@@ -16,7 +16,6 @@ private:
 	VectorType bluePixels;
 	const CMemoryBitmap& inputBitmap;
 	size_t vectorsPerLine;
-	bool avxReady;
 public:
 	AvxCfaProcessing() = delete;
 	AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, const CMemoryBitmap& inputbm);

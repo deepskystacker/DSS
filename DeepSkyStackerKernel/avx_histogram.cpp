@@ -6,27 +6,11 @@
 #include "histogram.h"
 #include "BezierAdjust.h"
 
-AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
-	avxReady{ AvxSimdCheck::checkSimdAvailability() },
-	redHisto(HistogramSize(), 0),
-	greenHisto(HistogramSize(), 0),
-	blueHisto(HistogramSize(), 0),
-	avxCfa{ 0, 0, inputbm },
-	inputBitmap{ inputbm }
-{
-	static_assert(sizeof(HistogramVectorType::value_type) == sizeof(int));
-}
-
-int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
-{
-	return SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.calcHistogram(lineStart, lineEnd, multiplier); });
-}
-
 int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
 {
 	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
 	{
-		if (this->avxReady && targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
+		if (AvxSimdCheck::checkSimdAvailability() && targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
 		{
 			constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
 			constexpr size_t nrVectors = HistogramSize() / VecLen;
@@ -63,9 +47,6 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 
 int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double)
 {
-	if (!this->histoData.avxReady)
-		return 1;
-
 	if (doCalcHistogram<std::uint16_t>(lineStart, lineEnd) == 0)
 		return AvxSupport::zeroUpper(0);
 	if (doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0)
@@ -328,7 +309,6 @@ namespace {
 }
 
 AvxBezierAndSaturation::AvxBezierAndSaturation(const size_t bufferLen) :
-	avxSupported{ AvxSimdCheck::checkSimdAvailability() },
 	redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen),
 	bezierX{}, bezierY{}
 {}
@@ -349,35 +329,6 @@ void AvxBezierAndSaturation::copyData(const float* const pRedPixel, const float*
 std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
 {
 	return { this->redBuffer.data(), this->greenBuffer.data(), this->blueBuffer.data() };
-}
-
-
-int AvxBezierAndSaturation::toHsl()
-{
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToHsl(); });
-}
-
-int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
-{
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps, histoAdjust); });
-}
-
-int AvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
-{
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(
-		this,
-		[markOverAndUnderExposure](auto&& o) { return o.avxToRgb(markOverAndUnderExposure); }
-	);
-}
-
-int AvxBezierAndSaturation::avxBezierAdjust(const size_t len)
-{
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len](auto&& o) { return o.avxBezierAdjust(len); });
-}
-
-int AvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
-{
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len, saturationShift](auto&& o) { return o.avxBezierSaturation(len, saturationShift); });
 }
 
 // ----------------------------------------------------------------------------------
@@ -409,9 +360,6 @@ __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues
 
 int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
-	if (!this->histoData.avxSupported)
-		return 1;
-
 	const size_t len = this->histoData.redBuffer.size();
 
 	const float scale = 255.0f / static_cast<float>(nBitmaps);
@@ -442,9 +390,6 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHi
 
 int Avx256BezierAndSaturation::avxToHsl()
 {
-	if (!this->histoData.avxSupported)
-		return 1;
-
 	const size_t len = this->histoData.redBuffer.size();
 
 	using VecType = __m256;
@@ -502,9 +447,6 @@ int Avx256BezierAndSaturation::avxToHsl()
 
 int Avx256BezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
-	if (!this->histoData.avxSupported)
-		return 1;
-
 	const size_t len = this->histoData.redBuffer.size();
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
@@ -577,9 +519,6 @@ int Avx256BezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 
 int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 {
-	if (!this->histoData.avxSupported)
-		return 1;
-
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
 
@@ -609,8 +548,6 @@ int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float
 {
 	if (saturationShift == 0)
 		return 0;
-	if (!this->histoData.avxSupported)
-		return 1;
 
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);

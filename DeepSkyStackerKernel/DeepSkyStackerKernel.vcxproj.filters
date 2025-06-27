@@ -215,6 +215,9 @@
     <ClCompile Include="avx_luminance-1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="avx_cfa_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

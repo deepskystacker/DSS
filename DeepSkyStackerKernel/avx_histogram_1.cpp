@@ -2,10 +2,105 @@
 #include "avx_histogram.h"
 #include "MemoryBitmap.h"
 #include "ColorHelpers.h"
+#include "avx_simd_check.h"
 
+AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
+	redHisto(HistogramSize(), 0),
+	greenHisto(HistogramSize(), 0),
+	blueHisto(HistogramSize(), 0),
+	avxCfa{ 0, 0, inputbm },
+	inputBitmap{ inputbm }
+{
+	static_assert(sizeof(HistogramVectorType::value_type) == sizeof(int));
+}
+
+int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
+{
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		Avx256Histogram avxHisto{ *this };
+		return avxHisto.calcHistogram(lineStart, lineEnd, multiplier);
+	}
+	else
+	{
+		NonAvxHistogram nonAvxHisto{ *this };
+		return nonAvxHisto.calcHistogram(lineStart, lineEnd, multiplier);
+	}
+}
+
+
+int AvxBezierAndSaturation::toHsl()
+{
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		Avx256BezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxToHsl();
+	}
+	else
+	{
+		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxToHsl();
+	}
+}
+
+int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
+{
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		Avx256BezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxAdjustRGB(nBitmaps, histoAdjust);
+	}
+	else
+	{
+		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxAdjustRGB(nBitmaps, histoAdjust);
+	}
+}
+
+int AvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
+{
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		Avx256BezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxToRgb(markOverAndUnderExposure);
+	}
+	else
+	{
+		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxToRgb(markOverAndUnderExposure);
+	}
+}
+
+int AvxBezierAndSaturation::avxBezierAdjust(const size_t len)
+{
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		Avx256BezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxBezierAdjust(len);
+	}
+	else
+	{
+		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxBezierAdjust(len);
+	}
+}
+
+int AvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
+{
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		Avx256BezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxBezierSaturation(len, saturationShift);
+	}
+	else
+	{
+		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
+		return bezierAndSaturation.avxBezierSaturation(len, saturationShift);
+	}
+}
 
 // *****************
-// Non-AVX Histogram
+// Non-AVX AvxHistogram
 // *****************
 
 int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
