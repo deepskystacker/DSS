@@ -13,6 +13,8 @@
 #include "FITSUtil.h"
 #include "TIFFUtil.h"
 #include "MasterFrames.h"
+#include "avx_bitmap_util.h"
+#include "avx_simd_check.h"
 
 void CRegisteredFrame::Reset()
 {
@@ -604,17 +606,30 @@ void CComputeLuminanceTask::process()
 	int progress = 0;
 	constexpr int lineBlockSize = 20;
 
-	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
-
-#pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
-	for (int row = 0; row < height; row += lineBlockSize)
+	if(AvxSimdCheck::checkSimdAvailability() && 	// Check output bitmap (must be monochrome-double).
+		AvxBitmapUtil{ *m_pGrayBitmap }.isMonochromeBitmapOfType<double>())
 	{
-		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
-
-		const int endRow = std::min(row + lineBlockSize, height);
-		if (avxLuminance.computeLuminanceBitmap(row, endRow) != 0)
+		AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
+#pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
+		for (int row = 0; row < height; row += lineBlockSize)
 		{
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+				m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+
+			const int endRow = std::min(row + lineBlockSize, height);
+			auto result = avxLuminance.computeLuminanceBitmap(row, endRow);
+			ZASSERTSTATE(0 == result);
+		}
+	}
+	else
+	{
+#pragma omp parallel for schedule(static, 5) default(shared) if(nrProcessors > 1)
+		for (int row = 0; row < height; row += lineBlockSize)
+		{
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+				m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+
+			const int endRow = std::min(row + lineBlockSize, height);
 			processNonAvx(row, endRow);
 		}
 	}

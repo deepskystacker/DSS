@@ -26,24 +26,8 @@ namespace
 	}
 }
 
-AvxLuminance::AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm) :
-	inputBitmap{ inputbm },
-	outputBitmap{ outbm },
-	avxReady{ true }
-{
-	if (!AvxSimdCheck::checkSimdAvailability())
-		avxReady = false;
-
-	// Check output bitmap (must be monochrome-double).
-	if (!AvxBitmapUtil{ outputBitmap }.isMonochromeBitmapOfType<double>())
-		avxReady = false;
-}
-
 int AvxLuminance::computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd)
 {
-	if (!avxReady)
-		return 1;
-
 	int rval = 1;
 	if (doComputeLuminance<std::uint16_t>(lineStart, lineEnd) == 0
 		|| doComputeLuminance<std::uint32_t>(lineStart, lineEnd) == 0

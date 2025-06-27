@@ -7,7 +7,6 @@ class AvxLuminance
 private:
 	const CMemoryBitmap& inputBitmap;
 	CMemoryBitmap& outputBitmap;
-	bool avxReady;
 public:
 	AvxLuminance() = delete;
 	explicit AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm);

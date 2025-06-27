@@ -134,20 +134,32 @@ set(i18n_Files
 source_group("Qt\\i18n" FILES ${i18n_Files} 
 )
 
+#
+# The files that contain AVX code that needs to be compiled with the AVX
+# compiler flags and contain code that can ONLY be called when AVX is available
+#
 set(AVX_Files
     "avx.cpp"
-    "avx_1.cpp"
     "avx_avg.cpp"
     "avx_bitmap_filler.cpp"
-    "avx_bitmap_util.cpp"
     "avx_cfa.cpp"
     "avx_entropy.cpp"
     "avx_filter.cpp"
     "avx_histogram.cpp"
-    "avx_histogram_1.cpp"
     "avx_luminance.cpp"
     "avx_simd_check.cpp"
     "avx_output.cpp"
+)
+
+#
+# The files that contain AVX code that needs to be compiled without the AVX
+# compiler flags and contain code that can be called when AVX isn't available
+#
+set(AVX_non-AVX_Files
+    "avx_1.cpp"
+    "avx_bitmap_util.cpp"
+    "avx_histogram_1.cpp"
+    "avx_luminance-1.cpp"
 )
 
 set(Source_Files
@@ -244,7 +256,7 @@ set_source_files_properties(${AVX_Files}
 # Target
 ################################################################################
 set (CMAKE_AUTOMOC OFF)
-add_library(DeepSkyStackerAVX STATIC ${AVX_Files} ${Header_Files})
+add_library(DeepSkyStackerAVX STATIC ${AVX_Files} ${AVX_non-AVX_Files} ${Header_Files})
 target_link_libraries(DeepSkyStackerAVX PRIVATE Qt6::Widgets Qt6::Network)
 target_link_libraries(DeepSkyStackerAVX PRIVATE ZLIB::ZLIB)
 
