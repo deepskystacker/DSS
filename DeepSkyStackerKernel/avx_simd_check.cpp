@@ -14,7 +14,7 @@
 
 bool AvxSimdCheck::checkAvx2CpuSupport()
 {
-#if defined (Q_OS_MACOS) // OSX builds will be ARM, so will support all AVX versions (incl. AVX2) through emulation with Simde (cf. avx_includes.h).
+#if defined (Q_OS_MACOS)  && defined(Q_PROCESSOR_ARM) // OSX builds will be ARM, so will support all AVX versions (incl. AVX2) through emulation with Simde (cf. avx_includes.h).
 	return true;
 #else
 #if defined(Q_OS_WIN) // MSVC verions
@@ -46,7 +46,7 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 
 	return (RequiredCpuFlags && AVXenabledOS);
 
-#else // GCC/Linux version
+#else // GCC/Linux version (applies to Linux and X86_64 OSX builds)
 	bool result = 
 		__builtin_cpu_supports("avx2") && 
 		__builtin_cpu_supports("fma") &&
@@ -65,8 +65,9 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 
 bool AvxSimdCheck::checkSimdAvailability()
 {
+	static const bool simdAvailable = checkAvx2CpuSupport();
 	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
-	return Multitask::GetUseSimd() && checkAvx2CpuSupport();
+	return Multitask::GetUseSimd() && simdAvailable;
 }
 
 #if defined (Q_OS_MACOS)
