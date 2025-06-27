@@ -63,7 +63,7 @@ bool AvxSimdCheck::checkSimdAvailability()
 #if !defined(Q_OS_MAC)
 		// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
 		_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
-#else
+#elif defined(Q_OS_MAC) && defined(Q_PROCESSOR_X86_64)
 		// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
 		_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON);
 #endif
