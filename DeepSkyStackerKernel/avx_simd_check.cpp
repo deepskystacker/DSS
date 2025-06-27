@@ -41,21 +41,19 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 	// OS supports AVX (YMM registers) - Note: XGETBV may only be executed on CPUs with XSAVE flag set. 
 	const bool AVXenabledOS = RequiredCpuFlags ? ((_xgetbv(0) & 6) == 6) : false; // 6 = SSE (0x2) + YMM (0x4) 
 
-	// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
-	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
-
 	return (RequiredCpuFlags && AVXenabledOS);
 
 #else // GCC/Linux version (applies to Linux and X86_64 OSX builds)
-	bool result = 
-		__builtin_cpu_supports("avx2") && 
+	bool result =
+		__builtin_cpu_supports("avx2") &&
 		__builtin_cpu_supports("fma") &&
 		__builtin_cpu_supports("popcnt") &&
-		__builtin_cpu_supports("xsave") &&
+		__builtin_cpu_supports("xsave");
+	
+#if !defined(Q_OS_MACOS)
+	result = result &&
 		__builtin_cpu_supports("osxsave");
-
-	// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
-	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
+#endif
 
 	return result;
 
@@ -66,6 +64,13 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 bool AvxSimdCheck::checkSimdAvailability()
 {
 	static const bool simdAvailable = checkAvx2CpuSupport();
+#if !defined(Q_PROCESSOR_ARM)
+	if (simdAvailable)
+	{
+		// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
+		_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
+	}
+#endif
 	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
 	return Multitask::GetUseSimd() && simdAvailable;
 }
