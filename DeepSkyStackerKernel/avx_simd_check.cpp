@@ -14,10 +14,9 @@
 
 bool AvxSimdCheck::checkAvx2CpuSupport()
 {
-#if defined (Q_OS_MACOS)  && defined(Q_PROCESSOR_ARM) // OSX builds will be ARM, so will support all AVX versions (incl. AVX2) through emulation with Simde (cf. avx_includes.h).
+#if defined (Q_OS_MACOS) && defined(Q_PROCESSOR_ARM) // OSX builds will be ARM, so will support all AVX versions (incl. AVX2) through emulation with Simde (cf. avx_includes.h).
 	return true;
-#else
-#if defined(Q_OS_WIN) // MSVC verions
+#elif defined(Q_OS_WIN) // MSVC verions
 	SYSTEM_INFO info;
 	GetNativeSystemInfo(&info);
 	if (info.wProcessorArchitecture != PROCESSOR_ARCHITECTURE_AMD64) // AVX instructions can only be supported on x64 CPUs. 
@@ -48,29 +47,27 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 		__builtin_cpu_supports("avx2") &&
 		__builtin_cpu_supports("fma") &&
 		__builtin_cpu_supports("popcnt") &&
-		__builtin_cpu_supports("xsave");
-	
-#if !defined(Q_OS_MACOS)
-	result = result &&
+		__builtin_cpu_supports("xsave") &&
 		__builtin_cpu_supports("osxsave");
-#endif
 
 	return result;
 
 #endif
-#endif
-};
+}
 
 bool AvxSimdCheck::checkSimdAvailability()
 {
 	static const bool simdAvailable = checkAvx2CpuSupport();
-#if !defined(Q_PROCESSOR_ARM)
 	if (simdAvailable)
 	{
+#if !defined(Q_OS_MAC)
 		// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
 		_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
-	}
+#else
+		// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs. 
+		_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON);
 #endif
+	}
 	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
 	return Multitask::GetUseSimd() && simdAvailable;
 }
