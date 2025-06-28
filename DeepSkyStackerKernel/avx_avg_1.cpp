@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2025 David C. Partridge
@@ -34,31 +33,23 @@
 **
 **
 ****************************************************************************/
-#include "BitmapBase.h"
-#include "avx_entropy.h"
+#include "pch.h"
+#include "dssrect.h"
+#include "avx_includes.h"
+#include "avx_avg.h"
+#include "avx_simd_check.h"
 
-class CTaskInfo;
-class DSSRect;
-class CMemoryBitmap;
-class AvxEntropy;
+AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
+	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
+	tempBitmap{ tempbm },
+	outputBitmap{ outbm },
+	taskInfo{ tInfo },
+	avxEntropy{ entroinfo }
+{}
 
-class AvxAccumulation
+int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 {
-	int resultWidth, resultHeight;
-	CMemoryBitmap& tempBitmap;
-	CMemoryBitmap& outputBitmap;
-	const CTaskInfo& taskInfo;
-	AvxEntropy& avxEntropy;
-public:
-	AvxAccumulation() = delete;
-	AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept;
-	AvxAccumulation(const AvxAccumulation&) = delete;
-	AvxAccumulation(AvxAccumulation&&) = delete;
-	AvxAccumulation& operator=(const AvxAccumulation&) = delete;
-
-	int accumulate(const int nrStackedBitmaps);
-	int avxAccumulate(const int nrStackedBitmaps);
-private:
-	template <class T_IN, class T_OUT>
-	int doAccumulate(const int nrStackedBitmaps);
-};
+	if (!AvxSimdCheck::checkSimdAvailability())
+		return 1;
+	return avxAccumulate(nrStackedBitmaps);
+}
