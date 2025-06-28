@@ -157,6 +157,7 @@ set(AVX_Files
 #
 set(AVX_non-AVX_Files
     "avx_1.cpp"
+    "avx_avg_1.cpp"
     "avx_bitmap_util.cpp"
     "avx_cfa_1.cpp"
     "avx_entropy_1.cpp"
