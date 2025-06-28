@@ -212,7 +212,7 @@
     <ClCompile Include="avx_bitmap_util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="avx_luminance-1.cpp">
+    <ClCompile Include="avx_luminance_1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="avx_cfa_1.cpp">
@@ -222,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="avx_avg_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avx_filter_1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
