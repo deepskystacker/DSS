@@ -218,6 +218,9 @@
     <ClCompile Include="avx_cfa_1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="avx_entropy_1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

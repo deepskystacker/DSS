@@ -38,7 +38,7 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 	mergeHisto(green, isColor ? greenHisto : redHisto);
 	mergeHisto(blue, isColor ? blueHisto : redHisto);
 
-	return this->avxReady ? AvxSupport::zeroUpper(0) : 0;
+	return AvxSupport::zeroUpper(0);
 }
 
 // *****************

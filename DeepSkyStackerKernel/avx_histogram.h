@@ -11,7 +11,6 @@ private:
 	friend class Avx256Histogram;
 	friend class NonAvxHistogram;
 
-	bool avxReady;
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
@@ -26,7 +25,6 @@ public:
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
 	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
-	inline bool isAvxReady() const { return this->avxReady; }
 private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
 };

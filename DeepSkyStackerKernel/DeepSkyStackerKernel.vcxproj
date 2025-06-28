@@ -271,6 +271,7 @@
     <ClCompile Include="avx_1.cpp" />
     <ClCompile Include="avx_bitmap_util.cpp" />
     <ClCompile Include="avx_cfa_1.cpp" />
+    <ClCompile Include="avx_entropy_1.cpp" />
     <ClCompile Include="avx_histogram_1.cpp" />
     <ClCompile Include="avx_luminance-1.cpp" />
     <ClCompile Include="avx_simd_check.cpp" />
