@@ -42,6 +42,20 @@ then you should install libxcb-cursor0 or xcb-cursor0 (whichever your installer 
 `sudo apt-get install libxcb-cursor0`
 
 worked for me on Ubuntu and Linux Mint systems.
+
+If get errors like:
+```
+/lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.32' not found (required by ./DeepSkyStacker)
+/lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by ./DeepSkyStacker)
+```
+then you need install a later version libstdc++
+```
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install libstdc++-13-dev
+```
+should do the trick.
+
 ### macOS:
 
 Just open the downloaded .dmg and run the installer that it contains
