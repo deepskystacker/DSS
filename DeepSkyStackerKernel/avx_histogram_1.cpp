@@ -54,7 +54,14 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, co
 	if (AvxSimdCheck::checkSimdAvailability())
 	{
 		Avx256Histogram avxHisto{ *this };
-		return avxHisto.calcHistogram(lineStart, lineEnd, multiplier);
+		auto result = avxHisto.calcHistogram(lineStart, lineEnd, multiplier);
+		//
+		// If it returend 1 (typically for very small arrays), do it the other way!
+		//
+
+		if (0 == result) return result;
+		NonAvxHistogram nonAvxHisto{ *this };
+		return nonAvxHisto.calcHistogram(lineStart, lineEnd, multiplier);
 	}
 	else
 	{
