@@ -197,9 +197,16 @@ int AvxImageFilter<T>::avxFilter(const size_t lineStart, const size_t lineEnd)
 	return AvxSupport::zeroUpper(0);
 }
 
+#if defined(_MSC_VER)
+#pragma warning( push )
+#pragma warning( disable : 4661)
+#endif
 // Explicit template instantiation for the types we need.
 template class AvxImageFilter<std::uint8_t>;
 template class AvxImageFilter<std::uint16_t>;
 template class AvxImageFilter<std::uint32_t>;
 template class AvxImageFilter<float>;
 template class AvxImageFilter<double>;
+#if defined(_MSC_VER)
+#pragma warning( pop )
+#endif
