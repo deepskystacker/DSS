@@ -6,8 +6,61 @@
 #include "TaskInfo.h"
 #include "EntropyInfo.h"
 #include "BackgroundCalibration.h"
+#include "avx_simd_check.h"
 #include "dssrect.h"
 
+AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
+	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
+	width{ colEnd }, height{ lineEnd - lineStart },
+	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
+	vectorsPerLine{ AvxBitmapUtil::numberOfAvxVectors<float, VectorElementType>(width) },
+	xCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
+	yCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
+	redPixels(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
+	greenPixels{},
+	bluePixels{},
+	inputBitmap{ inputbm },
+	tempBitmap{ tempbm },
+	avxCfa{ static_cast<size_t>(lStart), static_cast<size_t>(lEnd), inputbm },
+	entropyData{ entrdat }
+{
+	if (width < 0 || height < 0)
+		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
+
+	resizeColorVectors(vectorsPerLine * height);
+}
+
+void AvxStacking::init(const int lStart, const int lEnd)
+{
+	lineStart = lStart;
+	lineEnd = lEnd;
+	height = lineEnd - lineStart;
+
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		const size_t nrVectors = vectorsPerLine * height;
+		xCoordinates.resize(nrVectors);
+		yCoordinates.resize(nrVectors);
+		redPixels.resize(nrVectors);
+		resizeColorVectors(nrVectors);
+	}
+}
+
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+{
+	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
+
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		Avx256Stacking avxStacking{ *this };
+		return avxStacking.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier);
+	}
+	else
+	{
+		NonAvxStacking nonAvxStacking{ *this };
+		return nonAvxStacking.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier);
+	}
+}
 
 // ****************
 // Non-AVX Stacking

@@ -11,45 +11,6 @@
 #include "avx_entropy.h"
 #include "EntropyInfo.h"
 
-
-AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
-	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
-	width{ colEnd }, height{ lineEnd - lineStart },
-	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
-	vectorsPerLine{ AvxBitmapUtil::numberOfAvxVectors<float, VectorElementType>(width) },
-	xCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
-	yCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
-	redPixels(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
-	greenPixels{},
-	bluePixels{},
-	inputBitmap{ inputbm },
-	tempBitmap{ tempbm },
-	avxCfa{ static_cast<size_t>(lStart), static_cast<size_t>(lEnd), inputbm },
-	entropyData{ entrdat },
-	avx2Enabled{ AvxSimdCheck::checkSimdAvailability() }
-{
-	if (width < 0 || height < 0)
-		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
-
-	resizeColorVectors(vectorsPerLine * height);
-}
-
-void AvxStacking::init(const int lStart, const int lEnd)
-{
-	lineStart = lStart;
-	lineEnd = lEnd;
-	height = lineEnd - lineStart;
-
-	if (avx2Enabled)
-	{
-		const size_t nrVectors = vectorsPerLine * height;
-		xCoordinates.resize(nrVectors);
-		yCoordinates.resize(nrVectors);
-		redPixels.resize(nrVectors);
-		resizeColorVectors(nrVectors);
-	}
-}
-
 void AvxStacking::resizeColorVectors(const size_t nrVectors)
 {
 	if (AvxBitmapUtil{ tempBitmap }.isColorBitmap())
@@ -63,24 +24,12 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
-{
-	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
-
-	return SimdSelector<Avx256Stacking, NonAvxStacking>(
-		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier); }
-	);
-}
-
 // ****************
 // AVX 256 Stacking
 // ****************
 
 int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
 {
-	if (!this->stackData.avx2Enabled)
-		return 1;
-
 	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
 		return AvxSupport::zeroUpper(0);
 	if (doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)

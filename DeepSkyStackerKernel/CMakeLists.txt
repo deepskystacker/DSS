@@ -153,7 +153,7 @@ set(AVX_Files
 
 #
 # The files that contain AVX code that needs to be compiled without the AVX
-# compiler flags and contain code that can be called when AVX isn't available
+# compiler flags and contains code that can be called regardless of AVX availability
 #
 set(AVX_non-AVX_Files
     "avx_1.cpp"
