@@ -7,32 +7,8 @@
 #include "avx_histogram.h"
 #include "Multitask.h"
 
-AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
-	inputBitmap{ inputbm },
-	entropyInfo{ entrinfo },
-	pEntropyCoverage{ entropycov },
-	avxReady{ AvxSimdCheck::checkSimdAvailability() }
+int AvxEntropy::avxCalcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
 {
-	if (pEntropyCoverage != nullptr && avxReady)
-	{
-		const size_t width = pEntropyCoverage->Width();
-		const size_t height = pEntropyCoverage->Height();
-		static_assert(std::is_same<__m512&, decltype(redEntropyLayer[0])>::value);
-		const size_t nrVectors = AvxBitmapUtil::numberOfAvxVectors<float, __m512>(width);
-		redEntropyLayer.resize(height * nrVectors);
-		if (AvxBitmapUtil{ *pEntropyCoverage }.isColorBitmap())
-		{
-			greenEntropyLayer.resize(height * nrVectors);
-			blueEntropyLayer.resize(height * nrVectors);
-		}
-	}
-}
-
-int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
-{
-	if (!avxReady)
-		return 1;
-
 	int rval = 1;
 	if (doCalcEntropies<std::uint16_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
 		|| doCalcEntropies<std::uint32_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0

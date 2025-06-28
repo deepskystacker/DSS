@@ -24,7 +24,6 @@ private:
 	EntropyLayerVectorType redEntropyLayer;
 	EntropyLayerVectorType greenEntropyLayer;
 	EntropyLayerVectorType blueEntropyLayer;
-	bool avxReady;
 public:
 	AvxEntropy() = delete;
 	AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);
@@ -36,7 +35,9 @@ public:
 #endif 
 
 	int calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies);
+	int avxCalcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies);
 private:
 	template <class T>
 	int doCalcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies);
+	void ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy);
 };
