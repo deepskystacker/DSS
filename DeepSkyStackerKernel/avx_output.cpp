@@ -137,7 +137,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 	};
 	const auto sigma = [](const __m256 sum, const __m256d sumSqLo, const __m256d sumSqHi, const __m256 N) -> __m256
 	{
-		// Sigma� = sumSquared / N - �� = 1/N * (sumSquared - sum� / N)
+		// Sigma² = sumSquared / N - µ² = 1/N * (sumSquared - sum² / N)
 		const __m256d Nlo = _mm256_cvtps_pd(_mm256_extractf128_ps(N, 0));
 		const __m256d Nhi = _mm256_cvtps_pd(_mm256_extractf128_ps(N, 1));
 		const __m256d sumLo = _mm256_cvtps_pd(_mm256_extractf128_ps(sum, 0));
@@ -342,7 +342,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 				const __m256 noValuesMask2 = _mm256_cmp_ps(N2, _mm256_setzero_ps(), 0);
 				my1 = _mm256_blendv_ps(_mm256_div_ps(sum1, N1), _mm256_setzero_ps(), noValuesMask1); // Low 8 floats. Set 0 where N==0.
 				my2 = _mm256_blendv_ps(_mm256_div_ps(sum2, N2), _mm256_setzero_ps(), noValuesMask2); // Hi 8 floats. Set 0 where N==0.
-				// Update lower and upper bound with new � +- kappa * sigma
+				// Update lower and upper bound with new µ +- kappa * sigma
 				const __m256 sigma1 = sigma(sum1, sumSq1, sumSq2, N1);
 				const __m256 sigma2 = sigma(sum2, sumSq3, sumSq4, N2);
 				upperBound1 = _mm256_blendv_ps(_mm256_fmadd_ps(sigma1, kappa, my1), _mm256_setzero_ps(), noValuesMask1); // Set 0 where N==0.
@@ -506,20 +506,20 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				__m256 S1 = _mm256_setzero_ps();
 				__m256 S2 = _mm256_setzero_ps();
 
-				// Calculate sigma� related to � of last iteration.
+				// Calculate sigma² related to µ of last iteration.
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
 					const __m256 d1 = _mm256_sub_ps(lo8, my1);
 					const __m256 d2 = _mm256_sub_ps(hi8, my2);
-					S1 = _mm256_fmadd_ps(d1, d1, S1); // Sum of (x-�)�
+					S1 = _mm256_fmadd_ps(d1, d1, S1); // Sum of (x-µ)²
 					S2 = _mm256_fmadd_ps(d2, d2, S2);
 				}
-				const __m256 sigmaSq1 = _mm256_div_ps(S1, N); // sigma� = sum(x-�)� / N
+				const __m256 sigmaSq1 = _mm256_div_ps(S1, N); // sigma² = sum(x-µ)² / N
 				const __m256 sigmaSq2 = _mm256_div_ps(S2, N);
 
-				// Calculate new � using current sigma�.
+				// Calculate new µ using current sigma².
 				__m256 W1 = _mm256_setzero_ps();
 				__m256 W2 = _mm256_setzero_ps();
 				S1 = _mm256_setzero_ps();
@@ -528,9 +528,9 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					const __m256 d1 = _mm256_sub_ps(lo8, my1); // x-�
+					const __m256 d1 = _mm256_sub_ps(lo8, my1); // x-µ
 					const __m256 d2 = _mm256_sub_ps(hi8, my2);
-					const __m256 denominator1 = _mm256_fmadd_ps(d1, d1, sigmaSq1); // sigma� + (x-�)�
+					const __m256 denominator1 = _mm256_fmadd_ps(d1, d1, sigmaSq1); // sigma² + (x-µ)²
 					const __m256 denominator2 = _mm256_fmadd_ps(d2, d2, sigmaSq2);
 					const __m256 weight1 = _mm256_blendv_ps(_mm256_div_ps(sigmaSq1, denominator1), _mm256_set1_ps(1.0f), _mm256_cmp_ps(denominator1, _mm256_setzero_ps(), 0)); // sigma� / (sigma� + (x-�)�) = 1 / (1 + (x-�)�/sigma�)
 					const __m256 weight2 = _mm256_blendv_ps(_mm256_div_ps(sigmaSq2, denominator2), _mm256_set1_ps(1.0f), _mm256_cmp_ps(denominator2, _mm256_setzero_ps(), 0)); // Set weight to 1 when sigma==0.
@@ -564,7 +564,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 			{
 				float S{ 0.0f };
 
-				// Calculate sigma� related to � of last iteration.
+				// Calculate sigma² related to µ of last iteration.
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
@@ -573,7 +573,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				}
 				const float sigmaSq = S / nLineAddresses;
 
-				// Calculate new � using current sigma�.
+				// Calculate new µ using current sigma².
 				float W{ 0.0f };
 				S = 0.0f;
 				for (auto frameAddress : lineAddresses)
