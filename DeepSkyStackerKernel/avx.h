@@ -37,6 +37,7 @@
 #include "avx_cfa.h" 
 #include "avx_simd_factory.h"
 #include "avx_includes.h"
+#include "boost/align/aligned_allocator.hpp"
 
 class AvxEntropy;
 class CPixelTransform;
@@ -49,7 +50,7 @@ private:
 	friend class NonAvxStacking;
 
 	typedef __m512 VectorElementType;
-	typedef std::vector<VectorElementType> VectorType;
+	typedef std::vector<VectorElementType, boost::alignment::aligned_allocator<VectorElementType, 64> > VectorType;
 
 	int lineStart, lineEnd, colEnd;
 	int width, height;
