@@ -2141,16 +2141,14 @@ namespace DSS
 
 				if (checkReadOnlyFolders(tasks))
 				{
-					const auto start{ std::chrono::steady_clock::now() };
-
 					bContinue = checkStacking(tasks);
 					if (bStackAfter)
 						bContinue = bContinue && showRecap(tasks);
 
+					const auto start{ std::chrono::steady_clock::now() };
+
 					if (bContinue)
 					{
-						//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
-
 						CRegisterEngine	RegisterEngine;
 
 						imageLoader.clearCache();
