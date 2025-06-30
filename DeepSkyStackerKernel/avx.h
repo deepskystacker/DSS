@@ -37,7 +37,7 @@
 #include "avx_cfa.h" 
 #include "avx_simd_factory.h"
 #include "avx_includes.h"
-#include "boost/align/aligned_allocator.hpp"
+#include <boost/align/aligned_allocator.hpp>
 
 class AvxEntropy;
 class CPixelTransform;
