@@ -1,7 +1,7 @@
 <project>
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
-    <version>6.1.0.Beta.2</version>
+    <version>6.1.0_Beta_3</version>
     <readmeFile>README.txt</readmeFile>
     <licenseFile>LICENSE</licenseFile>
     <componentList>
