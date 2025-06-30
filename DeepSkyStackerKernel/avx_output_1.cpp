@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2025 David C. Partridge
@@ -34,45 +33,38 @@
 **
 **
 ****************************************************************************/
+#include "pch.h"
+#include "avx_includes.h"
+#include "avx_output.h"
+#include "avx_simd_check.h"
+#include "avx_bitmap_util.h"
+#include "avx_median.h"
+#include "MultiBitmap.h"
+#include "ColorMultiBitmap.h"
+#include "GreyMultiBitmap.h"
 
-#include "BitmapBase.h"
-
-class CMultiBitmap;
-class AvxOutputComposition
+AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) :
+	inputBitmap{ mBitmap },
+	outputBitmap{ outputbm }
 {
-private:
-	CMultiBitmap& inputBitmap;
-	CMemoryBitmap& outputBitmap;
-public:
-	AvxOutputComposition() = delete;
-	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm);
-	AvxOutputComposition(const AvxOutputComposition&) = default;
-	AvxOutputComposition(AvxOutputComposition&&) = delete;
-	AvxOutputComposition& operator=(const AvxOutputComposition&) = delete;
 
-	int compose(const int line, std::vector<void*> const& lineAddresses);
-private:
-	enum MethodSelection
-	{
-		KappaSigma = 0,
-		MedianKappaSigma = 1,
-		MedianOnly = 2
-	};
-	int avxCompose(const int line, std::vector<void*> const& lineAddresses);
+}
 
-	template <class INPUTTYPE, class OUTPUTTYPE>
-	static bool bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept;
+int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
+{
+	if (!AvxSimdCheck::checkSimdAvailability())
+		return 1;
+	// Homogenization not implemented with AVX
+	if (inputBitmap.GetHomogenization())
+		return 1;
+	// Output must be float values
+	if (AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<float>() == false)
+		return 1;	// If this is not equal, something went wrong and we cannot continue without risking access violations.
+	if (lineAddresses.size() != inputBitmap.GetNrAddedBitmaps())
+		return 1;
+	// No line addresses?
+	if (lineAddresses.empty())
+		return 1;
 
-	template <class T>
-	static float convertToFloat(const T value) noexcept;
-
-	template <MethodSelection Method>
-	int processMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses);
-
-	template <typename T, MethodSelection Method>
-	int doProcessMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses);
-
-	int processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses);
-	template <class T>
-	int doProcessAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses);
-};
+	return avxCompose(line, lineAddresses);
+}

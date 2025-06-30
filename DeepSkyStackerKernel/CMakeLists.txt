@@ -147,7 +147,6 @@ set(AVX_Files
     "avx_filter.cpp"
     "avx_histogram.cpp"
     "avx_luminance.cpp"
-    "avx_simd_check.cpp"
     "avx_output.cpp"
 )
 
@@ -164,6 +163,8 @@ set(AVX_non-AVX_Files
     "avx_filter_1.cpp"
     "avx_histogram_1.cpp"
     "avx_luminance_1.cpp"
+    "avx_simd_check.cpp"
+    "avx_output_1.cpp"
 )
 
 set(Source_Files

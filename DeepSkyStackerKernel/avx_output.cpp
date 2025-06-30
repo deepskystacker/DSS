@@ -43,21 +43,6 @@
 #include "ColorMultiBitmap.h"
 #include "GreyMultiBitmap.h"
 
-AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) :
-	inputBitmap{ mBitmap },
-	outputBitmap{ outputbm },
-	avxReady{ true }
-{
-	if (!AvxSimdCheck::checkSimdAvailability())
-		avxReady = false;
-	// Homogenization not implemented with AVX
-	if (inputBitmap.GetHomogenization())
-		avxReady = false;
-	// Output must be float values
-	if (AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<float>() == false)
-		avxReady = false;
-}
-
 template <class INPUTTYPE, class OUTPUTTYPE>
 bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept
 {
@@ -75,10 +60,9 @@ inline float AvxOutputComposition::convertToFloat(const T value) noexcept
 		return static_cast<float>(value);
 }
 
-int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
+int AvxOutputComposition::avxCompose(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (!avxReady)
-		return 1;
+
 	// If this is not equal, something went wrong and we cannot continue without risking access violations.
 	if (lineAddresses.size() != inputBitmap.GetNrAddedBitmaps())
 		return 1;
