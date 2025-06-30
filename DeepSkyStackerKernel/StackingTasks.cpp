@@ -1304,8 +1304,6 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 void CAllStackingTasks::AddFileToTask(const CFrameInfo& frameInfo, const std::uint32_t dwGroupID)
 {
-	ZFUNCTRACE_RUNTIME();
-
 	bool bFound = false;
 
 	// Add this frame to an already existing task, IF (1) same picture type, (2) same file group, (3) same ISO or gain, (4) same exposure.

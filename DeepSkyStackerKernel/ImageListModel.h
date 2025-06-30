@@ -112,6 +112,7 @@ namespace DSS
         const_iterator cend()const { return mydata.end(); }
         iterator begin() { return mydata.begin(); }
         iterator end() { return mydata.end(); }
+		auto size() const { return mydata.size(); }
 
         //
         // return the file held in the base FrameInfo object
