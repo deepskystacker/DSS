@@ -147,19 +147,24 @@ set(AVX_Files
     "avx_filter.cpp"
     "avx_histogram.cpp"
     "avx_luminance.cpp"
-    "avx_simd_check.cpp"
     "avx_output.cpp"
 )
 
 #
 # The files that contain AVX code that needs to be compiled without the AVX
-# compiler flags and contain code that can be called when AVX isn't available
+# compiler flags and contains code that can be called regardless of AVX availability
 #
 set(AVX_non-AVX_Files
     "avx_1.cpp"
+    "avx_avg_1.cpp"
     "avx_bitmap_util.cpp"
+    "avx_cfa_1.cpp"
+    "avx_entropy_1.cpp"
+    "avx_filter_1.cpp"
     "avx_histogram_1.cpp"
-    "avx_luminance-1.cpp"
+    "avx_luminance_1.cpp"
+    "avx_simd_check.cpp"
+    "avx_output_1.cpp"
 )
 
 set(Source_Files

@@ -196,6 +196,7 @@
                             <program>${system_temp_directory}/vc_redist.x64.exe</program>
                             <programArguments>/${vcredist_install_mode} /passive /norestart</programArguments>
                             <progressText>Installing Visual Studio runtime in ${vcredist_install_mode} mode</progressText>
+                            <showMessageOnError>0</showMessageOnError>
                         </runProgram>
                         <actionGroup>
                             <actionList>

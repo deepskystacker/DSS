@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2025 David C. Partridge
@@ -34,23 +33,41 @@
 **
 **
 ****************************************************************************/
+#include "pch.h"
+#include "avx_includes.h"
+#include "avx_entropy.h"
+#include "avx_bitmap_util.h"
+#include "avx_cfa.h"
+#include "avx_histogram.h"
+#include "avx_simd_check.h"
+#include "Multitask.h"
 
-#include "BitmapBase.h"
-
-class AvxLuminance
+AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
+	inputBitmap{ inputbm },
+	entropyInfo{ entrinfo },
+	pEntropyCoverage{ entropycov }
 {
-private:
-	const CMemoryBitmap& inputBitmap;
-	CMemoryBitmap& outputBitmap;
-public:
-	AvxLuminance() = delete;
-	explicit AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm);
-	AvxLuminance(const AvxLuminance&) = default;
-	AvxLuminance(AvxLuminance&&) = delete;
-	AvxLuminance& operator=(const AvxLuminance&) = delete;
+	if (pEntropyCoverage != nullptr && AvxSimdCheck::checkSimdAvailability())
+	{
+		const size_t width = pEntropyCoverage->Width();
+		const size_t height = pEntropyCoverage->Height();
+		static_assert(std::is_same<__m512&, decltype(redEntropyLayer[0])>::value);
+		const size_t nrVectors = AvxBitmapUtil::numberOfAvxVectors<float, __m512>(width);
+		redEntropyLayer.resize(height * nrVectors);
+		if (AvxBitmapUtil{ *pEntropyCoverage }.isColorBitmap())
+		{
+			greenEntropyLayer.resize(height * nrVectors);
+			blueEntropyLayer.resize(height * nrVectors);
+		}
+	}
+}
 
-	int computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd);
-private:
-	template <class T>
-	int doComputeLuminance(const size_t lineStart, const size_t lineEnd);
-};
+int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
+{
+	if (AvxSimdCheck::checkSimdAvailability())
+	{
+		return avxCalcEntropies(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies);
+	}
+	else return 1; // AVX not available, return error code 1
+}
+

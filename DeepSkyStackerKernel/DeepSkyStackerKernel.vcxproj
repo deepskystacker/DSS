@@ -269,9 +269,14 @@
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
     <ClCompile Include="avx_1.cpp" />
+    <ClCompile Include="avx_avg_1.cpp" />
     <ClCompile Include="avx_bitmap_util.cpp" />
+    <ClCompile Include="avx_cfa_1.cpp" />
+    <ClCompile Include="avx_entropy_1.cpp" />
+    <ClCompile Include="avx_filter_1.cpp" />
     <ClCompile Include="avx_histogram_1.cpp" />
-    <ClCompile Include="avx_luminance-1.cpp" />
+    <ClCompile Include="avx_luminance_1.cpp" />
+    <ClCompile Include="avx_output_1.cpp" />
     <ClCompile Include="avx_simd_check.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />

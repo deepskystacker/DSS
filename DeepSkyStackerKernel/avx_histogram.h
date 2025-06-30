@@ -1,4 +1,39 @@
 #pragma once
+/****************************************************************************
+**
+** Copyright (C) 2020, 2025 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
 #include "avx_cfa.h"
 #include "avx_simd_factory.h"
 #include "histogram.h"
@@ -11,7 +46,6 @@ private:
 	friend class Avx256Histogram;
 	friend class NonAvxHistogram;
 
-	bool avxReady;
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
@@ -26,16 +60,14 @@ public:
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
 	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
-	inline bool isAvxReady() const { return this->avxReady; }
 private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
 };
 
-class Avx256Histogram : public SimdFactory<Avx256Histogram>
+class Avx256Histogram
 {
 private:
 	friend class AvxHistogram;
-	friend class SimdFactory<Avx256Histogram>;
 
 	AvxHistogram& histoData;
 	Avx256Histogram(AvxHistogram& hd) : histoData{ hd } {}
@@ -64,11 +96,10 @@ public:
 };
 
 
-class NonAvxHistogram : public SimdFactory<NonAvxHistogram>
+class NonAvxHistogram
 {
 private:
 	friend class AvxHistogram;
-	friend class SimdFactory<NonAvxHistogram>;
 
 	AvxHistogram& histoData;
 	NonAvxHistogram(AvxHistogram& hd) : histoData{ hd } {}
@@ -92,7 +123,6 @@ private:
 	std::vector<float> blueBuffer;
 	std::vector<float> bezierX;
 	std::vector<float> bezierY;
-	bool avxSupported;
 
 public:
 	explicit AvxBezierAndSaturation(const size_t bufferLen);
@@ -127,11 +157,10 @@ public:
 };
 
 
-class Avx256BezierAndSaturation : public SimdFactory<Avx256BezierAndSaturation>
+class Avx256BezierAndSaturation
 {
 private:
 	friend class AvxBezierAndSaturation;
-	friend class SimdFactory<Avx256BezierAndSaturation>;
 
 	AvxBezierAndSaturation& histoData;
 	Avx256BezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}
@@ -149,11 +178,10 @@ private:
 };
 
 
-class NonAvxBezierAndSaturation : public SimdFactory<NonAvxBezierAndSaturation>
+class NonAvxBezierAndSaturation
 {
 private:
 	friend class AvxBezierAndSaturation;
-	friend class SimdFactory<NonAvxBezierAndSaturation>;
 
 	AvxBezierAndSaturation& histoData;
 	NonAvxBezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}

@@ -178,6 +178,55 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	ZClass
 )
 
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStackerTest
+        POST_BUILD
+        #
+        # Copy the .pdb file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStackerTest.pdb
+    )
+endif()
+
+if(NOT LINUX)
+    set (deploy_tool_options_arg "-verbose=1")
+    if(APPLE)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip ")
+    elseif(WIN32)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
+endif()
+
+    # Generate a deployment script to be executed at install time
+    # App bundles on macOS have an .app suffix
+    if(APPLE)
+        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerTest>.app")
+    else()
+        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
+        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerTest>")
+    endif()
+
+    message ("executable_path: " ${executable_path})
+    message ("deploy tools options arg: " ${deploy_tool_options_arg})
+     qt_generate_deploy_script(
+         TARGET DeepSkyStackerTest
+         OUTPUT_SCRIPT deploy_script
+         CONTENT "
+     qt_deploy_runtime_dependencies(
+         EXECUTABLE \"${executable_path}\"
+         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+     )"
+     )
+else()
+qt_generate_deploy_app_script(
+    TARGET ${PROJECT_NAME}
+    OUTPUT_SCRIPT deploy_script
+    DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+)
+endif()
+install (SCRIPT ${deploy_script})
+install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
+
 
 
 

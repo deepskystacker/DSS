@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2025 David C. Partridge
@@ -34,23 +33,42 @@
 **
 **
 ****************************************************************************/
+#include "pch.h"
+#include "avx_includes.h"
+#include "avx_filter.h"
+#include "avx_simd_check.h"
+#include "MedianFilterEngine.h"
 
-#include "BitmapBase.h"
-
-class AvxLuminance
+template <>
+AvxImageFilter<double>::AvxImageFilter(CInternalMedianFilterEngineT<double>* filEng) :
+	filterEngine{ filEng }
 {
-private:
-	const CMemoryBitmap& inputBitmap;
-	CMemoryBitmap& outputBitmap;
-public:
-	AvxLuminance() = delete;
-	explicit AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm);
-	AvxLuminance(const AvxLuminance&) = default;
-	AvxLuminance(AvxLuminance&&) = delete;
-	AvxLuminance& operator=(const AvxLuminance&) = delete;
+}
 
-	int computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd);
-private:
-	template <class T>
-	int doComputeLuminance(const size_t lineStart, const size_t lineEnd);
-};
+template <class T>
+AvxImageFilter<T>::AvxImageFilter(CInternalMedianFilterEngineT<T>*) :
+	filterEngine{ nullptr }
+{}
+
+template <class T>
+int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
+{
+	if constexpr (!std::is_same<T, double>::value)
+		return 1;
+	if (!AvxSimdCheck::checkSimdAvailability())
+		return 1;
+	if (filterEngine == nullptr)
+		return 1;
+	if (filterEngine->m_lFilterSize != 1)
+		return 1;
+	if (filterEngine->m_CFAType != CFATYPE_NONE)
+		return 1;
+	return avxFilter(lineStart, lineEnd);
+}
+
+// Explicit template instantiation for the types we need.
+template class AvxImageFilter<std::uint8_t>;
+template class AvxImageFilter<std::uint16_t>;
+template class AvxImageFilter<std::uint32_t>;
+template class AvxImageFilter<float>;
+template class AvxImageFilter<double>;

@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2025 David C. Partridge
@@ -34,23 +33,38 @@
 **
 **
 ****************************************************************************/
+#include "pch.h"
+#include "avx_includes.h"
+#include "avx_output.h"
+#include "avx_simd_check.h"
+#include "avx_bitmap_util.h"
+#include "avx_median.h"
+#include "MultiBitmap.h"
+#include "ColorMultiBitmap.h"
+#include "GreyMultiBitmap.h"
 
-#include "BitmapBase.h"
-
-class AvxLuminance
+AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) :
+	inputBitmap{ mBitmap },
+	outputBitmap{ outputbm }
 {
-private:
-	const CMemoryBitmap& inputBitmap;
-	CMemoryBitmap& outputBitmap;
-public:
-	AvxLuminance() = delete;
-	explicit AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm);
-	AvxLuminance(const AvxLuminance&) = default;
-	AvxLuminance(AvxLuminance&&) = delete;
-	AvxLuminance& operator=(const AvxLuminance&) = delete;
 
-	int computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd);
-private:
-	template <class T>
-	int doComputeLuminance(const size_t lineStart, const size_t lineEnd);
-};
+}
+
+int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
+{
+	if (!AvxSimdCheck::checkSimdAvailability())
+		return 1;
+	// Homogenization not implemented with AVX
+	if (inputBitmap.GetHomogenization())
+		return 1;
+	// Output must be float values
+	if (AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<float>() == false)
+		return 1;	// If this is not equal, something went wrong and we cannot continue without risking access violations.
+	if (lineAddresses.size() != inputBitmap.GetNrAddedBitmaps())
+		return 1;
+	// No line addresses?
+	if (lineAddresses.empty())
+		return 1;
+
+	return avxCompose(line, lineAddresses);
+}

@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2025 David C. Partridge
@@ -34,23 +33,23 @@
 **
 **
 ****************************************************************************/
+#include "pch.h"
+#include "dssrect.h"
+#include "avx_includes.h"
+#include "avx_avg.h"
+#include "avx_simd_check.h"
 
-#include "BitmapBase.h"
+AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
+	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
+	tempBitmap{ tempbm },
+	outputBitmap{ outbm },
+	taskInfo{ tInfo },
+	avxEntropy{ entroinfo }
+{}
 
-class AvxLuminance
+int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 {
-private:
-	const CMemoryBitmap& inputBitmap;
-	CMemoryBitmap& outputBitmap;
-public:
-	AvxLuminance() = delete;
-	explicit AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm);
-	AvxLuminance(const AvxLuminance&) = default;
-	AvxLuminance(AvxLuminance&&) = delete;
-	AvxLuminance& operator=(const AvxLuminance&) = delete;
-
-	int computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd);
-private:
-	template <class T>
-	int doComputeLuminance(const size_t lineStart, const size_t lineEnd);
-};
+	if (!AvxSimdCheck::checkSimdAvailability())
+		return 1;
+	return avxAccumulate(nrStackedBitmaps);
+}
