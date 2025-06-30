@@ -193,7 +193,8 @@
                         </unpackFile>
                         <runProgram>
                             <abortOnError>0</abortOnError>
-                            <program>${system_temp_directory}/vc_redist.x64.exe</program>
+							<showMessageOnError>0</showMessageOnError>
+							<program>${system_temp_directory}/vc_redist.x64.exe</program>
                             <programArguments>/${vcredist_install_mode} /passive /norestart</programArguments>
                             <progressText>Installing Visual Studio runtime in ${vcredist_install_mode} mode</progressText>
                         </runProgram>
