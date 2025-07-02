@@ -57,13 +57,15 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(QtMsBuild)\Qt.props" />
     <Import Project="..\Release.props" />
+    <Import Project="..\vcpkg.props" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(QtMsBuild)\Qt.props" />
     <Import Project="..\Debug.props" />
+    <Import Project="..\vcpkg.props" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -72,8 +74,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <IncludePath />
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -82,8 +84,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
     <IncludePath />
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
@@ -242,25 +244,6 @@
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="DeepSkyStackerLive.h" />
-    <ClInclude Include="..\include\SmtpMime\emailaddress.h" />
-    <ClInclude Include="..\include\SmtpMime\mimeattachment.h" />
-    <ClInclude Include="..\include\SmtpMime\mimebase64encoder.h" />
-    <ClInclude Include="..\include\SmtpMime\mimebase64formatter.h" />
-    <ClInclude Include="..\include\SmtpMime\mimebytearrayattachment.h" />
-    <ClInclude Include="..\include\SmtpMime\mimecontentencoder.h" />
-    <QtMoc Include="..\include\SmtpMime\mimecontentformatter.h" />
-    <ClInclude Include="..\include\SmtpMime\mimefile.h" />
-    <ClInclude Include="..\include\SmtpMime\mimehtml.h" />
-    <ClInclude Include="..\include\SmtpMime\mimeinlinefile.h" />
-    <ClInclude Include="..\include\SmtpMime\mimemessage.h" />
-    <ClInclude Include="..\include\SmtpMime\mimemultipart.h" />
-    <ClInclude Include="..\include\SmtpMime\mimepart.h" />
-    <ClInclude Include="..\include\SmtpMime\mimeqpencoder.h" />
-    <ClInclude Include="..\include\SmtpMime\mimeqpformatter.h" />
-    <ClInclude Include="..\include\SmtpMime\mimetext.h" />
-    <ClInclude Include="..\include\SmtpMime\quotedprintable.h" />
-    <QtMoc Include="..\include\SmtpMime\smtpclient.h" />
-    <ClInclude Include="..\include\SmtpMime\smtpmime_global.h" />
     <QtMoc Include="ChartTab.h" />
     <QtMoc Include="emailsettings.h" />
     <QtMoc Include="foldermonitor.h" />
@@ -325,9 +308,6 @@
     <QtUic Include="ui\SettingsTab.ui" />
     <QtUic Include="ui\DeepSkyStackerLive.ui" />
     <QtUic Include="ui\ImageViewer.ui" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\include\SmtpMime\SmtpMime" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc" />

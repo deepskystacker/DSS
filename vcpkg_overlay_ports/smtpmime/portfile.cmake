@@ -8,10 +8,13 @@ vcpkg_from_github(
     HEAD_REF V2.0
 	
 )
+
 set(ENV{QT_DIR} $ENV{QTDIR})
 set(ENV{Qt6_DIR} $ENV{QTDIR})
+set(CMAKE_AUTOMOC ON)
 
 set (options
+	"-DBUILD_SHARED_LIBS=OFF "
 	"-DBUILD_DEMOS=OFF "
 	"-DBUILD_TESTS=OFF "
 )
