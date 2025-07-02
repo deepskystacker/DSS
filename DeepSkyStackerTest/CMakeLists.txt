@@ -72,7 +72,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../include
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -188,23 +187,11 @@ if(WIN32)
     )
 endif()
 
-if(NOT LINUX)
-    set (deploy_tool_options_arg "-verbose=1")
-    if(APPLE)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip ")
-    elseif(WIN32)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
-endif()
+if(WIN32)
+    set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
 
-    # Generate a deployment script to be executed at install time
-    # App bundles on macOS have an .app suffix
-    if(APPLE)
-        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerTest>.app")
-    else()
-        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
-        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerTest>")
-    endif()
+    message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
+    set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerTest>")
 
     message ("executable_path: " ${executable_path})
     message ("deploy tools options arg: " ${deploy_tool_options_arg})
@@ -217,15 +204,11 @@ endif()
          DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
      )"
      )
-else()
-qt_generate_deploy_app_script(
-    TARGET ${PROJECT_NAME}
-    OUTPUT_SCRIPT deploy_script
-    DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
-)
-endif()
+
 install (SCRIPT ${deploy_script})
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
+endif()
 
 
 

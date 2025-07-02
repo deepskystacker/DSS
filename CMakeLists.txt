@@ -11,6 +11,14 @@ set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE "Manual" CACHE STRING "")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED TRUE CACHE BOOL "")
 endif()
 
+#
+# Before setting the VCPKG toolchain up, add the CMAKE_PREFIX_PATH from the command line
+# to the environment variable of the same name so it can be picked up for "inner builds"
+#
+set(ENV{CMAKE_PREFIX_PATH} ${CMAKE_PREFIX_PATH} $ENV{CMAKE_PREFIX_PATH})
+message("CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
+message("EV CMAKE_PREFIX_PATH: " $ENV{CMAKE_PREFIX_PATH})
+
 set(CMAKE_TOOLCHAIN_FILE 
 	"$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
 	)
@@ -80,6 +88,7 @@ find_package(exiv2 CONFIG REQUIRED)
 find_package(expat CONFIG REQUIRED)
 find_package(TIFF 4.7 REQUIRED)
 find_package(libraw CONFIG REQUIRED)
+find_package(smtpmime 2.0 REQUIRED)
 if(NOT WIN32)
 find_package(OpenMP REQUIRED)
 find_package (Threads REQUIRED)
@@ -114,18 +123,6 @@ if(LINUX)
 	set(CMAKE_CXX_FLAGS "-g -Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
 endif()
 
-#[=[
-################################################################################
-# Common utils
-################################################################################
-include(CMake/Utils.cmake)
-
-################################################################################
-# Additional Global Settings(add specific info there)
-################################################################################
-include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
-]=]
-
 ################################################################################
 # Use solution folders feature
 ################################################################################
@@ -134,8 +131,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(ZClass)
+add_subdirectory(DeepSkyStackerKernel)
 # 
 # DeepSkyStackerCL must be built before DeepSkyStacker as we copy the executable
 # into the DeepSkyStacker folder/MACOSX bundle

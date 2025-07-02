@@ -288,7 +288,6 @@ target_include_directories(DeepSkyStackerAVX PRIVATE
 
 if(WIN32)
 target_include_directories(DeepSkyStackerAVX PRIVATE
-    ../include
  	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -399,7 +398,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PRIVATE
-    ../include
  	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()

@@ -12,6 +12,7 @@
     "exiv2",
     "expat",
     "libraw",
+    "smtpmime",
     "tiff",
     "zlib"
   ],

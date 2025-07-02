@@ -18,30 +18,6 @@ set(Header_Files
  )
 source_group("Header Files" FILES ${Header_Files})
 
-if(WIN32)
-set(Header_Files__SmtpMime
-    "../include/SmtpMime/emailaddress.h"
-    "../include/SmtpMime/mimeattachment.h"
-    "../include/SmtpMime/mimebase64encoder.h"
-    "../include/SmtpMime/mimebase64formatter.h"
-    "../include/SmtpMime/mimebytearrayattachment.h"
-    "../include/SmtpMime/mimecontentencoder.h"
-    "../include/SmtpMime/mimefile.h"
-    "../include/SmtpMime/mimehtml.h"
-    "../include/SmtpMime/mimeinlinefile.h"
-    "../include/SmtpMime/mimemessage.h"
-    "../include/SmtpMime/mimemultipart.h"
-    "../include/SmtpMime/mimepart.h"
-    "../include/SmtpMime/mimeqpencoder.h"
-    "../include/SmtpMime/mimeqpformatter.h"
-    "../include/SmtpMime/mimetext.h"
-    "../include/SmtpMime/quotedprintable.h"
-    "../include/SmtpMime/SmtpMime"
-    "../include/SmtpMime/smtpmime_global.h"
-)
-source_group("Header Files\\SmtpMime" FILES ${Header_Files__SmtpMime})
-endif()
-
 set(Source_Files
     "ChartTab.cpp"
     "DeepSkyStackerLive.cpp"
@@ -137,10 +113,6 @@ set(ALL_FILES
     ${Tools}
     ${app_icon_macos}
 )
-if(WIN32)
-  set (ALL_FILES ${ALL_FILES} ${Header_Files__SmtpMime}
-)
-endif()
 
 ################################################################################
 # Target
@@ -186,7 +158,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../include
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -253,10 +224,6 @@ endif()
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
-	"$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
-    "$<$<CONFIG:RelWithDebInfo>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
-
 	)
 endif()
 
@@ -279,6 +246,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
 target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
+target_link_libraries(${PROJECT_NAME} PRIVATE SmtpMime::SmtpMime)
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 if(LINUX)
@@ -297,10 +265,6 @@ endif()
 if(APPLE)
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
 endif()
-
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    SmtpMime
-)
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
