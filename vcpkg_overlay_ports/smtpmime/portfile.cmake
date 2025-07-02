@@ -8,11 +8,8 @@ vcpkg_from_github(
     HEAD_REF V2.0
 	
 )
-message("EV QTDIR: " $ENV{QTDIR})
 set(ENV{QT_DIR} $ENV{QTDIR})
 set(ENV{Qt6_DIR} $ENV{QTDIR})
-message("EV QT_DIR: " $ENV{QT_DIR})
-message("EV Qt6_DIR: " $ENV{Qt6_DIR})
 
 set (options
 	"-DBUILD_DEMOS=OFF "
