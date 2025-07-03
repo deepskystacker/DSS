@@ -98,7 +98,7 @@
     </Midl>
     <ClCompile>
       <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;Z_DEVELOP;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\DeepSkyStacker;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\include;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -111,6 +111,7 @@
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>

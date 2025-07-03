@@ -78,6 +78,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <IncludePath />
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -103,7 +104,7 @@
     </Midl>
     <ClCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;..\;..\DeepSkyStacker;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -116,6 +117,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -178,6 +180,7 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <QtMoc>
       <QtMocDir>.\GeneratedFiles\</QtMocDir>

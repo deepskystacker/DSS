@@ -92,6 +92,7 @@
     </IncludePath>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>
@@ -157,6 +158,7 @@
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalOptions />
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -202,7 +204,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <ClCompile>
       <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -213,7 +215,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <ShowIncludes>false</ShowIncludes>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <WarningLevel>Level4</WarningLevel>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
