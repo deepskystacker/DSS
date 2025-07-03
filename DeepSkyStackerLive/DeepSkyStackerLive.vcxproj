@@ -140,6 +140,7 @@
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <OptimizeReferences>false</OptimizeReferences>
     </Link>
     <Manifest>
       <OutputManifestFile />

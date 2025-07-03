@@ -3,12 +3,17 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <VCPKG_KEEP_ENV_VARS>QTDIR</VCPKG_KEEP_ENV_VARS>
+    <QTDIR>$(QtInstallDir)</QTDIR>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
     <BuildMacro Include="VCPKG_KEEP_ENV_VARS">
       <Value>$(VCPKG_KEEP_ENV_VARS)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="QTDIR">
+      <Value>$(QTDIR)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

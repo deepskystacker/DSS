@@ -244,7 +244,8 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <Profile>true</Profile>
+      <Profile>false</Profile>
+      <OptimizeReferences>false</OptimizeReferences>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
