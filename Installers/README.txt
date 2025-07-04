@@ -52,6 +52,8 @@ Changes for DeepSkyStacker 6.1.0
 
 16: Work round for nasty g++ problem: std::vector elements of AVX data types were incorrectly aligned which
     caused a SIGSEGV (crash).
+
+17. Upgrade Qt to 6.9.1, and LibRaw to 21.4
 	
 Welcome to DeepSkyStacker 5.1.10
 ======================================
