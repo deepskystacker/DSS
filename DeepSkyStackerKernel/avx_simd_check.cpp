@@ -82,8 +82,11 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 		__builtin_cpu_supports("avx2") &&
 		__builtin_cpu_supports("fma") &&
 		__builtin_cpu_supports("popcnt") &&
-		__builtin_cpu_supports("xsave") &&
-		__builtin_cpu_supports("osxsave");
+		__builtin_cpu_supports("xsave");
+
+#if !defined(Q_OS_MAC) // OSX does not support XSAVE, so we do not check it.
+	result = result && __builtin_cpu_supports("osxsave");
+#endif
 
 	return result;
 
