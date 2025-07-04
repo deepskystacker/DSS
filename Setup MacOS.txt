@@ -39,7 +39,10 @@ curl -O https://download.qt.io/official_releases/online_installers/qt-online-ins
 # 
 # Make sure you install QtCharts
 #
-# In order to build uchmviewer you'll need to install the WebEngine extension (under Extensions)
+# To install 6.9.0 you may need to opt to show Archive items
+#
+# In order to build uchmviewer you'll need to install the WebEngine extension (under Extensions).
+# You will need to expand the WebEngine entry to get the version for Qt 6.9.0
 #
 
 #
@@ -95,7 +98,7 @@ git clone https://github.com/microsoft/vcpkg.git
 cd vcpkg && ./bootstrap-vcpkg.sh
 cd ~
 #
-# Edit .zshenv using (e.g.) nano (should be empty to start with), and and add these lines: 
+# Edit .zshenv using (e.g.) nano (should be empty to start with), and add these lines: 
 #
 	# remove duplicate entries from $PATH
 	# zsh uses $path array along with $PATH
@@ -111,9 +114,10 @@ cd ~
 	export VCPKG_ROOT=~/vcpkg
 	pathadd $VCPKG_ROOT
 	pathadd /usr/local/bin
+
 #
 # Install pkg-config
-#cd
+#
 cd ~/Downloads
 curl -O https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
 tar -zxvf pkg-config-0.29.2.tar.gz
@@ -164,43 +168,6 @@ cd wget-1.25.0
 ./configure --with-ssl=openssl
 make
 sudo make install
-
-#
-# Install chmlib for uchmviewer (install macPorts if needed first).
-#
-sudo port install chmlib +universal
-
-# 
-# libzip - needed to build uchmviewer
-# 
-cd ~/Downloads
-gh repo clone nih-at/libzip
-cd libzip
-mkdir build
-cmake -B build -D"CMAKE_OSX_DEPLOYMENT_TARGET:STRING=13.4" -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64"
-cd build
-sudo make install
-
-#
-# uchmviewer binary - not as a macOS bundle.  We will copy it into the DeepSkyStacker.app bundle
-# from ~/Downloads/uChmViewer/build/src/uchmviewer
-#
-cd ~/Downloads
-gh repo clone eBookProjects/uChmViewer/
-cd uChmViewer
-mkdir build
-cmake -B build -DUSE_WEBENGINE=ON -DUSE_MACOS_BUNDLE=OFF -D"CMAKE_OSX_DEPLOYMENT_TARGET:STRING=13.4" -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64"
-cd build
-make
-
-
-
-
-
-
-
-
-
 
 
 

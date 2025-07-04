@@ -1,0 +1,20 @@
+{
+  "name": "uchmviewer",
+  "version": "8.4",
+  "homepage": "https://github.com/eBookProjects/uChmViewer",
+  "description": "Viewer for .chm files",
+  "dependencies": [
+	"bzip2",
+    "chmlib",
+	"libzip",
+	"zlib",
+    {
+      "name" : "vcpkg-cmake",
+      "host" : true
+    },
+    {
+      "name" : "vcpkg-cmake-config",
+      "host" : true
+    }
+  ]
+}

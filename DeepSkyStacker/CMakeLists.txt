@@ -523,7 +523,8 @@ if(APPLE)
         # a dependency on the target, so that the DSSCL binary is built before this.
         #
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
-    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ $ENV{HOME}/Downloads/uChmViewer/build/src/uchmviewer
+		COMMAND ${CMAKE_COMMAND} -E echo "VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET}
+    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ ${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/tools/uchmviewer/uchmviewer
     	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
 	    #
 	    # Copy the InstallBuilder project file
