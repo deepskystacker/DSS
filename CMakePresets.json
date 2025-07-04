@@ -43,7 +43,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.9.0/gcc_64"
+        "QTDIR": "/opt/Qt/6.9.1/gcc_64"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
@@ -61,7 +61,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.9.0/gcc_64"
+        "QTDIR": "/opt/Qt/6.9.1/gcc_64"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
@@ -79,7 +79,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.9.0/macos"
+        "QTDIR": "/opt/Qt/6.9.1/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -99,7 +99,7 @@
       ],
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
-        "QTDIR": "/opt/Qt/6.9.0/macos"
+        "QTDIR": "/opt/Qt/6.9.1/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
@@ -118,7 +118,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.9.0/macos"
+        "QTDIR": "/opt/Qt/6.9.1/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -138,7 +138,7 @@
       ],
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
-        "QTDIR": "/opt/Qt/6.9.0/macos"
+        "QTDIR": "/opt/Qt/6.9.1/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
@@ -160,7 +160,7 @@
         "CMAKE_BUILD_TYPE": "Debug"
       },
       "environment": {
-        "QTDIR": "C:/Qt/6.9.0/msvc2022_64"
+        "QTDIR": "C:/Qt/6.9.1/msvc2022_64"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -179,7 +179,7 @@
       },
       "environment": {
         "VCPKG_INSTALL_OPTIONS": "--debug",
-        "QTDIR": "C:/Qt/6.9.0/msvc2022_64"
+        "QTDIR": "C:/Qt/6.9.1/msvc2022_64"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -190,7 +190,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "Ng3rI182UTmAta8IXuyfcS/yW4Q="
+      "checksum": "Ngn1E6CPDzjZEJz2UXGUitjYl0Y="
     }
   }
 }
