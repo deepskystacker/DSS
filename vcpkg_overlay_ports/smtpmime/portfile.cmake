@@ -9,8 +9,10 @@ vcpkg_from_github(
 	
 )
 
-set(ENV{QT_DIR} $ENV{QTDIR})
-set(ENV{Qt6_DIR} $ENV{QTDIR})
+set(QTDIR $ENV{QTDIR})
+set(CMAKE_PREFIX_PATH ${QTDIR}) 
+set(ENV{QT_DIR} ${QTDIR})
+set(ENV{Qt6_DIR} ${QTDIR})
 set(CMAKE_AUTOMOC ON)
 
 set (options
@@ -20,6 +22,7 @@ set (options
 )
 
 message ("****************************************************************")
+message ("EV QTDIR: " ${QTDIR})
 message ("Setting build options: " ${options})
 message ("****************************************************************")
 
