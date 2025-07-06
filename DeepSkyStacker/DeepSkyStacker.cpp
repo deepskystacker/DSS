@@ -657,7 +657,6 @@ void DeepSkyStacker::help()
 		helpProcess = new QProcess(this);
 		connect(helpProcess, &QProcess::finished, this, [this]
 			{
-				qInfo() << "Help process finished";
 				helpProcess->deleteLater();
 				helpProcess = nullptr;
 			});
@@ -674,7 +673,6 @@ void DeepSkyStacker::help()
 			qWarning() << "Failed to start help process:" << helpProcess->errorString();
 			return;
 		}
-		qInfo() << "Help process started with ID:" << helpProcess->processId();
 	}
 #endif
 	explorerBar->setHelpEnabled(true);
