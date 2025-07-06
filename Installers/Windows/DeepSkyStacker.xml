@@ -37,79 +37,16 @@
                 <folder>
                     <description>Program Files</description>
                     <destination>${installdir}</destination>
-                    <name>programfileslinux</name>
-                    <platforms>linux</platforms>
-                </folder>
-                <folder>
-                    <description>Program Files</description>
-                    <destination>${installdir}</destination>
-                    <name>programfileslinux64</name>
-                    <platforms>linux-x64</platforms>
-                </folder>
-                <folder>
-                    <description>Program Files</description>
-                    <destination>${installdir}</destination>
                     <name>programfileswindows64</name>
                     <platforms>windows-x64</platforms>
                     <distributionFileList>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/DeepSkyStacker.exe</origin>
+                        <distributionFile allowWildcards="1">
+                            <origin>../../x64/RelWithDebInfo/*</origin>
                         </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/DeepSkyStacker.pdb</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerCL.exe</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerCL.pdb</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerLive.exe</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/DeepSkyStackerLive.pdb</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/Qt6Widgets.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/Qt6Charts.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/Qt6Core.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/Qt6Gui.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/Qt6Network.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/Qt6OpenGL.dll</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../../x64/RelWithDebInfo/Qt6OpenGLWidgets.dll</origin>
-                        </distributionFile>
-                        <distributionDirectory>
-                            <origin>../../x64/RelWithDebInfo/Help</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>../../x64/RelWithDebInfo/plugins</origin>
-                        </distributionDirectory>
-                        <distributionDirectory>
-                            <origin>../../x64/RelWithDebInfo/translations</origin>
-                        </distributionDirectory>
                         <distributionFile>
                             <origin>../README.txt</origin>
                         </distributionFile>
                     </distributionFileList>
-                </folder>
-                <folder>
-                    <description>Program Files</description>
-                    <destination>${installdir}</destination>
-                    <name>programfilesosx</name>
-                    <platforms>osx</platforms>
                 </folder>
             </folderList>
             <startMenuShortcutList>
@@ -296,29 +233,29 @@
                     <actionList>
                         <setInstallerVariable name="vcredist_require_install" value="1"/>
                         <setInstallerVariable name="vcredist_install_mode" value="install"/>
-                        <logMessage text="Visual Studio Runtime build ${bld} is installed, install build 35208"/>
+                        <logMessage text="Visual Studio Runtime build ${bld} is installed, install build 35211"/>
                     </actionList>
                     <ruleList>
-                        <compareValues logic="less" value1="${bld}" value2="35208"/>
+                        <compareValues logic="less" value1="${bld}" value2="35211"/>
                     </ruleList>
                 </actionGroup>
                 <actionGroup>
                     <actionList>
                         <setInstallerVariable name="vcredist_require_install" value="1"/>
                         <setInstallerVariable name="vcredist_install_mode" value="repair"/>
-                        <logMessage text="Visual Studio Runtime build 35208 is already installed, do a repair install"/>
+                        <logMessage text="Visual Studio Runtime build ${bld} is already installed, do a repair install"/>
                     </actionList>
                     <ruleList>
-                        <compareValues logic="equals" value1="${bld}" value2="35208"/>
+                        <compareValues logic="equals" value1="${bld}" value2="35211"/>
                     </ruleList>
                 </actionGroup>
                 <actionGroup>
                     <actionList>
                         <setInstallerVariable name="vcredist_require_install" value="0"/>
-                        <logMessage text="Visual Studio Runtime build $0 is installed, do nothing"/>
+                        <logMessage text="Visual Studio Runtime build ${bld} is installed, do nothing"/>
                     </actionList>
                     <ruleList>
-                        <compareValues logic="greater" value1="${bld}" value2="35208"/>
+                        <compareValues logic="greater" value1="${bld}" value2="35211"/>
                     </ruleList>
                 </actionGroup>
             </elseActionList>
