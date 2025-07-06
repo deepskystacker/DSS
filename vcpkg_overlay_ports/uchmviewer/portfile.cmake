@@ -14,6 +14,8 @@ set(ENV{QT_DIR} ${QTDIR})
 set(ENV{Qt6_DIR} ${QTDIR})
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_INSTALL_RPATH "@executable_path/../Frameworks")
+set(VCPKG_FIXUP_MACHO_RPATH OFF)
 
 set (options
 	"-DUSE_WEBENGINE=ON "

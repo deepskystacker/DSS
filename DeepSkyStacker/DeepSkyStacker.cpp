@@ -54,6 +54,10 @@
 #include <locale>
 #include <fstream>
 
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+#include <signal.h>
+#endif
+
 namespace bip = boost::interprocess;
 
 #include "avx_simd_check.h"
@@ -220,9 +224,6 @@ DeepSkyStacker::DeepSkyStacker() :
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
 	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
-#if !defined(Q_OS_WIN)
-	, helpProcess{ new QProcess(this) }
-#endif
 {
 	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);
@@ -486,6 +487,19 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	}
 	e->accept();
 
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+	//
+	// On Linux and macOS, we need to close the help process if it is running
+	// as it will not close down automatically.
+	//
+	if (helpProcess && QProcess::NotRunning != helpProcess->state())
+	{
+		ZTRACE_RUNTIME("Closing help process");
+		helpProcess->close();
+	}
+#endif // defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+
+
 #if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	//
 	// Colossal Cave is now closing, tell the two dock widgets that they must now accept
@@ -615,6 +629,7 @@ void DeepSkyStacker::updatePanel()
 void DeepSkyStacker::help()
 {
 	ZFUNCTRACE_RUNTIME();
+	explorerBar->setHelpEnabled(false);
 	QString appPath{ QCoreApplication::applicationDirPath() };
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
@@ -640,11 +655,29 @@ void DeepSkyStacker::help()
 	if (!helpProcess)
 	{
 		helpProcess = new QProcess(this);
-		connect(helpProcess, &QProcess::finished, helpProcess, &QProcess::deleteLater);
+		connect(helpProcess, &QProcess::finished, this, [this]
+			{
+				qInfo() << "Help process finished";
+				helpProcess->deleteLater();
+				helpProcess = nullptr;
+			});
 	}
 	QStringList arguments{ "-token", "com.github.deepskystacker", helpFile };
-	helpProcess->startDetached(program, arguments);
+	if (QProcess::NotRunning == helpProcess->state())
+	{
+		//
+		// Start the help display program (kchmviewer or uchmviewer)
+		//
+		helpProcess->start(program, arguments);
+		if(!helpProcess->waitForStarted())
+		{
+			qWarning() << "Failed to start help process:" << helpProcess->errorString();
+			return;
+		}
+		qInfo() << "Help process started with ID:" << helpProcess->processId();
+	}
 #endif
+	explorerBar->setHelpEnabled(true);
 }
 
 /* ------------------------------------------------------------------- */

@@ -54,6 +54,8 @@ Changes for DeepSkyStacker 6.1.0
     caused a SIGSEGV (crash).
 
 17. Upgrade Qt to 6.9.1, and LibRaw to 21.4
+
+18. On Linux and macOS, the help viewer wasn't closed when DeepSkyStacker was closed.
 	
 Welcome to DeepSkyStacker 5.1.10
 ======================================
