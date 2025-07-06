@@ -33,7 +33,7 @@ Changes for DeepSkyStacker 6.1.0
 
 8.  Changes to associate an icon with .dssfilelist files and to provide DeepSkyStackerLive with its own icon.
 
-9.  Ensure that Visual C++ runtime build 35208 is installed.
+9.  Ensure that Visual C++ runtime build 35211 is installed.
 
 10. Update CFITSIO to 4.6.2
 
