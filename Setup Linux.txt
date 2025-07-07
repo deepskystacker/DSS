@@ -175,13 +175,10 @@ sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
 #
-# Update cmake to 3.30.2
+# Update cmake to 4.0.3
 #
-cd ~/Downloads
-mkdir kitware
-wget https://apt.kitware.com/kitware-archive.sh
-chmod +x kitware-archive.sh
-sudo ./kitware-archive.sh
+echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+sudo apt-get update
 sudo apt-get purge --auto-remove cmake
 sudo apt-get install -y software-properties-common lsb-release
 sudo apt-get clean all
