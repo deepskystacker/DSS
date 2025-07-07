@@ -161,5 +161,11 @@
             <width>40</width>
         </directoryParameter>
     </parameterList>
-</project>
+    <readmeFileList>
+        <readmeFile>
+            <code>en</code>
+            <encoding>utf-8</encoding>
+            <file>README.txt</file>
+        </readmeFile>
+    </readmeFileList></project>
 

@@ -522,10 +522,8 @@ if(APPLE)
         # The use of $<TARGET_FILE:DeepSkyStackerCL> in add_custom_command also adds
         # a dependency on the target, so that the DSSCL binary is built before this.
         #
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
-		COMMAND ${CMAKE_COMMAND} -E echo "VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET}
+        COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ $<TARGET_FILE:DeepSkyStackerCL> 
     	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ ${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/tools/uchmviewer/uchmviewer
-    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
 	    #
 	    # Copy the InstallBuilder project file
 	    #
@@ -535,6 +533,11 @@ if(APPLE)
 	    #
         COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/LICENSE
         COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/README.txt
+	    #
+    	# Copy the help files
+    	#
+    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
+
         COMMAND "$ENV{HOME}/.unlock_keychain"
     )
 endif()
@@ -572,6 +575,11 @@ if(WIN32)
         # Copy the .pdb
         #
         COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStacker.pdb
+	    #
+	    # Copy the license file and readme file
+	    #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/LICENSE
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/Installers/README.txt
 	    #
     	# Copy the help files
     	#

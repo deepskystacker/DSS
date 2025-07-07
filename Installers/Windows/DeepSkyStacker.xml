@@ -2,8 +2,8 @@
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
     <version>6.1.0_Beta_3</version>
-    <readmeFile>../README.txt</readmeFile>
-    <licenseFile>../../LICENSE</licenseFile>
+    <readmeFile>../../x64/RelWithDebInfo/README.txt</readmeFile>
+    <licenseFile>../../x64/RelWithDebInfo/LICENSE</licenseFile>
     <componentList>
         <component>
             <name>default</name>
@@ -42,9 +42,6 @@
                     <distributionFileList>
                         <distributionFile allowWildcards="1">
                             <origin>../../x64/RelWithDebInfo/*</origin>
-                        </distributionFile>
-                        <distributionFile>
-                            <origin>../README.txt</origin>
                         </distributionFile>
                     </distributionFileList>
                 </folder>
@@ -408,5 +405,12 @@
             <width>80</width>
         </directoryParameter>
     </parameterList>
+    <readmeFileList>
+        <readmeFile>
+            <code>en</code>
+            <encoding>utf-8</encoding>
+            <file>../../x64/RelWithDebInfo/README.txt</file>
+        </readmeFile>
+    </readmeFileList>
 </project>
 

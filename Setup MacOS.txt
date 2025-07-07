@@ -29,7 +29,7 @@ curl -O https://mac.r-project.org/openmp/openmp-19.1.0-darwin20-Release.tar.gz
 sudo tar -zxvf openmp-19.1.0-darwin20-Release.tar.gz -C /
 
 #
-# Install Qt 6.9.0
+# Install Qt 6.9.1
 #
 cd ~/Downloads
 curl -O https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg
@@ -37,12 +37,9 @@ curl -O https://download.qt.io/official_releases/online_installers/qt-online-ins
 # Open the .dmg file in Finder and run the installer (you will probably be prompted to install Rosetta).
 # Make sure you specify the install location as /opt/Qt
 # 
-# Make sure you install QtCharts
+# Make sure you install QtCharts and QtWebEngine (under Extensions).
 #
-# To install 6.9.0 you may need to opt to show Archive items
-#
-# In order to build uchmviewer you'll need to install the WebEngine extension (under Extensions).
-# You will need to expand the WebEngine entry to get the version for Qt 6.9.0
+# To install 6.9.1 you may need to opt to show Archive items
 #
 
 #
