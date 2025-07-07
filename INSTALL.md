@@ -43,12 +43,12 @@ then you should install libxcb-cursor0 or xcb-cursor0 (whichever your installer 
 
 worked for me on Ubuntu and Linux Mint systems.
 
-If get errors like:
+If you get errors like:
 ```
 /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.32' not found (required by ./DeepSkyStacker)
 /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.31' not found (required by ./DeepSkyStacker)
 ```
-then you need install a later version libstdc++
+then you need install a later version of libstdc++ :
 ```
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt-get update
