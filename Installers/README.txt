@@ -43,7 +43,8 @@ Changes for DeepSkyStacker 6.1.0
 
 13. Allow specification of the maximum number of processing threads to be used for registration and stacking
     in the Settings/Stacking Settings dialogue.  The default is set to the number of logical processors,
-    but this can be changed.
+    but this can be changed.  We recommend a maximum of 8 even though the default will be higher if you have
+    more processors available.
 
 14: Bug fix: Some translatable strings were not being updated when the language was changed.
 
