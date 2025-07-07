@@ -9,15 +9,16 @@ vcpkg_from_github(
 )
 
 set (options
+	"-DCMAKE_POLICY_VERSION_MINIMUM=3.5 "
 	"-DUSE_BZIP2=ON "
 	"-DUSE_CURL=OFF "
 	"-DTESTS=OFF "
-	"-DUTILS=OFF"
+	"-DUTILS=OFF "
 )
 if(VCPKG_TARGET_IS_WINDOWS)
-	set (options "${options}; -DUSE_PTHREADS=OFF")
+	set (options ${options} -DUSE_PTHREADS=OFF)
 else()
-	set (options "${options}; -DUSE_PTHREADS=ON")
+	set (options ${options} -DUSE_PTHREADS=ON)
 endif()
 
 message ("****************************************************************")

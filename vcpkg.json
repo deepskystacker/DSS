@@ -8,9 +8,10 @@
     "boost-align",
     "boost-container",
     "boost-interprocess",
-	  "cfitsio",
+	"cfitsio",
     "exiv2",
     "expat",
+	"freeglut",
     "libraw",
     "smtpmime",
     "tiff",
@@ -44,6 +45,10 @@
     {
       "name": "expat",
       "version": "2.6.4"
+    },
+    {
+      "name": "freeglut",
+      "version": "3.6.0#1"
     },
     {
       "name": "libraw",
