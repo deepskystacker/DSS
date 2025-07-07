@@ -46,12 +46,12 @@ Changes for DeepSkyStacker 6.1.0
     but this can be changed.  We recommend a maximum of 8 even though the default will be higher if you have
     more processors available.
 
-14: Bug fix: Some translatable strings were not being updated when the language was changed.
+14. Bug fix: Some translatable strings were not being updated when the language was changed.
 
 15. Bug fix: SIGILL crashes on Linux running on processors that didn't support AVX2.
     A major re-structuring of the AVX code was needed to resolve this.
 
-16: Work round for nasty g++ problem: std::vector elements of AVX data types were incorrectly aligned which
+16. Work round for nasty g++ problem: std::vector elements of AVX data types were incorrectly aligned which
     caused a SIGSEGV (crash).
 
 17. Upgrade Qt to 6.9.1, and LibRaw to 21.4
