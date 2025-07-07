@@ -537,8 +537,6 @@ if(APPLE)
     	# Copy the help files
     	#
     	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
-
-        COMMAND "$ENV{HOME}/.unlock_keychain"
     )
 endif()
 if(LINUX)
@@ -627,6 +625,11 @@ else()
         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
     )
 endif()
+
+if(APPLE)
+install (CODE "execute_process(COMMAND \"$ENV{HOME}/.unlock_keychain\")")
+endif()
+
 install (SCRIPT ${deploy_script})
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
