@@ -4,10 +4,10 @@
 # 
 xcode-select --install
 #
-# Install CMake by downloading https://github.com/Kitware/CMake/releases/download/v3.31.4/cmake-3.31.4-macos-universal.dmg
+# Install CMake by downloading https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-macos-universal.dmg
 # and copy the app file from the .dmg file to "Applications", then open terminal window or ssh session and run:
 #
-curl -OL https://github.com/Kitware/CMake/releases/download/v3.31.4/cmake-3.31.4-macos-universal.dmg
+curl -OL https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-macos-universal.dmg
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 
 #
