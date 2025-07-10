@@ -2,7 +2,6 @@
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
     <version>6.1.0_Beta_3</version>
-    <readmeFile>Linux/x64/RelWithDebInfo/README.txt</readmeFile>
     <licenseFile>Linux/x64/RelWithDebInfo/LICENSE</licenseFile>
     <componentList>
         <component>
@@ -118,6 +117,22 @@
     <uninstallationLogFile>${system_temp_directory}/${project.shortName}-uninstallation.log</uninstallationLogFile>
     <vendor>com.github.deepskystacker</vendor>
     <width>800</width>
+    <finalPageActionList>
+        <actionGroup progressText="View readme file">
+            <actionList>
+                <readFile>
+                    <encoding>utf-8</encoding>
+                    <name>text</name>
+                    <path>${installdir}/README.txt</path>
+                </readFile>
+                <showText>
+                    <text>${text}</text>
+                    <title>README</title>
+                    <width>800</width>
+                </showText>
+            </actionList>
+        </actionGroup>
+    </finalPageActionList>
     <parameterList>
         <directoryParameter>
             <name>installdir</name>
@@ -133,12 +148,5 @@
             <width>80</width>
         </directoryParameter>
     </parameterList>
-    <readmeFileList>
-        <readmeFile>
-            <code>en</code>
-            <encoding>utf-8</encoding>
-            <file>Linux/x64/RelWithDebInfo/README.txt</file>
-        </readmeFile>
-    </readmeFileList>
 </project>
 

@@ -2,7 +2,6 @@
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
     <version>6.1.0_Beta_3</version>
-    <readmeFile>../../x64/RelWithDebInfo/README.txt</readmeFile>
     <licenseFile>../../x64/RelWithDebInfo/LICENSE</licenseFile>
     <componentList>
         <component>
@@ -354,7 +353,21 @@
     <windows64bitMode>1</windows64bitMode>
     <windowsARPRegistryPrefix>${project.fullName}</windowsARPRegistryPrefix>
     <finalPageActionList>
-        <createShortcuts>
+        <actionGroup progressText="View readme file">
+            <actionList>
+                <readFile>
+                    <encoding>utf-8</encoding>
+                    <name>text</name>
+                    <path>${installdir}/README.txt</path>
+                </readFile>
+                <showText>
+                    <text>${text}</text>
+                    <title>README</title>
+                    <width>800</width>
+                </showText>
+            </actionList>
+        </actionGroup>
+		<createShortcuts>
             <destination>${windows_folder_desktopdirectory}</destination>
             <progressText>Do you want to create shortcuts on the Desktop?</progressText>
             <run>0</run>
@@ -405,12 +418,5 @@
             <width>80</width>
         </directoryParameter>
     </parameterList>
-    <readmeFileList>
-        <readmeFile>
-            <code>en</code>
-            <encoding>utf-8</encoding>
-            <file>../../x64/RelWithDebInfo/README.txt</file>
-        </readmeFile>
-    </readmeFileList>
 </project>
 
