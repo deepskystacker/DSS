@@ -43,6 +43,9 @@
 #endif
 
 #if defined (Q_OS_MACOS)
+#if defined(Q_PROCESSOR_X86_64)
+#include <cpuid.h>
+#endif	
 #include <sys/sysctl.h>
 #endif
 
@@ -78,15 +81,17 @@ bool AvxSimdCheck::checkAvx2CpuSupport()
 	return (RequiredCpuFlags && AVXenabledOS);
 
 #else // GCC/Linux version (applies to Linux and X86_64 OSX builds)
+	unsigned int eax = 0, ebx = 0, ecx = 0, edx = 0;
+
+	__get_cpuid(1, &eax, &ebx, &ecx, &edx);
+	const bool XSAVEsupported = ((ecx & bit_XSAVE) != 0);
+	const bool OSXSAVEsupported = ((ecx & bit_OSXSAVE) != 0);
 	bool result =
 		__builtin_cpu_supports("avx2") &&
 		__builtin_cpu_supports("fma") &&
 		__builtin_cpu_supports("popcnt") &&
-		__builtin_cpu_supports("xsave");
-
-#if !defined(Q_OS_MAC) // OSX does not support XSAVE, so we do not check it.
-	result = result && __builtin_cpu_supports("osxsave");
-#endif
+		XSAVEsupported &&
+		OSXSAVEsupported;
 
 	return result;
 
