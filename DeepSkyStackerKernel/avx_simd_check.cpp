@@ -196,13 +196,14 @@ void AvxSimdCheck::reportCpuType()
 #endif
 
 #if defined(Q_PROCESSOR_X86_64)
-	unsigned int cpuid[4] = { static_cast<unsigned int>(-1)};
 #if defined(Q_OS_WIN) 
-__cpuid(cpuid, 0x80000000);
+	int cpuid[4] = { (-1) };
+	__cpuid(cpuid, 0x80000000);
 #elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
-__cpuid(0x80000000, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
+	unsigned int cpuid[4] = { static_cast<unsigned int>(-1) };
+	__cpuid(0x80000000, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
 #endif
-	const unsigned int nExtIds = cpuid[0];
+	const unsigned int nExtIds = static_cast<unsigned int>(cpuid[0]);
 	char brand[64] = { '\0' };
 	if (nExtIds >= 0x80000004)
 	{
