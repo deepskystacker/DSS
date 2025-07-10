@@ -37,6 +37,7 @@
 #include "avx_includes.h"
 #include "avx_simd_check.h"
 #include "Multitask.h"
+#include <QSysInfo>
 
 #if defined (Q_OS_LINUX)
 #include <cpuid.h>
@@ -48,7 +49,6 @@
 #endif	
 #include <sys/sysctl.h>
 #endif
-
 
 bool AvxSimdCheck::checkAvx2CpuSupport()
 {
@@ -115,38 +115,22 @@ bool AvxSimdCheck::checkSimdAvailability()
 	return Multitask::GetUseSimd() && simdAvailable;
 }
 
-#if defined (Q_OS_MACOS)
 
 void AvxSimdCheck::reportCpuType()
 {
-	char buffer[128] = { '\0' };
-	size_t bufferSize = sizeof(buffer);
-	std::stringstream outputStrm;
+	const QByteArray productName{ QSysInfo::prettyProductName().toUtf8() };
+	const char* product = productName.constData();
+	ZTRACE_RUNTIME("Operating System name: %s", product);
+	std::cerr << "Operating System name: " << product << std::endl;
+	const QByteArray buildArchitecture{ QSysInfo::buildAbi().toUtf8() };
+	const char* buildArch = buildArchitecture.constData();
+	ZTRACE_RUNTIME("Build architecture: %s", buildArch);
+	std::cerr << "Build architecture: " << buildArch << std::endl;
+	const QByteArray currentArchitecture{ QSysInfo::currentCpuArchitecture().toUtf8() };
+	const char* currentArch = currentArchitecture.constData();
+	ZTRACE_RUNTIME("Current architecture: %s", currentArch);
+	std::cerr << "Current architecture: " << currentArch << std::endl;
 
-	// Get CPU brand string
-	outputStrm << "CPU Type: ";
-	if (sysctlbyname("machdep.cpu.brand_string", &buffer, &bufferSize, NULL, 0) == 0)
-		outputStrm << buffer << std::endl;
-	else
-		outputStrm << "Failed to get processor details." << std::endl;
-
-	// Get number of CPU cores
-	int coreCount = 0;
-	size_t coreSize = sizeof(coreCount);
-	if (sysctlbyname("hw.physicalcpu", &coreCount, &coreSize, NULL, 0) == 0)
-		outputStrm << "Physical Cores: " << coreCount << std::endl;
-
-	if (sysctlbyname("hw.logicalcpu", &coreCount, &coreSize, NULL, 0) == 0)
-		outputStrm << "Logical Cores: " << coreCount << std::endl;
-
-	std::cerr << outputStrm.str();
-	ZTRACE_RUNTIME(outputStrm.str());
-}
-
-#else
-
-void AvxSimdCheck::reportCpuType()
-{
 #if defined(Q_OS_WIN) 
 	char architecture[8]{ '\0' };
 	SYSTEM_INFO info;
@@ -177,29 +161,48 @@ void AvxSimdCheck::reportCpuType()
 	};
 
 	GetNativeSystemInfo(&info);
-	const auto nativeArchitecture = info.wProcessorArchitecture;
-	getArchitectureString(nativeArchitecture);
-
-	ZTRACE_RUNTIME("Native processor architecture: %s", architecture);
-	std::cerr << "Native processor architecture: " << architecture << std::endl;
 
 	GetSystemInfo(&info);
-	if (info.wProcessorArchitecture != nativeArchitecture)
+	if (info.wProcessorArchitecture != info.wProcessorArchitecture)
 	{
 		getArchitectureString(info.wProcessorArchitecture);
 		ZTRACE_RUNTIME("Emulated processor architecture: %s", architecture);
 		std::cerr << "Emulated processor architecture: " << architecture << std::endl;
 	}
 #endif 
-	int cpuid[4] = { -1 };
+#if defined (Q_OS_MACOS)
+	char buffer[128] = { '\0' };
+	size_t bufferSize = sizeof(buffer);
+	std::stringstream outputStrm;
+
+	// Get CPU brand string
+	outputStrm << "Real CPU Type: ";
+	if (sysctlbyname("machdep.cpu.brand_string", &buffer, &bufferSize, NULL, 0) == 0)
+		outputStrm << buffer << std::endl;
+	else
+		outputStrm << "Failed to get processor details." << std::endl;
+
+	// Get number of CPU cores
+	int coreCount = 0;
+	size_t coreSize = sizeof(coreCount);
+	if (sysctlbyname("hw.physicalcpu", &coreCount, &coreSize, NULL, 0) == 0)
+		outputStrm << "Physical Cores: " << coreCount << std::endl;
+
+	if (sysctlbyname("hw.logicalcpu", &coreCount, &coreSize, NULL, 0) == 0)
+		outputStrm << "Logical Cores: " << coreCount << std::endl;
+
+	std::cerr << outputStrm.str();
+	ZTRACE_RUNTIME(outputStrm.str());
+#endif
+
+#if defined(Q_PROCESSOR_X86_64)
+	unsigned int cpuid[4] = { static_cast<unsigned int>(-1)};
 #if defined(Q_OS_WIN) 
-	__cpuid(cpuid, 0x80000000);
-#elif defined(Q_OS_LINUX) 
-	__cpuid(0x80000000, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
-#else 
-#error "System not supported!" 
-#endif 
-	const int nExtIds = cpuid[0];
+__cpuid(cpuid, 0x80000000);
+#elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
+__cpuid(0x80000000, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
+#endif
+	const unsigned int nExtIds = cpuid[0];
 	char brand[64] = { '\0' };
 	if (nExtIds >= 0x80000004)
 	{
@@ -210,7 +213,7 @@ void AvxSimdCheck::reportCpuType()
 		memcpy(brand + 16, cpuid, sizeof(cpuid));
 		__cpuidex(cpuid, 0x80000004, 0);
 		memcpy(brand + 32, cpuid, sizeof(cpuid));
-#else
+#elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
 		cpuid[3] = cpuid[2] = cpuid[1] = cpuid[0] = 0;
 		__cpuid(0x80000002, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
 		memcpy(brand, cpuid, sizeof(cpuid));
@@ -220,17 +223,22 @@ void AvxSimdCheck::reportCpuType()
 		cpuid[3] = cpuid[2] = cpuid[1] = cpuid[0] = 0;
 		__cpuid(0x80000004, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
 		memcpy(brand + 32, cpuid, sizeof(cpuid));
+#else 
+#error "System not supported!" 
 #endif
+
 	}
 	else
 		memcpy(brand, "CPU brand not detected", 22);
 
-	// 
-	// Also report this on stderr so if we get a SIGILL the information  
-	// will be there along with the exception traceback.  
-	// 
-	std::cerr << "CPU Type: " << brand << std::endl;
-	ZTRACE_RUNTIME("CPU type: %s", brand);
-}
-
+	if (brand[0] != '\0')
+	{
+		// 
+		// Also report this on stderr so if we get a SIGILL the information  
+		// will be there along with the exception traceback.  
+		// 
+		std::cerr << "CPU Type: " << brand << std::endl;
+		ZTRACE_RUNTIME("CPU Type: %s", brand);
+	}
 #endif
+}
