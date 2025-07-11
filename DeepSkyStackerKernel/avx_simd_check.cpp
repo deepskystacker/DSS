@@ -197,49 +197,103 @@ void AvxSimdCheck::reportCpuType()
 
 #if defined(Q_PROCESSOR_X86_64)
 #if defined(Q_OS_WIN) 
-	int cpuid[4] = { (-1) };
+	int32_t cpuid[4] = { (-1) };
 	__cpuid(cpuid, 0x80000000);
 #elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
-	unsigned int cpuid[4] = { static_cast<unsigned int>(-1) };
+	uint32_t cpuid[4] = { static_cast<uint32_t>(-1) };
 	__cpuid(0x80000000, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
 #endif
 	const unsigned int nExtIds = static_cast<unsigned int>(cpuid[0]);
-	char brand[64] = { '\0' };
+
+#if defined(Q_OS_WIN)
+	__cpuid(cpuid, 0);
+#elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
+	__cpuid(0, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
+#endif	
+
+	char vendor[16] { '\0' };
+	// Get vendor
+	reinterpret_cast<uint32_t*>(vendor)[0] = cpuid[1]; // EBX
+	reinterpret_cast<uint32_t*>(vendor)[1] = cpuid[3]; // EDX
+	reinterpret_cast<uint32_t*>(vendor)[2] = cpuid[2]; // ECX
+	QString vendorStr = QString::fromLatin1(vendor, 12);
+
+#if defined(Q_OS_WIN)
+	__cpuid(cpuid, 1);
+#elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
+	__cpuid(1, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
+#endif	
+
+	// Logical core count per CPU
+	unsigned int logicalProcessors = (cpuid[1] >> 16) & 0xff; // EBX[23:16]
+	// Physical core count per CPU - default to logicalProcessors 
+	unsigned int physicalProcessors = logicalProcessors;	
+	if (vendorStr == "GenuineIntel")
+	{
+		// Get DCP cache information
+#if defined(Q_OS_WIN)	
+		__cpuid(cpuid, 4);
+#elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
+		__cpuid(4, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
+#endif
+		physicalProcessors = ((cpuid[0] >> 26) & 0x3f) + 1; // EAX[31:26] + 1
+	}
+	else if(vendorStr == "AuthenticAMD")
+	{
+		// Get DCP cache information
+#if defined(Q_OS_WIN)	
+		__cpuid(cpuid, 0x80000008);
+#elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
+		__cpuid(0x80000008, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
+#endif
+		physicalProcessors = (static_cast<uint32_t>(cpuid[2]) & 0xff) + 1; // ECX[7:0] + 1
+
+	}
+
+	char processor[64] = { '\0' };
 	if (nExtIds >= 0x80000004)
 	{
-#if defined(Q_OS_WIN) 
+#if defined(Q_OS_WIN)
+
 		__cpuidex(cpuid, 0x80000002, 0);
-		memcpy(brand, cpuid, sizeof(cpuid));
+		memcpy(processor, cpuid, sizeof(cpuid));
 		__cpuidex(cpuid, 0x80000003, 0);
-		memcpy(brand + 16, cpuid, sizeof(cpuid));
+		memcpy(processor + 16, cpuid, sizeof(cpuid));
 		__cpuidex(cpuid, 0x80000004, 0);
-		memcpy(brand + 32, cpuid, sizeof(cpuid));
+		memcpy(processor + 32, cpuid, sizeof(cpuid));
 #elif defined(Q_OS_LINUX) || (defined(Q_OS_MACOS))
 		cpuid[3] = cpuid[2] = cpuid[1] = cpuid[0] = 0;
 		__cpuid(0x80000002, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
-		memcpy(brand, cpuid, sizeof(cpuid));
+		memcpy(processor, cpuid, sizeof(cpuid));
 		cpuid[3] = cpuid[2] = cpuid[1] = cpuid[0] = 0;
 		__cpuid(0x80000003, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
-		memcpy(brand + 16, cpuid, sizeof(cpuid));
+		memcpy(processor + 16, cpuid, sizeof(cpuid));
 		cpuid[3] = cpuid[2] = cpuid[1] = cpuid[0] = 0;
 		__cpuid(0x80000004, cpuid[0], cpuid[1], cpuid[2], cpuid[3]);
-		memcpy(brand + 32, cpuid, sizeof(cpuid));
+		memcpy(processor + 32, cpuid, sizeof(cpuid));
 #else 
 #error "System not supported!" 
 #endif
 
 	}
 	else
-		memcpy(brand, "CPU brand not detected", 22);
+		memcpy(processor, "CPU type not detected", 22);
 
-	if (brand[0] != '\0')
+	if (processor[0] != '\0')
 	{
 		// 
 		// Also report this on stderr so if we get a SIGILL the information  
 		// will be there along with the exception traceback.  
 		// 
-		std::cerr << "CPU Type: " << brand << std::endl;
-		ZTRACE_RUNTIME("CPU Type: %s", brand);
+		std::cerr << "CPU Type: " << processor << std::endl;
+		ZTRACE_RUNTIME("CPU Type: %s", processor);
 	}
+#if !defined(Q_OS_MACOS)
+	std::cerr << "Physical Cores: " << physicalProcessors << std::endl;
+	ZTRACE_RUNTIME("Physical Cores: %u", physicalProcessors);
+	std::cerr << "Logical Cores: " << logicalProcessors << std::endl;
+	ZTRACE_RUNTIME("Logical Cores: %u", logicalProcessors);
+#endif
+
 #endif
 }
