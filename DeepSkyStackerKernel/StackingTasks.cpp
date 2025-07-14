@@ -1389,7 +1389,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo& frameInfo, const std::ui
 
 CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, PICTURETYPE TaskType)
 {
-	ZFUNCTRACE_RUNTIME();
+	// ZFUNCTRACE_RUNTIME();
 
 	CTaskInfo *			pResult = nullptr;
 	int				j;
@@ -1601,10 +1601,10 @@ void CAllStackingTasks::ResolveTasks()
 			// If there's an offset/bias task then set black point to zero
 			//
 			bool blackPointToZero = (si.m_pOffsetTask == nullptr) ? false : true;
-			ZTRACE_RUNTIME("***************************************");
-			ZTRACE_RUNTIME(" Offset task was %s therefore",(blackPointToZero ? "found," : "not found,"));
-			ZTRACE_RUNTIME(" Setting RawDDP/BlackPointTo0 %s",(blackPointToZero ? "true" : "false"));
-			ZTRACE_RUNTIME("***************************************");
+			//ZTRACE_RUNTIME("***************************************");
+			//ZTRACE_RUNTIME(" Offset task was %s therefore",(blackPointToZero ? "found," : "not found,"));
+			//ZTRACE_RUNTIME(" Setting RawDDP/BlackPointTo0 %s",(blackPointToZero ? "true" : "false"));
+			//ZTRACE_RUNTIME("***************************************");
 			workspace.setValue("RawDDP/BlackPointTo0", blackPointToZero);
 
 			// Try to find the best dark task for this task
