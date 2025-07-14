@@ -1141,10 +1141,11 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 			ReadReturnType data = future.get();
 			future = std::async(std::launch::async, ReadTask, pData, nullptr);
 
-			if (DoRegister(std::move(data), MasterFrames, *it, numberSeenFiles, false))
+
+			if (DoRegister(std::move(data), MasterFrames, *it, 1+numberSeenFiles, false))
 			{
-				++numberOfRegisteredLightframes;
 				++numberSeenFiles;
+				++numberOfRegisteredLightframes;
 			}
 
 			bResult = !pProgress->IsCanceled();
