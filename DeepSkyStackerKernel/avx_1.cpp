@@ -84,8 +84,27 @@ void AvxStacking::init(const int lStart, const int lEnd)
 int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
+	bool compatibleInputBitmap = false;
+	//
+	// Check that the input bitmap is compatible with AVX SIMD operations.
+	//
+	const AvxBitmapUtil avxInputSupport{ inputBitmap };
+	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<float>())
+	{
+		compatibleInputBitmap = true;
+	}
 
-	if (AvxSimdCheck::checkSimdAvailability())
+	if (!compatibleInputBitmap)
+	{
+		DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
+			"The input image is not compatible with SIMD processing.\n"
+			"SIMD will not be used."), "Not SIMD compatible",
+			DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false, Qt::ConnectionType::DirectConnection);
+	}
+
+	if (AvxSimdCheck::checkSimdAvailability() && compatibleInputBitmap)
 	{
 		Avx256Stacking avxStacking{ *this };
 		return avxStacking.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier);

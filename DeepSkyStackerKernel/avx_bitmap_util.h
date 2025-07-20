@@ -67,6 +67,8 @@ public:
 	bool isMonochromeBitmap() const;
 	template <class T> bool isMonochromeBitmapOfType() const;
 	template <class T> bool isMonochromeCfaBitmapOfType() const;
+	template <class T> bool isCompatibleInputBitmap() const;
+
 	bool isColorBitmapOrCfa() const;
 
 	CFATYPE getCfaType() const;

@@ -598,6 +598,8 @@ private:
 	void processNonAvx(const int lineStart, const int lineEnd);
 };
 
+
+
 void CComputeLuminanceTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -605,9 +607,30 @@ void CComputeLuminanceTask::process()
 	const int height = m_pBitmap->Height();
 	int progress = 0;
 	constexpr int lineBlockSize = 20;
+	bool compatibleInputBitmap = false;
+
+	//
+	// Check that the input bitmap is compatible with AVX SIMD operations.
+	//
+	const AvxBitmapUtil avxInputSupport{ *m_pBitmap };
+	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() || 
+		avxInputSupport.isCompatibleInputBitmap<float>())
+	{
+		compatibleInputBitmap = true;
+	}
+
+	if (!compatibleInputBitmap)
+	{
+		DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
+			"The input image is not compatible with SIMD processing.\n"
+			"SIMD will not be used."), "Not SIMD compatible",
+			DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false, Qt::ConnectionType::DirectConnection);
+	}
 
 	if(AvxSimdCheck::checkSimdAvailability() && 	// Check output bitmap (must be monochrome-double).
-		AvxBitmapUtil{ *m_pGrayBitmap }.isMonochromeBitmapOfType<double>())
+		AvxBitmapUtil{ *m_pGrayBitmap }.isMonochromeBitmapOfType<double>() &&
+		compatibleInputBitmap)
 	{
 		AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 #pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
