@@ -64,7 +64,27 @@ AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinf
 
 int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
 {
-	if (AvxSimdCheck::checkSimdAvailability())
+	bool compatibleInputBitmap = false;
+	//
+	// Check that the input bitmap is compatible with AVX SIMD operations.
+	//
+	const AvxBitmapUtil avxInputSupport{ inputBitmap };
+	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<float>())
+	{
+		compatibleInputBitmap = true;
+	}
+	
+	if (!compatibleInputBitmap)
+	{
+		DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
+			"The input image is not compatible with SIMD processing.\n"
+			"SIMD will not be used."), "Not SIMD compatible",
+			DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false, Qt::ConnectionType::DirectConnection);
+	}
+
+	if (AvxSimdCheck::checkSimdAvailability() && compatibleInputBitmap)
 	{
 		return avxCalcEntropies(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies);
 	}

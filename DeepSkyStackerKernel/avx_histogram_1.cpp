@@ -34,6 +34,7 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include "avx_bitmap_util.h"
 #include "avx_histogram.h"
 #include "MemoryBitmap.h"
 #include "ColorHelpers.h"
@@ -51,7 +52,27 @@ AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
 
 int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
 {
-	if (AvxSimdCheck::checkSimdAvailability())
+	bool compatibleInputBitmap = false;
+	//
+	// Check that the input bitmap is compatible with AVX SIMD operations.
+	//
+	const AvxBitmapUtil avxInputSupport{ inputBitmap };
+	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<float>())
+	{
+		compatibleInputBitmap = true;
+	}
+
+	if (!compatibleInputBitmap)
+	{
+		DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
+			"The input image is not compatible with SIMD processing.\n"
+			"SIMD will not be used."), "Not SIMD compatible",
+			DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false, Qt::ConnectionType::DirectConnection);
+	}
+
+	if (AvxSimdCheck::checkSimdAvailability() && compatibleInputBitmap)
 	{
 		Avx256Histogram avxHisto{ *this };
 		auto result = avxHisto.calcHistogram(lineStart, lineEnd, multiplier);
