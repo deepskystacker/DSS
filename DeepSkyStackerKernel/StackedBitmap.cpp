@@ -506,7 +506,6 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 //
 void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DSSRect* pRect) const
 {
-	ZFUNCTRACE_RUNTIME();
 	//
 	// pImageData is a uchar* pointer to the pre-allocated buffer used by the QImage
 	//
