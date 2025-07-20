@@ -381,19 +381,31 @@ void DeepSkyStacker::createStatusBar()
 }
 
 void DeepSkyStacker::reportError(const QString& message, const QString& type, Severity severity,
-	Method method, bool terminate)
+	Method method, bool terminate, Qt::ConnectionType connectionType)
 {
 	if (terminate) traceControl.setDeleteOnExit(false);
+	if (Method::QErrorMessage == method)
+	{
+		if (Qt::DirectConnection == connectionType)
+		{
+			errorMessageDialog->setModal(true);
+		}
+		else
+		{
+			errorMessageDialog->setModal(false);
+		}
+	}
+
 	if (Method::QMessageBox == method)
 	{
-		QMetaObject::invokeMethod(this, "qMessageBox", Qt::ConnectionType::AutoConnection,
+		QMetaObject::invokeMethod(this, "qMessageBox", connectionType,
 			Q_ARG(const QString&, message),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));
 	}
 	else
 	{
-		QMetaObject::invokeMethod(this, "qErrorMessage", Qt::ConnectionType::AutoConnection,
+		QMetaObject::invokeMethod(this, "qErrorMessage", connectionType,
 			Q_ARG(const QString&, message), Q_ARG(const QString&, type),
 			Q_ARG(QMessageBox::Icon, static_cast<QMessageBox::Icon>(severity)),
 			Q_ARG(bool, terminate));

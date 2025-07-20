@@ -93,7 +93,7 @@ public:
 	bool Run();
 
 	void reportError(const QString& message, const QString& type, Severity severity,
-		Method method, bool terminate) override;
+		Method method, bool terminate, Qt::ConnectionType connectionType) override;
 
 protected:
 	void SetOption(StackingParams::eStackingOption option) { stackingParams.SetOption(option); }
