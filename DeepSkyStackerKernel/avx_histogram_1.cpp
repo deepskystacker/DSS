@@ -64,20 +64,12 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, co
 		compatibleInputBitmap = true;
 	}
 
-	if (!compatibleInputBitmap)
-	{
-		DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
-			"The input image is not compatible with SIMD processing.\n"
-			"SIMD will not be used."), "Not SIMD compatible",
-			DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false, Qt::ConnectionType::DirectConnection);
-	}
-
 	if (AvxSimdCheck::checkSimdAvailability() && compatibleInputBitmap)
 	{
 		Avx256Histogram avxHisto{ *this };
 		auto result = avxHisto.calcHistogram(lineStart, lineEnd, multiplier);
 		//
-		// If it returend 1 (typically for very small arrays), do it the other way!
+		// If it returned 1 (typically for very small arrays), do it the other way!
 		//
 
 		if (0 == result) return result;
