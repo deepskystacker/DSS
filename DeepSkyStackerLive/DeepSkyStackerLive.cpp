@@ -221,6 +221,10 @@ DeepSkyStackerLive::DeepSkyStackerLive() :
 	dssInstance = this;
 	setupUi(this);
 
+	errorMessageDialog->setWindowTitle("DeepSkyStackerLive");
+	errorMessageDialog->setModal(true);
+
+
 	//
 	// Set to F1 (Windows) or Command + ? (MacOs) or ?? to invoke help
 	//
