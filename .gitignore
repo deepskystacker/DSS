@@ -358,4 +358,3 @@ compileData*scor*
 
 # xml backup files
 *.xml.backup
-/Installers/debug.txt
