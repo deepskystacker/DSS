@@ -643,22 +643,9 @@ void DeepSkyStackerLive::onInitialise()
 }
 
 void DeepSkyStackerLive::reportError(const QString& message, const QString& type, Severity severity,
-	Method method, bool terminate, Qt::ConnectionType connectionType)
+	Method method, bool terminate)
 {
 	if (terminate) traceControl.setDeleteOnExit(false);
-
-	if (Method::QErrorMessage == method)
-	{
-		if (Qt::DirectConnection == connectionType)
-		{
-			errorMessageDialog->setModal(true);
-		}
-		else
-		{
-			errorMessageDialog->setModal(false);
-		}
-	}
-
 	if (Method::QMessageBox == method)
 	{
 		QMetaObject::invokeMethod(this, "qMessageBox", Qt::ConnectionType::AutoConnection,
