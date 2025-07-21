@@ -234,7 +234,9 @@ DeepSkyStacker::DeepSkyStacker() :
 	//
 	helpShortCut->setContext(Qt::ApplicationShortcut);
 	setAcceptDrops(true);
+
 	errorMessageDialog->setWindowTitle("DeepSkyStacker");
+	errorMessageDialog->setModal(true);
 
 	//
 	// Force setting of blackPointToZero as initially false
