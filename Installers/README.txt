@@ -57,6 +57,8 @@ Changes for DeepSkyStacker 6.1.0
 17. Upgrade Qt to 6.9.1, and LibRaw to 21.4
 
 18. On Linux and macOS, the help viewer wasn't closed when DeepSkyStacker was closed.
+
+19. Bug fix: Fix problems introduced by AVX code restructuring. Seestar problems and Drizzle not working.
 	
 Welcome to DeepSkyStacker 5.1.10
 ======================================
