@@ -59,7 +59,8 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, co
 	const AvxBitmapUtil avxInputSupport{ inputBitmap };
 	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
 		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() ||
-		avxInputSupport.isCompatibleInputBitmap<float>())
+		avxInputSupport.isCompatibleInputBitmap<float>() ||
+		avxInputSupport.isCompatibleInputBitmap<double>())
 	{
 		compatibleInputBitmap = true;
 	}

@@ -128,6 +128,8 @@ template bool AvxBitmapUtil::isCompatibleInputBitmap<std::uint32_t>() const;
 
 template bool AvxBitmapUtil::isCompatibleInputBitmap<float>() const;
 
+template bool AvxBitmapUtil::isCompatibleInputBitmap<double>() const;
+
 template <class T>
 bool AvxBitmapUtil::isMonochromeCfaBitmapOfType() const
 {
