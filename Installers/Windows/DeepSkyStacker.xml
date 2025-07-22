@@ -1,7 +1,7 @@
 <project>
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
-    <version>6.1.0_Beta_3</version>
+    <version>6.1.0_Beta_4</version>
     <licenseFile>../../x64/RelWithDebInfo/LICENSE</licenseFile>
     <componentList>
         <component>
@@ -307,7 +307,7 @@
         <associateWindowsFileExtension>
             <extensions>.dssfilelist</extensions>
             <friendlyName></friendlyName>
-            <icon>${installdir}\DeepSkyStacker.exe,2</icon>
+            <icon>${installdir}\DeepSkyStacker.exe,1</icon>
             <mimeType>text/dssfilelist</mimeType>
             <progID>DeepSkyStacker.DeepSkyStacker.6</progID>
             <commandList>
@@ -315,7 +315,7 @@
                     <makeDefault>1</makeDefault>
                     <runProgram>${installdir}\DeepSkyStacker.exe</runProgram>
                     <runProgramArguments>"%1"</runProgramArguments>
-                    <verb></verb>
+                    <verb>Open</verb>
                 </command>
             </commandList>
         </associateWindowsFileExtension>

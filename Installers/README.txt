@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0 Beta 3
+Welcome to DeepSkyStacker 6.1.0 Beta 4
 ======================================
 
 Reporting problems:
