@@ -76,13 +76,13 @@ int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const i
 		compatibleInputBitmap = true;
 	}
 	
-	if (!compatibleInputBitmap)
-	{
-		DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
-			"The input image is not compatible with SIMD processing.\n"
-			"SIMD will not be used."), "Not SIMD compatible",
-			DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false);
-	}
+	//if (!compatibleInputBitmap)
+	//{
+	//	DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
+	//		"The input image is not compatible with SIMD processing.\n"
+	//		"SIMD will not be used."), "Not SIMD compatible",
+	//		DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false);
+	//}
 
 	if (AvxSimdCheck::checkSimdAvailability() && compatibleInputBitmap)
 	{
