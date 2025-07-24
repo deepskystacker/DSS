@@ -306,7 +306,7 @@
     <postInstallationActionList>
         <associateWindowsFileExtension>
             <extensions>.dssfilelist</extensions>
-            <friendlyName></friendlyName>
+            <friendlyName>DeepSkyStacker File List</friendlyName>
             <icon>${installdir}\DeepSkyStacker.exe,1</icon>
             <mimeType>text/dssfilelist</mimeType>
             <progID>DeepSkyStacker.DeepSkyStacker.6</progID>
@@ -367,7 +367,7 @@
                 </showText>
             </actionList>
         </actionGroup>
-		<createShortcuts>
+        <createShortcuts>
             <destination>${windows_folder_desktopdirectory}</destination>
             <progressText>Do you want to create shortcuts on the Desktop?</progressText>
             <run>0</run>
