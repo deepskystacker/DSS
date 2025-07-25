@@ -12,10 +12,16 @@
 #include "EntropyInfo.h"
 #include "ColorBitmap.h"
 #include "MedianFilterEngine.h"
-
+#include "avx_simd_check.h"
 
 TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	CTaskInfo taskInfo;
 	taskInfo.SetMethod(MBP_FASTAVERAGE, 0, 0);
 
@@ -178,6 +184,11 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 
 TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
 	CTaskInfo taskInfo;
 	taskInfo.SetMethod(MBP_MAXIMUM, 0, 0);
 
@@ -346,6 +357,12 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 
 TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	CTaskInfo taskInfo;
 	taskInfo.SetMethod(MBP_ENTROPYAVERAGE, 0, 0);
 
@@ -390,6 +407,7 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 		REQUIRE(memcmp(pOut->m_vPixels.data(), expected.data(), expected.size() * sizeof(float)) == 0);
 	}
 }
+
 
 BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode() { return BCM_RGB; }
 BACKGROUNDCALIBRATIONINTERPOLATION GetBackgroundCalibrationInterpolation() { return BCI_RATIONAL; }

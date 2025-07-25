@@ -13,6 +13,8 @@
 #include "FITSUtil.h"
 #include "TIFFUtil.h"
 #include "MasterFrames.h"
+#include "avx_bitmap_util.h"
+#include "avx_simd_check.h"
 
 void CRegisteredFrame::Reset()
 {
@@ -396,7 +398,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
 	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
 //	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
-	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
+	const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
 	constexpr double LowestPossibleThreshold = 0.00075;
 
 	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
@@ -596,25 +598,61 @@ private:
 	void processNonAvx(const int lineStart, const int lineEnd);
 };
 
+
+
 void CComputeLuminanceTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	const int height = m_pBitmap->Height();
 	int progress = 0;
 	constexpr int lineBlockSize = 20;
+	bool compatibleInputBitmap = false;
 
-	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
-
-#pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
-	for (int row = 0; row < height; row += lineBlockSize)
+	//
+	// Check that the input bitmap is compatible with AVX SIMD operations.
+	//
+	const AvxBitmapUtil avxInputSupport{ *m_pBitmap };
+	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
+		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() || 
+		avxInputSupport.isCompatibleInputBitmap<float>())
 	{
-		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+		compatibleInputBitmap = true;
+	}
 
-		const int endRow = std::min(row + lineBlockSize, height);
-		if (avxLuminance.computeLuminanceBitmap(row, endRow) != 0)
+	//if (!compatibleInputBitmap)
+	//{
+	//	DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
+	//		"The input image is not compatible with SIMD processing.\n"
+	//		"SIMD will not be used."), "Not SIMD compatible",
+	//		DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false);
+	//}
+
+	if(AvxSimdCheck::checkSimdAvailability() && 	// Check output bitmap (must be monochrome-double).
+		AvxBitmapUtil{ *m_pGrayBitmap }.isMonochromeBitmapOfType<double>() &&
+		compatibleInputBitmap)
+	{
+		AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
+#pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
+		for (int row = 0; row < height; row += lineBlockSize)
 		{
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+				m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+
+			const int endRow = std::min(row + lineBlockSize, height);
+			auto result = avxLuminance.computeLuminanceBitmap(row, endRow);
+			ZASSERTSTATE(0 == result);
+		}
+	}
+	else
+	{
+#pragma omp parallel for schedule(static, 5) default(shared) if(nrProcessors > 1)
+		for (int row = 0; row < height; row += lineBlockSize)
+		{
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+				m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+
+			const int endRow = std::min(row + lineBlockSize, height);
 			processNonAvx(row, endRow);
 		}
 	}
@@ -1126,7 +1164,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 			ReadReturnType data = future.get();
 			future = std::async(std::launch::async, ReadTask, pData, nullptr);
 
-			if (DoRegister(std::move(data), MasterFrames, *it, numberSeenFiles, false))
+			if (DoRegister(std::move(data), MasterFrames, *it, 1+numberSeenFiles, false))
 			{
 				++numberOfRegisteredLightframes;
 				++numberSeenFiles;

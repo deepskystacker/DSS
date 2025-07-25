@@ -181,8 +181,7 @@ public:
 
 void CCombineTask::process()
 {
-	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	const int nrRows = m_lEndRow - m_lStartRow + 1;
 	const size_t nrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
 	int progress = m_lStartRow;
@@ -377,6 +376,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgres
 		// Note:
 		// Making the file reading concurrent (e.g. with std::async) is hardly a speed improvement,
 		// because only about 7% of the time is spent for reading the data from the files.
+		ZTRACE_RUNTIME("Reading %ld files and combining using CCombineTask::process()", m_vFiles.size());
 
 		for (const auto& partFile : m_vFiles)
 		{

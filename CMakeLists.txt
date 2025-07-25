@@ -11,6 +11,14 @@ set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGN_STYLE "Manual" CACHE STRING "")
 set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED TRUE CACHE BOOL "")
 endif()
 
+#
+# Before setting the VCPKG toolchain up, add the CMAKE_PREFIX_PATH from the command line
+# to the environment variable of the same name so it can be picked up for "inner builds"
+#
+set(ENV{CMAKE_PREFIX_PATH} ${CMAKE_PREFIX_PATH} $ENV{CMAKE_PREFIX_PATH})
+message("CMAKE_PREFIX_PATH: " ${CMAKE_PREFIX_PATH})
+message("EV CMAKE_PREFIX_PATH: " $ENV{CMAKE_PREFIX_PATH})
+
 set(CMAKE_TOOLCHAIN_FILE 
 	"$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
 	)
@@ -27,6 +35,8 @@ message ("VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET})
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 project(DeepSkyStacker VERSION 6.1.0 LANGUAGES C CXX)
 
@@ -68,13 +78,8 @@ set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 find_package(Qt6 6.9.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
-#
-# Non-Windows use find_package to find stuff we want
-#
-#set(cfitsio_DIR "/usr/local/lib/cfitsio-4.5.0/")
-if(NOT WIN32)
-find_package(cfitsio 4.5.0 REQUIRED)
-endif()
+find_package(cfitsio 4.6.2 REQUIRED)
+find_package(boost_align CONFIG REQUIRED)
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
 if (APPLE)
@@ -85,6 +90,7 @@ find_package(exiv2 CONFIG REQUIRED)
 find_package(expat CONFIG REQUIRED)
 find_package(TIFF 4.7 REQUIRED)
 find_package(libraw CONFIG REQUIRED)
+find_package(SmtpMime 2.0 REQUIRED)
 if(NOT WIN32)
 find_package(OpenMP REQUIRED)
 find_package (Threads REQUIRED)
@@ -113,23 +119,11 @@ if(WIN32)
 	set(CMAKE_CXX_FLAGS "/GR /EHsc")
 endif()
 if (APPLE)
-	set(CMAKE_CXX_FLAGS "-Wno-switch-enum -Wno-switch")
+	set(CMAKE_CXX_FLAGS "-g -Wno-switch-enum -Wno-switch")
 endif()
 if(LINUX)
-	set(CMAKE_CXX_FLAGS "-Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
+	set(CMAKE_CXX_FLAGS "-g -Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
 endif()
-
-#[=[
-################################################################################
-# Common utils
-################################################################################
-include(CMake/Utils.cmake)
-
-################################################################################
-# Additional Global Settings(add specific info there)
-################################################################################
-include(CMake/GlobalSettingsInclude.cmake OPTIONAL)
-]=]
 
 ################################################################################
 # Use solution folders feature
@@ -139,8 +133,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(ZClass)
+add_subdirectory(DeepSkyStackerKernel)
 # 
 # DeepSkyStackerCL must be built before DeepSkyStacker as we copy the executable
 # into the DeepSkyStacker folder/MACOSX bundle

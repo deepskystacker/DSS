@@ -5,15 +5,26 @@
       "name": "boost-atomic",
       "platform": "osx"
     },
+    "boost-align",
     "boost-container",
     "boost-interprocess",
+	"cfitsio",
     "exiv2",
     "expat",
     "libraw",
+    "smtpmime",
     "tiff",
-    "zlib"
+	{
+      "name": "uchmviewer",
+      "platform": "osx"
+    },
+	"zlib"
   ],
   "overrides": [
+    {
+      "name": "boost-align",
+      "version": "1.86.0"
+    },
     {
       "name": "boost-atomic",
       "version": "1.86.0"
@@ -35,8 +46,12 @@
       "version": "2.6.4"
     },
     {
+      "name": "freeglut",
+      "version": "3.6.0#1"
+    },
+    {
       "name": "libraw",
-      "version": "0.21.3"
+      "version": "0.21.4"
     },
     {
       "name": "tiff",

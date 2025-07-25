@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Exec=sudo /opt/DeepSkyStacker/uninstall
+Name=DeepSkyStacker uninstall
+Icon=/opt/DeepSkyStacker/DeepSkyStacker.icns
+Terminal=true
+Categories=Astronomy;Science

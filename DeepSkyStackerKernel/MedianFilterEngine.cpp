@@ -12,7 +12,7 @@ template <typename T>
 void CInternalMedianFilterEngineT<T>::CFilterTask::process()
 {
 	const int height = m_pEngine->m_lHeight;
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	constexpr int lineBlockSize = 20;
 	const size_t filterSize = m_pEngine->m_lFilterSize;
 	int progress = 0;

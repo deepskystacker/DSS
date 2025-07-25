@@ -168,9 +168,6 @@
     <ClCompile Include="lowerdockwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="progressdlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -202,25 +199,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="app.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\asinh.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Buttons\Base_Down.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Buttons\Base_Hot.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Buttons\Base_Up.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="bitmap1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00001.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Buttons\ButtonBase_down.bmp">
@@ -304,18 +283,6 @@
     <Image Include="res\custommode.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\darkfram.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\darkframe.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="filelist.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\flatframe.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\GammaOff.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -326,9 +293,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="..\Tools\hdrup.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\icon1.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\ImageList_CFA_CYMG.bmp">
@@ -347,12 +311,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\intersectionmode.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\lightfra.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\lightframe.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\linear.bmp">
@@ -379,13 +337,7 @@
     <Image Include="res\normalmode.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\offsetframe.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="open.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="openfile.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Pattern_BGGR.bmp">
@@ -406,9 +358,6 @@
     <Image Include="redo.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="redo.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\RGBCalibration_Maximum.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -419,9 +368,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\RGBCalibration_None.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="settings.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\sqrt.bmp">
@@ -443,9 +389,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\StarShape_TruncatedCone.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="undo.ico">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\hdrup.bmp">
@@ -547,13 +490,16 @@
     <Image Include="res\Heart.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Icon\DeepSkyStacker.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
     </QtRcc>
     <QtRcc Include="resources.qrc">
-      <Filter>Resource Files</Filter>
+      <Filter>Qt</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
@@ -766,9 +712,6 @@
     <QtMoc Include="processingcontrols.h">
       <Filter>Dialogs\Processing</Filter>
     </QtMoc>
-    <QtMoc Include="progressdlg.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DeepSkyStacker_ca.ts">
@@ -822,18 +765,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ResourceCompile>
     <ResourceCompile Include="Version.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>Source Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Help\DeepSkyStacker Help.qhcp">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\Help\DeepSkyStacker Help.qhp">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

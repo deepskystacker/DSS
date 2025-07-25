@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2023 David C. Partridge
+** Copyright (C) 2025 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-// ProgressDlg.cpp : Implements the OLD DeepSkyStacker Progress Dialog
+// ProgressDlg.cpp : Implements the NEW DeepSkyStacker Progress Dialog
 //
 #include "pch.h"
 #include "progressdlg.h"
@@ -42,60 +42,132 @@
 
 using namespace DSS;
 
-ProgressDlg::ProgressDlg(QWidget* parent) :
-	QDialog { parent },
-	ProgressBase{ },
-	ui{ new Ui::ProgressDlg },
-	m_cancelInProgress{ false }
-{
-	ui->setupUi(this);
-	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
-	ProgressDlg::connect(ui->StopButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
+/*!
+  Constructs a progress dialog.
 
-	retainHiddenWidgetSize(*ui->ProcessText1);
-	retainHiddenWidgetSize(*ui->ProcessText2);
-	retainHiddenWidgetSize(*ui->ProgressBar1);
-	retainHiddenWidgetSize(*ui->ProgressBar2);
+  Default settings:
+  \list
+  \li The top and bottom label texts are empty.
+  \li The cancel button text is (translated) "Cancel".
+  \li partialMinimum is 0
+  \li partialMaximum is 100
+  \li totalMinimum is 0
+  \li totalMaximum is 100
+  \endlist
+
+  The \a parent argument is dialog's parent widget.
+
+  The \a mode argument is the progress mode. It can be either \c ProgressMode::Single, or
+  \c ProgressMode::Dual. The default is \c ProgressMode::Dual.  If \c ProgressMode::Single is
+  specified, the first (partial) progress bar is hidden, and the second (total) progress bar is shown.
+
+  The \a enableCancel argument specifies whether the cancel button is enabled or not.
+  The default is \c true, which means the cancel button is enabled.
+
+  \sa setTopText(), setBottomText(), setPartialMinimum(), setPartialMaximum(),
+  setTotalMinimum() and setTotalMaximum()
+*/
+ProgressDlg::ProgressDlg(
+	QWidget* parent,
+	ProgressMode mode,
+	bool enableCancel,
+	Qt::WindowFlags f) :
+	QDialog{ parent, f },
+	ProgressBase{ },
+	ui{ new Ui::ProgressDlg }
+{
+	Inherited::cancelEnabled = enableCancel;
+
+	ui->setupUi(this);
+
+	// Don't mess with size of our hidden widgets
+	retainHiddenWidgetSize(ui->topLabel);
+	retainHiddenWidgetSize(ui->bottomLabel);
+	retainHiddenWidgetSize(ui->partialProgress);
+	retainHiddenWidgetSize(ui->totalProgess);
+
+	//
+	// Hide the partial text and progress bar if we are in single mode
+	//
+	if (mode == ProgressMode::Single)
+	{
+		ui->topLabel->setVisible(false);
+		ui->partialProgress->setVisible(false);
+	}
+	else
+	{
+		ui->topLabel->setVisible(true);
+		ui->partialProgress->setVisible(true);
+
+	}
+
+
+	connect(ui->cancelButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
 }
 
 ProgressDlg::~ProgressDlg()
 {
 	Close();
-	delete ui;
 }
 
-void ProgressDlg::Start1(const QString& title, int total1, bool enableCancel /* = true */)
+void ProgressDlg::setTitleText(const QString& title)
 {
-	QMetaObject::invokeMethod(this, "slotStart1", Qt::AutoConnection,
-		Q_ARG(const QString&, title),
-		Q_ARG(int, total1),
-		Q_ARG(bool, enableCancel));
+	QMetaObject::invokeMethod(this, "slotSetTitleText", Qt::AutoConnection,
+		Q_ARG(const QString&, title));
 }
 
-void ProgressDlg::Progress1(const QString& text, int achieved)
+void ProgressDlg::setTopText(QStringView text)
 {
-	QMetaObject::invokeMethod(this, "slotProgress1", Qt::AutoConnection,
-		Q_ARG(const QString&, text),
-		Q_ARG(int, achieved));
+	QMetaObject::invokeMethod(this, "slotSetTopText", Qt::AutoConnection,
+		Q_ARG(QStringView, text));
 }
 
-void ProgressDlg::Start2(const QString& title, int total2)
+void ProgressDlg::setPartialMinimum(int minimum)
 {
-	QMetaObject::invokeMethod(this, "slotStart2", Qt::AutoConnection,
-		Q_ARG(const QString&, title),
-		Q_ARG(int, total2));
+	QMetaObject::invokeMethod(this, "slotSetPartialMinimum", Qt::AutoConnection,
+		Q_ARG(int, minimum));
 }
 
-void ProgressDlg::Progress2(const QString& text, int achieved)
+void ProgressDlg::setPartialMaximum(int maximum)
 {
-	QMetaObject::invokeMethod(this, "slotProgress2", Qt::AutoConnection,
-		Q_ARG(const QString&, text),
-		Q_ARG(int, achieved));
+	QMetaObject::invokeMethod(this, "slotSetPartialMaximum", Qt::AutoConnection,
+		Q_ARG(int, maximum));
 }
 
-void ProgressDlg::End2()
+void ProgressDlg::setPartialValue(int value)
 {
-	QMetaObject::invokeMethod(this, "slotEnd2", Qt::AutoConnection);
+	QMetaObject::invokeMethod(this, "slotSetPartialValue", Qt::AutoConnection,
+		Q_ARG(int, value));
+}
+
+void ProgressDlg::setTotalMinimum(int minimum)
+{
+	QMetaObject::invokeMethod(this, "slotSetTotalMinimum", Qt::AutoConnection,
+		Q_ARG(int, minimum));
+}
+
+void ProgressDlg::setTotalMaximum(int maximum)
+{
+	QMetaObject::invokeMethod(this, "slotSetTotalMaximum", Qt::AutoConnection,
+		Q_ARG(int, maximum));
+}
+
+void ProgressDlg::setTotalValue(int value)
+{
+	QMetaObject::invokeMethod(this, "slotSetTotalValue", Qt::AutoConnection,
+		Q_ARG(int, value));
+}
+
+void ProgressDlg::setBottomText(QStringView text)
+{
+	QMetaObject::invokeMethod(this, "slotSetBottomText", Qt::AutoConnection,
+		Q_ARG(QStringView, text));
+}
+
+
+bool ProgressDlg::wasCanceled() const
+{
+	return canceled;
 }
 
 void ProgressDlg::Close()
@@ -103,27 +175,18 @@ void ProgressDlg::Close()
 	QMetaObject::invokeMethod(this, "slotClose", Qt::AutoConnection);
 }
 
-bool ProgressDlg::Warning(const QString& szText)
+void ProgressDlg::retainHiddenWidgetSize(QWidget* widget)
 {
-	return doWarning(szText);
-}
-
-void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
-{
-	QSizePolicy sp_retain = rWidget.sizePolicy();
+	QSizePolicy sp_retain = widget->sizePolicy();
 	sp_retain.setRetainSizeWhenHidden(true);
-	rWidget.setSizePolicy(sp_retain);
+	widget->setSizePolicy(sp_retain);
 }
 
-void ProgressDlg::EnableCancelButton(bool bState)
+void ProgressDlg::EnableCancelButton(bool value)
 {
-	ui->StopButton->setEnabled(bState);
+	ui->cancelButton->setEnabled(value);
 }
-void ProgressDlg::applyTitleText(const QString& strText)
-{
-	if (!strText.isEmpty())
-		setWindowTitle(strText);
-}
+
 void ProgressDlg::setProgress1Range(int nMin, int nMax)
 {
 	ui->ProgressBar1->setRange(nMin, nMax);
@@ -151,14 +214,14 @@ void ProgressDlg::cancelPressed()
 {
 	if (QMessageBox::question(this, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
-		m_cancelInProgress = true;
-		ui->StopButton->setEnabled(false);
+		canceled = true;
+		ui->cancelButton->setEnabled(false);
 	}
 }
 
 void ProgressDlg::setTimeRemaining(const QString& strText)
 {
-	ui->TimeRemaining->setText(strText);
+	ui->timeRemaining->setText(strText);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -168,12 +231,8 @@ void ProgressDlg::initialise()
 	// Disable child dialogs of DeepSkyStackerDlg
 	DeepSkyStacker::instance()->disableSubDialogs();
 
-	EnableCancelButton(m_enableCancel);
-	setProgress1Range(0, m_total1);
-	setItemVisibility(true, false);
+	enableCancelButton(cancelEnabled);
 	setFocus();
-	applyTitleText(GetTitleText());
-
 	raise();
 	show();
 }
@@ -256,11 +315,6 @@ void ProgressDlg::endProgress2()
 	setItemVisibility(true, false);
 }
 
-bool ProgressDlg::doWarning(const QString& szText)
-{
-	return (QMessageBox::question(this, "", szText) == QMessageBox::Yes);
-}
-
 void ProgressDlg::closeProgress()
 {
 	DeepSkyStacker::instance()->enableSubDialogs();
@@ -270,21 +324,13 @@ void ProgressDlg::closeProgress()
 /************************************************************************************/
 /* SLOTS                                                                            */
 /************************************************************************************/
-void ProgressDlg::slotStart1(const QString& title, int total1, bool enableCancel /* = true */)
+void ProgressDlg::slotSetTitleText(const QString& title)
 {
-	m_lastTotal1 = 0;
-	m_total1 = total1;
-	m_timer.start();
-	m_firstProgress = true;
-	m_enableCancel = enableCancel;
-
-	if (GetTitleText().compare(title, Qt::CaseInsensitive) != 0)
+	if (windowTitle().compare(title, Qt::CaseInsensitive) != 0)
 	{
-		m_strLastOut[OT_TITLE] = title;
-		applyTitleText(GetTitleText());
+		setWindowTitle(title);
 	}
 	updateProcessorsUsed();
-	initialise();
 	QCoreApplication::processEvents();
 }
 

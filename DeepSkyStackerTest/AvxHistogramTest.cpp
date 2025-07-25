@@ -3,9 +3,16 @@
 #include "catch.h"
 #include "avx_histogram.h"
 #include "MedianFilterEngine.h"
+#include "avx_simd_check.h"
 
 TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	SECTION("Gray pixels same value")
 	{
 		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();

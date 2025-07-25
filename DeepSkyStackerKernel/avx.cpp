@@ -1,3 +1,38 @@
+/****************************************************************************
+**
+** Copyright (C) 2020, 2025 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
 #include "pch.h"
 #include "avx_includes.h"
 #include "avx_support.h"
@@ -10,45 +45,6 @@
 #include "BackgroundCalibration.h"
 #include "avx_entropy.h"
 #include "EntropyInfo.h"
-
-
-AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
-	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
-	width{ colEnd }, height{ lineEnd - lineStart },
-	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
-	vectorsPerLine{ AvxBitmapUtil::numberOfAvxVectors<float, VectorElementType>(width) },
-	xCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
-	yCoordinates(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
-	redPixels(width >= 0 && height >= 0 ? vectorsPerLine * height : 0),
-	greenPixels{},
-	bluePixels{},
-	inputBitmap{ inputbm },
-	tempBitmap{ tempbm },
-	avxCfa{ static_cast<size_t>(lStart), static_cast<size_t>(lEnd), inputbm },
-	entropyData{ entrdat },
-	avx2Enabled{ AvxSimdCheck::checkSimdAvailability() }
-{
-	if (width < 0 || height < 0)
-		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
-
-	resizeColorVectors(vectorsPerLine * height);
-}
-
-void AvxStacking::init(const int lStart, const int lEnd)
-{
-	lineStart = lStart;
-	lineEnd = lEnd;
-	height = lineEnd - lineStart;
-
-	if (avx2Enabled)
-	{
-		const size_t nrVectors = vectorsPerLine * height;
-		xCoordinates.resize(nrVectors);
-		yCoordinates.resize(nrVectors);
-		redPixels.resize(nrVectors);
-		resizeColorVectors(nrVectors);
-	}
-}
 
 void AvxStacking::resizeColorVectors(const size_t nrVectors)
 {
@@ -63,24 +59,12 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
-{
-	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
-
-	return SimdSelector<Avx256Stacking, NonAvxStacking>(
-		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier); }
-	);
-}
-
 // ****************
 // AVX 256 Stacking
 // ****************
 
 int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
 {
-	if (!this->stackData.avx2Enabled)
-		return 1;
-
 	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
 		return AvxSupport::zeroUpper(0);
 	if (doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)

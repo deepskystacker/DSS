@@ -25,9 +25,6 @@
     <Filter Include="Qt\ui">
       <UniqueIdentifier>{4abe7899-f800-4251-9c3f-1ebce915fbfb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\SmtpMime">
-      <UniqueIdentifier>{ba1f9d69-a738-45e1-a63f-5e9ef2baf608}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\SmtpMime">
       <UniqueIdentifier>{85303d65-955b-4244-ad43-3022097627c6}</UniqueIdentifier>
     </Filter>
@@ -86,57 +83,6 @@
     <ClInclude Include="LiveSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\emailaddress.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimeattachment.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimebase64encoder.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimebase64formatter.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimebytearrayattachment.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimecontentencoder.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimefile.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimehtml.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimeinlinefile.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimemessage.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimemultipart.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimepart.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimeqpencoder.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimeqpformatter.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\mimetext.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\quotedprintable.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\SmtpMime\smtpmime_global.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </ClInclude>
     <ClInclude Include="dssliveenums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -176,12 +122,6 @@
     </QtMoc>
     <QtMoc Include="settingstab.h">
       <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="..\include\SmtpMime\mimecontentformatter.h">
-      <Filter>Header Files\SmtpMime</Filter>
-    </QtMoc>
-    <QtMoc Include="..\include\SmtpMime\smtpclient.h">
-      <Filter>Header Files\SmtpMime</Filter>
     </QtMoc>
     <QtMoc Include="emailsettings.h">
       <Filter>Header Files</Filter>
@@ -285,11 +225,6 @@
     <QtUic Include="ui\ChartTab.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\include\SmtpMime\SmtpMime">
-      <Filter>Header Files\SmtpMime</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc">

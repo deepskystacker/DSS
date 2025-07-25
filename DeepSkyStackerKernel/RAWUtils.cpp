@@ -475,7 +475,7 @@ namespace { // Only use in this .cpp file
 
 		do	// Do once!
 		{
-			const int numberOfProcessors = CMultitask::GetNrProcessors();
+			const int numberOfProcessors = Multitask::GetNrProcessors();
 
 			//bSuperPixels = IsSuperPixels();
 			//bRawBayer    = IsRawBayer();

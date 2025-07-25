@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2023 David C. Partridge
+** Copyright (C) 2023, 2025 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -109,73 +109,95 @@ namespace DSS
 		virtual void applyProcessorsUsed(int nCount) = 0;
 	};
 
+
+	//
+	// Enum class for mode of Progress reporting (single or dual)
+	//
+	enum class ProgressMode
+	{
+		Single, // Single progress bar (default)
+		Dual    // Dual progress bar (for two progress bars)
+	};
+
+	// 
+	// Enum class to say which progress bar we are referring to.
+	//
+	enum class ProgressBar
+	{
+		Partial,  // First progress bar for process of indiviual actions
+		Total     // Second progress bar for overall progress
+	};
+
+	//
+	// This is the base class for all progress classes. It defines the interface
+	// that all progress classes must implement. It also provides some common
+	// functionality that is used by all progress classes.
+	// The interface is defined in the pure virtual functions that are
+	// implemented in the subclasses. The subclasses are responsible for
+	// implementing the actual progress display. The base class provides
+	// some common functionality that is used by all progress classes.
+	// 
+
 	class ProgressBase
 	{
 	protected:
-		bool m_jointProgress;
-		int m_total1;
-		int m_total2;
-		int m_lastTotal1;
-		int m_lastTotal2;
-		bool m_firstProgress;
-		bool m_enableCancel;
-		QElapsedTimer m_timer;
+		bool firstProgress{ false };
+		bool cancelEnabled{ false };
+		bool canceled{ false };
+		int partialMinimum{ 0 };
+		int partialMaximum{ 100 };
+		int partialValue{ 0 };
+		int totalMininum{ 0 };
+		int totalMaximum{ 100 };
+		int totalValue{ 0 };	
 
-		enum eOutputType
-		{
-			OT_TITLE = 0,
-			OT_TEXT1,
-			OT_TEXT2,
-			OT_PROGRESS1,
-			OT_PROGRESS2,
-			OT_MAX,
-		};
-		QString m_strLastOut[OT_MAX];
+		QElapsedTimer m_timer;
+		// Properties
+		QString topText{};
+		QString bottomText{};
 
 		static inline const QString m_strEmptyString{};
 		static constexpr float m_minProgressStep{ 5.0f };
 
+		void updateProcessorsUsed();
+		virtual void applyProcessorsUsed(int nCount) = 0;
+
 	public:
 		ProgressBase() :
-			m_jointProgress{ false },
-			m_total1{ 0 },
-			m_total2{ 0 },
-			m_lastTotal1{ 0 },
-			m_lastTotal2{ 0 },
-			m_firstProgress{ false },
-			m_enableCancel{ false }
-		{
-		}
+			firstProgress{ false },
+			cancelEnabled{ false },
+			canceled{ false },
+			partialMinimum{ 0 },
+			partialMaximum{ 100 },
+			partialValue{ 0 },
+			totalMininum{ 0 },
+			totalMaximum{ 100 },
+			totalValue{ 0 },
+			topText{},
+			bottomText{}
+			{}
 
+		// Deleted copy and move constructors and assignment operators
+		ProgressBase(const ProgressBase&) = delete;
+		ProgressBase(ProgressBase&&) = delete;
+		ProgressBase& operator=(const ProgressBase&) = delete;
+		ProgressBase& operator=(ProgressBase&&) = delete;
 		virtual ~ProgressBase() = default;
 
 		//
-		// These eight mfs define the interface implemented in subclasses
+		// These eleven mfs define the interface implemented in subclasses
 		//
-		virtual void Start1(const QString& szTitle, int lTotal1, bool bEnableCancel = true) = 0;
-		virtual void Progress1(const QString& szText, int lAchieved1) = 0;
-		virtual void Start2(const QString& szText, int lTotal2) = 0;
-		virtual void Progress2(const QString& szText, int lAchieved2) = 0;
-		virtual void End2() = 0;
-		virtual void Close() = 0;
-		virtual bool IsCanceled() const = 0;
-		virtual bool Warning(const QString& szText) = 0;
+		virtual void setTitleText(const QString& title) = 0;
+		virtual void setTopText(QStringView text) = 0;
+		virtual void setPartialMinimum(int minimum) = 0;
+		virtual void setPartialMaximum(int maximum) = 0;
+		virtual void setPartialValue(int value) = 0;
+		virtual void setTotalMinimum(int minimum) = 0;
+		virtual void setTotalMaximum(int maximum) = 0;
+		virtual void setTotalValue(int value) = 0;
+		virtual void setBottomText(QStringView text) = 0;
 
-		void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; };
-		virtual const QString& GetStart1Text() const { return m_strLastOut[OT_TEXT1]; }
-		virtual const QString& GetStart2Text() const { return m_strLastOut[OT_TEXT2]; }
-		const QString& GetTitleText() const { return m_strLastOut[OT_TITLE]; }
-		const QString& GetProgress1Text() const { return m_strLastOut[OT_PROGRESS1]; }
-		const QString& GetProgress2Text() const { return m_strLastOut[OT_PROGRESS2]; }
-
-		// Helper functions - when you just want to update the progress and not the text.
-		void Start1(int lTotal1, bool bEnableCancel = true) { Start1(m_strEmptyString, lTotal1, bEnableCancel); }
-		void Start2(int lTotal2) { Start2(m_strEmptyString, lTotal2); }
-		void Progress1(int lAchieved1) { Progress1(m_strEmptyString, lAchieved1); }
-		void Progress2(int lAchieved2) { Progress2(m_strEmptyString, lAchieved2); }
-
-	protected:
-		void updateProcessorsUsed();
-		virtual void applyProcessorsUsed(int nCount) = 0;
+		virtual bool wasCanceled() const = 0;
 	};
 }
+

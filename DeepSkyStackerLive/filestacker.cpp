@@ -424,7 +424,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		size_t width = pStackedImage->Width(), height = pStackedImage->Height();
-		const int numberOfProcessors = CMultitask::GetNrProcessors();
+		const int numberOfProcessors = Multitask::GetNrProcessors();
 		uchar* pImageData{ nullptr };
 
 		std::shared_ptr<QImage> image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);

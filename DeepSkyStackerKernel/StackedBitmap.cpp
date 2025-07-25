@@ -20,7 +20,7 @@ using namespace DSS;
 // Define some convenience "functions" to either turn Visual Leak Detector on and off
 // or do nothing
 //
-#if defined(Q_OS_WIN) && !defined(NDEBUG)
+#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
 #include <vld.h>
 void turnOffVld() { VLDDisable(); }
 void turnOnVld() { VLDEnable(); }
@@ -506,7 +506,6 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 //
 void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DSSRect* pRect) const
 {
-	ZFUNCTRACE_RUNTIME();
 	//
 	// pImageData is a uchar* pointer to the pre-allocated buffer used by the QImage
 	//
@@ -531,7 +530,7 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 	const size_t bufferLen = lXMax - lXMin;
 	AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
 
-#pragma omp parallel for default(shared) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) shared(lYMin) firstprivate(avxBezierAndSaturation) if(Multitask::GetNrProcessors() > 1)
 	for (int j = lYMin; j < lYMax; j++)
 	{
 		QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (bytes_per_line * j) + (lXMin * sizeof(QRgb)));
@@ -610,7 +609,7 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(OldProgressBase* const p
 		const size_t bufferLen = lXMax - lXMin;
 		AvxBezierAndSaturation avxBezierAndSaturation{ bufferLen };
 
-#pragma omp parallel for default(shared) shared(lYMin) firstprivate(avxBezierAndSaturation) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) shared(lYMin) firstprivate(avxBezierAndSaturation) if(Multitask::GetNrProcessors() > 1)
 		for (int j = lYMin; j < lYMax; ++j)
 		{
 			//

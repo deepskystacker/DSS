@@ -1,0 +1,152 @@
+<project>
+    <shortName>DeepSkyStacker</shortName>
+    <fullName>DeepSkyStacker</fullName>
+    <version>6.1.0_Beta_4</version>
+    <licenseFile>Linux/x64/RelWithDebInfo/LICENSE</licenseFile>
+    <componentList>
+        <component>
+            <name>default</name>
+            <description>Default Component</description>
+            <canBeEdited>1</canBeEdited>
+            <selected>1</selected>
+            <show>1</show>
+            <folderList>
+                <folder>
+                    <description>Program Files</description>
+                    <destination>${installdir}</destination>
+                    <name>programfileslinux64</name>
+                    <platforms>linux-x64</platforms>
+                    <distributionFileList>
+                        <distributionFile allowWildcards="1">
+                            <origin>Linux/x64/RelWithDebInfo/*</origin>
+                        </distributionFile>
+                    </distributionFileList>
+                </folder>
+            </folderList>
+        </component>
+    </componentList>
+    <preInstallationActionList>
+        <runProgram>
+            <explanation>Uninstalling previous installation</explanation>
+            <program>${installdir}/uninstall</program>
+            <programArguments>--mode unattended</programArguments>
+            <ruleList>
+                <fileExists>
+                    <path>${installdir}/uninstall</path>
+                </fileExists>
+            </ruleList>
+        </runProgram>
+    </preInstallationActionList>
+    <postInstallationActionList>
+        <runProgram>
+            <program>xdg-mime</program>
+            <programArguments>install ${installdir}/${project.vendor}-x-text-dssfilelist.xml</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>xdg-icon-resource</program>
+            <programArguments>install --context mimetypes --size 64 ${installdir}/DSS_filelist64x64.png text/dssfilelist</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>desktop-file-install</program>
+            <programArguments>${installdir}/DeepSkyStacker.desktop</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>desktop-file-install</program>
+            <programArguments>${installdir}/DeepSkyStacker-uninstall.desktop</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>desktop-file-install</program>
+            <programArguments>${installdir}/DeepSkyStackerLive.desktop</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>update-mime-database</program>
+            <programArguments>/usr/share/mime</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>update-desktop-database</program>
+            <programArguments>/usr/share/applications/</programArguments>
+        </runProgram>
+		<changePermissions permissions="0744" files="${installer_installation_log}">
+			<ruleList>
+			<platformTest type="unix"/>
+			</ruleList>
+		</changePermissions>
+    </postInstallationActionList>
+    <preUninstallationActionList>
+        <deleteFile>
+            <path>${installdir}/${project.shortName}-install.log</path>
+        </deleteFile>
+        <deleteFile path="/usr/share/applications/DeepSkyStacker.desktop"/>
+        <deleteFile path="/usr/share/applications/DeepSkyStacker-uninstall.desktop"/>
+        <deleteFile path="/usr/share/applications/DeepSkyStackerLive.desktop"/>
+        <runProgram>
+            <program>xdg-icon-resource</program>
+            <programArguments>uninstall --context mimetypes --size 64 ${installdir}/DSS_filelist64x64</programArguments>
+        </runProgram><runProgram>
+            <program>xdg-mime</program>
+            <programArguments>uninstall ${installdir}/${project.vendor}-x-text-dssfilelist.xml</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>update-mime-database</program>
+            <programArguments>/usr/share/mime</programArguments>
+        </runProgram>
+        <runProgram>
+            <program>update-desktop-database</program>
+            <programArguments>/usr/share/applications/</programArguments>
+        </runProgram>
+    </preUninstallationActionList>
+    <postUninstallationActionList>
+		<changePermissions permissions="0744" files="${installer_installation_log}">
+		<ruleList>
+		<platformTest type="unix"/>
+		</ruleList>
+		</changePermissions>
+    </postUninstallationActionList>
+    <enableRollback>0</enableRollback>
+    <enableTimestamp>1</enableTimestamp>
+    <height>600</height>
+    <!-- Configures the final destination of the installation log -->
+
+    <installationLogFile>${installdir}/${project.shortName}-install.log</installationLogFile>
+    <outputDirectory>.</outputDirectory>
+    <productUrlInfoAbout>https://github.com/deepskystacker/DSS</productUrlInfoAbout>
+    <requireInstallationByRootUser>1</requireInstallationByRootUser>
+    <saveRelativePaths>1</saveRelativePaths>
+    <!-- Configures the final destination of the uninstallation log -->
+
+    <uninstallationLogFile>${system_temp_directory}/${project.shortName}-uninstallation.log</uninstallationLogFile>
+    <vendor>com.github.deepskystacker</vendor>
+    <width>800</width>
+    <finalPageActionList>
+        <actionGroup progressText="View readme file">
+            <actionList>
+                <readFile>
+                    <encoding>utf-8</encoding>
+                    <name>text</name>
+                    <path>${installdir}/README.txt</path>
+                </readFile>
+                <showText>
+                    <text>${text}</text>
+                    <title>README</title>
+                    <width>800</width>
+                </showText>
+            </actionList>
+        </actionGroup>
+    </finalPageActionList>
+    <parameterList>
+        <directoryParameter>
+            <name>installdir</name>
+            <description>Installer.Parameter.installdir.description</description>
+            <explanation>Installer.Parameter.installdir.explanation</explanation>
+            <value></value>
+            <default>${platform_install_prefix}/${project.shortName}</default>
+            <allowEmptyValue>0</allowEmptyValue>
+            <cliOptionName>prefix</cliOptionName>
+            <insertAfter>welcome_label</insertAfter>
+            <mustBeWritable>yes</mustBeWritable>
+            <mustExist>0</mustExist>
+            <width>80</width>
+        </directoryParameter>
+    </parameterList>
+</project>
+

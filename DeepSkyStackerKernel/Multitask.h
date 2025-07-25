@@ -1,13 +1,13 @@
 #pragma once
 
-class CMultitask
+class Multitask
 {
 public:
-	CMultitask() = default;
+	Multitask() = default;
 
 	static int GetNrProcessors(bool bReal = false);
 	static int GetNrCurrentOmpThreads();
-	static void	SetUseAllProcessors(bool bUseAll);
+	static void	setMaxProcessors(uint processors);
 	static bool	GetReducedThreadsPriority();
 	static void	SetReducedThreadsPriority(bool bReduced);
 	static bool GetUseSimd();

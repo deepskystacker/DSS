@@ -1,0 +1,10 @@
+vcpkg-cfitsio provides CMake targets:
+
+Basic usage is:
+
+	find_package(cfitsio REQUIRED)
+	target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
+	
+Notes:
+	This is built as a static library.  The Windows build does not use pthreads, 
+	so you will need to provide your own locking around use of the library.

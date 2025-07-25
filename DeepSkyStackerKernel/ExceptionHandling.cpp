@@ -291,7 +291,7 @@ namespace
 			barrier = 0; // Reset to initial value, so that all other waiting threads can resume.
 			barrier.notify_all(); // Notify all waiting threads that we finished the stack walk.
 
-			std::exit(1);
+			std::abort();
 		}
 		else
 		{

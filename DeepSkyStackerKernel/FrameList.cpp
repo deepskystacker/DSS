@@ -6,6 +6,7 @@
 #include "Workspace.h"
 #include "ztrace.h"
 #include "RegisterEngine.h"
+#include <cinttypes>
 
 namespace {
 
@@ -239,6 +240,7 @@ namespace DSS
 
 	void FrameList::fillTasks(CAllStackingTasks& tasks)
 	{
+		ZFUNCTRACE_RUNTIME();
 		size_t				comets = 0;
 //		bool				bReferenceFrameHasComet = false;
 		bool				bReferenceFrameSet = false;
@@ -247,6 +249,8 @@ namespace DSS
 		// Iterate over all groups.
 		for (std::uint32_t group = 0; group != imageGroups.size(); ++group)
 		{
+			ZTRACE_RUNTIME("Adding %zu images to stacking task for group %" PRId32, imageGroups[group].pictures->size(), group);
+
 			// and then over each image in the group.
 			// it = deque<ListBitMap>::const_iterator.
 			for (auto it = imageGroups[group].pictures->cbegin(); it != imageGroups[group].pictures->cend(); ++it)

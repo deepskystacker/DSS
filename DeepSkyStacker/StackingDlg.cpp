@@ -2025,8 +2025,12 @@ namespace DSS
 		const QString file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex] /*DssFileListFilter*/, nullptr);
 		if (!file.isEmpty())
 		{
+			// If the user has not specified the extension, we add it.
+			fs::path fn = fs::path{ file.toStdU16String() };
+			if (!fn.has_extension())
+				fn.replace_extension(fs::path{ FileListExtension });
 			ZTRACE_RUNTIME("Saving to file-list %s", file.toUtf8().constData());
-			Save(fs::path{ file.toStdU16String() });
+			Save(fn);
 		}
 	}
 
@@ -2137,16 +2141,14 @@ namespace DSS
 
 				if (checkReadOnlyFolders(tasks))
 				{
-					const auto start{ std::chrono::steady_clock::now() };
-
 					bContinue = checkStacking(tasks);
 					if (bStackAfter)
 						bContinue = bContinue && showRecap(tasks);
 
+					const auto start{ std::chrono::steady_clock::now() };
+
 					if (bContinue)
 					{
-						//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
-
 						CRegisterEngine	RegisterEngine;
 
 						imageLoader.clearCache();

@@ -48,7 +48,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, OldProgressBa
 	{
 		const int height = pTarget->RealHeight();
 		const int width = pTarget->RealWidth();
-		const int nrProcessors = CMultitask::GetNrProcessors();
+		const int nrProcessors = Multitask::GetNrProcessors();
 
 		if (width == m_pFlatFrame->RealWidth() && height == m_pFlatFrame->RealHeight())
 		{

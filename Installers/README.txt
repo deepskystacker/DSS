@@ -1,7 +1,5 @@
-Welcome to DeepSkyStacker 6.1.0 Alpha 2
+Welcome to DeepSkyStacker 6.1.0 Beta 4
 ======================================
-
-Only 64 bit versions of Windows 10 and later are supported in this release.
 
 Reporting problems:
 
@@ -9,57 +7,13 @@ Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list ho
 <https://groups.io/g/DeepSkyStacker>
 Thank you.
 
-Installing on Linux:
-====================
-
-Unzip DeepSkyStacker.tar.gz to /opt/DeepSkyStacker.  For example:
-
-	amonra@styx:/opt$ sudo rm -rf DeepSkyStacker/
-	amonra@styx:/opt$ sudo tar -zxvf ~/Downloads/DeepSkyStacker.tar.gz
-
-
-Then run the shell script 'DSS-Linux-install.sh' to setup the mime type for text/dssfilelist and to install the .desktop files
-
-	amonra@styx:/opt$ cd DeepSkyStacker
-	amonra@styx:/opt$ ./DSS-Linux-install.sh
-
-Accessing DeepSkyStackerCL on macOS:
-====================================
-
-This is delivered in the DeepSkyStacker.app bundle.   To use it you'll need define a symlink to in e.g. /usr/local/bin
-	#
-	# If you need to, create the directory /usr/local/bin
-	#
-	sudo mkdir -p /usr/local/bin
-	#
-	# Add a symlink so you can invoke DeepSkyStackerCL by typing DSSCL
-	#
-	sudo ln -sf /Applications/DeepSkyStacker.app/Contents/MacOS/DeepSkyStackerCL /usr/local/bin/DSSCL
-
-You may also need to add /usr/local/bin to your path:  You can do this by creating a file in your home directory
-called .zshenv (assuming you're using zsh) this file might contain e.g.
-
-	# remove duplicate entries from $PATH
-	# zsh uses $path array along with $PATH 
-	typeset -U PATH path
-
-	pathadd () {
-       	  if [ "$2" = "after" ] ; then
-              PATH=$PATH:$1
-       	  else
-              PATH=$1:$PATH
-          fi
-        }
-	pathadd /usr/local/bin
-	pathadd /home/<username>/bin
-
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes since the last release:
+Changes for DeepSkyStacker 6.1.0
 
 1.  Both macOS (Ventura 13.4 and upward) on both ARM and x86_64 systems and also Linux are now supported.
     The Linux version is built on Lubuntu 22.04 (Jammy Jellyfish) and should work on most recent Linux systems.
@@ -72,6 +26,40 @@ Changes since the last release:
 
 5.  When starting DeepSkyStackerLive, create a DSSLive.settings file with "default" settings if it does not exist.
 
+6.  Correct the code that checks for SIMD support on Linux.   It wasn't working correctly.
+
+7.  Add code to invoke kchmviewer on Linux and uchmviewer on macOS to display the help, and ship uchmviewer inside
+    the DeepSkyStacker.app bundle.
+
+8.  Changes to associate an icon with .dssfilelist files and to provide DeepSkyStackerLive with its own icon.
+
+9.  Ensure that Visual C++ runtime build 35211 is installed.
+
+10. Update CFITSIO to 4.6.2
+
+11. Bug fix: SIGSEGV on Linux caused by incorrect call to TIFFSetField for EXIFTAG_CFAPATTERN
+
+12. If the user specifies a filelist name without an extension, add .dssfilelist
+
+13. Allow specification of the maximum number of processing threads to be used for registration and stacking
+    in the Settings/Stacking Settings dialogue.  The default is set to the number of logical processors,
+    but this can be changed.  We recommend a maximum of 8 even though the default will be higher if you have
+    more processors available.
+
+14. Bug fix: Some translatable strings were not being updated when the language was changed.
+
+15. Bug fix: SIGILL crashes on Linux running on processors that didn't support AVX2.
+    A major re-structuring of the AVX code was needed to resolve this.
+
+16. Work round for nasty g++ problem: std::vector elements of AVX data types were incorrectly aligned which
+    caused a SIGSEGV (crash).
+
+17. Upgrade Qt to 6.9.1, and LibRaw to 21.4
+
+18. On Linux and macOS, the help viewer wasn't closed when DeepSkyStacker was closed.
+
+19. Bug fix: Fix problems introduced by AVX code restructuring. Seestar problems and Drizzle not working.
+	
 Welcome to DeepSkyStacker 5.1.10
 ======================================
 

@@ -8,33 +8,15 @@ set(COMPILE_WARNING_AS_ERROR YES)
 ################################################################################
 set(Header_Files
     "dssliveenums.h"
+    "EmailSettings.h"
     "LiveSettings.h"
+    "fileregistrar.h"
+    "filestacker.h"
+    "foldermonitor.h"
+    "footprint.h"
+    "imageviewer.h"
  )
 source_group("Header Files" FILES ${Header_Files})
-
-if(WIN32)
-set(Header_Files__SmtpMime
-    "../include/SmtpMime/emailaddress.h"
-    "../include/SmtpMime/mimeattachment.h"
-    "../include/SmtpMime/mimebase64encoder.h"
-    "../include/SmtpMime/mimebase64formatter.h"
-    "../include/SmtpMime/mimebytearrayattachment.h"
-    "../include/SmtpMime/mimecontentencoder.h"
-    "../include/SmtpMime/mimefile.h"
-    "../include/SmtpMime/mimehtml.h"
-    "../include/SmtpMime/mimeinlinefile.h"
-    "../include/SmtpMime/mimemessage.h"
-    "../include/SmtpMime/mimemultipart.h"
-    "../include/SmtpMime/mimepart.h"
-    "../include/SmtpMime/mimeqpencoder.h"
-    "../include/SmtpMime/mimeqpformatter.h"
-    "../include/SmtpMime/mimetext.h"
-    "../include/SmtpMime/quotedprintable.h"
-    "../include/SmtpMime/SmtpMime"
-    "../include/SmtpMime/smtpmime_global.h"
-)
-source_group("Header Files\\SmtpMime" FILES ${Header_Files__SmtpMime})
-endif()
 
 set(Source_Files
     "ChartTab.cpp"
@@ -131,10 +113,6 @@ set(ALL_FILES
     ${Tools}
     ${app_icon_macos}
 )
-if(WIN32)
-  set (ALL_FILES ${ALL_FILES} ${Header_Files__SmtpMime}
-)
-endif()
 
 ################################################################################
 # Target
@@ -152,7 +130,7 @@ if(APPLE)
     set_target_properties(DeepSkyStackerLive PROPERTIES
         MACOSX_BUNDLE ON
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerLive"
-        MACOSX_BUNDLE_ICON_FILE "DSSLive-2.icns"
+        MACOSX_BUNDLE_ICON_FILE "DSSLive.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystackerlive"
         MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
         INSTALL_RPATH "@executable_path/../Frameworks"
@@ -180,7 +158,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../include
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -247,8 +224,6 @@ endif()
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
-	"$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
 	)
 endif()
 
@@ -270,9 +245,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
-if(NOT WIN32)
 target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
-endif()
+target_link_libraries(${PROJECT_NAME} PRIVATE SmtpMime::SmtpMime)
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 if(LINUX)
@@ -292,13 +266,8 @@ if(APPLE)
 target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
 endif()
 
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    SmtpMime
-)
-
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
-    cfitsio
     user32
     psapi
     htmlhelp
@@ -320,8 +289,17 @@ if(LINUX)
         # Copy the .desktop file and icon file
         #
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStackerLive.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStackerLive.desktop
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive-2.icns ${CMAKE_INSTALL_PREFIX}/DSSLive-2.icns
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive.icns ${CMAKE_INSTALL_PREFIX}/DSSLive.icns
 )
+endif()
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStackerLive
+        POST_BUILD
+        #
+        # Copy the .pdb file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStackerLive.pdb
+    )
 endif()
 
 if(NOT LINUX)
@@ -330,8 +308,9 @@ if(NOT LINUX)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip ")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)\"")
     elseif(WIN32)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
-    endif()
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
+endif()
 
     # Generate a deployment script to be executed at install time
     # App bundles on macOS have an .app suffix

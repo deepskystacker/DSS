@@ -19,6 +19,8 @@ namespace DSS
 		explicit ExplorerBar(QWidget* parent = nullptr);
 		~ExplorerBar();
 
+		void setHelpEnabled(bool enabled = true);
+
 #if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 		inline void setDSSClosing() { dssClosing = true; }
 #endif

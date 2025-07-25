@@ -120,42 +120,23 @@ BROWSER=false gh auth login
 # Download the Qt Online installer for Linux from Qt Website to the Downloads folder
 #
 cd ~/Downloads
-wget https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-linux-x64-4.8.1.run
-chmod +x qt-online-installer-linux-x64-4.8.1.run
+wget https://download.qt.io/official_releases/online_installers/qt-online-installer-linux-x64-online.run
+chmod +x qt-online-installer-linux-x64-online.run
 #
 # Now run the installer from a GUI terminal session and install Qt 6.8.2
 # (it won't work from the ssh session)
 # 
 # Ensure you install Qt to /opt/Qt and select a Custom Installation
 # 
-# Expand the Qt section and then the Qt 6.8.2 section and expand "Additional Libraries"
+# Expand the Qt section and then the Qt 6.9.0 section and expand "Additional Libraries"
 #
 #    Select Desktop, Sources (if you want then), and Qt Charts in the Additional Libraries section
 #    I also suggest it would be useful to select Qt Debug Information Files
 #
-./Downloads/qt-online-installer-linux-x64-4.8.1.run
+./Downloads/qt-online-installer-linux-x64-online.run
 #
 # Now return to the ssh session
 #
-
-#
-# Download CFITSIO from <https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio-4.5.0.tar.gz>
-# to your Downloads folder, then untar it, build and install CFITSIO
-#
-cd ~/Downloads
-wget https://github.com/HEASARC/cfitsio/archive/refs/tags/cfitsio4_5_0_20240826.tar.gz
-#
-# Get the CMake fixes
-#
-wget https://www.dropbox.com/scl/fi/drt4dcvsn0hd8xaa8ix2y/cfitsio_cmake.tar?rlkey=yrzzdjeo0brnodbbji4g7ku81&dl=1
-tar -zxvf cfitsio4_5_0_20240826.tar.gz
-cd cfitsio-cfitsio4_5_0_20240826
-tar -xvf ../cfitsio_cmake.tar
-mkdir build
-cmake -B build -G Ninja -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
-cd build
-ninja
-sudo ninja install
 
 #
 # Install libjpeg
@@ -166,24 +147,6 @@ sudo apt-get install libjpeg-dev
 # Install Exiv2
 #
 sudo apt-get install exiv2
-
-#
-# SmtpClient 2.0 for Qt 
-#
-# Revert to using bluetiger9/SmtpClient-for-Qt as pull request #182 from deepskystacker/SmtpClient-for-Qt was accepted
-# on 24th Feb. 2025 (allowing this to build as a static library).
-#
-cd ~/Downloads
-gh repo clone bluetiger9/SmtpClient-for-Qt/SmtpClient-for-Qt
-cd SmtpClient-for-Qt
-#
-# create a build directory
-#
-mkdir build
-cmake -B ./build -G Ninja -DBUILD_SHARED_LIBS=OFF -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.2/gcc_64"
-cd build
-ninja
-sudo ninja install
 
 #
 # Install libinih
@@ -212,13 +175,10 @@ sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
 #
-# Update cmake to 3.30.2
+# Update cmake to 4.0.3
 #
-cd ~/Downloads
-mkdir kitware
-wget https://apt.kitware.com/kitware-archive.sh
-chmod +x kitware-archive.sh
-sudo ./kitware-archive.sh
+echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+sudo apt-get update
 sudo apt-get purge --auto-remove cmake
 sudo apt-get install -y software-properties-common lsb-release
 sudo apt-get clean all

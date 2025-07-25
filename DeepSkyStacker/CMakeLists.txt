@@ -114,7 +114,7 @@ set(Source_Files
 if (LINUX)
     set(Source_Files ${Source_Files}
     "DeepSkyStacker.desktop"
-    "DSS-Linux-install.sh"
+    "DeepSkyStacker-uninstall.desktop"
     )
 endif()
 source_group("Source Files" FILES ${Source_Files})
@@ -323,6 +323,15 @@ if(APPLE)
         MACOSX_PACKAGE_LOCATION "Resources")
 endif()
 
+set(Help_Files
+    "${CMAKE_SOURCE_DIR}/Help/Aide DeepSkyStacker.chm"
+    "${CMAKE_SOURCE_DIR}/Help/Ayuda DeepSkyStacker.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Ajuda.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Hilfe.chm"
+	)
+source_group("Help" FILES ${Help_Files})
+
 set(ALL_FILES
     ${Dialogs}
     ${Dialogs__Processing}
@@ -389,7 +398,6 @@ target_include_directories(DeepSkyStacker PUBLIC
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../include
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -456,8 +464,6 @@ endif()
 if(WIN32)
 target_link_directories(DeepSkyStacker PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
-	"$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
 	)
 endif()
 
@@ -478,9 +484,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
-if(NOT WIN32)
 target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
-endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
 if(LINUX)
@@ -502,7 +506,6 @@ endif()
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
-    cfitsio
     user32
     psapi
     htmlhelp
@@ -519,23 +522,67 @@ if(APPLE)
         # The use of $<TARGET_FILE:DeepSkyStackerCL> in add_custom_command also adds
         # a dependency on the target, so that the DSSCL binary is built before this.
         #
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:DeepSkyStackerCL> $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/
-        COMMAND "$ENV{HOME}/.unlock_keychain"
+        COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ $<TARGET_FILE:DeepSkyStackerCL> 
+    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/ ${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/tools/uchmviewer/uchmviewer
+	    #
+	    # Copy the InstallBuilder project file
+	    #
+	    COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/macOS/DeepSkyStacker.xml
+	    #
+	    # Copy the license file and readme file
+	    #
+        COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/LICENSE
+        COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/README.txt
+	    #
+    	# Copy the help files
+    	#
+    	COMMAND ${CMAKE_COMMAND} -E copy -t $<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/Resources ${Help_Files}
     )
 endif()
 if(LINUX)
     add_custom_command(TARGET DeepSkyStacker
         POST_BUILD
         #
-        # Copy the .desktop file and icon file
+        # Copy the .desktop files, mime-type definition file and the icon files
         #
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DSS-Linux-install.sh ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
-        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DSS-Linux-install.sh
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
-        COMMAND chmod +x ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.desktop
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns ${CMAKE_INSTALL_PREFIX}/DeepSkyStacker.icns
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/text-dssfilelist.xml ${CMAKE_INSTALL_PREFIX}/text-dssfilelist.xml
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png ${CMAKE_INSTALL_PREFIX}/DSS_filelist64x64.png		
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStacker-uninstall.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/com.github.deepskystacker-x-text-dssfilelist.xml
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DeepSkyStacker.icns
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_SOURCE_DIR}/Icon/DSS_filelist64x64.png
+	    #
+	    # Copy the InstallBuilder project file
+	    #
+	    COMMAND ${CMAKE_COMMAND} -E copy -t $ENV{HOME}/build ${CMAKE_SOURCE_DIR}/Installers/Linux/DeepSkyStacker.xml
+	    #
+	    # Copy the license file and readme file
+	    #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/LICENSE
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/Installers/README.txt
+	    #
+        # Copy the help files
+        #
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/Help
+	    COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX}/Help ${Help_Files} 
+    )
+endif()
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStacker
+        POST_BUILD
+        #
+        # Copy the .pdb
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStacker.pdb
+	    #
+	    # Copy the license file and readme file
+	    #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/LICENSE
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_SOURCE_DIR}/Installers/README.txt
+	    #
+    	# Copy the help files
+    	#
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_INSTALL_PREFIX}/Help
+	    COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX}/Help ${Help_Files} 
     )
 endif()
 
@@ -544,9 +591,11 @@ if(NOT LINUX)
     if(APPLE)
         set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -timestamp -no-strip")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-executable=$<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/DeepSkyStackerCL\"")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-executable=$<TARGET_BUNDLE_CONTENT_DIR:DeepSkyStacker>/MacOS/uchmviewer\"")
         set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)\"")
     elseif(WIN32)
-        set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
     endif()
 
     # Generate a deployment script to be executed at install time
@@ -576,9 +625,15 @@ else()
         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
     )
 endif()
+
+if(APPLE)
+install (CODE "execute_process(COMMAND \"$ENV{HOME}/.unlock_keychain\")")
+endif()
+
 install (SCRIPT ${deploy_script})
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
+#[=[
 
 if(WIN32)
 ################################################################################
@@ -601,4 +656,5 @@ ADD_CUSTOM_COMMAND(
        
     )
 endif()
+]=]
 

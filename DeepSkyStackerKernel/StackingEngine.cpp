@@ -846,7 +846,7 @@ void CStackingEngine::ComputeMissingCometPositions()
 bool computeOffsets(CStackingEngine* const pStackingEngine, OldProgressBase* const pProg, const int nrBitmaps)
 {
 	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 
 	std::atomic_bool stop{ false };
 	std::atomic<int> nLoopCount{ 1 };
@@ -1343,7 +1343,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			m_pProgress->Start2(QString(" "), m_rcResult.width() * m_rcResult.height());
 		}
 
-#pragma omp parallel for schedule(static, 250) default(shared) shared(PixTransform) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for schedule(static, 250) default(shared) shared(PixTransform) if(Multitask::GetNrProcessors() > 1)
 		for (int j = 0; j < m_rcResult.height(); ++j)
 		{
 			for (const int i : std::views::iota(0, m_rcResult.width()))
@@ -1757,7 +1757,7 @@ void CStackTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
 	const int height = m_pBitmap->Height();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	constexpr int lineBlockSize = 50;
 	int progress = 0;
 	std::atomic_bool runOnlyOnce{ false };

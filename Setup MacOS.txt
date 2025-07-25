@@ -4,10 +4,10 @@
 # 
 xcode-select --install
 #
-# Install CMake by downloading https://github.com/Kitware/CMake/releases/download/v3.31.4/cmake-3.31.4-macos-universal.dmg
+# Install CMake by downloading https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-macos-universal.dmg
 # and copy the app file from the .dmg file to "Applications", then open terminal window or ssh session and run:
 #
-curl -OL https://github.com/Kitware/CMake/releases/download/v3.31.4/cmake-3.31.4-macos-universal.dmg
+curl -OL https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-macos-universal.dmg
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 
 #
@@ -29,13 +29,17 @@ curl -O https://mac.r-project.org/openmp/openmp-19.1.0-darwin20-Release.tar.gz
 sudo tar -zxvf openmp-19.1.0-darwin20-Release.tar.gz -C /
 
 #
-# Install Qt 6.8.2
+# Install Qt 6.9.1
 #
 cd ~/Downloads
-curl -O https://d13lb3tujbc8s0.cloudfront.net/onlineinstallers/qt-online-installer-macOS-x64-4.8.1.dmg
+curl -O https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg
 #
 # Open the .dmg file in Finder and run the installer (you will probably be prompted to install Rosetta).
 # Make sure you specify the install location as /opt/Qt
+# 
+# Make sure you install QtCharts and QtWebEngine (under Extensions).
+#
+# To install 6.9.1 you may need to opt to show Archive items
 #
 
 #
@@ -91,7 +95,7 @@ git clone https://github.com/microsoft/vcpkg.git
 cd vcpkg && ./bootstrap-vcpkg.sh
 cd ~
 #
-# Edit .zshenv using (e.g.) nano (should be empty to start with), and and add these lines: 
+# Edit .zshenv using (e.g.) nano (should be empty to start with), and add these lines: 
 #
 	# remove duplicate entries from $PATH
 	# zsh uses $path array along with $PATH
@@ -107,9 +111,10 @@ cd ~
 	export VCPKG_ROOT=~/vcpkg
 	pathadd $VCPKG_ROOT
 	pathadd /usr/local/bin
+
 #
 # Install pkg-config
-#cd
+#
 cd ~/Downloads
 curl -O https://pkgconfig.freedesktop.org/releases/pkg-config-0.29.2.tar.gz
 tar -zxvf pkg-config-0.29.2.tar.gz
@@ -160,57 +165,6 @@ cd wget-1.25.0
 ./configure --with-ssl=openssl
 make
 sudo make install
-
-#
-# SmtpClient 2.0 for Qt 
-#
-# Revert to using bluetiger9/SmtpClient-for-Qt as pull request #182 from deepskystacker/SmtpClient-for-Qt was accepted
-# on 24th Feb. 2025 (allowing this to build as a static library).
-#
-cd ~/Downloads
-gh repo clone bluetiger9/SmtpClient-for-Qt
-cd SmtpClient-for-Qt
-#
-# create a build directory
-#
-mkdir build
-cmake -B ./build -G Ninja -DBUILD_SHARED_LIBS=OFF -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DCMAKE_INSTALL_PREFIX:STRING="/usr/local" -DCMAKE_PREFIX_PATH:STRING="/opt/Qt/6.8.2/macos"
-cd build
-ninja
-sudo ninja install
-
-#
-# Install CFITSIO 4.5.0
-# 
-cd ~/Downloads
-wget https://github.com/HEASARC/cfitsio/archive/refs/tags/cfitsio4_5_0_20240826.tar.gz
-#
-# Get the CMake fixes
-#
-wget https://www.dropbox.com/scl/fi/drt4dcvsn0hd8xaa8ix2y/cfitsio_cmake.tar
-tar -zxvf cfitsio4_5_0_20240826.tar.gz
-cd cfitsio-cfitsio4_5_0_20240826
-tar -xvf ../cfitsio_cmake.tar
-mkdir build
-cmake -B build -G Ninja  -DBUILD_SHARED_LIBS=OFF -D"CMAKE_OSX_ARCHITECTURES:STRING=x86_64;arm64" -DBUILD_SHARED_LIBS=OFF -DUSE_PTHREADS=ON -DUSE_BZIP2=OFF
-cd build
-ninja
-sudo ninja install
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

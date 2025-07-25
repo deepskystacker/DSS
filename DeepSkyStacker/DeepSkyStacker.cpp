@@ -36,7 +36,7 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include "pch.h"
-#if defined(Q_OS_WIN) && !defined(NDEBUG)
+#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
 //
 // Visual Leak Detector
 //
@@ -53,6 +53,10 @@
 
 #include <locale>
 #include <fstream>
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+#include <signal.h>
+#endif
 
 namespace bip = boost::interprocess;
 
@@ -73,7 +77,7 @@ namespace bip = boost::interprocess;
 #include "Workspace.h"
 #include "QEventLogger.h"
 #include "QMessageLogger.h"
-
+#include "Multitask.h"
 
 bool	g_bShowRefStars = false;
 
@@ -230,7 +234,9 @@ DeepSkyStacker::DeepSkyStacker() :
 	//
 	helpShortCut->setContext(Qt::ApplicationShortcut);
 	setAcceptDrops(true);
+
 	errorMessageDialog->setWindowTitle("DeepSkyStacker");
+	errorMessageDialog->setModal(true);
 
 	//
 	// Force setting of blackPointToZero as initially false
@@ -365,19 +371,7 @@ DeepSkyStacker::DeepSkyStacker() :
 
 void DeepSkyStacker::createStatusBar()
 {
-	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
-
-	QString text{ QString("<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"16\" >&nbsp;"
-		"<a style=\"font-size:16px; color:%1;\" href=\"https://github.com/sponsors/deepskystacker\""
-		"<span>%2</span></a>")
-		.arg(linkColour.name())
-		.arg(tr("Sponsor DeepSkyStacker"))
-	};
-		
-	sponsorText->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	sponsorText->setTextFormat(Qt::RichText);
-	sponsorText->setOpenExternalLinks(true);
-	sponsorText->setText(text);
+	setSponsorText();
 
 	statusBarText->setAlignment(Qt::AlignHCenter);
 
@@ -449,6 +443,37 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(this, &DeepSkyStacker::panelChanged, lowerDockWidget, &LowerDockWidget::panelChanged);
 }
 
+void DeepSkyStacker::changeEvent(QEvent* e)
+{
+	if (e->type() == QEvent::LanguageChange) {
+		setSponsorText();
+	}
+	else {
+		QWidget::changeEvent(e);
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::setSponsorText()
+{
+	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
+
+	QString text{ QString("<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"16\" >&nbsp;"
+		"<a style=\"font-size:16px; color:%1;\" href=\"https://github.com/sponsors/deepskystacker\""
+		"<span>%2</span></a>")
+		.arg(linkColour.name())
+		.arg(tr("Sponsor DeepSkyStacker"))
+	};
+
+	sponsorText->setAlignment(Qt::AlignRight | Qt::AlignTop);
+	sponsorText->setTextFormat(Qt::RichText);
+	sponsorText->setOpenExternalLinks(true);
+	sponsorText->setText(text);
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -463,6 +488,19 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 		return;
 	}
 	e->accept();
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+	//
+	// On Linux and macOS, we need to close the help process if it is running
+	// as it will not close down automatically.
+	//
+	if (helpProcess && QProcess::NotRunning != helpProcess->state())
+	{
+		ZTRACE_RUNTIME("Closing help process");
+		helpProcess->close();
+	}
+#endif // defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+
 
 #if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	//
@@ -593,14 +631,53 @@ void DeepSkyStacker::updatePanel()
 void DeepSkyStacker::help()
 {
 	ZFUNCTRACE_RUNTIME();
-#if defined(Q_OS_WIN)
-
-	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
-
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
-#else
-	QMessageBox::information(this, "DeepSkyStacker", "Sorry, there's no help available for Linux yet");
+	explorerBar->setHelpEnabled(false);
+	QString appPath{ QCoreApplication::applicationDirPath() };
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+#elif defined(Q_OS_MACOS)
+	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 #endif
+
+#if defined(Q_OS_LINUX)
+	// On Linux, we use the kchmviewer application to display the help file
+	QString program{ "kchmviewer" };
+#elif defined(Q_OS_MACOS)
+	// On macOS, we use the uchmviewer application to display the help file
+	// which we've bundled with the application
+	QString program{ appPath + "/uchmviewer" };
+#endif
+
+#if defined(Q_OS_WIN)
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+#elif defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+	//
+	// On Linux and macOS, we use a QProcess to start the help viewer
+	//	
+	if (!helpProcess)
+	{
+		helpProcess = new QProcess(this);
+		connect(helpProcess, &QProcess::finished, this, [this]
+			{
+				helpProcess->deleteLater();
+				helpProcess = nullptr;
+			});
+	}
+	QStringList arguments{ "-token", "com.github.deepskystacker", helpFile };
+	if (QProcess::NotRunning == helpProcess->state())
+	{
+		//
+		// Start the help display program (kchmviewer or uchmviewer)
+		//
+		helpProcess->start(program, arguments);
+		if(!helpProcess->waitForStarted())
+		{
+			qWarning() << "Failed to start help process:" << helpProcess->errorString();
+			return;
+		}
+	}
+#endif
+	explorerBar->setHelpEnabled(true);
 }
 
 /* ------------------------------------------------------------------- */
@@ -816,6 +893,12 @@ int main(int argc, char* argv[])
 	//
 	constexpr int oneGB{ 1024 * 1024 * 1024 };
 	QImageReader::setAllocationLimit(oneGB);
+
+	//
+	// Set the maximum number of threads we're allowed to use
+	//
+	const auto processorCountSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+	Multitask::setMaxProcessors(processorCountSetting);
 
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try

@@ -42,14 +42,14 @@ namespace DSS
         strText += tr("(Now somewhat out of date)") += "<br><br>";
         strHTML += strText;
 
-        strText = "Qt Application Framework 6.8.0\nCopyright © 2024 The Qt Company Ltd.";
+        strText = "Qt Application Framework 6.9.1\nCopyright © 2025 The Qt Company Ltd.";
         strText += "<br>";
         strText = strText.replace("\n", "<br>");
         strHTML += strText;
         strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://www.qt.io/");
         strHTML += strText;
 
-        strText = tr("RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2024 LibRaw LLC",
+        strText = tr("RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2025 LibRaw LLC",
             "IDS_ABOUT_DCRAW").arg(LIBRAW_VERSION_STR);
         strText = strText.replace("\n", "<br>");
         strHTML += strText + "<br>";

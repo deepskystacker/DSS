@@ -48,7 +48,7 @@ class ImageLoader : public QObject
 {
 	Q_OBJECT
 
-	using CacheKeyType = std::filesystem::path;
+	using CacheKeyType = std::u8string;
 	using CacheValueType = std::tuple<LoadedImage, int, bool>; // <image, lastUse, currentlyLoading>
 	using CacheType = std::unordered_map<CacheKeyType, CacheValueType>;
 

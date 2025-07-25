@@ -3,9 +3,10 @@
 
 #include "pch.h"
 
-#if defined(Q_OS_WIN) && !defined(NDEBUG)
+#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
 //
 // Visual Leak Detector
+//
 #include <vld.h>
 #endif
 
@@ -23,6 +24,7 @@
 #include "tracecontrol.h"
 #include "ztrace.h"
 #include "QMessageLogger.h"
+#include "Multitask.h"
 
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
@@ -422,6 +424,12 @@ int main(int argc, char* argv[])
 	//
 	constexpr int oneGB{ 1024 * 1024 * 1024 };
 	QImageReader::setAllocationLimit(oneGB);
+
+	//
+	// Set the maximum number of threads we're allowed to use
+	//
+	const auto processorCountSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+	Multitask::setMaxProcessors(processorCountSetting);
 
 	DeepSkyStackerCommandLine process(argc, argv);
 

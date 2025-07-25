@@ -99,7 +99,6 @@ target_include_directories(DeepSkyStackerCL PUBLIC
 
 if(WIN32)
 target_include_directories(DeepSkyStackerCL PUBLIC
-   ../include
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -168,8 +167,6 @@ endif()
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
-	"$<$<CONFIG:Debug>:${CMAKE_SOURCE_DIR}/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:${CMAKE_SOURCE_DIR}/libs/Win64/ReleaseLibs>"
 	)
 endif()
 
@@ -226,9 +223,7 @@ target_link_libraries(DeepSkyStackerCL PRIVATE
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
 target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
-if(NOT WIN32)
 target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
-endif() 
 target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
 target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
 target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
@@ -251,10 +246,19 @@ endif()
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
-    cfitsio
     user32
     psapi
 )
+endif()
+
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStackerCL
+        POST_BUILD
+        #
+        # Copy the .pdb
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStackerCL.pdb
+    )
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
@@ -270,7 +274,8 @@ if(NOT APPLE)
             set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip")
             set(deploy_tool_options_arg "${deploy_tool_options_arg} -codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)")
         elseif(WIN32)
-            set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
         endif()
 
         # Generate a deployment script to be executed at install time

@@ -192,9 +192,10 @@ namespace DSS
 		update();
 	}
 
-	//void ExplorerBar::linkActivated()
-	//{
-	//}
+	void ExplorerBar::setHelpEnabled(bool enabled)
+	{
+		ui->help->setEnabled(enabled);
+	}
 
 	void ExplorerBar::onOpenLights()
 	{

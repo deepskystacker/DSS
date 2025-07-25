@@ -29,6 +29,7 @@ set(Source_Files
     "PixelIteratorTest.cpp"
     "RegisterTest.cpp"
     "SkyBackGroupTest.cpp"
+    "TimeStampTest.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
 
@@ -68,9 +69,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../DeepSkyStackerKernel
     ../ZClass
   )
-  if(WIN32)
+
+if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../include
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
 )
 endif()
@@ -96,13 +97,12 @@ if(APPLE)
 target_link_libraries(${PROJECT_NAME} PRIVATE
     OpenMP::OpenMP_CXX
 )
+endif()
+
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
 	)
-endif()
-
-
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
@@ -176,6 +176,39 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     DeepSkyStackerKernel
 	ZClass
 )
+
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStackerTest
+        POST_BUILD
+        #
+        # Copy the .pdb file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStackerTest.pdb
+    )
+endif()
+
+if(WIN32)
+    set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+
+    message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
+    set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerTest>")
+
+    message ("executable_path: " ${executable_path})
+    message ("deploy tools options arg: " ${deploy_tool_options_arg})
+     qt_generate_deploy_script(
+         TARGET DeepSkyStackerTest
+         OUTPUT_SCRIPT deploy_script
+         CONTENT "
+     qt_deploy_runtime_dependencies(
+         EXECUTABLE \"${executable_path}\"
+         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+     )"
+     )
+
+install (SCRIPT ${deploy_script})
+install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
+endif()
 
 
 

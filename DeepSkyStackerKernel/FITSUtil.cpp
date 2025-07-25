@@ -731,7 +731,7 @@ bool CFITSReader::Read()
 			};
 
 
-		const int nrProcessors = CMultitask::GetNrProcessors(); // Returns 1, if the user de-selected multi-threading, # CPUs else.
+		const int nrProcessors = Multitask::GetNrProcessors(); // Returns 1, if the user de-selected multi-threading, # CPUs else.
 		std::atomic_bool stop = false;
 		const ptrdiff_t greenOffset = ptrdiff_t{ m_lWidth } * m_lHeight;
 		const ptrdiff_t blueOffset = 2 * greenOffset;

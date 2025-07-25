@@ -41,20 +41,22 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtInstall>6.9.1_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
     <QtDeployPdb>true</QtDeployPdb>
+    <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtInstall>6.9.1_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
-    <QtDeploy>true</QtDeploy>
+    <QtDeploy>false</QtDeploy>
     <QtDeployPdb>true</QtDeployPdb>
+    <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') OR !Exists('$(QtMsBuild)\Qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -65,12 +67,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Debug.props" />
+    <Import Project="..\vcpkg.props" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Release.props" />
+    <Import Project="..\vcpkg.props" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -84,26 +88,29 @@
     <CAExcludePath>$(QTDIR)\include;.\GeneratedFiles;$(CAExcludePath)</CAExcludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath>
     </IncludePath>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath>
     </IncludePath>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
     <VcpkgUseMD>true</VcpkgUseMD>
+    <VcpkgAdditionalInstallOptions>
+    </VcpkgAdditionalInstallOptions>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
     <VcpkgUseMD>true</VcpkgUseMD>
+    <VcpkgAdditionalInstallOptions>
+    </VcpkgAdditionalInstallOptions>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
@@ -151,6 +158,7 @@
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalOptions />
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -182,6 +190,10 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
       <NoObsolete>true</NoObsolete>
     </QtTranslation>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -192,7 +204,6 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <ClCompile>
       <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -203,7 +214,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <ShowIncludes>false</ShowIncludes>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <WarningLevel>Level4</WarningLevel>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
@@ -233,7 +244,8 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <Profile>true</Profile>
+      <Profile>false</Profile>
+      <OptimizeReferences>false</OptimizeReferences>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -265,6 +277,10 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
       <NoObsolete>true</NoObsolete>
     </QtTranslation>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\imageview.cpp" />
@@ -416,11 +432,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   <ItemGroup>
     <Image Include="..\Tools\hdrdown.bmp" />
     <Image Include="..\Tools\hdrup.bmp" />
-    <Image Include="app.ico" />
-    <Image Include="bitmap1.bmp" />
-    <Image Include="Buttons\Base_Down.ico" />
-    <Image Include="Buttons\Base_Hot.ico" />
-    <Image Include="Buttons\Base_Up.ico" />
     <Image Include="Buttons\ButtonBase_down.bmp" />
     <Image Include="Buttons\ButtonBase_hot.bmp" />
     <Image Include="Buttons\ButtonBase_mask.bmp" />
@@ -441,14 +452,11 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="Buttons\ButtonStar_Down.bmp" />
     <Image Include="Buttons\ButtonStar_Hot.bmp" />
     <Image Include="Buttons\ButtonStar_Up.bmp" />
-    <Image Include="filelist.ico" />
+    <Image Include="Icon\DeepSkyStacker.ico" />
     <Image Include="open.bmp" />
-    <Image Include="openfile.ico" />
     <Image Include="redo.bmp" />
-    <Image Include="redo.ico" />
     <Image Include="res\4Corners.png" />
     <Image Include="res\asinh.bmp" />
-    <Image Include="res\bmp00001.bmp" />
     <Image Include="res\brazil.png" />
     <Image Include="res\ButtonComet_Disabled.png" />
     <Image Include="res\ButtonComet_Down.png" />
@@ -475,17 +483,13 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\cuberoot.bmp" />
     <Image Include="res\custommode.bmp" />
     <Image Include="res\Czech.png" />
-    <Image Include="res\darkfram.ico" />
-    <Image Include="res\darkframe.ico" />
     <Image Include="res\Dutch.png" />
-    <Image Include="res\flatframe.ico" />
     <Image Include="res\GammaOff.bmp" />
     <Image Include="res\GammaOn.bmp" />
     <Image Include="res\German.png" />
     <Image Include="res\hdrdown.bmp" />
     <Image Include="res\hdrup.bmp" />
     <Image Include="res\Heart.png" />
-    <Image Include="res\icon1.ico" />
     <Image Include="res\ImageList_CFA_CYMG.bmp" />
     <Image Include="res\ImageList_CFA_RGB.bmp" />
     <Image Include="res\ImageList_Color.bmp" />
@@ -493,8 +497,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\ImageList_Mask.bmp" />
     <Image Include="res\intersectionmode.bmp" />
     <Image Include="res\Italian.png" />
-    <Image Include="res\lightfra.ico" />
-    <Image Include="res\lightframe.ico" />
     <Image Include="res\linear.bmp" />
     <Image Include="res\linear_en.bmp" />
     <Image Include="res\linear_fr.bmp" />
@@ -504,7 +506,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\logsqrt.bmp" />
     <Image Include="res\mosaicmode.bmp" />
     <Image Include="res\normalmode.bmp" />
-    <Image Include="res\offsetframe.ico" />
     <Image Include="res\Pattern_BGGR.bmp" />
     <Image Include="res\Pattern_CYGMCYMG.bmp" />
     <Image Include="res\Pattern_GBRG.bmp" />
@@ -527,8 +528,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\StarShape_TruncatedCone.bmp" />
     <Image Include="res\Taiwan.png" />
     <Image Include="res\Turkish.png" />
-    <Image Include="settings.ico" />
-    <Image Include="undo.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
@@ -601,10 +600,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   <ItemGroup>
     <ResourceCompile Include="Icon.rc" />
     <ResourceCompile Include="Version.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Help\DeepSkyStacker Help.qhcp" />
-    <None Include="..\Help\DeepSkyStacker Help.qhp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

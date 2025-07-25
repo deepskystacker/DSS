@@ -350,7 +350,7 @@ bool CTIFFReader::Open()
 		if (dwSkipExifInfo == 0)
 		{
 			// Try to read EXIF data
-			uint64_t ExifID;
+			toff_t ExifID;
 
 			if (TIFFGetField(m_tiff, TIFFTAG_EXIFIFD, &ExifID))
 			{
@@ -552,7 +552,7 @@ bool CTIFFReader::Read()
 		assert(bps == 32);
 
 		if (spp == 1)
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
 			for (int y = 0; y < this->h; ++y)
 			{
 				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -571,7 +571,7 @@ bool CTIFFReader::Read()
 				});
 			}
 		else
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 			for (int y = 0; y < this->h; ++y)
 			{
 				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -599,7 +599,7 @@ bool CTIFFReader::Read()
 			switch (bps)
 			{
 			case 8: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -620,7 +620,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 16: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -640,7 +640,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 32: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -665,7 +665,7 @@ bool CTIFFReader::Read()
 			switch (bps)
 			{
 			case 8: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -688,7 +688,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 16: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -711,7 +711,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 32: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -857,7 +857,7 @@ bool CTIFFWriter::Open()
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 	constexpr unsigned char exifVersion[4] {'0', '2', '3', '1' }; // EXIF 2.31 version is 4 characters of a string!
-	uint64_t dir_offset_EXIF{ 0 };
+	toff_t dir_offset_EXIF{ 0 };
 
 #ifdef Q_OS_WIN
 	m_tiff = TIFFOpenW(file.wstring().c_str(), "w");
@@ -1074,7 +1074,7 @@ bool CTIFFWriter::Open()
 			if (cfa)
 			{
 				constexpr uint16_t count = sizeof(cfaDimPat.dim) + sizeof(cfaDimPat.cfa.cfa4);
-				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, cfaDimPat);
+				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, reinterpret_cast<uint8_t *>(&cfaDimPat));
 			}
 			
 			//
@@ -1136,7 +1136,7 @@ bool CTIFFWriter::Write()
 
 		if (buff != nullptr)
 		{
-			const int nrProcessors = CMultitask::GetNrProcessors();
+			const int nrProcessors = Multitask::GetNrProcessors();
 			if (m_pProgress != nullptr)
 				m_pProgress->Start2(h);
 
