@@ -88,6 +88,9 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 
 int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	if (doCalcHistogram<std::uint16_t>(lineStart, lineEnd) == 0)
 		return AvxSupport::zeroUpper(0);
 	if (doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0)
