@@ -41,6 +41,8 @@
 
 int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
 {
+	if (!avxEnabled)
+		return 1;
 	if (pixelSizeMultiplier != 1)
 		return 1;
 	if (!AvxBitmapUtil{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())

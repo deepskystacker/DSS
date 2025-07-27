@@ -34,11 +34,17 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include "avx_bitmap_util.h"
+#include "avx_simd_check.h"
 #include "avx_luminance.h"
 
 AvxLuminance::AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm) :
 	inputBitmap{ inputbm },
-	outputBitmap{ outbm }
+	outputBitmap{ outbm },
+	avxEnabled{ AvxSimdCheck::checkSimdAvailability() }
 {
+	// Check output bitmap (must be monochrome-double).
+	if (!AvxBitmapUtil{ outputBitmap }.isMonochromeBitmapOfType<double>())
+		avxEnabled = false;
 }
 

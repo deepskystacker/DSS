@@ -65,6 +65,8 @@ private:
 	CMemoryBitmap& tempBitmap;
 	AvxCfaProcessing avxCfa;
 	AvxEntropy& entropyData;
+	bool avxEnabled{ false };
+
 public:
 	AvxStacking() = delete;
 	AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const class DSSRect& resultRect, AvxEntropy& entrdat);
@@ -87,10 +89,11 @@ private:
 	}
 };
 
-class Avx256Stacking
+class Avx256Stacking : public SimdFactory<Avx256Stacking>
 {
 private:
 	friend class AvxStacking;
+	friend class SimdFactory<Avx256Stacking>;
 
 	AvxStacking& stackData;
 	Avx256Stacking(AvxStacking& sd) : stackData{ sd } {}
@@ -115,10 +118,11 @@ private:
 	void getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const __m256i xIndex, const int row);
 };
 
-class NonAvxStacking
+class NonAvxStacking : public SimdFactory<NonAvxStacking>
 {
 private:
 	friend class AvxStacking;
+	friend class SimdFactory<NonAvxStacking>;
 
 	AvxStacking& stackData;
 	NonAvxStacking(AvxStacking& sd) : stackData{ sd } {}

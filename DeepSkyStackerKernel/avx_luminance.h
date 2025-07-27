@@ -34,7 +34,6 @@
 **
 **
 ****************************************************************************/
-
 #include "BitmapBase.h"
 
 class AvxLuminance
@@ -42,6 +41,8 @@ class AvxLuminance
 private:
 	const CMemoryBitmap& inputBitmap;
 	CMemoryBitmap& outputBitmap;
+	bool avxEnabled{ false };
+
 public:
 	AvxLuminance() = delete;
 	explicit AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm);

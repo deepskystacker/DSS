@@ -63,6 +63,9 @@ namespace
 
 int AvxLuminance::computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd)
 {
+	if (!avxEnabled)
+		return 1; // AVX not available.
+
 	int rval = 1;
 	if (doComputeLuminance<std::uint16_t>(lineStart, lineEnd) == 0
 		|| doComputeLuminance<std::uint32_t>(lineStart, lineEnd) == 0

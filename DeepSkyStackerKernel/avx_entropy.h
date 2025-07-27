@@ -59,6 +59,8 @@ private:
 	EntropyLayerVectorType redEntropyLayer;
 	EntropyLayerVectorType greenEntropyLayer;
 	EntropyLayerVectorType blueEntropyLayer;
+	bool avxEnabled{ false };
+
 public:
 	AvxEntropy() = delete;
 	AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);

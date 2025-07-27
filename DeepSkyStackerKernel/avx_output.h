@@ -43,6 +43,8 @@ class AvxOutputComposition
 private:
 	CMultiBitmap& inputBitmap;
 	CMemoryBitmap& outputBitmap;
+	bool avxEnabled{ false };
+
 public:
 	AvxOutputComposition() = delete;
 	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm);

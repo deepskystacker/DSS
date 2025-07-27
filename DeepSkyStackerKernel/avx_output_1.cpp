@@ -45,25 +45,20 @@
 
 AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) :
 	inputBitmap{ mBitmap },
-	outputBitmap{ outputbm }
+	outputBitmap{ outputbm },
+	avxEnabled{ AvxSimdCheck::checkSimdAvailability() }
 {
-
+	// Homogenization not implemented with AVX
+	if (inputBitmap.GetHomogenization())
+		avxEnabled = false;
+	// Output must be float values
+	if (AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<float>() == false)
+		avxEnabled = false;
 }
 
 int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (!AvxSimdCheck::checkSimdAvailability())
-		return 1;
-	// Homogenization not implemented with AVX
-	if (inputBitmap.GetHomogenization())
-		return 1;
-	// Output must be float values
-	if (AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<float>() == false)
-		return 1;	// If this is not equal, something went wrong and we cannot continue without risking access violations.
-	if (lineAddresses.size() != inputBitmap.GetNrAddedBitmaps())
-		return 1;
-	// No line addresses?
-	if (lineAddresses.empty())
+	if (!avxEnabled)
 		return 1;
 
 	return avxCompose(line, lineAddresses);

@@ -44,7 +44,8 @@ AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd,
 	greenPixels{},
 	bluePixels{},
 	inputBitmap{ inputbm },
-	vectorsPerLine{ 0 }
+	vectorsPerLine{ 0 },
+	avxEnabled{ AvxSimdCheck::checkSimdAvailability()}
 {
 	init(lineStart, lineEnd);
 }
