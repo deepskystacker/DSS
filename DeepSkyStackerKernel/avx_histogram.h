@@ -46,6 +46,7 @@ private:
 	friend class Avx256Histogram;
 	friend class NonAvxHistogram;
 
+	bool avxEnabled {false};
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
@@ -64,10 +65,11 @@ private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
 };
 
-class Avx256Histogram
+class Avx256Histogram : public SimdFactory<Avx256Histogram>
 {
 private:
 	friend class AvxHistogram;
+	friend class SimdFactory<Avx256Histogram>;
 
 	AvxHistogram& histoData;
 	Avx256Histogram(AvxHistogram& hd) : histoData{ hd } {}
@@ -96,10 +98,11 @@ public:
 };
 
 
-class NonAvxHistogram
+class NonAvxHistogram : public SimdFactory<NonAvxHistogram>
 {
 private:
 	friend class AvxHistogram;
+	friend class SimdFactory<NonAvxHistogram>;
 
 	AvxHistogram& histoData;
 	NonAvxHistogram(AvxHistogram& hd) : histoData{ hd } {}
@@ -157,10 +160,11 @@ public:
 };
 
 
-class Avx256BezierAndSaturation
+class Avx256BezierAndSaturation : public SimdFactory<Avx256BezierAndSaturation>
 {
 private:
 	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<Avx256BezierAndSaturation>;
 
 	AvxBezierAndSaturation& histoData;
 	Avx256BezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}
@@ -178,10 +182,12 @@ private:
 };
 
 
-class NonAvxBezierAndSaturation
+class NonAvxBezierAndSaturation : public SimdFactory<NonAvxBezierAndSaturation>
 {
 private:
 	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<NonAvxBezierAndSaturation>;
+
 
 	AvxBezierAndSaturation& histoData;
 	NonAvxBezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}

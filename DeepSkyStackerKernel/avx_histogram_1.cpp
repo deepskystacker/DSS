@@ -41,6 +41,7 @@
 #include "avx_simd_check.h"
 
 AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
+	avxEnabled(AvxSimdCheck::checkSimdAvailability()),
 	redHisto(HistogramSize(), 0),
 	greenHisto(HistogramSize(), 0),
 	blueHisto(HistogramSize(), 0),
@@ -52,36 +53,7 @@ AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
 
 int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
 {
-	bool compatibleInputBitmap = false;
-	//
-	// Check that the input bitmap is compatible with AVX SIMD operations.
-	//
-	const AvxBitmapUtil avxInputSupport{ inputBitmap };
-	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
-		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() ||
-		avxInputSupport.isCompatibleInputBitmap<float>() ||
-		avxInputSupport.isCompatibleInputBitmap<double>())
-	{
-		compatibleInputBitmap = true;
-	}
-
-	if (AvxSimdCheck::checkSimdAvailability() && compatibleInputBitmap)
-	{
-		Avx256Histogram avxHisto{ *this };
-		auto result = avxHisto.calcHistogram(lineStart, lineEnd, multiplier);
-		//
-		// If it returned 1 (typically for very small arrays), do it the other way!
-		//
-
-		if (0 == result) return result;
-		NonAvxHistogram nonAvxHisto{ *this };
-		return nonAvxHisto.calcHistogram(lineStart, lineEnd, multiplier);
-	}
-	else
-	{
-		NonAvxHistogram nonAvxHisto{ *this };
-		return nonAvxHisto.calcHistogram(lineStart, lineEnd, multiplier);
-	}
+	return SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.calcHistogram(lineStart, lineEnd, multiplier); });
 }
 
 std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
@@ -110,72 +82,30 @@ void AvxBezierAndSaturation::copyData(const float* const pRedPixel, const float*
 
 int AvxBezierAndSaturation::toHsl()
 {
-	if (AvxSimdCheck::checkSimdAvailability())
-	{
-		Avx256BezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxToHsl();
-	}
-	else
-	{
-		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxToHsl();
-	}
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToHsl(); });
 }
 
 int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
-	if (AvxSimdCheck::checkSimdAvailability())
-	{
-		Avx256BezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxAdjustRGB(nBitmaps, histoAdjust);
-	}
-	else
-	{
-		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxAdjustRGB(nBitmaps, histoAdjust);
-	}
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps, histoAdjust); });
 }
 
 int AvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
-	if (AvxSimdCheck::checkSimdAvailability())
-	{
-		Avx256BezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxToRgb(markOverAndUnderExposure);
-	}
-	else
-	{
-		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxToRgb(markOverAndUnderExposure);
-	}
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(
+		this,
+		[markOverAndUnderExposure](auto&& o) { return o.avxToRgb(markOverAndUnderExposure); }
+	);
 }
 
 int AvxBezierAndSaturation::avxBezierAdjust(const size_t len)
 {
-	if (AvxSimdCheck::checkSimdAvailability())
-	{
-		Avx256BezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxBezierAdjust(len);
-	}
-	else
-	{
-		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxBezierAdjust(len);
-	}
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len](auto&& o) { return o.avxBezierAdjust(len); });
 }
 
 int AvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
 {
-	if (AvxSimdCheck::checkSimdAvailability())
-	{
-		Avx256BezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxBezierSaturation(len, saturationShift);
-	}
-	else
-	{
-		NonAvxBezierAndSaturation bezierAndSaturation{ *this };
-		return bezierAndSaturation.avxBezierSaturation(len, saturationShift);
-	}
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len, saturationShift](auto&& o) { return o.avxBezierSaturation(len, saturationShift); });
 }
 
 // *****************

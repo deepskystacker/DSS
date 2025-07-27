@@ -45,7 +45,7 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 {
 	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
 	{
-		if (AvxSimdCheck::checkSimdAvailability() && targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
+		if (this->avxEnabled && targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
 		{
 			constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
 			constexpr size_t nrVectors = HistogramSize() / VecLen;
@@ -60,8 +60,14 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 			for (size_t n = nrVectors * VecLen; n < HistogramSize(); ++n)
 				targetHisto[n] += sourceHisto[n];
 		}
-		else // !avxReady
+		else // !avxEnabled
 		{
+			// Fallback to non-AVX code.
+			// This is the case for 16-bit histograms, which are not supported by AVX.
+			// Also, if the histogram size is not equal to the maximum value of std::uint16_t + 1, we use the non-AVX code.
+			if (targetHisto.size() != sourceHisto.size())
+				throw std::runtime_error("Histogram sizes do not match.");
+			// Add the source histogram to the target histogram.
 			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is not smaller in size than the sourceHisto.
 				targetHisto[n] += sourceHisto[n];
 		}
@@ -73,7 +79,7 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 	mergeHisto(green, isColor ? greenHisto : redHisto);
 	mergeHisto(blue, isColor ? blueHisto : redHisto);
 
-	return AvxSupport::zeroUpper(0);
+	return this->avxEnabled ? AvxSupport::zeroUpper(0) : 0;
 }
 
 // *****************
