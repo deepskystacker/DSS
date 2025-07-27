@@ -602,57 +602,22 @@ private:
 
 void CComputeLuminanceTask::process()
 {
-	ZFUNCTRACE_RUNTIME();
 	const int nrProcessors = Multitask::GetNrProcessors();
 	const int height = m_pBitmap->Height();
 	int progress = 0;
 	constexpr int lineBlockSize = 20;
-	bool compatibleInputBitmap = false;
 
-	//
-	// Check that the input bitmap is compatible with AVX SIMD operations.
-	//
-	const AvxBitmapUtil avxInputSupport{ *m_pBitmap };
-	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
-		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() || 
-		avxInputSupport.isCompatibleInputBitmap<float>())
-	{
-		compatibleInputBitmap = true;
-	}
+	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
-	//if (!compatibleInputBitmap)
-	//{
-	//	DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
-	//		"The input image is not compatible with SIMD processing.\n"
-	//		"SIMD will not be used."), "Not SIMD compatible",
-	//		DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false);
-	//}
-
-	if(AvxSimdCheck::checkSimdAvailability() && 	// Check output bitmap (must be monochrome-double).
-		AvxBitmapUtil{ *m_pGrayBitmap }.isMonochromeBitmapOfType<double>() &&
-		compatibleInputBitmap)
-	{
-		AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 #pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
-		for (int row = 0; row < height; row += lineBlockSize)
-		{
-			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-				m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
-
-			const int endRow = std::min(row + lineBlockSize, height);
-			auto result = avxLuminance.computeLuminanceBitmap(row, endRow);
-			ZASSERTSTATE(0 == result);
-		}
-	}
-	else
+	for (int row = 0; row < height; row += lineBlockSize)
 	{
-#pragma omp parallel for schedule(static, 5) default(shared) if(nrProcessors > 1)
-		for (int row = 0; row < height; row += lineBlockSize)
-		{
-			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-				m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
 
-			const int endRow = std::min(row + lineBlockSize, height);
+		const int endRow = std::min(row + lineBlockSize, height);
+		if (avxLuminance.computeLuminanceBitmap(row, endRow) != 0)
+		{
 			processNonAvx(row, endRow);
 		}
 	}
