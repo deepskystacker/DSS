@@ -56,6 +56,11 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, co
 	return SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.calcHistogram(lineStart, lineEnd, multiplier); });
 }
 
+int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
+{
+	return SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.mergeHistograms(red, green, blue); });
+}
+
 std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
 {
 	return { this->redBuffer.data(), this->greenBuffer.data(), this->blueBuffer.data() };
@@ -138,6 +143,28 @@ int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 	return 0;
 }
 
+int NonAvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
+{
+	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
+		{
+			// Fallback to non-AVX code.
+			// This is the case for 16-bit histograms, which are not supported by AVX.
+			// Also, if the histogram size is not equal to the maximum value of std::uint16_t + 1, we use the non-AVX code.
+			//if (targetHisto.size() != sourceHisto.size())
+			//	throw std::runtime_error("Histogram sizes do not match.");
+			// Add the source histogram to the target histogram.
+			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is not smaller in size than the sourceHisto.
+				targetHisto[n] += sourceHisto[n];
+		};
+
+	const bool isColor = AvxBitmapUtil{ histoData.inputBitmap }.isColorBitmapOrCfa();
+
+	mergeHisto(red, histoData.redHisto);
+	mergeHisto(green, isColor ? histoData.greenHisto : histoData.redHisto);
+	mergeHisto(blue, isColor ? histoData.blueHisto : histoData.redHisto);
+
+	return 0;
+}
 
 // ------------------------
 // Non AVX Bezier functions

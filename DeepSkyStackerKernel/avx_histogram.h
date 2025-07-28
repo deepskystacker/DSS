@@ -41,7 +41,7 @@
 class AvxHistogram
 {
 public:
-	typedef std::vector<int> HistogramVectorType;
+	using HistogramVectorType = std::vector<int> ;
 private:
 	friend class Avx256Histogram;
 	friend class NonAvxHistogram;
@@ -67,6 +67,7 @@ private:
 
 class Avx256Histogram : public SimdFactory<Avx256Histogram>
 {
+	using HistogramVectorType = AvxHistogram::HistogramVectorType;
 private:
 	friend class AvxHistogram;
 	friend class SimdFactory<Avx256Histogram>;
@@ -75,6 +76,7 @@ private:
 	Avx256Histogram(AvxHistogram& hd) : histoData{ hd } {}
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double);
+	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
 
 	template <class T>
 	int doCalcHistogram(const size_t lineStart, const size_t lineEnd);
@@ -100,6 +102,7 @@ public:
 
 class NonAvxHistogram : public SimdFactory<NonAvxHistogram>
 {
+	using HistogramVectorType = AvxHistogram::HistogramVectorType;
 private:
 	friend class AvxHistogram;
 	friend class SimdFactory<NonAvxHistogram>;
@@ -108,6 +111,8 @@ private:
 	NonAvxHistogram(AvxHistogram& hd) : histoData{ hd } {}
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
+	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
+
 };
 
 

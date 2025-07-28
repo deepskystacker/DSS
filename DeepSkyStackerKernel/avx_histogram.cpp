@@ -41,47 +41,6 @@
 #include "histogram.h"
 #include "BezierAdjust.h"
 
-int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
-{
-	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
-	{
-		if (this->avxEnabled && targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
-		{
-			constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
-			constexpr size_t nrVectors = HistogramSize() / VecLen;
-			auto* pTarget = targetHisto.data();
-			const auto* pSource = sourceHisto.data();
-
-			for (size_t n = 0; n < nrVectors; ++n, pTarget += VecLen, pSource += VecLen)
-			{
-				const __m256i tgt = _mm256_add_epi32(_mm256_loadu_si256((const __m256i*)pTarget), _mm256_loadu_si256((const __m256i*)pSource));
-				_mm256_storeu_si256((__m256i*)pTarget, tgt);
-			}
-			for (size_t n = nrVectors * VecLen; n < HistogramSize(); ++n)
-				targetHisto[n] += sourceHisto[n];
-		}
-		else // !avxEnabled
-		{
-			// Fallback to non-AVX code.
-			// This is the case for 16-bit histograms, which are not supported by AVX.
-			// Also, if the histogram size is not equal to the maximum value of std::uint16_t + 1, we use the non-AVX code.
-			if (targetHisto.size() != sourceHisto.size())
-				throw std::runtime_error("Histogram sizes do not match.");
-			// Add the source histogram to the target histogram.
-			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is not smaller in size than the sourceHisto.
-				targetHisto[n] += sourceHisto[n];
-		}
-	};
-
-	const bool isColor = AvxBitmapUtil{ inputBitmap }.isColorBitmapOrCfa();
-
-	mergeHisto(red, redHisto);
-	mergeHisto(green, isColor ? greenHisto : redHisto);
-	mergeHisto(blue, isColor ? blueHisto : redHisto);
-
-	return this->avxEnabled ? AvxSupport::zeroUpper(0) : 0;
-}
-
 // *****************
 // AVX-256 Histogram
 // *****************
@@ -101,6 +60,39 @@ int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 		return AvxSupport::zeroUpper(0);
 
 	return 1;
+}
+
+int Avx256Histogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
+{
+	if (!this->histoData.avxEnabled)
+	return 1; // AVX not enabled, so we cannot use this class.
+
+	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
+		{
+			if (targetHisto.size() == AvxHistogram::HistogramSize() && sourceHisto.size() == AvxHistogram::HistogramSize())
+			{
+				constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
+				constexpr size_t nrVectors = AvxHistogram::HistogramSize() / VecLen;
+				auto* pTarget = targetHisto.data();
+				const auto* pSource = sourceHisto.data();
+
+				for (size_t n = 0; n < nrVectors; ++n, pTarget += VecLen, pSource += VecLen)
+				{
+					const __m256i tgt = _mm256_add_epi32(_mm256_loadu_si256((const __m256i*)pTarget), _mm256_loadu_si256((const __m256i*)pSource));
+					_mm256_storeu_si256((__m256i*)pTarget, tgt);
+				}
+				for (size_t n = nrVectors * VecLen; n < AvxHistogram::HistogramSize(); ++n)
+					targetHisto[n] += sourceHisto[n];
+			}
+		};
+
+	const bool isColor = AvxBitmapUtil{ histoData.inputBitmap }.isColorBitmapOrCfa();
+
+	mergeHisto(red, histoData.redHisto);
+	mergeHisto(green, isColor ? histoData.greenHisto : histoData.redHisto);
+	mergeHisto(blue, isColor ? histoData.blueHisto : histoData.redHisto);
+
+	return AvxSupport::zeroUpper(0);
 }
 
 template <class T>
