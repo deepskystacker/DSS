@@ -67,6 +67,7 @@ std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
 }
 
 AvxBezierAndSaturation::AvxBezierAndSaturation(const size_t bufferLen) :
+	avxEnabled(AvxSimdCheck::checkSimdAvailability()),
 	redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen),
 	bezierX{}, bezierY{}
 {}
