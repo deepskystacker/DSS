@@ -276,12 +276,6 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-if(APPLE)
-    add_custom_command(TARGET DeepSkyStackerLive
-        POST_BUILD
-        COMMAND "$ENV{HOME}/.unlock_keychain"
-    )
-endif()
 if(LINUX)
     add_custom_command(TARGET DeepSkyStackerLive
         POST_BUILD
@@ -339,6 +333,11 @@ qt_generate_deploy_app_script(
     DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
 )
 endif()
+
+if(APPLE)
+install (CODE "execute_process(COMMAND \"$ENV{HOME}/.unlock_keychain\")")
+endif()
+
 install (SCRIPT ${deploy_script})
 install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
 
