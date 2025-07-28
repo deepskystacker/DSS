@@ -373,6 +373,9 @@ __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues
 
 int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	const size_t len = this->histoData.redBuffer.size();
 
 	const float scale = 255.0f / static_cast<float>(nBitmaps);
@@ -403,6 +406,9 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHi
 
 int Avx256BezierAndSaturation::avxToHsl()
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	const size_t len = this->histoData.redBuffer.size();
 
 	using VecType = __m256;
@@ -460,6 +466,9 @@ int Avx256BezierAndSaturation::avxToHsl()
 
 int Avx256BezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	const size_t len = this->histoData.redBuffer.size();
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
@@ -532,6 +541,9 @@ int Avx256BezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 
 int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
 
@@ -559,6 +571,9 @@ int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 
 int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	if (saturationShift == 0)
 		return 0;
 
