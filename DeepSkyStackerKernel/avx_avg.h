@@ -58,8 +58,9 @@ public:
 	AvxAccumulation& operator=(const AvxAccumulation&) = delete;
 
 	int accumulate(const int nrStackedBitmaps);
-	int avxAccumulate(const int nrStackedBitmaps);
 private:
+	int avxAccumulate(const int nrStackedBitmaps);
+
 	template <class T_IN, class T_OUT>
 	int doAccumulate(const int nrStackedBitmaps);
 };
