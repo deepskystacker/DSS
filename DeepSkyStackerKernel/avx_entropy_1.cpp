@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -45,9 +45,10 @@
 AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
 	inputBitmap{ inputbm },
 	entropyInfo{ entrinfo },
-	pEntropyCoverage{ entropycov }
+	pEntropyCoverage{ entropycov },
+	avxEnabled(AvxSimdCheck::checkSimdAvailability())
 {
-	if (pEntropyCoverage != nullptr && AvxSimdCheck::checkSimdAvailability())
+	if (pEntropyCoverage != nullptr && avxEnabled)
 	{
 		const size_t width = pEntropyCoverage->Width();
 		const size_t height = pEntropyCoverage->Height();
@@ -64,27 +65,7 @@ AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinf
 
 int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
 {
-	bool compatibleInputBitmap = false;
-	//
-	// Check that the input bitmap is compatible with AVX SIMD operations.
-	//
-	const AvxBitmapUtil avxInputSupport{ inputBitmap };
-	if (avxInputSupport.isCompatibleInputBitmap<std::uint16_t>() ||
-		avxInputSupport.isCompatibleInputBitmap<std::uint32_t>() ||
-		avxInputSupport.isCompatibleInputBitmap<float>())
-	{
-		compatibleInputBitmap = true;
-	}
-	
-	//if (!compatibleInputBitmap)
-	//{
-	//	DSSBase::instance()->reportError(QCoreApplication::translate("DeepSkyStacker",
-	//		"The input image is not compatible with SIMD processing.\n"
-	//		"SIMD will not be used."), "Not SIMD compatible",
-	//		DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage, false);
-	//}
-
-	if (AvxSimdCheck::checkSimdAvailability() && compatibleInputBitmap)
+	if (avxEnabled)
 	{
 		return avxCalcEntropies(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies);
 	}

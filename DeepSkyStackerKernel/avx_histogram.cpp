@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -41,47 +41,15 @@
 #include "histogram.h"
 #include "BezierAdjust.h"
 
-int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
-{
-	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
-	{
-		if (AvxSimdCheck::checkSimdAvailability() && targetHisto.size() == HistogramSize() && sourceHisto.size() == HistogramSize())
-		{
-			constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
-			constexpr size_t nrVectors = HistogramSize() / VecLen;
-			auto* pTarget = targetHisto.data();
-			const auto* pSource = sourceHisto.data();
-
-			for (size_t n = 0; n < nrVectors; ++n, pTarget += VecLen, pSource += VecLen)
-			{
-				const __m256i tgt = _mm256_add_epi32(_mm256_loadu_si256((const __m256i*)pTarget), _mm256_loadu_si256((const __m256i*)pSource));
-				_mm256_storeu_si256((__m256i*)pTarget, tgt);
-			}
-			for (size_t n = nrVectors * VecLen; n < HistogramSize(); ++n)
-				targetHisto[n] += sourceHisto[n];
-		}
-		else // !avxReady
-		{
-			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is not smaller in size than the sourceHisto.
-				targetHisto[n] += sourceHisto[n];
-		}
-	};
-
-	const bool isColor = AvxBitmapUtil{ inputBitmap }.isColorBitmapOrCfa();
-
-	mergeHisto(red, redHisto);
-	mergeHisto(green, isColor ? greenHisto : redHisto);
-	mergeHisto(blue, isColor ? blueHisto : redHisto);
-
-	return AvxSupport::zeroUpper(0);
-}
-
 // *****************
 // AVX-256 Histogram
 // *****************
 
 int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	if (doCalcHistogram<std::uint16_t>(lineStart, lineEnd) == 0)
 		return AvxSupport::zeroUpper(0);
 	if (doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0)
@@ -92,6 +60,39 @@ int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 		return AvxSupport::zeroUpper(0);
 
 	return 1;
+}
+
+int Avx256Histogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
+{
+	if (!this->histoData.avxEnabled)
+	return 1; // AVX not enabled, so we cannot use this class.
+
+	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
+		{
+			if (targetHisto.size() == AvxHistogram::HistogramSize() && sourceHisto.size() == AvxHistogram::HistogramSize())
+			{
+				constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
+				constexpr size_t nrVectors = AvxHistogram::HistogramSize() / VecLen;
+				auto* pTarget = targetHisto.data();
+				const auto* pSource = sourceHisto.data();
+
+				for (size_t n = 0; n < nrVectors; ++n, pTarget += VecLen, pSource += VecLen)
+				{
+					const __m256i tgt = _mm256_add_epi32(_mm256_loadu_si256((const __m256i*)pTarget), _mm256_loadu_si256((const __m256i*)pSource));
+					_mm256_storeu_si256((__m256i*)pTarget, tgt);
+				}
+				for (size_t n = nrVectors * VecLen; n < AvxHistogram::HistogramSize(); ++n)
+					targetHisto[n] += sourceHisto[n];
+			}
+		};
+
+	const bool isColor = AvxBitmapUtil{ histoData.inputBitmap }.isColorBitmapOrCfa();
+
+	mergeHisto(red, histoData.redHisto);
+	mergeHisto(green, isColor ? histoData.greenHisto : histoData.redHisto);
+	mergeHisto(blue, isColor ? histoData.blueHisto : histoData.redHisto);
+
+	return AvxSupport::zeroUpper(0);
 }
 
 template <class T>
@@ -372,6 +373,9 @@ __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues
 
 int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	const size_t len = this->histoData.redBuffer.size();
 
 	const float scale = 255.0f / static_cast<float>(nBitmaps);
@@ -402,6 +406,9 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHi
 
 int Avx256BezierAndSaturation::avxToHsl()
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	const size_t len = this->histoData.redBuffer.size();
 
 	using VecType = __m256;
@@ -459,6 +466,9 @@ int Avx256BezierAndSaturation::avxToHsl()
 
 int Avx256BezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	const size_t len = this->histoData.redBuffer.size();
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
@@ -531,6 +541,9 @@ int Avx256BezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 
 int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
 
@@ -558,6 +571,9 @@ int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 
 int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
 {
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
+
 	if (saturationShift == 0)
 		return 0;
 

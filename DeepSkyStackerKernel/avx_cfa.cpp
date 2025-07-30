@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -41,6 +41,8 @@
 
 int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
 {
+	if (!avxEnabled)
+		return 1;
 	if (pixelSizeMultiplier != 1)
 		return 1;
 	if (!AvxBitmapUtil{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())

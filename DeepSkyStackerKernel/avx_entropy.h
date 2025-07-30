@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -59,6 +59,8 @@ private:
 	EntropyLayerVectorType redEntropyLayer;
 	EntropyLayerVectorType greenEntropyLayer;
 	EntropyLayerVectorType blueEntropyLayer;
+	bool avxEnabled{ false };
+
 public:
 	AvxEntropy() = delete;
 	AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);

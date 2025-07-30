@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -57,7 +57,8 @@ AvxStacking::AvxStacking(const int lStart, const int lEnd, const CMemoryBitmap& 
 	inputBitmap{ inputbm },
 	tempBitmap{ tempbm },
 	avxCfa{ static_cast<size_t>(lStart), static_cast<size_t>(lEnd), inputbm },
-	entropyData{ entrdat }
+	entropyData{ entrdat },
+	avxEnabled{ AvxSimdCheck::checkSimdAvailability() }
 {
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
@@ -71,7 +72,7 @@ void AvxStacking::init(const int lStart, const int lEnd)
 	lineEnd = lEnd;
 	height = lineEnd - lineStart;
 
-	if (AvxSimdCheck::checkSimdAvailability())
+	if (avxEnabled)
 	{
 		const size_t nrVectors = vectorsPerLine * height;
 		xCoordinates.resize(nrVectors);
@@ -85,20 +86,9 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 {
 	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
-	if (AvxSimdCheck::checkSimdAvailability())
-	{
-		Avx256Stacking avxStacking{ *this };
-		auto result = avxStacking.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier);
-		// If the AVX stacker returns an error, use the non-AVX stacker
-		if (0 == result) return result;
-		NonAvxStacking nonAvxStacking{ *this };
-		return nonAvxStacking.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier);
-	}
-	else
-	{
-		NonAvxStacking nonAvxStacking{ *this };
-		return nonAvxStacking.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier);
-	}
+	return SimdSelector<Avx256Stacking, NonAvxStacking>(
+		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier); }
+	);
 }
 
 // ****************

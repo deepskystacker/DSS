@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -41,11 +41,12 @@
 class AvxHistogram
 {
 public:
-	typedef std::vector<int> HistogramVectorType;
+	using HistogramVectorType = std::vector<int> ;
 private:
 	friend class Avx256Histogram;
 	friend class NonAvxHistogram;
 
+	bool avxEnabled {false};
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
@@ -64,15 +65,18 @@ private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
 };
 
-class Avx256Histogram
+class Avx256Histogram : public SimdFactory<Avx256Histogram>
 {
+	using HistogramVectorType = AvxHistogram::HistogramVectorType;
 private:
 	friend class AvxHistogram;
+	friend class SimdFactory<Avx256Histogram>;
 
 	AvxHistogram& histoData;
 	Avx256Histogram(AvxHistogram& hd) : histoData{ hd } {}
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double);
+	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
 
 	template <class T>
 	int doCalcHistogram(const size_t lineStart, const size_t lineEnd);
@@ -96,15 +100,19 @@ public:
 };
 
 
-class NonAvxHistogram
+class NonAvxHistogram : public SimdFactory<NonAvxHistogram>
 {
+	using HistogramVectorType = AvxHistogram::HistogramVectorType;
 private:
 	friend class AvxHistogram;
+	friend class SimdFactory<NonAvxHistogram>;
 
 	AvxHistogram& histoData;
 	NonAvxHistogram(AvxHistogram& hd) : histoData{ hd } {}
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
+	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
+
 };
 
 
@@ -118,6 +126,7 @@ private:
 	friend class Avx256BezierAndSaturation;
 	friend class NonAvxBezierAndSaturation;
 
+	bool avxEnabled{ false };
 	std::vector<float> redBuffer;
 	std::vector<float> greenBuffer;
 	std::vector<float> blueBuffer;
@@ -157,10 +166,11 @@ public:
 };
 
 
-class Avx256BezierAndSaturation
+class Avx256BezierAndSaturation : public SimdFactory<Avx256BezierAndSaturation>
 {
 private:
 	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<Avx256BezierAndSaturation>;
 
 	AvxBezierAndSaturation& histoData;
 	Avx256BezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}
@@ -178,10 +188,12 @@ private:
 };
 
 
-class NonAvxBezierAndSaturation
+class NonAvxBezierAndSaturation : public SimdFactory<NonAvxBezierAndSaturation>
 {
 private:
 	friend class AvxBezierAndSaturation;
+	friend class SimdFactory<NonAvxBezierAndSaturation>;
+
 
 	AvxBezierAndSaturation& histoData;
 	NonAvxBezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}

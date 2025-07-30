@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -34,7 +34,6 @@
 **
 **
 ****************************************************************************/
-
 #include "BitmapBase.h"
 
 class AvxLuminance
@@ -42,6 +41,8 @@ class AvxLuminance
 private:
 	const CMemoryBitmap& inputBitmap;
 	CMemoryBitmap& outputBitmap;
+	bool avxEnabled{ false };
+
 public:
 	AvxLuminance() = delete;
 	explicit AvxLuminance(const CMemoryBitmap& inputbm, CMemoryBitmap& outbm);

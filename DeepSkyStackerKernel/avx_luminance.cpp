@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2020, 2025 David C. Partridge
+** Copyright (C) 2024, 2025 Martin Toeltsch
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -63,6 +63,9 @@ namespace
 
 int AvxLuminance::computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd)
 {
+	if (!avxEnabled)
+		return 1; // AVX not available.
+
 	int rval = 1;
 	if (doComputeLuminance<std::uint16_t>(lineStart, lineEnd) == 0
 		|| doComputeLuminance<std::uint32_t>(lineStart, lineEnd) == 0
