@@ -46,7 +46,7 @@ AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinf
 	inputBitmap{ inputbm },
 	entropyInfo{ entrinfo },
 	pEntropyCoverage{ entropycov },
-	avxEnabled(AvxSimdCheck::checkSimdAvailability())
+	avxEnabled{ AvxSimdCheck::checkSimdAvailability() }
 {
 	if (pEntropyCoverage != nullptr && avxEnabled)
 	{
@@ -69,6 +69,6 @@ int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const i
 	{
 		return avxCalcEntropies(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies);
 	}
-	else return 1; // AVX not available, return error code 1
+	else
+		return 1; // AVX not available, return error code 1
 }
-
