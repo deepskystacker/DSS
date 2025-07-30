@@ -44,12 +44,13 @@ AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tIn
 	tempBitmap{ tempbm },
 	outputBitmap{ outbm },
 	taskInfo{ tInfo },
-	avxEntropy{ entroinfo }
+	avxEntropy{ entroinfo },
+	avxEnabled{ AvxSimdCheck::checkSimdAvailability() }
 {}
 
 int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 {
-	if (!AvxSimdCheck::checkSimdAvailability())
+	if (!avxEnabled)
 		return 1;
 	return avxAccumulate(nrStackedBitmaps);
 }

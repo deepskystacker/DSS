@@ -49,6 +49,7 @@ class AvxAccumulation
 	CMemoryBitmap& outputBitmap;
 	const CTaskInfo& taskInfo;
 	AvxEntropy& avxEntropy;
+	bool avxEnabled;
 public:
 	AvxAccumulation() = delete;
 	AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept;
