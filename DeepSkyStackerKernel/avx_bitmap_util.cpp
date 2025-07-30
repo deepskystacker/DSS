@@ -104,13 +104,6 @@ bool AvxBitmapUtil::isMonochromeBitmapOfType() const
 		return false;
 }
 
-template <class T>
-bool AvxBitmapUtil::isCompatibleInputBitmap() const
-{
-	// Check that the input bitmap is compatible with AVX SIMD operations.
-	return (isColorBitmapOfType<T>() || isMonochromeBitmapOfType<T>());
-}
-
 //
 // Force instantiation of the template functions for the types we need.
 //
@@ -121,14 +114,6 @@ template bool AvxBitmapUtil::isMonochromeBitmapOfType<unsigned int>() const;
 template bool AvxBitmapUtil::isMonochromeBitmapOfType<float>() const;
 
 template bool AvxBitmapUtil::isMonochromeBitmapOfType<double>() const;
-
-template bool AvxBitmapUtil::isCompatibleInputBitmap<std::uint16_t>() const;
-
-template bool AvxBitmapUtil::isCompatibleInputBitmap<std::uint32_t>() const;
-
-template bool AvxBitmapUtil::isCompatibleInputBitmap<float>() const;
-
-template bool AvxBitmapUtil::isCompatibleInputBitmap<double>() const;
 
 template <class T>
 bool AvxBitmapUtil::isMonochromeCfaBitmapOfType() const
