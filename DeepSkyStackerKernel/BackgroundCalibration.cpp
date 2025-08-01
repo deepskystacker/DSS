@@ -71,7 +71,6 @@ void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, OldP
 
 #pragma omp critical(OmpLockHistoMerge)
 		{
-//			if (avxHistogram.histogramSuccessful())
 			avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto);
 		}
 	} // omp parallel
