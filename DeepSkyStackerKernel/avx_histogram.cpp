@@ -62,36 +62,33 @@ int Avx256Histogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 	return 1;
 }
 
-int Avx256Histogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
+int Avx256Histogram::mergeOneChannelHisto(HistogramVectorType& targetHisto, HistogramVectorType const& sourceHisto) const
 {
+	// AVX not enabled, so we cannot use this function.
 	if (!this->histoData.avxEnabled)
-	return 1; // AVX not enabled, so we cannot use this class.
+		return 1;
+	// If sizes of histograms are insufficient for SIMD processing -> return 1.
+	if (targetHisto.size() != AvxHistogram::HistogramSize() || sourceHisto.size() != AvxHistogram::HistogramSize())
+		return 1;
 
-	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
-		{
-			if (targetHisto.size() == AvxHistogram::HistogramSize() && sourceHisto.size() == AvxHistogram::HistogramSize())
-			{
-				constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
-				constexpr size_t nrVectors = AvxHistogram::HistogramSize() / VecLen;
-				auto* pTarget = targetHisto.data();
-				const auto* pSource = sourceHisto.data();
+	constexpr size_t VecLen = sizeof(__m256i) / sizeof(int);
+	constexpr size_t NrVectors = AvxHistogram::HistogramSize() / VecLen;
+	auto* pTarget = targetHisto.data();
+	const auto* pSource = sourceHisto.data();
 
-				for (size_t n = 0; n < nrVectors; ++n, pTarget += VecLen, pSource += VecLen)
-				{
-					const __m256i tgt = _mm256_add_epi32(_mm256_loadu_si256((const __m256i*)pTarget), _mm256_loadu_si256((const __m256i*)pSource));
-					_mm256_storeu_si256((__m256i*)pTarget, tgt);
-				}
-				for (size_t n = nrVectors * VecLen; n < AvxHistogram::HistogramSize(); ++n)
-					targetHisto[n] += sourceHisto[n];
-			}
-		};
+	for (size_t n = 0; n < NrVectors; ++n, pTarget += VecLen, pSource += VecLen)
+	{
+		const __m256i newTargetVec = _mm256_add_epi32(
+			_mm256_loadu_si256(reinterpret_cast<const __m256i*>(pTarget)), // Old target values
+			_mm256_loadu_si256(reinterpret_cast<const __m256i*>(pSource))  // New source values
+		);
+		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pTarget), newTargetVec); // Overwrite old target values with new target values.
+	}
+	// Loop over the remaining vector elements that are just falling out of the last SIMD vector. This must be 0..7 elements.
+	for (size_t n = NrVectors * VecLen; n < AvxHistogram::HistogramSize(); ++n)
+		targetHisto[n] += sourceHisto[n];
 
-	const bool isColor = AvxBitmapUtil{ histoData.inputBitmap }.isColorBitmapOrCfa();
-
-	mergeHisto(red, histoData.redHisto);
-	mergeHisto(green, isColor ? histoData.greenHisto : histoData.redHisto);
-	mergeHisto(blue, isColor ? histoData.blueHisto : histoData.redHisto);
-
+	// SIMD processing has been done -> we clear the upper vector register elements and return 0.
 	return AvxSupport::zeroUpper(0);
 }
 
@@ -103,11 +100,11 @@ int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEn
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA
 		return 1;
 
-	constexpr size_t vectorLen = 16;
+	constexpr size_t VectorLen = sizeof(__m256i) / sizeof(std::int16_t); // We process 16 elements per SIMD vector.
 	const size_t width = histoData.inputBitmap.Width();
-	const size_t nrVectors = width / vectorLen;
+	const size_t nrVectors = width / VectorLen;
 
-	// AVX makes no sense for super-small arrays.
+	// AVX makes no sense for small arrays.
 	if (width < 256 || histoData.inputBitmap.Height() < 32)
 		return 1;
 
@@ -124,7 +121,7 @@ int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEn
 	// ------------------------
 	if (avxInputSupport.isColorBitmapOfType<T>() || isCFA)
 	{
-		if constexpr (std::is_same<T, double>::value) // color-double not supported. 
+		if constexpr (std::is_same_v<T, double>) // color-double not supported. 
 			return 1;
 		else
 		{
@@ -136,17 +133,17 @@ int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEn
 
 			for (size_t row = lineStart, lineNdx = 0; row < lineEnd; ++row, ++lineNdx)
 			{
-				const T* pRedPixels = isCFA ? histoData.avxCfa.redCfaLine<T>(lineNdx) : &avxInputSupport.redPixels<T>().at(row * width);
-				const T* pGreenPixels = isCFA ? histoData.avxCfa.greenCfaLine<T>(lineNdx) : &avxInputSupport.greenPixels<T>().at(row * width);
-				const T* pBluePixels = isCFA ? histoData.avxCfa.blueCfaLine<T>(lineNdx) : &avxInputSupport.bluePixels<T>().at(row * width);
+				const T* pRedPixels = isCFA ? histoData.avxCfa.redCfaLine<T>(lineNdx) : avxInputSupport.redPixels<T>().data() + (row * width);
+				const T* pGreenPixels = isCFA ? histoData.avxCfa.greenCfaLine<T>(lineNdx) : avxInputSupport.greenPixels<T>().data() + (row * width);
+				const T* pBluePixels = isCFA ? histoData.avxCfa.blueCfaLine<T>(lineNdx) : avxInputSupport.bluePixels<T>().data() + (row * width);
 
-				for (size_t counter = 0; counter < nrVectors; ++counter, pRedPixels += vectorLen, pGreenPixels += vectorLen, pBluePixels += vectorLen)
+				for (size_t counter = 0; counter < nrVectors; ++counter, pRedPixels += VectorLen, pGreenPixels += VectorLen, pBluePixels += VectorLen)
 				{
 					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pRedPixels), histoData.redHisto);
 					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGreenPixels), histoData.greenHisto);
 					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pBluePixels), histoData.blueHisto);
 				}
-				for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pRedPixels, ++pGreenPixels, ++pBluePixels)
+				for (size_t n = nrVectors * VectorLen; n < width; ++n, ++pRedPixels, ++pGreenPixels, ++pBluePixels)
 				{
 					addToHisto(histoData.redHisto, *pRedPixels);
 					addToHisto(histoData.greenHisto, *pGreenPixels);
@@ -166,14 +163,14 @@ int Avx256Histogram::doCalcHistogram(const size_t lineStart, const size_t lineEn
 		for (size_t row = lineStart; row < lineEnd; ++row)
 		{
 			const T* pGrayPixels = &avxInputSupport.grayPixels<T>().at(row * width);
-			for (size_t counter = 0; counter < nrVectors; ++counter, pGrayPixels += vectorLen)
+			for (size_t counter = 0; counter < nrVectors; ++counter, pGrayPixels += VectorLen)
 			{
 				if constexpr (std::is_same<T, double>::value)
 					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels, _mm256_set1_pd(256.0)), histoData.redHisto);
 				else
 					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels), histoData.redHisto);
 			}
-			for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pGrayPixels)
+			for (size_t n = nrVectors * VectorLen; n < width; ++n, ++pGrayPixels)
 			{
 				addToHisto(histoData.redHisto, *pGrayPixels);
 			}
@@ -571,11 +568,11 @@ int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 
 int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
 {
-	if (!this->histoData.avxEnabled)
-		return 1; // AVX not enabled, so we cannot use this class.
-
 	if (saturationShift == 0)
 		return 0;
+
+	if (!this->histoData.avxEnabled)
+		return 1; // AVX not enabled, so we cannot use this class.
 
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);

@@ -41,17 +41,17 @@
 class AvxHistogram
 {
 public:
-	using HistogramVectorType = std::vector<int> ;
+	using HistogramVectorType = std::vector<int>;
 private:
 	friend class Avx256Histogram;
 	friend class NonAvxHistogram;
 
-	bool avxEnabled {false};
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
 	AvxCfaProcessing avxCfa;
 	const CMemoryBitmap& inputBitmap;
+	bool avxEnabled{ false };
 public:
 	AvxHistogram() = delete;
 	AvxHistogram(const CMemoryBitmap& inputbm);
@@ -60,7 +60,7 @@ public:
 	AvxHistogram& operator=(const AvxHistogram&) = delete;
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
-	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
+	int mergeHistograms(HistogramVectorType& redTargetHisto, HistogramVectorType& greenTargetHisto, HistogramVectorType& blueTargetHisto);
 private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{ 1 }; }
 };
@@ -76,7 +76,7 @@ private:
 	Avx256Histogram(AvxHistogram& hd) : histoData{ hd } {}
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double);
-	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
+	int mergeOneChannelHisto(HistogramVectorType& targetHisto, HistogramVectorType const& sourceHisto) const;
 
 	template <class T>
 	int doCalcHistogram(const size_t lineStart, const size_t lineEnd);
@@ -111,8 +111,7 @@ private:
 	NonAvxHistogram(AvxHistogram& hd) : histoData{ hd } {}
 
 	int calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier);
-	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
-
+	int mergeOneChannelHisto(HistogramVectorType& targetHisto, HistogramVectorType const& sourceHisto) const;
 };
 
 
@@ -126,13 +125,12 @@ private:
 	friend class Avx256BezierAndSaturation;
 	friend class NonAvxBezierAndSaturation;
 
-	bool avxEnabled{ false };
 	std::vector<float> redBuffer;
 	std::vector<float> greenBuffer;
 	std::vector<float> blueBuffer;
 	std::vector<float> bezierX;
 	std::vector<float> bezierY;
-
+	bool avxEnabled{ false };
 public:
 	explicit AvxBezierAndSaturation(const size_t bufferLen);
 	AvxBezierAndSaturation(const AvxBezierAndSaturation&) = default;
@@ -193,7 +191,6 @@ class NonAvxBezierAndSaturation : public SimdFactory<NonAvxBezierAndSaturation>
 private:
 	friend class AvxBezierAndSaturation;
 	friend class SimdFactory<NonAvxBezierAndSaturation>;
-
 
 	AvxBezierAndSaturation& histoData;
 	NonAvxBezierAndSaturation(AvxBezierAndSaturation& d) : histoData{ d } {}

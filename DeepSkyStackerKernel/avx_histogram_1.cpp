@@ -56,9 +56,16 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, co
 	return SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.calcHistogram(lineStart, lineEnd, multiplier); });
 }
 
-int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
+int AvxHistogram::mergeHistograms(HistogramVectorType& redTargetHisto, HistogramVectorType& greenTargetHisto, HistogramVectorType& blueTargetHisto)
 {
-	return SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.mergeHistograms(red, green, blue); });
+	const bool isColor = AvxBitmapUtil{ inputBitmap }.isColorBitmapOrCfa();
+	int returnValue = 0;
+
+	returnValue += SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.mergeOneChannelHisto(redTargetHisto, redHisto); });
+	returnValue += SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.mergeOneChannelHisto(greenTargetHisto, isColor ? greenHisto : redHisto); });
+	returnValue += SimdSelector<Avx256Histogram, NonAvxHistogram>(this, [&](auto&& o) { return o.mergeOneChannelHisto(blueTargetHisto, isColor ? blueHisto : redHisto); });
+
+	return returnValue;
 }
 
 std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
@@ -114,14 +121,14 @@ int AvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float sa
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len, saturationShift](auto&& o) { return o.avxBezierSaturation(len, saturationShift); });
 }
 
-// *****************
+// ********************
 // Non-AVX AvxHistogram
-// *****************
+// ********************
 
 int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd, const double multiplier)
 {
 	const size_t width = histoData.inputBitmap.Width();
-	const double fMultiplier = multiplier * 256.0;
+	const double scalingFactor = multiplier * 256.0;
 
 	for (size_t row = lineStart; row < lineEnd; ++row)
 	{
@@ -133,36 +140,25 @@ int NonAvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd,
 			constexpr auto ColorToIndex = [](const double color) {
 				constexpr double Maxvalue = static_cast<double>(std::numeric_limits<std::uint16_t>::max());
 				return static_cast<size_t>(std::min(color, Maxvalue));
-				};
+			};
 
-			++this->histoData.redHisto[ColorToIndex(fRed * fMultiplier)];
-			++this->histoData.greenHisto[ColorToIndex(fGreen * fMultiplier)];
-			++this->histoData.blueHisto[ColorToIndex(fBlue * fMultiplier)];
+			++this->histoData.redHisto[ColorToIndex(fRed * scalingFactor)];
+			++this->histoData.greenHisto[ColorToIndex(fGreen * scalingFactor)];
+			++this->histoData.blueHisto[ColorToIndex(fBlue * scalingFactor)];
 		}
 	}
 
 	return 0;
 }
 
-int NonAvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue)
+// Fallback to non-AVX code.
+// This is the case for 16-bit histograms, which are not supported by AVX.
+// Also, if the histogram size is not equal to the maximum value of std::uint16_t + 1, we use the non-AVX code.
+int NonAvxHistogram::mergeOneChannelHisto(HistogramVectorType& targetHisto, HistogramVectorType const& sourceHisto) const
 {
-	const auto mergeHisto = [this](HistogramVectorType& targetHisto, const HistogramVectorType& sourceHisto) -> void
-		{
-			// Fallback to non-AVX code.
-			// This is the case for 16-bit histograms, which are not supported by AVX.
-			// Also, if the histogram size is not equal to the maximum value of std::uint16_t + 1, we use the non-AVX code.
-			//if (targetHisto.size() != sourceHisto.size())
-			//	throw std::runtime_error("Histogram sizes do not match.");
-			// Add the source histogram to the target histogram.
-			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is not smaller in size than the sourceHisto.
-				targetHisto[n] += sourceHisto[n];
-		};
-
-	const bool isColor = AvxBitmapUtil{ histoData.inputBitmap }.isColorBitmapOrCfa();
-
-	mergeHisto(red, histoData.redHisto);
-	mergeHisto(green, isColor ? histoData.greenHisto : histoData.redHisto);
-	mergeHisto(blue, isColor ? histoData.blueHisto : histoData.redHisto);
+	// Add the source histogram to the target histogram.
+	for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is not smaller in size than the sourceHisto.
+		targetHisto[n] += sourceHisto[n];
 
 	return 0;
 }
