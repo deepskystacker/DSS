@@ -150,7 +150,7 @@ const int AvxBitmapUtil::width() const {
 template <class T>
 bool AvxBitmapUtil::bitmapHasCorrectType() const
 {
-	return (isColorBitmapOfType<T>() || isMonochromeBitmapOfType<T>());
+	return (isColorBitmapOfType<T>() || isMonochromeBitmapOfType<T>()); // Monochrome includes CFA
 }
 
 // Explicit template instantiation for the types we need.
