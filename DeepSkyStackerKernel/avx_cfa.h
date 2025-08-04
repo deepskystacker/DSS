@@ -41,8 +41,8 @@
 class AvxCfaProcessing
 {
 private:
-	typedef __m512i VectorElementType;
-	typedef std::vector<VectorElementType> VectorType;
+	using VectorElementType = __m512i;
+	using VectorType = std::vector<VectorElementType>;
 
 	friend class Avx256CfaProcessing;
 
@@ -108,8 +108,8 @@ class Avx256CfaProcessing
 private:
 	friend class AvxCfaProcessing;
 
-	AvxCfaProcessing& avxData;
-	Avx256CfaProcessing(AvxCfaProcessing& ad) : avxData{ ad } {}
+	AvxCfaProcessing& cfaData;
+	Avx256CfaProcessing(AvxCfaProcessing& ad) : cfaData{ ad } {}
 
 	template <int RG_ROW> // RG_ROW==0 for RGGB pattern, RG_ROW==1 for GBRG pattern.
 	int interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd);

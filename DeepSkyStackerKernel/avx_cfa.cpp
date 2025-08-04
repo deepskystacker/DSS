@@ -61,18 +61,18 @@ int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, 
 template <int RG_ROW>
 int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd)
 {
-	if (const auto* const p{ dynamic_cast<const CGrayBitmapT<std::uint16_t>*>(&avxData.inputBitmap) })
+	if (const auto* const p{ dynamic_cast<const CGrayBitmapT<std::uint16_t>*>(std::addressof(cfaData.inputBitmap)) })
 	{
-		if (!p->IsCFA())
+		if (!p->IsCFA()) // It is a gray bitmap but not CFA -> nothing to do -> return 1.
 			return 1;
 	}
-	else
+	else // It is not a gray bitmap, hence no CFA -> return 1.
 		return 1;
 	if ((lineStart % 2) != 0) // Must start with an even index (RG-line).
 		return 2;
 
-	const size_t width = avxData.inputBitmap.Width();
-	const size_t height = avxData.inputBitmap.Height();
+	const size_t width = cfaData.inputBitmap.Width();
+	const size_t height = cfaData.inputBitmap.Height();
 	if (width < 64 || height < 8) // AVX makes no sense for super-small arrays.
 		return 2;
 
@@ -86,11 +86,11 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 	__m256i nextRowCurrent, nextRowNext; // ... of following row.
 	int thisRowLast, prevRowLast, nextRowLast; // Last value of the previous line.
 
-	const AvxBitmapUtil avxSupport{ avxData.inputBitmap };
+	const AvxBitmapUtil avxSupport{ cfaData.inputBitmap };
 	const std::uint16_t* pGray = avxSupport.grayPixels<std::uint16_t>().data() + lineStart * width;
-	std::uint16_t* pRed = avxData.redCfaLine(0);
-	std::uint16_t* pGreen = avxData.greenCfaLine(0);
-	std::uint16_t* pBlue = avxData.blueCfaLine(0);
+	std::uint16_t* pRed = cfaData.redCfaLine(0);
+	std::uint16_t* pGreen = cfaData.greenCfaLine(0);
+	std::uint16_t* pBlue = cfaData.blueCfaLine(0);
 	std::int16_t prevRowMask = lineStart == 0 ? 0x0 : -1;
 
 	const auto extract0 = [](const __m256i x) -> int { return _mm256_cvtsi256_si32(x); };
@@ -165,9 +165,9 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 		nextRowNext = _mm256_maskload_epi32((int*)(pGray + width), _mm256_set1_epi32(nextRowMask)); // Load entire vector or nothing.
 		nextRowLast = 0;
 
-		pRed = avxData.redCfaLine(row);
-		pGreen = avxData.greenCfaLine(row);
-		pBlue = avxData.blueCfaLine(row);
+		pRed = cfaData.redCfaLine(row);
+		pGreen = cfaData.greenCfaLine(row);
+		pBlue = cfaData.blueCfaLine(row);
 
 		for (size_t n = 1; n < nrVectors; ++n, pGray += VecSize, pRed += VecSize, pGreen += VecSize, pBlue += VecSize) // nrVectors - 1 iterations
 		{
