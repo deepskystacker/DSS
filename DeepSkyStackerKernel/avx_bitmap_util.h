@@ -50,9 +50,9 @@ private:
 	template <class T>
 	auto* getGrayPtr() { return dynamic_cast<CGrayBitmapT<T>*>(pBitmap); }
 	template <class T>
-	const auto* getColorPtr() const { return dynamic_cast<const CColorBitmapT<T>*>(&bitmap); }
+	const auto* getColorPtr() const { return dynamic_cast<const CColorBitmapT<T>*>(std::addressof(bitmap)); }
 	template <class T>
-	const auto* getGrayPtr() const { return dynamic_cast<const CGrayBitmapT<T>*>(&bitmap); }
+	const auto* getGrayPtr() const { return dynamic_cast<const CGrayBitmapT<T>*>(std::addressof(bitmap)); }
 
 	int getNrChannels() const;
 public:
