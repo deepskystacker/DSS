@@ -1047,7 +1047,7 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
     </message>

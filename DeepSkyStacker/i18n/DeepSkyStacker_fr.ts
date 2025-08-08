@@ -1051,7 +1051,7 @@ Ctrl + 4 pour basculer en mode 4 coins</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Temps restant estimé : Inconnu</translation>
     </message>

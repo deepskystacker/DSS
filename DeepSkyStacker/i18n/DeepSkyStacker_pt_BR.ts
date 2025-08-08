@@ -1051,7 +1051,7 @@ Ctrl+4 para alternar o modo de 4 cantos</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Tempo estimado de: Desconhecido</translation>
     </message>

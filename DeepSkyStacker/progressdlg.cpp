@@ -294,7 +294,7 @@ void ProgressDlg::applyProgress1(int lAchieved)
 	}
 	else
 	{
-		const QString qStrText = tr("Estimated remaining Time: Unknown",
+		const QString qStrText = tr("Estimated remaining time: Unknown",
 			"IDS_ESTIMATEDUNKNOWN");
 		setTimeRemaining(qStrText);
 	};
