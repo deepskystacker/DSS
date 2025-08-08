@@ -1710,75 +1710,79 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
-
-class CStackTask
+namespace
 {
-private:
-	CStackingEngine* m_pStackingEngine;
-	OldProgressBase* m_pProgress;
-	std::vector<QPoint> m_vLockedPixels;
-
-public:
-	CEntropyInfo m_EntropyWindow;
-	CMemoryBitmap* m_pBitmap;
-	CPixelTransform m_PixTransform;
-	CTaskInfo* m_pLightTask;
-	CBackgroundCalibration m_BackgroundCalibration;
-	DSSRect m_rcResult;
-	std::shared_ptr<CMemoryBitmap> m_pTempBitmap;
-	std::shared_ptr<CMemoryBitmap> m_pOutput;
-	std::shared_ptr<CMemoryBitmap> m_pEntropyCoverage;
-	AvxEntropy* m_pAvxEntropy;
-	int m_lPixelSizeMultiplier;
-	bool m_bColor;
-
-public:
-	CStackTask() = delete;
-	~CStackTask() = default;
-	CStackTask(CMemoryBitmap* pBitmap, OldProgressBase* pProgress) :
-		m_pStackingEngine {nullptr},
-		m_pProgress{ pProgress },
-		m_vLockedPixels{},
-		m_EntropyWindow {},
-		m_pBitmap{ pBitmap },
-		m_PixTransform{},
-		m_pLightTask { nullptr },
-		m_BackgroundCalibration {},
-		m_rcResult{},
-		m_pAvxEntropy { nullptr },
-		m_lPixelSizeMultiplier{0},
-		m_bColor{false}
-	{}
-
-	void process();
-};
-
-void CStackTask::process()
-{
-	ZFUNCTRACE_RUNTIME();
-	const int height = m_pBitmap->Height();
-	const int nrProcessors = Multitask::GetNrProcessors();
-	constexpr int lineBlockSize = 50;
-	int progress = 0;
-	std::atomic_bool runOnlyOnce{ false };
-
-	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
-
-#pragma omp parallel for default(shared) firstprivate(avxStacking) shared(runOnlyOnce) if(nrProcessors > 1) // No "schedule" clause gives fastest result.
-	for (int row = 0; row < height; row += lineBlockSize)
+	class CStackTask final
 	{
-		const int endRow = std::min(row + lineBlockSize, height);
-		avxStacking.init(row, endRow);
-		avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_pOutput, m_lPixelSizeMultiplier);
+	public:
+		CEntropyInfo m_EntropyWindow{};
+		std::shared_ptr<CMemoryBitmap> m_pTempBitmap{};
+	private:
+		OldProgressBase* m_pProgress;
+		std::shared_ptr<CMemoryBitmap> m_pBitmap;
+		CPixelTransform m_PixTransform{};
+		CTaskInfo* m_pLightTask{ nullptr };
+		CBackgroundCalibration m_BackgroundCalibration{};
+		DSSRect m_rcResult{};
+		std::shared_ptr<CMemoryBitmap> m_pOutput{};
+		AvxEntropy* m_pAvxEntropy{ nullptr };
+		int m_lPixelSizeMultiplier{ 0 };
 
-		if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
-			ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
+	public:
+		CStackTask() = delete;
+		~CStackTask() = default;
+		explicit CStackTask(std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase* pProgress) : // pBitmap must not be a reference!
+			m_pProgress{ pProgress },
+			m_pBitmap{ std::move(pBitmap) }
+		{}
+		CStackTask(CStackTask const&) = delete;
 
-		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+
+		void init(CPixelTransform const& pixTr, CTaskInfo *pTi, CBackgroundCalibration const& backCal, 
+			DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy *pEnt);
+		void process();
+	};
+
+	void CStackTask::init(CPixelTransform const& pixTr, CTaskInfo* pTi, CBackgroundCalibration const& backCal,
+		DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy* pEnt)
+	{
+		m_PixTransform = pixTr;
+		m_pLightTask = pTi;
+		m_BackgroundCalibration = backCal;
+		m_rcResult = rect;
+		m_lPixelSizeMultiplier = pixSize;
+		static_assert(!std::is_reference_v<decltype(pOut)>);
+		m_pOutput = std::move(pOut);
+		m_pAvxEntropy = pEnt;
 	}
-}
 
+	void CStackTask::process()
+	{
+		ZFUNCTRACE_RUNTIME();
+		const int height = m_pBitmap->Height();
+		const int nrProcessors = Multitask::GetNrProcessors();
+		constexpr int lineBlockSize = 50;
+		int progress = 0;
+		std::atomic_bool runOnlyOnce{ false };
+
+		AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
+
+#pragma omp parallel for default(shared) firstprivate(avxStacking) if(nrProcessors > 1) // No "schedule" clause gives fastest result.
+		for (int row = 0; row < height; row += lineBlockSize)
+		{
+			const int endRow = std::min(row + lineBlockSize, height);
+			avxStacking.init(row, endRow);
+			avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_pOutput, m_lPixelSizeMultiplier);
+
+			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
+				ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
+
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+				m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
+		}
+	}
+
+} // namespace
 
 std::shared_ptr<CMultiBitmap> CStackingEngine::CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor)
 {
@@ -1833,7 +1837,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 		else
 			pBitmap = pInBitmap;
 
-		CStackTask StackTask{ pBitmap.get(), m_pProgress };
+		CStackTask StackTask{ pBitmap, m_pProgress };
 
 		// Create the output bitmap
 		const int lHeight = pBitmap->Height();
@@ -1901,14 +1905,16 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 
 		if (static_cast<bool>(m_pMasterLight))
 		{
-			StackTask.m_pTempBitmap = m_pMasterLight->CreateNewMemoryBitmap();
-			if (static_cast<bool>(StackTask.m_pTempBitmap))
+			std::shared_ptr<CMemoryBitmap> pTmpBitmap = m_pMasterLight->CreateNewMemoryBitmap();
+			if (static_cast<bool>(pTmpBitmap))
 			{
-				StackTask.m_pTempBitmap->Init(m_rcResult.width(), m_rcResult.height());
-				StackTask.m_pTempBitmap->SetISOSpeed(pBitmap->GetISOSpeed());
-				StackTask.m_pTempBitmap->SetGain(pBitmap->GetGain());
-				StackTask.m_pTempBitmap->SetExposure(pBitmap->GetExposure());
-				StackTask.m_pTempBitmap->SetNrFrames(pBitmap->GetNrFrames());
+				pTmpBitmap->Init(m_rcResult.width(), m_rcResult.height());
+				pTmpBitmap->SetISOSpeed(pBitmap->GetISOSpeed());
+				pTmpBitmap->SetGain(pBitmap->GetGain());
+				pTmpBitmap->SetExposure(pBitmap->GetExposure());
+				pTmpBitmap->SetNrFrames(pBitmap->GetNrFrames());
+
+				StackTask.m_pTempBitmap = std::move(pTmpBitmap);
 			}
 		}
 
@@ -1936,16 +1942,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 
 			AvxEntropy avxEntropy(*pBitmap, StackTask.m_EntropyWindow, m_pEntropyCoverage.get());
 
-			StackTask.m_PixTransform			= PixTransform;
-			StackTask.m_pLightTask				= m_pLightTask;
-			StackTask.m_bColor					= bColor;
-			StackTask.m_BackgroundCalibration	= m_BackgroundCalibration;
-			StackTask.m_rcResult				= m_rcResult;
-			StackTask.m_lPixelSizeMultiplier	= m_lPixelSizeMultiplier;
-			StackTask.m_pOutput					= m_pOutput;
-			StackTask.m_pEntropyCoverage		= m_pEntropyCoverage;
-			StackTask.m_pAvxEntropy				= &avxEntropy;
-
+			StackTask.init(PixTransform, m_pLightTask, m_BackgroundCalibration, m_rcResult, m_lPixelSizeMultiplier, m_pOutput, std::addressof(avxEntropy));
 			StackTask.process();
 
 			if (m_bCreateCometImage)
