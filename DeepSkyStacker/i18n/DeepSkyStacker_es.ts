@@ -1049,7 +1049,7 @@ Ctrl+4 para alternar el modo de 4 esquinas</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Tiempo restante: Desconocido</translation>
     </message>

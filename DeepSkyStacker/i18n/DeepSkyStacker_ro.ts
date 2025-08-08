@@ -1051,7 +1051,7 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Timp rămas estimat: Nedeterminat</translation>
     </message>
@@ -2870,7 +2870,7 @@ based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
         <translation>&lt;b&gt;Media ponderata&lt;/b&gt; este obtinuta prin
-ponderarea iterativa a fiecarei pixel 
+ponderarea iterativa a fiecarei pixel
 de la abaterea de la medie
 comparativ cu abaterea standard (%1).</translation>
     </message>

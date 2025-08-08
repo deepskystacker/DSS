@@ -1051,7 +1051,7 @@ Ctrl+4 per attivare/disattivare la modalità 4 angoli</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Tempo rimanente stimato: Sconosciuto</translation>
     </message>

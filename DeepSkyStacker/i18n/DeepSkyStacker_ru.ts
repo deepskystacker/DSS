@@ -1052,7 +1052,7 @@ Ctrl+4 для переключения режима 4-х углов</translation
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Осталось времени: Неизвестно</translation>
     </message>

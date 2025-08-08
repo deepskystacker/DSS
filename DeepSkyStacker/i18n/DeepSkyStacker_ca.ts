@@ -1046,7 +1046,7 @@ Ctrl+4 per canviar el mode de 4 cantonades</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Temps restant: Desconegut</translation>
     </message>

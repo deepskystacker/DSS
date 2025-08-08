@@ -137,7 +137,7 @@ void OldProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 {
 	ui->ProcessText1->setVisible(bSet1);
 	ui->ProgressBar1->setVisible(bSet1);
-	
+
 	ui->ProcessText2->setVisible(bSet2);
 	ui->ProgressBar2->setVisible(bSet2);
 }
@@ -236,7 +236,7 @@ void OldProgressDlg::applyProgress1(int lAchieved)
 	}
 	else
 	{
-		const QString qStrText = tr("Estimated remaining Time: Unknown",
+		const QString qStrText = tr("Estimated remaining time: Unknown",
 			"IDS_ESTIMATEDUNKNOWN");
 		setTimeRemaining(qStrText);
 	};
