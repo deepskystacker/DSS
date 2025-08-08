@@ -101,7 +101,8 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 	PIXELDISPATCHVECTOR vPixels;
 	vPixels.reserve(16);
 
-	const bool isColor = AvxBitmapUtil{ this->stackData.entropyData.inputBitmap }.isColorBitmapOrCfa();
+	// True color or CFA
+	const bool entropyIsColor = !stackData.entropyData.inputBitmap.IsMonochrome() || stackData.entropyData.inputBitmap.IsCFA();
 
 	for (int j = this->stackData.lineStart; j < this->stackData.lineEnd; ++j)
 	{
@@ -137,7 +138,7 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 						// Special case for entropy average
 						if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
 						{
-							if (isColor)
+							if (entropyIsColor)
 							{
 								double fOldRed, fOldGreen, fOldBlue;
 
