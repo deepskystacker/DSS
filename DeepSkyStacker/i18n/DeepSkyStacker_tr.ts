@@ -321,7 +321,7 @@ The Bicubic method is used when at least 40 stars areavailable, then the Bisquar
 
 Do you want...</source>
         <translation>Bu görüntü hizalanmamış
-(yıldızlar tespit edilemedi). 
+(yıldızlar tespit edilemedi).
 
 Hangisini yapmak istersiniz...</translation>
     </message>

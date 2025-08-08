@@ -137,7 +137,7 @@ void OldProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 {
 	ui->ProcessText1->setVisible(bSet1);
 	ui->ProgressBar1->setVisible(bSet1);
-	
+
 	ui->ProcessText2->setVisible(bSet2);
 	ui->ProgressBar2->setVisible(bSet2);
 }
