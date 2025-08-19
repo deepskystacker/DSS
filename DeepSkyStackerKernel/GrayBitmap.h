@@ -161,8 +161,7 @@ public:
 		//{
 		//	i *= 2; j *= 2;
 		//}
-		CheckXY(i, j);
-		fGray = m_vPixels[GetOffset(i, j)];
+		fGray = getValue(i, j);
 	}
 
 	virtual double getValue(size_t i, size_t j) const override

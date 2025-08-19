@@ -63,3 +63,33 @@ void AvxCfaProcessing::init(const size_t lineStart, const size_t lineEnd) // You
 	}
 }
 
+int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
+{
+	if (!(this->inputBitmap.IsMonochrome() && this->inputBitmap.IsCFA()))
+		return 1;
+	return SimdSelector<Avx256CfaProcessing, NonAvxCfaProcessing>(this, [&](auto&& o) { return o.interpolate(lineStart, lineEnd, pixelSizeMultiplier); });
+}
+
+// ----------------------
+// Non-SIMD interpolation
+// ----------------------
+
+int NonAvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int)
+{
+	const auto width = static_cast<size_t>(this->cfaData.inputBitmap.Width());
+	for (size_t row = 0; row < (lineEnd - lineStart); ++row)
+	{
+		std::uint16_t* pRed = cfaData.redCfaLine(row);
+		std::uint16_t* pGreen = cfaData.greenCfaLine(row);
+		std::uint16_t* pBlue = cfaData.blueCfaLine(row);
+		for (size_t col = 0; col < width; ++col, ++pRed, ++pGreen, ++pBlue)
+		{
+			COLORREF16 rgb16;
+			this->cfaData.inputBitmap.GetPixel16(col, row + lineStart, rgb16);
+			*pRed = rgb16.red;
+			*pGreen = rgb16.green;
+			*pBlue = rgb16.blue;
+		}
+	}
+	return 0;
+}

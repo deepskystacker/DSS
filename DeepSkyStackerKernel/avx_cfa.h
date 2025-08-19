@@ -36,6 +36,7 @@
 ****************************************************************************/
 
 #include "BitmapBase.h"
+#include "avx_simd_factory.h"
 #include "avx_includes.h"
 
 class AvxCfaProcessing
@@ -45,6 +46,7 @@ private:
 	using VectorType = std::vector<VectorElementType>;
 
 	friend class Avx256CfaProcessing;
+	friend class NonAvxCfaProcessing;
 
 	VectorType redPixels;
 	VectorType greenPixels;
@@ -69,7 +71,7 @@ public:
 	inline const T* redCfaLine(const size_t rowIndex) const
 	{
 		if constexpr (std::is_same<T, std::uint16_t>::value)
-			return reinterpret_cast<const std::uint16_t*>(&this->redPixels[rowIndex * vectorsPerLine]);
+			return reinterpret_cast<const std::uint16_t*>(this->redPixels.data() + (rowIndex * vectorsPerLine));
 		else
 			return nullptr;
 	}
@@ -77,7 +79,7 @@ public:
 	inline const T* greenCfaLine(const size_t rowIndex) const
 	{
 		if constexpr (std::is_same<T, std::uint16_t>::value)
-			return reinterpret_cast<const std::uint16_t*>(&this->greenPixels[rowIndex * vectorsPerLine]);
+			return reinterpret_cast<const std::uint16_t*>(this->greenPixels.data() + (rowIndex * vectorsPerLine));
 		else
 			return nullptr;
 	}
@@ -85,7 +87,7 @@ public:
 	inline const T* blueCfaLine(const size_t rowIndex) const
 	{
 		if constexpr (std::is_same<T, std::uint16_t>::value)
-			return reinterpret_cast<const std::uint16_t*>(&this->bluePixels[rowIndex * vectorsPerLine]);
+			return reinterpret_cast<const std::uint16_t*>(this->bluePixels.data() + (rowIndex * vectorsPerLine));
 		else
 			return nullptr;
 	}
@@ -103,14 +105,36 @@ private:
 // ************ AVX-256 ************
 // *********************************
 
-class Avx256CfaProcessing
+class Avx256CfaProcessing : public SimdFactory<Avx256CfaProcessing>
 {
 private:
 	friend class AvxCfaProcessing;
+	friend class SimdFactory<Avx256CfaProcessing>;
 
 	AvxCfaProcessing& cfaData;
 	Avx256CfaProcessing(AvxCfaProcessing& ad) : cfaData{ ad } {}
 
-	template <int RG_ROW> // RG_ROW==0 for RGGB pattern, RG_ROW==1 for GBRG pattern.
+	int interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier);
+
+	// RG_ROW==0 for RGGB or BGGR pattern, RG_ROW==1 for GBRG or GRBG pattern.
+	// REVERSE==0: RGGB/GBRG, REVERSE==1: BGGR/GRBG
+	// In other words, if REVERSE==1, then R and B have reversed roles (the G channel remains unchanged).
+	template <int RG_ROW, int REVERSE>
 	int interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd);
+};
+
+// ************************************************************
+// The non-SIMD implementation to be used with the SimdSelector
+// ************************************************************
+
+class NonAvxCfaProcessing : public SimdFactory<NonAvxCfaProcessing>
+{
+private:
+	friend class AvxCfaProcessing;
+	friend class SimdFactory<NonAvxCfaProcessing>;
+
+	AvxCfaProcessing& cfaData;
+	NonAvxCfaProcessing(AvxCfaProcessing& ad) : cfaData{ ad } {}
+
+	int interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier);
 };

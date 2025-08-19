@@ -39,35 +39,45 @@
 #include "avx_support.h"
 #include "avx_bitmap_util.h"
 
-int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
-{
-	if (!avxEnabled)
-		return 1;
-	if (pixelSizeMultiplier != 1)
-		return 1;
-	if (!AvxBitmapUtil{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
-		return 1;
-
-	return AvxBitmapUtil{ inputBitmap }.getCfaType() == CFATYPE_RGGB
-		? Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0>(lineStart, lineEnd)
-		: Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1>(lineStart, lineEnd);
-}
-
 
 // ***********************************************
 // ************ AVX-256 interpolation ************
 // ***********************************************
 
-template <int RG_ROW>
+int Avx256CfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
+{
+	if (!this->cfaData.avxEnabled) // AVX not enabled by user or not supported by CPU.
+		return 1;
+	if (pixelSizeMultiplier != 1) // No SIMD implementation for other pixel sizes.
+		return 1;
+	const auto cfaBitmapProperties = AvxBitmapUtil{ cfaData.inputBitmap };
+	if (!cfaBitmapProperties.isMonochromeCfaBitmapOfType<std::uint16_t>())
+		return 1; // EITHER: Input bitmap cannot be converted to a CGrayBitmap with type uint_16, OR: it is a gray bitmap but not CFA.
+	const auto cfaType = cfaBitmapProperties.getCfaType();
+	const auto* const pGray = dynamic_cast<CGrayBitmapT<std::uint16_t> const*>(std::addressof(cfaData.inputBitmap)); // Cannot be nullptr.
+	const bool cfaAvxImplemented =
+		(cfaType == CFATYPE_BGGR || cfaType == CFATYPE_GRBG || cfaType == CFATYPE_GBRG || cfaType == CFATYPE_RGGB) // SIMD implementation available for BGGR, GRBG, GBRG, RGGB.
+		&& pGray->GetCFATransformation() == CFAT_BILINEAR // Only bi-linear interpolation implemented.
+		&& pGray->xOffset() == 0 // Only x-offset and y-offset of 0 implemented.
+		&& pGray->yOffset() == 0;
+	if (!cfaAvxImplemented)
+		return 1;
+
+	switch (cfaType)
+	{
+		case CFATYPE_BGGR: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0, 1>(lineStart, lineEnd); break;
+		case CFATYPE_GRBG: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1, 1>(lineStart, lineEnd); break;
+		case CFATYPE_GBRG: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1, 0>(lineStart, lineEnd); break;
+		case CFATYPE_RGGB: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0, 0>(lineStart, lineEnd); break;
+		default: return 1;
+	}
+	return 1;
+}
+
+
+template <int RG_ROW, int REVERSE>
 int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd)
 {
-	if (const auto* const p{ dynamic_cast<const CGrayBitmapT<std::uint16_t>*>(std::addressof(cfaData.inputBitmap)) })
-	{
-		if (!p->IsCFA()) // It is a gray bitmap but not CFA -> nothing to do -> return 1.
-			return 1;
-	}
-	else // It is not a gray bitmap, hence no CFA -> return 1.
-		return 1;
 	if ((lineStart % 2) != 0) // Must start with an even index (RG-line).
 		return 2;
 
@@ -88,9 +98,9 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 
 	const AvxBitmapUtil avxSupport{ cfaData.inputBitmap };
 	const std::uint16_t* pGray = avxSupport.grayPixels<std::uint16_t>().data() + lineStart * width;
-	std::uint16_t* pRed = cfaData.redCfaLine(0);
+	std::uint16_t* pRed = REVERSE == 0 ? cfaData.redCfaLine(0) : cfaData.blueCfaLine(0); // REVERSE==0: RGGB/GBRG, REVERSE==1: BGGR/GRBG
 	std::uint16_t* pGreen = cfaData.greenCfaLine(0);
-	std::uint16_t* pBlue = cfaData.blueCfaLine(0);
+	std::uint16_t* pBlue = REVERSE == 0 ? cfaData.blueCfaLine(0) : cfaData.redCfaLine(0);
 	std::int16_t prevRowMask = lineStart == 0 ? 0x0 : -1;
 
 	const auto extract0 = [](const __m256i x) -> int { return _mm256_cvtsi256_si32(x); };
@@ -135,8 +145,8 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 			const __m256i crossInterpol = _mm256_avg_epu16(_mm256_avg_epu16(prevRight, prevLeft), _mm256_avg_epu16(nextRight, nextLeft));
 			const __m256i greenInterpol = _mm256_avg_epu16(UDinterpol, LRinterpol);
 
-			// RGGB pattern: RG_ROW==0 -> even row -> RG-line
-			// GBRG pattern: RG_ROW==1 ->  odd row -> RG-line
+			// RGGB pattern: RG_ROW==0 -> even row -> RG-line (or BGGR)
+			// GBRG pattern: RG_ROW==1 ->  odd row -> RG-line (or GRBG)
 			if ((row % 2) == RG_ROW)
 			{
 				const __m256i red = _mm256_blend_epi16(thisCurr, LRinterpol, 0xaa); // 0b10101010 = 0xaa
@@ -165,9 +175,9 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 		nextRowNext = _mm256_maskload_epi32((int*)(pGray + width), _mm256_set1_epi32(nextRowMask)); // Load entire vector or nothing.
 		nextRowLast = 0;
 
-		pRed = cfaData.redCfaLine(row);
+		pRed = REVERSE == 0 ? cfaData.redCfaLine(row) : cfaData.blueCfaLine(row); // REVERSE==0: RGGB/GBRG, REVERSE==1: BGGR/GRBG
 		pGreen = cfaData.greenCfaLine(row);
-		pBlue = cfaData.blueCfaLine(row);
+		pBlue = REVERSE == 0 ? cfaData.blueCfaLine(row) : cfaData.redCfaLine(row);
 
 		for (size_t n = 1; n < nrVectors; ++n, pGray += VecSize, pRed += VecSize, pGreen += VecSize, pBlue += VecSize) // nrVectors - 1 iterations
 		{

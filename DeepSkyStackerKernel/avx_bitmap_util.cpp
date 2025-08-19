@@ -122,9 +122,11 @@ bool AvxBitmapUtil::isMonochromeCfaBitmapOfType() const
 	if constexpr (std::is_same_v<T, std::uint16_t>)
 	{
 		const auto* const pGray = this->getGrayPtr<T>();
-		// We support CFA only for RGGB or GBRG Bayer matrices with BILINEAR interpolation and no offsets.
-		return (pGray != nullptr && pGray->IsCFA() && pGray->GetCFATransformation() == CFAT_BILINEAR && pGray->xOffset() == 0 && pGray->yOffset() == 0
-			&& (pGray->GetCFAType() == CFATYPE_RGGB || pGray->GetCFAType() == CFATYPE_GBRG));
+		return (pGray != nullptr && pGray->IsCFA());
+		// We removed the other checks since we can handle these cases with the class NonAvxCfaProcessing which uses the "old" non-SIMD code.
+		// Some of the checks are now done in Avx256CfaProcessing::interpolate().
+		// && pGray->GetCFATransformation() == CFAT_BILINEAR && pGray->xOffset() == 0 && pGray->yOffset() == 0
+		// && (pGray->GetCFAType() == CFATYPE_RGGB || pGray->GetCFAType() == CFATYPE_GBRG)
 	}
 	else
 		return false;
