@@ -321,7 +321,7 @@ The Bicubic method is used when at least 40 stars areavailable, then the Bisquar
 
 Do you want...</source>
         <translation>Bu görüntü hizalanmamış
-(yıldızlar tespit edilemedi). 
+(yıldızlar tespit edilemedi).
 
 Hangisini yapmak istersiniz...</translation>
     </message>
@@ -1047,7 +1047,7 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
     </message>

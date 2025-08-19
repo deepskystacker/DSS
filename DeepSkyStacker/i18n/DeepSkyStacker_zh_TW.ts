@@ -1044,7 +1044,7 @@ Ctrl+4 切換四角模式</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
-        <source>Estimated remaining Time: Unknown</source>
+        <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>預計剩餘時間: 不明</translation>
     </message>

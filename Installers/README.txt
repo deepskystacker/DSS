@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0 Beta 4
+Welcome to DeepSkyStacker 6.1.0 Beta 5
 ======================================
 
 Reporting problems:
@@ -59,6 +59,12 @@ Changes for DeepSkyStacker 6.1.0
 18. On Linux and macOS, the help viewer wasn't closed when DeepSkyStacker was closed.
 
 19. Bug fix: Fix problems introduced by AVX code restructuring. Seestar problems and Drizzle not working.
+
+20. Some code cleanup of the changes made for AVX code restructuring.
+
+21. Bug fix: The name of the html summary file was created from the file list file name incorrectly.
+    It was appending .html to the content of the filename up to but not including the first '.' character.
+    It should have used up to but not including the last '.' character.
 	
 Welcome to DeepSkyStacker 5.1.10
 ======================================

@@ -2681,7 +2681,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 		return;
 
 	const QFileInfo fileInfo(outputFile);
-	const QString strOutputFile(QDir::toNativeSeparators(QString("%1%2%3.html").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.baseName())));
+	const QString strOutputFile(QDir::toNativeSeparators(QString("%1%2%3.html").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.completeBaseName())));
 
 	QFile file(strOutputFile);
 	if (!file.open(QIODevice::Text | QIODevice::WriteOnly | QIODevice::Truncate))
