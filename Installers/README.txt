@@ -64,7 +64,7 @@ Changes for DeepSkyStacker 6.1.0
 
 21. Bug fix: The name of the html summary file was created from the file list file name incorrectly.
     It was appending .html to the content of the filename up to but not including the first '.' character.
-    The code now uses the characters of the filename up to but not including the last '.' character.
+    It should have used up to but not including the last '.' character.
 	
 Welcome to DeepSkyStacker 5.1.10
 ======================================
