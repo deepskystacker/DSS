@@ -1956,14 +1956,17 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 			if (!rcOutput.isEmpty())
 				ulLSpace = rcOutput.width() * rcOutput.height() * 2 * 3;
 
-			if ((m_vStacks[i].m_pLightTask->m_Method == MBP_AVERAGE)
-				&& (!IsCometAvailable() || (GetCometStackingMode() != CSM_COMETSTAR)))
+			if (m_vStacks[i].m_pLightTask->m_Method == MBP_AVERAGE && (!IsCometAvailable() || GetCometStackingMode() != CSM_COMETSTAR))
+			{
 				m_vStacks[i].m_pLightTask->m_Method = MBP_FASTAVERAGE;
+			}
 
-			if ((m_vStacks[i].m_pLightTask->m_Method != MBP_FASTAVERAGE) &&
-				(m_vStacks[i].m_pLightTask->m_Method != MBP_MAXIMUM) &&
-				(m_vStacks[i].m_pLightTask->m_Method != MBP_ENTROPYAVERAGE))
+			if (m_vStacks[i].m_pLightTask->m_Method != MBP_FASTAVERAGE
+				&& m_vStacks[i].m_pLightTask->m_Method != MBP_MAXIMUM
+				&& m_vStacks[i].m_pLightTask->m_Method != MBP_ENTROPYAVERAGE)
+			{
 				ulLightSpace += ulLSpace * m_vStacks[i].m_pLightTask->m_vBitmaps.size() * ulPixelSize;
+			}
 
 			if (m_vStacks[i].m_pLightTask->m_Method == MBP_FASTAVERAGE)
 				m_vStacks[i].m_pLightTask->m_Method = MBP_AVERAGE;
