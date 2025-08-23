@@ -65,10 +65,10 @@ int Avx256CfaProcessing::interpolate(const size_t lineStart, const size_t lineEn
 
 	switch (cfaType)
 	{
-		case CFATYPE_BGGR: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0, 1>(lineStart, lineEnd); break;
-		case CFATYPE_GRBG: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1, 1>(lineStart, lineEnd); break;
-		case CFATYPE_GBRG: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1, 0>(lineStart, lineEnd); break;
-		case CFATYPE_RGGB: return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0, 0>(lineStart, lineEnd); break;
+		case CFATYPE_BGGR: return interpolateGrayCFA2Color<0, 1>(lineStart, lineEnd); break;
+		case CFATYPE_GRBG: return interpolateGrayCFA2Color<1, 1>(lineStart, lineEnd); break;
+		case CFATYPE_GBRG: return interpolateGrayCFA2Color<1, 0>(lineStart, lineEnd); break;
+		case CFATYPE_RGGB: return interpolateGrayCFA2Color<0, 0>(lineStart, lineEnd); break;
 		default: return 1;
 	}
 	return 1;
