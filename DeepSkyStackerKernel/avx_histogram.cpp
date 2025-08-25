@@ -568,11 +568,11 @@ int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 
 int Avx256BezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
 {
-	if (saturationShift == 0)
-		return 0;
-
 	if (!this->histoData.avxEnabled)
 		return 1; // AVX not enabled, so we cannot use this class.
+
+	if (saturationShift == 0)
+		return 0;
 
 	using VecType = __m256;
 	constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
