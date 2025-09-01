@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "DeBloom.h"
 #include "GrayBitmap.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "BackgroundCalibration.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 
 using namespace DSS;
 
@@ -1323,14 +1323,14 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 }
 
 
-void CDeBloom::CreateBloomMask(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+void CDeBloom::CreateBloomMask(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	m_pProgress = pProgress;
 	this->m_pMask = CreateMask(pBitmap);
 }
 
 
-void CDeBloom::DeBloomImage(CMemoryBitmap * pBitmap, ProgressBase * pProgress)
+void CDeBloom::DeBloomImage(CMemoryBitmap * pBitmap, OldProgressBase * pProgress)
 {
 	m_pProgress = pProgress;
 	if (static_cast<bool>(m_pMask))

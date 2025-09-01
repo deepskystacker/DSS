@@ -1,66 +1,88 @@
-#include "stdafx.h"
-#include <immintrin.h>
+/****************************************************************************
+**
+** Copyright (C) 2024, 2025 Martin Toeltsch
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
+#include "pch.h"
+#include "avx_includes.h"
 #include "avx_cfa.h"
 #include "avx_support.h"
-
-AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, const CMemoryBitmap& inputbm) :
-	redPixels{},
-	greenPixels{},
-	bluePixels{},
-	inputBitmap{ inputbm },
-	vectorsPerLine{ 0 },
-	avxReady{ AvxSimdCheck::checkSimdAvailability() }
-{
-	init(lineStart, lineEnd);
-}
-
-void AvxCfaProcessing::init(const size_t lineStart, const size_t lineEnd) // You should be sure that lineEnd >= lineStart!
-{
-	const size_t height = lineEnd - lineStart;
-	vectorsPerLine = AvxSupport::numberOfAvxVectors<std::uint16_t, VectorElementType>(inputBitmap.Width());
-	const size_t nrVectors = vectorsPerLine * height;
-	if (nrVectors != 0 && AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
-	{
-		redPixels.resize(nrVectors);
-		greenPixels.resize(nrVectors);
-		bluePixels.resize(nrVectors);
-	}
-}
-
-int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
-{
-	if (!avxReady)
-		return 1;
-	if (pixelSizeMultiplier != 1)
-		return 1;
-	if (!AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
-		return 1;
-
-	return AvxSupport{ inputBitmap }.getCfaType() == CFATYPE_RGGB
-		? Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0>(lineStart, lineEnd)
-		: Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1>(lineStart, lineEnd);
-}
+#include "avx_bitmap_util.h"
 
 
 // ***********************************************
 // ************ AVX-256 interpolation ************
 // ***********************************************
 
-template <int RG_ROW>
+int Avx256CfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
+{
+	if (!this->cfaData.avxEnabled) // AVX not enabled by user or not supported by CPU.
+		return 1;
+	if (pixelSizeMultiplier != 1) // No SIMD implementation for other pixel sizes.
+		return 1;
+	const auto cfaBitmapProperties = AvxBitmapUtil{ cfaData.inputBitmap };
+	if (!cfaBitmapProperties.isMonochromeCfaBitmapOfType<std::uint16_t>())
+		return 1; // EITHER: Input bitmap cannot be converted to a CGrayBitmap with type uint_16, OR: it is a gray bitmap but not CFA.
+	const auto cfaType = cfaBitmapProperties.getCfaType();
+	const auto* const pGray = dynamic_cast<CGrayBitmapT<std::uint16_t> const*>(std::addressof(cfaData.inputBitmap)); // Cannot be nullptr.
+	const bool cfaAvxImplemented =
+		(cfaType == CFATYPE_BGGR || cfaType == CFATYPE_GRBG || cfaType == CFATYPE_GBRG || cfaType == CFATYPE_RGGB) // SIMD implementation available for BGGR, GRBG, GBRG, RGGB.
+		&& pGray->GetCFATransformation() == CFAT_BILINEAR // Only bi-linear interpolation implemented.
+		&& pGray->xOffset() == 0 // Only x-offset and y-offset of 0 implemented.
+		&& pGray->yOffset() == 0;
+	if (!cfaAvxImplemented)
+		return 1;
+
+	switch (cfaType)
+	{
+		case CFATYPE_BGGR: return interpolateGrayCFA2Color<0, 1>(lineStart, lineEnd); break;
+		case CFATYPE_GRBG: return interpolateGrayCFA2Color<1, 1>(lineStart, lineEnd); break;
+		case CFATYPE_GBRG: return interpolateGrayCFA2Color<1, 0>(lineStart, lineEnd); break;
+		case CFATYPE_RGGB: return interpolateGrayCFA2Color<0, 0>(lineStart, lineEnd); break;
+		default: return 1;
+	}
+	return 1;
+}
+
+
+template <int RG_ROW, int REVERSE>
 int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd)
 {
-	if (const auto* const p{ dynamic_cast<const CGrayBitmapT<std::uint16_t>*>(&avxData.inputBitmap) })
-	{
-		if (!p->IsCFA())
-			return 1;
-	}
-	else
-		return 1;
 	if ((lineStart % 2) != 0) // Must start with an even index (RG-line).
 		return 2;
 
-	const size_t width = avxData.inputBitmap.Width();
-	const size_t height = avxData.inputBitmap.Height();
+	const size_t width = cfaData.inputBitmap.Width();
+	const size_t height = cfaData.inputBitmap.Height();
 	if (width < 64 || height < 8) // AVX makes no sense for super-small arrays.
 		return 2;
 
@@ -74,11 +96,11 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 	__m256i nextRowCurrent, nextRowNext; // ... of following row.
 	int thisRowLast, prevRowLast, nextRowLast; // Last value of the previous line.
 
-	const AvxSupport avxSupport{ avxData.inputBitmap };
+	const AvxBitmapUtil avxSupport{ cfaData.inputBitmap };
 	const std::uint16_t* pGray = avxSupport.grayPixels<std::uint16_t>().data() + lineStart * width;
-	std::uint16_t* pRed = avxData.redCfaLine(0);
-	std::uint16_t* pGreen = avxData.greenCfaLine(0);
-	std::uint16_t* pBlue = avxData.blueCfaLine(0);
+	std::uint16_t* pRed = REVERSE == 0 ? cfaData.redCfaLine(0) : cfaData.blueCfaLine(0); // REVERSE==0: RGGB/GBRG, REVERSE==1: BGGR/GRBG
+	std::uint16_t* pGreen = cfaData.greenCfaLine(0);
+	std::uint16_t* pBlue = REVERSE == 0 ? cfaData.blueCfaLine(0) : cfaData.redCfaLine(0);
 	std::int16_t prevRowMask = lineStart == 0 ? 0x0 : -1;
 
 	const auto extract0 = [](const __m256i x) -> int { return _mm256_cvtsi256_si32(x); };
@@ -123,8 +145,8 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 			const __m256i crossInterpol = _mm256_avg_epu16(_mm256_avg_epu16(prevRight, prevLeft), _mm256_avg_epu16(nextRight, nextLeft));
 			const __m256i greenInterpol = _mm256_avg_epu16(UDinterpol, LRinterpol);
 
-			// RGGB pattern: RG_ROW==0 -> even row -> RG-line
-			// GBRG pattern: RG_ROW==1 ->  odd row -> RG-line
+			// RGGB pattern: RG_ROW==0 -> even row -> RG-line (or BGGR)
+			// GBRG pattern: RG_ROW==1 ->  odd row -> RG-line (or GRBG)
 			if ((row % 2) == RG_ROW)
 			{
 				const __m256i red = _mm256_blend_epi16(thisCurr, LRinterpol, 0xaa); // 0b10101010 = 0xaa
@@ -153,9 +175,9 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 		nextRowNext = _mm256_maskload_epi32((int*)(pGray + width), _mm256_set1_epi32(nextRowMask)); // Load entire vector or nothing.
 		nextRowLast = 0;
 
-		pRed = avxData.redCfaLine(row);
-		pGreen = avxData.greenCfaLine(row);
-		pBlue = avxData.blueCfaLine(row);
+		pRed = REVERSE == 0 ? cfaData.redCfaLine(row) : cfaData.blueCfaLine(row); // REVERSE==0: RGGB/GBRG, REVERSE==1: BGGR/GRBG
+		pGreen = cfaData.greenCfaLine(row);
+		pBlue = REVERSE == 0 ? cfaData.blueCfaLine(row) : cfaData.redCfaLine(row);
 
 		for (size_t n = 1; n < nrVectors; ++n, pGray += VecSize, pRed += VecSize, pGreen += VecSize, pBlue += VecSize) // nrVectors - 1 iterations
 		{

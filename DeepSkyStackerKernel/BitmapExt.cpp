@@ -1,4 +1,5 @@
-#include <stdafx.h>
+#include "pch.h"
+#include <unordered_set>
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
@@ -7,9 +8,9 @@
 #include "BitmapIterator.h"
 #include "AHDDemosaicing.h"
 #include "Multitask.h"
-#include "Ztrace.h"
-#include "ZExcBase.h"
-#include "ZExcept.h"
+#include <ztrace.h>
+#include <zexcbase.h>
+#include <zexcept.h>
 #include "RationalInterpolation.h"
 #include "RAWUtils.h"
 #include "TIFFUtil.h"
@@ -38,15 +39,10 @@ namespace
 		ThreadVars& operator=(const ThreadVars&) = delete;
 	};
 
-	//
-	// the Mime type for a FITS file changed in 6.8.0 from "image/fits" to
-	// "application/fits" so code round that.
-	//
-	constexpr char const* mimeFitsKeyword = QT_VERSION < 0x060800 ? "image/fits" : "application/fits";
 }
 
 /* ------------------------------------------------------------------- */
-bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, ProgressBase* pProgress)
+bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -72,7 +68,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			pColorBitmap->Init(lWidth, lHeight);
 			ThreadVars<BitmapIterator, std::shared_ptr<C48BitColorBitmap>> threadVars{ pColorBitmap };
 
-#pragma omp parallel for default(none) firstprivate(threadVars) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) firstprivate(threadVars) if(Multitask::GetNrProcessors() > 1)
 			for (int j = 0; j < lHeight; j++)
 			{
 				threadVars.pixelIt.Reset(0, j);
@@ -100,7 +96,7 @@ bool	CAllDepthBitmap::initQImage()
 	bool			bResult = false;
 	const int width = m_pBitmap->Width();
 	const int height = m_pBitmap->Height();
-	const int numberOfProcessors = CMultitask::GetNrProcessors();
+	const int numberOfProcessors = Multitask::GetNrProcessors();
 
 	m_Image = std::make_shared<QImage>(width, height, QImage::Format_RGB32);
 
@@ -133,7 +129,7 @@ bool	CAllDepthBitmap::initQImage()
 		auto pImageData = m_Image->bits();
 		auto bytes_per_line = m_Image->bytesPerLine();
 
-#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 50) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -163,7 +159,7 @@ bool	CAllDepthBitmap::initQImage()
 		auto bytes_per_line = m_Image->bytesPerLine();
 		ThreadVars<BitmapIteratorConst, std::shared_ptr<const CMemoryBitmap>> threadVars{ m_pBitmap };
 
-#pragma omp parallel for firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for firstprivate(threadVars) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -187,7 +183,7 @@ bool	CAllDepthBitmap::initQImage()
 }
 
 
-bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, ProgressBase* pProgress)
+bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -225,7 +221,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 					std::shared_ptr<C48BitColorBitmap>	pColorBitmap = std::make_shared<C48BitColorBitmap>();
 					pColorBitmap->Init(lWidth, lHeight);
 
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 					for (int j = 0; j < lHeight; j++)
 					{
 						for (int i = 0; i < lWidth; i++)
@@ -298,12 +294,12 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, Progress
 }
 
 
-bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* const pProgress, 
+bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* const pProgress, 
 	std::shared_ptr<QImage>& pQImage )
 {
 	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
 	ZFUNCTRACE_RUNTIME();
-	const int numberOfProcessors = CMultitask::GetNrProcessors();
+	const int numberOfProcessors = Multitask::GetNrProcessors();
 	const QString name{ QString::fromStdU16String(file.generic_u16string()) };
 
 	//
@@ -369,7 +365,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		(const uchar* pSrc)
 	{
 		std::atomic_int loopCtr = 0;
-#pragma omp parallel for shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int row = 0; row < height; ++row)
 		{
 			const auto* pPixel = reinterpret_cast<const PixelType*>(pSrc + row * bytes_per_line);
@@ -415,7 +411,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	switch (bits)
 	{
 	case 8:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const uchar* pGreyPixel = pImageData + (j * bytes_per_line);
@@ -432,7 +428,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		}
 		break;
 	case 16:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const uint16_t* pGreyPixel = reinterpret_cast<const uint16_t*>(pImageData + (j * bytes_per_line));
@@ -449,7 +445,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		}
 		break;
 	case 24:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgb* pRgbPixel = reinterpret_cast<const QRgb*>(pImageData + (j * bytes_per_line));
@@ -471,7 +467,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		}
 		break;
 	case 48:
-#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 100) shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			const QRgba64* pRgba64Pixel = reinterpret_cast<const QRgba64*>(pImageData + (j * bytes_per_line));
@@ -594,7 +590,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 		if (QImage::Format_RGB32 == pImage->format())
 		{
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < height; j++)
 			{
 				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -633,7 +629,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		}
 		else        // Must be RGB64
 		{
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < height; j++)
 			{
 				QRgba64* pOutPixel = reinterpret_cast<QRgba64*>(pImageData + (j * bytes_per_line));
@@ -749,7 +745,7 @@ namespace {
 	//typedef std::set<CBitmapInfo> InfoCache;
 	// We absolutely must use a thread-safe cache, otherwise GetPictureInfo() crashes if used concurrently (e.g. with OpenMP).
 
-	using InfoCache = concurrency::concurrent_unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>>;
+	using InfoCache = std::unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>>;
 	InfoCache g_sBitmapInfoCache;
 	QDateTime g_BitmapInfoTime{ QDateTime::currentDateTime() };
 	std::shared_mutex bitmapInfoMutex;
@@ -802,26 +798,23 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 	auto now{ QDateTime::currentDateTime() };	// local time
 
 	// First try to find the info in the cache
-	if (!g_sBitmapInfoCache.empty())
-	{
-		// Check that the cache is not old (more than 5 minutes)
-		constexpr qint64 maxAge{ 300 };		// 300 seconds == 5 minutes
-		auto age{ g_BitmapInfoTime.secsTo(now) };
+	// Check that the cache is not old (more than 5 minutes)
+	constexpr qint64 maxAge{ 300 };		// 300 seconds == 5 minutes
+	auto age{ g_BitmapInfoTime.secsTo(now) };
 
-		if (age > maxAge)
+	if (age > maxAge)
+	{
+		std::unique_lock<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
+		g_sBitmapInfoCache.clear();
+	}
+	else
+	{
+		std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
+		InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(path));
+		if (it != g_sBitmapInfoCache.cend())
 		{
-			std::lock_guard<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
-			g_sBitmapInfoCache.clear();
-		}
-		else
-		{
-			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
-			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(path));
-			if (it != g_sBitmapInfoCache.cend())
-			{
-				BitmapInfo = *it;
-				bResult = true;
-			}
+			BitmapInfo = *it;
+			bResult = true;
 		}
 	}
 
@@ -846,13 +839,16 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 		//
 		// Check RAW image file types
-
+		//
+		// The Mime type for a FITS file changed in 6.8.0 from "image/fits" to
+		// "application/fits", but not on all platforms so need to check for both.
+		//
 		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, BitmapInfo))
 			bResult = true;
 		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, BitmapInfo))
 			bResult = true;
-		else if (mime.inherits(mimeFitsKeyword) && IsFITSPicture(path, BitmapInfo))
-
+		else if ((mime.inherits("image/fits") || mime.inherits("application/fits")) &&
+				IsFITSPicture(path, BitmapInfo))
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
@@ -918,7 +914,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 					//
 					// The first segment MUST be the IHDR segment
 					//
-					uint32_t chunkLength = big_endian::read_dword(f); chunkLength;
+					static_cast<void>(big_endian::read_dword(f));  // Read but discard the chunkLength;
 					f.read(type, sizeof(type));
 					if (0 != memcmp(type, IHDR, sizeof(type))) return false;
 
@@ -979,7 +975,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 			//
 			BitmapInfo.m_strDateTime = BitmapInfo.m_DateTime.toString("yyyy/MM/dd hh:mm:ss"); 
 
-			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
+			std::unique_lock<std::shared_mutex> writeLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
 				g_BitmapInfoTime = now;
 			g_sBitmapInfoCache.insert(BitmapInfo);
@@ -991,7 +987,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 /* ------------------------------------------------------------------- */
 
 bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
-	ProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage)
+	OldProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Processing file %s", filePath.generic_u8string().c_str());
@@ -1056,7 +1052,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		// It wasn't a TIFF file, so try to load a FITS file
 		//
-		else if (mime.inherits(mimeFitsKeyword))
+		else if (mime.inherits("image/fits") || mime.inherits("application/fits"))
 		{
 			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
 			if (0 == loadResult)
@@ -1081,7 +1077,7 @@ class CSubtractTask
 private :
 	std::shared_ptr<CMemoryBitmap> m_pTarget;
 	std::shared_ptr<const CMemoryBitmap> m_pSource;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 	double m_fRedFactor;
 	double m_fGreenFactor;
 	double m_fBlueFactor;
@@ -1110,7 +1106,7 @@ public :
 
 	~CSubtractTask() = default;
 
-	void Init(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
+	void Init(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 	{
 		m_pProgress = pProgress;
 		m_pTarget = pTarget;
@@ -1157,7 +1153,7 @@ void CSubtractTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
 	const int height = m_pTarget->RealHeight() - (m_fYShift == 0 ? 0 : static_cast<int>(std::abs(m_fYShift) + 0.5));
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 
 	if (m_pProgress != nullptr)
 		m_pProgress->Start2(height);
@@ -1168,7 +1164,7 @@ void CSubtractTask::process()
 	ThreadVars<BitmapIteratorConst, std::shared_ptr<const CMemoryBitmap>> sourceIt{ m_pSource };
 	ThreadVars<BitmapIterator, std::shared_ptr<CMemoryBitmap>> targetIt{ m_pTarget };
 
-#pragma omp parallel for default(none) firstprivate(sourceIt, targetIt) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) firstprivate(sourceIt, targetIt) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
 	{
 		int lTgtStartX = 0, lTgtStartY = row, lSrcStartX = 0, lSrcStartY = row;
@@ -1247,7 +1243,7 @@ void CSubtractTask::process()
 }
 
 
-bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
+bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1290,7 +1286,7 @@ bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMem
 
 /* ------------------------------------------------------------------- */
 
-bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress, double fXShift, double fYShift)
+bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress, double fXShift, double fYShift)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1314,7 +1310,7 @@ bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<co
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, ProgressBase* pProgress)
+bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
@@ -1338,7 +1334,7 @@ bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBi
 
 
 
-std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 

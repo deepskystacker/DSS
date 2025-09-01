@@ -1,8 +1,8 @@
-#include "stdafx.h"
+#include "pch.h"
 #include <algorithm>
 #include "ColorBitmap.h"
 #include "ColorHelpers.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "ColorMultiBitmap.h"
 #include "MedianFilterEngine.h"
 #include "BitmapCharacteristics.h"
@@ -224,7 +224,7 @@ std::shared_ptr<CMedianFilterEngine> CColorBitmapT<TType>::GetMedianFilterEngine
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::RemoveHotPixels(ProgressBase* pProgress/*=nullptr*/)
+void CColorBitmapT<TType>::RemoveHotPixels(OldProgressBase* pProgress/*=nullptr*/)
 {
 	m_Red.RemoveHotPixels(pProgress);
 	m_Green.RemoveHotPixels(pProgress);

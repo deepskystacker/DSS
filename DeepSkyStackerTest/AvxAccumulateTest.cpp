@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 #include "dssrect.h"
 
@@ -12,10 +12,16 @@
 #include "EntropyInfo.h"
 #include "ColorBitmap.h"
 #include "MedianFilterEngine.h"
-
+#include "avx_simd_check.h"
 
 TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	CTaskInfo taskInfo;
 	taskInfo.SetMethod(MBP_FASTAVERAGE, 0, 0);
 
@@ -178,6 +184,11 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 
 TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
 	CTaskInfo taskInfo;
 	taskInfo.SetMethod(MBP_MAXIMUM, 0, 0);
 
@@ -346,6 +357,12 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 
 TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	CTaskInfo taskInfo;
 	taskInfo.SetMethod(MBP_ENTROPYAVERAGE, 0, 0);
 
@@ -391,8 +408,9 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 	}
 }
 
+
 BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode() { return BCM_RGB; }
 BACKGROUNDCALIBRATIONINTERPOLATION GetBackgroundCalibrationInterpolation() { return BCI_RATIONAL; }
 RGBBACKGROUNDCALIBRATIONMETHOD GetRGBBackgroundCalibrationMethod() { return RBCM_MIDDLE; }
 
-//std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const { return std::shared_ptr<CMemoryBitmap>{}; }
+//std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(int lFilterSize, OldProgressBase* pProgress) const { return std::shared_ptr<CMemoryBitmap>{}; }

@@ -33,10 +33,10 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "group.h"
 #include "ImageListModel.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "FrameInfo.h"
 #include "RegisterEngine.h"
 
@@ -149,7 +149,6 @@ namespace DSS
 				if (bmpInfo.m_bInfoOk)
 				{
 					lb.m_bRegistered = true;
-					lb.m_fScore = bmpInfo.m_fScore;
 					lb.quality = bmpInfo.quality;
 					lb.m_fFWHM = bmpInfo.m_fFWHM;
 					lb.m_lNrStars = static_cast<decltype(lb.m_lNrStars)>(bmpInfo.m_vStars.size());

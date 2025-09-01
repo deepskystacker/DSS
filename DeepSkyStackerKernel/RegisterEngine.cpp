@@ -1,9 +1,9 @@
 
-#include "stdafx.h"
+#include "pch.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include "PixelTransform.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "BackgroundCalibration.h"
 #include "Multitask.h"
 #include "avx_luminance.h"
@@ -13,6 +13,8 @@
 #include "FITSUtil.h"
 #include "TIFFUtil.h"
 #include "MasterFrames.h"
+#include "avx_bitmap_util.h"
+#include "avx_simd_check.h"
 
 void CRegisteredFrame::Reset()
 {
@@ -32,7 +34,6 @@ void CRegisteredFrame::Reset()
 
 	m_SkyBackground.Reset();
 
-	m_fScore = 0;
 	m_fFWHM = 0;
 	quality = 0;
 }
@@ -153,7 +154,6 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 
 	QTextStream fileOut(&buffer);	
 
-	fileOut << QString("OverallQuality = %1").arg(m_fScore, 0, 'f', 2) << Qt::endl;
 	fileOut << paramString(QualityParam, " = %1").arg(this->quality, 0, 'f', 2) << Qt::endl;
 	fileOut << "RedXShift = 0.0" << Qt::endl;
 	fileOut << "RedYShift = 0.0" << Qt::endl;
@@ -222,8 +222,6 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		if (GetNextValue(&fileIn, strVariable, strValue) == false) // It did not even find "NrStars".
 			return unsuccessfulReturn();
 
-		if (0 == strVariable.compare("OverallQuality", Qt::CaseInsensitive))
-			m_fScore = strValue.toDouble();
 		if (0 == strVariable.compare(QualityParam, Qt::CaseInsensitive))
 			this->quality = strValue.toDouble();
 
@@ -399,8 +397,8 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	const int nrSubrectsY = (calcHeight - 1) / StepSize + 1;
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
 	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
-	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
-	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
+//	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
+	const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
 	constexpr double LowestPossibleThreshold = 0.00075;
 
 	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
@@ -511,7 +509,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 			}
 		};
 
-#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4, ePointers, nPixels, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
+#pragma omp parallel default(shared) shared(stars1, stars2, stars3, stars4, ePointers, threshold) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
 #pragma omp sections
 		{
@@ -585,10 +583,10 @@ class CComputeLuminanceTask
 public:
 	CGrayBitmap* m_pGrayBitmap;
 	const CMemoryBitmap* m_pBitmap;
-	ProgressBase* m_pProgress;
+	OldProgressBase* m_pProgress;
 
 public:
-	CComputeLuminanceTask(const CMemoryBitmap* pBm, CGrayBitmap* pGb, ProgressBase* pPrg) :
+	CComputeLuminanceTask(const CMemoryBitmap* pBm, CGrayBitmap* pGb, OldProgressBase* pPrg) :
 		m_pGrayBitmap{ pGb },
 		m_pBitmap{ pBm },
 		m_pProgress{ pPrg }
@@ -600,17 +598,18 @@ private:
 	void processNonAvx(const int lineStart, const int lineEnd);
 };
 
+
+
 void CComputeLuminanceTask::process()
 {
-	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	const int height = m_pBitmap->Height();
 	int progress = 0;
 	constexpr int lineBlockSize = 20;
 
 	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
-#pragma omp parallel for schedule(static, 5) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 5) default(shared) firstprivate(avxLuminance) if(nrProcessors > 1)
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
@@ -829,7 +828,7 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 // Public function to run a test registering of a light-frame using the path to the file.
 // Used in: RegisterSettings::on_computeDetectedStars_clicked().
 //
-void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
+void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	Reset();
@@ -920,7 +919,7 @@ CRegisterEngine::CRegisterEngine()
 	m_bSaveCalibratedDebayered = CAllStackingTasks::GetSaveCalibratedDebayered();
 }
 
-bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, QString& strCalibratedFile)
+bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase* pProgress, QString& strCalibratedFile)
 {
 	bool bResult = false;
 
@@ -930,7 +929,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 		const QString strPath(fileInfo.path() + QDir::separator());
 		const QString strBaseName(fileInfo.baseName());
 
-		if ((m_IntermediateFileFormat == IFF_TIFF))
+		if (m_IntermediateFileFormat == IFF_TIFF)
 		{
 			strCalibratedFile = strPath + strBaseName + ".cal.tif";
 		}
@@ -989,13 +988,13 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 // Register all light-frames of all the stacking tasks. 
 // Will call lfInfo->RegisterPicture(pBitmap.get(), successfulRegisteredPictures++); for all light-frames.
 //
-bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QString& referenceFrame, bool bForce, ProgressBase* pProgress)
+bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QString& referenceFrame, bool bForce, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	using ReadReturnType = std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>;
 	using FutureType = std::future<ReadReturnType>;
 
-	const auto ReadTask = [bForce](const FRAMEINFOVECTOR::const_pointer pBitmap, ProgressBase* pTaskProgress) -> ReadReturnType
+	const auto ReadTask = [bForce](const FRAMEINFOVECTOR::const_pointer pBitmap, OldProgressBase* pTaskProgress) -> ReadReturnType
 	{
 		if (pBitmap == nullptr)
 			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
@@ -1130,7 +1129,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 			ReadReturnType data = future.get();
 			future = std::async(std::launch::async, ReadTask, pData, nullptr);
 
-			if (DoRegister(std::move(data), MasterFrames, *it, numberSeenFiles, false))
+			if (DoRegister(std::move(data), MasterFrames, *it, 1+numberSeenFiles, false))
 			{
 				++numberOfRegisteredLightframes;
 				++numberSeenFiles;

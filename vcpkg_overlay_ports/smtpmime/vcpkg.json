@@ -1,0 +1,16 @@
+{
+  "name": "smtpmime",
+  "version": "2.0",
+  "homepage": "https://github.com/bluetiger9/SmtpClient-for-Qt",
+  "description": "SMTP Client for Qt (C++) - Version 2.0",
+  "dependencies": [
+    {
+      "name" : "vcpkg-cmake",
+      "host" : true
+    },
+    {
+      "name" : "vcpkg-cmake-config",
+      "host" : true
+    }
+  ]
+}

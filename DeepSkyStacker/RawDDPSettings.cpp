@@ -1,13 +1,13 @@
 // RawDDPSettings.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "RawDDPSettings.h"
 #include "dslr.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "ui_RawDDPSettings.h"
 #include "Workspace.h"
 #include "DeepSkyStacker.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "StackingDlg.h"
 
 namespace DSS

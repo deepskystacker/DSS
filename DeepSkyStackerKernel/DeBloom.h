@@ -155,7 +155,7 @@ public:
 };
 
 /* ------------------------------------------------------------------- */
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 class CMemoryBitmap;
 class CDeBloom
 {
@@ -165,7 +165,7 @@ private:
 	int m_lWidth;
 	int m_lHeight;
 	std::shared_ptr<C8BitGrayBitmap> m_pMask;
-	DSS::ProgressBase* m_pProgress;
+	DSS::OldProgressBase* m_pProgress;
 	double m_fBackground;
 
 	bool	IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y);
@@ -202,6 +202,6 @@ public:
 
 	virtual ~CDeBloom() {};
 
-	void CreateBloomMask(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress);
-	void DeBloomImage(CMemoryBitmap* pBitmap, DSS::ProgressBase* pProgress);
+	void CreateBloomMask(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);
+	void DeBloomImage(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);
 };

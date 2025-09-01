@@ -19,7 +19,6 @@
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <OptimizeReferences>true</OptimizeReferences>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
 	<ClCompile>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>

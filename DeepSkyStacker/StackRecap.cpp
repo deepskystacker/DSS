@@ -1,15 +1,15 @@
 // StackRecap.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "StackRecap.h"
 #include "ui/ui_StackRecap.h"
 #include "DeepSkyStacker.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "StackingTasks.h"
 #include "Multitask.h"
 #include "FrameInfoSupport.h"
 #include "BitmapExt.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "StackSettings.h"
 #include "RecommendedSettings.h"
 
@@ -249,7 +249,7 @@ namespace DSS
 				strText = tr("The process temporarily requires %1 of free space on the %2 drive.<br>"
 					"Only %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE")
 					.arg(strNeededSpace)
-					.arg(drive.wstring().c_str())
+					.arg(drive.generic_string().c_str())
 					.arg(strFreeSpace);
 				insertHTML(strHTML, strText, QColorConstants::Red, true, false);
 				if (ResultMode == SM_MOSAIC)
@@ -342,15 +342,17 @@ namespace DSS
 				};
 			};
 
-			const auto lNrProcessors = CMultitask::GetNrProcessors(true);
-			if (lNrProcessors > 1)
+			const auto processorCount = Multitask::GetNrProcessors(true);
+			const auto allowedProcessors = Multitask::GetNrProcessors();
+			if (processorCount > 1)
 			{
-				if (CMultitask::GetNrProcessors() > 1)
-					strText = tr("%1 processors detected and used", "IDS_RECAP_DETECTEDANDUSEDPROCESSORS")
-					.arg(lNrProcessors);
+				if (allowedProcessors > 1)
+					strText = tr("%1 processors detected - %2 used", "IDS_RECAP_DETECTEDANDUSEDPROCESSORS")
+					.arg(processorCount)
+					.arg(allowedProcessors);
 				else
 					strText = tr("%1 processors detected - only one used", "IDS_RECAP_DETECTEDNOTUSEDPROCESSORS")
-					.arg(lNrProcessors);
+					.arg(processorCount);
 				insertHTML(strHTML, strText, blueColour, false, true);
 				strHTML += "<br>";
 			};
@@ -731,7 +733,7 @@ namespace DSS
 				strText = tr("The process will temporarily use %1 on the %2 drive (%3 free).",
 					"IDS_RECAP_INFODISKSPACE")
 					.arg(strNeededSpace)
-					.arg(drive.wstring().c_str())
+					.arg(drive.generic_string().c_str())
 					.arg(strFreeSpace);
 				insertHTML(strHTML, strText, windowTextColour);
 				if (ResultMode == SM_MOSAIC)

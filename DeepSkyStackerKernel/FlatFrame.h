@@ -109,7 +109,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 class CMemoryBitmap;
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 class CFlatFrame
 {
 public :
@@ -126,8 +126,8 @@ public :
 	bool IsOk() const;
 	bool IsCFA() const;
 	void Clear();
-	void ComputeFlatNormalization(DSS::ProgressBase* pProgress = nullptr);
-	bool ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, DSS::ProgressBase * pProgress = nullptr);
+	void ComputeFlatNormalization(DSS::OldProgressBase* pProgress = nullptr);
+	bool ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, DSS::OldProgressBase * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */

@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2023 David C. Partridge
+** Copyright (C) 2025 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -34,7 +34,7 @@
 **
 **
 ****************************************************************************/
-// ProgressDlg.h : Defines the DSS Progress Dialog class
+// ProgressDlg.h : Defines the NEW DSS Progress Dialog class
 //
 #include "DSSProgress.h"
 
@@ -44,9 +44,11 @@ namespace DSS
 		class ProgressDlg;
 	}
 
-	class ProgressDlg : public QDialog, public ProgressBase
+	class ProgressDlg final : public QDialog, public ProgressBase
 	{
 		Q_OBJECT
+
+	using Inherited = ProgressBase;
 
 	private:
 		Ui::ProgressDlg* ui;
@@ -54,60 +56,61 @@ namespace DSS
 		static inline const QString m_emptyString{};
 
 	public:
-		ProgressDlg(QWidget* parent = nullptr);
+		ProgressDlg(
+			QWidget* parent = nullptr,
+			ProgressMode mode = ProgressMode::Dual,
+			bool enableCancel = true,
+			Qt::WindowFlags f = Qt::WindowFlags());
 		~ProgressDlg();
 
 		//
-		// These eight mfs implement the public interface defined in DSS::ProgressBase
+		// These eleven mfs implement the public interface defined in DSS::ProgressBase
 		// They invoke the corresponding slots using QMetaObject::invokeMethod
 		// so that they can be invoked from ANY thread in the application will run on
 		// the GUI thread.
 		//
-		virtual void Start1(const QString& szTitle, int lTotal1, bool bEnableCancel = true) override;
-		virtual void Progress1(const QString& szText, int lAchieved1) override;
-		virtual void Start2(const QString& szText, int lTotal2) override;
-		virtual void Progress2(const QString& szText, int lAchieved2) override;
-		virtual void End2() override;
-		virtual void Close() override;
-		virtual bool IsCanceled() const override { return m_cancelInProgress; }
-		virtual bool Warning(const QString& szText) override;
+		virtual void setTitleText(const QString& title) override;
+		virtual void setTopText(QStringView text) override;
+		virtual void setPartialMinimum(int minimum) override;
+		virtual void setPartialMaximum(int maximum) override;
+		virtual void setPartialValue(int value) override;
+		virtual void setTotalMinimum(int minimum) override;
+		virtual void setTotalMaximum(int maximum) override;
+		virtual void setTotalValue(int value) override;
+		virtual void setBottomText(QStringView text) override;
+
+		virtual bool wasCanceled() const override;
+
+		void setTimeRemaining(QStringView text);
+
+		void enableCancelButton(bool value);
 
 
-		void setTimeRemaining(const QString& strText);
-		void setProgress1Range(int nMin, int nMax);
-		void setProgress2Range(int nMin, int nMax);
-		void setItemVisibility(bool bSet1, bool bSet2);
 
-		void EnableCancelButton(bool bState);
-
-
-	protected:
-		void applyStart1Text(const QString& strText);
-		void applyStart2Text(const QString& strText);
-		void applyProgress1(int lAchieved);
-		void applyProgress2(int lAchieved);
-		void applyTitleText(const QString& strText);
 		void initialise();
-		void endProgress2();
 		void closeProgress();
-		bool doWarning(const QString& szText);
 
 		// ProgressBase
 		virtual void applyProcessorsUsed(int nCount) override;
 
 	protected slots:
-		virtual void slotStart1(const QString& szTitle, int lTotal1, bool bEnableCancel = true);
-		virtual void slotProgress1(const QString& szText, int lAchieved1);
-		virtual void slotStart2(const QString& szText, int lTotal2);
-		virtual void slotProgress2(const QString& szText, int lAchieved2);
-		virtual void slotEnd2();
-		virtual void slotClose();
+		void slotSetTitleText(QStringView title);
+		void slotSetTopText(QStringView text);
+		void slotSetPartialMinimum(int minimum);
+		void slotSetPartialMaximum(int maximum);
+		void slotSetPartialValue(int value);
+		void slotSetTotalMinimum(int minimum);
+		void slotSetTotalMaximum(int maximum);
+		void slotSetTotalValue(int value);
+		void slotSetBottomText(QStringView text);
+
+		void slotClose();
 
 	private slots:
 		void cancelPressed();
 
 	private:
 		void closeEvent(QCloseEvent* bar);
-		void retainHiddenWidgetSize(QWidget& rWidget);
+		void retainHiddenWidgetSize(QWidget* widget);
 	};
 }

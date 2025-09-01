@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "StackSettings.h"
 #include "ui/ui_StackSettings.h"
 #include "Workspace.h"
@@ -108,22 +108,33 @@ namespace DSS
 		//
 		// Get number of processors we're allowed to use.   Normally this is the number of
 		// real cores available, but this can artificially be limited by setting  
-		// "MaxProcessors" to 1 in the application settings (registry or ini file).
+		// "MaxProcessors" to a specific value in the application settings (registry or ini file).
 		//
 		// If this is done the the number used will be min("MaxProcessors", cores)
 		//
-		ui->reducePriority->setChecked(CMultitask::GetReducedThreadsPriority());
+		ui->reducePriority->setChecked(Multitask::GetReducedThreadsPriority());
 
-		if (CMultitask::GetNrProcessors(true) > 1)
+		// Get the number of processers we have available.
+		int processors = Multitask::GetNrProcessors(true);
+
+		if (processors > 1)
 		{
-			ui->useAllProcessors->setChecked(CMultitask::GetNrProcessors() > 1);
+			const auto processorCountSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+
+			ui->processorCountSpinBox->setRange(1, processors);
+			ui->processorCountSpinBox->setEnabled(true);
+			ui->processorCountSpinBox->setValue((0 == processorCountSetting) ? processors : processorCountSetting);
 		}
 		else
-			ui->useAllProcessors->setDisabled(true);
+		{
+			ui->processorCountSpinBox->setRange(1, 1);
+			ui->processorCountSpinBox->setEnabled(false);
+			ui->processorCountSpinBox->setValue(1);
+		}
 
 		// Check if we're allowed to use SIMD vectorized code.
 		const bool cpuSupportsAvx2 = AvxSimdCheck::checkAvx2CpuSupport();
-		ui->useSimd->setChecked(cpuSupportsAvx2 && CMultitask::GetUseSimd());
+		ui->useSimd->setChecked(cpuSupportsAvx2 && Multitask::GetUseSimd());
 		ui->useSimd->setDisabled(!cpuSupportsAvx2);
 
 		//
@@ -183,9 +194,8 @@ namespace DSS
 			QMetaObject::invokeMethod(which, "onSetActive");
 	}
 
-	void StackSettings::on_chooseFolder_clicked(bool value)
+	void StackSettings::on_chooseFolder_clicked(bool)
 	{
-		value;
 		QString dir =
 			QFileDialog::getExistingDirectory(this, tr("Select Temporary Files Folder", "IDS_RECAP_SELECTTEMPFOLDER"),
 				ui->tempFilesFolder->text(),
@@ -215,14 +225,14 @@ namespace DSS
 		//
 		workspace.saveSettings();
 
-		// Save whether allowed to use all processors and whether to run threads
-		// at reduced priority
-		if (CMultitask::GetNrProcessors(true) > 1)
-			CMultitask::SetUseAllProcessors(ui->useAllProcessors->isChecked());
-		CMultitask::SetReducedThreadsPriority(ui->reducePriority->isChecked());
+		// Save the maximum number of processors we're allowed to use,
+		// and whether to run threads at reduced priority
+		//
+		Multitask::setMaxProcessors(ui->processorCountSpinBox->value());
+		Multitask::SetReducedThreadsPriority(ui->reducePriority->isChecked());
 
 		// Save whether to use SIMD vectorized code.
-		CMultitask::SetUseSimd(ui->useSimd->isChecked());
+		Multitask::SetUseSimd(ui->useSimd->isChecked());
 
 		//
 		// Save the temporary files folder

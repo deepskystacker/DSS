@@ -1,8 +1,8 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
-#include "progressdlg.h"
-#include <Ztrace.h>
+#include "oldprogressdlg.h"
+#include <ztrace.h>
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -96,7 +96,7 @@ namespace DSS
 
 	void ProcessingDlg::redChanging(int peg)
 	{
-		qDebug() << "ProcessingDlg::RedChanging(" << peg << ")";
+		// qDebug() << "ProcessingDlg::redChanging(" << peg << ")";
 
 		double blackPoint{ 0.0 },
 			greyPoint{ 0.0 },
@@ -108,6 +108,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
+		// qDebug() << "stops.size: " << stops.size();
 		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
@@ -184,7 +185,8 @@ namespace DSS
 
 	void ProcessingDlg::redChanged(int peg)
 	{
-		qDebug() << "ProcessingDlg::RedChanged(" << peg << ")";
+		// qDebug() << "ProcessingDlg::redChanged(" << peg << ")";
+
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
 		// one final time
@@ -196,6 +198,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
+		// qDebug() << "stops.size: " << stops.size();
 		ZASSERT(5 == stops.size());
 
 		//
@@ -210,7 +213,7 @@ namespace DSS
 		setDirty();
 		emit showHistogram();
 
-		qDebug() << "red sliders changed";
+		// qDebug() << "red slider changed";
 
 	}
 
@@ -218,6 +221,8 @@ namespace DSS
 
 	void ProcessingDlg::greenChanging(int peg)
 	{
+		// qDebug() << "ProcessingDlg::greenChanging(" << peg << ")";
+
 		double blackPoint{ 0.0 },
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
@@ -228,6 +233,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
+		// qDebug() << "stops.size: " << stops.size();
 		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
@@ -303,6 +309,8 @@ namespace DSS
 
 	void ProcessingDlg::greenChanged(int peg)
 	{
+		// qDebug() << "ProcessingDlg::greenChanged(" << peg << ")";
+
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
 		// one final time
@@ -314,6 +322,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
+		// qDebug() << "stops.size: " << stops.size();
 		ZASSERT(5 == stops.size());
 
 		//
@@ -325,7 +334,7 @@ namespace DSS
 			controls->blueGradient->setPeg(peg, stops[peg].first); controls->blueGradient->update();
 		}
 
-		qDebug() << "green sliders changed";
+		// qDebug() << "green slider changed";
 
 		setDirty();
 		emit showHistogram();
@@ -335,6 +344,8 @@ namespace DSS
 
 	void ProcessingDlg::blueChanging(int peg)
 	{
+		// qDebug() << "ProcessingDlg::blueChanging(" << peg << ")";
+
 		double blackPoint{ 0.0 },
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
@@ -345,6 +356,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
+		// qDebug() << "stops.size: " << stops.size();
 		ZASSERT(5 == stops.size());
 
 		blackPoint = stops[1].first;
@@ -420,6 +432,7 @@ namespace DSS
 
 	void ProcessingDlg::blueChanged(int peg)
 	{
+		// qDebug() << "ProcessingDlg::blueChanged(" << peg << ")";
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
 		// one final time
@@ -431,6 +444,7 @@ namespace DSS
 		//
 		// Adjust stop values if necessary
 		//
+		// qDebug() << "stops.size: " << stops.size();
 		ZASSERT(5 == stops.size());
 
 		//
@@ -445,7 +459,7 @@ namespace DSS
 		setDirty();
 		emit showHistogram();
 
-		qDebug() << "blue sliders changed";
+		// qDebug() << "blue slider changed";
 
 	}
 

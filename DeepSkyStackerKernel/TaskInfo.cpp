@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "TaskInfo.h"
 #include "MemoryBitmap.h"
 #include "MultiBitmap.h"
@@ -19,13 +19,13 @@ void CTaskInfo::CreateEmptyMaster(const CMemoryBitmap* pBitmap)
 	m_pMaster->SetProcessingMethod(m_Method, m_fKappa, m_lNrIterations);
 }
 
-void CTaskInfo::AddToMaster(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+void CTaskInfo::AddToMaster(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	if (static_cast<bool>(m_pMaster))
 		m_pMaster->AddBitmap(pBitmap, pProgress);
 }
 
-std::shared_ptr<CMemoryBitmap> CTaskInfo::GetMaster(ProgressBase* const pProgress)
+std::shared_ptr<CMemoryBitmap> CTaskInfo::GetMaster(OldProgressBase* const pProgress)
 {
 	std::shared_ptr<CMemoryBitmap> pBitmap;
 

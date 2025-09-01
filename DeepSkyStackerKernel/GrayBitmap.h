@@ -2,7 +2,7 @@
 #include "MemoryBitmap.h"
 #include "CFABitmapInfo.h"
 
-namespace DSS { class ProgressDlg; }
+namespace DSS { class OldProgressDlg; }
 using namespace DSS;
 
 namespace {
@@ -161,8 +161,7 @@ public:
 		//{
 		//	i *= 2; j *= 2;
 		//}
-		CheckXY(i, j);
-		fGray = m_vPixels[GetOffset(i, j)];
+		fGray = getValue(i, j);
 	}
 
 	virtual double getValue(size_t i, size_t j) const override
@@ -176,14 +175,14 @@ public:
 	}
 
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override;
-	inline virtual void SetPixel(size_t i, size_t j, double fGray) override;
+	virtual void SetPixel(size_t i, size_t j, double fGray) override;
 	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override;
-	virtual void inline GetPixel(size_t i, size_t j, double& fGray) const override;
+	virtual void GetPixel(size_t i, size_t j, double& fGray) const override;
 	virtual bool GetScanLine(size_t j, void* pScanLine) const override;
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override;
 
-	virtual void RemoveHotPixels(ProgressBase* pProgress = nullptr) override;
+	virtual void RemoveHotPixels(OldProgressBase* pProgress = nullptr) override;
 
 	TType* GetGrayPixel(const int i, const int j)
 	{

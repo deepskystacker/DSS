@@ -1,26 +1,47 @@
-#include "stdafx.h"
-#include <immintrin.h>
+/****************************************************************************
+**
+** Copyright (C) 2024, 2025 Martin Toeltsch
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
+#include "pch.h"
+#include "avx_includes.h"
 #include "avx_output.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "avx_median.h"
 #include "MultiBitmap.h"
 #include "ColorMultiBitmap.h"
 #include "GreyMultiBitmap.h"
-
-AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) :
-	inputBitmap{ mBitmap },
-	outputBitmap{ outputbm },
-	avxReady{ true }
-{
-	if (!AvxSimdCheck::checkSimdAvailability())
-		avxReady = false;
-	// Homogenization not implemented with AVX
-	if (inputBitmap.GetHomogenization())
-		avxReady = false;
-	// Output must be float values
-	if (AvxSupport{outputBitmap}.bitmapHasCorrectType<float>() == false)
-		avxReady = false;
-}
 
 template <class INPUTTYPE, class OUTPUTTYPE>
 bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept
@@ -39,10 +60,9 @@ inline float AvxOutputComposition::convertToFloat(const T value) noexcept
 		return static_cast<float>(value);
 }
 
-int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
+int AvxOutputComposition::avxCompose(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (!avxReady)
-		return 1;
+
 	// If this is not equal, something went wrong and we cannot continue without risking access violations.
 	if (lineAddresses.size() != inputBitmap.GetNrAddedBitmaps())
 		return 1;
@@ -101,7 +121,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 	};
 	const auto sigma = [](const __m256 sum, const __m256d sumSqLo, const __m256d sumSqHi, const __m256 N) -> __m256
 	{
-		// Sigma� = sumSquared / N - �� = 1/N * (sumSquared - sum� / N)
+		// Sigma² = sumSquared / N - µ² = 1/N * (sumSquared - sum² / N)
 		const __m256d Nlo = _mm256_cvtps_pd(_mm256_extractf128_ps(N, 0));
 		const __m256d Nhi = _mm256_cvtps_pd(_mm256_extractf128_ps(N, 1));
 		const __m256d sumLo = _mm256_cvtps_pd(_mm256_extractf128_ps(sum, 0));
@@ -177,10 +197,14 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 	const auto vectorMedian = [&quickMedian](__m256& loMedian, __m256& hiMedian, const __m256 loLoBound, const __m256 hiLoBound, const __m256 loHiBound, const __m256 hiHiBound) -> void
 	{
-		for (size_t n = 0; n < 8; ++n)
-			accessSimdElement(loMedian, n) = quickMedian(n, accessSimdElement(loLoBound, n), accessSimdElement(loHiBound, n), accessSimdElement(loMedian, n));
-		for (size_t n = 0; n < 8; ++n)
-			accessSimdElement(hiMedian, n) = quickMedian(n + 8, accessSimdElement(hiLoBound, n), accessSimdElement(hiHiBound, n), accessSimdElement(hiMedian, n));
+		constexpr size_t N = sizeof(__m256) / sizeof(float);
+		std::array<float, N> vec;
+		for (size_t n = 0; n < N; ++n)
+			vec[n] = quickMedian(n, accessSimdElementConst(loLoBound, n), accessSimdElementConst(loHiBound, n), accessSimdElementConst(loMedian, n));
+		loMedian = _mm256_loadu_ps(vec.data());
+		for (size_t n = 0; n < N; ++n)
+			vec[n] = quickMedian(n + 8, accessSimdElementConst(hiLoBound, n), accessSimdElementConst(hiHiBound, n), accessSimdElementConst(hiMedian, n));
+		hiMedian = _mm256_loadu_ps(vec.data());
 	};
 
 
@@ -302,7 +326,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 				const __m256 noValuesMask2 = _mm256_cmp_ps(N2, _mm256_setzero_ps(), 0);
 				my1 = _mm256_blendv_ps(_mm256_div_ps(sum1, N1), _mm256_setzero_ps(), noValuesMask1); // Low 8 floats. Set 0 where N==0.
 				my2 = _mm256_blendv_ps(_mm256_div_ps(sum2, N2), _mm256_setzero_ps(), noValuesMask2); // Hi 8 floats. Set 0 where N==0.
-				// Update lower and upper bound with new � +- kappa * sigma
+				// Update lower and upper bound with new µ +- kappa * sigma
 				const __m256 sigma1 = sigma(sum1, sumSq1, sumSq2, N1);
 				const __m256 sigma2 = sigma(sum2, sumSq3, sumSq4, N2);
 				upperBound1 = _mm256_blendv_ps(_mm256_fmadd_ps(sigma1, kappa, my1), _mm256_setzero_ps(), noValuesMask1); // Set 0 where N==0.
@@ -466,20 +490,20 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				__m256 S1 = _mm256_setzero_ps();
 				__m256 S2 = _mm256_setzero_ps();
 
-				// Calculate sigma� related to � of last iteration.
+				// Calculate sigma² related to µ of last iteration.
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
 					const __m256 d1 = _mm256_sub_ps(lo8, my1);
 					const __m256 d2 = _mm256_sub_ps(hi8, my2);
-					S1 = _mm256_fmadd_ps(d1, d1, S1); // Sum of (x-�)�
+					S1 = _mm256_fmadd_ps(d1, d1, S1); // Sum of (x-µ)²
 					S2 = _mm256_fmadd_ps(d2, d2, S2);
 				}
-				const __m256 sigmaSq1 = _mm256_div_ps(S1, N); // sigma� = sum(x-�)� / N
+				const __m256 sigmaSq1 = _mm256_div_ps(S1, N); // sigma² = sum(x-µ)² / N
 				const __m256 sigmaSq2 = _mm256_div_ps(S2, N);
 
-				// Calculate new � using current sigma�.
+				// Calculate new µ using current sigma².
 				__m256 W1 = _mm256_setzero_ps();
 				__m256 W2 = _mm256_setzero_ps();
 				S1 = _mm256_setzero_ps();
@@ -488,9 +512,9 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					const __m256 d1 = _mm256_sub_ps(lo8, my1); // x-�
+					const __m256 d1 = _mm256_sub_ps(lo8, my1); // x-µ
 					const __m256 d2 = _mm256_sub_ps(hi8, my2);
-					const __m256 denominator1 = _mm256_fmadd_ps(d1, d1, sigmaSq1); // sigma� + (x-�)�
+					const __m256 denominator1 = _mm256_fmadd_ps(d1, d1, sigmaSq1); // sigma² + (x-µ)²
 					const __m256 denominator2 = _mm256_fmadd_ps(d2, d2, sigmaSq2);
 					const __m256 weight1 = _mm256_blendv_ps(_mm256_div_ps(sigmaSq1, denominator1), _mm256_set1_ps(1.0f), _mm256_cmp_ps(denominator1, _mm256_setzero_ps(), 0)); // sigma� / (sigma� + (x-�)�) = 1 / (1 + (x-�)�/sigma�)
 					const __m256 weight2 = _mm256_blendv_ps(_mm256_div_ps(sigmaSq2, denominator2), _mm256_set1_ps(1.0f), _mm256_cmp_ps(denominator2, _mm256_setzero_ps(), 0)); // Set weight to 1 when sigma==0.
@@ -524,7 +548,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 			{
 				float S{ 0.0f };
 
-				// Calculate sigma� related to � of last iteration.
+				// Calculate sigma² related to µ of last iteration.
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
@@ -533,7 +557,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				}
 				const float sigmaSq = S / nLineAddresses;
 
-				// Calculate new � using current sigma�.
+				// Calculate new µ using current sigma².
 				float W{ 0.0f };
 				S = 0.0f;
 				for (auto frameAddress : lineAddresses)

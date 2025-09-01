@@ -1,0 +1,13 @@
+# Microsoft Developer Studio Generated Dependency File, included by TestZTrace.mak
+
+.\TestZTrace.cpp : \
+	"..\..\..\program files\microsoft platform sdk\include\basetsd.h"\
+	"..\..\..\program files\microsoft platform sdk\include\guiddef.h"\
+	"..\..\..\program files\microsoft platform sdk\include\propidl.h"\
+	"..\..\..\program files\microsoft platform sdk\include\tvout.h"\
+	"..\..\..\program files\microsoft platform sdk\include\winefs.h"\
+	"..\ZDefs.h"\
+	"..\zexcbase.h"\
+	"..\zexcept.h"\
+	"..\ztrace.h"\
+	

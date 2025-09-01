@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2023 David C. Partridge
+** Copyright (C) 2023, 2025 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -40,7 +40,7 @@
 #include <QString>
 namespace DSS
 {
-	class ProgressBase
+	class OldProgressBase
 	{
 	protected:
 		bool m_jointProgress;
@@ -67,7 +67,7 @@ namespace DSS
 		static constexpr float m_minProgressStep{ 5.0f };
 
 	public:
-		ProgressBase() :
+		OldProgressBase() :
 			m_jointProgress{ false },
 			m_total1{ 0 },
 			m_total2{ 0 },
@@ -77,7 +77,7 @@ namespace DSS
 			m_enableCancel{ false }
 		{}
 
-		virtual ~ProgressBase() = default;
+		virtual ~OldProgressBase() = default;
 
 		//
 		// These eight mfs define the interface implemented in subclasses
@@ -107,7 +107,97 @@ namespace DSS
 	protected:
 		void UpdateProcessorsUsed();
 		virtual void applyProcessorsUsed(int nCount) = 0;
+	};
 
 
+	//
+	// Enum class for mode of Progress reporting (single or dual)
+	//
+	enum class ProgressMode
+	{
+		Single, // Single progress bar (default)
+		Dual    // Dual progress bar (for two progress bars)
+	};
+
+	// 
+	// Enum class to say which progress bar we are referring to.
+	//
+	enum class ProgressBar
+	{
+		Partial,  // First progress bar for process of indiviual actions
+		Total     // Second progress bar for overall progress
+	};
+
+	//
+	// This is the base class for all progress classes. It defines the interface
+	// that all progress classes must implement. It also provides some common
+	// functionality that is used by all progress classes.
+	// The interface is defined in the pure virtual functions that are
+	// implemented in the subclasses. The subclasses are responsible for
+	// implementing the actual progress display. The base class provides
+	// some common functionality that is used by all progress classes.
+	// 
+
+	class ProgressBase
+	{
+	protected:
+		bool firstProgress{ false };
+		bool cancelEnabled{ false };
+		bool canceled{ false };
+		int partialMinimum{ 0 };
+		int partialMaximum{ 100 };
+		int partialValue{ 0 };
+		int totalMininum{ 0 };
+		int totalMaximum{ 100 };
+		int totalValue{ 0 };	
+
+		QElapsedTimer m_timer;
+		// Properties
+		QString topText{};
+		QString bottomText{};
+
+		static inline const QString m_strEmptyString{};
+		static constexpr float m_minProgressStep{ 5.0f };
+
+		void updateProcessorsUsed();
+		virtual void applyProcessorsUsed(int nCount) = 0;
+
+	public:
+		ProgressBase() :
+			firstProgress{ false },
+			cancelEnabled{ false },
+			canceled{ false },
+			partialMinimum{ 0 },
+			partialMaximum{ 100 },
+			partialValue{ 0 },
+			totalMininum{ 0 },
+			totalMaximum{ 100 },
+			totalValue{ 0 },
+			topText{},
+			bottomText{}
+			{}
+
+		// Deleted copy and move constructors and assignment operators
+		ProgressBase(const ProgressBase&) = delete;
+		ProgressBase(ProgressBase&&) = delete;
+		ProgressBase& operator=(const ProgressBase&) = delete;
+		ProgressBase& operator=(ProgressBase&&) = delete;
+		virtual ~ProgressBase() = default;
+
+		//
+		// These eleven mfs define the interface implemented in subclasses
+		//
+		virtual void setTitleText(const QString& title) = 0;
+		virtual void setTopText(QStringView text) = 0;
+		virtual void setPartialMinimum(int minimum) = 0;
+		virtual void setPartialMaximum(int maximum) = 0;
+		virtual void setPartialValue(int value) = 0;
+		virtual void setTotalMinimum(int minimum) = 0;
+		virtual void setTotalMaximum(int maximum) = 0;
+		virtual void setTotalValue(int value) = 0;
+		virtual void setBottomText(QStringView text) = 0;
+
+		virtual bool wasCanceled() const = 0;
 	};
 }
+

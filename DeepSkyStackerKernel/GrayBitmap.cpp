@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "pch.h"
 #include <algorithm>
 #include "GrayBitmap.h"
 #include "DSSProgress.h"
@@ -7,7 +7,7 @@
 #include "Multitask.h"
 #include "GreyMultiBitmap.h"
 #include "MedianFilterEngine.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 
 using namespace DSS;
 
@@ -50,7 +50,7 @@ bool CGrayBitmapT<T>::InitInternals()
 {
 	const size_t nrPixels = static_cast<size_t>(m_lWidth) * static_cast<size_t>(m_lHeight);
 	m_vPixels.clear();
-	m_vPixels.resize(nrPixels);
+	if (0 != nrPixels) m_vPixels.resize(nrPixels);
 
 	return true; // Otherwise m_vPixels.resize() would have thrown bad_alloc.
 }
@@ -517,9 +517,9 @@ void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc) const
 #pragma warning( disable : 4189 ) // unreachable code from initial constexpr if statement.
 
 template <typename T>
-void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
+void CGrayBitmapT<T>::RemoveHotPixels(OldProgressBase* pProgress)
 {
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 
 	if (pProgress != nullptr)
 	{
@@ -532,7 +532,7 @@ void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
 	std::vector<size_t> hotOffsets;
 	std::vector<size_t> localHotOffsets;
 
-#pragma omp parallel default(none) shared(hotOffsets) firstprivate(localHotOffsets) if(nrProcessors > 1)
+#pragma omp parallel default(shared) shared(hotOffsets) firstprivate(localHotOffsets) if(nrProcessors > 1)
 	{
 #pragma omp for schedule(dynamic, 50) nowait
 		for (int row = 2; row < height - 2; ++row)

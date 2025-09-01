@@ -1,0 +1,234 @@
+open-vm-tools#
+# If you don't already have an installation of Ubuntu 22.04, I suggest you
+# iInstall Lubuntu 22.04.5 using lubuntu-22.04.5-desktop-amd64.iso which 
+# can be downloaded from:
+# 
+# https://cdimage.ubuntu.com/lubuntu/releases/jammy/release/
+#
+# You may also wish to do that so that the DeepSkyStacker build environment
+# doesn't change your existing Ubuntu setup.
+#
+# I installed it in a VMware Workstation Pro virtual machine.
+#
+# **********************************************************************
+#       DO NOT INSTALL VMWare's VM Tools by right clicking on the VM name
+#                and selecting "Install VMware Tools"
+# **********************************************************************
+#
+# Open a gui terminal and install openssh
+#
+sudo apt-get install openssh-server
+#
+# Check if the firewall is running
+#
+sudo ufw status
+#
+# if it isn't start it
+# 
+sudo ufw enable
+#
+# Allow ssh connections
+# 
+sudo ufw allow ssh
+#
+# Check that all is well
+#
+sudo systemctl status ssh
+#
+# You can now close the terminal window ...
+#
+
+#
+# open an ssh session to it using (e.g.) putty.
+#
+# If you are asked about overwriting configuration files while the full-upgrade
+# is running, accept the default reply which is to simply press enter (No)
+#
+sudo apt-get update
+sudo apt-get full-upgrade
+sudo apt-get autoremove
+sudo reboot now
+#
+# Re-connect your ssh session once the system has restarted.
+#
+
+#
+# *******************************************************************
+# Start of section **ONLY* for VMware virtual machine
+# 
+sudo apt-get install open-vm-tools open-vm-tools-desktop
+sudo apt-get update
+sudo reboot now
+#
+# Re-connect your openssh session once the system has restarted.
+#
+# End of section **ONLY** for VMware virtual machine
+#
+# *******************************************************************
+# 
+sudo apt-get install build-essential libgl1-mesa-dev
+sudo apt-get install gdb ninja-build zip cmake
+sudo apt-get install libglu1-mesa-dev libxcb-xinerama0 libxcb-cursor0
+sudo apt-get install libfontconfig1-dev libfreetype-dev libx11-dev 
+sudo apt-get install libx11-xcb-dev libxcb-cursor-dev libxcb-glx0-dev
+sudo apt-get install libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev
+sudo apt-get install libxcb-randr0-dev libxcb-render-util0-dev libxcb-shape0-dev
+sudo apt-get install libxcb-shm0-dev libxcb-sync-dev libxcb-util-dev
+sudo apt-get install libxcb-xfixes0-dev libxcb-xinerama0-dev libxcb-xkb-dev
+sudo apt-get install libxcb1-dev libxext-dev libxfixes-dev libxi-dev
+sudo apt-get install libxkbcommon-dev libxkbcommon-x11-dev libxrender-dev
+sudo apt-get install cmake-qt-gui
+sudo apt-get install gh
+
+#
+# Setup to login to github
+#
+# Choose github.com, HTTPS, Use github credentials, and Login with a web browser
+# It will then display an authentication code.
+# Then press enter again:
+#
+BROWSER=false gh auth login
+#
+# Here's what you should see:
+#
+? What account do you want to log into? GitHub.com
+? What is your preferred protocol for Git operations? HTTPS
+? Authenticate Git with your GitHub credentials? Yes
+? How would you like to authenticate GitHub CLI? Login with a web browser
+
+! First copy your one-time code: 1C26-43EB
+- Press Enter to open github.com in your browser...
+! Failed opening a web browser at https://github.com/login/device
+  exit status 1
+  Please try entering the URL in your browser manually
+#
+# Go back the the GUI and open firefox and goto 
+# https://github.com/login/device 
+# 
+# enter your credentials to login to github and then enter the authentication code
+#
+# Once that has been accepted, return to the ssh session. where you should see
+# something like this:
+#
+✓ Authentication complete. Press Enter to continue...
+
+- gh config set -h github.com git_protocol https
+✓ Configured git protocol
+✓ Logged in as perdrix52
+
+#
+# Download the Qt Online installer for Linux from Qt Website to the Downloads folder
+#
+cd ~/Downloads
+wget https://download.qt.io/official_releases/online_installers/qt-online-installer-linux-x64-online.run
+chmod +x qt-online-installer-linux-x64-online.run
+#
+# Now run the installer from a GUI terminal session and install Qt 6.8.2
+# (it won't work from the ssh session)
+# 
+# Ensure you install Qt to /opt/Qt and select a Custom Installation
+# 
+# Expand the Qt section and then the Qt 6.9.0 section and expand "Additional Libraries"
+#
+#    Select Desktop, Sources (if you want then), and Qt Charts in the Additional Libraries section
+#    I also suggest it would be useful to select Qt Debug Information Files
+#
+./Downloads/qt-online-installer-linux-x64-online.run
+#
+# Now return to the ssh session
+#
+
+#
+# Install libjpeg
+#
+sudo apt-get install libjpeg-dev
+
+#
+# Install Exiv2
+#
+sudo apt-get install exiv2
+
+#
+# Install libinih
+#
+sudo apt-get install libinih-dev
+
+#
+# Install openMP (we'll need to install this as a co-req of our install)
+#
+sudo apt-get install libomp-dev
+
+#
+# Install socat to allow Visual Studio to remote debug CMake
+#
+sudo apt-get install socat
+
+#
+# Get gcc and g++ 13 installed and set symlinks 
+#
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+sudo apt-get install --reinstall g++-13 gcc-13
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+sudo update-alternatives --config gcc
+sudo update-alternatives --config g++
+
+#
+# Update cmake to 4.0.3
+#
+echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+sudo apt-get update
+sudo apt-get purge --auto-remove cmake
+sudo apt-get install -y software-properties-common lsb-release
+sudo apt-get clean all
+sudo apt-get install cmake
+
+#
+# Install vcpkg
+#
+cd ~
+sudo apt-get install curl
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg && ./bootstrap-vcpkg.sh
+cd ~
+#
+# Edit .bashrc using (e.g.) nano and and add these lines: 
+#
+export VCPKG_ROOT=~/vcpkg
+export PATH=$VCPKG_ROOT:$PATH
+#
+# You should add them just before the lines that read:
+#
+	# If not running interactively, don't do anything
+	case $- in
+	    *i*) ;;
+	      *) return;;
+	esac
+# *************** END OF START OF .bashrc
+
+#
+# Install some more pre-reqs for building our dependencies
+#
+sudo apt-get install mesa-common-dev libxrandr-dev libxxf86vm-dev
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

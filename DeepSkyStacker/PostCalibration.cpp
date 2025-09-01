@@ -1,15 +1,16 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "PostCalibration.h"
 #include "ui/ui_PostCalibration.h"
 #include "Workspace.h"
 #include "StackSettings.h"
-#include "ZExcept.h"
-#include "Ztrace.h"
-#include "progressdlg.h"
+#include "zexcept.h"
+#include "ztrace.h"
+#include "oldprogressdlg.h"
 #include "MasterFrames.h"
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "CosmeticEngine.h"
+#include "DeepSkyStacker.h"
 
 extern bool	g_bShowRefStars;
 
@@ -49,15 +50,15 @@ namespace DSS
 	{
 		onMedian = new QAction(medianString, this);
 		connect(onMedian, &QAction::triggered, this,
-			[=]() { this->setReplacementMethod(CR_MEDIAN); });
+			[this]() { this->setReplacementMethod(CR_MEDIAN); });
 		connect(onMedian, &QAction::triggered, this,
-			[=]() { ui->replacementMethod->setText(medianString); });
+			[this]() { ui->replacementMethod->setText(medianString); });
 
 		onGaussian = new QAction(gaussianString, this);
 		connect(onGaussian, &QAction::triggered, this,
-			[=]() { this->setReplacementMethod(CR_GAUSSIAN); });
+			[this]() { this->setReplacementMethod(CR_GAUSSIAN); });
 		connect(onGaussian, &QAction::triggered, this,
-			[=]() { ui->replacementMethod->setText(gaussianString); });
+			[this]() { ui->replacementMethod->setText(gaussianString); });
 
 		return *this;
 	}
@@ -318,7 +319,7 @@ namespace DSS
 			tasks.ResolveTasks();
 			if (tasks.m_vStacks.size())
 			{
-				DSS::ProgressDlg				dlg;
+				DSS::OldProgressDlg				dlg{ DeepSkyStacker::instance() } ;
 				CStackingInfo& StackingInfo = tasks.m_vStacks[0];
 
 				if (StackingInfo.m_pLightTask &&

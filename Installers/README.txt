@@ -1,9 +1,11 @@
-Welcome to DeepSkyStacker 5.1.10
+Welcome to DeepSkyStacker 6.1.0
 ===============================
 
-Only 64 bit versions of Windows 10 and later are supported in this release.
+Reporting problems:
 
-This release contains some enhancements and bug fixes for problems found in 5.1.8 and 5.1.9
+Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
+<https://groups.io/g/DeepSkyStacker>
+Thank you.
 
 Reporting problems:
 
@@ -14,7 +16,66 @@ Thank you.
 Known problems:
 
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
-   This requires too much work to fix in this release, as we will need to implement our own edit control.
+   This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
+   This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
+
+Changes for DeepSkyStacker 6.1.0
+
+1.  Both macOS (Ventura 13.4 and upward) on both ARM and x86_64 systems and also Linux are now supported.
+    The Linux version is built on Lubuntu 22.04 (Jammy Jellyfish) and should work on most recent Linux systems.
+
+2.  Remove final traces of the old Score metric (e.g. from the info.txt files where it was called OverallQuality).
+
+3.  Bug-fix: Change to the progress dialogue to prevent it stealing focus.
+
+4.  Set code page to utf-8 so that Exiv2 can read files with fileids such as: C:\Τεστερ\ABM8W.jpg
+
+5.  When starting DeepSkyStackerLive, create a DSSLive.settings file with "default" settings if it does not exist.
+
+6.  Correct the code that checks for SIMD support on Linux.   It wasn't working correctly.
+
+7.  Add code to invoke kchmviewer on Linux and uchmviewer on macOS to display the help, and ship uchmviewer inside
+    the DeepSkyStacker.app bundle.
+
+8.  Changes to associate an icon with .dssfilelist files and to provide DeepSkyStackerLive with its own icon.
+
+9.  Ensure that Visual C++ runtime build 35211 is installed.
+
+10. Update CFITSIO to 4.6.2
+
+11. Bug fix: SIGSEGV on Linux caused by incorrect call to TIFFSetField for EXIFTAG_CFAPATTERN
+
+12. If the user specifies a filelist name without an extension, add .dssfilelist
+
+13. Allow specification of the maximum number of processing threads to be used for registration and stacking
+    in the Settings/Stacking Settings dialogue.  The default is set to the number of logical processors,
+    but this can be changed.  We recommend a maximum of 8 even though the default will be higher if you have
+    more processors available.
+
+14. Bug fix: Some translatable strings were not being updated when the language was changed.
+
+15. Bug fix: SIGILL crashes on Linux running on processors that didn't support AVX2.
+    A major re-structuring of the AVX code was needed to resolve this.
+
+16. Work round for nasty g++ problem: std::vector elements of AVX data types were incorrectly aligned which
+    caused a SIGSEGV (crash).
+
+17. Upgrade Qt to 6.9.1, and LibRaw to 21.4
+
+18. On Linux and macOS, the help viewer wasn't closed when DeepSkyStacker was closed.
+
+19. Bug fix: Fix problems introduced by AVX code restructuring. Seestar problems and Drizzle not working.
+
+20. Some code cleanup of the changes made for AVX code restructuring.
+
+21. Bug fix: The name of the html summary file was created from the file list file name incorrectly.
+    It was appending .html to the content of the filename up to but not including the first '.' character.
+    It should have used up to but not including the last '.' character.
+
+22. Implement SIMD decoding for GRBG and BGGR Bayer patterns.
+	
+Welcome to DeepSkyStacker 5.1.10
+======================================
 
 Changes since the last release:
 
@@ -48,14 +109,14 @@ Changes since the last release:
 
 9.  Bug fix: Open picture file should use the Linear transformation not log(Sqrt) so that the image is displayed correctly.
 
-10. Implement default values for FITS keywords DATAMIN and DATAMAX which can be set using FITS/DDP settings.
+10. Work round problem of Visual C++ not driving the dtor of the global scope "Trace Control" object with the result
+    that the trace file was not being deleted.
+	
+11. Implement default values for FITS keywords DATAMIN and DATAMAX which can be set using FITS/DDP settings
+
 
 Welcome to DeepSkyStacker 5.1.8
 ======================================
-
-This release is all about finishing the conversion of the code to use Qt instead of MFC.  That said, there are a few bug fixes,
-and a number of enhancements as well.   This isn't a complete list as many changes were made to improve code quality and 
-performance.
 
 Changes since the last release:
 

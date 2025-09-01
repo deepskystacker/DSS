@@ -81,7 +81,7 @@
  *   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  **********************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "StackWalker.h"
 
 #include <stdio.h>
@@ -1415,7 +1415,7 @@ void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& ent
                   entry.lineFileName, entry.name);
       //
       // Special case check for the first (real) entry in the backtrace being MSVCP140
-	  // If so display a message asking the user to install the latest Visual C++ Redistributable
+      // If so display a message asking the user to install the latest Visual C++ Redistributable
       // 
       if (firstEntry == eType && 0 == strcmp(entry.moduleName, "MSVCP140"))
       {

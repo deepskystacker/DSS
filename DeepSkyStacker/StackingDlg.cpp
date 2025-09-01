@@ -36,11 +36,11 @@
 // StackingDlg.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include "pch.h"
 #include "StackingDlg.h"
 #include "ui_StackingDlg.h"
 #include "picturelist.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "DropFilesDlg.h"
 #include "RenameGroup.h"
 #include "toolbar.h"
@@ -52,7 +52,7 @@
 #include "DeepSkyStacker.h"
 #include "CheckAbove.h"
 #include "Workspace.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include "RegisterSettings.h"
 #include "avx_simd_check.h"
 #include "FrameInfoSupport.h"
@@ -62,7 +62,7 @@
 #include "BatchStacking.h"
 #include "StackRecap.h"
 #include "ProcessingDlg.h"
-#include "ZExcept.h"
+#include "zexcept.h"
 #include "ImageProperties.h"
 
 #define dssApp DeepSkyStacker::instance()
@@ -135,7 +135,7 @@ namespace
 	}};
 
 	QStringList INPUTFILE_FILTERS;
-	QString dssFileListFilter;
+	QString DssFileListFilter;
 }
 
 namespace DSS
@@ -498,6 +498,15 @@ namespace DSS
 
 		retranslateUi();		// translate some of our stuff.
 
+#if defined(Q_OS_MAC)
+		// 
+		// If this is macOS, we need to handle file open events
+		// that are sent to the application. This is done by
+		// installing an event filter on the application object.
+		//
+		qApp->installEventFilter(this);		// Set up an event filter for file open events
+#endif
+
 		mruPath.readSettings();
 
 		connect(ui->fourCorners, &QToolButton::clicked, ui->picture, &DSS::ImageView::on_fourCorners_clicked);
@@ -531,6 +540,35 @@ namespace DSS
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
 	{
+
+#if defined(Q_OS_MAC)
+		// 
+		// If this is macOS, we need to handle file open events
+		// that are sent to the application. This is done by
+		// installing an event filter on the application object.
+		//
+		if (qApp == watched && event->type() == QEvent::FileOpen)
+		{
+			auto* fileOpenEvent = static_cast<QFileOpenEvent*>(event);
+			QString name = fileOpenEvent->file();
+			qDebug() << "File to open:" << name;
+
+			fs::path file{ name.toStdU16String() };
+			if (fs::file_type::regular == status(file).type())
+			{
+				// If the file is a DSS file list, then we need to load it	
+				// and show the images in the list.
+				setFileList(file);
+				openFileList(fileList);			// Will call updateListInfo()
+			}
+			else
+				QMessageBox::warning(this,
+					"DeepSkyStacker",
+					tr("%1 does not exist or is not a file").arg(name));
+
+			return true;
+		}
+#endif
 		if (pictureList->tableView == watched)
 		{
 			if (QEvent::KeyPress == event->type())
@@ -673,7 +711,7 @@ namespace DSS
 			OUTPUTLIST_FILTERS.append(qApp->translate("DSS", filter.source, filter.comment));
 		ZASSERT(std::cmp_equal(OUTPUTLIST_FILTERS.size(), OUTPUTLIST_FILTER_SOURCES.size()));
 
-		dssFileListFilter = qApp->translate("DSS", DssFileListFilterSource.source, DssFileListFilterSource.comment);
+		DssFileListFilter = qApp->translate("DSS", DssFileListFilterSource.source, DssFileListFilterSource.comment);
 
 		INPUTFILE_FILTERS.clear();
 		for (const auto& filter : INPUTFILE_FILTER_SOURCES)
@@ -1292,7 +1330,7 @@ namespace DSS
 			if (ndx.isValid())
 			{
 				fs::path  file;
-				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
+				const ImageListModel* model = qobject_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
 				file = model->selectedFile(row);
 				//
@@ -1968,20 +2006,31 @@ namespace DSS
 
 		// if we already used a file-list set the extension in the save dialog accordingly
 		// otherwise use (*.dssfilelist)
-		QString filterName { dssFileListFilter };
-		if (!fileList.empty())
-		{
-			if (fileList.extension() == ".txt")
-				filterName = OUTPUTLIST_FILTERS[1];
+		QString currentExtension;
+		if (this->fileList.empty()) {
+			currentExtension = "File List (*.dssfilelist)";
 		}
-		ZTRACE_RUNTIME("filterName is %s\n", filterName.toStdString().c_str());
+		else {
+			currentExtension = "File List (*" + QString::fromStdString(defaultName.extension().generic_string()) + ")";
+		}
+		ZTRACE_RUNTIME("currentExtension is %s\n", currentExtension.toStdString().c_str());
+
+		// get the filter index but trap case where the extension wasn't in the list 
+		auto filterIndex = OUTPUTLIST_FILTERS.indexOf(currentExtension);
+		filterIndex = filterIndex < 0 ? 0 : filterIndex;
+		ZTRACE_RUNTIME("filterindex %lld\n", filterIndex);
+
 
 		ZTRACE_RUNTIME("About to show file save dlg");
-		const QString file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), filterName, nullptr);
+		const QString file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex] /*DssFileListFilter*/, nullptr);
 		if (!file.isEmpty())
 		{
+			// If the user has not specified the extension, we add it.
+			fs::path fn = fs::path{ file.toStdU16String() };
+			if (!fn.has_extension())
+				fn.replace_extension(fs::path{ FileListExtension });
 			ZTRACE_RUNTIME("Saving to file-list %s", file.toUtf8().constData());
-			Save(fs::path{ file.toStdU16String() });
+			Save(fn);
 		}
 	}
 
@@ -1989,11 +2038,13 @@ namespace DSS
 
 	void StackingDlg::versionInfoReceived(QNetworkReply* reply)
 	{
+		ZFUNCTRACE_RUNTIME();
 		QNetworkReply::NetworkError error = reply->error();
 		if (QNetworkReply::NoError == error)
 		{
 			QString string(reply->read(reply->bytesAvailable()));
 
+			qInfo() << "Latest version is: " << string;
 			if (string.startsWith("DeepSkyStackerVersion="))
 			{
 				QString verStr = string.section('=', 1, 1);
@@ -2021,6 +2072,7 @@ namespace DSS
 		}
 		else
 		{
+			qWarning() << "Internet version check error: " << reply;
 			QMessageBox::warning(nullptr, dssApp->windowTitle(),
 				tr("Internet version check error code %1:\n%2")
 				.arg(error)
@@ -2055,7 +2107,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+		DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		::RegisterSettings dlgSettings{ this };
 		bool bContinue = true;
 
@@ -2089,16 +2141,14 @@ namespace DSS
 
 				if (checkReadOnlyFolders(tasks))
 				{
-					const auto start{ std::chrono::steady_clock::now() };
-
 					bContinue = checkStacking(tasks);
 					if (bStackAfter)
 						bContinue = bContinue && showRecap(tasks);
 
+					const auto start{ std::chrono::steady_clock::now() };
+
 					if (bContinue)
 					{
-						//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
-
 						CRegisterEngine	RegisterEngine;
 
 						imageLoader.clearCache();
@@ -2181,7 +2231,7 @@ namespace DSS
 					if (frameList.countUnregisteredCheckedLightFrames() != 0)
 					{
 						CRegisterEngine	RegisterEngine;
-						DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+						DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
@@ -2253,6 +2303,7 @@ namespace DSS
 			{
 			case AskRegistering::Answer::ARA_ONE:
 				frameList.checkAllLights(false);// Register only this light frame (unchek the others
+				[[fallthrough]];
 			case AskRegistering::Answer::ARA_ALL:
 				frameList.checkImage(fileToShow, true);// Register all the checked light frames (including this one).
 				registerCheckedImages();
@@ -2358,7 +2409,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+		DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2428,6 +2479,7 @@ namespace DSS
 					dlg.Start2(strText, 0);
 					dlg.SetJointProgress(true);
 
+#if (0)
 					auto deb{ qDebug() }; deb.nospace();
 					deb << "Final stacked image:" << Qt::endl;
 
@@ -2445,6 +2497,7 @@ namespace DSS
 							deb << " " << r << " " << g << " " << b << Qt::endl;
 						}
 					}
+#endif
 
 					if (iff == IFF_TIFF)
 					{
@@ -2492,7 +2545,7 @@ namespace DSS
 #if defined(Q_OS_WIN)
 				_wfopen(file.c_str(), L"rt")
 #else
-				std::fopen(file.c_ctr(), "rt")
+				std::fopen(file.c_str(), "rt")
 #endif
 				)
 			{
@@ -2537,7 +2590,7 @@ namespace DSS
 			if (frameList.countUnregisteredCheckedLightFrames() != 0)
 			{
 				CRegisterEngine	RegisterEngine;
-				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+				DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, this->frameList.getReferenceFrame(), false, &dlg);
@@ -2547,7 +2600,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+				DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };

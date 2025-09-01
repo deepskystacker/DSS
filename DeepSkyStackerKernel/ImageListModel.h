@@ -98,7 +98,7 @@ namespace DSS
         QVariant data(const int row, const Column column, int role = Qt::DisplayRole) const;
         QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-        virtual bool setData(const QModelIndex& index, const QVariant& value, int role);
+        virtual bool setData(const QModelIndex& index, const QVariant& value, int role) override;
         bool setData(const int row, const Column column, const QVariant& value, int role = Qt::EditRole);
         bool setSkyBackground(const int row, const CSkyBackground& bg, int role = Qt::EditRole);
 
@@ -112,6 +112,7 @@ namespace DSS
         const_iterator cend()const { return mydata.end(); }
         iterator begin() { return mydata.begin(); }
         iterator end() { return mydata.end(); }
+		auto size() const { return mydata.size(); }
 
         //
         // return the file held in the base FrameInfo object

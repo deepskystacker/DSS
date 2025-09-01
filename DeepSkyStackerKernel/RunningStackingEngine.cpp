@@ -1,6 +1,6 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "RunningStackingEngine.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 #include "BitmapIterator.h"
@@ -61,7 +61,7 @@ void CRunningStackingEngine::CreatePublicBitmap()
 }
 
 
-bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, ProgressBase* pProgress)
+bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;

@@ -38,8 +38,8 @@ public :
 
 class CPostCalibrationSettings;
 class CMemoryBitmap;
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 using namespace DSS;
 
-std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, ProgressBase* const pProgress);
-void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, ProgressBase* const pProgress);
+std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, OldProgressBase* const pProgress);
+void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, OldProgressBase* const pProgress);

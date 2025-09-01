@@ -1,9 +1,10 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 #include "avx_entropy.h"
 #include "ColorBitmap.h"
 #include "Multitask.h"
 #include "AvxEntropyTest.h"
+#include "avx_simd_check.h"
 
 std::tuple<float, float> calcEntropy(const std::vector<int>& incidences)
 {
@@ -30,6 +31,11 @@ float truncSig(const float value, const float mult) {
 
 TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
 	SECTION("Entropy is zero if all values equal")
 	{
 		constexpr int windowSize = 4;
@@ -116,7 +122,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 			const auto [entropyAvx, entropyExact] = calcEntropy(incidences);
 			REQUIRE(roundSig(calculatedEntropy, 1e4f) == roundSig(entropyAvx, 1e4f));
 			REQUIRE(roundSig(entropyAvx, 1e4f) == roundSig(entropyExact, 1e4f)); // Some decimal digits need to be identical.
-		};
+			};
 
 		compare(std::vector<int>(squareSize * squareSize, 1), redEnt[0]); // First square.
 		compare(std::vector<int>((24 - squareSize) * squareSize, 1), redEnt[1]); // Second "square".
@@ -151,8 +157,8 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 			return static_cast<int>(
 				std::abs(roundSig(calculatedEntropy, 1e3f) - roundSig(entropyAvx, 1e3f))
 				+ std::abs(roundSig(entropyAvx, 1e3f) - roundSig(entropyExact, 1e3f))
-			);
-		};
+				);
+			};
 
 		std::vector<int> inci(squareSize * squareSize, 1);
 		inci[0] = inci[1] = 2;
@@ -189,8 +195,8 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 			return static_cast<int>(
 				std::abs(roundSig(calculatedEntropy, 1e3f) - roundSig(entropyAvx, 1e3f))
 				+ std::abs(roundSig(entropyAvx, 1e3f) - roundSig(entropyExact, 1e3f))
-			);
-		};
+				);
+			};
 
 		REQUIRE(compare(std::vector<int>(squareSize * squareSize, 1), redEnt[0]) == 0); // First square.
 		std::vector<int> inci((40 - squareSize) * squareSize, 1);
@@ -228,7 +234,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 			const auto [entropyAvx, entropyExact] = calcEntropy(incidences);
 			REQUIRE(roundSig(calculatedEntropy, 1e4f) == roundSig(entropyAvx, 1e4f));
 			REQUIRE(roundSig(entropyAvx, 1e4f) == roundSig(entropyExact, 1e4f)); // Some decimal digits need to be identical.
-		};
+			};
 
 		compare(std::vector<int>(squareSize * squareSize, 1), redEnt[0]); // First square.
 		compare(std::vector<int>((24 - squareSize) * squareSize, 1), redEnt[1]); // Second "square".
@@ -249,7 +255,7 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	}
 }
 
-int CMultitask::GetNrProcessors(bool) { return 1; }
+int Multitask::GetNrProcessors(bool) { return 1; }
 
  void TestEntropyInfo::InitSquareEntropies()
  {

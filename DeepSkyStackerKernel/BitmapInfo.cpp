@@ -35,10 +35,10 @@
 ****************************************************************************/
 // BitmapInfo.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "BitmapInfo.h"
 #include <zexcept.h>
-#include <Ztrace.h>
+#include <ztrace.h>
 
 using namespace Exiv2;
 
@@ -52,8 +52,13 @@ bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
 	//
 	// Use Exiv2 C++ class library to retrieve the EXIF information we want
 	//
+//#if defined(Q_OS_WIN)
+//	std::wstring temp{ fileName.generic_wstring() };
+//	auto image = ImageFactory::open(temp);
+//#else
 	std::string temp{ reinterpret_cast<const char*>(fileName.generic_u8string().c_str()) };
 	auto image = ImageFactory::open(temp);
+//#endif
 	ZASSERT(image.get() != nullptr);
 	image->readMetadata();
 	auto& exifData{ image->exifData() };

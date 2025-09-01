@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "About.h"
 #include "ui/ui_About.h"
 #include "DSSVersion.h"
@@ -42,14 +42,14 @@ namespace DSS
         strText += tr("(Now somewhat out of date)") += "<br><br>";
         strHTML += strText;
 
-        strText = "Qt Application Framework 6.8.0\nCopyright © 2024 The Qt Company Ltd.";
+        strText = "Qt Application Framework 6.9.1\nCopyright © 2025 The Qt Company Ltd.";
         strText += "<br>";
         strText = strText.replace("\n", "<br>");
         strHTML += strText;
         strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://www.qt.io/");
         strHTML += strText;
 
-        strText = tr("RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2024 LibRaw LLC",
+        strText = tr("RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2025 LibRaw LLC",
             "IDS_ABOUT_DCRAW").arg(LIBRAW_VERSION_STR);
         strText = strText.replace("\n", "<br>");
         strHTML += strText + "<br>";
@@ -94,7 +94,7 @@ namespace DSS
         connect(ui->aboutQt, &QPushButton::clicked, this, &About::aboutQt);
 
         ui->comboBox->addItem(tr("Default"), "");
-        QDir dir(":/i18n/", "DSS_*.qm");
+        QDir dir(":/i18n/", "DeepSkyStacker_*.qm");
         for (auto it : dir.entryList())
         {
             QString lang{ it.section('_', 1) };
@@ -102,10 +102,9 @@ namespace DSS
             QLocale locale{ lang };
             QString variant{ lang.section('_', 1) };
             QString langName = locale.nativeLanguageName();
-            if ("en" == lang) langName = "English";
             if (!variant.isEmpty())
             {
-                langName += " " + locale.nativeCountryName();
+                langName += " " + locale.nativeTerritoryName();     // was .nativeCountryName()
             }
             ui->comboBox->addItem(langName, lang);
         }

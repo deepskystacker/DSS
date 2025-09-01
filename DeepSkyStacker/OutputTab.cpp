@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "OutputTab.h"
 #include "ui/ui_OutputTab.h"
 

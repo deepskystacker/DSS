@@ -66,7 +66,7 @@ namespace DSS
 
 		ValuedRect& operator = (const ValuedRect& vr) = default;
 
-		bool operator < (const ValuedRect& rhs)
+		bool operator < (const ValuedRect& rhs) const
 		{
 			return m_fScore < rhs.m_fScore;
 		};

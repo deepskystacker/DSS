@@ -1,18 +1,17 @@
 // BatchStacking.cpp : implementation file
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "BatchStacking.h"
 #include "ui/ui_BatchStacking.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Workspace.h"
 #include "StackingTasks.h"
 #include "FrameList.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-
-
+#include "DeepSkyStacker.h"
 
 namespace DSS
 
@@ -75,7 +74,7 @@ namespace DSS
 		if (!tasks.m_vStacks.empty())
 		{
 			bool bContinue = true;
-			DSS::ProgressDlg dlg{ this };
+			DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 			CStackingEngine StackingEngine;
 
 			// First check that the images are registered
@@ -205,7 +204,7 @@ namespace DSS
 	{
 		QStringList filePaths;
 		for (const auto& path : mruPaths) {
-			filePaths.append(QString::fromWCharArray(path.native().c_str()));
+			filePaths.append(QString::fromStdU16String(path.generic_u16string()));
 		}
 		clearLists();
 		addItemsFor(filePaths, false);

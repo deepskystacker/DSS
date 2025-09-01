@@ -1,0 +1,65 @@
+{
+  "builtin-baseline": "a345bbdc68cdfda65603e24413b21afb28f110fb",
+  "dependencies": [
+    {
+      "name": "boost-atomic",
+      "platform": "osx"
+    },
+    "boost-align",
+    "boost-container",
+    "boost-interprocess",
+	"cfitsio",
+    "exiv2",
+    "expat",
+    "libraw",
+    "smtpmime",
+    "tiff",
+	{
+      "name": "uchmviewer",
+      "platform": "osx"
+    },
+	"zlib"
+  ],
+  "overrides": [
+    {
+      "name": "boost-align",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-atomic",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-container",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-interprocess",
+      "version": "1.86.0"
+    },
+    {
+      "name": "exiv2",
+      "version": "0.28.3"
+    },
+    {
+      "name": "expat",
+      "version": "2.6.4"
+    },
+    {
+      "name": "freeglut",
+      "version": "3.6.0#1"
+    },
+    {
+      "name": "libraw",
+      "version": "0.21.4"
+    },
+    {
+      "name": "tiff",
+      "version": "4.7.0"
+    },
+    {
+      "name": "zlib",
+      "version": "1.3.1"
+    }
+  ]
+}

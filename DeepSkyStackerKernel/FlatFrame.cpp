@@ -1,10 +1,10 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "FlatFrame.h"
 #include "Multitask.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
 #include "CFABitmapInfo.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 //#include "resource.h"
 
 using namespace DSS;
@@ -27,7 +27,7 @@ void CFlatFrame::Clear()
 	m_pFlatFrame.reset();
 }
 
-bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress)
+bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -48,7 +48,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase 
 	{
 		const int height = pTarget->RealHeight();
 		const int width = pTarget->RealWidth();
-		const int nrProcessors = CMultitask::GetNrProcessors();
+		const int nrProcessors = Multitask::GetNrProcessors();
 
 		if (width == m_pFlatFrame->RealWidth() && height == m_pFlatFrame->RealHeight())
 		{
@@ -62,7 +62,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase 
 
 			int	rowProgress = 0;
 
-#pragma omp parallel for schedule(static, 100) default(none) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 100) default(shared) if(nrProcessors > 1)
 			for (int j = 0; j < height; j++)
 			{
 				for (int i = 0; i < width; i++)
@@ -116,7 +116,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase 
 
 /* ------------------------------------------------------------------- */
 
-void CFlatFrame::ComputeFlatNormalization(ProgressBase* pProgress)
+void CFlatFrame::ComputeFlatNormalization(OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (IsOk() && !m_bComputed)

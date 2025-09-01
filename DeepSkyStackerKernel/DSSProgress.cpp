@@ -1,13 +1,18 @@
-#include <stdafx.h>
+#include "pch.h"
 #include <QCoreApplication>
 #include "DSSProgress.h"
 #include "Multitask.h"
 
 namespace DSS
 {
-	void ProgressBase::UpdateProcessorsUsed()
+	void OldProgressBase::UpdateProcessorsUsed()
 	{
-		int nCurrentThreadCount = CMultitask::GetNrCurrentOmpThreads();
+		int nCurrentThreadCount = Multitask::GetNrCurrentOmpThreads();
 		applyProcessorsUsed(nCurrentThreadCount);
+	}
+	void ProgressBase::updateProcessorsUsed()
+	{
+		int threadCount = Multitask::GetNrCurrentOmpThreads();
+		applyProcessorsUsed(threadCount);
 	}
 }

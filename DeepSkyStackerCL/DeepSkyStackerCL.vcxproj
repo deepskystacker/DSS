@@ -37,14 +37,20 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtInstall>6.9.1_msvc2022_64</QtInstall>
     <QtModules>core; gui</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtDeployPdb>true</QtDeployPdb>
+    <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
+    <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.8.0_msvc2022_64</QtInstall>
+    <QtInstall>6.9.1_msvc2022_64</QtInstall>
     <QtModules>core; gui</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
+    <QtDeployPdb>true</QtDeployPdb>
+    <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
+    <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -54,11 +60,13 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Release.props" />
+    <Import Project="..\vcpkg.props" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\Debug.props" />
+    <Import Project="..\vcpkg.props" />
     <Import Project="$(QtMsBuild)\Qt.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -68,16 +76,27 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <IncludePath />
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>../include;$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
     <IncludePath />
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgUseMD>true</VcpkgUseMD>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgUseMD>true</VcpkgUseMD>
+    <VcpkgConfiguration>Debug</VcpkgConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -85,18 +104,19 @@
     </Midl>
     <ClCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;NOMINMAX;LIBRAW_NODLL;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;..\;..\DeepSkyStacker;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;..\;..\DeepSkyStacker;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>-Zc:__cplusplus /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4244 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4244 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <WarningLevel>Level4</WarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -107,9 +127,10 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
-      <AdditionalDependencies>psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2d.lib;libexpatd.lib;zlibstaticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <OptimizeReferences>false</OptimizeReferences>
     </Link>
     <QtMoc>
       <QtMocDir>.\GeneratedFiles\</QtMocDir>
@@ -131,25 +152,26 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\;..\DeepSkyStacker;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;..\;..\DeepSkyStacker;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DSS_COMMANDLINE;NOMINMAX;LIBRAW_NODLL;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>-Zc:__cplusplus /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4244 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4244 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <WarningLevel>Level4</WarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;exiv2.lib;libexpat.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
@@ -158,6 +180,7 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <QtMoc>
       <QtMocDir>.\GeneratedFiles\</QtMocDir>
@@ -182,7 +205,7 @@
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
     <ClCompile Include="progressconsole.cpp" />
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -192,17 +215,11 @@
     <ClInclude Include="..\DeepSkyStackerKernel\dssrect.h" />
     <QtMoc Include="DeepSkyStackerCL.h" />
     <QtMoc Include="progressconsole.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
       <Project>{cb7b75f1-08f4-4c8d-a7ef-2aa33e9a67f1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\LibRaw\buildfiles\libraw.vcxproj">
-      <Project>{a71d2131-f425-381f-8a9a-29d60132a046}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
-      <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ZClass\ZClass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
@@ -293,21 +310,25 @@
     <Image Include="..\DeepSkyStacker\undo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <QtTranslation Include="i18n\DSSCL_ca.ts" />
-    <QtTranslation Include="i18n\DSSCL_cs.ts" />
-    <QtTranslation Include="i18n\DSSCL_de.ts" />
-    <QtTranslation Include="i18n\DSSCL_en.ts" />
-    <QtTranslation Include="i18n\DSSCL_es.ts" />
-    <QtTranslation Include="i18n\DSSCL_fr.ts" />
-    <QtTranslation Include="i18n\DSSCL_it.ts" />
-    <QtTranslation Include="i18n\DSSCL_ja_JP.ts" />
-    <QtTranslation Include="i18n\DSSCL_nl.ts" />
-    <QtTranslation Include="i18n\DSSCL_pt_BR.ts" />
-    <QtTranslation Include="i18n\DSSCL_ro.ts" />
-    <QtTranslation Include="i18n\DSSCL_ru.ts" />
-    <QtTranslation Include="i18n\DSSCL_tr.ts" />
-    <QtTranslation Include="i18n\DSSCL_zh_CN.ts" />
-    <QtTranslation Include="i18n\DSSCL_zh_TW.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_ca.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_cs.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_de.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_en.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_en_GB.ts">
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PluralOnly>
+      <PluralOnly Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PluralOnly>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DeepSkyStackerCL_es.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_fr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_it.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_ja_JP.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_nl.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_pt_BR.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_ro.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_ru.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_tr.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_zh_CN.ts" />
+    <QtTranslation Include="i18n\DeepSkyStackerCL_zh_TW.ts" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />

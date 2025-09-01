@@ -1,43 +1,22 @@
-set(PROJECT_NAME DeepSkyStackerLive)
+﻿set(PROJECT_NAME DeepSkyStackerLive)
 message("Configuring project: " ${PROJECT_NAME})
 
 set(COMPILE_WARNING_AS_ERROR YES)
-SET (CMAKE_INSTALL_BINDIR ".")
-
-qt_standard_project_setup()
-
-set(CMAKE_AUTORCC ON)
 
 ################################################################################
 # Source groups
 ################################################################################
 set(Header_Files
     "dssliveenums.h"
+    "EmailSettings.h"
     "LiveSettings.h"
+    "fileregistrar.h"
+    "filestacker.h"
+    "foldermonitor.h"
+    "footprint.h"
+    "imageviewer.h"
  )
 source_group("Header Files" FILES ${Header_Files})
-
-set(Header_Files__SmtpMime
-    "../include/SmtpMime/emailaddress.h"
-    "../include/SmtpMime/mimeattachment.h"
-    "../include/SmtpMime/mimebase64encoder.h"
-    "../include/SmtpMime/mimebase64formatter.h"
-    "../include/SmtpMime/mimebytearrayattachment.h"
-    "../include/SmtpMime/mimecontentencoder.h"
-    "../include/SmtpMime/mimefile.h"
-    "../include/SmtpMime/mimehtml.h"
-    "../include/SmtpMime/mimeinlinefile.h"
-    "../include/SmtpMime/mimemessage.h"
-    "../include/SmtpMime/mimemultipart.h"
-    "../include/SmtpMime/mimepart.h"
-    "../include/SmtpMime/mimeqpencoder.h"
-    "../include/SmtpMime/mimeqpformatter.h"
-    "../include/SmtpMime/mimetext.h"
-    "../include/SmtpMime/quotedprintable.h"
-    "../include/SmtpMime/SmtpMime"
-    "../include/SmtpMime/smtpmime_global.h"
-)
-source_group("Header Files\\SmtpMime" FILES ${Header_Files__SmtpMime})
 
 set(Source_Files
     "ChartTab.cpp"
@@ -62,94 +41,129 @@ set(Tools
 source_group("Tools" FILES ${Tools})
 
 set(i18n_Files
-	"i18n/DSSLive_ca.ts"
-	"i18n/DSSLive_cs.ts"
-	"i18n/DSSLive_de.ts"
-	"i18n/DSSLive_en.ts"
-	"i18n/DSSLive_es.ts"
-	"i18n/DSSLive_fr.ts"
-	"i18n/DSSLive_it.ts"
-	"i18n/DSSLive_ja_JP.ts"
-	"i18n/DSSLive_nl.ts"
-	"i18n/DSSLive_pt_BR.ts"
-	"i18n/DSSLive_ro.ts"
-	"i18n/DSSLive_ru.ts"
-	"i18n/DSSLive_tr.ts"
-	"i18n/DSSLive_zh_CN.ts"
-	"i18n/DSSLive_zh_TW.ts"
+	"i18n/DeepSkyStackerLive_ca.ts"
+	"i18n/DeepSkyStackerLive_cs.ts"
+	"i18n/DeepSkyStackerLive_de.ts"
+	"i18n/DeepSkyStackerLive_en.ts"
+	"i18n/DeepSkyStackerLive_en_GB.ts"
+	"i18n/DeepSkyStackerLive_es.ts"
+	"i18n/DeepSkyStackerLive_fr.ts"
+	"i18n/DeepSkyStackerLive_it.ts"
+	"i18n/DeepSkyStackerLive_ja_JP.ts"
+	"i18n/DeepSkyStackerLive_nl.ts"
+	"i18n/DeepSkyStackerLive_pt_BR.ts"
+	"i18n/DeepSkyStackerLive_ro.ts"
+	"i18n/DeepSkyStackerLive_ru.ts"
+	"i18n/DeepSkyStackerLive_tr.ts"
+	"i18n/DeepSkyStackerLive_zh_CN.ts"
+	"i18n/DeepSkyStackerLive_zh_TW.ts"
 	)	
-source_group("Qt\\i18n" FILES ${i18n_Files} "i18n/translations.qrc"
+source_group("Qt\\i18n" FILES ${i18n_Files}
     )
-	
+
 set(Resources
-	"../DeepSkyStacker/Icon.rc"
-	"../DeepSkyStacker/Icon/app.ico"
-	"resources.qrc"
+    "res/DSSLive32x32.png"
+    "res/DSSLive32x32@2x.png"
+)
+
+if(WIN32)
+    set(Resources ${Resources}
+	"../DeepSkyStacker/Icon/DSSLive.ico"
+    )
+endif()
+
+set (Qt_Resource_Files
+    "resources.qrc"
+    )
+
+if(WIN32)
+    set(Resource_Files
+	"Icon.rc"
 	"version.rc"
-	)
-source_group("Resources" FILES ${Resources}	)
+    )
+endif()
+
+source_group("Resources" FILES ${Resources}	${Resource_Files})
+
+if(APPLE)
+    # And the following tells CMake where to find and install the file itself.
+    set(app_icon_macos "${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive.icns")
+    set_source_files_properties(${app_icon_macos} PROPERTIES
+        MACOSX_PACKAGE_LOCATION "Resources")
+endif()
+
+set(ui_Files
+    "ui/ChartTab.ui"
+    "ui/DeepSkyStackerLive.ui"
+    "ui/EmailSettings.ui"
+    "ui/ImageViewer.ui"
+    "ui/RestartMonitoring.ui"
+    "ui/SettingsTab.ui"
+)
+source_group("Qt\\ui" FILES ${ui_Files})
 
 set(ALL_FILES
     ${Header_Files}
-    ${Header_Files__SmtpMime}
     ${Source_Files}
-	${i18n_Files} "i18n/translations.qrc"
-	${Resources}
+	${i18n_Files}
+    ${ui_Files}
+    ${Resources}
+    ${Qt_Resource_Files}
+    ${Resource_Files}
     ${Tools}
+    ${app_icon_macos}
 )
 
 ################################################################################
 # Target
 ################################################################################
-qt_add_executable(${PROJECT_NAME} ${ALL_FILES})
+qt_standard_project_setup(I18N_TRANSLATED_LANGUAGES ca cs de es fr it ja_JP nl pt_BR ro ru tr zh_CN zh_TW)
+qt_add_translations(${PROJECT_NAME}
+    TS_FILE_DIR i18n
+    PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
+    PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
+    )
+qt_add_resources(ALL_FILES ${Qt_Resource_Files})
+qt_add_executable(DeepSkyStackerLive ${ALL_FILES})
 
-set_source_files_properties(${i18n_Files}
-     PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/i18n")
-
-qt_add_lrelease(TS_FILES ${i18n_Files})
+if(APPLE)
+    set_target_properties(DeepSkyStackerLive PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerLive"
+        MACOSX_BUNDLE_ICON_FILE "DSSLive.icns"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystackerlive"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
+        INSTALL_RPATH "@executable_path/../Frameworks"
+)
+endif()
+if(WIN32)
+    set_target_properties(DeepSkyStackerLive PROPERTIES
+        WIN32_EXECUTABLE ON
+    )
+endif()
 
 set_target_properties(DeepSkyStackerLive PROPERTIES
     INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 )
-set_target_properties(DeepSkyStackerLive PROPERTIES
-    WIN32_EXECUTABLE ON
-    MACOSX_BUNDLE ON
-)
 
-################################################################################
-# Output directory
-################################################################################
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    OUTPUT_DIRECTORY_DEBUG   "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
-    OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/${CMAKE_VS_PLATFORM_NAME}/$<CONFIG>/"
-)
-
-################################################################################
+###############################################################################
 # Include directories
 ################################################################################
 target_include_directories(${PROJECT_NAME} PUBLIC
     .
     ../DeepSkyStackerKernel
-    ../LibRaw
     ../ZClass
     ../Tools
   )
 
 if(WIN32)
 target_include_directories(${PROJECT_NAME} PUBLIC
-   ../Zlib
-   ../LibTiff
-   ../CFitsIO
-   ../include
-   ../include/exiv2
-   ../include/SmtpMime
    "$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/include>"
-   "$ENV{Boost_1_80_0}"
 )
 endif()
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE
-	stdafx.h
+	pch.h
 	)
 
 ################################################################################
@@ -180,7 +194,7 @@ if(MSVC)
 	    -W4 /wd4652 /wd4702 /wd4828 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
-        /GL-;
+        /utf-8;
         /EHsc
     )
     target_link_options(${PROJECT_NAME} PRIVATE
@@ -195,12 +209,20 @@ if(MSVC)
         /SUBSYSTEM:WINDOWS;
         /DYNAMICBASE:NO
     )
+elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    if(APPLE)
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Xclang -fopenmp
+        )
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -fopenmp
+        )
+    endif()
 endif()
 
 if(WIN32)
 target_link_directories(${PROJECT_NAME} PRIVATE
-	"$<$<CONFIG:Debug>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/DebugLibs>"
-	"$<$<CONFIG:Release>:C:/Users/amonra/Documents/GitHub/DSS/libs/Win64/ReleaseLibs>"
 	"$<$<CONFIG:Debug>:C:/Program Files (x86)/Visual Leak Detector/lib/Win64>"
 	)
 endif()
@@ -211,24 +233,38 @@ endif()
 # Link with other targets.
 target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Core
+    Qt6::Gui
     Qt6::Widgets
     Qt6::Network
-	Qt6::Charts
+    Qt6::Charts
 	DeepSkyStackerKernel
-    libraw
-    libtiff
+    DeepSkyStackerAVX
     ZClass
 )
-
-set(DEBUG_DEPENDENCIES exiv2d libexpatd zlibstaticd)
-set(RELEASE_DEPENDENCIES exiv2 libexpat zlibstatic)
-
-set(ADDITIONAL_LIBRARY_DEPENDENCIES
-    "$<$<CONFIG:Debug>:${DEBUG_DEPENDENCIES}>"
-    "$<$<CONFIG:Release>:${RELEASE_DEPENDENCIES}>"
-    "cfitsio"
-    SmtpMime
+target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
+target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)
+target_link_libraries(${PROJECT_NAME} PRIVATE expat::expat)
+target_link_libraries(${PROJECT_NAME} PRIVATE libraw::raw_r)
+target_link_libraries(${PROJECT_NAME} PRIVATE CFITSIO::cfitsio)
+target_link_libraries(${PROJECT_NAME} PRIVATE SmtpMime::SmtpMime)
+target_link_libraries(${PROJECT_NAME} PRIVATE TIFF::TIFF)
+target_link_libraries(${PROJECT_NAME} PRIVATE ZLIB::ZLIB)
+if(LINUX)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    OpenMP::OpenMP_CXX
+    Threads::Threads
 )
+endif()
+if(APPLE)
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    OpenMP::OpenMP_CXX
+    CURL::libcurl
+)
+endif()
+
+if(APPLE)
+target_link_directories(${PROJECT_NAME} PRIVATE /usr/local/lib)
+endif()
 
 if(WIN32)
 set(ADDITIONAL_LIBRARY_DEPENDENCIES ${ADDITIONAL_LIBRARY_DEPENDENCIES}
@@ -240,53 +276,68 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-#
-# Force the values of QT_DEPLOY... variables
-#
-set (QT_DEPLOY_BIN_DIR ".")
-set (QT_DEPLOY_LIBEXEC_DIR ".")
-set (QT_DEPLOY_LIB_DIR ".")
-set (QT_DEPLOY_PLUGINS_DIR ".")
-
-#
-# Set options for the deployment script.   The value of:
-# 
-# --libdir .
-# 
-# is set to work around a bug in qt_deploy_runtime_dependencies which uses
-#
-# --libdir bin
-# 
-# even though QT_DEPLOY_LIB_DIR is set to .
-#
-set (deploy_tool_options_arg "--libdir .")
-if(APPLE)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --hardened-runtime")
-elseif(WIN32)
-    set(deploy_tool_options_arg "${deploy_tool_options_arg} --pdb")
+if(LINUX)
+    add_custom_command(TARGET DeepSkyStackerLive
+        POST_BUILD
+        #
+        # Copy the .desktop file and icon file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/DeepSkyStackerLive.desktop ${CMAKE_INSTALL_PREFIX}/DeepSkyStackerLive.desktop
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/DeepSkyStacker/Icon/DSSLive.icns ${CMAKE_INSTALL_PREFIX}/DSSLive.icns
+)
+endif()
+if(WIN32)
+    add_custom_command(TARGET DeepSkyStackerLive
+        POST_BUILD
+        #
+        # Copy the .pdb file
+        #
+        COMMAND ${CMAKE_COMMAND} -E copy -t ${CMAKE_INSTALL_PREFIX} ${CMAKE_CURRENT_BINARY_DIR}/DeepSkyStackerLive.pdb
+    )
 endif()
 
-# Generate a deployment script to be executed at install time
-# App bundles on macOS have an .app suffix
-if(APPLE)
-    set(executable_path "$<TARGET_FILE_NAME:DeepSkyStackerLive>.app")
+if(NOT LINUX)
+    set (deploy_tool_options_arg "-verbose=1")
+    if(APPLE)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} -hardened-runtime -no-strip ")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} \"-codesign=Developer ID Application: David Partridge (VH8AYT3C7Y)\"")
+    elseif(WIN32)
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --compiler-runtime --pdb")
+        set(deploy_tool_options_arg "${deploy_tool_options_arg} --dir . --plugindir plugins")
+endif()
+
+    # Generate a deployment script to be executed at install time
+    # App bundles on macOS have an .app suffix
+    if(APPLE)
+        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerLive>.app")
+    else()
+        message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
+        set(executable_path "${CMAKE_CURRENT_BINARY_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerLive>")
+    endif()
+
+    message ("executable_path: " ${executable_path})
+    message ("deploy tools options arg: " ${deploy_tool_options_arg})
+     qt_generate_deploy_script(
+         TARGET DeepSkyStackerLive
+         OUTPUT_SCRIPT deploy_script
+         CONTENT "
+     qt_deploy_runtime_dependencies(
+         EXECUTABLE \"${executable_path}\"
+         DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+     )"
+     )
 else()
-    message ("Qt Deploy Bin Dir: " ${QT_DEPLOY_BIN_DIR})
-    message ("Qt Deploy Lib Dir: " ${QT_DEPLOY_LIB_DIR})
-    message ("Target filename:"  $<TARGET_FILE_NAME:DeepSkyStackerLive>)
-    set(executable_path "${QT_DEPLOY_BIN_DIR}/$<TARGET_FILE_NAME:DeepSkyStackerLive>")
+qt_generate_deploy_app_script(
+    TARGET ${PROJECT_NAME}
+    OUTPUT_SCRIPT deploy_script
+    DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
+)
 endif()
-message ("executable_path: " ${executable_path})
-message ("deploy tools options arg: " ${deploy_tool_options_arg})
- qt_generate_deploy_script(
-     TARGET DeepSkyStackerLive
-     OUTPUT_SCRIPT deploy_script
-     CONTENT "
- qt_deploy_runtime_dependencies(
-     EXECUTABLE \"${executable_path}\"
-     DEPLOY_TOOL_OPTIONS ${deploy_tool_options_arg}
- )"
- )
 
-INSTALL (TARGETS DeepSkyStackerLive)
-INSTALL (SCRIPT ${deploy_script})
+if(APPLE)
+install (CODE "execute_process(COMMAND \"$ENV{HOME}/.unlock_keychain\")")
+endif()
+
+install (SCRIPT ${deploy_script})
+install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION .)
+

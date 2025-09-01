@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "StarMask.h"
 #include "DSSProgress.h"
 #include "RegisterEngine.h"
@@ -8,7 +8,7 @@ namespace DSS
 {
 
 	// Can't be const due to RegisterPicture(pBitmap).
-	std::shared_ptr<CMemoryBitmap> StarMaskEngine::createStarMask(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+	std::shared_ptr<CMemoryBitmap> StarMaskEngine::createStarMask(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 	{
 		CLightFrameInfo LightFrame;
 

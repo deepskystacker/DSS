@@ -35,9 +35,9 @@
 ****************************************************************************/
 // FolderMonitor.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include <atomic>
-#include <Ztrace.h>
+#include <ztrace.h>
 #include "foldermonitor.h"
 
 namespace DSS
@@ -55,12 +55,12 @@ namespace DSS
 		for (auto& file : fs::directory_iterator(folderToWatch))
 		{
 			//
-			// Only interested in reqular files.
+			// Only interested in regular files.
 			//
 			if (file.is_regular_file())
 			{
 				existing_.push_back(file);
-				paths_[file] = fs::last_write_time(file);
+				paths_[file.path().generic_u8string()] = fs::last_write_time(file);
 			}
 		}
 	}
@@ -99,19 +99,19 @@ namespace DSS
 			{
 				auto current_file_last_write_time = fs::last_write_time(file);
 
-				if (!paths_.contains(file))
+				if (!paths_.contains(file.path().generic_u8string()))
 				{
 					// File creation
-					paths_[file] = current_file_last_write_time;
+					paths_[file.path().generic_u8string()] = current_file_last_write_time;
 					emit fileCreated(file);
 					// File modification
 				}
 				else
 				{
 					// File modification
-					if (paths_[file] != current_file_last_write_time)
+					if (paths_[file.path().generic_u8string()] != current_file_last_write_time)
 					{
-						paths_[file] = current_file_last_write_time;
+						paths_[file.path().generic_u8string()] = current_file_last_write_time;
 						emit fileChanged(file);
 					}
 				}

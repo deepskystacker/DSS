@@ -1,65 +1,38 @@
 // DeepSkyStackerCL.cpp : Defines the entry point for the console application.
 //
 
-#include <stdafx.h>
+#include "pch.h"
 
-#if defined(Q_OS_WIN) && !defined(NDEBUG)
+#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
 //
 // Visual Leak Detector
+//
 #include <vld.h>
 #endif
 
 #include <QtLogging>
 #include <QImageReader>
 #include "DeepSkyStackerCL.h"
+#if !defined(Q_OS_APPLE)
+#include "ExceptionHandling.h"
+#endif
 #include "progressconsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "tracecontrol.h"
-#include "Ztrace.h"
+#include "ztrace.h"
+#include "QMessageLogger.h"
+#include "Multitask.h"
+
+std::unique_ptr<std::uint8_t[]> backPocket;
+constexpr size_t backPocketSize{ 1024 * 1024 };
 
 //
 // Set up tracing and manage trace file deletion
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
-
-namespace
-{
-	QtMessageHandler originalHandler;
-	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-	{
-		QByteArray localMsg = msg.toLocal8Bit();
-		const char* file = context.file ? context.file : "";
-		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
-		strcpy(name, file);
-		if (0 != strlen(name))
-		{
-			fs::path path{ name };
-			strcpy(name, path.filename().string().c_str());
-		}
-
-		switch (type) {
-		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		}
-		originalHandler(type, context, msg);
-	}
-}
 
 DeepSkyStackerCommandLine::DeepSkyStackerCommandLine(int& argc, char** argv) :
 	QCoreApplication(argc, argv),
@@ -90,12 +63,17 @@ void DeepSkyStackerCommandLine::reportError(const QString& message, const QStrin
 {
 	if (terminate) traceControl.setDeleteOnExit(false);
 	std::cerr << message.toUtf8().constData() << std::endl;
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStream& consoleOut)
 {
-	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
+	DSS::OldProgressConsole progress(stackingParams.GetTerminalMode());
 	DSS::FrameList frameList;
 	bool bContinue = true;
 	bool bUseFits = stackingParams.IsOptionSet(StackingParams::eStackingOption::FITS_OUTPUT);
@@ -153,7 +131,7 @@ void DeepSkyStackerCommandLine::Process(StackingParams& stackingParams, QTextStr
 bool DeepSkyStackerCommandLine::DecodeCommandLine()
 {
 	bool bResult = false;
-	LONG i;
+	std::int32_t i = 0;
 	const QStringList vCommandLine = arguments();
 
 	// At least 2 arguments are needed (registering and/or stacking + filename)
@@ -335,7 +313,7 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 	if (!(pBitmap && !stackingParams.GetOutputFilename().isEmpty()))
 		return;
 
-	DSS::ProgressConsole progress(stackingParams.GetTerminalMode());
+	DSS::OldProgressConsole progress(stackingParams.GetTerminalMode());
 
 	const QString strText(QCoreApplication::translate("DeepSkyStackerCL", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(stackingParams.GetOutputFilename()));
 	progress.Start1(strText, 0);
@@ -387,32 +365,49 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 void atexitHandler()
 {
 	//
-	// Retain or delete the trace file as wanted
+	// Delete the back pocket storage
 	//
-	traceControl.terminate();
+	backPocket.reset();
 }
 
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 	//
-	// Set up the atexit handler to ensure that the trace file is deleted if necessary
+	// Set up the atexit handler to release the back pocket storage
 	//
 	std::atexit(atexitHandler);
 
+	//
+	// Create a storage cushion (aka back pocket storage)
+	// and ensure that it is actually touched.
+	//
+	backPocket = std::make_unique<std::uint8_t[]>(backPocketSize);
+	for (auto* p = backPocket.get(); p < backPocket.get() + backPocketSize; p += 4096)
+	{
+		*p = static_cast<uint8_t>('\xff');
+	}
 
+#if !defined(Q_OS_APPLE)
+	//
+	// Set things up to capture terminal errors
+	//
+	setDssExceptionHandling();
+#endif
 
 #if defined(Q_OS_WIN)
-	// Set console code page to UTF-8 so console knows how to interpret string data
+	// Set the C character locale for UTF-8 so Exiv2 can open files with UTF-8 names
+	// I think this also applies to the use of regular fopen() calls.
+	std::setlocale(LC_CTYPE, ".UTF-8");
+
+	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
-#ifndef NDEBUG
 	//
-	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	// Log Qt messages to the trace file as well as to the debugger.
 	//
 	originalHandler = qInstallMessageHandler(qtMessageLogger);
-#endif
 
 	//
 	// Silence the windows heap checker as we use Visual Leak Detector
@@ -429,6 +424,12 @@ int main(int argc, char* argv[])
 	//
 	constexpr int oneGB{ 1024 * 1024 * 1024 };
 	QImageReader::setAllocationLimit(oneGB);
+
+	//
+	// Set the maximum number of threads we're allowed to use
+	//
+	const auto processorCountSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+	Multitask::setMaxProcessors(processorCountSetting);
 
 	DeepSkyStackerCommandLine process(argc, argv);
 

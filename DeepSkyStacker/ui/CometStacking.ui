@@ -181,9 +181,6 @@ The comet and the stars will be sharp. This process takes twice as long.</string
         <property name="text">
          <string/>
         </property>
-        <property name="pixmap">
-         <pixmap/>
-        </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>

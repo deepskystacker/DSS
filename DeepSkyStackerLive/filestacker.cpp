@@ -35,7 +35,7 @@
 ****************************************************************************/
 // FileStacker.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "filestacker.h"
 #include "progresslive.h"
 #include "RegisterEngine.h"
@@ -62,6 +62,7 @@ namespace DSS
 
 	FileStacker::~FileStacker()
 	{
+		ZFUNCTRACE_RUNTIME();
 		{
 			//
 			// Prevent new work being added to or removed from the queue
@@ -74,11 +75,13 @@ namespace DSS
 
 
 			// Clear the work queue
+
 			if (!pending.empty())
 				pending.clear();
 
 			// Add a null entry to the work queue to show we're done
 			// and wake up the run() mf
+			ZTRACE_RUNTIME("Adding null entry to pending queue to terminate run()");
 			std::shared_ptr<CLightFrameInfo> nullSharedPtr;
 			pending.emplace_back(nullSharedPtr);
 			condvar.wakeOne();
@@ -87,6 +90,7 @@ namespace DSS
 		//
 		// Wait for run() to terminate
 		//
+		ZTRACE_RUNTIME("Waiting for run() to terminate");
 		wait();
 		ZTRACE_RUNTIME("File stacker deleted");
 	}
@@ -420,7 +424,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		size_t width = pStackedImage->Width(), height = pStackedImage->Height();
-		const int numberOfProcessors = CMultitask::GetNrProcessors();
+		const int numberOfProcessors = Multitask::GetNrProcessors();
 		uchar* pImageData{ nullptr };
 
 		std::shared_ptr<QImage> image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
@@ -462,7 +466,7 @@ namespace DSS
 			pImageData = image->bits();
 			auto bytes_per_line = image->bytesPerLine();
 
-#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 50) default(shared) if(numberOfProcessors > 1)
 			for (int j = 0; j < height; j++)
 			{
 				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -491,7 +495,7 @@ namespace DSS
 			auto bytes_per_line = image->bytesPerLine();
 			thread_vars threadVars(pStackedImage.get());
 
-#pragma omp parallel for schedule(guided, 50) firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 50) firstprivate(threadVars) default(shared) if(numberOfProcessors > 1)
 			for (int j = 0; j < height; j++)
 			{
 				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));

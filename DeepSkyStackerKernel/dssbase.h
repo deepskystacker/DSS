@@ -80,3 +80,4 @@ public:
 private:
 	static inline DSSBase* theInstance{ nullptr };
 };
+

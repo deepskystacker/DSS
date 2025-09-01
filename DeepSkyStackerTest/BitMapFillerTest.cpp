@@ -1,16 +1,29 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 #include "avx_bitmap_filler.h"
 #include "ColorBitmap.h"
 #include "MedianFilterEngine.h"
 #include "DSSProgress.h"
 
+#if defined(_MSC_VER)
+#define bswap_16(x) _byteswap_ushort(x)
+#elif defined(__GNUC__)
+#define bswap_16(x) __builtin_bswap16(x)
+#else
+#error Compiler not yet supported
+#endif
+
 template <size_t SZ>
 void be2le(std::uint16_t(&out)[SZ], const std::uint16_t* pIn)
 {
 	for (size_t n = 0; n < SZ; ++n)
 //		out[n] = _load_be_u16(pIn + n);
-		out[n] = _byteswap_ushort(pIn[n]);
+		out[n] = bswap_16(pIn[n]);
+}
+
+std::uint16_t loadAndSwap(std::uint16_t const* p)
+{
+	return bswap_16(*p);
 }
 
 // ------------------
@@ -19,7 +32,7 @@ void be2le(std::uint16_t(&out)[SZ], const std::uint16_t* pIn)
 
 TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitmapFiller, NonAvxBitmapFiller)
 {
-	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<WORD>>();
+	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 	// TestType is the current type from the list of types for which this TEST_CASE is run.
 	CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<TestType>(pBitmap.get(), nullptr, 1.0, 1.0, 1.0);
 	filler->setGrey(true);
@@ -34,8 +47,8 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 
 		filler->Write(inputData, 1, 18, 0);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
-		WORD data[18];
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
+		std::uint16_t data[18];
 		for (int i = 0; i < 18; ++i)
 			data[i] = inputData[i] << 8;
 		REQUIRE(memcmp(pGray->m_vPixels.data(), data, 36) == 0);
@@ -52,8 +65,8 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 
 		filler->Write(inputData, 2, 19, 0);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
-		WORD data[19];
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
+		std::uint16_t data[19];
 		be2le(data, inputData);
 		REQUIRE(memcmp(pGray->m_vPixels.data(), data, 16) == 0);
 	}
@@ -69,8 +82,8 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 		filler->Write(inputData, 2, 8, 0);
 		filler->Write(inputData + 8, 2, 8, 1);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
-		WORD data[16];
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
+		std::uint16_t data[16];
 		be2le(data, inputData);
 
 		REQUIRE(memcmp(pGray->m_vPixels.data(), data, 32) == 0);
@@ -92,12 +105,13 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 		bmFiller->Write(inputData, 2, W, 0);
 		bmFiller->Write(inputData + W, 2, W, 1);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
-		WORD data[W * 2];
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
+		std::uint16_t data[W * 2];
 		for (size_t i = 0; i < W; ++i)
-			data[i] = _load_be_u16(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
+			//data[i] = _load_be_u16(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
+			data[i] = loadAndSwap(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
 		for (size_t i = 0; i < W; ++i)
-			data[i + W] = _load_be_u16(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
+			data[i + W] = loadAndSwap(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
 
 		auto* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
 
@@ -121,21 +135,21 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 
 		bmFiller->Write(inputData, 2, 2 * W, 0);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
-		WORD data[W * 2];
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
+		std::uint16_t data[W * 2];
 		for (size_t i = 0; i < W; ++i)
-			data[i] = _load_be_u16(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
+			data[i] = loadAndSwap(&inputData[i]) * (i % 2 == 0 ? 2 : 3);
 		for (size_t i = 0; i < W; ++i)
-			data[i + W] = _load_be_u16(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
+			data[i + W] = loadAndSwap(&inputData[i + W]) * (i % 2 == 0 ? 3 : 4);
 
 		REQUIRE(memcmp(pGray->m_vPixels.data(), data, sizeof(data)) != 0); // Second line (GBGB) incorrectly interpolated, because filler treats it like RGRG...
 	}
 
 	SECTION("2 lines 16 bps and adjust different CFA schemes")
 	{
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 
-		const auto testCfaType = [&pBitmap, pGray, &filler](const CFATYPE cfaType, WORD wb0, WORD wb1, WORD wb2, WORD wb3) -> int
+		const auto testCfaType = [&pBitmap, pGray, &filler](const CFATYPE cfaType, std::uint16_t wb0, std::uint16_t wb1, std::uint16_t wb2, std::uint16_t wb3) -> int
 		{
 			constexpr size_t W = 17;
 			std::uint16_t inputData[W * 2] = { 256, 257, 258, 1003, 1075, 2328, 32767, 20000, 5000, 6000, 7000, 9002, 9003, 9004, 10010, 10100, 10101,
@@ -154,8 +168,8 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 			fil->Write(beData, 2, W, 0);
 			fil->Write(beData + W, 2, W, 1);
 
-			WORD wb[2][2] = { {wb0, wb1}, {wb2, wb3} };
-			WORD expected[W * 2];
+			std::uint16_t wb[2][2] = { {wb0, wb1}, {wb2, wb3} };
+			std::uint16_t expected[W * 2];
 			for (size_t y = 0; y < 2; ++y)
 				for (size_t x = 0; x < W; ++x)
 					expected[y * W + x] = std::min(inputData[y * W + x] * wb[y % 2][x % 2], 65534);
@@ -185,9 +199,9 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 		pBitmap->Init(W, 1);
 
 		bmFiller->Write(inputData, 2, W, 0);
-		constexpr WORD MAXIMUM = 65534; // For some strange reason, the old BitMapFiller limited this to MAXWORD - 1
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
-		WORD data[W] = { 2560 * 2, 3249 * 10, 29265 * 2, MAXIMUM, 5 * 2, MAXIMUM, 6 * 2, MAXIMUM, 7 * 2, 6000 * 10, 8 * 2, MAXIMUM, 9 * 2, MAXIMUM, 10 * 2, MAXIMUM, 11 * 2 };
+		constexpr std::uint16_t MAXIMUM = 65534; // For some strange reason, the old BitMapFiller limited this to MAXstd::uint16_t - 1
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
+		std::uint16_t data[W] = { 2560 * 2, 3249 * 10, 29265 * 2, MAXIMUM, 5 * 2, MAXIMUM, 6 * 2, MAXIMUM, 7 * 2, 6000 * 10, 8 * 2, MAXIMUM, 9 * 2, MAXIMUM, 10 * 2, MAXIMUM, 11 * 2 };
 		REQUIRE(memcmp(pGray->m_vPixels.data(), data, sizeof(data)) == 0);
 	}
 }
@@ -198,7 +212,7 @@ TEMPLATE_TEST_CASE("BitmapFiller gray", "[Bitmap][BitmapFiller][gray]", AvxBitma
 
 TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBitmapFiller, NonAvxBitmapFiller)
 {
-	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CColorBitmapT<WORD>>();
+	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CColorBitmapT<std::uint16_t>>();
 	CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<TestType>(pBitmap.get(), nullptr, 1.0, 1.0, 1.0);
 	filler->setGrey(false);
 
@@ -214,12 +228,12 @@ TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBit
 
 		filler->Write(inputData, 3, W, 0);
 
-		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.get());
-		const WORD* pRed = pGray->m_Red.m_vPixels.data();
-		const WORD* pGreen = pGray->m_Green.m_vPixels.data();
-		const WORD* pBlue = pGray->m_Blue.m_vPixels.data();
+		auto* pGray = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.get());
+		const std::uint16_t* pRed = pGray->m_Red.m_vPixels.data();
+		const std::uint16_t* pGreen = pGray->m_Green.m_vPixels.data();
+		const std::uint16_t* pBlue = pGray->m_Blue.m_vPixels.data();
 		bool correct = true;
-		constexpr WORD twofiftysix = 256;
+		constexpr std::uint16_t twofiftysix = 256;
 		for (size_t n = 0; n < W; ++n)
 		{
 			if (pRed[n] != twofiftysix * inputData[3 * n])
@@ -245,10 +259,10 @@ TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBit
 
 		filler->Write(inputData, 3 * sizeof(std::uint16_t), W, 0);
 
-		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.get());
-		const WORD* pRed = pGray->m_Red.m_vPixels.data();
-		const WORD* pGreen = pGray->m_Green.m_vPixels.data();
-		const WORD* pBlue = pGray->m_Blue.m_vPixels.data();
+		auto* pGray = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.get());
+		const std::uint16_t* pRed = pGray->m_Red.m_vPixels.data();
+		const std::uint16_t* pGreen = pGray->m_Green.m_vPixels.data();
+		const std::uint16_t* pBlue = pGray->m_Blue.m_vPixels.data();
 
 		std::uint16_t data[W * 3];
 		be2le(data, inputData);
@@ -284,10 +298,10 @@ TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBit
 		filler->Write(inputData, 3 * 2, W, 0);
 		filler->Write(inputData + W * 3, 3 * 2, W, 1);
 
-		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.get());
-		const WORD* pRed = pGray->m_Red.m_vPixels.data();
-		const WORD* pGreen = pGray->m_Green.m_vPixels.data();
-		const WORD* pBlue = pGray->m_Blue.m_vPixels.data();
+		auto* pGray = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.get());
+		const std::uint16_t* pRed = pGray->m_Red.m_vPixels.data();
+		const std::uint16_t* pGreen = pGray->m_Green.m_vPixels.data();
+		const std::uint16_t* pBlue = pGray->m_Blue.m_vPixels.data();
 
 		std::uint16_t data[W * 3 * 2];
 		be2le(data, inputData);
@@ -322,19 +336,19 @@ TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBit
 		be2le(beData, inputData);
 		bmFiller->Write(beData, 3 * 2, W, 0);
 
-		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.get());
-		const WORD* pRed = pGray->m_Red.m_vPixels.data();
-		const WORD* pGreen = pGray->m_Green.m_vPixels.data();
-		const WORD* pBlue = pGray->m_Blue.m_vPixels.data();
+		auto* pGray = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.get());
+		const std::uint16_t* pRed = pGray->m_Red.m_vPixels.data();
+		const std::uint16_t* pGreen = pGray->m_Green.m_vPixels.data();
+		const std::uint16_t* pBlue = pGray->m_Blue.m_vPixels.data();
 
 		bool correct = true;
 		for (int n = 0; n < W; ++n)
 		{
-			if (pRed[n] != static_cast<WORD>(std::min(0.3 * static_cast<double>(inputData[3 * n]), 65534.0)))
+			if (pRed[n] != static_cast<std::uint16_t>(std::min(0.3 * static_cast<double>(inputData[3 * n]), 65534.0)))
 				correct = false;
-			if (pGreen[n] != static_cast<WORD>(std::min(0.24 * static_cast<double>(inputData[3 * n + 1]), 65534.0)))
+			if (pGreen[n] != static_cast<std::uint16_t>(std::min(0.24 * static_cast<double>(inputData[3 * n + 1]), 65534.0)))
 				correct = false;
-			if (pBlue[n] != static_cast<WORD>(std::min(1.18 * static_cast<double>(inputData[3 * n + 2]), 65534.0)))
+			if (pBlue[n] != static_cast<std::uint16_t>(std::min(1.18 * static_cast<double>(inputData[3 * n + 2]), 65534.0)))
 				correct = false;
 		}
 		REQUIRE(correct == true);
@@ -346,7 +360,7 @@ TEMPLATE_TEST_CASE("BitmapFiller color", "[Bitmap][BitmapFiller][color]", AvxBit
 // Progress
 // ---------------
 using namespace DSS;
-class MyProgress : public ProgressBase
+class MyProgress : public OldProgressBase
 {
 public:
 	int nrCallsStart2 = 0;
@@ -385,7 +399,7 @@ public:
 
 TEMPLATE_TEST_CASE("BitmapFiller progress check", "[Bitmap][BitmapFiller][progress]", AvxBitmapFiller, NonAvxBitmapFiller)
 {
-	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<WORD>>();
+	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 	MyProgress prg{};
 	CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<TestType>(pBitmap.get(), &prg, 1.0, 1.0, 1.0);
 	filler->setGrey(true);

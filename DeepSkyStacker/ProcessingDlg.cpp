@@ -33,10 +33,10 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
-#include "progressdlg.h"
+#include "oldprogressdlg.h"
 #include "selectrect.h"
 #include "FrameInfoSupport.h"
 #include "ProcessingSettingsDlg.h"
@@ -307,7 +307,7 @@ namespace DSS
 
 			if (QDialog::Accepted == dlg.exec())
 			{
-				ProgressDlg progress{ DeepSkyStacker::instance() };
+				OldProgressDlg progress{ DeepSkyStacker::instance() };
 				StarMaskEngine starMaskEngine;
 
 				progress.SetJointProgress(true);
@@ -345,7 +345,7 @@ namespace DSS
 		//
 		// Load the output file created at the end of the stacking process.
 		//
-		ProgressDlg dlg{ DeepSkyStacker::instance() };
+		OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		bool ok { false };
 
 		timer.stop();
@@ -401,7 +401,7 @@ namespace DSS
 			QString				strTitle;
 			fs::path file;
 
-			DSS::ProgressDlg dlg{ DeepSkyStacker::instance() };
+			DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 			timer.stop();
 
@@ -556,7 +556,7 @@ namespace DSS
 				compression = dlg.compression();
 				bool useRect = dlg.useRect();
 				DSSRect rect;			// Empty rectangle
-				DSS::ProgressDlg progress{ DeepSkyStacker::instance() };
+				DSS::OldProgressDlg progress{ DeepSkyStacker::instance() };
 
 
 				//

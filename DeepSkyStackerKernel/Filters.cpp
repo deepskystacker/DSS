@@ -1,6 +1,6 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "Filters.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "MemoryBitmap.h"
 #include "DSSProgress.h"
 
@@ -150,7 +150,7 @@ inline void	CheckPixel(int X, int Y, EXCLUDEDPIXELVECTOR &vExcluded, EXCLUDEDPIX
 
 /* ------------------------------------------------------------------- */
 
-void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, ProgressBase*)
+void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, OldProgressBase*)
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR vExcluded = m_vExcludedPixels;
@@ -236,7 +236,7 @@ void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBit
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	//
@@ -320,7 +320,7 @@ void	CMedianImageFilter::ComputeMedianAt(int x, int y, double & fRedValue, doubl
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CMedianImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CMedianImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, OldProgressBase* pProgress)
 {
 	return GetFilteredImage(pInBitmap, m_lFilterSize, pProgress);
 }
@@ -379,7 +379,7 @@ void CDirectionalImageFilter::InitFilterMatrix(CFilterMatrix & fm)
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, OldProgressBase* pProgress)
 {
 	if (pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};

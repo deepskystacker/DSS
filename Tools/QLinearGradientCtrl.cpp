@@ -1,10 +1,10 @@
 // QLinearGradientCtrl.cpp 
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "QLinearGradientCtrl.h"
 
-#include "Ztrace.h"
-#include "ZExcBase.h"
+#include "ztrace.h"
+#include "zexcbase.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // QLinearGradientCtrl
@@ -924,7 +924,7 @@ void QLinearGradientCtrl::deleteSelected(bool bUpdate)
 	setGradientFromStops();
 
 	//Select the previous peg
-	if (!STARTPEG == selectedPeg)
+	if (STARTPEG != selectedPeg)
 		selectedPeg--;
 	if (selectedPeg < 1) selectedPeg = STARTPEG;
 

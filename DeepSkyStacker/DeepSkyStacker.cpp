@@ -35,8 +35,8 @@
 ****************************************************************************/
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
-#include <stdafx.h>
-#if defined(Q_OS_WIN) && !defined(NDEBUG)
+#include "pch.h"
+#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
 //
 // Visual Leak Detector
 //
@@ -51,14 +51,19 @@
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/exceptions.hpp>
 
+#include <locale>
 #include <fstream>
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+#include <signal.h>
+#endif
 
 namespace bip = boost::interprocess;
 
 #include "avx_simd_check.h"
 #include "DeepSkyStacker.h"
 #include "ui_StackingDlg.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "StackingTasks.h"
 #include "StackingDlg.h"
 #include "ExplorerBar.h"
@@ -71,7 +76,8 @@ namespace bip = boost::interprocess;
 #include "tracecontrol.h"
 #include "Workspace.h"
 #include "QEventLogger.h"
-
+#include "QMessageLogger.h"
+#include "Multitask.h"
 
 bool	g_bShowRefStars = false;
 
@@ -80,41 +86,6 @@ bool	g_bShowRefStars = false;
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
-namespace
-{
-	QtMessageHandler originalHandler;
-	void qtMessageLogger(QtMsgType type, const QMessageLogContext& context, const QString& msg)
-	{
-		QByteArray localMsg = msg.toLocal8Bit();
-		const char* file = context.file ? context.file : "";
-		char* name{ static_cast<char*>(_alloca(1 + strlen(file))) };
-		strcpy(name, file);
-		if (0 != strlen(name))
-		{
-			fs::path path{ name };
-			strcpy(name, path.filename().string().c_str());
-		}
-
-		switch (type) {
-		case QtDebugMsg:
-			ZTRACE_RUNTIME("Qt Debug: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtInfoMsg:
-			ZTRACE_RUNTIME("Qt Info: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtWarningMsg:
-			ZTRACE_RUNTIME("Qt Warn: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtCriticalMsg:
-			ZTRACE_RUNTIME("Qt Critical: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		case QtFatalMsg:
-			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
-			break;
-		}
-		originalHandler(type, context, msg);
-	}
-}
 
 bool	hasExpired()
 {
@@ -263,7 +234,9 @@ DeepSkyStacker::DeepSkyStacker() :
 	//
 	helpShortCut->setContext(Qt::ApplicationShortcut);
 	setAcceptDrops(true);
+
 	errorMessageDialog->setWindowTitle("DeepSkyStacker");
+	errorMessageDialog->setModal(true);
 
 	//
 	// Force setting of blackPointToZero as initially false
@@ -393,25 +366,12 @@ DeepSkyStacker::DeepSkyStacker() :
 		restoreState(windowState);
 	}
 
-
 	settings.endGroup();
 }
 
 void DeepSkyStacker::createStatusBar()
 {
-	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
-
-	QString text{ QString("<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"16\" >&nbsp;"
-		"<a style=\"font-size:16px; color:%1;\" href=\"https://github.com/sponsors/deepskystacker\""
-		"<span>%2</span></a>")
-		.arg(linkColour.name())
-		.arg(tr("Sponsor DeepSkyStacker"))
-	};
-		
-	sponsorText->setAlignment(Qt::AlignRight | Qt::AlignTop);
-	sponsorText->setTextFormat(Qt::RichText);
-	sponsorText->setOpenExternalLinks(true);
-	sponsorText->setText(text);
+	setSponsorText();
 
 	statusBarText->setAlignment(Qt::AlignHCenter);
 
@@ -483,6 +443,37 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(this, &DeepSkyStacker::panelChanged, lowerDockWidget, &LowerDockWidget::panelChanged);
 }
 
+void DeepSkyStacker::changeEvent(QEvent* e)
+{
+	if (e->type() == QEvent::LanguageChange) {
+		setSponsorText();
+	}
+	else {
+		QWidget::changeEvent(e);
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
+void DeepSkyStacker::setSponsorText()
+{
+	QColor	linkColour{ (Qt::ColorScheme::Dark == QGuiApplication::styleHints()->colorScheme()) ? Qt::cyan : Qt::darkBlue };
+
+	QString text{ QString("<img border=\"0\" src=\":/Heart.png\" width=\"16\" height=\"16\" >&nbsp;"
+		"<a style=\"font-size:16px; color:%1;\" href=\"https://github.com/sponsors/deepskystacker\""
+		"<span>%2</span></a>")
+		.arg(linkColour.name())
+		.arg(tr("Sponsor DeepSkyStacker"))
+	};
+
+	sponsorText->setAlignment(Qt::AlignRight | Qt::AlignTop);
+	sponsorText->setTextFormat(Qt::RichText);
+	sponsorText->setOpenExternalLinks(true);
+	sponsorText->setText(text);
+}
+
+/* ------------------------------------------------------------------- */
+
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -497,6 +488,19 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 		return;
 	}
 	e->accept();
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+	//
+	// On Linux and macOS, we need to close the help process if it is running
+	// as it will not close down automatically.
+	//
+	if (helpProcess && QProcess::NotRunning != helpProcess->state())
+	{
+		ZTRACE_RUNTIME("Closing help process");
+		helpProcess->close();
+	}
+#endif // defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+
 
 #if QT_VERSION < 0x060601		// Shouldn't need this in QT 6.6.1
 	//
@@ -627,14 +631,53 @@ void DeepSkyStacker::updatePanel()
 void DeepSkyStacker::help()
 {
 	ZFUNCTRACE_RUNTIME();
-#if defined(Q_OS_WIN)
-
-	QString helpFile{ QCoreApplication::applicationDirPath() + "/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
-
-	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
-#else
-	QMessageBox::Information(this, "DeepSkyStecker", "Sorry, there's no help available for Linux yet");
+	explorerBar->setHelpEnabled(false);
+	QString appPath{ QCoreApplication::applicationDirPath() };
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
+	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+#elif defined(Q_OS_MACOS)
+	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
 #endif
+
+#if defined(Q_OS_LINUX)
+	// On Linux, we use the kchmviewer application to display the help file
+	QString program{ "kchmviewer" };
+#elif defined(Q_OS_MACOS)
+	// On macOS, we use the uchmviewer application to display the help file
+	// which we've bundled with the application
+	QString program{ appPath + "/uchmviewer" };
+#endif
+
+#if defined(Q_OS_WIN)
+	::HtmlHelp(::GetDesktopWindow(), helpFile.toStdWString().c_str(), HH_DISPLAY_TOPIC, 0);
+#elif defined(Q_OS_LINUX) || defined(Q_OS_MACOS)
+	//
+	// On Linux and macOS, we use a QProcess to start the help viewer
+	//	
+	if (!helpProcess)
+	{
+		helpProcess = new QProcess(this);
+		connect(helpProcess, &QProcess::finished, this, [this]
+			{
+				helpProcess->deleteLater();
+				helpProcess = nullptr;
+			});
+	}
+	QStringList arguments{ "-token", "com.github.deepskystacker", helpFile };
+	if (QProcess::NotRunning == helpProcess->state())
+	{
+		//
+		// Start the help display program (kchmviewer or uchmviewer)
+		//
+		helpProcess->start(program, arguments);
+		if(!helpProcess->waitForStarted())
+		{
+			qWarning() << "Failed to start help process:" << helpProcess->errorString();
+			return;
+		}
+	}
+#endif
+	explorerBar->setHelpEnabled(true);
 }
 
 /* ------------------------------------------------------------------- */
@@ -643,7 +686,12 @@ void DeepSkyStacker::qMessageBox(const QString& message, QMessageBox::Icon icon,
 {
 	QMessageBox msgBox{ icon, "DeepSkyStacker", message, QMessageBox::Ok , this };
 	msgBox.exec();
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -675,7 +723,12 @@ void DeepSkyStacker::qErrorMessage(const QString& message, const QString& type, 
 		}
 	}
 	errorMessageDialog->showMessage(message, type);
-	if (terminate) QCoreApplication::exit(1);
+	if (terminate)
+	{
+		// QCoreApplication::exit(1);
+		QMetaObject::invokeMethod(QCoreApplication::instance(), "exit", Qt::QueuedConnection,
+			Q_ARG(int, 1));
+	}
 }
 
 /* ------------------------------------------------------------------- */
@@ -690,7 +743,7 @@ using namespace std;
 std::unique_ptr<std::uint8_t[]> backPocket;
 constexpr size_t backPocketSize{ 1024 * 1024 };
 
-static char const* global_program_name;
+char const* global_program_name;
 
 bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
 {
@@ -721,24 +774,20 @@ bool LoadTranslations()
 	static QTranslator theAppTranslator;
 	static QTranslator theKernelTranslator;
 
-	Q_INIT_RESOURCE(translations_kernel);
+	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
 
 	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
 	QSettings settings;
 	const QString language = settings.value("Language").toString();
 	LoadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
-	LoadTranslationUnit(*qApp, theAppTranslator, "DSS_", ":/i18n/", language);
-	LoadTranslationUnit(*qApp, theKernelTranslator, "DSSKernel_", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theAppTranslator, "DeepSkyStacker_", ":/i18n/", language);
+	LoadTranslationUnit(*qApp, theKernelTranslator, "DeepSkyStackerKernel_", ":/i18n/", language);
 	
 	return true;
 }
 
 void atexitHandler()
 {
-	//
-	// Retain or delete the trace file as wanted
-	//
-	traceControl.terminate();
 	//
 	// Delete the back pocket storage
 	//
@@ -749,21 +798,23 @@ int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
 	//
-	// Set up the atexit handler to ensure that the trace file is deleted if necessary
+	// Set up the atexit handler to release our back-pocket storage
 	//
 	std::atexit(atexitHandler);
 
 #if defined(Q_OS_WIN)
-	// Set console code page to UTF-8 so console known how to interpret string data
+	// Set the C character locale for UTF-8 so Exiv2 can open files with UTF-8 names
+	// I think this also applies to the use of regular fopen() calls.
+	std::setlocale(LC_CTYPE, ".UTF-8");
+
+	// Set console code page to UTF-8 so console knowns how to interpret string data
 	SetConsoleOutputCP(CP_UTF8);
 #endif
 
-#ifndef NDEBUG
 	//
-	// If this is a debug build, log Qt messages to the trace file as well as to the debugger.
+	// Log Qt messages to the trace file as well as to the debugger.
 	//
 	originalHandler = qInstallMessageHandler(qtMessageLogger);
-#endif
 
 	//
 	// Save the program name in case we need it later
@@ -789,23 +840,10 @@ int main(int argc, char* argv[])
 	_CrtSetDbgFlag(0);
 #endif
 
-//#if defined(_WINDOWS)
-
-//#else
-	//
-	// Set up to handle signals
-	//
-//	std::signal(SIGINT, signalHandler);
-//	std::signal(SIGILL, signalHandler);
-//	std::signal(SIGFPE, signalHandler);
-//	std::signal(SIGSEGV, signalHandler);
-//	std::signal(SIGTERM, signalHandler);
-//#endif
-
 	QApplication app(argc, argv);
 
 	if (hasExpired())
-		return FALSE;
+		return 1;
 
 	//
 	// Set up organisation etc. for QSettings usage
@@ -835,10 +873,12 @@ int main(int argc, char* argv[])
 
 	AvxSimdCheck::reportCpuType();
 
+#if !defined(Q_OS_APPLE)
 	//
 	// Set things up to capture terminal errors
 	//
 	setDssExceptionHandling();
+#endif
 
 	askIfVersionCheckWanted();
 
@@ -854,13 +894,19 @@ int main(int argc, char* argv[])
 	constexpr int oneGB{ 1024 * 1024 * 1024 };
 	QImageReader::setAllocationLimit(oneGB);
 
+	//
+	// Set the maximum number of threads we're allowed to use
+	//
+	const auto processorCountSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+	Multitask::setMaxProcessors(processorCountSetting);
+
 	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
 		ZTRACE_RUNTIME("Creating Main Window");
 		DeepSkyStacker mainWindow;
 
-		//QEventLogger eventLogger("C:/temp/DSSEvents", &mainWindow, false);
+		//QEventLogger eventLogger("Qt-Event-log", &mainWindow, false);
 		//app.installEventFilter(&eventLogger);
 
 		ZTRACE_RUNTIME("Checking Mutex");

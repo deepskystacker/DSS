@@ -1,13 +1,13 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "TIFFUtil.h"
 //#include "resource.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "BitmapInfo.h"
 #include "DSSProgress.h"
 #include "Multitask.h"
 #include "ColorHelpers.h"
 #include "ColorBitmap.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "RAWUtils.h"
 #include "tiffio.h"
 #include "dssbase.h"
@@ -105,7 +105,7 @@ void DSSTIFFInitialize()
 
 /* ------------------------------------------------------------------- */
 
-CTIFFReader::CTIFFReader(const fs::path& p, ProgressBase* pProgress) :
+CTIFFReader::CTIFFReader(const fs::path& p, OldProgressBase* pProgress) :
 	m_tiff{ nullptr },
 	file{ p },
 	m_pProgress{ pProgress }
@@ -204,7 +204,7 @@ bool CTIFFReader::Open()
 #ifdef Q_OS_WIN
 	m_tiff = TIFFOpenW(file.wstring().c_str(), "r");
 #else
-	m_tiff = TIFFOpen(file.u8string.c_str(), "r");
+	m_tiff = TIFFOpen(reinterpret_cast<const char*>(file.u8string().c_str()), "r");
 #endif
 	TIFFSetErrorHandler(oldHandler);
 	TIFFSetErrorHandlerExt(oldHandlerExt);
@@ -350,7 +350,7 @@ bool CTIFFReader::Open()
 		if (dwSkipExifInfo == 0)
 		{
 			// Try to read EXIF data
-			uint64_t ExifID;
+			toff_t ExifID;
 
 			if (TIFFGetField(m_tiff, TIFFTAG_EXIFIFD, &ExifID))
 			{
@@ -552,7 +552,7 @@ bool CTIFFReader::Read()
 		assert(bps == 32);
 
 		if (spp == 1)
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
 			for (int y = 0; y < this->h; ++y)
 			{
 				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -571,7 +571,7 @@ bool CTIFFReader::Read()
 				});
 			}
 		else
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 			for (int y = 0; y < this->h; ++y)
 			{
 				if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -599,7 +599,7 @@ bool CTIFFReader::Read()
 			switch (bps)
 			{
 			case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -620,7 +620,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -640,7 +640,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -665,7 +665,7 @@ bool CTIFFReader::Read()
 			switch (bps)
 			{
 			case 8: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -688,7 +688,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 16: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -711,7 +711,7 @@ bool CTIFFReader::Read()
 				}
 				} break;
 			case 32: {
-#pragma omp parallel for default(none) schedule(dynamic, 50) shared(stop) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
 				for (int y = 0; y < this->h; ++y)
 				{
 					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
@@ -764,7 +764,7 @@ bool CTIFFReader::Close()
 
 /* ------------------------------------------------------------------- */
 
-CTIFFWriter::CTIFFWriter(const fs::path& p, ProgressBase* pProgress) :
+CTIFFWriter::CTIFFWriter(const fs::path& p, OldProgressBase* pProgress) :
 	m_tiff{ nullptr },
 	file{ p },
 	m_pProgress{ pProgress },
@@ -857,12 +857,12 @@ bool CTIFFWriter::Open()
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 	constexpr unsigned char exifVersion[4] {'0', '2', '3', '1' }; // EXIF 2.31 version is 4 characters of a string!
-	uint64_t dir_offset_EXIF{ 0 };
+	toff_t dir_offset_EXIF{ 0 };
 
 #ifdef Q_OS_WIN
 	m_tiff = TIFFOpenW(file.wstring().c_str(), "w");
 #else
-	m_tiff = TIFFOpen(file.u8string.c_str(), "w");
+	m_tiff = TIFFOpen(reinterpret_cast<const char*>(file.u8string().c_str()), "w");
 #endif
 	if (m_tiff != nullptr)
 	{
@@ -1074,7 +1074,7 @@ bool CTIFFWriter::Open()
 			if (cfa)
 			{
 				constexpr uint16_t count = sizeof(cfaDimPat.dim) + sizeof(cfaDimPat.cfa.cfa4);
-				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, cfaDimPat);
+				TIFFSetField(m_tiff, EXIFTAG_CFAPATTERN, count, reinterpret_cast<uint8_t *>(&cfaDimPat));
 			}
 			
 			//
@@ -1136,7 +1136,7 @@ bool CTIFFWriter::Write()
 
 		if (buff != nullptr)
 		{
-			const int nrProcessors = CMultitask::GetNrProcessors();
+			const int nrProcessors = Multitask::GetNrProcessors();
 			if (m_pProgress != nullptr)
 				m_pProgress->Start2(h);
 
@@ -1148,7 +1148,7 @@ bool CTIFFWriter::Write()
 			// int	rowProgress = 0;
 
 			std::atomic_bool stop{ false };
-#pragma omp parallel for default(none) if(nrProcessors > 1)
+#pragma omp parallel for default(shared) if(nrProcessors > 1)
 			for (int row = 0; row < h; row++)
 			{
 				if (stop.load())
@@ -1342,7 +1342,7 @@ private :
 	TIFFFORMAT GetBestTiffFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CTIFFWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
+	CTIFFWriteFromMemoryBitmap(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress) :
 		CTIFFWriter{ szFileName, pProgress },
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -1475,7 +1475,7 @@ bool CTIFFWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1513,18 +1513,18 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 }
 
 /* ------------------------------------------------------------------- */
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, /*description*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase * pProgress, const QString& szDescription)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase * pProgress, const QString& szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
 	const QString& szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1556,11 +1556,11 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase*
 }
 
 /* ------------------------------------------------------------------- */
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, /*description*/"", /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
-bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, ProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription)
+bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, const QString& szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
@@ -1574,7 +1574,7 @@ private :
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 
 public :
-	CTIFFReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress):
+	CTIFFReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress):
 		CTIFFReader(szFileName, pProgress),
 		m_outBitmap{ rpBitmap }
 	{}
@@ -1730,7 +1730,7 @@ bool CTIFFReadInMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase *	pProgress)
+bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase *	pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CTIFFReadInMemoryBitmap	tiff(szFileName, rpBitmap, pProgress);
@@ -1783,7 +1783,7 @@ bool	IsTIFFPicture(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 }
 
 
-int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, ProgressBase* pProgress)
+int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1;		// -1 means not a TIFF file.

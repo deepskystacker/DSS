@@ -89,13 +89,18 @@ private:
 	QErrorMessage* errorMessageDialog;
 	QLabel* eMDI;		// errorMessageDialogIcon pointer
 	QShortcut* helpShortCut;
+#if !defined(Q_OS_WIN)
+	QProcess* helpProcess{ nullptr };
+#endif // !defined(Q_OS_WIN)
 
 	void createStatusBar();
 	void updatePanel();
 	static inline DeepSkyStacker* theMainWindow{ nullptr };
 	void connectSignalsToSlots();
+	void setSponsorText();
 
 protected:
+	void changeEvent(QEvent* e) override;
 	void closeEvent(QCloseEvent* e) override;
 	void dragEnterEvent(QDragEnterEvent* e) override;
 	void dropEvent(QDropEvent* e) override;
@@ -125,19 +130,3 @@ public:
 	void reportError(const QString& message, const QString& type, Severity severity,
 		Method method, bool terminate) override;
 };
-
-
-//class DeepSkyStackerApp : public CWinApp
-//{
-//public :
-//	CWnd *				m_pMainDlg;
-//
-//public :
-//	DeepSkyStackerApp() : m_pMainDlg{ nullptr } {}
-//	virtual ~DeepSkyStackerApp() = default;
-//
-//	virtual BOOL InitInstance( ) override;
-//	virtual int ExitInstance() override;
-//	virtual int Run() override;
-//
-//};

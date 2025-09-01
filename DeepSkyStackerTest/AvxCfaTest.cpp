@@ -1,42 +1,49 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 #include "avx_cfa.h"
 #include "GrayBitmap.h"
 #include "Multitask.h"
 #include "MultiBitmap.h"
 #include "MedianFilterEngine.h"
+#include "avx_simd_check.h"
 
 TEST_CASE("AVX CFA", "[AVX][CFA]")
 {
-	const auto compare = [](const std::uint16_t* pColor, const std::initializer_list<std::uint16_t>& data) -> int
+	if (!AvxSimdCheck::checkSimdAvailability())
 	{
-		const int retval = memcmp(pColor, data.begin(), data.size() * sizeof(std::uint16_t));
-		if (retval != 0)
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
+	const auto compare = [](const std::uint16_t* pColor, const std::initializer_list<std::uint16_t>& data) -> int
 		{
-			for (int n = 0; n < data.size(); ++n)
+			const int retval = memcmp(pColor, data.begin(), data.size() * sizeof(std::uint16_t));
+			if (retval != 0)
 			{
-				printf("first[%i] = %i, second[%i] = %i\n", n, pColor[n], n, *(data.begin() + n));
+				for (int n = 0; n < data.size(); ++n)
+				{
+					printf("first[%i] = %i, second[%i] = %i\n", n, pColor[n], n, *(data.begin() + n));
+				}
 			}
-		}
-		return retval;
-	};
+			return retval;
+		};
 
 	const auto avg2 = [](const std::initializer_list<std::uint16_t>& data) -> std::uint16_t
-	{
-		constexpr std::uint16_t one = 1;
-		constexpr std::uint16_t two = 2;
-		return (one + std::accumulate(data.begin(), data.end(), std::uint16_t{ 0 })) / two;
-	};
+		{
+			constexpr std::uint16_t one = 1;
+			constexpr std::uint16_t two = 2;
+			return (one + std::accumulate(data.begin(), data.end(), std::uint16_t{ 0 })) / two;
+		};
 
 	const auto emulate_simd_avg = [&avg2](const std::initializer_list<std::uint16_t>& data) -> std::uint16_t
-	{
-		if (data.size() == 2)
-			return avg2(data);
-		if (data.size() == 4)
-			return avg2({ avg2({ *data.begin(), *(data.begin() + 1) }), avg2({ *(data.begin() + 2), *(data.begin() + 3) }) });
-		else
-			throw "Only 2 or 4 arguments valid.";
-	};
+		{
+			if (data.size() == 2)
+				return avg2(data);
+			if (data.size() == 4)
+				return avg2({ avg2({ *data.begin(), *(data.begin() + 1) }), avg2({ *(data.begin() + 2), *(data.begin() + 3) }) });
+			else
+				throw "Only 2 or 4 arguments valid.";
+		};
 
 	// Just to indicate that the color-component of a RGB pixel matchen the bayer pattern color at that position.
 	// E.g. the red color of a RGB pixel in a RG-line at positions 0, 2, 4, ...
@@ -159,7 +166,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
-		
+
 		avxCfaProcessing.init(0, 8);
 		const int r = avxCfaProcessing.interpolate(0, 8, 1);
 		REQUIRE(r == 0);
@@ -222,7 +229,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		avxCfaProcessing.init(0, 8);
 		REQUIRE(avxCfaProcessing.interpolate(0, 8, 1) == 0);
 
-		REQUIRE(compare(avxCfaProcessing.redCfaLine<std::uint16_t>(3), { emulate_simd_avg({ 128, 256 }), 193, 194, 195, 196, 197}) == 0);
+		REQUIRE(compare(avxCfaProcessing.redCfaLine<std::uint16_t>(3), { emulate_simd_avg({ 128, 256 }), 193, 194, 195, 196, 197 }) == 0);
 		REQUIRE(compare(avxCfaProcessing.greenCfaLine<std::uint16_t>(3), { 192, 193, 194, 195, 196, 197 }) == 0);
 		REQUIRE(compare(avxCfaProcessing.blueCfaLine<std::uint16_t>(3), { emulate_simd_avg({ 0, 193}), 193, emulate_simd_avg({ 193, 195 }), 195, 196, 197 }) == 0);
 	}
@@ -252,19 +259,18 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 
 
 
-
-bool CMultitask::GetUseSimd() { return true; }
-int CMultitask::GetNrCurrentOmpThreads() { return 1; } // Placeholder!!!
+bool Multitask::GetUseSimd() { return true; }
+int Multitask::GetNrCurrentOmpThreads() { return 1; } // Placeholder!!!
 
 void CMultiBitmap::removeTempFiles() {}
 void CMultiBitmap::SetBitmapModel(const CMemoryBitmap*) {}
-bool CMultiBitmap::AddBitmap(CMemoryBitmap*, ProgressBase*) { return true; }
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase*) { return std::shared_ptr<CMemoryBitmap>{}; }
+bool CMultiBitmap::AddBitmap(CMemoryBitmap*, OldProgressBase*) { return true; }
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase*) { return std::shared_ptr<CMemoryBitmap>{}; }
 
 //void CYMGToRGB(double, double, double, double, double&, double&, double&) {}
 std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics&) { return std::shared_ptr<CMemoryBitmap>{}; }
-// std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class OldProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 // 
-// std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+// std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class OldProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 // 
-// void CGrayBitmapT<unsigned short>::RemoveHotPixels(class ProgressBase*) {}
+// void CGrayBitmapT<unsigned short>::RemoveHotPixels(class OldProgressBase*) {}

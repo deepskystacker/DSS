@@ -5,13 +5,13 @@
 #include "dssrect.h"
 #include "TaskInfo.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 class CMemoryBitmap;
 class CFrameInfo;
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, DSS::ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, DSS::OldProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 bool AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */
@@ -131,7 +131,7 @@ public:
 
 /* ------------------------------------------------------------------- */
 class CTaskInfo;
-bool GetTaskResult(const CTaskInfo* pTaskInfo, DSS::ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool GetTaskResult(const CTaskInfo* pTaskInfo, DSS::OldProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 void ClearTaskCache();
 
 /* ------------------------------------------------------------------- */
@@ -188,10 +188,10 @@ public :
 		return (*this);
 	};
 
-	bool	DoOffsetTask(DSS::ProgressBase* const pProgress);
-	bool	DoDarkTask(DSS::ProgressBase* const pProgress);
-	bool	DoFlatTask(DSS::ProgressBase* const pProgress);
-	bool	DoDarkFlatTask(DSS::ProgressBase* const pProgress);
+	bool	DoOffsetTask(DSS::OldProgressBase* const pProgress);
+	bool	DoDarkTask(DSS::OldProgressBase* const pProgress);
+	bool	DoFlatTask(DSS::OldProgressBase* const pProgress);
+	bool	DoDarkFlatTask(DSS::OldProgressBase* const pProgress);
 };
 
 /* ------------------------------------------------------------------- */
@@ -353,11 +353,11 @@ public:
 
 	STACKINGMODE getStackingMode() const;
 
-	bool DoOffsetTasks(DSS::ProgressBase* pProgress);
-	bool DoDarkTasks(DSS::ProgressBase* pProgress);
-	bool DoFlatTasks(DSS::ProgressBase* pProgress);
-	bool DoDarkFlatTasks(DSS::ProgressBase* pProgress);
-	bool DoAllPreTasks(DSS::ProgressBase* pProgress);
+	bool DoOffsetTasks(DSS::OldProgressBase* pProgress);
+	bool DoDarkTasks(DSS::OldProgressBase* pProgress);
+	bool DoFlatTasks(DSS::OldProgressBase* pProgress);
+	bool DoDarkFlatTasks(DSS::OldProgressBase* pProgress);
+	bool DoAllPreTasks(DSS::OldProgressBase* pProgress);
 
 	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
 	std::int64_t computeNecessaryDiskSpace();
@@ -397,7 +397,7 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-void SpaceToQString(__int64 ulSpace, QString& strSpace);
+void SpaceToQString(std::int64_t ulSpace, QString& strSpace);
 
 /* ------------------------------------------------------------------- */
 

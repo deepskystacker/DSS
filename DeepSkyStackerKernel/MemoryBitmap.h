@@ -3,11 +3,12 @@
 #include "BitmapExtraInfo.h"
 #include "ColorRef.h"
 #include "Bayer.h"
+#include "dssbase.h"
 
 class CMultiBitmap;
 class CMedianFilterEngine;
 class CBitmapCharacteristics;
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 class CMemoryBitmap
 {
@@ -205,8 +206,8 @@ public:
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const = 0;
 
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const = 0;
-	virtual void AverageBitmap(CMemoryBitmap*, DSS::ProgressBase*) {};
-	virtual void RemoveHotPixels(DSS::ProgressBase* pProgress = nullptr) = 0;
+	virtual void AverageBitmap(CMemoryBitmap*, DSS::OldProgressBase*) {};
+	virtual void RemoveHotPixels(DSS::OldProgressBase* pProgress = nullptr) = 0;
 	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const = 0;
 
 	virtual double GetMaximumValue() const = 0;

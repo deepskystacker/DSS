@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "catch.h"
 
 #define UNIT_TESTS
@@ -13,10 +13,15 @@
 #include "PixelTransform.h"
 #include "avx_entropy.h"
 #include "BackgroundCalibration.h"
-
+#include "avx_simd_check.h"
 
 TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
 	SECTION("Int16")
 	{
 		constexpr int W = 313;
@@ -127,6 +132,12 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 
 TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	SECTION("X/Y shift")
 	{
 		constexpr int W = 281;
@@ -257,15 +268,15 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		REQUIRE(pOut != nullptr);
 		std::vector<T> expected(W * H);
 		const auto calcFrac = [&](const float xc, const float yc, const int xn, const int yn, const int x, const int y) -> void
-		{
-			const float xf = 1.0f - std::abs(xc - xn);
-			const float yf = 1.0f - std::abs(yc - yn);
-			if (xc >= 0 && xc <= (W - 1) && yc >= 0 && yc <= (H - 1)
-				&& xn >= 0 && xn < W && yn >= 0 && yn < H)
 			{
-				expected[yn * W + xn] += xf * yf * pGray->m_vPixels[y * W + x];
-			}
-		};
+				const float xf = 1.0f - std::abs(xc - xn);
+				const float yf = 1.0f - std::abs(yc - yn);
+				if (xc >= 0 && xc <= (W - 1) && yc >= 0 && yc <= (H - 1)
+					&& xn >= 0 && xn < W && yn >= 0 && yn < H)
+				{
+					expected[yn * W + xn] += xf * yf * pGray->m_vPixels[y * W + x];
+				}
+			};
 		for (int y = 0; y < H; ++y)
 			for (int x = 0; x < W; ++x)
 			{
@@ -287,6 +298,12 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 
 TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	SECTION("Linear")
 	{
 		constexpr int W = 151;
@@ -354,7 +371,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 		backgroundCalib.SetMode(BCM_RGB, BCI_RATIONAL, RBCM_MAXIMUM);
 		backgroundCalib.m_riRed.Initialize(0, median, 106052.598087, 0, median * 0.84, 106052.598087);
 
-//		printf("A: %f, B: %f, C: %f, Min: %f, Max: %f\n", backgroundCalib.m_riRed.getParameterA(), backgroundCalib.m_riRed.getParameterB(), backgroundCalib.m_riRed.getParameterC(), backgroundCalib.m_riRed.getParameterMin(), backgroundCalib.m_riRed.getParameterMax());
+		//		printf("A: %f, B: %f, C: %f, Min: %f, Max: %f\n", backgroundCalib.m_riRed.getParameterA(), backgroundCalib.m_riRed.getParameterB(), backgroundCalib.m_riRed.getParameterC(), backgroundCalib.m_riRed.getParameterMin(), backgroundCalib.m_riRed.getParameterMax());
 
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, std::shared_ptr<CMemoryBitmap>{}, 1) == 0);
@@ -374,10 +391,17 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 			}
 		REQUIRE(OK == true);
 	}
+
 }
 
 TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 {
+	if (!AvxSimdCheck::checkSimdAvailability())
+	{
+		WARN("AVX2 hardware not available");
+		return;
+	}
+
 	SECTION("One image")
 	{
 		constexpr int W = 61;
@@ -490,10 +514,11 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 	}
 }
 
-CBackgroundCalibration::CBackgroundCalibration() :
-	m_bInitOk{ false },
-	m_fMultiplier{ 1.0 },
-	m_BackgroundCalibrationMode{ BCM_RGB },
-	m_BackgroundInterpolation{ BCI_LINEAR },
-	m_RGBBackgroundMethod{ RBCM_MAXIMUM }
-{}
+	CBackgroundCalibration::CBackgroundCalibration() :
+		m_bInitOk{ false },
+		m_fMultiplier{ 1.0 },
+		m_BackgroundCalibrationMode{ BCM_RGB },
+		m_BackgroundInterpolation{ BCI_LINEAR },
+		m_RGBBackgroundMethod{ RBCM_MAXIMUM }
+	{
+	}

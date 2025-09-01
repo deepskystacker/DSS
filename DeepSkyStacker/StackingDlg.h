@@ -56,11 +56,6 @@ namespace DSS
 	class ToolBar;
 }
 
-namespace std::filesystem
-{
-	class path;
-}
-
 class QErrorMessage;
 class QTextOption;
 class QSortFilterProxyModel;
@@ -74,7 +69,7 @@ namespace DSS
 		class StackingDlg;
 	}
 
-	class IconSizeDelegate : public QStyledItemDelegate
+	class IconSizeDelegate final : public QStyledItemDelegate
 	{
 		Q_OBJECT
 
@@ -98,7 +93,7 @@ namespace DSS
 
 	};
 
-	class ItemEditDelegate :
+	class ItemEditDelegate final:
 		public QStyledItemDelegate
 	{
 		typedef QStyledItemDelegate
@@ -129,7 +124,7 @@ namespace DSS
 
 	class PictureList;
 
-	class StackingDlg : public QWidget
+	class StackingDlg final : public QWidget
 	{
 		typedef QWidget
 			Inherited;
@@ -186,6 +181,8 @@ namespace DSS
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr, PictureList* list = nullptr);
 		~StackingDlg();
+		StackingDlg(const StackingDlg&) = delete;
+		StackingDlg& operator=(const StackingDlg&) = delete;
 
 		bool eventFilter(QObject* watched, QEvent* event) override;
 

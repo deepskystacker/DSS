@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "pch.h"
 //#include "resource.h"
 #include "BitmapBase.h"
 #include "BackgroundCalibration.h"
@@ -16,16 +16,16 @@ CBackgroundCalibration::CBackgroundCalibration() :
 	m_RGBBackgroundMethod{ CAllStackingTasks::GetRGBBackgroundCalibrationMethod() }
 {}
 
-void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, ProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
+void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, OldProgressBase* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
 {
 	AvxHistogram avxHistogram(*pBitmap);
 //	std::vector<int> redLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize()); // Only allocate mem if AVX will not be used (see below).
 //	std::vector<int> greenLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
 //	std::vector<int> blueLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
 	const int height = pBitmap->Height();
-	const auto nrProcessors = CMultitask::GetNrProcessors();
+	const auto nrProcessors = Multitask::GetNrProcessors();
 
-#pragma omp parallel default(none) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram/*, redLocalHist, greenLocalHist, blueLocalHist*/) if(nrProcessors > 1)
+#pragma omp parallel default(shared) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram/*, redLocalHist, greenLocalHist, blueLocalHist*/) if(nrProcessors > 1)
 	{
 		constexpr int Bulksize = 50;
 #pragma omp for
@@ -71,13 +71,12 @@ void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, Prog
 
 #pragma omp critical(OmpLockHistoMerge)
 		{
-//			if (avxHistogram.histogramSuccessful())
 			avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto);
 		}
 	} // omp parallel
 }
 
-void CBackgroundCalibration::ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, bool bFirst, ProgressBase* pProgress)
+void CBackgroundCalibration::ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, bool bFirst, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	m_fSrcRedMax = 0;

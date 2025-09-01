@@ -1,11 +1,11 @@
-#include <stdafx.h>
+#include "pch.h"
 #include "StackingTasks.h"
 #include "MultiBitmap.h"
 #include "MemoryBitmap.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "Multitask.h"
 #include "avx_output.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 #include <QTemporaryFile>
@@ -90,7 +90,7 @@ void CMultiBitmap::InitParts()
 
 
 // Save the bitmap to the temporary file
-bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
+bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	static std::mutex initMutex{};
 
@@ -122,7 +122,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 #if defined(Q_OS_WIN)
 			_wfopen(partFile.file.c_str(), L"a+b"),
 #else
-			std::fopen(partFile.file.c_ctr(), "a+b"),
+			std::fopen(partFile.file.c_str(), "a+b"),
 #endif
 			dtor };
 
@@ -158,13 +158,13 @@ private:
 	int							m_lStartRow;
 	int							m_lEndRow;
 	size_t						m_lScanLineSize;
-	ProgressBase*				m_pProgress;
+	OldProgressBase*				m_pProgress;
 	CMultiBitmap*				m_pMultiBitmap;
 	void*						m_pBuffer;
 	CMemoryBitmap* m_pBitmap;
 
 public:
-    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, ProgressBase* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
+    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, OldProgressBase* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
 		m_lStartRow{ startRow },
 		m_lEndRow{ endRow },
 		m_lScanLineSize{ scanLineSize },
@@ -181,8 +181,7 @@ public:
 
 void CCombineTask::process()
 {
-	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrProcessors = Multitask::GetNrProcessors();
 	const int nrRows = m_lEndRow - m_lStartRow + 1;
 	const size_t nrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
 	int progress = m_lStartRow;
@@ -191,7 +190,7 @@ void CCombineTask::process()
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-#pragma omp parallel for default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1) // No "schedule" clause gives fastest result.
+#pragma omp parallel for default(shared) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1) // No "schedule" clause gives fastest result.
 	for (int row = m_lStartRow; row <= m_lEndRow; ++row)
 	{
 		if (stop)
@@ -313,7 +312,7 @@ static void ComputeWeightedAverage(int x, int y, CMemoryBitmap* pBitmap, CMemory
 	};
 };
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, ProgressBase* const pProgress) const
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, OldProgressBase* const pProgress) const
 {
 	if (static_cast<bool>(m_pHomBitmap))
 	{
@@ -343,7 +342,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, P
 	return std::shared_ptr<CMemoryBitmap>{};
 }
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	std::shared_ptr<CMemoryBitmap> pBitmap;
@@ -377,6 +376,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 		// Note:
 		// Making the file reading concurrent (e.g. with std::async) is hardly a speed improvement,
 		// because only about 7% of the time is spent for reading the data from the files.
+		ZTRACE_RUNTIME("Reading %ld files and combining using CCombineTask::process()", m_vFiles.size());
 
 		for (const auto& partFile : m_vFiles)
 		{
@@ -393,7 +393,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase* pProgress)
 #if defined(Q_OS_WIN)
 				_wfopen(partFile.file.c_str(), L"rb")
 #else
-				std::fopen(partFile.file.c_ctr(), "rb")
+				std::fopen(partFile.file.c_str(), "rb")
 #endif
 				)
 			{

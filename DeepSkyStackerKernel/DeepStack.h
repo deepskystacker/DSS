@@ -9,7 +9,7 @@ namespace fs = std::filesystem;
 #include "StackedBitmap.h"
 #include "BitmapExt.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 class CDeepStack
 {
 private :
@@ -18,7 +18,7 @@ private :
 	QVector<uchar> imageData_;
 	std::unique_ptr<QImage> image_;
 	bool m_bNewStackedBitmap;
-	DSS::ProgressBase* m_pProgress;
+	DSS::OldProgressBase* m_pProgress;
 
 public :
 	CDeepStack() : 
@@ -52,7 +52,7 @@ private :
 	void	AdjustHistogram(DSS::RGBHistogram & srcHisto, DSS::RGBHistogram & tgtHisto, const DSS::RGBHistogramAdjust & histogramAdjust);
 
 public :
-	void	SetProgress(DSS::ProgressBase *	pProgress)
+	void	SetProgress(DSS::OldProgressBase *	pProgress)
 	{
 		m_pProgress = pProgress;
 	};
@@ -76,8 +76,8 @@ public :
 		//
 		if (nullptr == image_.get())
 		{
-			int width = GetWidth(); int height = GetHeight();
-			qDebug() << "Creating image data storage: " << width << "*" << height;
+			//int width = GetWidth(); int height = GetHeight();
+			//qDebug() << "Creating image data storage: " << width << "*" << height;
 			imageData_.resize(GetWidth() * GetHeight() * sizeof(QRgb));
 			image_ = std::make_unique<QImage>(imageData_.data(), GetWidth(), GetHeight(), QImage::Format_RGB32);
 		}

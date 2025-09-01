@@ -1,0 +1,10 @@
+SmtpMime provides CMake targets:
+
+Basic usage is:
+
+	find_package(SmtpMime REQUIRED)
+	target_link_libraries(${PROJECT_NAME} PRIVATE SmtpMime::SmtpMime)
+	
+Notes:
+	This is built as a static library.
+	

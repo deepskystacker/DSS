@@ -65,7 +65,7 @@ namespace DSS
 		volatile bool stopped;
 		unsigned long delay;
 		std::u16string folderToWatch;
-		std::unordered_map<fs::path, fs::file_time_type> paths_;
+		std::unordered_map<std::u8string, fs::file_time_type> paths_;
 		std::vector<fs::path> existing_;
 
 	signals:

@@ -1,28 +1,50 @@
-#include "stdafx.h"
+#include "pch.h"
+#include "ztrace.h"
+#include "tracecontrol.h"
+#include "dssbase.h"
 
+extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
+//extern char const* global_program_name;
+
+namespace
+{
+	void writeOutput(const char* text)
+	{
+		fputs(text, stderr);
+		ZTRACE_RUNTIME(text);
+	}
+}
 
 #if defined(Q_OS_WIN)
 
 #include "StackWalker.h"
-#include "Ztrace.h"
-#include "tracecontrol.h"
-
-extern std::unique_ptr<std::uint8_t[]> backPocket;
-extern DSS::TraceControl traceControl;
 
 namespace {
-
 	class DSSStackWalker : public StackWalker
 	{
+		bool suppressOutputFlag{ false };
 	public:
-		DSSStackWalker() : StackWalker{}
+		DSSStackWalker() : StackWalker{ StackWalker::RetrieveVerbose | StackWalker::SymBuildPath }
 		{}
+		void suppressOutput(const bool suppress) {
+			this->suppressOutputFlag = suppress;
+		}
 	protected:
 		virtual void OnOutput(LPCSTR text) override
 		{
+			if (suppressOutputFlag)
+				return;
 			fprintf(stderr, text);
 			ZTRACE_RUNTIME(text);
 			//		StackWalker::OnOutput(text); // Just OutputDebugString()
+		}
+
+		virtual void OnDbgHelpErr(LPCSTR szFuncName, DWORD lastErrorCode, DWORD64 address) override
+		{
+			if (strcmp(szFuncName, "SymGetLineFromAddr64") == 0)
+				return;
+			StackWalker::OnDbgHelpErr(szFuncName, lastErrorCode, address);
 		}
 	};
 
@@ -66,20 +88,18 @@ namespace {
 	std::atomic<std::uint32_t> barrier{ 0 };
 	std::thread::id currentThreadId{};
 
-	void writeOutput(const char* text)
+	void traceTheStack(const bool suppressOutput, auto pContext)
 	{
-		fputs(text, stderr);
-		ZTRACE_RUNTIME(text);
-	}
-
-	void traceTheStack()
-	{
-		sw.ShowCallstack();
+		sw.suppressOutput(suppressOutput);
+		if constexpr (std::is_same_v<decltype(pContext), nullptr_t>)
+			sw.ShowCallstack();
+		else
+			sw.ShowCallstack(GetCurrentThread(), pContext);
+		sw.suppressOutput(false);
 	}
 
 	long WINAPI DssCriticalExceptionHandler(EXCEPTION_POINTERS* pExc)
 	{
-		traceControl.setDeleteOnExit(false);
 		constexpr auto returnCode = EXCEPTION_CONTINUE_SEARCH; // should show the error pop-up message box
 		const EXCEPTION_RECORD* exc = pExc->ExceptionRecord;
 		const std::uint32_t excCode = exc->ExceptionCode;
@@ -93,18 +113,21 @@ namespace {
 		else // don't care about the exception
 			return returnCode;
 
-		if (barrier.fetch_add(1) == 0) // We are the first one
+		if (barrier.exchange(1) == 0) // atomic::exchange() returns the value before the call, so we are the first one.
 		{
+			traceControl.setDeleteOnExit(false); // Here we know there's a serious situation, so we prevent deletion of the trace file.
 			currentThreadId = thisThreadId;
-			backPocket.reset();
+			backPocket.reset(nullptr);
 			fprintf(stderr, "Thread %" PRIx64 " beginning StackWalk\n", myThreadId);
 			if (excCode != EXCEPTION_STACK_OVERFLOW)
-				traceTheStack();
+				traceTheStack(false, pExc->ContextRecord); // false = do NOT suppress output.
 			fprintf(stderr, "Thread %" PRIx64 " finished StackWalk\n", myThreadId);
 			fflush(stderr);
+			barrier = 0; // Reset to initial value, so that all other waiting threads can resume.
+			barrier.notify_all(); // Notify all waiting threads that we finished the stack walk.
 			std::terminate();
 		}
-		else // another stack walk is done
+		else // Another stack walk is done.
 		{
 			if (currentThreadId == thisThreadId) // Exception while tracing the stack -> there's nothing we can do.
 			{
@@ -112,11 +135,12 @@ namespace {
 					writeOutput(str);
 				return returnCode;
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+			barrier.wait(1);
 		}
 
 		return returnCode;
 	}
+
 
 } // namespace
 
@@ -124,107 +148,158 @@ void setDssExceptionHandling()
 {
 	// Add our own vectored exception handler to the front of the handler chain, so it gets called early (ideally first).
 	AddVectoredExceptionHandler(1, DssCriticalExceptionHandler);
+	traceTheStack(true, nullptr); // Stack tracing to initialise StackWalker and pre-load all libraries, true = output suppressed.
 }
 
-#else
+#elif defined(Q_OS_LINUX)
+#include <csignal>
+#include <execinfo.h>
+#include <link.h>
 
-/* Resolve symbol name and source location given the path to the executable
-   and an address */
-int addr2line(char const* const program_name, void const* const addr)
+namespace
 {
-	char addr2line_cmd[512]{ 0 };
 
-	/* have addr2line map the address to the relevant line in the code */
-#ifdef __APPLE__
-  /* apple does things differently... */
-	sprintf(addr2line_cmd, "atos -o %.256s %p", program_name, addr);
-#else
-	sprintf(addr2line_cmd, "addr2line -f -p -e %.256s %p", program_name, addr);
-#endif
-
-	/* This will print a nicely formatted string specifying the
-	   function and source line of the address */
-	FILE* in;
-	char buff[512];
-	// is this the check for command execution exited with not 0?
-	if (!(in = popen(addr2line_cmd, "r"))) {
-		// I want to return the exit code and error message too if any
-		return 1;
-	}
-	// this part echoes the output of the command that's executed
-	while (fgets(buff, sizeof(buff), in) != NULL)
+	// converts a function's address in memory to its VMA address in the executable file. VMA is what addr2line expects
+	std::uintptr_t convertToVMA(void* addr)
 	{
-		writeOutput(buff);
+		Dl_info info;
+		struct link_map* link_map;
+		dladdr1((void*)addr, &info, (void**)&link_map, RTLD_DL_LINKMAP);
+		return reinterpret_cast<std::uintptr_t>(addr) - link_map->l_addr;
 	}
 
-	int status = pclose(in);
-	return WEXITSTATUS(status);
-}
 
-constexpr size_t MAX_STACK_FRAMES{ 64 };
-static void* stack_traces[MAX_STACK_FRAMES];
-void posix_print_stack_trace()
-{
-	int i, trace_size = 0;
-	char** messages = (char**)NULL;
-	char buffer[1024]{};	// buffer for error message
-
-
-	trace_size = backtrace(stack_traces, MAX_STACK_FRAMES);
-	messages = backtrace_symbols(stack_traces, trace_size);
-
-	/* skip the first couple stack frames (as they are this function and
-	   our handler) and also skip the last frame as it's (always?) junk. */
-	   // for (i = 3; i < (trace_size - 1); ++i)
-	   // we'll use this for now so you can see what's going on
-	for (i = 0; i < trace_size; ++i)
+	/* Resolve symbol name and source location given the path to the executable
+	   and an address */
+	int addr2line(char const* const program_name, std::uintptr_t addr)
 	{
-		if (addr2line(global_program_name, stack_traces[i]) != 0)
+		char addr2line_cmd[512] = { '\0' };
+
+		/* have addr2line map the address to the relevant line in the code */
+		snprintf(addr2line_cmd, sizeof(addr2line_cmd), "addr2line -f -C -p -e %.256s %p", program_name, (void*)addr);
+
+		/* This will print a nicely formatted string specifying the
+		   function and source line of the address */
+		FILE* in;
+		char buff[512];
+		// is this the check for command execution exited with not 0?
+		if (!(in = popen(addr2line_cmd, "r"))) {
+			// I want to return the exit code and error message too if any
+			return 1;
+		}
+		// this part echoes the output of the command that's executed
+		while (fgets(buff, sizeof(buff), in) != NULL)
 		{
-			snprintf(buffer, sizeof(buffer) / sizeof(char),
-				"  error determining line # for: %s\n", messages[i]);
-			writeOutput(buffer);
+			::writeOutput(buff);
 		}
 
+		int status = pclose(in);
+		return WEXITSTATUS(status);
 	}
-	if (messages) { free(messages); }
-}
 
-void signalHandler(int signal)
-{
-	if (backPocket)
+	constexpr size_t MAX_STACK_FRAMES{ 64 };
+	static void* stack_trace[MAX_STACK_FRAMES];
+	std::atomic<std::uint32_t> barrier{ 0 };
+
+	//
+	// This function is NOT THREAD SAFE!
+	// Make sure to use barriers or similar before calling it.
+	// After the call terminate the process.
+	//
+	void posix_print_stack_trace()
 	{
-		free(backPocket);
-		backPocket = nullptr;
+		char buffer[1024] = { '\0' }; // buffer for error message
+
+		const int trace_size = backtrace(stack_trace, MAX_STACK_FRAMES);
+
+		//
+		// Refer to https://stackoverflow.com/questions/56046062/linux-addr2line-command-returns-0
+		// for a discussion of why we need to convert the address in the stack trace to call
+		// addr2line 
+		//
+
+		// Skip the first two stack frames (as they are this function and
+		//   our handler), and also skip the last frame as it's (always?) junk.
+
+		// Skip the first two frames on Linux as they don't appear be useful.
+		constexpr int skip_frames{ 2 };
+
+		for (int i = skip_frames; i < (trace_size - 1); ++i) // To see the entire entire stack trace, change to: for (i = 0 ...
+		{
+			Dl_info info;
+			if (dladdr(stack_trace[i], &info))
+			{
+				std::uintptr_t VMA_addr = convertToVMA(stack_trace[i]);
+				//
+				// Decrement the PC so we point to actual source line in error, not the one
+				// following it.
+				//
+				VMA_addr = VMA_addr - 1;
+				//if (addr2line(global_program_name, VMA_addr) != 0)
+				if (addr2line(info.dli_fname, VMA_addr) != 0)
+				{
+					static char* *const messages = backtrace_symbols(stack_trace, trace_size);
+					if (messages != nullptr)
+					{
+						snprintf(buffer, sizeof(buffer) / sizeof(char), "  error determining line # for: %s\n", messages[i]);
+						::writeOutput(buffer);
+					}
+				}
+			}
+		}
+		// No need to free the message buffer, because the process will be terminated now.
+//		free(messages);
 	}
 
-	char name[8]{};
-	switch (signal)
+	void signalHandler(int signal)
 	{
-	case SIGINT:
-		strcpy(name, "SIGINT");
-		break;
-	case SIGILL:
-		strcpy(name, "SIGILL");
-		break;
-	case SIGFPE:
-		strcpy(name, "SIGFPE");
-		break;
-	case SIGSEGV:
-		strcpy(name, "SIGSEGV");
-		break;
-	case SIGTERM:
-		strcpy(name, "SIGTERM");
-		break;
-	default:
-		snprintf(name, sizeof(name) / sizeof(char), "%d", signal);
+		// If we reach this point, we know that something disastrous happened. The process was sent one of the fatal signals (Seg. violation, FP exception, ...).
+		// We run the signal handler and then terminate the process.
+
+		// The signal handler can only be executed by a single thread. All other threads must wait.
+		if (barrier.exchange(1) == 0) // atomic::exchange() returns the value before the call, so we are the first one.
+		{
+			backPocket.reset(nullptr); // Release back pocket storage
+			traceControl.setDeleteOnExit(false);
+
+			char name[8] = { '\0' };
+			switch (signal)
+			{
+			case SIGINT:
+				strcpy(name, "SIGINT");
+				break;
+			case SIGILL:
+				strcpy(name, "SIGILL");
+				break;
+			case SIGFPE:
+				strcpy(name, "SIGFPE");
+				break;
+			case SIGSEGV:
+				strcpy(name, "SIGSEGV");
+				break;
+			case SIGTERM:
+				strcpy(name, "SIGTERM");
+				break;
+			default:
+				snprintf(name, sizeof(name) / sizeof(char), "%d", signal);
+			}
+
+			ZTRACE_RUNTIME("In signalHandler(%s)", name);
+
+			posix_print_stack_trace();
+
+			barrier = 0; // Reset to initial value, so that all other waiting threads can resume.
+			barrier.notify_all(); // Notify all waiting threads that we finished the stack walk.
+
+			std::abort();
+		}
+		else
+		{
+			barrier.wait(1);
+		}
 	}
+} // namespace
 
-	ZTRACE_RUNTIME("In signalHandler(%s)", name);
-
-	posix_print_stack_trace();
-	DeepSkyStacker::instance()->close();
-}
 
 void setDssExceptionHandling()
 {
@@ -234,5 +309,4 @@ void setDssExceptionHandling()
 	std::signal(SIGSEGV, signalHandler);
 	std::signal(SIGTERM, signalHandler);
 }
-
 #endif

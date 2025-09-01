@@ -33,7 +33,7 @@
 **
 **
 ****************************************************************************/
-#include "stdafx.h"
+#include "pch.h"
 #include "mrulist.h"
 
 void	MRUList::readSettings()

@@ -3,7 +3,7 @@
 #include "Stars.h"
 #include "Bayer.h"
 
-namespace DSS { class ProgressBase; }
+namespace DSS { class OldProgressBase; }
 
 /* ------------------------------------------------------------------- */
 
@@ -152,9 +152,9 @@ public :
 	DSSRect						m_rcHotest;
 	std::vector<DSSRect>		m_vrcColdest;
 	std::vector<double>			m_vMedianColdest;
-	double						m_fMedianHotest;
-	double						m_fGrayValue;
-	int						m_lColdestIndice;
+	double						m_fMedianHotest{0.0};
+	double						m_fGrayValue{0.0};
+	int						m_lColdestIndice{0};
 
 	DSSRect getRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px)
 	{
@@ -227,14 +227,14 @@ private :
 	void	GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
 
 protected :
-	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, DSS::ProgressBase * pProgress);
+	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, DSS::OldProgressBase * pProgress);
 
-	void	ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, DSS::ProgressBase * pProgress);
-	void	ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, DSS::ProgressBase * pProgress);
+	void	ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, DSS::OldProgressBase * pProgress);
+	void	ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, DSS::OldProgressBase * pProgress);
 	void	ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor);
 	void	RemoveContiguousHotPixels(bool bCFA);
-	void	FindHotPixels(DSS::ProgressBase* pProgress);
-	void	FindBadVerticalLines(DSS::ProgressBase* pProgress);
+	void	FindHotPixels(DSS::OldProgressBase* pProgress);
+	void	FindBadVerticalLines(DSS::OldProgressBase* pProgress);
 
 public :
 	CDarkFrame(std::shared_ptr<CMemoryBitmap> pMaster = std::shared_ptr<CMemoryBitmap>{})
@@ -251,8 +251,8 @@ public :
 		//m_pMasterDark = pMaster; // pMaster.Addref(); m_pMasterDark.m_p->Release(); m_pMasterDark.m_p = pMaster;
 	}
 
-	bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, DSS::ProgressBase* pProgress = nullptr);
-	void InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, DSS::ProgressBase* pProgress = nullptr);
+	bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, DSS::OldProgressBase* pProgress = nullptr);
+	void InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, DSS::OldProgressBase* pProgress = nullptr);
 
 	bool IsOk() const
 	{

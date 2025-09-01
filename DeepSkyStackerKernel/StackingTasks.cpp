@@ -1,15 +1,15 @@
-#include <stdafx.h>
+#include "pch.h"
 
 #include "StackingTasks.h"
 #include "DSSProgress.h"
-#include "Ztrace.h"
+#include "ztrace.h"
 #include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "RAWUtils.h"
 #include "TaskInfo.h"
 #include "TIFFUtil.h"
 #include "Settings.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "MemoryBitmap.h"
 
 using namespace DSS;
@@ -36,7 +36,7 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 	return bResult;
 };
 
-void	SpaceToQString(__int64 ulSpace, QString& strSpace)
+void	SpaceToQString(std::int64_t ulSpace, QString& strSpace)
 {
 	double fKb(ulSpace / 1024.0);
 	double fMb(fKb / 1024.0);
@@ -55,15 +55,14 @@ void	SpaceToQString(__int64 ulSpace, QString& strSpace)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, OldProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	bool bResult = false;
 	CBitmapInfo bmpInfo;
 
-	const auto fileName = filePath.generic_wstring(); // Otherwise szFile could be a dangling pointer.
-	const auto szFile = fileName.c_str();
+	const auto fileName{ QString::fromStdU16String(filePath.generic_u16string()) };
 
 	if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 	{
@@ -77,33 +76,33 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, ProgressBase* p
 		{
 		case PICTURETYPE_DARKFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_DARKFLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_OFFSETFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_FLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_LIGHTFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			bOverrideRAW = false;
 			break;
 		};
@@ -162,7 +161,7 @@ public:
 		m_pFlatBitmap.reset();
 	}
 
-	bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+	bool GetTaskResult(const CTaskInfo* pTaskInfo, OldProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -219,7 +218,7 @@ static CTaskBitmapCache g_BitmapCache;
 
 /* ------------------------------------------------------------------- */
 
-bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+bool GetTaskResult(const CTaskInfo* pTaskInfo, OldProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	return ::g_BitmapCache.GetTaskResult(pTaskInfo, pProgress, rpBitmap);
 }
@@ -251,7 +250,7 @@ static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool
 
 /* ------------------------------------------------------------------- */
 
-static void WriteMasterTIFF(fs::path szFileName, CMemoryBitmap* pMasterBitmap, ProgressBase* pProgress, const QString& szDescription, CTaskInfo* pTaskInfo)
+static void WriteMasterTIFF(fs::path szFileName, CMemoryBitmap* pMasterBitmap, OldProgressBase* pProgress, const QString& szDescription, CTaskInfo* pTaskInfo)
 {
     WriteTIFF(szFileName, pMasterBitmap, pProgress, szDescription,
 		pTaskInfo->m_lISOSpeed, pTaskInfo->m_lGain, pTaskInfo->m_fExposure, pTaskInfo->m_fAperture);
@@ -287,7 +286,7 @@ bool	CStackingInfo::CheckForExistingOffset(fs::path& masterFile)
 	return bResult;
 }
 
-bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
+bool CStackingInfo::DoOffsetTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
@@ -316,7 +315,7 @@ bool CStackingInfo::DoOffsetTask(ProgressBase* const pProgress)
 			if (pProgress)
 				pProgress->Start1(strText, (int)m_pOffsetTask->m_vBitmaps.size(), true);
 
-			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pOffsetTask->m_vBitmaps.size())
 					return { {}, false };
@@ -449,7 +448,7 @@ bool CStackingInfo::CheckForExistingDark(fs::path& masterFile)
 }
 
 
-bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
+bool CStackingInfo::DoDarkTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -489,7 +488,7 @@ bool CStackingInfo::DoDarkTask(ProgressBase* const pProgress)
 			//	<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
 			//	<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
 
-			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pDarkTask->m_vBitmaps.size())
 					return { {}, false };
@@ -644,7 +643,7 @@ bool CStackingInfo::CheckForExistingDarkFlat(fs::path& masterFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoDarkFlatTask(ProgressBase* const pProgress)
+bool	CStackingInfo::DoDarkFlatTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -911,13 +910,13 @@ public :
 		return m_bInitialized;
 	};
 
-	void	ComputeParameters(CMemoryBitmap* pBitmap, ProgressBase * pProgress);
-	void	ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, ProgressBase * pProgress);
+	void	ComputeParameters(CMemoryBitmap* pBitmap, OldProgressBase * pProgress);
+	void	ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, OldProgressBase * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, ProgressBase * pProgress)
+void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, OldProgressBase * pProgress)
 {
 	QString			strStart2;
 
@@ -970,7 +969,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, Progr
 
 /* ------------------------------------------------------------------- */
 
-void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, ProgressBase * pProgress)
+void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, OldProgressBase * pProgress)
 {
 	QString			strStart2;
 	if (pProgress)
@@ -1066,7 +1065,7 @@ bool CStackingInfo::CheckForExistingFlat(fs::path& strMasterFile)
 }
 
 
-bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
+bool CStackingInfo::DoFlatTask(OldProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1089,7 +1088,7 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 		else
 		{
 			// Else create the master flat
-			qDebug() << "Creating Master Flat";
+			// qDebug() << "Creating Master Flat";
 			QString strText;
 			std::shared_ptr<CMemoryBitmap> pMasterOffset;
 			std::shared_ptr<CMemoryBitmap> pMasterDarkFlat;
@@ -1104,27 +1103,27 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 			// First load the master offset if available
 			if (m_pOffsetTask != nullptr)
 			{
-				const bool masterOffsetFound = g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
-
-				if (masterOffsetFound && pMasterOffset->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Master Offset"
-						<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
-						<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
-				}
+				// getValue() only implemented for grey bitmaps
+//				if (const bool masterOffsetFound = g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset); masterOffsetFound && pMasterOffset->IsMonochrome())
+//				{
+//					qDebug() << "Master Offset"
+//						<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
+//						<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
+//				}
 			}
 
 			if (m_pDarkFlatTask != nullptr)
 			{
-				const bool masterDarkFlatFound = g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat);
-
-				if (masterDarkFlatFound && pMasterDarkFlat->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Master DarkFlat"
-						<< pMasterDarkFlat->getValue(0, 0) << pMasterDarkFlat->getValue(1, 0) << pMasterDarkFlat->getValue(2, 0) << pMasterDarkFlat->getValue(3, 0) << pMasterDarkFlat->getValue(4, 0)
-						<< pMasterDarkFlat->getValue(5, 0) << pMasterDarkFlat->getValue(6, 0) << pMasterDarkFlat->getValue(7, 0) << pMasterDarkFlat->getValue(8, 0) << pMasterDarkFlat->getValue(9, 0);
-				}
+				// getValue() only implemented for grey bitmaps
+//				if (const bool masterDarkFlatFound = g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat); masterDarkFlatFound && pMasterDarkFlat->IsMonochrome())
+//				{
+//					qDebug() << "Master DarkFlat"
+//						<< pMasterDarkFlat->getValue(0, 0) << pMasterDarkFlat->getValue(1, 0) << pMasterDarkFlat->getValue(2, 0) << pMasterDarkFlat->getValue(3, 0) << pMasterDarkFlat->getValue(4, 0)
+//						<< pMasterDarkFlat->getValue(5, 0) << pMasterDarkFlat->getValue(6, 0) << pMasterDarkFlat->getValue(7, 0) << pMasterDarkFlat->getValue(8, 0) << pMasterDarkFlat->getValue(9, 0);
+//				}
 			}
 
-			const auto readTask = [this](const size_t bitmapNdx, ProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pFlatTask->m_vBitmaps.size())
 					return { {}, false };
@@ -1152,11 +1151,11 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 				if (!m_pFlatTask->m_pMaster)
 					m_pFlatTask->CreateEmptyMaster(pBitmap.get());
 
-				if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Input bitmap" << (1 + i) << "before calibration"
-						<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
-						<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
-				}
+				//if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
+				//	qDebug() << "Input bitmap" << (1 + i) << "before calibration"
+				//		<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//		<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+				//}
 
 				// Subtract the offset frame from the dark frame
 				if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
@@ -1179,11 +1178,11 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					Subtract(pBitmap, pMasterDarkFlat, pProgress);
 				}
 
-				if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Input bitmap" << (1 + i) << "after master subtraction"
-						<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
-						<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
-				}
+				//if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
+				//	qDebug() << "Input bitmap" << (1 + i) << "after master subtraction"
+				//		<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//		<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+				//}
 
 				if (!fcpBase.IsInitialized())
 				{
@@ -1197,11 +1196,11 @@ bool CStackingInfo::DoFlatTask(ProgressBase* const pProgress)
 					fcpBase.ApplyParameters(pBitmap.get(), fcpBitmap, pProgress);
 				}
 
-				if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
-					qDebug() << "Input bitmap" << (1 + i) << "after calibration"
-						<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
-						<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
-				}
+				//if (static_cast<bool>(pBitmap) && pBitmap->IsMonochrome()) { // getValue() only implemented for grey bitmaps
+				//	qDebug() << "Input bitmap" << (1 + i) << "after calibration"
+				//		<< pBitmap->getValue(0, 0) << pBitmap->getValue(1, 0) << pBitmap->getValue(2, 0) << pBitmap->getValue(3, 0) << pBitmap->getValue(4, 0)
+				//		<< pBitmap->getValue(5, 0) << pBitmap->getValue(6, 0) << pBitmap->getValue(7, 0) << pBitmap->getValue(8, 0) << pBitmap->getValue(9, 0);
+				//}
 
 				// Add the flat frame
 				m_pFlatTask->AddToMaster(pBitmap.get(), pProgress);
@@ -1305,8 +1304,6 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 void CAllStackingTasks::AddFileToTask(const CFrameInfo& frameInfo, const std::uint32_t dwGroupID)
 {
-	ZFUNCTRACE_RUNTIME();
-
 	bool bFound = false;
 
 	// Add this frame to an already existing task, IF (1) same picture type, (2) same file group, (3) same ISO or gain, (4) same exposure.
@@ -1392,7 +1389,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo& frameInfo, const std::ui
 
 CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, PICTURETYPE TaskType)
 {
-	ZFUNCTRACE_RUNTIME();
+	// ZFUNCTRACE_RUNTIME();
 
 	CTaskInfo *			pResult = nullptr;
 	int				j;
@@ -1604,10 +1601,10 @@ void CAllStackingTasks::ResolveTasks()
 			// If there's an offset/bias task then set black point to zero
 			//
 			bool blackPointToZero = (si.m_pOffsetTask == nullptr) ? false : true;
-			ZTRACE_RUNTIME("***************************************");
-			ZTRACE_RUNTIME(" Offset task was %s therefore",(blackPointToZero ? "found," : "not found,"));
-			ZTRACE_RUNTIME(" Setting RawDDP/BlackPointTo0 %s",(blackPointToZero ? "true" : "false"));
-			ZTRACE_RUNTIME("***************************************");
+			//ZTRACE_RUNTIME("***************************************");
+			//ZTRACE_RUNTIME(" Offset task was %s therefore",(blackPointToZero ? "found," : "not found,"));
+			//ZTRACE_RUNTIME(" Setting RawDDP/BlackPointTo0 %s",(blackPointToZero ? "true" : "false"));
+			//ZTRACE_RUNTIME("***************************************");
 			workspace.setValue("RawDDP/BlackPointTo0", blackPointToZero);
 
 			// Try to find the best dark task for this task
@@ -1728,7 +1725,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 
 /* ------------------------------------------------------------------- */
 
-bool CAllStackingTasks::DoOffsetTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoOffsetTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
@@ -1754,7 +1751,7 @@ bool CAllStackingTasks::DoOffsetTasks(ProgressBase * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-bool CAllStackingTasks::DoDarkTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoDarkTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
@@ -1787,7 +1784,7 @@ bool CAllStackingTasks::DoDarkTasks(ProgressBase * pProgress)
 	return bResult;
 };
 
-bool CAllStackingTasks::DoDarkFlatTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoDarkFlatTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
@@ -1820,7 +1817,7 @@ bool CAllStackingTasks::DoDarkFlatTasks(ProgressBase * pProgress)
 	return bResult;
 };
 
-bool CAllStackingTasks::DoAllPreTasks(ProgressBase* pProgress)
+bool CAllStackingTasks::DoAllPreTasks(OldProgressBase* pProgress)
 {
 	if (!DoOffsetTasks(pProgress)) return false;
 	if (!DoDarkTasks(pProgress)) return false;
@@ -1829,7 +1826,7 @@ bool CAllStackingTasks::DoAllPreTasks(ProgressBase* pProgress)
 	return true;
 }
 
-bool CAllStackingTasks::DoFlatTasks(ProgressBase * pProgress)
+bool CAllStackingTasks::DoFlatTasks(OldProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
@@ -1902,7 +1899,7 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 #if defined(Q_OS_WIN)
 			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
-			std::fopen(file.generic_u8string().c_str(), "wt")
+			std::fopen(reinterpret_cast<const char*>(file.generic_u8string().c_str()), "wt")
 #endif
 			)
 		{
@@ -1959,14 +1956,17 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 			if (!rcOutput.isEmpty())
 				ulLSpace = rcOutput.width() * rcOutput.height() * 2 * 3;
 
-			if ((m_vStacks[i].m_pLightTask->m_Method == MBP_AVERAGE)
-				&& (!IsCometAvailable() || (GetCometStackingMode() != CSM_COMETSTAR)))
+			if (m_vStacks[i].m_pLightTask->m_Method == MBP_AVERAGE && (!IsCometAvailable() || GetCometStackingMode() != CSM_COMETSTAR))
+			{
 				m_vStacks[i].m_pLightTask->m_Method = MBP_FASTAVERAGE;
+			}
 
-			if ((m_vStacks[i].m_pLightTask->m_Method != MBP_FASTAVERAGE) &&
-				(m_vStacks[i].m_pLightTask->m_Method != MBP_MAXIMUM) &&
-				(m_vStacks[i].m_pLightTask->m_Method != MBP_ENTROPYAVERAGE))
+			if (m_vStacks[i].m_pLightTask->m_Method != MBP_FASTAVERAGE
+				&& m_vStacks[i].m_pLightTask->m_Method != MBP_MAXIMUM
+				&& m_vStacks[i].m_pLightTask->m_Method != MBP_ENTROPYAVERAGE)
+			{
 				ulLightSpace += ulLSpace * m_vStacks[i].m_pLightTask->m_vBitmaps.size() * ulPixelSize;
+			}
 
 			if (m_vStacks[i].m_pLightTask->m_Method == MBP_FASTAVERAGE)
 				m_vStacks[i].m_pLightTask->m_Method = MBP_AVERAGE;

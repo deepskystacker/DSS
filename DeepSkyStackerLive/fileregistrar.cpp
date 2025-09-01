@@ -35,7 +35,7 @@
 ****************************************************************************/
 // FileRegistrar.cpp : Defines the class behaviors for the application.
 //
-#include "stdafx.h"
+#include "pch.h"
 #include "DeepSkyStackerLive.h"
 #include "fileregistrar.h"
 #include "progresslive.h"
@@ -59,6 +59,7 @@ namespace DSS
 
 	FileRegistrar::~FileRegistrar()
 	{
+		ZFUNCTRACE_RUNTIME();
 		closing = true;
 		{
 			QMutexLocker lock(&mutex);
@@ -69,6 +70,7 @@ namespace DSS
 
 			// Add a null entry to the work queue to show we're done
 			// and wake up the run() mf
+			ZTRACE_RUNTIME("Adding null entry to work queue to terminate run()");
 			pending.emplace_back(fs::path());
 			condvar.wakeOne();
 		}
@@ -76,6 +78,7 @@ namespace DSS
 		//
 		// Wait for run() to terminate
 		//
+		ZTRACE_RUNTIME("Waiting for run() to terminate");
 		wait();
 		ZTRACE_RUNTIME("File registrar deleted");
 	}

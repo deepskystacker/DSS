@@ -1,9 +1,9 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "GreyMultiBitmap.h"
 #include "GrayBitmap.h"
 #include "BitmapCharacteristics.h"
 #include "BitmapBase.h"
-#include "ZExcBase.h"
+#include "zexcbase.h"
 #include "DSSTools.h"
 
 template <typename TType, typename TTypeOutput>

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "pch.h"
 #include "QEventLogger.h"
 #include <QApplication>
 #include <QTableView>
@@ -16,8 +16,15 @@ QEventLogger::QEventLogger(const QString& logFileBaseName,
     QDateTime now = QDateTime::currentDateTime();
     QString fullLogFileName = logFileBaseName + " " + now.toString(Qt::ISODate).replace(":", "-") + ".csv";
 
+    const QString dirName{ QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation) };
+    fs::path file{ dirName.toStdU16String() };
+    file /= "DeepSkyStacker";
+    create_directories(file);
+    fullLogFileName = QString::fromStdU16String(file.generic_u16string()) + "/" + fullLogFileName;
+
     // Open log file.
     this->logFile = new QFile(fullLogFileName);
+
     if (!this->logFile->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
         exit(1);
     this->log = new QTextStream(this->logFile);
@@ -172,8 +179,8 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
 
             // Build the details string.
             details +=
-                "X=" + QString::number(mouseEvent->x()) + ',' +
-                "Y=" + QString::number(mouseEvent->y()) + ',' +
+                "X=" + QString::number(mouseEvent->position().x()) + ',' +
+                "Y=" + QString::number(mouseEvent->position().y()) + ',' +
                 "Buttons=" + buttonsPressed + ',' +
                 "Modifiers=" + modifiers;
         }

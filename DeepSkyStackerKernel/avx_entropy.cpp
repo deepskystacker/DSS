@@ -1,37 +1,49 @@
-#include "stdafx.h"
-#include <immintrin.h>
+/****************************************************************************
+**
+** Copyright (C) 2024, 2025 Martin Toeltsch
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
+#include "pch.h"
+#include "avx_includes.h"
 #include "avx_entropy.h"
 #include "avx_support.h"
+#include "avx_bitmap_util.h"
 #include "avx_cfa.h"
 #include "avx_histogram.h"
 #include "Multitask.h"
 
-AvxEntropy::AvxEntropy(const CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
-	inputBitmap{ inputbm },
-	entropyInfo{ entrinfo },
-	pEntropyCoverage{ entropycov },
-	avxReady{ AvxSimdCheck::checkSimdAvailability() }
+int AvxEntropy::avxCalcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
 {
-	if (pEntropyCoverage != nullptr && avxReady)
-	{
-		const size_t width = pEntropyCoverage->Width();
-		const size_t height = pEntropyCoverage->Height();
-		static_assert(std::is_same<__m512&, decltype(redEntropyLayer[0])>::value);
-		const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m512>(width);
-		redEntropyLayer.resize(height * nrVectors);
-		if (AvxSupport{ *pEntropyCoverage }.isColorBitmap())
-		{
-			greenEntropyLayer.resize(height * nrVectors);
-			blueEntropyLayer.resize(height * nrVectors);
-		}
-	}
-}
-
-int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
-{
-	if (!avxReady)
-		return 1;
-
 	int rval = 1;
 	if (doCalcEntropies<std::uint16_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
 		|| doCalcEntropies<std::uint32_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
@@ -46,7 +58,7 @@ template <class T>
 int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
 {
 	// Check input bitmap. 
-	const AvxSupport avxInputSupport{ inputBitmap };
+	const AvxBitmapUtil avxInputSupport{ inputBitmap };
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA 
 		return 1;
 
@@ -120,11 +132,11 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 	const auto calcEntropy = [nSquaresX, nSquaresY, &calcEntropyOfSquare](const T* const pColor, EntropyVectorType& entropyVector) -> void
 	{
 #pragma warning (suppress: 4189)
-		const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+		const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		constexpr size_t HistoSize = std::numeric_limits<std::uint16_t>::max() + size_t{ 1 };
 		std::vector<int> histogram(HistoSize, 0);
 
-#pragma omp parallel for default(none) firstprivate(histogram) schedule(dynamic, 50) if(nrEnabledThreads - 1) 
+#pragma omp parallel for default(shared) firstprivate(histogram) schedule(dynamic, 50) if(nrEnabledThreads - 1) 
 		for (int y = 0; y < nSquaresY; ++y)
 		{
 			for (int x = 0, ndx = y * nSquaresX; x < nSquaresX; ++x, ++ndx)
