@@ -1,5 +1,5 @@
-Welcome to DeepSkyStacker 6.1.0 Beta 5
-======================================
+Welcome to DeepSkyStacker 6.1.0
+===============================
 
 Reporting problems:
 
@@ -65,6 +65,8 @@ Changes for DeepSkyStacker 6.1.0
 21. Bug fix: The name of the html summary file was created from the file list file name incorrectly.
     It was appending .html to the content of the filename up to but not including the first '.' character.
     It should have used up to but not including the last '.' character.
+
+22. Implement SIMD decoding for GRBG and BGGR Bayer patterns.
 	
 Welcome to DeepSkyStacker 5.1.10
 ======================================
