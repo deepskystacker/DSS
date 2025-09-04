@@ -23,19 +23,19 @@
   "overrides": [
     {
       "name": "boost-align",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "boost-atomic",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "boost-container",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "boost-interprocess",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "exiv2",

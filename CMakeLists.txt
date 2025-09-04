@@ -32,7 +32,7 @@ message ("VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET})
 
 # Require C++20 and disable extensions for all targets.
 # NOTE: See further below for how to do this more robustly.
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
