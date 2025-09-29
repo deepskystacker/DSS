@@ -108,10 +108,10 @@
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2024 LibRaw LLC</source>
+Copyright © 1997-2025 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
         <translation>Decodificação de arquivo RAW por LibRaw (versão %1)
-Copyright © 1997-2024 LibRaw LLC</translation>
+Copyright © 1997-2025 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
@@ -805,62 +805,62 @@ Marque esta caixa para manter o arquivo de rastreamento.</translation>
         <translation>Mostrar recorte para Pontos Preto/Branco</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="299"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Registar Configuracoes...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Integrando Configuracoes...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="342"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Restaurar configuracoes primarias por defeito</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="344"/>
+        <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Carregar configuracoes do DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="348"/>
+        <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Carga...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="409"/>
+        <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Guardar as configuracoes com o DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="413"/>
+        <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Guardar como...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="577"/>
+        <location filename="../ExplorerBar.cpp" line="578"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Carregar configuracoes do DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="581"/>
-        <location filename="../ExplorerBar.cpp" line="629"/>
+        <location filename="../ExplorerBar.cpp" line="582"/>
+        <location filename="../ExplorerBar.cpp" line="630"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker Configuracoes (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="624"/>
+        <location filename="../ExplorerBar.cpp" line="625"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Guardar configuracoes do DeepSkyStacker</translation>
@@ -1008,6 +1008,16 @@ Ctrl+4 para alternar o modo de 4 cantos</translation>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
         <translation>Ficheiros FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="133"/>
+        <source>Will compress FITS files.  Please be aware that floating point FITS images (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also means that the original floating value pixel values are not exactly preserved.</source>
+        <translation>Compactará arquivos FITS. Esteja ciente de que imagens FITS de ponto flutuante (que têm BITPIX = -32 ou -64) geralmente contêm muito &quot;ruído&quot; nos bits menos significativos da mantissa dos valores de pixel para serem compactadas efetivamente com qualquer algoritmo sem perdas. Consequentemente, imagens de ponto flutuante são primeiro quantizadas em valores de pixel inteiros escalonados (e, portanto, eliminando grande parte do ruído) antes de serem compactadas com o algoritmo especificado (GZIP, Rice ou HCOMPRESS). Essa técnica produz fatores de compactação muito maiores do que simplesmente usar o utilitário GZIP para compactar externamente todo o arquivo FITS, mas também significa que os valores de pixel de valor flutuante originais não são preservados exatamente.</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="136"/>
+        <source>Compress FITS files</source>
+        <translation>Compactar arquivos FITS</translation>
     </message>
 </context>
 <context>
@@ -2546,7 +2556,7 @@ Botão direito do mouse para exibir o menu</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2189"/>
+        <location filename="../StackingDlg.cpp" line="2187"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Nem todos os seus light frames verificados têm uma qualidade calculada. Você deve registrar novamente seus light frames.</translation>
     </message>
@@ -2636,18 +2646,18 @@ Offset/Bias Frames: %5</source>
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2178"/>
+        <location filename="../StackingDlg.cpp" line="2176"/>
         <source>Total registering time: %1 %2</source>
         <translation>Tempo total de registro: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2205"/>
+        <location filename="../StackingDlg.cpp" line="2203"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Tem que verificar fotogramas-luz para registar.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2262"/>
+        <location filename="../StackingDlg.cpp" line="2260"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2657,19 +2667,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker precisa de criar ficheiros nesta pasta durante o processamento.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2283"/>
+        <location filename="../StackingDlg.cpp" line="2281"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>As fotos verificadas nao sao compativeis: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2287"/>
+        <location filename="../StackingDlg.cpp" line="2285"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Tem que verificar fotogramas d luz para integrar.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2335"/>
+        <location filename="../StackingDlg.cpp" line="2333"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2679,18 +2689,18 @@ Do you want to save the changes?</source>
 Quer que guarde essas alteracoes?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2449"/>
+        <location filename="../StackingDlg.cpp" line="2447"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Tempo total de empilhamento: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2480"/>
+        <location filename="../StackingDlg.cpp" line="2478"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Guardando imagem final em %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2564"/>
+        <location filename="../StackingDlg.cpp" line="2562"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3058,14 +3068,14 @@ Clique com o botão direito para alterar o comportamento.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="106"/>
+        <location filename="../DeepSkyStacker.cpp" line="110"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Esta versão beta do DeepSkyStacker expirou
 Você provavelmente pode obter outro ou baixar a versão final do site.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="134"/>
+        <location filename="../DeepSkyStacker.cpp" line="138"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3073,18 +3083,18 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 (voce pode activar-desativar esta opcao mais tarde na janela respectiva)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="466"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Patrocinador DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="322"/>
+        <location filename="../DeepSkyStacker.cpp" line="325"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 não existe ou não é um ficheiro</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="601"/>
-        <location filename="../DeepSkyStacker.cpp" line="603"/>
+        <location filename="../DeepSkyStacker.cpp" line="637"/>
+        <location filename="../DeepSkyStacker.cpp" line="639"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Ajuda.chm</translation>

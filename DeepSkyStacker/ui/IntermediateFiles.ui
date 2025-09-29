@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>458</width>
-    <height>222</height>
+    <height>240</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,7 +75,7 @@
         <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -95,7 +95,7 @@
         <item>
          <spacer name="verticalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Orientation::Vertical</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -112,20 +112,43 @@
         <property name="title">
          <string>Intermediate and Final Image File Format</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
           <widget class="QRadioButton" name="formatTIFF">
            <property name="text">
             <string>TIFF Files</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="1" column="0">
           <widget class="QRadioButton" name="formatFITS">
            <property name="text">
             <string>FITS Files</string>
            </property>
           </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="compressFITS">
+           <property name="toolTip">
+            <string>Will compress FITS files.  Please be aware that floating point FITS images (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also means that the original floating value pixel values are not exactly preserved.</string>
+           </property>
+           <property name="text">
+            <string>Compress FITS files</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>185</width>
+             <height>16</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>

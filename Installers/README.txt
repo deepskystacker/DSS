@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0
+Welcome to DeepSkyStacker 6.1.1
 ===============================
 
 Reporting problems:
@@ -13,7 +13,20 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
+Changes for DeepSkyStacker 6.1.1
+================================
+
+1.  Support for writing and reading compressed FITS files.  Writing of compressed files is enabled by a check box
+    on the Intermediate Files tab of the Stacking settings dialogue.  Please be aware that floating point FITS images
+    (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa
+    of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images
+    are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being
+    compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher
+    compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also
+    means that the original floating value pixel values are not exactly preserved.
+
 Changes for DeepSkyStacker 6.1.0
+================================
 
 1.  Both macOS (Ventura 13.4 and upward) on both ARM and x86_64 systems and also Linux are now supported.
     The Linux version is built on Lubuntu 22.04 (Jammy Jellyfish) and should work on most recent Linux systems.
@@ -68,10 +81,8 @@ Changes for DeepSkyStacker 6.1.0
 
 22. Implement SIMD decoding for GRBG and BGGR Bayer patterns.
 	
-Welcome to DeepSkyStacker 5.1.10
-======================================
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.10
+=================================
 
 1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.
 	If present use these to determine the minimum and maximum pixel values instead of scanning the image data which
@@ -109,10 +120,8 @@ Changes since the last release:
 11. Implement default values for FITS keywords DATAMIN and DATAMAX which can be set using FITS/DDP settings
 
 
-Welcome to DeepSkyStacker 5.1.8
-======================================
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.8
+================================
 
 1. Bug fix: When saving the project to a file-list, a default file name is suggested which is equal to the name of the current directory.
 
@@ -186,14 +195,8 @@ Changes since the last release:
 
 24. Resolve problems with editing controls on Processing Panel.
 
-Welcome to DeepSkyStacker 5.1.6
-===============================
-
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
-This is primarily a bug fix release, but there are a few enhancements as well.
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.6
+================================
 
 1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
 
@@ -243,12 +246,8 @@ Changes since the last release:
 
 24. Bug fix: Crash during startup initialising ImageListModel array of icons.
 
-Welcome to DeepSkyStacker 5.1.5
-===============================
-
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.5
+================================
 
 1. Write Intermediate TIFF format files with COMPRESSION_NONE.  Final output files will still be compressed.
 
@@ -261,10 +260,8 @@ Changes since the last release:
 
 4. Bug fix: Revert change to create masters as float - it caused incompatibility problems.
 
-Welcome to DeepSkyStacker 5.1.4
-===============================
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.4
+================================
 
 1. Upgrade CFITSIO library to 4.2.0
 
@@ -383,10 +380,8 @@ Changes since the last release:
 
 52. Resolve problem of clipped controls on processing page when the native language is set to Japanese.
 
-Welcome to DeepSkyStacker 5.1.3
-===============================
-
-This is a bug fix release for problems reported against 5.1.0, 5.1.1, 5.1.2
+Changes for DeepSkyStacker 5.1.3
+================================
 
 1. Possible bug fix - DeepSkyStacker terminated at startup when running on ARM version of Windows 11 in x64 emulation mode.  Unable to test.
 
@@ -432,12 +427,8 @@ This is a bug fix release for problems reported against 5.1.0, 5.1.1, 5.1.2
 
 22. Bug fix - Register settings set a value of 0 for the luminance threshold when it was initially set to 20.
 
-Welcome to DeepSkyStacker 5.1.0
-===============================
-
-This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows.
-
-Here are the main changes that were made for DeepSkyStacker 5.1.0:
+Changes for DeepSkyStacker 5.1.0
+================================
 
 1. The bulk of the code for the "Stacking" panel has been converted to Qt.  This includes a completely reworked image display.
 

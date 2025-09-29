@@ -108,11 +108,10 @@
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2024 LibRaw LLC</source>
+Copyright © 1997-2025 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>73 / 5,000
-Декодирование RAW-файлов с помощью LibRaw (версия %1)
-Авторские права © 1997-2024 LibRaw LLC</translation>
+        <translation>Декодирование RAW-файлов с помощью LibRaw (версия %1)
+Copyright © 1997-2025 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
@@ -806,62 +805,62 @@ Tick this box to keep the trace file.</source>
         <translation>Показать обрезку для точек черного/белого цвета</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="299"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Настройки регистрации...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Настройки сложения...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="342"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Восстановить настройки по умолчанию</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="344"/>
+        <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Загрузить настройки DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="348"/>
+        <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Загрузка...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="409"/>
+        <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Сохранить как настройки DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="413"/>
+        <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="577"/>
+        <location filename="../ExplorerBar.cpp" line="578"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Загрузить установки DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="581"/>
-        <location filename="../ExplorerBar.cpp" line="629"/>
+        <location filename="../ExplorerBar.cpp" line="582"/>
+        <location filename="../ExplorerBar.cpp" line="630"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Установки DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="624"/>
+        <location filename="../ExplorerBar.cpp" line="625"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Сохранить установки DeepSkyStacker</translation>
@@ -1009,6 +1008,16 @@ Ctrl+4 для переключения режима 4-х углов</translation
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
         <translation>FITS файлы</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="133"/>
+        <source>Will compress FITS files.  Please be aware that floating point FITS images (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also means that the original floating value pixel values are not exactly preserved.</source>
+        <translation>Сжимает файлы FITS. Обратите внимание, что изображения FITS с плавающей точкой (с BITPIX = -32 или -64) обычно содержат слишком много «шума» в младших битах мантиссы значений пикселей для эффективного сжатия любым алгоритмом без потерь. Поэтому изображения с плавающей точкой сначала квантуются в масштабированные целочисленные значения пикселей (тем самым отбрасывая большую часть шума), а затем сжимаются указанным алгоритмом (GZIP, Rice или HCOMPRESS). Этот метод обеспечивает гораздо более высокий коэффициент сжатия, чем простое использование утилиты GZIP для внешнего сжатия всего файла FITS, но это также означает, что исходные значения пикселей с плавающей точкой сохраняются не в точности.</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="136"/>
+        <source>Compress FITS files</source>
+        <translation>Сжатие файлов FITS</translation>
     </message>
 </context>
 <context>
@@ -2551,7 +2560,7 @@ Ctrl-A или эквивалент для выбора всех строк
         <translation>Кадров изображения:%1      -      Dark кадров: %2      -      Flat кадров:%3      -   Dark Flat кадров: %4   -      Offset/Bias кадров: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2189"/>
+        <location filename="../StackingDlg.cpp" line="2187"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Не все ваши проверенные световые рамки имеют рассчитанное качество. Вам следует перерегистрировать ваши световые рамки.</translation>
     </message>
@@ -2646,18 +2655,18 @@ Offset/Bias кадров: %5</translation>
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2178"/>
+        <location filename="../StackingDlg.cpp" line="2176"/>
         <source>Total registering time: %1 %2</source>
         <translation>Общее время регистрации: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2205"/>
+        <location filename="../StackingDlg.cpp" line="2203"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Вы должны выбрать кадры с изображениями, чтобы зарегистрировать их.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2262"/>
+        <location filename="../StackingDlg.cpp" line="2260"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2667,19 +2676,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker должен иметь возможность создавать файлы в каталогах в процессе работы.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2283"/>
+        <location filename="../StackingDlg.cpp" line="2281"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Выбранные изображения несовместимы: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2287"/>
+        <location filename="../StackingDlg.cpp" line="2285"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Вы должны выбрать кадры с изображениями, чтобы сложить их.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2335"/>
+        <location filename="../StackingDlg.cpp" line="2333"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2689,18 +2698,18 @@ Do you want to save the changes?</source>
 Хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2449"/>
+        <location filename="../StackingDlg.cpp" line="2447"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Общее время накопления: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2480"/>
+        <location filename="../StackingDlg.cpp" line="2478"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Сохранить итоговое изображение в %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2564"/>
+        <location filename="../StackingDlg.cpp" line="2562"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3070,14 +3079,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="106"/>
+        <location filename="../DeepSkyStacker.cpp" line="110"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Срок действия этой бета-версии DeepSkyStacker истек
 Вы, вероятно, можете получить еще один или загрузить финальную версию с веб-сайта.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="134"/>
+        <location filename="../DeepSkyStacker.cpp" line="138"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3085,18 +3094,18 @@ You can probably get another one or download the final release from the web site
 (Эту опцию можно выключить и включить позже в)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="466"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Спонсор DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="322"/>
+        <location filename="../DeepSkyStacker.cpp" line="325"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 не существует или не является файлом</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="601"/>
-        <location filename="../DeepSkyStacker.cpp" line="603"/>
+        <location filename="../DeepSkyStacker.cpp" line="637"/>
+        <location filename="../DeepSkyStacker.cpp" line="639"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
