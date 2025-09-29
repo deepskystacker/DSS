@@ -124,7 +124,7 @@ namespace DSS
 		connect(selectRect, &SelectRect::selectRectChanged, this, &ProcessingDlg::setSelectionRect);
 		connectSignalsToSlots();
 
-		timer.start(50);	// 50 ms timeout
+		timer.setInterval(50);	// 50 ms timeout
 
 		updateControls();
 
