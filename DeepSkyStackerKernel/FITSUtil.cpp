@@ -274,8 +274,8 @@ bool CFITSReader::Open()
 
 		m_bDSI = false;
 
-		bResult = ReadKey("SIMPLE", strSimple);
-		bResult = ReadKey("NAXIS", lNrAxis);
+		ReadKey("SIMPLE", strSimple);
+		ReadKey("NAXIS", lNrAxis);
 
 		//
 		// Check if this HDU is an empty one, if so, move to the next one
@@ -295,7 +295,17 @@ bool CFITSReader::Open()
 			}
 			else
 			{
-				ZTHROW(ZAccessError("2nd HDU isn't a compressed image"));
+				QString errorMessage(QCoreApplication::translate("FITSUtil",
+					"The second HDU of file %1 does not contain a compressed image.")
+					.arg(file.generic_u16string().c_str())
+				ZTRACE_RUNTIME(errorMessage);
+				DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
+				if (m_fits)
+				{
+					fits_close_file(m_fits, &status);
+					m_fits = nullptr;
+					return false;
+				}
 			}
 		}
 
