@@ -297,7 +297,7 @@ bool CFITSReader::Open()
 			{
 				QString errorMessage(QCoreApplication::translate("FITSUtil",
 					"The second HDU of file %1 does not contain a compressed image.")
-					.arg(file.generic_u16string().c_str())
+					.arg(file.generic_u16string().c_str());
 				ZTRACE_RUNTIME(errorMessage);
 				DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
 				if (m_fits)
