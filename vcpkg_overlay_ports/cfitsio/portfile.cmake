@@ -3,8 +3,8 @@ vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO HEASARC/cfitsio
-    REF cfitsio-${VERSION}
-    SHA512 b33c27070b311a831c2a40780549966ef3cc36b7052efd2fe8e44ce07061d9ed8297a822153cc6365469824aaec61c307f6d37adeae79e8b51ca620876b4733a
+    REF 2165b1b71fbe572fe155e35e5bb65ba659aee363
+    SHA512 5094ce02385818024cbe8c5f4937713d07d5645e712744d952c5a24c61ddfeaa445162d1da3da10e563db85cce10d56d01229d7a2e24931e1523ffb2f4142381
     HEAD_REF main
 )
 
@@ -13,7 +13,7 @@ set (options
 	"-DUSE_BZIP2=ON "
 	"-DUSE_CURL=OFF "
 	"-DTESTS=OFF "
-	"-DUTILS=OFF "
+	"-DUTILS=ON "
 )
 if(VCPKG_TARGET_IS_WINDOWS)
 	set (options ${options} -DUSE_PTHREADS=OFF)
@@ -54,6 +54,11 @@ vcpkg_fixup_pkgconfig()
 vcpkg_cmake_config_fixup(CONFIG_PATH "lib/cmake/${PORT}") 
 
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
+
+vcpkg_copy_tools(
+        TOOL_NAMES fitsverify fpack funpack
+        AUTO_CLEAN
+)
 
 file(INSTALL "${CMAKE_CURRENT_LIST_DIR}/usage" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/licenses/License.txt")

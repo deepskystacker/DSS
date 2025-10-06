@@ -108,10 +108,10 @@
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2024 LibRaw LLC</source>
+Copyright © 1997-2025 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>Decodificare fișier RAW de către LibRaw (versiunea %1)
-Copyright © 1997-2024 LibRaw LLC</translation>
+        <translation>Decodificarea fișierelor RAW prin LibRaw (versiunea %1)
+Copyright © 1997-2025 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
@@ -805,62 +805,62 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
         <translation>Afișați decuparea pentru puncte alb/negru</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="299"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Setari Inregistrare...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Setari Stackare...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="342"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Restaurează setările implicite</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="344"/>
+        <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Încarcă setările pentru DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="348"/>
+        <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Încarcă...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="409"/>
+        <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Salvează ca setări pentru DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="413"/>
+        <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Salvează ca...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="577"/>
+        <location filename="../ExplorerBar.cpp" line="578"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Încarcă setări pentru DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="581"/>
-        <location filename="../ExplorerBar.cpp" line="629"/>
+        <location filename="../ExplorerBar.cpp" line="582"/>
+        <location filename="../ExplorerBar.cpp" line="630"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Fișiere Setări DSS (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="624"/>
+        <location filename="../ExplorerBar.cpp" line="625"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Salvează Setări DeepSkyStacker</translation>
@@ -1008,6 +1008,16 @@ Ctrl+4 pentru a comuta în modul 4-Colțuri</translation>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
         <translation>Fișiere FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="133"/>
+        <source>Will compress FITS files.  Please be aware that floating point FITS images (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also means that the original floating value pixel values are not exactly preserved.</source>
+        <translation>Va comprima fișierele FITS. Rețineți că imaginile FITS cu virgulă mobilă (care au BITPIX = -32 sau -64) conțin de obicei prea mult „zgomot” în biții cei mai puțin semnificativi ai mantisei valorilor pixelilor pentru a fi comprimate eficient cu orice algoritm fără pierderi. În consecință, imaginile cu virgulă mobilă sunt mai întâi cuantizate în valori întregi scalate ale pixelilor (și astfel elimină o mare parte din zgomot) înainte de a fi comprimate cu algoritmul specificat (fie GZIP, Rice, fie HCOMPRESS). Această tehnică produce factori de compresie mult mai mari decât simpla utilizare a utilitarului GZIP pentru a comprima extern întregul fișier FITS, dar înseamnă și că valorile originale ale pixelilor cu valori mobile nu sunt păstrate exact.</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="136"/>
+        <source>Compress FITS files</source>
+        <translation>Comprimați fișierele FITS</translation>
     </message>
 </context>
 <context>
@@ -2549,7 +2559,7 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         <translation>Cadre Light: %1      -      Cadre Dark: %2      -      Cadre Flat: %3      -   Cadre Dark Flat: %4   -      Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2189"/>
+        <location filename="../StackingDlg.cpp" line="2187"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Nu toate cadrele dvs. luminoase verificate au o calitate calculată. Ar trebui să vă reînregistrați cadrele luminoase.</translation>
     </message>
@@ -2644,18 +2654,18 @@ Cadre Offset/Bias: %5</translation>
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2178"/>
+        <location filename="../StackingDlg.cpp" line="2176"/>
         <source>Total registering time: %1 %2</source>
         <translation>Timp total de înregistrare: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2205"/>
+        <location filename="../StackingDlg.cpp" line="2203"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Trebuie să bifați cadrele light pentru a le înregistra.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2262"/>
+        <location filename="../StackingDlg.cpp" line="2260"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2665,19 +2675,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker are nevoie sa creeze fișiere în aceste directoare în timpul procesării.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2283"/>
+        <location filename="../StackingDlg.cpp" line="2281"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Imaginile bifate nu sunt compatibile: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2287"/>
+        <location filename="../StackingDlg.cpp" line="2285"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Trebuie să bifați cadrele light pentru a le stivui.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2335"/>
+        <location filename="../StackingDlg.cpp" line="2333"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2687,18 +2697,18 @@ Do you want to save the changes?</source>
 Vreți să salvați modificările?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2449"/>
+        <location filename="../StackingDlg.cpp" line="2447"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Timp total de stivuire: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2480"/>
+        <location filename="../StackingDlg.cpp" line="2478"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Salvează imaginea finală în %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2564"/>
+        <location filename="../StackingDlg.cpp" line="2562"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3069,14 +3079,14 @@ Faceți clic dreapta pentru a modifica comportamentul.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="106"/>
+        <location filename="../DeepSkyStacker.cpp" line="110"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Această versiune beta a DeepSkyStacker a expirat
 Probabil că puteți obține alta sau puteți descărca versiunea finală de pe site-ul web.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="134"/>
+        <location filename="../DeepSkyStacker.cpp" line="138"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3084,18 +3094,18 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
 (Puteți modifica această opțiune mai târziu din fereastra Despre)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="466"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsorizează DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="322"/>
+        <location filename="../DeepSkyStacker.cpp" line="325"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="601"/>
-        <location filename="../DeepSkyStacker.cpp" line="603"/>
+        <location filename="../DeepSkyStacker.cpp" line="637"/>
+        <location filename="../DeepSkyStacker.cpp" line="639"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

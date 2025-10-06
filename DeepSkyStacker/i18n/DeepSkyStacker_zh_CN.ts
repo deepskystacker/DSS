@@ -108,10 +108,10 @@
     <message>
         <location filename="../About.cpp" line="52"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2024 LibRaw LLC</source>
+Copyright © 1997-2025 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>RAW 文件解码由 LibRaw 提供 (版本 %1)
-版权所有 © 1997-2024 LibRaw LLC</translation>
+        <translation>LibRaw 解码 RAW 文件（版本 %1)
+Copyright © 1997-2025 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="62"/>
@@ -798,62 +798,62 @@ Tick this box to keep the trace file.</source>
         <translation>显示黑/白点的裁剪</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="299"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>星点检测设置...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>堆栈设置...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="342"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>恢复为默认值</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="344"/>
+        <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>加载 DeepSkyStacker Live 设置</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="348"/>
+        <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>加载...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="409"/>
+        <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>保存为 DeepSkyStacker Live 设置</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="413"/>
+        <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>保存为...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="577"/>
+        <location filename="../ExplorerBar.cpp" line="578"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>加载 DeepSkyStacker 设置</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="581"/>
-        <location filename="../ExplorerBar.cpp" line="629"/>
+        <location filename="../ExplorerBar.cpp" line="582"/>
+        <location filename="../ExplorerBar.cpp" line="630"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker 设置配置文件 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="624"/>
+        <location filename="../ExplorerBar.cpp" line="625"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>保存 DeepSkyStacker 设置</translation>
@@ -1001,6 +1001,16 @@ Ctrl+4 切換四角模式</translation>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
         <translation>保存为 FITS 格式</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="133"/>
+        <source>Will compress FITS files.  Please be aware that floating point FITS images (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also means that the original floating value pixel values are not exactly preserved.</source>
+        <translation>将压缩 FITS 文件。请注意，浮点型 FITS 图像（BITPIX = -32 或 -64）通常在像素值尾数的最低有效位中包含过多“噪声”，无法使用任何无损算法进行有效压缩。因此，浮点型图像首先会被量化为缩放后的整数像素值（从而去除大部分噪声），然后再使用指定的算法（GZIP、Rice 或 HCOMPRESS）进行压缩。与直接使用 GZIP 实用程序对整个 FITS 文件进行外部压缩相比，此技术可以产生更高的压缩率，但这也意味着原始浮点值像素值无法完全保留。</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="136"/>
+        <source>Compress FITS files</source>
+        <translation>压缩 FITS 文件</translation>
     </message>
 </context>
 <context>
@@ -2623,23 +2633,23 @@ Offset/Bias Frames: %5</source>
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2178"/>
+        <location filename="../StackingDlg.cpp" line="2176"/>
         <source>Total registering time: %1 %2</source>
         <translation>注册时长: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2189"/>
+        <location filename="../StackingDlg.cpp" line="2187"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>并非所有选中的亮场图像都计算了质量。请重新注册亮场图像。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2205"/>
+        <location filename="../StackingDlg.cpp" line="2203"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>检测星点前需要选择亮场图像。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2262"/>
+        <location filename="../StackingDlg.cpp" line="2260"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2649,19 +2659,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker 需要在这些文件夹中创建文件。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2283"/>
+        <location filename="../StackingDlg.cpp" line="2281"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>选择的图像不兼容: %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2287"/>
+        <location filename="../StackingDlg.cpp" line="2285"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>堆栈前需要选择亮场图像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2335"/>
+        <location filename="../StackingDlg.cpp" line="2333"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2671,18 +2681,18 @@ Do you want to save the changes?</source>
 要保存这些更改吗？</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2449"/>
+        <location filename="../StackingDlg.cpp" line="2447"/>
         <source>Total stacking time: %1 %2</source>
         <translation>堆栈时间总计: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2480"/>
+        <location filename="../StackingDlg.cpp" line="2478"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>保存最终图像到 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2564"/>
+        <location filename="../StackingDlg.cpp" line="2562"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3043,14 +3053,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="106"/>
+        <location filename="../DeepSkyStacker.cpp" line="110"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker beta 版本已过期
 您可以再获取一个 beta 版本(如果有)或下载正式版本。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="134"/>
+        <location filename="../DeepSkyStacker.cpp" line="138"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3058,18 +3068,18 @@ You can probably get another one or download the final release from the web site
 (稍后从关于对话框中启用或禁用此选项)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="466"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>捐助 DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="322"/>
+        <location filename="../DeepSkyStacker.cpp" line="325"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 文件不存在或格式错误</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="601"/>
-        <location filename="../DeepSkyStacker.cpp" line="603"/>
+        <location filename="../DeepSkyStacker.cpp" line="637"/>
+        <location filename="../DeepSkyStacker.cpp" line="639"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker 帮助文件</translation>

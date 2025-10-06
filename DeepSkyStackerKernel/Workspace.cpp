@@ -173,6 +173,7 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 	vSettings.push_back(WorkspaceSetting("Stacking/ApplyFilterToCometImages", true));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/IntermediateFileFormat", (uint)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/CompressFITS", false));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanHot", false));
 	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotFilter", (uint)1));
