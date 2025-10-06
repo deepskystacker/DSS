@@ -78,13 +78,13 @@ namespace DSS
 		//
 		// Set the trace file location
 		//
-//		qputenv("Z_TRACEFILE", file.generic_string().c_str());
+		qputenv("Z_TRACEFILE", file.generic_string().c_str());
 
 		//
 		// Enable trace to a file
 		//
 		ZTrace::enableTrace();
-		ZTrace::writeToFile(file);
+		ZTrace::writeToFile();
 	}
 
 	TraceControl::~TraceControl()
