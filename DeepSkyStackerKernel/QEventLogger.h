@@ -1,5 +1,6 @@
 #pragma once
 #include <QObject>
+#include <QElapsedTimer>
 #include <QMouseEvent>
 #include <QKeyEvent>
 #include <QDateTime>

@@ -160,7 +160,8 @@
         "CMAKE_BUILD_TYPE": "Debug"
       },
       "environment": {
-        "QTDIR": "C:/Qt/6.9.1/msvc2022_64"
+		    "VCPKG_INSTALL_OPTIONS": "--debug",
+        "QTDIR": "C:/Qt/6.9.2/msvc2022_64"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -179,7 +180,7 @@
       },
       "environment": {
         "VCPKG_INSTALL_OPTIONS": "--debug",
-        "QTDIR": "C:/Qt/6.9.1/msvc2022_64"
+        "QTDIR": "C:/Qt/6.9.2/msvc2022_64"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -190,7 +191,7 @@
   ],
   "vendor": {
     "qt-project.org/Presets": {
-      "checksum": "Ngn1E6CPDzjZEJz2UXGUitjYl0Y="
+      "checksum": "KQI0X+u2pyr6QIfyRFdhlyl3NiY="
     }
   }
 }
