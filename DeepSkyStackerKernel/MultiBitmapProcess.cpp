@@ -19,7 +19,12 @@ namespace
 		path /= "DSSXXXXXX.tmp";
 		QString name{ QString::fromStdU16String(path.u16string()) };
 		QTemporaryFile tempFile{ name };
-		tempFile.open();
+		bool result = tempFile.open();
+		if (!result)
+		{
+			QString message{ QString{"Unable to create a temporary file %1" }.arg(name) };
+			throw ZException(message.toUtf8().constData());
+		}
 		tempFile.setAutoRemove(false);
 		return tempFile.fileName().toStdU16String();
 	}

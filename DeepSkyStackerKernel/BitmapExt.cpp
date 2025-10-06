@@ -853,7 +853,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		else if (isJpeg || isPng)
 		{
 			QFile file{ path };
-			file.open(QIODevice::ReadOnly);
+			std::ignore = file.open(QIODevice::ReadOnly);
 			if (file.isOpen())
 			{
 				//
