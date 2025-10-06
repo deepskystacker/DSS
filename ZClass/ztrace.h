@@ -37,6 +37,7 @@
 #endif
 
 #include <string>
+#include <filesystem>
 
 #if defined(_AIX) && defined(__IBMCPP__)
 #pragma info(restore)
@@ -190,7 +191,7 @@ static ZTrace::Destination
 static void
   writeToStandardError     ( ),
   writeToStandardOutput    ( ),
-  writeToFile              ( );
+  writeToFile              (std::filesystem::path pathToOutputFile);
 
 /*------------------------- Enable/Disable -----------------------------------*/
 static void
@@ -253,6 +254,7 @@ static ZTrace::Destination
 static size_t
   remainingStack ( );
 
+inline static constinit std::filesystem::path outputFileName{};
 };
 
 #define Z_TRACE_RUNTIME
