@@ -395,15 +395,6 @@ int main(int argc, char* argv[])
 	setDssExceptionHandling();
 #endif
 
-#if defined(Q_OS_WIN)
-	// Set the C character locale for UTF-8 so Exiv2 can open files with UTF-8 names
-	// I think this also applies to the use of regular fopen() calls.
-	std::setlocale(LC_CTYPE, ".UTF-8");
-
-	// Set console code page to UTF-8 so console knowns how to interpret string data
-	SetConsoleOutputCP(CP_UTF8);
-#endif
-
 	//
 	// Log Qt messages to the trace file as well as to the debugger.
 	//
