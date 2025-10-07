@@ -1496,7 +1496,7 @@ bool CFITSWriter::Write()
 				if (m_bFloat)
 					datatype = TFLOAT;
 				else
-					datatype = TULONG;
+					datatype = TUINT;
 				break;
 			case 64 :
 				datatype = TFLOAT;
