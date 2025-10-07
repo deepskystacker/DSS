@@ -516,12 +516,12 @@ namespace DSS
 				tr("TIFF Image 16 bit/ch (*.tif)", "IDS_FILTER_OUTPUT"),
 				tr("TIFF Image 32 bit/ch - integer (*.tif)", "IDS_FILTER_OUTPUT"),
 				tr("TIFF Image 32 bit/ch - rational (*.tif)", "IDS_FILTER_OUTPUT"),
-				tr("FITS Image 16 bit/ch (*.fts)", "IDS_FILTER_OUTPUT"),
-				tr("FITS Image 32 bit/ch - integer (*.fts)", "IDS_FILTER_OUTPUT"),
-				tr("FITS Image 32 bit/ch - rational (*.fts)", "IDS_FILTER_OUTPUT")
+				tr("FITS Image 16 bit/ch (*.fits)", "IDS_FILTER_OUTPUT"),
+				tr("FITS Image 32 bit/ch - integer (*.fits)", "IDS_FILTER_OUTPUT"),
+				tr("FITS Image 32 bit/ch - rational (*.fits)", "IDS_FILTER_OUTPUT")
 			};
 
-			if (filterIndex > 2) extension = ".fts";
+			if (filterIndex > 2) extension = ".fits";
 			else extension = ".tif";
 
 			//

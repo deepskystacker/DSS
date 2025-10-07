@@ -1407,21 +1407,21 @@ Detected Cold Pixels: %L3 (%L4%)
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="519"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS檔 每色16 bit (*.fts)</translation>
+        <translation>FITS檔 每色16 bit (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="520"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS檔 每色32 bit - 整數 (*.fts)</translation>
+        <translation>FITS檔 每色32 bit - 整數 (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="521"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS 檔 每色32 bit - 有理數 (*.fts)</translation>
+        <translation>FITS 檔 每色32 bit - 有理數 (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="530"/>

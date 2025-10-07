@@ -2622,7 +2622,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(fs::path& file, const fs::path& f
 	}
 	else
 	{
-		extension = ".fit";
+		extension = ".fits";
 	}
 	fs::path outputFile{ folder };
 
