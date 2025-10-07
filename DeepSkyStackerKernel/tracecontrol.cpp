@@ -75,10 +75,19 @@ namespace DSS
 		create_directories(file);
 		file /= name.toStdU16String();
 
+#if defined(Q_OS_WIN)
+		// Set the C character locale to UTF-8 (used to be in DeepSkyStacker.cpp and friends)
+		std::setlocale(LC_CTYPE, ".UTF-8");
+
+		// Set console code page to UTF-8 so console knows how to interpret string data
+		SetConsoleOutputCP(CP_UTF8);
+#endif
+
 		//
 		// Set the trace file location
 		//
-		qputenv("Z_TRACEFILE", file.generic_string().c_str());
+		QByteArray nameArray{ reinterpret_cast<const char*>(file.generic_u8string().c_str()) };
+		qputenv("Z_TRACEFILE", nameArray);
 
 		//
 		// Enable trace to a file

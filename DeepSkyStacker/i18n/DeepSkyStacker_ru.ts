@@ -1416,21 +1416,21 @@ Detected Cold Pixels: %L3 (%L4%)
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="519"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Изображение 16 бит/канал (*.fts)</translation>
+        <translation>FITS Изображение 16 бит/канал (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="520"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Изображение 32 бит/канал - целые (*.fts)</translation>
+        <translation>FITS Изображение 32 бит/канал - целые (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="521"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS изображение 32 бит/канал -дробные (*.fts)</translation>
+        <translation>FITS изображение 32 бит/канал -дробные (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="530"/>

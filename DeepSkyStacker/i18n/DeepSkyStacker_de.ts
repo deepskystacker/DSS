@@ -1414,21 +1414,21 @@ Erkannte kalte Pixel: %L3 (%L4%)
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="519"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Bild 16 bit/k (*.fts)</translation>
+        <translation>FITS Bild 16 bit/k (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="520"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Bild 32 bit/k - integer (*.fts)</translation>
+        <translation>FITS Bild 32 bit/k - integer (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="521"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Bild 32 bit/k - rational (*.fts)</translation>
+        <translation>FITS Bild 32 bit/k - rational (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="530"/>

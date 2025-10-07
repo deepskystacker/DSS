@@ -1413,21 +1413,21 @@ Píxeles fríos detectados: %L3 (%L4%)
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="519"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>Imagen FITS 16 bit/ch (*.fts)</translation>
+        <translation>FITS Imagen 16 bit/ch (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="520"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>Imagen FITS 32 bit/ch integer (*.fts)</translation>
+        <translation>FITS Imagen 32 bit/ch - integer (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="521"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>Imagen FITS 32 bit/ch rational (*.fts)</translation>
+        <translation>FITS Imagen 32 bit/ch - rational (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="530"/>

@@ -38,7 +38,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
-project(DeepSkyStacker VERSION 6.1.0 LANGUAGES C CXX)
+project(DeepSkyStacker VERSION 6.1.1 LANGUAGES C CXX)
 
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
@@ -75,7 +75,7 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
-find_package(Qt6 6.9.1 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
+find_package(Qt6 6.10.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 find_package(cfitsio 4.6.2 REQUIRED)
@@ -83,6 +83,7 @@ find_package(boost_align CONFIG REQUIRED)
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
 if (APPLE)
+find_package(boost_atomic CONFIG REQUIRED)	
 find_package(Iconv REQUIRED)
 find_package(CURL REQUIRED)
 endif()

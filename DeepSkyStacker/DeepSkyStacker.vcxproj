@@ -41,7 +41,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>6.9.2_msvc2022_64</QtInstall>
+    <QtInstall>6.10.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
@@ -50,7 +50,7 @@
     <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>6.9.2_msvc2022_64</QtInstall>
+    <QtInstall>6.10.0_msvc2022_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>

@@ -1415,21 +1415,21 @@ Pixel freddi rilevati: %L3 (%L4%)
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="519"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>Immagine FITS 16 bit/can (*.fts)</translation>
+        <translation>Immagine FITS 16 bit/can (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="520"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>Immagine FITS 32 bit/can - interi (*.fts)</translation>
+        <translation>Immagine FITS 32 bit/can - interi (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="521"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>Immagine FITS 32 bit/can - razionale (*.fts)</translation>
+        <translation>Immagine FITS 32 bit/can - razionale (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="530"/>
