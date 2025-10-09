@@ -526,35 +526,39 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 
 		bResult = true;
 	}
-	else if ((m_vBitmaps[lBitmapIndice].m_vStars.size() > 4) &&
-		((m_vBitmaps[lBitmapIndice].m_vStars.size() > m_vBitmaps[0].m_vStars.size()/5) ||
-		 (m_vBitmaps[lBitmapIndice].m_vStars.size()>=30)))
+	else if (
+		(m_vBitmaps[lBitmapIndice].m_vStars.size() > 4) &&
+		((m_vBitmaps[lBitmapIndice].m_vStars.size() > m_vBitmaps[0].m_vStars.size() / 5) || (m_vBitmaps[lBitmapIndice].m_vStars.size() >= 30))
+		)
 	{
 		// Try to identify patterns in the placement of stars
 
-		STARVECTOR &		vStarsOrg = m_vBitmaps[0].m_vStars;
-		STARVECTOR &		vStarsDst = m_vBitmaps[lBitmapIndice].m_vStars;
-		CMatchingStars		MatchingStars;
+		STARVECTOR & vStarsOrg = m_vBitmaps[0].m_vStars;
+		STARVECTOR & vStarsDst = m_vBitmaps[lBitmapIndice].m_vStars;
 
 		{
-			const std::lock_guard<std::mutex> lock(mutex);
-			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-			std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
+			const std::lock_guard<std::mutex> lock{ mutex };
+			std::ranges::sort(vStarsOrg, CompareStarLuminancy);
+			std::ranges::sort(vStarsDst, CompareStarLuminancy);
 		}
 
+		CMatchingStars MatchingStars;
 		if (!MatchingStars.IsReferenceSet())
 		{
-			double			fXRatio,
-							fYRatio;
+			const double fXRatio = static_cast<double>(m_vBitmaps[lBitmapIndice].RenderedWidth()) / static_cast<double>(m_vBitmaps[0].RenderedWidth());
+			const double fYRatio = static_cast<double>(m_vBitmaps[lBitmapIndice].RenderedHeight()) / static_cast<double>(m_vBitmaps[0].RenderedHeight());
 
-			fXRatio = (double)m_vBitmaps[lBitmapIndice].RenderedWidth()/(double)m_vBitmaps[0].RenderedWidth();
-			fYRatio = (double)m_vBitmaps[lBitmapIndice].RenderedHeight()/(double)m_vBitmaps[0].RenderedHeight();
 			for (size_t i = 0; i < std::min(vStarsOrg.size(), MaxNumberOfConsideredStars); i++)
+			{
 				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX * fXRatio, vStarsOrg[i].m_fY * fYRatio);
-		};
+			}
+		}
+
 		MatchingStars.ClearTarget();
 		for (size_t i = 0; i < std::min(vStarsDst.size(), MaxNumberOfConsideredStars); i++)
+		{
 			MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
+		}
 
 		MatchingStars.SetSizes(m_vBitmaps[lBitmapIndice].RenderedWidth(), m_vBitmaps[lBitmapIndice].RenderedHeight());
 		bResult = MatchingStars.ComputeCoordinateTransformation(BilinearParameters);
@@ -567,18 +571,12 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 			MatchingStars.GetVotedPairs(m_vBitmaps[lBitmapIndice].m_vVotedPairs);
 			const std::lock_guard<std::mutex> lock(mutex);
 			m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-inline bool CompareLightFrameDate (const CLightFrameInfo * plfi1, const CLightFrameInfo * plfi2)
-{
-	return (plfi2->m_DateTime > plfi1->m_DateTime);
-};
 
 bool interpolateCometPositions(CStackingEngine& stackingEngine)
 {
@@ -725,7 +723,9 @@ void CStackingEngine::ComputeMissingCometPositions()
 		};
 
 		// Now sort the list by ascending date/time
-		std::sort(vpLightFrames.begin(), vpLightFrames.end(), CompareLightFrameDate);
+		std::ranges::sort(vpLightFrames, [](const CLightFrameInfo* pLfi1, const CLightFrameInfo* pLfi2) {
+			return (pLfi2->m_DateTime > pLfi1->m_DateTime);
+		});
 
 		std::vector<int> vNewComet;
 

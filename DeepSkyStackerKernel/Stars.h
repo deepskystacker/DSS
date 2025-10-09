@@ -70,10 +70,10 @@ public:
 	}
 };
 
-typedef std::vector<CStar>		STARVECTOR;
-typedef STARVECTOR::iterator	STARITERATOR;
-typedef std::set<CStar>			STARSET;
-typedef STARSET::iterator		STARSETITERATOR;
+using STARVECTOR = std::vector<CStar>;
+using STARITERATOR = STARVECTOR::iterator;
+using STARSET = std::set<CStar>;
+using STARSETITERATOR = STARSET::iterator;
 
 constexpr inline const size_t MaxNumberOfConsideredStars = 100;
 
