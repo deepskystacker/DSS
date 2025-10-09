@@ -75,6 +75,8 @@ typedef STARVECTOR::iterator	STARITERATOR;
 typedef std::set<CStar>			STARSET;
 typedef STARSET::iterator		STARSETITERATOR;
 
+constexpr inline const size_t MaxNumberOfConsideredStars = 100;
+
 constexpr bool CompareStarLuminancy(const CStar& ms1, const CStar& ms2)
 {
 	if (ms1.m_fIntensity > ms2.m_fIntensity)

@@ -97,7 +97,7 @@ double CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
 	double sumWeights = 0;
 	double sum = 0;
 	// Sorted indexes -> get CStar -> filter out removed -> take max. 100 -> get circularity.
-	for (int ndx = 0; const double q : indexes | vs::transform(std::bind_front(Projector, std::identity{})) | Filter | vs::take(100) | vs::transform(&CStar::m_fCircularity))
+	for (int ndx = 0; const double q : indexes | vs::transform(std::bind_front(Projector, std::identity{})) | Filter | vs::take(MaxNumberOfConsideredStars) | vs::transform(&CStar::m_fCircularity))
 	{
 		const double w = ndx < weights.size() ? weights[ndx] : (ndx < 40 ? 1.0 : 0.1); // Star 0..26 Gaussian weights, then 1.0, above 40 0.1.
 		sumWeights += w;
