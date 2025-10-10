@@ -57,6 +57,9 @@
     <ClCompile Include="TimeStampTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="catch.h">

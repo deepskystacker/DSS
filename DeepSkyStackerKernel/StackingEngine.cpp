@@ -46,7 +46,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 	const QFileInfo fileInfo(path);
 
 	referenceFrame = path;
-	m_strStackingFileInfo = QDir::toNativeSeparators(QString("%1%2%3.stackinfo.txt").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.baseName()));
+	m_strStackingFileInfo = QDir::toNativeSeparators(QString("%1%2%3.stackinfo.txt").arg(fileInfo.path()).arg(QDir::separator()).arg(fileInfo.completeBaseName()));
 
 	unsigned int dwAlignmentTransformation = 2;
 	Workspace workspace;
@@ -1486,7 +1486,7 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 	{
 		const QFileInfo fileInfo(currentLightFrame);		
 		const QString strPath(fileInfo.path() + QDir::separator());
-		const QString strBaseName(fileInfo.baseName());
+		const QString strBaseName(fileInfo.completeBaseName());
 		QString strOutputFile;
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1528,7 +1528,7 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 	{
 		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
-		const QString strBaseName(fileInfo.baseName());
+		const QString strBaseName(fileInfo.completeBaseName());
 		QString strOutputFile;
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1594,7 +1594,7 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 	{
 		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
-		const QString strBaseName(fileInfo.baseName());
+		const QString strBaseName(fileInfo.completeBaseName());
 		QString strOutputFile;
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1634,7 +1634,7 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 	{
 		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
-		const QString strBaseName(fileInfo.baseName());
+		const QString strBaseName(fileInfo.completeBaseName());
 		QString strOutputFile;
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1676,7 +1676,7 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 	{
 		const QFileInfo fileInfo(currentLightFrame);
 		const QString strPath(fileInfo.path() + QDir::separator());
-		const QString strBaseName(fileInfo.baseName());
+		const QString strBaseName(fileInfo.completeBaseName());
 		QString strOutputFile;
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -2695,10 +2695,10 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	stream << "<html>" << Qt::endl;
 	stream << "<head>" << Qt::endl;
 	stream << "<meta name=\"GENERATOR\" content=\"DeepSkyStacker\">";
-	stream << "<title>DeepSkyStacker - " << fileInfo.baseName() << "</title>";
+	stream << "<title>DeepSkyStacker - " << fileInfo.completeBaseName() << "</title>";
 	stream << "</head>" << Qt::endl;
 	stream << "<body>" << Qt::endl;
-	stream << "-> " << fileInfo.baseName() << "<br><br>" << Qt::endl;
+	stream << "-> " << fileInfo.completeBaseName() << "<br><br>" << Qt::endl;
 
 	// Stacking Mode
 	stream << QCoreApplication::translate("StackRecap", "Stacking mode: ", "IDS_RECAP_STACKINGMODE");
