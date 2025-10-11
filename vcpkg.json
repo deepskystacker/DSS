@@ -1,5 +1,5 @@
 {
-  "builtin-baseline": "a345bbdc68cdfda65603e24413b21afb28f110fb",
+  "builtin-baseline": "a62ce77d56ee07513b4b67de1ec2daeaebfae51a",
   "dependencies": [
     {
       "name": "boost-atomic",
@@ -8,21 +8,33 @@
     "boost-align",
     "boost-container",
     "boost-interprocess",
-	"cfitsio",
+    "cfitsio",
     "exiv2",
     "expat",
     "libraw",
     "smtpmime",
     "tiff",
-	{
+    {
       "name": "uchmviewer",
       "platform": "osx"
     },
-	"zlib"
+    "zlib"
   ],
   "overrides": [
     {
-      "name": "boost",
+      "name": "boost-align",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-atomic",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-container",
+      "version": "1.86.0"
+    },
+    {
+      "name": "boost-interprocess",
       "version": "1.86.0"
     },
     {
