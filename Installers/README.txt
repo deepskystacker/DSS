@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1
+Welcome to DeepSkyStacker 6.1.1 Beta 1
 ===============================
 
 Reporting problems:
@@ -13,7 +13,7 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.1
+Changes for DeepSkyStacker 6.1.1 Beta 1
 ================================
 
 1.  Support for writing and reading compressed FITS files.  Writing of compressed files is enabled by a check box
@@ -35,7 +35,7 @@ Changes for DeepSkyStacker 6.1.1
 4.  Update boost to 1.88 and libtiff to 4.7.1
 
 5.  Bug fix: The name of the intermediate files were created incorrectly.   The stem for the file name
-    was using the content of the input filename up to but not including the first '.' character.
+    used the content of the input filename up to but not including the first '.' character.
     It should have used up to but not including the last '.' character.
 
 6.  Bug fix: Incorrect master flat files were created when bias frames were being used.   This bug was
