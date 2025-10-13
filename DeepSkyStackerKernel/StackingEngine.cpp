@@ -1493,9 +1493,7 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 			strOutputFile = strPath + strBaseName + ".reg.tif";
 		else
 		{
-			QString strFitsExt;
-			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
-			strOutputFile = strPath + strBaseName + ".reg" + strFitsExt;
+			strOutputFile = strPath + strBaseName + ".reg.fits";
 		}
 		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
@@ -1535,9 +1533,7 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 			strOutputFile = strPath + strBaseName + ".cal.tif";
 		else
 		{
-			QString strFitsExt;
-			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
-			strOutputFile = strPath + strBaseName + ".cal" + strFitsExt;
+			strOutputFile = strPath + strBaseName + ".cal.fits";
 		}
 		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
@@ -1601,9 +1597,7 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 			strOutputFile = strPath + strBaseName + ".cosmetic.tif";
 		else
 		{
-			QString strFitsExt;
-			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
-			strOutputFile = strPath + strBaseName + ".cosmetic" + strFitsExt;
+			strOutputFile = strPath + strBaseName + ".cosmetic.fits";
 		}
 		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
@@ -1641,9 +1635,7 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 			strOutputFile = strPath + strBaseName + ".Comet.tif";
 		else
 		{
-			QString strFitsExt;
-			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
-			strOutputFile = strPath + strBaseName + ".Comet" + strFitsExt;
+			strOutputFile = strPath + strBaseName + ".Comet.fits";
 		}
 		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 
@@ -1683,9 +1675,7 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 			strOutputFile = strPath + strBaseName + ".Cometless.tif";
 		else
 		{
-			QString strFitsExt;
-			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
-			strOutputFile = strPath + strBaseName + ".Cometless" + strFitsExt;
+			strOutputFile = strPath + strBaseName + ".Cometless.fits";
 		}
 		strOutputFile = QDir::toNativeSeparators(strOutputFile);
 

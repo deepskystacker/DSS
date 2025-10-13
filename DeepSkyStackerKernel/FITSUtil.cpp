@@ -1945,27 +1945,3 @@ int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::sh
 	}
 	return result;
 }
-
-void GetFITSExtension(const QString& path, QString& strExtension)
-{
-	QFileInfo fileInfo(path);
-
-	const QString strExt("." + fileInfo.suffix());
-	if (strExt.compare(".FITS", Qt::CaseInsensitive) == 0)
-		strExtension = strExt;
-	else if (strExt.compare(".FIT", Qt::CaseInsensitive) == 0)
-		strExtension = strExt;
-	else
-		strExtension = ".fts";
-}
-
-void GetFITSExtension(const fs::path& file, QString& strExtension)
-{
-	GetFITSExtension(QString::fromStdU16String(file.generic_u16string().c_str()), strExtension);
-}
-
-void GetFITSExtension(fs::path path, QString& strExtension)
-{
-	QDir qPath(path);
-	GetFITSExtension(qPath.absolutePath(), strExtension);
-}

@@ -935,9 +935,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 		}
 		else
 		{
-			QString strFitsExt;
-			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
-			strCalibratedFile = strPath + strBaseName + ".cal" + strFitsExt;
+			strCalibratedFile = strPath + strBaseName + ".cal.fits";
 		}
 		strCalibratedFile = QDir::toNativeSeparators(strCalibratedFile);
 
