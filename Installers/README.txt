@@ -25,7 +25,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 1
     compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also
     means that the original floating value pixel values are not exactly preserved.
 
-2.  FITS files will now be written with the extension .fits rather than .fit of .fts.
+2.  FITS files will now be written with the extension .fits rather than .fit or .fts.
 
 3.  Resolve problem of 0xC000409 abend at startup when the user's "Documents" directory path contained non-Latin1
     characters.
