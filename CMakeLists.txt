@@ -78,7 +78,7 @@ set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 find_package(Qt6 6.10.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
-find_package(cfitsio 4.6.2 REQUIRED)
+find_package(cfitsio REQUIRED)
 find_package(boost_align CONFIG REQUIRED)
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
