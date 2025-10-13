@@ -79,7 +79,7 @@ namespace DSS
         strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://github.com/Exiv2/exiv2");
         strHTML += strText;
 
-        strText = tr("SMTP support by SMTP Client for Qt (C++) - Version 0.27.6\nCopyright Tőkés Attila");
+        strText = tr("SMTP support by SMTP Client for Qt (C++) - Version 2.0\nCopyright Tőkés Attila");
         strText = strText.replace("\n", "<br>");
         strHTML += strText + "<br>";
         strText = QString("<a href=\"%1\">%1</a><br>").arg("https://github.com/bluetiger9/SmtpClient-for-Qt");
