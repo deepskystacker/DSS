@@ -37,7 +37,7 @@ namespace DSS
         strText += "<br>";
         strText += copyright;
         strText = strText.replace("\n", "<br>");
-        strHTML += "<b>" + strText + "</b><br>";
+        strHTML += "<b>" + strText + "</b><br><br>";
 
         strText = "Qt Application Framework 6.10.0\nCopyright © 2025 The Qt Company Ltd.";
         strText += "<br>";
