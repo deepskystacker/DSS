@@ -38,9 +38,6 @@ namespace DSS
         strText += copyright;
         strText = strText.replace("\n", "<br>");
         strHTML += "<b>" + strText + "</b><br>";
-        strText = QString("<a href=\"%1\">%1</a>&nbsp;").arg("http://deepskystacker.free.fr/");
-        strText += tr("(Now somewhat out of date)") += "<br><br>";
-        strHTML += strText;
 
         strText = "Qt Application Framework 6.10.0\nCopyright © 2025 The Qt Company Ltd.";
         strText += "<br>";
