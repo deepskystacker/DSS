@@ -52,68 +52,74 @@ bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
 	//
 	// Use Exiv2 C++ class library to retrieve the EXIF information we want
 	//
-//#if defined(Q_OS_WIN)
-//	std::wstring temp{ fileName.generic_wstring() };
-//	auto image = ImageFactory::open(temp);
-//#else
 	std::string temp{ reinterpret_cast<const char*>(fileName.generic_u8string().c_str()) };
-	auto image = ImageFactory::open(temp);
-//#endif
-	ZASSERT(image.get() != nullptr);
-	image->readMetadata();
-	auto& exifData{ image->exifData() };
-	ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", fileName.generic_u8string().c_str());
-	if (exifData.empty())
+	try
 	{
-		ZTRACE_RUNTIME("No EXIF data found in file");
-		return result;
-	}
+		auto image = ImageFactory::open(temp);
 
-	ExifData::const_iterator iterator{ };
+		ZASSERT(image.get() != nullptr);
+		image->readMetadata();
+		auto& exifData{ image->exifData() };
+		ZTRACE_RUNTIME("Retrieving EXIF data from file: %s", fileName.generic_u8string().c_str());
+		if (exifData.empty())
+		{
+			ZTRACE_RUNTIME("No EXIF data found in file");
+			return result;
+		}
 
-	// Exposure time
-	if (iterator = exposureTime(exifData); exifData.end() != iterator)
-	{
-		BitmapInfo.m_fExposure = iterator->toFloat();
-		result = true;
-	}
-	
-	// Aperture
-	if (iterator = fNumber(exifData); exifData.end() != iterator)
-	{
-		BitmapInfo.m_fAperture = iterator->toFloat();
-		result = true;
-	}
-	//else if (iterator = apertureValue(exifData); exifData.end() != iterator)
-	//{
-	//	BitmapInfo.m_fAperture = iterator->toFloat();
-	//	result = true;
-	//}
+		ExifData::const_iterator iterator{ };
 
-	// ISO
-	if (iterator = isoSpeed(exifData); exifData.end() != iterator)
-	{
-		BitmapInfo.m_lISOSpeed = iterator->toInt64(0);	// Return 1st element if multi-element IFD
-		result = true;
-	}
+		// Exposure time
+		if (iterator = exposureTime(exifData); exifData.end() != iterator)
+		{
+			BitmapInfo.m_fExposure = iterator->toFloat();
+			result = true;
+		}
 
-	// Model
-	if (iterator = model(exifData); exifData.end() != iterator )
-	{
-		BitmapInfo.m_strModel = QString(iterator->toString().c_str()).trimmed();
-		result = true;
-	}
-	
-	// Date/Time
-	if (iterator = dateTimeOriginal(exifData); exifData.end() != iterator)
-	{
-		QString strDateTime{ iterator->toString().c_str() };
+		// Aperture
+		if (iterator = fNumber(exifData); exifData.end() != iterator)
+		{
+			BitmapInfo.m_fAperture = iterator->toFloat();
+			result = true;
+		}
+		//else if (iterator = apertureValue(exifData); exifData.end() != iterator)
+		//{
+		//	BitmapInfo.m_fAperture = iterator->toFloat();
+		//	result = true;
+		//}
 
-		// Parse the string : YYYY:MM:DD hh:mm:ss
-		//                    0123456789012345678
-		BitmapInfo.m_DateTime = QDateTime::fromString(strDateTime, "yyyy:MM:dd hh:mm:ss");
-		result = true;
+		// ISO
+		if (iterator = isoSpeed(exifData); exifData.end() != iterator)
+		{
+			BitmapInfo.m_lISOSpeed = iterator->toInt64(0);	// Return 1st element if multi-element IFD
+			result = true;
+		}
+
+		// Model
+		if (iterator = model(exifData); exifData.end() != iterator)
+		{
+			BitmapInfo.m_strModel = QString(iterator->toString().c_str()).trimmed();
+			result = true;
+		}
+
+		// Date/Time
+		if (iterator = dateTimeOriginal(exifData); exifData.end() != iterator)
+		{
+			QString strDateTime{ iterator->toString().c_str() };
+
+			// Parse the string : YYYY:MM:DD hh:mm:ss
+			//                    0123456789012345678
+			BitmapInfo.m_DateTime = QDateTime::fromString(strDateTime, "yyyy:MM:dd hh:mm:ss");
+			result = true;
+		}
 	}
-	
+	catch (std::exception& e)
+	{
+		const char* message{ e.what() };
+		ZTRACE_RUNTIME("std::exception caught: %s", message);
+		QString errorMessage{ message };
+		DSSBase::instance()->reportError(errorMessage, "EXIV2 exception", DSSBase::Severity::Warning, DSSBase::Method::QErrorMessage);
+		return false;
+	}
 	return result;
 }

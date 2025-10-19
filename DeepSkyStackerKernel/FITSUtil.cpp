@@ -1360,10 +1360,12 @@ bool CFITSWriter::Open()
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
 	Workspace	workspace;
+	char error_text[31] = "";			// Error text for FITS errors.
+
 	bool compressFITSFile{ workspace.value("Stacking/CompressFITS", false).toBool() };
 
 	// Create a new fits file
-	int				nStatus = 0;
+	int				status = 0;
 
 	fs::remove(file);
 
@@ -1376,8 +1378,20 @@ bool CFITSWriter::Open()
 		file += "[compress]";
 	}
 
-	fits_create_file(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &nStatus);
-	if (m_fits && nStatus == 0)
+	fits_create_file(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &status);
+	if (0 != status)
+	{
+		fits_get_errstatus(status, error_text);
+		QString errorMessage(QCoreApplication::translate("FITSUtil",
+			"fits_create_file %1\nreturned a status of %2, error text is:\n\"%3\"")
+			.arg(file.generic_u16string().c_str())
+			.arg(status)
+			.arg(error_text));
+		ZTRACE_RUNTIME(errorMessage);
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
+	}
+
+	if (m_fits && status == 0)
 	{
 		bResult = OnOpen();
 		if (bResult)
@@ -1407,8 +1421,8 @@ bool CFITSWriter::Open()
 					nBitPixels = ULONG_IMG;
 			};
 
-			fits_create_img(m_fits, nBitPixels, nAxis, nAxes, &nStatus);
-			if (nStatus == 0)
+			fits_create_img(m_fits, nBitPixels, nAxis, nAxes, &status);
+			if (status == 0)
 			{
 				bResult = true;
 
@@ -1437,7 +1451,7 @@ bool CFITSWriter::Open()
 		};
 		if (!bResult)
 		{
-			fits_close_file(m_fits, &nStatus);
+			fits_close_file(m_fits, &status);
 			m_fits = nullptr;
 		};
 	};
@@ -1944,28 +1958,4 @@ int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::sh
 			result = 1; // Failed to read file
 	}
 	return result;
-}
-
-void GetFITSExtension(const QString& path, QString& strExtension)
-{
-	QFileInfo fileInfo(path);
-
-	const QString strExt("." + fileInfo.suffix());
-	if (strExt.compare(".FITS", Qt::CaseInsensitive) == 0)
-		strExtension = strExt;
-	else if (strExt.compare(".FIT", Qt::CaseInsensitive) == 0)
-		strExtension = strExt;
-	else
-		strExtension = ".fts";
-}
-
-void GetFITSExtension(const fs::path& file, QString& strExtension)
-{
-	GetFITSExtension(QString::fromStdU16String(file.generic_u16string().c_str()), strExtension);
-}
-
-void GetFITSExtension(fs::path path, QString& strExtension)
-{
-	QDir qPath(path);
-	GetFITSExtension(qPath.absolutePath(), strExtension);
 }

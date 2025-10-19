@@ -14,7 +14,7 @@ namespace DSS
 	{
 		ui->setupUi(this);
 
-		connect (ui->compressFITS, &QCheckBox::stateChanged, [this](int state)
+		connect (ui->compressFITS, &QCheckBox::checkStateChanged, [this](Qt::CheckState state)
 		{
 			QSettings settings;
 			switch (state)

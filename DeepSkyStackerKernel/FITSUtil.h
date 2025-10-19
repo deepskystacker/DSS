@@ -225,7 +225,3 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBase* pProgress);
 bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
 int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase* pProgress);
-void GetFITSExtension(const fs::path& szFileName, QString& strExtension);
-void GetFITSExtension(const fs::path& path, QString& strExtension);
-void GetFITSExtension(const QString& path, QString& strExtension);
-
