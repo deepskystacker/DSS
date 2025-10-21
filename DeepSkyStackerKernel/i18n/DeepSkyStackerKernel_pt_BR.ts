@@ -471,10 +471,10 @@ Os valores padrão DATAMIN = %L1 e DATAMAX = %L2 das configurações FITS/DDP se
     </message>
     <message>
         <location filename="../FITSUtil.cpp" line="1385"/>
-        <source>fits_create_file %1
+        <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
-        <translation type="unfinished">fits_create_file %1
+        <translation type="unfinished">fits_create_diskfile %1
 retornou um status de %2, o texto do erro é:
 &quot;%3&quot;</translation>
     </message>

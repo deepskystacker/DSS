@@ -471,10 +471,10 @@ settings will be used.</source>
     </message>
     <message>
         <location filename="../FITSUtil.cpp" line="1385"/>
-        <source>fits_create_file %1
+        <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
-        <translation>fits_create_file %1
+        <translation>fits_create_diskfile %1
 вернул статус %2, текст ошибки:
 &quot;%3&quot;</translation>
     </message>

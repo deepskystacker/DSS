@@ -471,10 +471,10 @@ Se utilizarán los valores predeterminados DATAMIN = %L1 y DATAMAX = %L2 de la c
     </message>
     <message>
         <location filename="../FITSUtil.cpp" line="1385"/>
-        <source>fits_create_file %1
+        <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
-        <translation>fits_create_file %1
+        <translation>fits_create_diskfile %1
 devolvió un estado de %2, el texto de error es:
 &quot;%3&quot;</translation>
     </message>
