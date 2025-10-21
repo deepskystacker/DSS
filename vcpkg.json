@@ -9,7 +9,10 @@
     "boost-container",
     "boost-interprocess",
     "cfitsio",
-    "exiv2",
+	{
+	  "name": "exiv2",
+	  "features": ["bmff", "png", "xmp"]
+	},
     "expat",
     "libraw",
     "smtpmime",
@@ -39,7 +42,7 @@
     },
     {
       "name": "exiv2",
-      "version": "0.28.3"
+      "version": "0.28.7"
     },
     {
       "name": "expat",
