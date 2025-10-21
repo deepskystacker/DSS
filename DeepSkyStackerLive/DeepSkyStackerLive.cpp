@@ -490,12 +490,12 @@ void DeepSkyStackerLive::onInitialise()
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
 
 	//
-	// If the file does not exist, initialise the workspace to default settings 
-	// and save it to the file.
+	// Initialise the workspace to default settings to be sure all settings exist
 	//
+	workspace.ResetToDefault();		// Reset the workspace to default settings
+
 	if (!exists(fileName))
 	{
-		workspace.ResetToDefault();		// Reset the workspace to default settings
 		ZTRACE_RUNTIME("DSSLive settings file %s does not exist, creating it", fileName.generic_u8string().c_str());
 		workspace.SaveToFile(fileName);
 	}
