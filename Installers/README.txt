@@ -44,6 +44,11 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 7.  Update exiv2 to 28.7 and change vcpkg.json file so that png file support is included (along with bmff and xmp).
     This fixes the problem where an assertion was thrown when opening PNG files.
 
+8.  Bug fix: Nasty problem with save/restore of Workspace settings to and from files.  Trailing end-of-line wasn't
+    trimmed off and also datatype information was often lost.  This error dates back to DeepSkyStacker 5.1.0 :(
+
+9.  Set correct bit-depth for images in DeepSkyStackerLive - was defaulting to 16 bits for 8-bit images.
+
 
 Changes for DeepSkyStacker 6.1.0
 ================================
