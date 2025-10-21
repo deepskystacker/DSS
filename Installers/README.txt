@@ -49,6 +49,8 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 
 9.  Set correct bit-depth for images in DeepSkyStackerLive - was defaulting to 16 bits for 8-bit images.
 
+10. Revert to exiv2 28.3 and remove the xmp feature as this broke the CMake build.
+
 
 Changes for DeepSkyStacker 6.1.0
 ================================
