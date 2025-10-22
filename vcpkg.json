@@ -10,10 +10,13 @@
     "boost-container",
     "boost-interprocess",
     "cfitsio",
-	{
-	  "name": "exiv2",
-	  "features": ["bmff", "png"]
-	},
+    {
+      "name": "exiv2",
+      "features": [
+        "bmff",
+        "png"
+      ]
+    },
     "expat",
     "libraw",
     "smtpmime",
