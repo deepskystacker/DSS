@@ -1389,7 +1389,7 @@ bool CFITSWriter::Open()
 		//
 		if (compressFITSFile)
 		{
-			// Yes, so append [compress] to the fileid
+			// Yes, so turn on Rice compression
 			fits_set_compression_type(m_fits, RICE_1, &status);
 			ZASSERT(0 == status);
 		}
