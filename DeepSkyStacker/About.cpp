@@ -70,7 +70,7 @@ namespace DSS
         strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html");
         strHTML += strText;
 
-        strText = tr("Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0\nCopyright 2004-2023 Exiv2 authors");
+        strText = tr("Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.3\nCopyright 2004-2025 Exiv2 authors");
         strText = strText.replace("\n", "<br>");
         strHTML += strText + "<br>";
         strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://github.com/Exiv2/exiv2");
