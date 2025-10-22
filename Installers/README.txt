@@ -30,9 +30,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 3.  Resolve problem of 0xC000409 abend at startup when the user's "Documents" directory path contained non-Latin1
     characters.
 
-4.  Update build to use Qt 6.10.0
-
-4.  Update boost to 1.88 and libtiff to 4.7.1
+4.  Update build to use Qt 6.10.0, boost 1.88 and libtiff 4.7.1
 
 5.  Bug fix: The name of the intermediate files were created incorrectly.   The stem for the file name
     used the content of the input filename up to but not including the first '.' character.
@@ -41,7 +39,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 6.  Bug fix: Incorrect master flat files were created when bias frames were being used.   This bug was
     introduced during the development of 6.1.0.
 
-7.  Update exiv2 to 28.7 and change vcpkg.json file so that png file support is included (along with bmff and xmp).
+7.  Change vcpkg.json file so that Exiv2 png file support is included (along with bmff).
     This fixes the problem where an assertion was thrown when opening PNG files.
 
 8.  Bug fix: Nasty problem with save/restore of Workspace settings to and from files.  Trailing end-of-line wasn't
@@ -49,9 +47,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 
 9.  Set correct bit-depth for images in DeepSkyStackerLive - was defaulting to 16 bits for 8-bit images.
 
-10. Revert to exiv2 28.3 and remove the xmp feature as this broke the CMake build.
-
-11. Change to FITS compression support code to work round problems with () and [] in file-ids.
+10. Change to FITS compression support code to work round problems with () and [] in file-ids.
 
 
 Changes for DeepSkyStacker 6.1.0
