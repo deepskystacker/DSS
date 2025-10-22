@@ -475,7 +475,7 @@ vor fi utilizate setările.</translation>
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
-        <translation type="unfinished">fits_create_diskfile %1
+        <translation>fits_create_diskfile %1
 a returnat o stare de %2, textul de eroare este:
 „%3”</translation>
     </message>

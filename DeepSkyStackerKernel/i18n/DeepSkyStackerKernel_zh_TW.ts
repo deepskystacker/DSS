@@ -475,7 +475,7 @@ FITS/DDP 中 DATAMIN = %L1 和 DATAMAX = %L2 的預設值
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
-        <translation type="unfinished">fits_create_diskfile %1
+        <translation>fits_create_diskfile %1
 返回狀態 %2，錯誤文字為：
 “%3”</translation>
     </message>
