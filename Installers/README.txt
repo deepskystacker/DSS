@@ -39,7 +39,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 6.  Bug fix: Incorrect master flat files were created when bias frames were being used.   This bug was
     introduced during the development of 6.1.0.
 
-7.  Change vcpkg.json file so that Exiv2 png file support is included (along with bmff).
+7.  Update build so that Exiv2 png file support is included (along with bmff).
     This fixes the problem where an assertion was thrown when opening PNG files.
 
 8.  Bug fix: Nasty problem with save/restore of Workspace settings to and from files.  Trailing end-of-line wasn't
