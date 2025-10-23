@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1 Beta 1
+Welcome to DeepSkyStacker 6.1.1 Beta 2
 ===============================
 
 Reporting problems:
@@ -13,7 +13,7 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.1 Beta 1
+Changes for DeepSkyStacker 6.1.1 Beta 2
 ================================
 
 1.  Support for writing and reading compressed FITS files.  Writing of compressed files is enabled by a check box
@@ -30,9 +30,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 1
 3.  Resolve problem of 0xC000409 abend at startup when the user's "Documents" directory path contained non-Latin1
     characters.
 
-4.  Update build to use Qt 6.10.0
-
-4.  Update boost to 1.88 and libtiff to 4.7.1
+4.  Update build to use Qt 6.10.0, boost 1.88 and libtiff 4.7.1
 
 5.  Bug fix: The name of the intermediate files were created incorrectly.   The stem for the file name
     used the content of the input filename up to but not including the first '.' character.
@@ -40,6 +38,16 @@ Changes for DeepSkyStacker 6.1.1 Beta 1
 
 6.  Bug fix: Incorrect master flat files were created when bias frames were being used.   This bug was
     introduced during the development of 6.1.0.
+
+7.  Update build so that Exiv2 png file support is included (along with bmff).
+    This fixes the problem where an assertion was thrown when opening PNG files.
+
+8.  Bug fix: Nasty problem with save/restore of Workspace settings to and from files.  Trailing end-of-line wasn't
+    trimmed off and also datatype information was often lost.  This error dates back to DeepSkyStacker 5.1.0 :(
+
+9.  Set correct bit-depth for images in DeepSkyStackerLive - was defaulting to 16 bits for 8-bit images.
+
+10. Change to FITS compression support code to work round problems with () and [] in file-ids.
 
 
 Changes for DeepSkyStacker 6.1.0

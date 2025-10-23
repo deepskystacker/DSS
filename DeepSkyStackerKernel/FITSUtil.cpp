@@ -1369,21 +1369,12 @@ bool CFITSWriter::Open()
 
 	fs::remove(file);
 
-	//
-	// Is the output file to be compressed?
-	//
-	if (compressFITSFile)
-	{
-		// Yes, so append [compress] to the fileid
-		file += "[compress]";
-	}
-
-	fits_create_file(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &status);
+	fits_create_diskfile(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
 		QString errorMessage(QCoreApplication::translate("FITSUtil",
-			"fits_create_file %1\nreturned a status of %2, error text is:\n\"%3\"")
+			"fits_create_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
 			.arg(file.generic_u16string().c_str())
 			.arg(status)
 			.arg(error_text));
@@ -1393,6 +1384,16 @@ bool CFITSWriter::Open()
 
 	if (m_fits && status == 0)
 	{
+		//
+		// Is the output file to be compressed?
+		//
+		if (compressFITSFile)
+		{
+			// Yes, so turn on Rice compression
+			fits_set_compression_type(m_fits, RICE_1, &status);
+			ZASSERT(0 == status);
+		}
+
 		bResult = OnOpen();
 		if (bResult)
 		{
