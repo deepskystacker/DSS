@@ -79,7 +79,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 
 void CDeepStack::AdjustHistogram(RGBHistogram & srcHisto, RGBHistogram & tgtHisto, const DSS::RGBHistogramAdjust & histogramAdjust)
 {
-	ZFUNCTRACE_RUNTIME();
+//	ZFUNCTRACE_RUNTIME(); // Produces a lot of clutter in the log file, because it's called really often.
 	tgtHisto.clear();
 	bool				bMonochrome;
 
