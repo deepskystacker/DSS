@@ -404,14 +404,15 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
 
 	// Lambda for stopping criterion.
-	const auto stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
+	const auto Stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
 	{
 		return !optimizeThreshold // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
 			|| (oneMoreIteration == 2)
 			|| (oneMoreIteration != 1 && (nStars >= numberOfWantedStars || thres <= LowestPossibleThreshold));
 	};
+
 	// Lambda for threshold update.
-	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
+	auto NewThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
 		const double lastThreshold, const size_t nStars) mutable -> double
 	{
 		if (!optimizeThreshold) // IF optimizeThreshold == false THEN return last threshold.
@@ -564,8 +565,8 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		}
 
 		usedThreshold = threshold;
-		threshold = newThreshold(threshold, stars1.size());
-	} while (!stop(threshold, stars1.size())); // loop over thresholds
+		threshold = NewThreshold(threshold, stars1.size());
+	} while (!Stop(threshold, stars1.size())); // loop over thresholds
 
 	if (m_pProgress != nullptr)
 		m_pProgress->End2();
