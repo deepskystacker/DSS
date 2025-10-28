@@ -36,7 +36,7 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 	return bResult;
 };
 
-void	SpaceToQString(std::int64_t ulSpace, QString& strSpace)
+void	SpaceToQString(std::uintmax_t ulSpace, QString& strSpace)
 {
 	double fKb(ulSpace / 1024.0);
 	double fMb(fKb / 1024.0);
@@ -1923,15 +1923,15 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 
 /* ------------------------------------------------------------------- */
 
-std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutput)
+std::uintmax_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutput)
 {
-	std::int64_t				ulResult = 0;
-	std::int64_t				ulLightSpace = 0,
+	std::uintmax_t				ulResult = 0;
+	std::uintmax_t				ulLightSpace = 0,
 						ulFlatSpace = 0,
 						ulDarkSpace = 0,
 						ulDarkFlatSpace = 0,
 						ulOffsetSpace = 0;
-	std::int64_t				ulPixelSize = 0;
+	std::uintmax_t				ulPixelSize = 0;
 
 	ulPixelSize = GetPixelSizeMultiplier();
 	ulPixelSize *= ulPixelSize;
@@ -1942,8 +1942,8 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 			lHeight,
 			lNrChannels,
 			lNrBytesPerChannel;
-		std::int64_t	ulSpace;
-		std::int64_t	ulLSpace;
+		std::uintmax_t	ulSpace;
+		std::uintmax_t	ulLSpace;
 
 		if (m_vStacks[i].m_pLightTask && m_vStacks[i].m_pLightTask->m_vBitmaps.size())
 		{
@@ -1952,8 +1952,8 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 			lNrChannels = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
 			lNrBytesPerChannel = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitsPerChannel/8;
 
-			ulSpace	= static_cast<std::int64_t>(lWidth) * lHeight * lNrBytesPerChannel * lNrChannels;
-			ulLSpace = static_cast<std::int64_t>(lWidth) * lHeight * 2 * 3;
+			ulSpace	= static_cast<std::uintmax_t>(lWidth) * lHeight * lNrBytesPerChannel * lNrChannels;
+			ulLSpace = static_cast<std::uintmax_t>(lWidth) * lHeight * 2 * 3;
 
 			if (!rcOutput.isEmpty())
 				ulLSpace = rcOutput.width() * rcOutput.height() * 2 * 3;
@@ -1974,16 +1974,16 @@ std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutpu
 				m_vStacks[i].m_pLightTask->m_Method = MBP_AVERAGE;
 
 			if (m_vStacks[i].m_pOffsetTask)
-				ulOffsetSpace = std::max(ulOffsetSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
+				ulOffsetSpace = std::max(ulOffsetSpace, static_cast<std::uintmax_t>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkTask)
-				ulDarkSpace = std::max(ulDarkSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
+				ulDarkSpace = std::max(ulDarkSpace, static_cast<std::uintmax_t>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkFlatTask)
-				ulDarkFlatSpace = std::max(ulDarkFlatSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
+				ulDarkFlatSpace = std::max(ulDarkFlatSpace, static_cast<std::uintmax_t>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pFlatTask)
-				ulFlatSpace = std::max(ulFlatSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
+				ulFlatSpace = std::max(ulFlatSpace, static_cast<std::uintmax_t>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
 		};
 	};
 
@@ -2007,7 +2007,7 @@ STACKINGMODE CAllStackingTasks::getStackingMode() const
 		return static_cast<STACKINGMODE>(workspace.value("Stacking/Mosaic", uint(0)).toUInt());
 }
 
-std::int64_t CAllStackingTasks::computeNecessaryDiskSpace()
+std::uintmax_t CAllStackingTasks::computeNecessaryDiskSpace()
 {
 	DSSRect rcOutput;
 
@@ -2019,7 +2019,7 @@ std::int64_t CAllStackingTasks::computeNecessaryDiskSpace()
 
 /* ------------------------------------------------------------------- */
 
-std::int64_t CAllStackingTasks::AvailableDiskSpace(fs::path& strDrive)
+std::uintmax_t CAllStackingTasks::AvailableDiskSpace(fs::path& strDrive)
 {
 	fs::path path;
 	GetTemporaryFilesFolder(path);
