@@ -356,7 +356,9 @@ namespace DSS
 			tr("Select Warning File Folder", "IDS_SELECTWARNINGFOLDER"),
 			QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
 			QFileDialog::ShowDirsOnly
-			| QFileDialog::DontResolveSymlinks);
+			| QFileDialog::DontResolveSymlinks
+			| QFileDialog::DontUseNativeDialog);	// Use Qt dialog for consistency across platforms
+
 		if (!dir.isEmpty())
 		{
 			strWarnFileFolder = dir;
@@ -375,7 +377,9 @@ namespace DSS
 			tr("Select Stacked Image Output Folder", "IDS_SELECTSTACKEDFOLDER"),
 			QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
 			QFileDialog::ShowDirsOnly
-			| QFileDialog::DontResolveSymlinks);
+			| QFileDialog::DontResolveSymlinks
+			| QFileDialog::DontUseNativeDialog);	// Use Qt dialog for consistency across platforms
+
 		if (!dir.isEmpty())
 		{
 			strStackedOutputFolder = dir;

@@ -401,6 +401,11 @@ namespace DSS
 			QString				strTitle;
 			fs::path file;
 
+			//
+			// Always use the Qt Widget file dialog for consistency
+			// 
+			fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+
 			DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 			timer.stop();

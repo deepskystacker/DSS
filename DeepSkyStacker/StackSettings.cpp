@@ -200,7 +200,8 @@ namespace DSS
 			QFileDialog::getExistingDirectory(this, tr("Select Temporary Files Folder", "IDS_RECAP_SELECTTEMPFOLDER"),
 				ui->tempFilesFolder->text(),
 				QFileDialog::ShowDirsOnly
-				| QFileDialog::DontResolveSymlinks);
+				| QFileDialog::DontResolveSymlinks
+				| QFileDialog::DontUseNativeDialog);	// Use Qt dialog for consistency across platforms
 
 		if (dir.length() > 0)
 		{

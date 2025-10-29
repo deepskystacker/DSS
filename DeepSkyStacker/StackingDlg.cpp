@@ -1554,6 +1554,11 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
+		//
+		// Always use the Qt Widget file dialog for consistency
+		// 
+		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+
 		bool				checked{ true };  // Automatically check all frames
 		switch (type)
 		{
