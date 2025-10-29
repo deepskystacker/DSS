@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1 Beta 2
+Welcome to DeepSkyStacker 6.1.1 Beta 3
 ===============================
 
 Reporting problems:
@@ -49,6 +49,10 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 
 10. Change to FITS compression support code to work round problems with () and [] in file-ids.
 
+11. Update exiv2 to 28.7#1
+
+12. Always use the Qt Widgets based File Dialog for consistency and also so that (e.g.) both .cr2 and .CR2
+    files are found with a file filter that specifies *.cr2
 
 Changes for DeepSkyStacker 6.1.0
 ================================
