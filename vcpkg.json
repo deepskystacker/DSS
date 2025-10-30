@@ -14,7 +14,8 @@
       "name": "exiv2",
       "features": [
         "bmff",
-        "png"
+        "png",
+		"xmp"
       ]
     },
     "expat",
