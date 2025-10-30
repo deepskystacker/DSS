@@ -27,7 +27,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 
 2.  FITS files will now be written with the extension .fits rather than .fit or .fts.
 
-3.  Resolve problem of 0xC000409 abend at startup when the user's "Documents" directory path contained non-Latin1
+3.  Resolve problem of 0xC0000409 abend at startup when the user's "Documents" directory path contained non-Latin1
     characters.
 
 4.  Update build to use Qt 6.10.0, boost 1.88 and libtiff 4.7.1
