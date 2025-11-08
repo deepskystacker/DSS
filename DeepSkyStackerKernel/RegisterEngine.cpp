@@ -693,6 +693,7 @@ std::shared_ptr<const CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemo
 // This threshold will be used for all other images as starting threshold (the starting threshold for the first image is set to 65%).
 // The parameter 'numberOfWantedStars' is set to 50 for the first image, and 30 for the others. This makes it highly probable, that all images 
 // will be registered with the same (or a similar) threshold. 
+// These target number of wanted stars might change in the future.
 // Only if a really bad (dark or blurred) image is in the sequence, this "optimum" threshold will be lowered further down to find at least 
 // the 30 wanted stars. 
 // 
@@ -716,7 +717,8 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 	// Use minLuminancy IF auto-threshold NOT selected, ELSE: 65% for first image OR previousThreshold for the others.
 	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
 	// If auto-threshold: Try to find 50 stars in first image, then relax criterion to 30. This should make found thresholds as equal as possible.
-	const size_t numberWantedStars = bitmapIndex <= 0 ? 50 : 30;
+	// Changed on Oct-28-2025.
+	const size_t numberWantedStars = bitmapIndex <= 0 ? 80 : 65;
 
 	const std::shared_ptr<const CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
 	if (static_cast<bool>(pGrayBitmap))

@@ -6,231 +6,238 @@
 #include "matrix.h"
 #include "Workspace.h"
 
-constexpr int		MINPAIRSTOBISQUARED = 25;
-constexpr int		MINPAIRSTOBICUBIC	= 40;
+constexpr int MINPAIRSTOBISQUARED = 25;
+constexpr int MINPAIRSTOBICUBIC	= 40;
+constexpr double TriangleMaxRatio = 0.9;
 
-/* ------------------------------------------------------------------- */
 
-static TRANSFORMATIONTYPE	GetTransformationType(int lNrVotingPairs = 2000)
-{
-	std::uint32_t dwAlignmentTransformation = 2;
-	TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
-	Workspace				workspace;
-
-	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
-
-	if (dwAlignmentTransformation > TT_LAST)
-		dwAlignmentTransformation = 0;
-
-	if (!dwAlignmentTransformation)
+namespace {
+	TRANSFORMATIONTYPE GetTransformationType(const size_t lNrVotingPairs)
 	{
-		// Automatic - no forcing
-		if (lNrVotingPairs >= MINPAIRSTOBICUBIC)
-			TTResult = TT_BICUBIC;
-		else if (lNrVotingPairs >= MINPAIRSTOBISQUARED)
-			TTResult = TT_BISQUARED;
-		else
-			TTResult = TT_BILINEAR;
-	}
-	else
-	{
-		if (dwAlignmentTransformation == 5)
-			TTResult = TT_NONE;
-		else if (dwAlignmentTransformation == 4 && lNrVotingPairs >= MINPAIRSTOBICUBIC)
-			TTResult = TT_BICUBIC;
-		else if (dwAlignmentTransformation >= 3 && lNrVotingPairs >= MINPAIRSTOBISQUARED)
-			TTResult = TT_BISQUARED;
-		else if (dwAlignmentTransformation >= 2)
-			TTResult = TT_BILINEAR;
-		else
-			TTResult = TT_LINEAR;
+		std::uint32_t dwAlignmentTransformation = 2;
+		TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
 
-	};
+		dwAlignmentTransformation = Workspace{}.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 
-	return TTResult;
-};
+		if (dwAlignmentTransformation > TT_LAST)
+			dwAlignmentTransformation = 0;
 
-/* ------------------------------------------------------------------- */
-
-static bool AreCornersLocked()
-{
-	Workspace				workspace;
-
-	return workspace.value("Stacking/LockCorners", true).toBool();
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CMatchingStars::ComputeStarDistances(const POINTFVECTOR & vStars, STARDISTVECTOR & vStarDist)
-{
-	int				i, j;
-
-	double				fMaxDistance = 0;
-
-	vStarDist.reserve(vStars.size() * (vStars.size()-1)/2);
-
-	for (i = 0;i<vStars.size();i++)
-	{
-		for (j = i+1;j<vStars.size();j++)
+		if (dwAlignmentTransformation == 0)
 		{
-			double			fDistance;
+			// Automatic - no forcing
+			if (lNrVotingPairs >= MINPAIRSTOBICUBIC)
+				TTResult = TT_BICUBIC;
+			else if (lNrVotingPairs >= MINPAIRSTOBISQUARED)
+				TTResult = TT_BISQUARED;
+			else
+				TTResult = TT_BILINEAR;
+		}
+		else
+		{
+			if (dwAlignmentTransformation == 5)
+				TTResult = TT_NONE;
+			else if (dwAlignmentTransformation == 4 && lNrVotingPairs >= MINPAIRSTOBICUBIC)
+				TTResult = TT_BICUBIC;
+			else if (dwAlignmentTransformation >= 3 && lNrVotingPairs >= MINPAIRSTOBISQUARED)
+				TTResult = TT_BISQUARED;
+			else if (dwAlignmentTransformation >= 2)
+				TTResult = TT_BILINEAR;
+			else
+				TTResult = TT_LINEAR;
 
-			fDistance = Distance(vStars[i].x(), vStars[i].y(), vStars[j].x(), vStars[j].y());
-			fMaxDistance = max(fDistance, fMaxDistance);
+		}
+
+		return TTResult;
+	}
+
+	TRANSFORMATIONTYPE GetTransformationType()
+	{
+		return GetTransformationType(99999); // 99999 -> just take a VERY large number to force finding the "highest" transformation or NONE.
+	}
+
+	bool AreCornersLocked()
+	{
+		return Workspace{}.value("Stacking/LockCorners", true).toBool();
+	}
+}
+
+
+void CMatchingStars::ComputeStarDistances(const QPointFVector& vStars, STARDISTVECTOR& vStarDist)
+{
+	double fMaxDistance = 0;
+
+	vStarDist.reserve((vStars.size() * (vStars.size() - 1)) / 2);
+
+	for (const size_t i : std::views::iota(size_t{ 0 }, vStars.size()))
+	{
+		for (const size_t j : std::views::iota(i + 1, vStars.size()))
+		{
+			const double fDistance = Distance(vStars[i].x(), vStars[i].y(), vStars[j].x(), vStars[j].y());
+			fMaxDistance = std::max(fDistance, fMaxDistance);
 
 			vStarDist.emplace_back(i, j, fDistance);
-		};
-	};
+		}
+	}
 
-	std::sort(vStarDist.begin(), vStarDist.end());
-};
+	static_assert(CStarDist{ 1, 2 } < CStarDist{ 2, 2 } && CStarDist{ 1, 1 } < CStarDist{ 1, 2 }
+		&& !(CStarDist{ 2, 6 } < CStarDist{ 1, 6 }) && !(CStarDist{ 2, 6 } < CStarDist{ 2, 5 }) && !(CStarDist{ 6, 6 } < CStarDist{ 6, 6 })
+	);
 
-/* ------------------------------------------------------------------- */
+	std::ranges::sort(vStarDist, std::less{});
+}
 
-void	CMatchingStars::ComputeTriangles(const POINTFVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles)
+
+void CMatchingStars::ComputeTriangles(const QPointFVector& vStars, STARTRIANGLEVECTOR& vTriangles)
 {
 	ZFUNCTRACE_RUNTIME();
-	STARDISTVECTOR			vStarDist;
-	int					i, j, k;
-	STARDISTITERATOR		it;
-	std::vector<float>		vDistances;
+	STARDISTVECTOR vStarDist;
+	std::array<float, 3> vDistances;
 
 	ComputeStarDistances(vStars, vStarDist);
-	vDistances.resize(3);
 
-	for (i = 0;i<vStars.size();i++)
+	for (const size_t i : std::views::iota(size_t{ 0 }, vStars.size()))
 	{
-		for (j = i+1;j<vStars.size();j++)
+		for (const size_t j : std::views::iota(i + 1, vStars.size()))
 		{
-			it = std::lower_bound(vStarDist.begin(), vStarDist.end(), CStarDist(i, j));
-			vDistances[0] = (*it).m_fDistance;
+			auto it = std::lower_bound(vStarDist.cbegin(), vStarDist.cend(), CStarDist(i, j));
+			vDistances[0] = it->m_fDistance;
 
-			for (k = j+1;k<vStars.size();k++)
+			for (const size_t k : std::views::iota(j + 1, vStars.size()))
 			{
-				it = std::lower_bound(vStarDist.begin(), vStarDist.end(), CStarDist(j, k));
-				vDistances[1] = (*it).m_fDistance;
-				it = std::lower_bound(vStarDist.begin(), vStarDist.end(), CStarDist(i, k));
-				vDistances[2] = (*it).m_fDistance;
+				it = std::lower_bound(vStarDist.cbegin(), vStarDist.cend(), CStarDist(j, k));
+				vDistances[1] = it->m_fDistance;
+				it = std::lower_bound(vStarDist.cbegin(), vStarDist.cend(), CStarDist(i, k));
+				vDistances[2] = it->m_fDistance;
 
-				std::sort(vDistances.begin(), vDistances.end());
+				std::ranges::sort(vDistances);
 
 				if (vDistances[2] > 0)
 				{
-					float		fX, fY;
-
-					fX = vDistances[1]/vDistances[2];
-					fY = vDistances[0]/vDistances[2];
+					const float fX = vDistances[1] / vDistances[2];
+					const float fY = vDistances[0] / vDistances[2];
 
 					// Filter
-					if (fX < 0.9)
+					if (fX < TriangleMaxRatio)
 					{
 						// Add to the triangle list
-						vTriangles.push_back(CStarTriangle(i, j, k, fX, fY));
-					};
-				};
-			};
-		};
-	};
+						vTriangles.emplace_back(i, j, k, fX, fY);
+					}
+				}
+			}
+		}
+	}
 
-	std::sort(vTriangles.begin(), vTriangles.end());
-};
+	std::ranges::sort(vTriangles, std::less{});
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CMatchingStars::InitVotingGrid(VOTINGPAIRVECTOR & vVotingPairs)
+void CMatchingStars::InitVotingGrid(VOTINGPAIRVECTOR& vVotingPairs)
 {
 	vVotingPairs.clear();
 	vVotingPairs.reserve(m_vRefStars.size() * m_vTgtStars.size());
 
-	for (int i = 0;i<m_vRefStars.size();i++)
+	for (const int i : std::views::iota(0, static_cast<int>(m_vRefStars.size())))
 	{
-		for (int j = 0;j<m_vTgtStars.size();j++)
+		for (const int j : std::views::iota(0, static_cast<int>(m_vTgtStars.size())))
 		{
-			vVotingPairs.push_back(CVotingPair(i, j));
-		};
-	};
-};
+			vVotingPairs.emplace_back(i, j);
+		}
+	}
+}
 
-/* ------------------------------------------------------------------- */
 
-inline void	AddVote(std::uint8_t RefStar, std::uint8_t TgtStar, VOTINGPAIRVECTOR & vVotingPairs, int lNrTgtStars)
+void AddVote(const std::uint8_t RefStar, const std::uint8_t TgtStar, VOTINGPAIRVECTOR& vVotingPairs, const size_t lNrTgtStars)
 {
-	int				lOffset = RefStar * lNrTgtStars + TgtStar;
+	const size_t offset = RefStar * lNrTgtStars + TgtStar;
+	vVotingPairs[offset].m_lNrVotes++;
+}
 
-	vVotingPairs[lOffset].m_lNrVotes++;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTINGPAIRVECTOR & vOutVotingPairs, int lNrTgtStars)
+void AddAllVotes(const STARTRIANGLEVECTOR::const_iterator itRef, const STARTRIANGLEVECTOR::const_iterator itTgt, VOTINGPAIRVECTOR& vVotingPairs, const size_t nrTargetStars)
 {
-	int			i, j;
+	AddVote(itRef->m_Star1, itTgt->m_Star1, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star1, itTgt->m_Star2, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star1, itTgt->m_Star3, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star2, itTgt->m_Star1, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star2, itTgt->m_Star2, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star2, itTgt->m_Star3, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star3, itTgt->m_Star1, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star3, itTgt->m_Star2, vVotingPairs, nrTargetStars);
+	AddVote(itRef->m_Star3, itTgt->m_Star3, vVotingPairs, nrTargetStars);
+}
 
-	for (i = 0;i<vInVotingPairs.size();i++)
-	{
-		int		lMaxVotes1 = 0,
-					lMaxVotes2 = 0;
 
-		// compute max votes for the same reference star
-		for (j = (vInVotingPairs[i].m_RefStar)*lNrTgtStars;j<(vInVotingPairs[i].m_RefStar+1)*lNrTgtStars;j++)
-		{
-			ZASSERT(vInVotingPairs[j].m_RefStar == vInVotingPairs[i].m_RefStar);
-			if (vInVotingPairs[j].m_TgtStar != vInVotingPairs[i].m_TgtStar)
-				lMaxVotes1 = max(lMaxVotes1, vInVotingPairs[j].m_lNrVotes);
-		};
+//void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTINGPAIRVECTOR & vOutVotingPairs, int lNrTgtStars)
+//{
+//	int			i, j;
+//
+//	for (i = 0;i<vInVotingPairs.size();i++)
+//	{
+//		int		lMaxVotes1 = 0,
+//					lMaxVotes2 = 0;
+//
+//		// compute max votes for the same reference star
+//		for (j = (vInVotingPairs[i].m_RefStar)*lNrTgtStars;j<(vInVotingPairs[i].m_RefStar+1)*lNrTgtStars;j++)
+//		{
+//			ZASSERT(vInVotingPairs[j].m_RefStar == vInVotingPairs[i].m_RefStar);
+//			if (vInVotingPairs[j].m_TgtStar != vInVotingPairs[i].m_TgtStar)
+//				lMaxVotes1 = max(lMaxVotes1, vInVotingPairs[j].m_lNrVotes);
+//		}
+//
+//		// compute max votes for the same target star
+//		for (j = vInVotingPairs[i].m_TgtStar;j<vInVotingPairs.size();j+=lNrTgtStars)
+//		{
+//			ZASSERT(vInVotingPairs[j].m_TgtStar == vInVotingPairs[i].m_TgtStar);
+//			if (vInVotingPairs[j].m_RefStar != vInVotingPairs[i].m_RefStar)
+//				lMaxVotes2 = max(lMaxVotes2, vInVotingPairs[j].m_lNrVotes);
+//		}
+//
+//		vOutVotingPairs[i].m_lNrVotes = vInVotingPairs[i].m_lNrVotes - max(lMaxVotes1, lMaxVotes2);
+//		if (vOutVotingPairs[i].m_lNrVotes<0)
+//			vOutVotingPairs[i].m_lNrVotes = 0;
+//	}
+//}
 
-		// compute max votes for the same target star
-		for (j = vInVotingPairs[i].m_TgtStar;j<vInVotingPairs.size();j+=lNrTgtStars)
-		{
-			ZASSERT(vInVotingPairs[j].m_TgtStar == vInVotingPairs[i].m_TgtStar);
-			if (vInVotingPairs[j].m_RefStar != vInVotingPairs[i].m_RefStar)
-				lMaxVotes2 = max(lMaxVotes2, vInVotingPairs[j].m_lNrVotes);
-		};
 
-		vOutVotingPairs[i].m_lNrVotes = vInVotingPairs[i].m_lNrVotes - max(lMaxVotes1, lMaxVotes2);
-		if (vOutVotingPairs[i].m_lNrVotes<0)
-			vOutVotingPairs[i].m_lNrVotes = 0;
-	};
-};
+using DMATRIX = math::matrix<double>;
 
-/* ------------------------------------------------------------------- */
-
-typedef math::matrix<double>		DMATRIX;
-
-bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeTransformation(auto&& vPairs, CBilinearParameters& BilinearParameters, const TRANSFORMATIONTYPE TType)
+	requires requires(decltype(vPairs)& r) { std::span{ r }; }
 {
-	bool				bResult = false;
-	int				i;
-	double				fXWidth = m_lWidth,
-						fYWidth = m_lHeight;
+	bool bResult = false;
+	const double fXWidth = m_lWidth;
+	const double fYWidth = m_lHeight;
+
+	const std::span<const VotingPair> vVotingPairs{ std::forward<decltype(vPairs)>(vPairs) };
 
 	BilinearParameters.fXWidth = fXWidth;
 	BilinearParameters.fYWidth = fYWidth;
 
+	constexpr size_t Zero = size_t{ 0 };
+
 	if (TType == TT_BICUBIC)
 	{
-		DMATRIX				M((int)vVotingPairs.size(), 16);
-		DMATRIX				X((int)vVotingPairs.size(), 1);
-		DMATRIX				Y((int)vVotingPairs.size(), 1);
+		DMATRIX M(vVotingPairs.size(), 16);
+		DMATRIX X(vVotingPairs.size(), 1);
+		DMATRIX Y(vVotingPairs.size(), 1);
 
-		for (i = 0;i<vVotingPairs.size();i++)
+		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
-			QPointF &		Star = RefStar(vVotingPairs[i]);
-			X(i, 0) = Star.x()/fXWidth;
-			Y(i, 0) = Star.y()/fYWidth;
-		};
+			QPointF& Star = RefStar(vVotingPairs[i]);
+			X(i, 0) = Star.x() / fXWidth;
+			Y(i, 0) = Star.y() / fYWidth;
+		}
 
-		for (i = 0;i<vVotingPairs.size();i++)
+		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
-			QPointF &		Star = TgtStar(vVotingPairs[i]);
+			QPointF& Star = TgtStar(vVotingPairs[i]);
 #pragma warning (suppress:4456)
-			double			X = Star.x()/fXWidth;
-			double			X2 = X * X;
-			double			X3 = X * X * X;
+			const double X = Star.x() / fXWidth;
+			const double X2 = X * X;
+			const double X3 = X * X * X;
 #pragma warning (suppress:4456)
-			double			Y = Star.y()/fYWidth;
-			double			Y2 = Y * Y;
-			double			Y3 = Y * Y * Y;
+			const double Y = Star.y() / fYWidth;
+			const double Y2 = Y * Y;
+			const double Y3 = Y * Y * Y;
 
 			M(i, 0) = 1;
 			M(i, 1) = X;
@@ -248,17 +255,17 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 			M(i, 13) = X3*Y2;
 			M(i, 14) = X2*Y3;
 			M(i, 15) = X3*Y3;
-		};
+		}
 
-		DMATRIX				MT = ~M;
-		DMATRIX				TM = MT * M;
+		const DMATRIX MT = ~M;
+		DMATRIX TM = MT * M;
 
 		try
 		{
 			if (!TM.IsSingular())
 			{
-				DMATRIX				A = !TM * MT * X;
-				DMATRIX				B = !TM * MT * Y;
+				const DMATRIX A = !TM * MT * X;
+				const DMATRIX B = !TM * MT * Y;
 
 				BilinearParameters.Type = TType;
 				BilinearParameters.a0 = A(0, 0);
@@ -296,37 +303,36 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b15 = B(15, 0);
 
 				bResult = true;
-			};
+			}
 		}
 		catch(math::matrix_error const&)
 		{
 			bResult = false;
-		};
+		}
 	}
 	else if (TType == TT_BISQUARED)
 	{
-		DMATRIX				M(vVotingPairs.size(), 9);
-		DMATRIX				X(vVotingPairs.size(), 1);
-		DMATRIX				Y(vVotingPairs.size(), 1);
+		DMATRIX M(vVotingPairs.size(), 9);
+		DMATRIX X(vVotingPairs.size(), 1);
+		DMATRIX Y(vVotingPairs.size(), 1);
 
-		for (i = 0;i<vVotingPairs.size();i++)
+		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
-			QPointF &		Star = RefStar(vVotingPairs[i]);
+			QPointF& Star = RefStar(vVotingPairs[i]);
+			X(i, 0) = Star.x() / fXWidth;
+			Y(i, 0) = Star.y() / fYWidth;
+		}
 
-			X(i, 0) = Star.x()/fXWidth;
-			Y(i, 0) = Star.y()/fYWidth;
-		};
-
-		for (i = 0;i<vVotingPairs.size();i++)
+		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
-			QPointF &		Star = TgtStar(vVotingPairs[i]);
+			QPointF& Star = TgtStar(vVotingPairs[i]);
 
 #pragma warning (suppress:4456)
-			double		X = Star.x()/fXWidth;
-			double		X2 = X * X;
+			const double X = Star.x() / fXWidth;
+			const double X2 = X * X;
 #pragma warning (suppress:4456)
-			double		Y = Star.y()/fYWidth;
-			double		Y2 = Y * Y;
+			const double Y = Star.y() / fYWidth;
+			const double Y2 = Y * Y;
 
 			M(i, 0) = 1;
 			M(i, 1) = X;
@@ -337,17 +343,17 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 			M(i, 6) = X2 * Y;
 			M(i, 7) = X * Y2;
 			M(i, 8) = X2 * Y2;
-		};
+		}
 
-		DMATRIX				MT = ~M;
-		DMATRIX				TM = MT * M;
+		const DMATRIX MT = ~M;
+		DMATRIX TM = MT * M;
 
 		try
 		{
 			if (!TM.IsSingular())
 			{
-				DMATRIX				A = !TM * MT * X;
-				DMATRIX				B = !TM * MT * Y;
+				const DMATRIX A = !TM * MT * X;
+				const DMATRIX B = !TM * MT * Y;
 
 				BilinearParameters.Type = TType;
 				BilinearParameters.a0 = A(0, 0);
@@ -371,50 +377,49 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b8 = B(8, 0);
 
 				bResult = true;
-			};
+			}
 		}
 		catch(math::matrix_error const&)
 		{
 			bResult = false;
-		};
+		}
 	}
 	else
 	{
-		DMATRIX				M(vVotingPairs.size(), 4);
-		DMATRIX				X(vVotingPairs.size(), 1);
-		DMATRIX				Y(vVotingPairs.size(), 1);
+		DMATRIX M(vVotingPairs.size(), 4);
+		DMATRIX X(vVotingPairs.size(), 1);
+		DMATRIX Y(vVotingPairs.size(), 1);
 
-		for (i = 0;i<vVotingPairs.size();i++)
+		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
-			QPointF &		Star = RefStar(vVotingPairs[i]);
+			QPointF& Star = RefStar(vVotingPairs[i]);
+			X(i, 0) = Star.x() / fXWidth;
+			Y(i, 0) = Star.y() / fYWidth;
+		}
 
-			X(i, 0) = Star.x()/fXWidth;
-			Y(i, 0) = Star.y()/fYWidth;
-		};
-
-		for (i = 0;i<vVotingPairs.size();i++)
+		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
-			QPointF &		Star = TgtStar(vVotingPairs[i]);
+			QPointF& Star = TgtStar(vVotingPairs[i]);
 #pragma warning (suppress:4456)
-			double		X = Star.x()/fXWidth;
-#pragma warning (suppress:4456)
-			double		Y = Star.y()/fYWidth;
+			const double X = Star.x() / fXWidth;
+#pragma warning (suppress:4456) 
+			const double Y = Star.y() / fYWidth;
 
 			M(i, 0) = 1;
 			M(i, 1) = X;
 			M(i, 2) = Y;
-			M(i, 3) = X*Y;
-		};
+			M(i, 3) = X * Y;
+		}
 
-		DMATRIX				MT = ~M;
-		DMATRIX				TM = MT * M;
+		const DMATRIX MT = ~M;
+		DMATRIX TM = MT * M;
 
 		try
 		{
 			if (!TM.IsSingular())
 			{
-				DMATRIX				A = !TM * MT * X;
-				DMATRIX				B = !TM * MT * Y;
+				const DMATRIX A = !TM * MT * X;
+				const DMATRIX B = !TM * MT * Y;
 
 				BilinearParameters.a0 = A(0, 0);
 				BilinearParameters.a1 = A(1, 0);
@@ -426,82 +431,83 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b3 = B(3, 0);
 
 				bResult = true;
-			};
+			}
 		}
 		catch(math::matrix_error const&)
 		{
 			bResult = false;
-		};
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-double CMatchingStars::ValidateTransformation(const VOTINGPAIRVECTOR & vTestedPairs, const CBilinearParameters & transform)
-{
-	double fResult = 0.0;
-
-	// Compute the distance between the stars
-	for (const auto& testedPair : vTestedPairs)
-	{
-		const QPointF ptProjected = transform.transform(TgtStar(testedPair));
-		const double fDistance = Distance(ptProjected, RefStar(testedPair));
-
-		if (!testedPair.IsCorner())
-		{
-			if (fDistance > fResult)
-				fResult = fDistance;
 		}
 	}
 
-	return fResult;
-};
+	return bResult;
+}
 
-/* ------------------------------------------------------------------- */
-
-bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE MaxTType)
+template <typename... DistanceVector>
+std::pair<double, size_t> CMatchingStars::ComputeDistanceBetweenStars(const VOTINGPAIRVECTOR& vTestedPairs, const CBilinearParameters& projection, DistanceVector&... distances)
 {
-	bool								bResult = false;
-	bool								bEnd = false;
-	VOTINGPAIRVECTOR					vPairs;
-	TRANSFORMATIONTYPE					TType = TT_BILINEAR;
+	double maxDistance = 0.0;
+	size_t maxDistanceIndex = 0;
+	auto vdistance = std::tie(distances...);
 
-	size_t								nrPairs;
-	size_t								lNrExtraPairs = 0;
-	std::vector<int>					vAddedPairs;
-	VOTINGPAIRVECTOR					vTestedPairs;
-	VOTINGPAIRVECTOR					vOkPairs;
-	std::vector<int>					vOkAddedPairs;
-	CBilinearParameters					OkTransformation;
-	TRANSFORMATIONTYPE					OkTType{ TT_LINEAR };
+	// Compute the distance between the stars
+	for (size_t i = 0; const auto& testedPair : vTestedPairs)
+	{
+		if (!testedPair.IsCorner())
+		{
+			const QPointF ptProjected = projection.transform(TgtStar(testedPair));
+			const double distance = Distance(ptProjected, RefStar(testedPair));
 
-	if (!vVotingPairs.empty() && vVotingPairs[0].IsCorner())
-		lNrExtraPairs = 4;
+			if constexpr (sizeof...(DistanceVector) == 1)
+			{
+				std::get<0>(vdistance).push_back(distance);
+			}
 
-	vPairs = vVotingPairs;
+			if (distance > maxDistance)
+			{
+				maxDistance = distance;
+				maxDistanceIndex = i;
+			}
+		}
+		++i;
+	}
+
+	return { maxDistance, maxDistanceIndex };
+}
+
+
+bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, const TRANSFORMATIONTYPE MaxTType)
+{
+	bool bResult = false;
+	bool bEnd = false;
+	TRANSFORMATIONTYPE TType = TT_BILINEAR;
+	TRANSFORMATIONTYPE OkTType = TT_LINEAR;
+	
+	CBilinearParameters OkTransformation;
+
+	std::vector<int> vAddedPairs;
+	std::vector<int> vOkAddedPairs;
+	VOTINGPAIRVECTOR vPairs = vVotingPairs;
+	VOTINGPAIRVECTOR vTestedPairs;
+	VOTINGPAIRVECTOR vOkPairs;
+
+	const size_t nrExtraPairs = !vVotingPairs.empty() && vVotingPairs[0].IsCorner() ? 4 : 0;
 
 	while (!bEnd && !bResult)
 	{
-		if (TType == TT_BICUBIC)
-			nrPairs = 32 + lNrExtraPairs;
-		else if (TType == TT_BISQUARED)
-			nrPairs = 18 + lNrExtraPairs;
-		else
-			nrPairs = 8 + lNrExtraPairs;
+		const size_t nrPairs = nrExtraPairs + (TType == TT_BICUBIC ? 32 : (TType == TT_BISQUARED ? 18 : 8));
 
 		// Get the top pairs
 		vAddedPairs.clear();
 		vTestedPairs.clear();
 		// First add the locked pairs
-		for (size_t i = 0; i < vPairs.size(); i++)
+		for (int i = 0; const auto& pair : vPairs)
 		{
-			if (vPairs[i].IsActive() && vPairs[i].IsLocked())
+			if (pair.IsActive() && pair.IsLocked())
 			{
-				vTestedPairs.push_back(vPairs[i]);
-				vAddedPairs.push_back(static_cast<int>(i));
+				vTestedPairs.push_back(pair);
+				vAddedPairs.push_back(i);
 			}
+			++i;
 		}
 
 		// Then add the other pairs up to the limit
@@ -517,18 +523,17 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 		if (vTestedPairs.size() == nrPairs)
 		{
 			// Compute the transformation
-			CBilinearParameters				transform;
+			CBilinearParameters projection;
 
-			if (ComputeTransformation(vTestedPairs, transform, TType))
+			if (ComputeTransformation(std::span<const VotingPair>{ vTestedPairs }, projection, TType))
 			{
 				std::vector<double> vDistances;
-				double fMaxDistance = 0.0;
-				size_t maxDistanceIndex = 0;
-
+				const auto [fMaxDistance, maxDistanceIndex] = ComputeDistanceBetweenStars(vTestedPairs, projection, vDistances);
+/*
 				// Compute the distance between the stars
 				for (size_t i = 0; i < vTestedPairs.size(); i++)
 				{
-					const QPointF ptProjected = transform.transform(TgtStar(vTestedPairs[i]));
+					const QPointF ptProjected = projection.transform(TgtStar(vTestedPairs[i]));
 					const double fDistance = Distance(ptProjected, RefStar(vTestedPairs[i]));
 
 					if (!vTestedPairs[i].IsCorner())
@@ -541,21 +546,19 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						}
 					}
 				}
-
+*/
 				// If one star is far from the spot - deactivate the pair
 				if (fMaxDistance > 3)
 				{
-					int						lDeactivatedIndice;
-					double						fAverage;
-					double						fSigma;
-					bool						bOneDeactivated = false;
+					int lDeactivatedIndice = 0;
+					bool bOneDeactivated = false;
 
-					fAverage = Average(vDistances);
-					fSigma = Sigma(vDistances);
+					const double fAverage = Average(vDistances);
+					const double fSigma = Sigma(vDistances);
 
 					for (size_t i = 0; i < vDistances.size(); i++)
 					{
-						if (fabs(vDistances[i] - fAverage) > 2 * fSigma)
+						if (std::abs(vDistances[i] - fAverage) > 2 * fSigma)
 						{
 							lDeactivatedIndice = vAddedPairs[i];
 							if (vPairs[lDeactivatedIndice].IsCorner())
@@ -591,6 +594,7 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 							}
 						}
 					}
+
 					if (!bOneDeactivated)
 					{
 						lDeactivatedIndice = vAddedPairs[maxDistanceIndex];
@@ -604,16 +608,18 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						}
 					}
 				}
-				else
+				else // fMaxDistance <= 3 here.
 				{
-					OkTransformation = transform;
+					OkTransformation = projection;
 					vOkPairs = vTestedPairs;
 					vOkAddedPairs = vAddedPairs;
 					OkTType = TType;
 					bResult = (TType == MaxTType);
+
 					if (TType < MaxTType)
 					{
-						TType = (TRANSFORMATIONTYPE)(1 + (int)TType);
+						TType = getNextHigherTransformationType(TType);
+
 						// All the possible pairs are active again
 						for (auto& votingPair : vPairs)
 						{
@@ -625,12 +631,12 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						}
 
 						// Lock the pairs
-						for (size_t index : vAddedPairs)
+						for (const size_t index : vAddedPairs)
 							vPairs[index].SetLocked(true);
 					}
 				}
 			}
-			else
+			else // ComputeTransformation(vTestedPairs, projection, TType) returned false here.
 			{
 				// Remove the last pair of the selected pairs
 				vPairs[vAddedPairs[nrPairs - 1]].SetActive(false);
@@ -640,16 +646,14 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 			bEnd = true;
 	}
 
-	if (vOkPairs.size())
+	if (!vOkPairs.empty())
 		bResult = true;
 
 	if (bResult)
 	{
 		// Try to add other pairs to refine the transformation
 		bEnd = false;
-		CBilinearParameters		transform;
-		VOTINGPAIRVECTOR		vTempPairs;
-		int					lNrFails = 0;
+		int lNrFails = 0;
 
 		BilinearParameters = OkTransformation;
 
@@ -657,16 +661,15 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 		vAddedPairs = vOkAddedPairs;
 		TType = OkTType;
 
-		for (size_t index : vAddedPairs)
+		for (const auto index : vAddedPairs)
 			vVotingPairs[index].SetUsed(true);
 
 		while (!bEnd)
 		{
-			double			fMaxDistance;
-			bool			bTransformOk = false;
-			int				lAddedPair = -1;
+			bool bTransformOk = false;
+			int lAddedPair = -1;
+			VOTINGPAIRVECTOR vTempPairs = vTestedPairs;
 
-			vTempPairs = vTestedPairs;
 			for (size_t i = 0; i < vVotingPairs.size() && lAddedPair < 0; i++)
 			{
 				if (vVotingPairs[i].IsActive() && !vVotingPairs[i].IsUsed())
@@ -679,19 +682,20 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 
 			if (lAddedPair >= 0)
 			{
-				if (ComputeTransformation(vTempPairs, transform, TType))
+				CBilinearParameters projection;
+				if (ComputeTransformation(std::span{ vTempPairs }, projection, TType))
 				{
-					fMaxDistance = ValidateTransformation(vTempPairs, transform);
-					if (fMaxDistance <= 2)
+					const double maxDistance = ComputeDistanceBetweenStars(vTempPairs, projection).first;
+					if (maxDistance <= 2)
 					{
 						vTestedPairs = vTempPairs;
-						BilinearParameters = transform;
+						BilinearParameters = projection;
 						vAddedPairs.push_back(lAddedPair);
 						bTransformOk = true;
 					}
 					else
 						vVotingPairs[lAddedPair].SetActive(false);
-				};
+				}
 
 				if (!bTransformOk)
 				{
@@ -702,34 +706,29 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 			}
 			else
 				bEnd = true;
-		};
-	};
+		}
+	}
 
 	if (bResult)
 		vVotingPairs = vTestedPairs;
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-bool CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, const TRANSFORMATIONTYPE TType)
 {
-	bool								bResult = false;
-	VOTINGPAIRVECTOR					vPairs;
-
-	vPairs = vVotingPairs;
+	bool bResult = false;
+	VOTINGPAIRVECTOR vPairs = vVotingPairs;
 
 	if (AreCornersLocked())
 	{
-		CBilinearParameters					BaseTransformation;
+		CBilinearParameters BaseTransformation;
 
 		// First try to compute a robust bilinear transformation
 		bResult = ComputeCoordinatesTransformation(vPairs, BaseTransformation, TT_BILINEAR);
 		if (bResult)
 		{
-			int					i;
-
 			// Use the transformation as pure linear
 			// BaseTransformation.a3 = BaseTransformation.b3 = 0.0;
 			// Add the four corners as pseudo transformed stars to the list with high voting values
@@ -738,51 +737,50 @@ bool CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 			m_vTgtCorners.clear();
 
 			m_vTgtCorners.push_back(QPointF(0, 0));
-			m_vTgtCorners.push_back(QPointF(m_lWidth-1, 0));
-			m_vTgtCorners.push_back(QPointF(0, m_lHeight-1));
-			m_vTgtCorners.push_back(QPointF(m_lWidth-1, m_lHeight-1));
+			m_vTgtCorners.push_back(QPointF(m_lWidth - 1, 0));
+			m_vTgtCorners.push_back(QPointF(0, m_lHeight - 1));
+			m_vTgtCorners.push_back(QPointF(m_lWidth - 1, m_lHeight - 1));
 
-			for (i = 0;i<m_vTgtCorners.size();i++)
+			for (const QPointF& targetCorner : m_vTgtCorners)
 			{
-				QPointF			ptProjected;
-
-				ptProjected = BaseTransformation.transform(m_vTgtCorners[i]);
-				m_vRefCorners.push_back(ptProjected);
-			};
+				m_vRefCorners.push_back(BaseTransformation.transform(targetCorner));
+			}
 
 			// Then add the pairs to the list
 			vPairs = vVotingPairs;
-			CVotingPair				vp;
+			VotingPair vp;
 
 			vp.m_Flags = VPFLAG_ACTIVE | VPFLAG_CORNER_TOPLEFT;
 			vp.m_lNrVotes = 10000000;
 			vp.m_RefStar = vp.m_TgtStar = 0;
 			vPairs.push_back(vp);
+
 			vp.m_Flags = VPFLAG_ACTIVE | VPFLAG_CORNER_TOPRIGHT;
 			vp.m_RefStar = vp.m_TgtStar = 1;
 			vPairs.push_back(vp);
+
 			vp.m_Flags = VPFLAG_ACTIVE | VPFLAG_CORNER_BOTTOMLEFT;
 			vp.m_RefStar = vp.m_TgtStar = 2;
 			vPairs.push_back(vp);
+
 			vp.m_Flags = VPFLAG_ACTIVE | VPFLAG_CORNER_BOTTOMRIGHT;
 			vp.m_RefStar = vp.m_TgtStar = 3;
 			vPairs.push_back(vp);
 
 			// And compute the transformation with the four corners firmly set
-			std::sort(vPairs.begin(), vPairs.end());
+			std::ranges::sort(vPairs, std::greater{});
 			bResult = ComputeCoordinatesTransformation(vPairs, BilinearParameters, TType);
 
 			// Remove inactive and corners from the resulting pairs
-			VOTINGPAIRVECTOR					vOutPairs;
-
-			for (i = 0;i<vPairs.size(); i++)
+			VOTINGPAIRVECTOR vOutPairs;
+			for (const auto& pair : vPairs)
 			{
-				if (vPairs[i].IsActive() && !vPairs[i].IsCorner())
-					vOutPairs.push_back(vPairs[i]);
-			};
+				if (pair.IsActive() && !pair.IsCorner())
+					vOutPairs.push_back(pair);
+			}
 
 			vPairs = vOutPairs;
-		};
+		}
 	}
 	else
 		bResult = ComputeCoordinatesTransformation(vPairs, BilinearParameters, TType);
@@ -791,91 +789,84 @@ bool CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 		m_vVotedPairs = vPairs;
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 bool CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
 {
-	bool								bResult = false;
-	std::vector<CBilinearParameters>	vBilinears;
-	int								i, j, k, l;
+	bool bResult = false;
+	std::vector<CBilinearParameters> vBilinears;
 
-	for (i = 0;i<vVotingPairs.size();i++)
+	for (size_t i = 0; i < vVotingPairs.size(); i++)
 	{
-		for (j = i+1;j<vVotingPairs.size();j++)
+		for (size_t j = i + 1; j < vVotingPairs.size(); j++)
 		{
-			for (k = j+1;k<vVotingPairs.size();k++)
+			for (size_t k = j + 1; k < vVotingPairs.size(); k++)
 			{
-				for (l = k+1;l<vVotingPairs.size();l++)
+				for (size_t l = k + 1; l < vVotingPairs.size(); l++)
 				{
-					VOTINGPAIRVECTOR					vPairs;
-					CBilinearParameters					params;
-
-					vPairs.push_back(vVotingPairs[i]);
-					vPairs.push_back(vVotingPairs[j]);
-					vPairs.push_back(vVotingPairs[k]);
-					vPairs.push_back(vVotingPairs[l]);
-
-					if (ComputeTransformation(vPairs, params, TType))
-						vBilinears.push_back(params);
+					std::array<const VotingPair, 4> vPairs = { vVotingPairs[i], vVotingPairs[j], vVotingPairs[k], vVotingPairs[l] };
+					CBilinearParameters projection;
+					if (ComputeTransformation(std::span{ vPairs }, projection, TType))
+						vBilinears.push_back(std::move(projection));
 				}
-			};
-		};
-	};
+			}
+		}
+	}
 
 	// Compute the median transformation
-	if (vBilinears.size())
+	if (!vBilinears.empty())
 	{
-		std::vector<double>					vA0, vA1, vA2, vA3;
-		std::vector<double>					vB0, vB1, vB2, vB3;
-		std::vector<double>					vA4, vA5, vA6, vA7, vA8;
-		std::vector<double>					vB4, vB5, vB6, vB7, vB8;
-		std::vector<double>					vA9, vA10, vA11, vA12, vA13, vA14, vA15;
-		std::vector<double>					vB9, vB10, vB11, vB12, vB13, vB14, vB15;
+		std::vector<double> vA0, vA1, vA2, vA3;
+		std::vector<double> vB0, vB1, vB2, vB3;
+		std::vector<double> vA4, vA5, vA6, vA7, vA8;
+		std::vector<double> vB4, vB5, vB6, vB7, vB8;
+		std::vector<double> vA9, vA10, vA11, vA12, vA13, vA14, vA15;
+		std::vector<double> vB9, vB10, vB11, vB12, vB13, vB14, vB15;
 
-		for (i = 0;i<vBilinears.size();i++)
+		for (const auto& projection : vBilinears)
 		{
-			vA0.push_back(vBilinears[i].a0);
-			vA1.push_back(vBilinears[i].a1);
-			vA2.push_back(vBilinears[i].a2);
-			vA3.push_back(vBilinears[i].a3);
-			vB0.push_back(vBilinears[i].b0);
-			vB1.push_back(vBilinears[i].b1);
-			vB2.push_back(vBilinears[i].b2);
-			vB3.push_back(vBilinears[i].b3);
+			vA0.push_back(projection.a0);
+			vA1.push_back(projection.a1);
+			vA2.push_back(projection.a2);
+			vA3.push_back(projection.a3);
+			vB0.push_back(projection.b0);
+			vB1.push_back(projection.b1);
+			vB2.push_back(projection.b2);
+			vB3.push_back(projection.b3);
 
 			if (TType == TT_BISQUARED || TType == TT_BICUBIC)
 			{
-				vA4.push_back(vBilinears[i].a4);
-				vA5.push_back(vBilinears[i].a5);
-				vA6.push_back(vBilinears[i].a6);
-				vA7.push_back(vBilinears[i].a7);
-				vA8.push_back(vBilinears[i].a8);
-				vB4.push_back(vBilinears[i].b4);
-				vB5.push_back(vBilinears[i].b5);
-				vB6.push_back(vBilinears[i].b6);
-				vB7.push_back(vBilinears[i].b7);
-				vB8.push_back(vBilinears[i].b8);
-			};
+				vA4.push_back(projection.a4);
+				vA5.push_back(projection.a5);
+				vA6.push_back(projection.a6);
+				vA7.push_back(projection.a7);
+				vA8.push_back(projection.a8);
+				vB4.push_back(projection.b4);
+				vB5.push_back(projection.b5);
+				vB6.push_back(projection.b6);
+				vB7.push_back(projection.b7);
+				vB8.push_back(projection.b8);
+			}
+
 			if (TType == TT_BICUBIC)
 			{
-				vA9.push_back(vBilinears[i].a9);
-				vA10.push_back(vBilinears[i].a10);
-				vA11.push_back(vBilinears[i].a11);
-				vA12.push_back(vBilinears[i].a12);
-				vA13.push_back(vBilinears[i].a13);
-				vA14.push_back(vBilinears[i].a14);
-				vA15.push_back(vBilinears[i].a15);
-				vB9.push_back(vBilinears[i].b9);
-				vB10.push_back(vBilinears[i].b10);
-				vB11.push_back(vBilinears[i].b11);
-				vB12.push_back(vBilinears[i].b12);
-				vB13.push_back(vBilinears[i].b13);
-				vB14.push_back(vBilinears[i].b14);
-				vB15.push_back(vBilinears[i].b15);
-			};
-		};
+				vA9.push_back(projection.a9);
+				vA10.push_back(projection.a10);
+				vA11.push_back(projection.a11);
+				vA12.push_back(projection.a12);
+				vA13.push_back(projection.a13);
+				vA14.push_back(projection.a14);
+				vA15.push_back(projection.a15);
+				vB9.push_back(projection.b9);
+				vB10.push_back(projection.b10);
+				vB11.push_back(projection.b11);
+				vB12.push_back(projection.b12);
+				vB13.push_back(projection.b13);
+				vB14.push_back(projection.b14);
+				vB15.push_back(projection.b15);
+			}
+		}
 
 		BilinearParameters.a0 = Median(vA0);
 		BilinearParameters.a1 = Median(vA1);
@@ -898,7 +889,8 @@ bool CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotin
 			BilinearParameters.b6 = Median(vB6);
 			BilinearParameters.b7 = Median(vB7);
 			BilinearParameters.b8 = Median(vB8);
-		};
+		}
+
 		if (TType == TT_BICUBIC)
 		{
 			BilinearParameters.a9 = Median(vA9);
@@ -915,100 +907,84 @@ bool CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotin
 			BilinearParameters.b13 = Median(vB13);
 			BilinearParameters.b14 = Median(vB14);
 			BilinearParameters.b15 = Median(vB15);
-		};
+		}
 
 		bResult = true;
-	};
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-const	float					TRIANGLETOLERANCE = (float)0.002;
-
-bool	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters)
+bool CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters)
 {
-	bool				bResult = false;
+	constexpr float TRIANGLETOLERANCE = 0.002f;
+	bool bResult = false;
 
 	// First compute the triangles for reference and target
-	if (!m_vRefTriangles.size())
+	if (m_vRefTriangles.empty())
 		ComputeTriangles(m_vRefStars, m_vRefTriangles);
 
 	ComputeTriangles(m_vTgtStars, m_vTgtTriangles);
 
 	// Then match the triangle filling the voting grid in the process
 	// At this point the triangles vectors are sorted along the X axis
-	bool						bEnd = false;
-	STARTRIANGLEITERATOR		itRef,
-								itLastUsedRef,
-								itTgt;
-	VOTINGPAIRVECTOR			vVotingPairs,
-								vOutputVotingPairs;
+	bool bEnd = false;
+	VOTINGPAIRVECTOR vVotingPairs;
 
 	InitVotingGrid(vVotingPairs);
 
-	itLastUsedRef = m_vRefTriangles.begin();
+	auto itLastUsedRef = m_vRefTriangles.cbegin();
 
-	for (itTgt = m_vTgtTriangles.begin();(itTgt != m_vTgtTriangles.end()) && !bEnd;itTgt++)
+	for (auto itTgt = m_vTgtTriangles.cbegin(); itTgt != m_vTgtTriangles.cend() && !bEnd; ++itTgt)
 	{
-		while (itLastUsedRef != m_vRefTriangles.end() &&
-			   (*itTgt).m_fX > (*itLastUsedRef).m_fX+TRIANGLETOLERANCE)
-			   itLastUsedRef++;
+		while (itLastUsedRef != m_vRefTriangles.cend() && (itTgt->m_fX > itLastUsedRef->m_fX + TRIANGLETOLERANCE))
+		{
+			++itLastUsedRef;
+		}
 
-		if (itLastUsedRef == m_vRefTriangles.end())
+		if (itLastUsedRef == m_vRefTriangles.cend())
 			bEnd = true;
 		else
 		{
 			// At this point (*itLastUsedRef).m_fX is less than (*itTgt).m_fX
-			itRef = itLastUsedRef;
-			while ((itRef != m_vRefTriangles.end()) && ((*itRef).m_fX < (*itTgt).m_fX + TRIANGLETOLERANCE))
+			auto itRef = itLastUsedRef;
+			while (itRef != m_vRefTriangles.cend() && (itRef->m_fX < itTgt->m_fX + TRIANGLETOLERANCE))
 			{
 				// Check real distance between triangles
-				float			fDistance;
-
-				fDistance = Distance((*itRef).m_fX, (*itRef).m_fY, (*itTgt).m_fX, (*itTgt).m_fY);
+				const float fDistance = Distance(itRef->m_fX, itRef->m_fY, itTgt->m_fX, itTgt->m_fY);
 				if (fDistance <= TRIANGLETOLERANCE)
 				{
 					// Vote for the all the pairs
-					AddVote((*itRef).m_Star1, (*itTgt).m_Star1, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star1, (*itTgt).m_Star2, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star1, (*itTgt).m_Star3, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star2, (*itTgt).m_Star1, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star2, (*itTgt).m_Star2, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star2, (*itTgt).m_Star3, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star3, (*itTgt).m_Star1, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star3, (*itTgt).m_Star2, vVotingPairs, (int)m_vTgtStars.size());
-					AddVote((*itRef).m_Star3, (*itTgt).m_Star3, vVotingPairs, (int)m_vTgtStars.size());
-				};
-				itRef++;
-			};
-		};
-	};
+					AddAllVotes(itRef, itTgt, vVotingPairs, m_vTgtStars.size());
+				}
+				++itRef;
+			}
+		}
+	}
 
 /*	InitVotingGrid(vOutputVotingPairs);
 	AdjustVoting(vVotingPairs, vOutputVotingPairs, m_vTgtStars.size());
-	std::sort(vOutputVotingPairs.begin(), vOutputVotingPairs.end());
-	vVotingPairs = vOutputVotingPairs;*/
+	std::ranges::sort(vOutputVotingPairs.begin(), vOutputVotingPairs.end());
+	vVotingPairs = vOutputVotingPairs;
+*/
 
-	std::sort(vVotingPairs.begin(), vVotingPairs.end());
+	std::ranges::sort(vVotingPairs, std::greater{});
 
 	// At this point voting pairs are ordered descending
 	// Then eliminate false matches and get transformations parameters
 	if (vVotingPairs.size() >= m_vTgtStars.size())
 	{
-		int				lMinNrVotes;
-		int				lCut = 0;
-		TRANSFORMATIONTYPE	TType = TT_BILINEAR;
-
-		lMinNrVotes = vVotingPairs[m_vTgtStars.size()*2-1].m_lNrVotes;
+		int lMinNrVotes = vVotingPairs[m_vTgtStars.size() * 2 - 1].m_lNrVotes;
 		if (lMinNrVotes == 0)
 			lMinNrVotes = 1;
+
+		int lCut = 0;
 		while (vVotingPairs[lCut].m_lNrVotes >= lMinNrVotes)
 			lCut++;
 		vVotingPairs.resize(lCut);
 
-		TType = GetTransformationType((int)vVotingPairs.size());
+		const TRANSFORMATIONTYPE TType = GetTransformationType(vVotingPairs.size());
 
 		bResult = ComputeSigmaClippingTransformation(vVotingPairs, BilinearParameters, TType);
 
@@ -1017,170 +993,130 @@ bool	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 			// This is a pure linear function -- Alter coefficients
 			BilinearParameters.a3 = 0;
 			BilinearParameters.b3 = 0;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-const double			MAXSTARDISTANCEDELTA = 2.0;
-
-std::mutex	g_StarDistSection;
-STARDISTVECTOR *		g_pvDists = nullptr;
-
-inline bool CompareStarDistances (int lDist1, int lDist2)
+bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& BilinearParameters)
 {
-	return (*g_pvDists)[lDist1].m_fDistance > (*g_pvDists)[lDist2].m_fDistance;
-};
-
-bool	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters)
-{
-	bool					bResult = false;
-	int					i = 0,
-							j = 0;
+	constexpr double MAXSTARDISTANCEDELTA = 2.0;
 
 	// Compute patterns
-	if (!m_vRefStarDistances.size())
+	if (m_vRefStarDistances.empty())
 	{
 		ComputeStarDistances(m_vRefStars, m_vRefStarDistances);
-		for (i = 0;i<m_vRefStarDistances.size();i++)
-			m_vRefStarIndices.push_back(i);
-	};
+		for (const size_t i : std::views::iota(size_t{ 0 }, m_vRefStarDistances.size()))
+			m_vRefStarIndices.push_back(static_cast<int>(i));
+	}
 
 	ComputeStarDistances(m_vTgtStars, m_vTgtStarDistances);
-	for (i = 0;i<m_vTgtStarDistances.size();i++)
-		m_vTgtStarIndices.push_back(i);
+	for (const size_t i : std::views::iota(size_t{ 0 }, m_vTgtStarDistances.size()))
+		m_vTgtStarIndices.push_back(static_cast<int>(i));
 
-	g_StarDistSection.lock();
-	g_pvDists = &m_vRefStarDistances;
-	std::sort(m_vRefStarIndices.begin(), m_vRefStarIndices.end(), CompareStarDistances);
+	std::ranges::sort(m_vRefStarIndices, std::greater{}, [this](const int starIndex) { return m_vRefStarDistances[starIndex].m_fDistance; });
+	std::ranges::sort(m_vTgtStarIndices, std::greater{}, [this](const int starIndex) { return m_vTgtStarDistances[starIndex].m_fDistance; });
 
-	g_pvDists = &m_vTgtStarDistances;
-	std::sort(m_vTgtStarIndices.begin(), m_vTgtStarIndices.end(), CompareStarDistances);
-
-	g_pvDists = nullptr;
-	g_StarDistSection.unlock();
-
-	VOTINGPAIRVECTOR			vVotingPairs,
-								vOutputVotingPairs;
-
+	VOTINGPAIRVECTOR vVotingPairs;
 	InitVotingGrid(vVotingPairs);
-	i = j = 0;
 
-	while (i<m_vTgtStarDistances.size() && j<m_vRefStarDistances.size())
+	const auto TargetStar =    [&dist = m_vTgtStarDistances, &ind = m_vTgtStarIndices](const size_t ndx) { return dist[ind[ndx]]; };
+	const auto ReferenceStar = [&dist = m_vRefStarDistances, &ind = m_vRefStarIndices](const size_t ndx) { return dist[ind[ndx]]; };
+
+	for (size_t i = 0, j = 0; i < m_vTgtStarDistances.size() && j < m_vRefStarDistances.size();)
 	{
-		if (fabs(m_vTgtStarDistances[m_vTgtStarIndices[i]].m_fDistance-m_vRefStarDistances[m_vRefStarIndices[j]].m_fDistance) <= MAXSTARDISTANCEDELTA)
+		if (std::fabs(TargetStar(i).m_fDistance - ReferenceStar(j).m_fDistance) <= static_cast<decltype(CStarDist::m_fDistance)>(MAXSTARDISTANCEDELTA))
 		{
 			// These are within 2 pixels ... find all the others stars
 			// using the same stars in Target and check if the distances
 			// are the same in the reference.
 			// If it is the case, cast a vote for each potential pair
-			int				lRefStar1,
-								lRefStar2,
-								lTgtStar1,
-								lTgtStar2;
-			double				fTgtDistance12,
-								fRefDistance12;
 
-			fRefDistance12 = m_vRefStarDistances[m_vRefStarIndices[j]].m_fDistance;
-			fTgtDistance12 = m_vTgtStarDistances[m_vTgtStarIndices[i]].m_fDistance;
+// not used		const double fRefDistance12 = ReferenceStar(j).m_fDistance;
+			const double fTgtDistance12 = TargetStar(i).m_fDistance;
 
-			lRefStar1 = m_vRefStarDistances[m_vRefStarIndices[j]].m_Star1;
-			lRefStar2 = m_vRefStarDistances[m_vRefStarIndices[j]].m_Star2;
+			const int lRefStar1 = ReferenceStar(j).m_Star1;
+			const int lRefStar2 = ReferenceStar(j).m_Star2;
 
-			lTgtStar1 = m_vTgtStarDistances[m_vTgtStarIndices[i]].m_Star1;
-			lTgtStar2 = m_vTgtStarDistances[m_vTgtStarIndices[i]].m_Star2;
+			const int lTgtStar1 = TargetStar(i).m_Star1;
+			const int lTgtStar2 = TargetStar(i).m_Star2;
 
-			for (int lTgtStar3 = 0;lTgtStar3 < m_vTgtStars.size();lTgtStar3++)
+			for (int lTgtStar3 = 0; lTgtStar3 < m_vTgtStars.size(); lTgtStar3++)
 			{
 				if ((lTgtStar3 != lTgtStar1) && (lTgtStar3 != lTgtStar2))
 				{
-					STARDISTITERATOR		it;
-					double					fTgtDistance13 = 0.0;
-					double					fTgtDistance23 = 0.0;
-					double					fRatio;
+					auto it = std::lower_bound(m_vTgtStarDistances.cbegin(), m_vTgtStarDistances.cend(), CStarDist(lTgtStar1, lTgtStar3));
+					const double fTgtDistance13 = it == m_vTgtStarDistances.cend() ? 0.0 : it->m_fDistance;
 
-					it = std::lower_bound(m_vTgtStarDistances.begin(), m_vTgtStarDistances.end(), CStarDist(lTgtStar1, lTgtStar3));
-					if (it != m_vTgtStarDistances.end())
-						fTgtDistance13 = (*it).m_fDistance;
-					it = std::lower_bound(m_vTgtStarDistances.begin(), m_vTgtStarDistances.end(), CStarDist(lTgtStar2, lTgtStar3));
-					if (it != m_vTgtStarDistances.end())
-						fTgtDistance23 = (*it).m_fDistance;
+					it = std::lower_bound(m_vTgtStarDistances.cbegin(), m_vTgtStarDistances.cend(), CStarDist(lTgtStar2, lTgtStar3));
+					const double fTgtDistance23 = it == m_vTgtStarDistances.cend() ? 0.0 : it->m_fDistance;
 
-					fRatio = max(fTgtDistance13, fTgtDistance23) / fTgtDistance12;
+					const double fRatio = std::max(fTgtDistance13, fTgtDistance23) / fTgtDistance12;
 					// Filter triangle because :
 					// Larger triangle are already used
-					// 0.9 avoids many useless triangles with two big sides and one small side
-					if (fRatio < 0.9)
+					// TriangleMaxRatio (usually 0.9) avoids many useless triangles with two big sides and one small side
+					if (fRatio < TriangleMaxRatio)
 					{
 						// Search a star from reference such as
 						// distance from 1 to 3 is near fTgtDistance13
 						// distance from 2 to 3 is near fTgtDistance23
-						for (int lRefStar3 = 0;lRefStar3 < m_vRefStars.size();lRefStar3++)
+						for (int lRefStar3 = 0; lRefStar3 < m_vRefStars.size(); lRefStar3++)
 						{
 							if ((lRefStar3 != lRefStar1) && (lRefStar3 != lRefStar2))
 							{
-								double		fRefDistance13 = 0.0;
-								double		fRefDistance23 = 0.0;
+								it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(lRefStar1, lRefStar3));
+								const double fRefDistance13 = it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
 
-								it = std::lower_bound(m_vRefStarDistances.begin(), m_vRefStarDistances.end(), CStarDist(lRefStar1, lRefStar3));
-								if (it != m_vRefStarDistances.end())
-									fRefDistance13 = (*it).m_fDistance;
-								it = std::lower_bound(m_vRefStarDistances.begin(), m_vRefStarDistances.end(), CStarDist(lRefStar2, lRefStar3));
-								if (it != m_vRefStarDistances.end())
-									fRefDistance23 = (*it).m_fDistance;
+								it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(lRefStar2, lRefStar3));
+								const double fRefDistance23 = it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
 
-								if ((fabs(fRefDistance13 - fTgtDistance13) < MAXSTARDISTANCEDELTA) &&
-									(fabs(fRefDistance23 - fTgtDistance23) < MAXSTARDISTANCEDELTA))
+								if (std::abs(fRefDistance13 - fTgtDistance13) < MAXSTARDISTANCEDELTA && std::fabs(fRefDistance23 - fTgtDistance23) < MAXSTARDISTANCEDELTA)
 								{
 									// Cast votes for stars
-									AddVote(lRefStar1, lTgtStar1, vVotingPairs, (int)m_vTgtStars.size());
-									AddVote(lRefStar2, lTgtStar2, vVotingPairs, (int)m_vTgtStars.size());
-									AddVote(lRefStar3, lTgtStar3, vVotingPairs, (int)m_vTgtStars.size());
+									AddVote(lRefStar1, lTgtStar1, vVotingPairs, m_vTgtStars.size());
+									AddVote(lRefStar2, lTgtStar2, vVotingPairs, m_vTgtStars.size());
+									AddVote(lRefStar3, lTgtStar3, vVotingPairs, m_vTgtStars.size());
 								}
-								else if ((fabs(fRefDistance23 - fTgtDistance13) < MAXSTARDISTANCEDELTA) &&
-										 (fabs(fRefDistance13 - fTgtDistance23) < MAXSTARDISTANCEDELTA))
+								else if (std::abs(fRefDistance23 - fTgtDistance13) < MAXSTARDISTANCEDELTA && std::fabs(fRefDistance13 - fTgtDistance23) < MAXSTARDISTANCEDELTA)
 								{
 									// Cast votes for stars
-									AddVote(lRefStar1, lTgtStar2, vVotingPairs, (int)m_vTgtStars.size());
-									AddVote(lRefStar2, lTgtStar1, vVotingPairs, (int)m_vTgtStars.size());
-									AddVote(lRefStar3, lTgtStar3, vVotingPairs, (int)m_vTgtStars.size());
-								};
-							};
-						};
-					};
-				};
-			};
-		};
+									AddVote(lRefStar1, lTgtStar2, vVotingPairs, m_vTgtStars.size());
+									AddVote(lRefStar2, lTgtStar1, vVotingPairs, m_vTgtStars.size());
+									AddVote(lRefStar3, lTgtStar3, vVotingPairs, m_vTgtStars.size());
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
-		if (m_vTgtStarDistances[m_vTgtStarIndices[i]].m_fDistance<m_vRefStarDistances[m_vRefStarIndices[j]].m_fDistance)
-			j++;
+		if (TargetStar(i).m_fDistance < ReferenceStar(j).m_fDistance)
+			++j;
 		else
-			i++;
-	};
+			++i;
+	}
 
 	// Resolve votes
-	std::sort(vVotingPairs.begin(), vVotingPairs.end());
+	std::ranges::sort(vVotingPairs, std::greater{});
 
 	// At this point voting pairs are ordered descending
 	// Then eliminate false matches and get transformations parameters
+	bool bResult = false;
 	if (vVotingPairs.size() >= m_vTgtStars.size())
 	{
-		int				lMinNrVotes;
-		int				lCut = 0;
-		TRANSFORMATIONTYPE	TType = TT_BILINEAR;
-
-		lMinNrVotes = vVotingPairs[m_vTgtStars.size()*2-1].m_lNrVotes;
+		int lMinNrVotes = vVotingPairs[m_vTgtStars.size() * 2 - 1].m_lNrVotes;
 		if (lMinNrVotes == 0)
 			lMinNrVotes = 1;
+
+		size_t lCut = 0;
 		while (vVotingPairs[lCut].m_lNrVotes >= lMinNrVotes)
 			lCut++;
-		vVotingPairs.resize(lCut+1);
+		vVotingPairs.resize(lCut + 1);
 
-		TType = GetTransformationType((int)vVotingPairs.size());
+		const TRANSFORMATIONTYPE TType = GetTransformationType(vVotingPairs.size());
 
 		bResult = ComputeSigmaClippingTransformation(vVotingPairs, BilinearParameters, TType);
 
@@ -1189,15 +1125,14 @@ bool	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 			// This is a pure linear function -- Alter coefficients
 			BilinearParameters.a3 = 0;
 			BilinearParameters.b3 = 0;
-		};
-	};
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CMatchingStars::AdjustSize()
+void CMatchingStars::AdjustSize()
 {
 	// if all the stars are in the top/left corner divide the sizes by two
 	bool				bAllInTopLeft = true;
@@ -1206,7 +1141,7 @@ void	CMatchingStars::AdjustSize()
 	{
 		if ((m_vTgtStars[i].x() > m_lWidth/2) || (m_vTgtStars[i].y() > m_lHeight/2))
 			bAllInTopLeft = false;
-	};
+	}
 
 	if (bAllInTopLeft)
 	{
@@ -1221,38 +1156,29 @@ void	CMatchingStars::AdjustSize()
 		{
 			if ((m_vTgtStars[i].x() > m_lWidth) || (m_vTgtStars[i].y() > m_lHeight))
 				bOutside = true;
-		};
+		}
 		if (bOutside)
 		{
 			m_lWidth  /= 2;
 			m_lHeight /= 2;
-		};
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters)
-{
-	bool					bResult = false;
-
-	if (GetTransformationType() != TT_NONE)
-	{
-		//AdjustSize();
-		if (m_vRefStars.size()>=8 && m_vTgtStars.size()>=8)
-		{
-			bResult = ComputeLargeTriangleTransformation(BilinearParameters);
-			if (!bResult)
-				bResult = ComputeMatchingTriangleTransformation(BilinearParameters);
-		};
+		}
 	}
-	else
-	{
-		bResult = true;
-	};
-
-	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
+bool CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters& BilinearParameters)
+{
+	if (GetTransformationType() == TT_NONE)
+		return true;
+
+	//AdjustSize();
+	if (m_vRefStars.size() >= 8 && m_vTgtStars.size() >= 8)
+	{
+		bool bResult = ComputeLargeTriangleTransformation(BilinearParameters);
+		if (!bResult)
+			bResult = ComputeMatchingTriangleTransformation(BilinearParameters);
+		return bResult;
+	}
+	return false;
+}

@@ -4,32 +4,19 @@
 #include "avx_median.h"
 
 
-/* ------------------------------------------------------------------- */
-
-
-/* ------------------------------------------------------------------- */
-
-
-typedef std::vector<QPointF>	POINTFVECTOR;
-typedef POINTFVECTOR::iterator	POINTFITERATOR;
-
-/* ------------------------------------------------------------------- */
-
-inline double	Distance(double fX1, double fY1, double fX2, double fY2) noexcept
+inline double Distance(const double fX1, const double fY1, const double fX2, const double fY2) noexcept
 {
-	return sqrt((fX1-fX2)*(fX1-fX2) + (fY1-fY2)*(fY1-fY2));
-};
+	constexpr auto SquareOf = [](const double x) { return x * x; };
+
+	return std::sqrt(SquareOf(fX1 - fX2) + SquareOf(fY1 - fY2));
+}
 
 inline double Distance(const QPointF& pt1, const QPointF& pt2) noexcept
 {
 	return Distance(pt1.x(), pt1.y(), pt2.x(), pt2.y());
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------- */
-
-inline double Median(double v1, double v2, double v3) noexcept
+constexpr double Median(const double v1, const double v2, const double v3) noexcept
 {
   if (v1 > v2)
   {
@@ -49,7 +36,6 @@ inline double Median(double v1, double v2, double v3) noexcept
   }
 }
 
-/* ------------------------------------------------------------------- */
 
 template <class T> inline
 double Median(std::vector<T>& values)
@@ -61,7 +47,7 @@ double Median(std::vector<T>& values)
 
 	return qMedian(values.data(), size, size / 2);
 /*
-    // benchmarked: at around 40 elements, partial sort stars becoming faster
+    // benchmarked: at around 40 elements, partial sort starts becoming faster
     // O(N) or O(2*N) for even count vs O(N*log(N))
     if (size > 40)
     {
@@ -97,29 +83,43 @@ double Median(std::vector<T>& values)
 */
 }
 
-/* ------------------------------------------------------------------- */
 
-template <class T> inline
-T Maximum(const std::vector<T>& values)
+template <class T>
+inline T Minimum(const std::vector<T>& values, bool ignoreZeros)
+{
+	T result = 0;
+
+	if (!values.empty())
+	{
+		if (values.front() || !ignoreZeros)
+			result = values.front();
+	}
+
+	for (T const& val : values)
+		if (val || !ignoreZeros)
+			result = std::min(result, val);
+
+	return result;
+}
+
+template <class T>
+inline T Maximum(const std::vector<T>& values)
 {
     if (values.empty())
         return 0;
 
 	return *std::max_element(values.begin(), values.end());
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-template <class T> inline
-double Average(const std::vector<T>& values)
+template <class T>
+inline double Average(const std::vector<T>& values)
 {
-    return std::accumulate(values.begin(), values.end(), 0.0) / values.size();
-};
+    return std::accumulate(values.cbegin(), values.cend(), 0.0) / values.size();
+}
 
-/* ------------------------------------------------------------------- */
 
-template <class T> inline
-double Sigma2(const std::vector<T>& values, double& average)
+template <class T>
+inline double Sigma2(const std::vector<T>& values, double& average)
 {
 	double result = 0.0;
 	double squareDiff = 0.0;
@@ -134,17 +134,17 @@ double Sigma2(const std::vector<T>& values, double& average)
         result = sqrt(squareDiff / values.size());
 
 	return result;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-template <class T> inline
-double Sigma(const std::vector<T>& values)
+template <class T>
+inline double Sigma(const std::vector<T>& values)
 {
 	double average;
 
 	return Sigma2(values, average);
-};
+}
+
 
 template <typename T>
 double CalculateSigmaFromAverage(const std::vector<T>& values, const double targetAverage)
@@ -278,26 +278,6 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 			};
 		};
 	};
-};
-
-/* ------------------------------------------------------------------- */
-
-template <class T> inline
-T Minimum(std::vector<T>& values, bool ignoreZeros)
-{
-    T result = 0;
-
-    if (!values.empty())
-    {
-        if (values.front() || !ignoreZeros)
-            result = values.front();
-    }
-
-    for (T const& val : values)
-        if (val || !ignoreZeros)
-            result = std::min(result, val);
-
-	return result;
 };
 
 /* ------------------------------------------------------------------- */

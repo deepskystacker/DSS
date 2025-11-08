@@ -504,7 +504,7 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 {
 	// ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = false;
+	bool bResult = false;
 	CBilinearParameters	BilinearParameters;
 
 	{
@@ -542,33 +542,33 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 			std::ranges::sort(vStarsDst, CompareStarLuminancy);
 		}
 
-		CMatchingStars MatchingStars;
-		if (!MatchingStars.IsReferenceSet())
+		CMatchingStars matchingStars;
+		if (!matchingStars.IsReferenceSet())
 		{
 			const double fXRatio = static_cast<double>(m_vBitmaps[lBitmapIndice].RenderedWidth()) / static_cast<double>(m_vBitmaps[0].RenderedWidth());
 			const double fYRatio = static_cast<double>(m_vBitmaps[lBitmapIndice].RenderedHeight()) / static_cast<double>(m_vBitmaps[0].RenderedHeight());
 
 			for (size_t i = 0; i < std::min(vStarsOrg.size(), MaxNumberOfConsideredStars); i++)
 			{
-				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX * fXRatio, vStarsOrg[i].m_fY * fYRatio);
+				matchingStars.AddReferenceStar(vStarsOrg[i].m_fX * fXRatio, vStarsOrg[i].m_fY * fYRatio);
 			}
 		}
 
-		MatchingStars.ClearTarget();
+		matchingStars.ClearTarget();
 		for (size_t i = 0; i < std::min(vStarsDst.size(), MaxNumberOfConsideredStars); i++)
 		{
-			MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
+			matchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 		}
 
-		MatchingStars.SetSizes(m_vBitmaps[lBitmapIndice].RenderedWidth(), m_vBitmaps[lBitmapIndice].RenderedHeight());
-		bResult = MatchingStars.ComputeCoordinateTransformation(BilinearParameters);
+		matchingStars.SetSizes(m_vBitmaps[lBitmapIndice].RenderedWidth(), m_vBitmaps[lBitmapIndice].RenderedHeight());
+		bResult = matchingStars.ComputeCoordinateTransformation(BilinearParameters);
 
 		if (bResult)
 		{
 			BilinearParameters.Offsets(m_vBitmaps[lBitmapIndice].m_fXOffset, m_vBitmaps[lBitmapIndice].m_fYOffset);
 			m_vBitmaps[lBitmapIndice].m_fAngle   = BilinearParameters.Angle(m_vBitmaps[lBitmapIndice].RenderedWidth());
 			m_vBitmaps[lBitmapIndice].m_BilinearParameters = BilinearParameters;
-			MatchingStars.GetVotedPairs(m_vBitmaps[lBitmapIndice].m_vVotedPairs);
+			m_vBitmaps[lBitmapIndice].m_vVotedPairs = std::move(matchingStars.GetVotedPairsCopy());
 			const std::lock_guard<std::mutex> lock(mutex);
 			m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
 		}

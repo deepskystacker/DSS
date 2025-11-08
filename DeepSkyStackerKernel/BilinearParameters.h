@@ -10,6 +10,11 @@ typedef enum TRANSFORMATIONTYPE
 	TT_LAST = 5
 } TRANSFORMATIONTYPE;
 
+inline TRANSFORMATIONTYPE getNextHigherTransformationType(const TRANSFORMATIONTYPE tt)
+{
+	return static_cast<TRANSFORMATIONTYPE>(static_cast<int>(tt) + 1);
+}
+
 class QPointF;
 class CBilinearParameters
 {

@@ -181,7 +181,9 @@ namespace DSS
 		forceHere{ false },
 	//	displayGrid{ false },
 	//	m_tipShowCount{ 0 }
-		disabled{ false }
+		disabled{ false },
+		starCirclesStatus{ 0 },
+		timer{ std::make_unique<QTimer>() }
 	{
 		ZASSERT(nullptr != imageView);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -189,6 +191,14 @@ namespace DSS
 		setAttribute(Qt::WA_TranslucentBackground);
 		setAttribute(Qt::WA_WState_ExplicitShowHide);
 //		setToolTip(tr("Ctrl+G to toggle display of the Grid"));
+		connect(timer.get(), &QTimer::timeout, this, &EditStars::toggleStarCircles);
+		timer->start(500);
+	}
+
+	void EditStars::toggleStarCircles()
+	{
+		++this->starCirclesStatus;
+		update();
 	}
 
 	bool EditStars::isDirty() const
@@ -564,10 +574,12 @@ namespace DSS
 	template <bool WithCross>
 	void EditStars::drawCircleAroundStar(const CStar& star, QPainter& painter, const QColor& color, const double radius, const double penWidth) const
 	{
-		qreal xPos1 = star.m_fX - radius;
-		qreal yPos1 = star.m_fY - radius;
-		qreal xPos2 = star.m_fX + radius;
-		qreal yPos2 = star.m_fY + radius;
+		const double effectiveRadius = std::max(radius, 2.0);
+
+		qreal xPos1 = star.m_fX - effectiveRadius;
+		qreal yPos1 = star.m_fY - effectiveRadius;
+		qreal xPos2 = star.m_fX + effectiveRadius;
+		qreal yPos2 = star.m_fY + effectiveRadius;
 		imageView->imageToScreen(xPos1, yPos1);
 		imageView->imageToScreen(xPos2, yPos2);
 
@@ -754,11 +766,18 @@ namespace DSS
 		}
 
 		// Green circles around the registered stars
+		auto circleColor = QColor("lime");
+		switch (this->starCirclesStatus % 3) {
+			case 1: circleColor = QColor("magenta"); break;
+			case 2: circleColor = QColor("transparent"); break;
+			default: circleColor = QColor("lime"); break;
+		}
+
 		for (int i = 0; const auto& star : stars)
 		{
 			if (isTgtStarVoted(i) && !star.m_bRemoved)
 			{
-				drawCircleAroundStar<true>(star, painter, star.m_bAdded ? qRgba(0, 0, 255, 255) : qRgba(0, 190, 0, 255), star.m_fMeanRadius, 1.0);
+				drawCircleAroundStar<true>(star, painter, star.m_bAdded ? qRgba(0, 0, 255, 255) : circleColor, star.m_fMeanRadius, 1.0);
 
 				// If showRefStars: Line from ref-star to target-star.
 				// (target-star: star in the current frame, ref-star: according star in the reference frame).
