@@ -231,9 +231,9 @@ private:
 	STARTRIANGLEVECTOR m_vRefTriangles;
 	STARTRIANGLEVECTOR m_vTgtTriangles;
 	std::vector<int> m_vRefStarIndices;
-	std::vector<int> m_vTgtStarIndices;
+//	std::vector<int> m_vTgtStarIndices;
 	STARDISTVECTOR m_vRefStarDistances;
-	STARDISTVECTOR m_vTgtStarDistances;
+//	STARDISTVECTOR m_vTgtStarDistances;
 	VOTINGPAIRVECTOR m_vVotedPairs;
 	int m_lWidth{ 0 };
 	int m_lHeight{ 0 };
@@ -251,15 +251,14 @@ private:
 
 	void InitVotingGrid(VOTINGPAIRVECTOR& vVotingPairs);
 //	void AdjustVoting(const VOTINGPAIRVECTOR& vInVotingPairs, VOTINGPAIRVECTOR& vOutVotingPairs, int lNrTgtStars);
-	void ComputeStarDistances(const QPointFVector& vStars, STARDISTVECTOR& vStarDist);
+	STARDISTVECTOR ComputeStarDistances(const QPointFVector& vStars);
 	void ComputeTriangles(const QPointFVector& vStars, STARTRIANGLEVECTOR& vTriangles);
 	template <typename... DistanceVector>
 	std::pair<double, size_t> ComputeDistanceBetweenStars(const VOTINGPAIRVECTOR& vVotingPairs, const CBilinearParameters& projection, DistanceVector&... distances);
 	bool ComputeCoordinatesTransformation(VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, const TRANSFORMATIONTYPE TType);
-	bool ComputeTransformation(auto&& vPairs, CBilinearParameters& BilinearParameters, const TRANSFORMATIONTYPE TType)
-		requires requires(decltype(vPairs)& r) { std::span{ r }; };
+	bool ComputeTransformation(std::span<const VotingPair> vVotingPairs, CBilinearParameters& BilinearParameters, const TRANSFORMATIONTYPE TType);
 	bool ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, const TRANSFORMATIONTYPE TType);
-	bool ComputeMedianTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);
+//	bool ComputeMedianTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);
 	bool ComputeMatchingTriangleTransformation(CBilinearParameters& BilinearParameters);
 	bool ComputeLargeTriangleTransformation(CBilinearParameters& BilinearParameters);
 	void AdjustSize();
@@ -299,8 +298,8 @@ public:
 		m_vTgtStars.clear();
 		m_vTgtTriangles.clear();
 		m_vTgtCorners.clear();
-		m_vTgtStarDistances.clear();
-		m_vTgtStarIndices.clear();
+//		m_vTgtStarDistances.clear();
+//		m_vTgtStarIndices.clear();
 	}
 
 	void SetSizes(const int lWidth, const int lHeight)
