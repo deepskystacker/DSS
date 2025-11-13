@@ -880,7 +880,9 @@ bool DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 			tr("Select the folder to be monitored", "IDS_SELECTMONITOREDFOLDER"),
 			startDir,
 			QFileDialog::ShowDirsOnly
-			| QFileDialog::DontResolveSymlinks);
+			| QFileDialog::DontResolveSymlinks
+			| QFileDialog::DontUseNativeDialog);	// Use Qt dialog for consistency across platforms
+
 		if (!dir.isEmpty())
 		{
 			settings.setValue("MonitoredFolder", dir);

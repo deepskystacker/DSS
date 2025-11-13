@@ -2084,20 +2084,20 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 			QString strNeededSpace;
 
 			m_rcResult = computeLargestRectangle();
-			std::int64_t ulNeededSpace;
-			std::int64_t ulFreeSpace;
+			std::uintmax_t neededSpace;
+			std::uintmax_t freeSpace;
 			DSSRect rcResult;
 
 			rcResult.setCoords(m_rcResult.left / m_lPixelSizeMultiplier, m_rcResult.top / m_lPixelSizeMultiplier,
 				m_rcResult.right / m_lPixelSizeMultiplier, m_rcResult.bottom / m_lPixelSizeMultiplier);
 
-			ulNeededSpace = tasks.computeNecessaryDiskSpace(rcResult);
-			ulFreeSpace = tasks.AvailableDiskSpace(strDrive);
+			neededSpace = tasks.computeNecessaryDiskSpace(rcResult);
+			freeSpace = tasks.AvailableDiskSpace(strDrive);
 
-			if (m_pProgress != nullptr && (ulNeededSpace > ulFreeSpace))
+			if (m_pProgress != nullptr && (neededSpace > freeSpace))
 			{
-				SpaceToQString(ulFreeSpace, strFreeSpace);
-				SpaceToQString(ulNeededSpace, strNeededSpace);
+				SpaceToQString(freeSpace, strFreeSpace);
+				SpaceToQString(neededSpace, strNeededSpace);
 
 				const QString strText(QCoreApplication::translate("StackingEngine", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(strNeededSpace).arg(QString::fromWCharArray(strDrive.wstring().c_str())).arg(strFreeSpace) +
 									  QCoreApplication::translate("StackingEngine", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));

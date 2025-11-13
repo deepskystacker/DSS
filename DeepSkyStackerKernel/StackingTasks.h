@@ -359,9 +359,9 @@ public:
 	bool DoDarkFlatTasks(DSS::OldProgressBase* pProgress);
 	bool DoAllPreTasks(DSS::OldProgressBase* pProgress);
 
-	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
-	std::int64_t computeNecessaryDiskSpace();
-	std::int64_t AvailableDiskSpace(fs::path& strDrive);
+	std::uintmax_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
+	std::uintmax_t computeNecessaryDiskSpace();
+	std::uintmax_t AvailableDiskSpace(fs::path& strDrive);
 
 	bool	checkReadOnlyStatus(QStringList & folders);
 
@@ -397,7 +397,7 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-void SpaceToQString(std::int64_t ulSpace, QString& strSpace);
+void SpaceToQString(std::uintmax_t ulSpace, QString& strSpace);
 
 /* ------------------------------------------------------------------- */
 

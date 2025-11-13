@@ -570,6 +570,11 @@ namespace DSS
 		QString				extension("settings");
 		bool				fileLoaded(false);
 
+		//
+		// Always use the Qt Widget file dialog for consistency
+		// 
+		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+		// 
 		// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 		// create the directory to avoid surprises
 		directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
@@ -616,6 +621,11 @@ namespace DSS
 		QString				directory;
 		QString				extension("settings");
 		bool				fileSaved(false);
+
+		//
+		// Always use the Qt Widget file dialog for consistency
+		// 
+		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
 
 		// Save the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 		// create the directory to avoid surprises

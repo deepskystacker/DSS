@@ -214,6 +214,11 @@ namespace DSS
 		dlg.setAcceptMode(QFileDialog::AcceptSave);
 
 		//
+		// Always use the Qt Widget file dialog for consistency
+		// 
+		dlg.setOption(QFileDialog::DontUseNativeDialog, true);
+
+		//
 		// display the dialogue
 		//
 		if (QDialog::Accepted == dlg.exec())

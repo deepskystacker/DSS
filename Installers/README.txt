@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1 Beta 2
+Welcome to DeepSkyStacker 6.1.1 Beta 3
 ===============================
 
 Reporting problems:
@@ -27,7 +27,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 
 2.  FITS files will now be written with the extension .fits rather than .fit or .fts.
 
-3.  Resolve problem of 0xC000409 abend at startup when the user's "Documents" directory path contained non-Latin1
+3.  Resolve problem of 0xC0000409 abend at startup when the user's "Documents" directory path contained non-Latin1
     characters.
 
 4.  Update build to use Qt 6.10.0, boost 1.88 and libtiff 4.7.1
@@ -49,6 +49,10 @@ Changes for DeepSkyStacker 6.1.1 Beta 2
 
 10. Change to FITS compression support code to work round problems with () and [] in file-ids.
 
+11. Update exiv2 to 28.7#1
+
+12. Always use the Qt Widgets based File Dialog for consistency and also so that (e.g.) both .cr2 and .CR2
+    files are found with a file filter that specifies *.cr2
 
 Changes for DeepSkyStacker 6.1.0
 ================================

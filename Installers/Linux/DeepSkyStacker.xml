@@ -1,8 +1,9 @@
 <project>
     <shortName>DeepSkyStacker</shortName>
     <fullName>DeepSkyStacker</fullName>
-    <version>6.1.1 Beta 2</version>
+    <version>6.1.1-Beta-3</version>
     <licenseFile>Linux/x64/RelWithDebInfo/LICENSE</licenseFile>
+	<enableGtkDarkThemesSupport>1</enableGtkDarkThemesSupport>
     <componentList>
         <component>
             <name>default</name>
