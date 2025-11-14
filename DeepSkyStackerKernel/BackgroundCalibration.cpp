@@ -76,7 +76,7 @@ void CBackgroundCalibration::ompCalcHistogram(const CMemoryBitmap* pBitmap, OldP
 	} // omp parallel
 }
 
-void CBackgroundCalibration::ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, bool bFirst, OldProgressBase* pProgress)
+void CBackgroundCalibration::ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, const char8_t* pFileName, bool bFirst, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	m_fSrcRedMax = 0;
@@ -124,28 +124,45 @@ void CBackgroundCalibration::ComputeBackgroundCalibration(const CMemoryBitmap* p
 
 	if (bFirst)
 	{
+		const char* pStrMode = "None";
+		const char* pStrRGB = "N/A";
+		const char* pStrMethod = m_BackgroundInterpolation == BCI_LINEAR ? "Linear" : (m_BackgroundInterpolation == BCI_RATIONAL ? "Rational" : "Unknown");
+
 		if (m_BackgroundCalibrationMode == BCM_PERCHANNEL)
 		{
 			m_fTgtRedBk = m_fSrcRedBk;
 			m_fTgtGreenBk = m_fSrcGreenBk;
 			m_fTgtBlueBk = m_fSrcBlueBk;
+			pStrMode = "Per Channel";
 		}
 		else if (m_BackgroundCalibrationMode == BCM_RGB)
 		{
 			double fTgtBk;
 
 			if (m_RGBBackgroundMethod == RBCM_MAXIMUM)
-				fTgtBk = std::max(m_fSrcRedBk, std::max(m_fSrcGreenBk, m_fSrcBlueBk));
+			{
+				fTgtBk = std::ranges::max({ m_fSrcRedBk, m_fSrcGreenBk, m_fSrcBlueBk });
+				pStrRGB = "Max";
+			}
 			else if (m_RGBBackgroundMethod == RBCM_MINIMUM)
-				fTgtBk = std::min(m_fSrcRedBk, std::min(m_fSrcGreenBk, m_fSrcBlueBk));
+			{
+				fTgtBk = std::ranges::min({ m_fSrcRedBk, m_fSrcGreenBk, m_fSrcBlueBk });
+				pStrRGB = "Min";
+			}
 			else
+			{
 				fTgtBk = Median(m_fSrcRedBk, m_fSrcGreenBk, m_fSrcBlueBk);
+				pStrRGB = "Median";
+			}
 
 			m_fTgtRedBk = m_fSrcRedMax > fTgtBk ? fTgtBk : m_fSrcRedBk;
 			m_fTgtGreenBk = m_fSrcGreenMax > fTgtBk ? fTgtBk : m_fSrcGreenBk;
 			m_fTgtBlueBk = m_fSrcBlueMax > fTgtBk ? fTgtBk : m_fSrcBlueBk;
+
+			pStrMode = "RGB";
 		}
-		ZTRACE_RUNTIME("Target Background : Red = %.2f - Green = %.2f - Blue = %.2f", m_fTgtRedBk/256.0, m_fTgtGreenBk/256.0, m_fTgtBlueBk/256.0);
+		ZTRACE_RUNTIME("Reference frame: %s | Method = %s, Mode = %s, RGB-Point = %s", pFileName == nullptr ? u8"-" : pFileName, pStrMethod, pStrMode, pStrRGB);
+		ZTRACE_RUNTIME("Reference Background: Red = %.2f - Green = %.2f - Blue = %.2f", m_fTgtRedBk/256.0, m_fTgtGreenBk/256.0, m_fTgtBlueBk/256.0);
 	}
 
 	m_riRed.Initialize(0, m_fSrcRedBk, m_fSrcRedMax, 0, m_fTgtRedBk, m_fSrcRedMax);

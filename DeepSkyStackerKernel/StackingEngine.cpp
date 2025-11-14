@@ -42,6 +42,7 @@
 void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 {
 	ZFUNCTRACE_RUNTIME();
+	ZTRACE_RUNTIME("Reference Frame: %s", path.generic_u8string().c_str());
 
 	const QFileInfo fileInfo(path);
 
@@ -1877,7 +1878,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 				strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
 				m_pProgress->Start2(strText, 0);
 			}
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), bFirst, m_pProgress);
+			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), this->currentLightFrame.generic_u8string().c_str(), bFirst, m_pProgress);
 		}
 
 		// Create a master light to enable stacking

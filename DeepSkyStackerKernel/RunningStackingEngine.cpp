@@ -88,7 +88,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pPr
 
 		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 		{
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), !m_lNrStacked, pProgress);
+			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), lfi.filePath.generic_u8string().c_str(), m_lNrStacked == 0, pProgress);
 		};
 
 		// Stack it (average)

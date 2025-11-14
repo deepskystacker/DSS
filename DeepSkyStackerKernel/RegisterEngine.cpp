@@ -336,7 +336,7 @@ double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
 	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
 	BackgroundCalibration.SetMultiplier(256.0);
-	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, true, m_pProgress);
+	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, nullptr, true, m_pProgress);
 	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
 
 	return fResult;
