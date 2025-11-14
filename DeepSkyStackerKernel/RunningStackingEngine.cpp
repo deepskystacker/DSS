@@ -88,8 +88,9 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pPr
 
 		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 		{
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), lfi.filePath.generic_u8string().c_str(), m_lNrStacked == 0, pProgress);
-		};
+			const bool isFirst = m_lNrStacked == 0;
+			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), isFirst ? lfi.filePath.generic_u8string().c_str() : nullptr, isFirst, pProgress);
+		}
 
 		// Stack it (average)
 		CPixelTransform PixTransform(lfi.m_BilinearParameters);
