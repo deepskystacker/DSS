@@ -207,6 +207,8 @@ namespace DSS
 //		bool displayGrid;
 //		uint m_tipShowCount;
 		bool disabled;
+		unsigned int starCirclesStatus;
+		std::unique_ptr<QTimer> timer;
 
 		template <bool Refstar>
 		bool isStarVoted(const int starIndex)
@@ -215,9 +217,9 @@ namespace DSS
 				return true;
 
 			if constexpr (Refstar)
-				return std::ranges::find_if(vVotedPairs, [starIndex](const CVotingPair& votedPair) { return votedPair.m_RefStar == starIndex; }) != vVotedPairs.end();
+				return std::ranges::find_if(vVotedPairs, [starIndex](const VotingPair& votedPair) { return votedPair.m_RefStar == starIndex; }) != vVotedPairs.end();
 			else
-				return std::ranges::find_if(vVotedPairs, [starIndex](const CVotingPair& votedPair) { return votedPair.m_TgtStar == starIndex; }) != vVotedPairs.end();
+				return std::ranges::find_if(vVotedPairs, [starIndex](const VotingPair& votedPair) { return votedPair.m_TgtStar == starIndex; }) != vVotedPairs.end();
 		}
 
 		bool isRefStarVoted(const int lStar)
@@ -259,6 +261,6 @@ namespace DSS
 		{
 			Inherited::setGeometry(geom);
 		}
-
+		void toggleStarCircles();
     };
 }

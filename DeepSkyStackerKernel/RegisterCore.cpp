@@ -24,8 +24,6 @@ namespace {
 	//
 	bool computeStarCenter(const CGrayBitmap& inputBitmap, CStar& star, const double backgroundLevel)
 	{
-		double fSumX = 0;
-		double fSumY = 0;
 		double fNrValuesX = 0;
 		double fNrValuesY = 0;
 		double fAverageX = 0;
@@ -39,7 +37,7 @@ namespace {
 
 		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 		{
-			fSumX = 0;
+			double fSumX = 0;
 			fNrValuesX = 0;
 			for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 			{
@@ -59,7 +57,7 @@ namespace {
 		int lNrColumns = 0;
 		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 		{
-			fSumY = 0;
+			double fSumY = 0;
 			fNrValuesY = 0;
 			for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 			{
@@ -82,7 +80,7 @@ namespace {
 		// Then compute the radius
 		double fSquareSumX = 0;
 		double fStdDevX = 0;
-		fSumX = 0;
+//		fSumX = 0;
 		fNrValuesX = 0;
 		const size_t yCoord = std::round(star.m_fY);
 		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
@@ -90,7 +88,7 @@ namespace {
 			double fValue;
 			inputBitmap.GetPixel(x, yCoord, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
-			fSumX += fValue * x;
+//			fSumX += fValue * x;
 			fSquareSumX += (x - star.m_fX) * (x - star.m_fX) * fValue;
 			fNrValuesX += fValue;
 		}
@@ -98,7 +96,7 @@ namespace {
 
 		double fSquareSumY = 0;
 		double fStdDevY = 0;
-		fSumY = 0;
+//		fSumY = 0;
 		fNrValuesY = 0;
 		const size_t xCoord = std::round(star.m_fX);
 		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
@@ -106,7 +104,7 @@ namespace {
 			double fValue;
 			inputBitmap.GetPixel(xCoord, y, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
-			fSumY += fValue * y;
+//			fSumY += fValue * y;
 			fSquareSumY += (y - star.m_fY) * (y - star.m_fY) * fValue;
 			fNrValuesY += fValue;
 		}
@@ -235,7 +233,7 @@ namespace DSS {
 	//
 	// CGrayBitmap is a typedef for CGrayBitmapT<double>
 	// So the gray raw values are in the range [0, 256), CGrayBitmap::m_fMultiplier is 256.0.
-	// getValue() ant getUncheckedValue() return values in the range [0.0, 256.0).
+	// getValue() and getUncheckedValue() return values in the range [0.0, 256.0).
 	// GetPixel() returns values in the range [0.0, 1.0).
 	//
 
@@ -279,7 +277,7 @@ namespace DSS {
 			size_t fiftyPercentQuantile = static_cast<size_t>(-1);
 			while (nrValues < fiftyPercentValues)
 			{
-				++fiftyPercentQuantile;
+				++fiftyPercentQuantile; // Will be zero after the first iteration.
 				nrValues += histo[fiftyPercentQuantile];
 			}
 			const double v = static_cast<double>(fiftyPercentQuantile) / static_cast<double>(HistoSize);
@@ -337,7 +335,7 @@ namespace DSS {
 
 								// Hot pixel prevention.
 								// The pixel is a hot-pixel, if: of the 8 surrounding pixels, (i) 7 are darker than the center minus background-noise, and (ii) 4 are much darker.
-								const auto isHotPixel = [&directions, backgroundLevel, th1 = fIntensity - backgroundLevel, th2 = 0.6 * (fIntensity - backgroundLevel)]() -> bool
+								const auto IsHotPixel = [&directions, backgroundLevel, th1 = fIntensity - backgroundLevel, th2 = 0.6 * (fIntensity - backgroundLevel)]() -> bool
 								{
 									int numberOfDarkerPixels = 0;
 									int numberOfMuchDarkerPixels = 0;
@@ -355,7 +353,7 @@ namespace DSS {
 								};
 
 								bool bBrighterPixel = false;
-								bool bMainOk = !isHotPixel();
+								bool bMainOk = !IsHotPixel();
 								int	lMaxRadius = 0;
 
 								// We search the pixels around the center (i, j) up to a distance of 'STARMAXSIZE'.
@@ -392,14 +390,14 @@ namespace DSS {
 										// As long as we did not yet find at least 2 pixels darker than 25% of the center -> cannot be a star.
 										if (testPixel.m_Ok)
 											bMainOk = true;
-										if (testPixel.m_lNrBrighterPixels > 2) // If at least 2 pixels are brighter than the center -> NO star.
+										if (testPixel.m_lNrBrighterPixels >= 2) // If at least 2 pixels are brighter than the center -> NO star.
 											bBrighterPixel = true;
 									} // Loop over 8 test directions.
 								}
 								//
 								// If bMainOk == false -> there is a candidate star at the center pixel (i, j).
 								// This is the case, if
-								//   Max. 1 pixel brighter than the center, no pixel brighter than +5%.
+								//   Max. 1 pixel brighter than the center, but no pixel brighter than +5%.
 								//   In every of the 8 test directions we found 2 pixels that are darker than 25% of the center (above the background level).
 								//   The largest distance (over all directions) of such a darker pixel is at least 2 pixels (so stars cannot be too small).
 								//   - Additionally we stored for every direction the distance of the second of the darker pixels in m_Radius.
@@ -411,7 +409,7 @@ namespace DSS {
 								if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2)) // We found darker pixels, no brighter pixels, candidate is not too small.
 								{
 									int maxDeltaRadii = 0;
-									const auto compareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](std::ranges::viewable_range auto dirs) -> bool
+									const auto CompareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](std::ranges::viewable_range auto dirs) -> bool
 									{
 										bool OK = true;
 										for (const Dirs k1 : dirs)
@@ -429,24 +427,25 @@ namespace DSS {
 									// Compare directions up, down, left, right: delta of radii must be smaller than deltaRadius (loop 0 -> 4)
 									// Compare the 4 diagonal directions: delta of radii must also be smaller than deltaRadius.
 									bool validCandidate =
-										compareDeltaRadii(std::array{ Dirs::Up, Dirs::Right, Dirs::Down, Dirs::Left })
-										&& compareDeltaRadii(std::array{ Dirs::UpRight, Dirs::DnRight, Dirs::DnLeft, Dirs::UpLeft });
+										CompareDeltaRadii(std::array{ Dirs::Up, Dirs::Right, Dirs::Down, Dirs::Left })
+										&& CompareDeltaRadii(std::array{ Dirs::UpRight, Dirs::DnRight, Dirs::DnLeft, Dirs::UpLeft });
 
 									// Additional check for super-small stars, which could be "larger" hot-pixels or just noise.
 									// The ratio of the radii must not be too large.
-									const auto checkDiameterRatio = [lMaxRadius, &directions](const Dirs d1, const Dirs d2, const Dirs d3, const Dirs d4) -> bool
+									const auto CheckDiameterRatio = [lMaxRadius, &directions](const Dirs d1, const Dirs d2, const Dirs d3, const Dirs d4) -> bool
 									{
+										constexpr double MaxAllowedRatio = 1.5;
 										if (lMaxRadius > 10)
 											return true;
 										const auto diameter1 = directions[static_cast<size_t>(d1)].m_Radius + directions[static_cast<size_t>(d2)].m_Radius;
 										const auto diameter2 = directions[static_cast<size_t>(d3)].m_Radius + directions[static_cast<size_t>(d4)].m_Radius;
 										const double ratio1 = diameter1 != 0 ? diameter2 / static_cast<double>(diameter1) : 0; // 0 if one of the diameters is 0
 										const double ratio2 = diameter2 != 0 ? diameter1 / static_cast<double>(diameter2) : 0; // 0 if one of the diameters is 0
-										return ratio1 <= 1.3 && ratio2 <= 1.3;
+										return ratio1 <= MaxAllowedRatio && ratio2 <= MaxAllowedRatio;
 									};
 									validCandidate = validCandidate
-										&& checkDiameterRatio(Dirs::Up, Dirs::Down, Dirs::Right, Dirs::Left)
-										&& checkDiameterRatio(Dirs::UpRight, Dirs::DnLeft, Dirs::DnRight, Dirs::UpLeft);
+										&& CheckDiameterRatio(Dirs::Up, Dirs::Down, Dirs::Right, Dirs::Left)
+										&& CheckDiameterRatio(Dirs::UpRight, Dirs::DnLeft, Dirs::DnRight, Dirs::UpLeft);
 
 									const double fMeanRadius1 = // top, bottom, left, right
 										std::accumulate(directions.cbegin(), directions.cbegin() + 4, 0.0, [](const double acc, const PixelDirection& d) { return acc + d.m_Radius; })
@@ -530,6 +529,7 @@ namespace DSS {
 
 											if (validCandidate)
 											{
+												// Calculate major/minor axis, and axis angle.
 												findStarShape(inputBitmap, ms, backgroundLevel * (1.0 / 256.0));
 												stars.insert(std::move(ms));
 												++nStars;

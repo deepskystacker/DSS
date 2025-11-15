@@ -58,7 +58,7 @@ public:
 		m_BackgroundInterpolation	= BackgroundInterpolation;
 		m_RGBBackgroundMethod		= RGBBackgroundMethod;
 	}
-	void ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, bool bFirst, OldProgressBase* pProgress);
+	void ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, const char8_t* pFileName, bool bFirst, OldProgressBase* pProgress);
 
 	template <class T>
 	void ApplyCalibration(T& fRed, T& fGreen, T& fBlue) const

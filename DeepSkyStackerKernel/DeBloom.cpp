@@ -1196,7 +1196,7 @@ double CDeBloom::ComputeBackgroundValue(CMemoryBitmap* pBitmap)
 
 	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
-	BackgroundCalibration.ComputeBackgroundCalibration(pBitmap, true, m_pProgress);
+	BackgroundCalibration.ComputeBackgroundCalibration(pBitmap, nullptr, true, m_pProgress);
 	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
 
 	return fResult;

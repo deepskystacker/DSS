@@ -111,6 +111,8 @@ public:
 		return m_Method;
 	}
 
+	std::string GetProcessingMethodName() const;
+
 	auto GetProcessingParameters() const
 	{
 		return std::make_tuple(m_fKappa, m_lNrIterations);

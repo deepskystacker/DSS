@@ -336,7 +336,7 @@ double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
 	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
 	BackgroundCalibration.SetMultiplier(256.0);
-	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, true, m_pProgress);
+	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, nullptr, true, m_pProgress);
 	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
 
 	return fResult;
@@ -404,14 +404,15 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
 
 	// Lambda for stopping criterion.
-	const auto stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
+	const auto Stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
 	{
 		return !optimizeThreshold // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
 			|| (oneMoreIteration == 2)
 			|| (oneMoreIteration != 1 && (nStars >= numberOfWantedStars || thres <= LowestPossibleThreshold));
 	};
+
 	// Lambda for threshold update.
-	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
+	auto NewThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
 		const double lastThreshold, const size_t nStars) mutable -> double
 	{
 		if (!optimizeThreshold) // IF optimizeThreshold == false THEN return last threshold.
@@ -564,8 +565,8 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		}
 
 		usedThreshold = threshold;
-		threshold = newThreshold(threshold, stars1.size());
-	} while (!stop(threshold, stars1.size())); // loop over thresholds
+		threshold = NewThreshold(threshold, stars1.size());
+	} while (!Stop(threshold, stars1.size())); // loop over thresholds
 
 	if (m_pProgress != nullptr)
 		m_pProgress->End2();
@@ -692,6 +693,7 @@ std::shared_ptr<const CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemo
 // This threshold will be used for all other images as starting threshold (the starting threshold for the first image is set to 65%).
 // The parameter 'numberOfWantedStars' is set to 50 for the first image, and 30 for the others. This makes it highly probable, that all images 
 // will be registered with the same (or a similar) threshold. 
+// These target number of wanted stars might change in the future.
 // Only if a really bad (dark or blurred) image is in the sequence, this "optimum" threshold will be lowered further down to find at least 
 // the 30 wanted stars. 
 // 
@@ -715,7 +717,8 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 	// Use minLuminancy IF auto-threshold NOT selected, ELSE: 65% for first image OR previousThreshold for the others.
 	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
 	// If auto-threshold: Try to find 50 stars in first image, then relax criterion to 30. This should make found thresholds as equal as possible.
-	const size_t numberWantedStars = bitmapIndex <= 0 ? 50 : 30;
+	// Changed on Oct-28-2025.
+	const size_t numberWantedStars = bitmapIndex <= 0 ? 80 : 65;
 
 	const std::shared_ptr<const CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
 	if (static_cast<bool>(pGrayBitmap))
