@@ -42,7 +42,7 @@
   <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>6.10.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts;printsupport</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
@@ -51,7 +51,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>6.10.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts;printsupport</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
@@ -122,7 +122,7 @@
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\Tools;..\ZClass;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\Tools;..\ZClass;..\qwt-6.3.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -202,7 +202,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;.\..\DeepSkyStacker;.\..\DeepSkyStackerKernel;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\Tools;..\ZClass;..\qwt-6.3.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -284,6 +284,12 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\imageview.cpp" />
+    <ClCompile Include="..\Tools\qcustomplot.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TreatWarningAsError>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</TreatWarningAsError>
+    </ClCompile>
     <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="About.cpp">
@@ -317,6 +323,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessingSettingsDlg.cpp" />
     <ClCompile Include="oldprogressdlg.cpp" />
+    <ClCompile Include="QualityChart.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Use</PrecompiledHeader>
@@ -380,6 +387,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="toolbar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="QualityChart.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />
     <QtMoc Include="..\Tools\QElidedLabel.h" />
@@ -393,6 +401,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="CheckAbove.h" />
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h" />
     <QtMoc Include="DeepSkyStacker.h" />
+    <QtMoc Include="..\Tools\qcustomplot.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
     <ClInclude Include="dslr.h" />
@@ -561,6 +570,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\ProcessingSettingsDlg.ui" />
     <QtUic Include="ui\OldProgressDlg.ui" />
     <QtUic Include="ui\ProgressDlg.ui" />
+    <QtUic Include="ui\QualityChart.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RecommendedSettings.ui" />
     <QtUic Include="ui\RegisterSettings.ui" />

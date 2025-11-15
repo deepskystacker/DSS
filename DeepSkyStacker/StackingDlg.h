@@ -244,6 +244,7 @@ namespace DSS
 			uncheck,
 			remove,
 			properties,
+			quality,
 			copy,
 			erase
 		};
@@ -292,6 +293,7 @@ namespace DSS
 		QAction* toOffset;
 		QAction* remove;
 		QAction* properties;
+		QAction* quality;
 		QAction* copy;
 		QAction* erase;
 
