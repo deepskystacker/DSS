@@ -168,6 +168,12 @@
     <ClCompile Include="lowerdockwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QualityChart.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\qcustomplot.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -593,6 +599,9 @@
     <QtUic Include="ui\ProgressDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\QualityChart.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BackgroundOptions.h">
@@ -711,6 +720,12 @@
     </QtMoc>
     <QtMoc Include="processingcontrols.h">
       <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="QualityChart.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="..\Tools\qcustomplot.h">
+      <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
