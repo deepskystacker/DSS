@@ -111,12 +111,7 @@ public:
 	//}
 };
 
-#if !defined(NDEBUG)
-using STARDISTVECTOR = bc::vector<CStarDist>;
-#else
 using STARDISTVECTOR = std::vector<CStarDist>;
-#endif
-
 
 constexpr int VPFLAG_ACTIVE				= 0x00000001;
 constexpr int VPFLAG_CORNER_TOPLEFT		= 0x00000010;

@@ -1032,6 +1032,19 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 	const auto TargetStar = [&targetStarDistances, &targetStarIndices](const size_t ndx) { return targetStarDistances[targetStarIndices[ndx]]; };
 	const auto ReferenceStar = [&dist = m_vRefStarDistances, &ind = m_vRefStarIndices](const size_t ndx) { return dist[ind[ndx]]; };
 
+	const auto getRefStarDistance = [this, b = m_vRefStarDistances.data(), e = m_vRefStarDistances.data() + m_vRefStarDistances.size()](
+		const int star1, const int star2) -> float
+	{
+#if !defined(NDEBUG) // Accelerate the search in debug mode by using raw pointers and avoiding iterators.
+		const auto it = std::lower_bound(b, e, CStarDist(star1, star2));
+		return it == e ? 0.0 : it->m_fDistance;
+#else
+		const auto it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(star1, star2));
+		return it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
+#endif
+	};
+
+
 	for (size_t i = 0, j = 0; i < targetStarDistances.size() && j < m_vRefStarDistances.size();)
 	{
 		if (std::fabs(TargetStar(i).m_fDistance - ReferenceStar(j).m_fDistance) <= static_cast<decltype(CStarDist::m_fDistance)>(MAXSTARDISTANCEDELTA))
@@ -1073,11 +1086,13 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 						{
 							if ((lRefStar3 != lRefStar1) && (lRefStar3 != lRefStar2))
 							{
-								it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(lRefStar1, lRefStar3));
-								const double fRefDistance13 = it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
+//								it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(lRefStar1, lRefStar3));
+//								const double fRefDistance13 = it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
+//								it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(lRefStar2, lRefStar3));
+//								const double fRefDistance23 = it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
 
-								it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(lRefStar2, lRefStar3));
-								const double fRefDistance23 = it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
+								const double fRefDistance13 = getRefStarDistance(lRefStar1, lRefStar3);
+								const double fRefDistance23 = getRefStarDistance(lRefStar2, lRefStar3);
 
 								if (std::abs(fRefDistance13 - fTgtDistance13) < MAXSTARDISTANCEDELTA && std::fabs(fRefDistance23 - fTgtDistance23) < MAXSTARDISTANCEDELTA)
 								{
@@ -1172,7 +1187,6 @@ void CMatchingStars::AdjustSize()
 	}
 }
 
-/* ------------------------------------------------------------------- */
 
 bool CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters& BilinearParameters)
 {
