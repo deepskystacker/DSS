@@ -40,6 +40,9 @@
     <Filter Include="Qt\i18n">
       <UniqueIdentifier>{5fa33482-6260-4ecd-9e29-d45fd46209d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tools\nn">
+      <UniqueIdentifier>{f88b0080-99d4-486f-b547-a856b552d8bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -174,6 +177,51 @@
     <ClCompile Include="..\Tools\qcustomplot.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\Tools\griddata.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\csa.c">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\minell.c">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\svd.c">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\hash.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\istack.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\lpi.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\nnai.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\nncommon.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\nncommon-vulnerable.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\nnpi.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\preader.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\triangle.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\version.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\nn\nn_delaunay.c">
+      <Filter>Tools\nn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -202,6 +250,63 @@
     </ClInclude>
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\csa.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\minell.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nan.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\svd.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\version.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\delaunay.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\delaunay_internal.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\hash.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\istack.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\istack_internal.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\nan.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\nn.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\nn_internal.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\nncommon.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\nnpi.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\preader.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\triangle.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\nn\config.h">
+      <Filter>Tools\nn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\griddata.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

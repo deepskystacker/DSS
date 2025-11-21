@@ -34,52 +34,27 @@
 **
 **
 ****************************************************************************/
-// QualityChart.h : header file
+// griddata.h : header file
 //
-#include <QWidget>
-#include "ui_QualityChart.h"
-#include "RegisterEngine.h"
-class ListBitMap;
 namespace DSS
 {
-	class QualityChart final: public QDialog, public Ui::QualityChart
-	{
-		Q_OBJECT
-	public:
-		QualityChart(const ListBitMap& lbmp, QWidget* parent = nullptr);
-		QualityChart(const QualityChart&) = delete;
-		QualityChart& operator=(const QualityChart&) = delete;
-		QualityChart(QualityChart&&) = delete;
+    class GridData
+    {
+    public:
+    enum class InterpolationType
+    {
+        GRID_CSA = 0,   // Bivariate Cubic Spline Approximation
+        GRID_NNAIDW,    // Natural Neighbors with Inverse Distance Weighting
+        GRID_NNLI,      // Natural Neighbors with Linear Interpolation
+        GRID_NNIDW,     // Natural Neighbors with Inverse Distance Weighting (KNN)
+        GRID_DTLI,      // Delaunay Triangulation Linear Interpolation
+        GRID_NNI        // Natural Neighbors Interpolation
+    };
 
-		~QualityChart()
-		{
-			if (colorMap)
-				customPlot->removePlottable(colorMap);
-		};
-
-	private:
-		CLightFrameInfo lightFrameInfo;
-
-	private:
-		std::vector<double> xValues;
-		std::vector<double> yValues;
-		std::vector<double> fwhmValues;
-		std::vector<double> circularityValues;
-		std::vector<double> xg;
-		std::vector<double> yg;
-		std::vector<double> zg;
-
-		QCPColorMap* colorMap{ nullptr };
-		QCPColorScale* colorScale{ nullptr };
-		QCPColorGradient* gradient{ nullptr };
-		QCPMarginGroup* marginGroup{ nullptr };
-
-		void connectSignalsToSlots();
-	
-	private slots:
-		void fwhmButtonClicked(bool checked);
-		void circularityButtonClicked(bool checked);
-
-
+    static void
+        interpolate(
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+            const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
+            InterpolationType type, float data = 0.0);
 	};
 }

@@ -39,6 +39,7 @@
 #include "FrameInfo.h"
 #include "stars.h"
 #include "QualityChart.h"
+#include "griddata.h"
 
 namespace DSS
 {
@@ -53,32 +54,82 @@ namespace DSS
 		//
 		// Fill the data vectors
 		//
-		for (uint32_t i = 0; i < lightFrameInfo.m_vStars.size(); ++i)
+		xValues.reserve(lightFrameInfo.m_vStars.size());
+		yValues.reserve(lightFrameInfo.m_vStars.size());
+		fwhmValues.reserve(lightFrameInfo.m_vStars.size());
+		circularityValues.reserve(lightFrameInfo.m_vStars.size());
+		for (const auto& star : lightFrameInfo.m_vStars)
 		{
-			const CStar& star = lightFrameInfo.m_vStars[i];
-			xValues.emplace_back(static_cast<uint32_t>(star.m_fX));
-			yValues.emplace_back(static_cast<uint32_t>(star.m_fY));
+			xValues.emplace_back(star.m_fX);
+			yValues.emplace_back(star.m_fY);
 			fwhmValues.emplace_back((star.m_fMeanRadius / CRegisteredFrame::RadiusFactor));
 			circularityValues.emplace_back(star.m_fCircularity);
 		}
 
+		//
+		// Set up the grid arrays.
+		//
+		int width = lightFrameInfo.m_lWidth;
+		int height = lightFrameInfo.m_lHeight;
+
+		//int xgSize = 1 + lightFrameInfo.m_lWidth / 10; 
+		//if (lightFrameInfo.m_lWidth % 10) ++xgSize;
+		//int ygSize = 1 + lightFrameInfo.m_lHeight / 10;
+		//if (lightFrameInfo.m_lHeight % 10) ++ygSize;
+		//xg.reserve(static_cast<size_t>(xgSize));
+		//yg.reserve(static_cast<size_t>(ygSize));
+		//zg.reserve(static_cast<size_t>(xgSize * ygSize));
+		xg.reserve(static_cast<size_t>(width));
+		yg.reserve(static_cast<size_t>(height));
+		zg.reserve(static_cast<size_t>(width * height));
+#if(0)
+		for (int x = 0; x < 10 * xgSize; x += 10)
+			xg.emplace_back(static_cast<double>((x==0) ? 0:(x-1)));
+		for (int y = 0; y < 10*ygSize; y += 10)
+			yg.emplace_back(static_cast<double>((y==0) ? 0:(y-1)));
+#endif
+		for (int x = 0; x < width; ++x)
+			xg.emplace_back(static_cast<double>(x));
+		for (int y = 0; y < height; ++y)
+			yg.emplace_back(static_cast<double>(y));
+
 		radioFWHM->setChecked(true);
 
-		customPlot->xAxis->setLabel("x");
-		customPlot->yAxis->setLabel("y");
+		customPlot->xAxis->setLabel("x");	
+		customPlot->yAxis->setLabel("y"); customPlot->yAxis->setRangeReversed(true);
 
 		colorScale = new QCPColorScale(customPlot);
 
 		colorMap = new QCPColorMap(customPlot->xAxis, customPlot->yAxis);
 
-		colorMap->data()->setSize(static_cast<int>(lightFrameInfo.m_lWidth), static_cast<int>(lightFrameInfo.m_lHeight));
-		colorMap->data()->setRange(QCPRange(0, static_cast<double>(lightFrameInfo.m_lWidth)),
-			QCPRange(0, static_cast<double>(lightFrameInfo.m_lHeight)));
+		gradient = new QCPColorGradient(QCPColorGradient::gpSpectrum);
+
+		marginGroup = new QCPMarginGroup(customPlot);
+
+		colorMap->data()->setSize(width,  height);
+		colorMap->data()->setRange(QCPRange(0, width-1), QCPRange(0, height-1));
+
+		gradient->setNanHandling(QCPColorGradient::nhTransparent);
+		gradient->setLevelCount(10);
+		//gradient->loadPreset(QCPColorGradient::gpSpectrum);
+		colorMap->setGradient(*gradient);
+
+		customPlot->plotLayout()->addElement(0, 1, colorScale); // add it to the right of the main axis rect
+		colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (default)
+		colorScale->setDataRange(colorMap->dataRange());
+		colorMap->setColorScale(colorScale); // associate the color map with the color scale
+
+		// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
+		customPlot->axisRect()->setMarginGroup(QCP::msBottom | QCP::msTop, marginGroup);
+		colorScale->setMarginGroup(QCP::msBottom | QCP::msTop, marginGroup);
 
 		connectSignalsToSlots();
 
-		fwhmButtonClicked(true);		// Display FWHM by default
-
+		//
+		// Fake up a click on the FWHM button to initialize the chart
+		//
+		QMetaObject::invokeMethod(radioFWHM, "clicked", Qt::ConnectionType::QueuedConnection,
+			Q_ARG(bool, true));
 	}
 
 	void QualityChart::connectSignalsToSlots()
@@ -94,35 +145,40 @@ namespace DSS
 	//
 	void QualityChart::fwhmButtonClicked(bool checked)
 	{
+		ZFUNCTRACE_RUNTIME();
 		if (checked)
 		{
 			//
 			// Clear the color map data
 			// 
-			colorMap->data()->fill(0.0);
+			colorMap->data()->fill(std::numeric_limits<double>::quiet_NaN());
+			ZTRACE_RUNTIME("FWHM interpolation");
+			//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zg, GridData::InterpolationType::GRID_CSA);
+			GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zg, GridData::InterpolationType::GRID_NNIDW, 10.f);
+			//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zg, GridData::InterpolationType::GRID_NNLI, 1.001f);
+			//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zg, GridData::InterpolationType::GRID_NNAIDW);
+			//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zg, GridData::InterpolationType::GRID_DTLI);
+			//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zg, GridData::InterpolationType::GRID_NNI, -std::numeric_limits<float>::max());
+			ZTRACE_RUNTIME("FWHM interpolation complete");
 
 			auto p = std::minmax_element(fwhmValues.cbegin(), fwhmValues.cend());
 			qDebug() << "FWHM Min:" << *p.first << " Max:" << *p.second;
+			p = std::minmax_element(zg.cbegin(), zg.cend());
+			qDebug() << "zg Min:" << *p.first << "zg Max:" << *p.second;
 			colorMap->setDataRange(QCPRange(*p.first, *p.second));
+
 			colorScale->axis()->setLabel("FWHM");
 
 			//
-			// Update the color map with FWHM values
+			// Update the color map with FWHM values from the interpolated grid
 			//
-			for (uint32_t i = 0; i < lightFrameInfo.m_vStars.size(); ++i)
+			for (size_t i = 0; i < xg.size(); ++i)
 			{
-				colorMap->data()->setCell(static_cast<int>(xValues[i]), static_cast<int>(yValues[i]), fwhmValues[i]);
+				for (size_t j = 0; j < yg.size(); ++j)
+				{
+					colorMap->data()->setCell(static_cast<int>(xg[i]), static_cast<int>(yg[j]), zg[i + j * xg.size()]);
+				}
 			}
-
-			customPlot->plotLayout()->addElement(0, 1, colorScale); // add it to the right of the main axis rect
-			colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
-			colorMap->setColorScale(colorScale); // associate the color map with the color scale
-			colorMap->setGradient(QCPColorGradient::gpGrayscale);
-
-			// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
-			QCPMarginGroup* marginGroup = new QCPMarginGroup(customPlot);
-			customPlot->axisRect()->setMarginGroup(QCP::msBottom | QCP::msTop, marginGroup);
-			colorScale->setMarginGroup(QCP::msBottom | QCP::msTop, marginGroup);
 
 			colorMap->rescaleAxes();
 			customPlot->replot();
@@ -155,11 +211,6 @@ namespace DSS
 			colorScale->setType(QCPAxis::atRight); // scale shall be vertical bar with tick/axis labels right (actually atRight is already the default)
 			colorMap->setColorScale(colorScale); // associate the color map with the color scale
 			colorMap->setGradient(QCPColorGradient::gpGrayscale);
-
-			// make sure the axis rect and color scale synchronize their bottom and top margins (so they line up):
-			QCPMarginGroup* marginGroup = new QCPMarginGroup(customPlot);
-			customPlot->axisRect()->setMarginGroup(QCP::msBottom | QCP::msTop, marginGroup);
-			colorScale->setMarginGroup(QCP::msBottom | QCP::msTop, marginGroup);
 
 			colorMap->rescaleAxes();
 			customPlot->replot();
