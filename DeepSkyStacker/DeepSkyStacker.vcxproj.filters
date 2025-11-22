@@ -174,9 +174,6 @@
     <ClCompile Include="QualityChart.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\qcustomplot.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\griddata.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -828,9 +825,6 @@
     </QtMoc>
     <QtMoc Include="QualityChart.h">
       <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="..\Tools\qcustomplot.h">
-      <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -40,6 +40,10 @@
 #include "ui_QualityChart.h"
 #include "RegisterEngine.h"
 class ListBitMap;
+class QwtPlotSpectrogram;
+class QwtMatrixRasterData;
+class QwtLinearColorMap;
+
 namespace DSS
 {
 	class QualityChart final: public QDialog, public Ui::QualityChart
@@ -53,8 +57,6 @@ namespace DSS
 
 		~QualityChart()
 		{
-			if (colorMap)
-				customPlot->removePlottable(colorMap);
 		};
 
 	private:
@@ -67,12 +69,11 @@ namespace DSS
 		std::vector<double> circularityValues;
 		std::vector<double> xg;
 		std::vector<double> yg;
-		std::vector<double> zg;
+		std::vector<double> zgFWHM;
+		std::vector<double> zgCircularity;
 
-		QCPColorMap* colorMap{ nullptr };
-		QCPColorScale* colorScale{ nullptr };
-		QCPColorGradient* gradient{ nullptr };
-		QCPMarginGroup* marginGroup{ nullptr };
+		QwtPlotSpectrogram* spectrogram{ nullptr };
+		QwtMatrixRasterData* rasterData{ nullptr };
 
 		void connectSignalsToSlots();
 	
