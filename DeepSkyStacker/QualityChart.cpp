@@ -37,7 +37,7 @@
 //
 #include "pch.h"
 #include "FrameInfo.h"
-#include "stars.h"
+#include "Stars.h"
 #include "QualityChart.h"
 #include "griddata.h"
 #include <QwtLinearColorMap>
