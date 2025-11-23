@@ -1007,7 +1007,7 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 	constexpr auto createIota = [](const size_t size) -> std::vector<int>
 	{
 		const auto iota = std::views::iota(0, static_cast<int>(size));
-		return std::vector<int>(iota.cbegin(), iota.cend());
+		return std::vector<int>(iota.begin(), iota.end());
 	};
 
 	// Compute patterns
