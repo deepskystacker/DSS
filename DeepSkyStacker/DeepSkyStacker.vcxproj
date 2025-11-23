@@ -148,7 +148,7 @@
     </ResourceCompile>
     <ProjectReference />
     <Link>
-      <AdditionalDependencies>user32.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;user32.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
@@ -229,7 +229,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <AdditionalIncludeDirectories>$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>user32.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;user32.lib;psapi.lib;$(Qt_LIBS_);htmlhelp.lib;cfitsio.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
@@ -283,13 +283,11 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Tools\imageview.cpp" />
-    <ClCompile Include="..\Tools\qcustomplot.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</TreatWarningAsError>
-      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</TreatWarningAsError>
+    <ClCompile Include="..\Tools\griddata.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WITH_CSA;WITH_NN;;NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="..\Tools\imageview.cpp" />
     <ClCompile Include="..\Tools\QElidedLabel.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
     <ClCompile Include="About.cpp">
@@ -401,7 +399,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="CheckAbove.h" />
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h" />
     <QtMoc Include="DeepSkyStacker.h" />
-    <QtMoc Include="..\Tools\qcustomplot.h" />
+    <ClInclude Include="..\Tools\griddata.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
     <ClInclude Include="dslr.h" />
@@ -541,6 +539,9 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   <ItemGroup>
     <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
       <Project>{cb7b75f1-08f4-4c8d-a7ef-2aa33e9a67f1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\qwt-6.3.0\qwt-6.3.0.vcxproj">
+      <Project>{0bd6ab93-b4d3-426e-9bed-18a9b0b5cd67}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ZClass\ZClass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
