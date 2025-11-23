@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
+message("CMake version: " ${CMAKE_VERSION})
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 cmake_policy(SET CMP0115 NEW)
@@ -35,8 +36,6 @@ message ("VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET})
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
-set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 
 project(DeepSkyStacker VERSION 6.1.1 LANGUAGES C CXX)
 
@@ -75,7 +74,7 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
-find_package(Qt6 6.10.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
+find_package(Qt6 6.10.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets Concurrent LinguistTools Svg PrintSupport)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 find_package(cfitsio REQUIRED)
@@ -134,6 +133,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
+add_subdirectory(qwt-6.3.0)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStackerKernel)
 # 
