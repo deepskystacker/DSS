@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>722</width>
-    <height>546</height>
+    <height>572</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,6 +79,13 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="message">
+     <property name="text">
+      <string notr="true"/>
      </property>
     </widget>
    </item>

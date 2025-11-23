@@ -1512,9 +1512,20 @@ Vă rugăm să schimbați numele.</translation>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="50"/>
-        <location filename="../QualityChart.cpp" line="239"/>
+        <location filename="../QualityChart.cpp" line="255"/>
         <source>Star Circularity</source>
         <translation>Circularitatea stelelor</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="92"/>
+        <location filename="../QualityChart.cpp" line="181"/>
+        <source>Interpolating FWHM data.  Please be patient.</source>
+        <translation>Interpolarea datelor FWHM. Vă rugăm să aveți răbdare.</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="230"/>
+        <source>Interpolating Circularity data.  Please be patient.</source>
+        <translation>Interpolarea datelor de circularitate. Vă rugăm să aveți răbdare.</translation>
     </message>
 </context>
 <context>

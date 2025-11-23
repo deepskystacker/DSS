@@ -1509,9 +1509,20 @@ Bitte ändern Sie den Namen.</translation>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="50"/>
-        <location filename="../QualityChart.cpp" line="239"/>
+        <location filename="../QualityChart.cpp" line="255"/>
         <source>Star Circularity</source>
         <translation>Sternkreisförmig</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="92"/>
+        <location filename="../QualityChart.cpp" line="181"/>
+        <source>Interpolating FWHM data.  Please be patient.</source>
+        <translation>Interpolation der FWHM-Daten. Bitte haben Sie Geduld.</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="230"/>
+        <source>Interpolating Circularity data.  Please be patient.</source>
+        <translation>Interpolation der Zirkularitätsdaten. Bitte haben Sie Geduld.</translation>
     </message>
 </context>
 <context>

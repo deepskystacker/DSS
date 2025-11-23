@@ -1513,9 +1513,20 @@ Změňte prosím název.</translation>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="50"/>
-        <location filename="../QualityChart.cpp" line="239"/>
+        <location filename="../QualityChart.cpp" line="255"/>
         <source>Star Circularity</source>
         <translation>Kruhovitost hvězd</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="92"/>
+        <location filename="../QualityChart.cpp" line="181"/>
+        <source>Interpolating FWHM data.  Please be patient.</source>
+        <translation>Interpolace dat FWHM. Prosím o trpělivost.</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="230"/>
+        <source>Interpolating Circularity data.  Please be patient.</source>
+        <translation>Interpolace dat kruhovitosti. Prosím o trpělivost.</translation>
     </message>
 </context>
 <context>

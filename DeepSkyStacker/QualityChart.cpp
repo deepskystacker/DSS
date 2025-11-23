@@ -89,6 +89,8 @@ namespace DSS
 	{
 		setupUi(this);
 		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());
+		message->setText(tr("Interpolating FWHM data.  Please be patient."));
+		message->repaint();
 		lightFrameInfo.SetBitmap(lbmp.filePath);
 
 		//
@@ -149,8 +151,12 @@ namespace DSS
 		//
 		// Fake up a click on the FWHM button to compute and display the chart
 		//
-		QMetaObject::invokeMethod(radioFWHM, "clicked", Qt::ConnectionType::QueuedConnection,
-			Q_ARG(bool, true));
+		QTimer::singleShot(100,
+			[this]()
+			{
+				QMetaObject::invokeMethod(this->radioFWHM, "clicked", Qt::ConnectionType::QueuedConnection,
+					Q_ARG(bool, true));
+			});
 	}
 
 	void QualityChart::connectSignalsToSlots()
@@ -172,12 +178,17 @@ namespace DSS
 			if (zgFWHM.empty())
 			{
 				ZTRACE_RUNTIME("FWHM interpolation");
+				message->setText(tr("Interpolating FWHM data.  Please be patient."));
+				message->repaint();
+
 				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_CSA);
 				GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNIDW, 10.f);
 				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNLI, 1.001f);
 				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNAIDW);
 				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_DTLI);
 				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNI, -std::numeric_limits<float>::max());
+				message->setText("");
+				message->repaint();
 				ZTRACE_RUNTIME("FWHM interpolation complete");
 			}
 	
@@ -216,12 +227,17 @@ namespace DSS
 			if (zgCircularity.empty())
 			{
 				ZTRACE_RUNTIME("Star Circularity interpolation");
+				message->setText(tr("Interpolating Circularity data.  Please be patient."));
+				message->repaint();
+
 				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_CSA);
 				GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
 				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNLI, 1.001f);
 				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNAIDW);
 				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_DTLI);
 				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNI, -std::numeric_limits<float>::max());
+				message->setText("");
+				message->repaint();
 				ZTRACE_RUNTIME("Star Circularity interpolation complete");
 			}
 

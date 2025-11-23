@@ -1508,9 +1508,20 @@ Wijzig de naam.</translation>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="50"/>
-        <location filename="../QualityChart.cpp" line="239"/>
+        <location filename="../QualityChart.cpp" line="255"/>
         <source>Star Circularity</source>
         <translation>Star Circulariteit</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="92"/>
+        <location filename="../QualityChart.cpp" line="181"/>
+        <source>Interpolating FWHM data.  Please be patient.</source>
+        <translation>Interpolatie van FWHM-gegevens. Even geduld.</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="230"/>
+        <source>Interpolating Circularity data.  Please be patient.</source>
+        <translation>Interpolatie van circulariteitsgegevens. Even geduld.</translation>
     </message>
 </context>
 <context>
