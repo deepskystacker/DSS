@@ -168,7 +168,6 @@ namespace DSS
 	{
 		ZFUNCTRACE_RUNTIME();
 		if (checked)
-
 		{
 			if (zgFWHM.empty())
 			{
@@ -214,6 +213,43 @@ namespace DSS
 	{
 		if (checked)
 		{
+			if (zgCircularity.empty())
+			{
+				ZTRACE_RUNTIME("Star Circularity interpolation");
+				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_CSA);
+				GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
+				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNLI, 1.001f);
+				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNAIDW);
+				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_DTLI);
+				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNI, -std::numeric_limits<float>::max());
+				ZTRACE_RUNTIME("Star Circularity interpolation complete");
+			}
+
+			//
+			// Clear the color map data
+			// 
+			rasterData->setValueMatrix(QVector<double>{}, 0);
+
+			auto p = std::minmax_element(zgCircularity.cbegin(), zgCircularity.cend());
+			qDebug() << "zgCircularity Min:" << *p.first << "zgCircularity Max:" << *p.second;
+
+			rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
+			// A color bar on the right axis
+			QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
+			rightAxis->setTitle(tr("Star Circularity"));
+			rightAxis->setColorBarEnabled(true);
+			rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new QualityColourMap);
+			qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
+			qualityPlot->setAxisVisible(QwtAxis::YRight);
+
+			qualityPlot->plotLayout()->setAlignCanvasToScales(true);
+
+			//
+			// Update the color map with Star Circularity values from the interpolated grid
+			//
+			rasterData->setValueMatrix(QVector<double>(zgCircularity.cbegin(), zgCircularity.cend()), static_cast<int>(xg.size()));
+
+			qualityPlot->replot();
 		}
 	}
 }
