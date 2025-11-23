@@ -3,7 +3,7 @@
  <class>DSS::QualityChart</class>
  <widget class="QDialog" name="DSS::QualityChart">
   <property name="windowModality">
-   <enum>Qt::WindowModality::WindowModal</enum>
+   <enum>Qt::WindowModality::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -15,6 +15,12 @@
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

@@ -82,17 +82,16 @@ public:
 namespace DSS
 {
 	QualityChart::QualityChart(const ListBitMap& lbmp, QWidget* parent) :
-		QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint),
+		QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint),
 		lightFrameInfo(lbmp),
 		spectrogram{ new QwtPlotSpectrogram("Star Quality") },
 		rasterData{ new QwtMatrixRasterData() }
 	{
 		setupUi(this);
 		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());
-		message->setText(tr("Interpolating FWHM data.  Please be patient."));
-		message->repaint();
 		lightFrameInfo.SetBitmap(lbmp.filePath);
 
+		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());		lightFrameInfo.SetBitmap(lbmp.filePath);
 		//
 		// Fill the data vectors
 		//
@@ -180,6 +179,9 @@ namespace DSS
 				ZTRACE_RUNTIME("FWHM interpolation");
 				message->setText(tr("Interpolating FWHM data.  Please be patient."));
 				message->repaint();
+#if defined(Q_OS_MAC)
+				QCoreApplication::processEvents();
+#endif
 
 				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_CSA);
 				GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNIDW, 10.f);
@@ -229,6 +231,9 @@ namespace DSS
 				ZTRACE_RUNTIME("Star Circularity interpolation");
 				message->setText(tr("Interpolating Circularity data.  Please be patient."));
 				message->repaint();
+#if defined(Q_OS_MAC)
+				QCoreApplication::processEvents();
+#endif
 
 				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_CSA);
 				GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
