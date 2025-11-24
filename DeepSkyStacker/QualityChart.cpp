@@ -195,13 +195,7 @@ namespace DSS
 #if defined(Q_OS_MAC)
 				QCoreApplication::processEvents();
 #endif
-
-				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_CSA);
 				GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNIDW, 10.f);
-				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNLI, 1.001f);
-				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNAIDW);
-				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_DTLI);
-				//GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNI, -std::numeric_limits<float>::max());
 				message->setText("");
 				message->repaint();
 				ZTRACE_RUNTIME("FWHM interpolation complete");
@@ -248,13 +242,7 @@ namespace DSS
 #if defined(Q_OS_MAC)
 				QCoreApplication::processEvents();
 #endif
-
-				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_CSA);
 				GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
-				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNLI, 1.001f);
-				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNAIDW);
-				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_DTLI);
-				//GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNI, -std::numeric_limits<float>::max());
 				message->setText("");
 				message->repaint();
 				ZTRACE_RUNTIME("Star Circularity interpolation complete");
