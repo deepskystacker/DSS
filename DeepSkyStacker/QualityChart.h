@@ -40,6 +40,7 @@
 #include "ui_QualityChart.h"
 #include "RegisterEngine.h"
 class ListBitMap;
+class QwtPlotRescaler;
 class QwtPlotSpectrogram;
 class QwtMatrixRasterData;
 class QwtLinearColorMap;

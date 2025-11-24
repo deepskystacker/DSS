@@ -42,6 +42,7 @@
 #include "griddata.h"
 #include <QwtLinearColorMap>
 #include <QwtPlotSpectrogram>
+#include <QWtLogScaleEngine>
 #include <QwtMatrixRasterData>
 #include <QwtScaleWidget>
 #include <QwtScaleDraw>
@@ -49,6 +50,7 @@
 //#include <QwtPlotPanner>
 #include <QwtPlotLayout>
 #include <QwtPlotRenderer>
+#include <QwtPlotRescaler>
 #include <QwtInterval>
 #include <QwtPainter>
 class QualityColourMap : public QwtLinearColorMap
@@ -78,7 +80,20 @@ public:
 		addColorStop(0.95, QColorConstants::Svg::white);
 	}
 };
+class LogarithmicColourMap : public QualityColourMap
+{
+public:
+	LogarithmicColourMap() : QualityColourMap()
+	{
+	}
 
+	QRgb rgb(const QwtInterval& interval, double value) const
+	{
+		return QwtLinearColorMap::rgb(QwtInterval(std::log10(interval.minValue()),
+			std::log10(interval.maxValue())),
+			std::log10(value));
+	}
+};
 namespace DSS
 {
 	QualityChart::QualityChart(const ListBitMap& lbmp, QWidget* parent) :
@@ -124,8 +139,6 @@ namespace DSS
 		rasterData->setInterval(Qt::YAxis, QwtInterval(0.0, static_cast<double>(height - 1)));
 		qualityPlot->setAxisScale(QwtPlot::xBottom, 0.0, static_cast<double>(width - 1), 500);
 		qualityPlot->setAxisScale(QwtPlot::yLeft, static_cast<double>(height - 1), 0.0, 500);
-
-		spectrogram->setColorMap(new QualityColourMap);
 
 		spectrogram->setData(rasterData);
 		spectrogram->attach(qualityPlot);
@@ -202,6 +215,7 @@ namespace DSS
 			auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
 			qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
 
+			spectrogram->setColorMap(new QualityColourMap);
 			rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
 			// A color bar on the right axis
 			QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
@@ -254,12 +268,15 @@ namespace DSS
 			auto p = std::minmax_element(zgCircularity.cbegin(), zgCircularity.cend());
 			qDebug() << "zgCircularity Min:" << *p.first << "zgCircularity Max:" << *p.second;
 
+			spectrogram->setColorMap(new LogarithmicColourMap);
 			rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
-			// A color bar on the right axis
+
+			// A color bar on the right axis with a logarithmic scale
+			qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
 			QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
 			rightAxis->setTitle(tr("Star Circularity"));
 			rightAxis->setColorBarEnabled(true);
-			rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new QualityColourMap);
+			rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new LogarithmicColourMap);
 			qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
 			qualityPlot->setAxisVisible(QwtAxis::YRight);
 
