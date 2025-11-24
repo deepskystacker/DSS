@@ -98,6 +98,7 @@ set(Header_Files
     "mrulist.h"
     "oldprogressdlg.h"
     "pch.h"
+    "QualityChart.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -110,6 +111,7 @@ set(Source_Files
     "oldprogressdlg.cpp"
     "selectrect.cpp"
     "toolbar.cpp"
+    "QualityChart.cpp"
 )
 if (LINUX)
     set(Source_Files ${Source_Files}
@@ -131,13 +133,14 @@ set(Ui_Files
 	"ui/ExplorerBar.ui"
 	"ui/ImageProperties.ui"
 	"ui/IntermediateFiles.ui"
+    "ui/OldProgressDlg.ui"
 	"ui/OutputTab.ui"
 	"ui/PictureList.ui"
 	"ui/PostCalibration.ui"
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
 	"ui/ProcessingSettingsDlg.ui"
-	"ui/OldProgressDlg.ui"
+	"ui/QualityChart.ui"
 	"ui/RawDDPSettings.ui"
 	"ui/RecommendedSettings.ui"
 	"ui/RegisterSettings.ui"
@@ -308,6 +311,7 @@ source_group("Resources" FILES ${Resources}	${Qt_Resource_Files} ${Resource_File
 
 set(Tools
     "../Tools/imageview.cpp"
+    "../Tools/griddata.cpp"
     "../Tools/QElidedLabel.cpp"
     "../Tools/QLinearGradientCtrl.cpp"
 )
@@ -394,6 +398,7 @@ target_include_directories(DeepSkyStacker PUBLIC
     GeneratedFiles
     ../ZClass
     ../Tools
+    ../qwt-6.3.0
   )
 
 if(WIN32)
@@ -476,9 +481,15 @@ target_link_libraries(DeepSkyStacker PRIVATE
     Qt6::Gui
     Qt6::Widgets
     Qt6::Network
+    Qt6::OpenGLWidgets
+    Qt6::OpenGL
+    Qt6::Concurrent
+    Qt6::Svg
+    Qt6::PrintSupport
 	DeepSkyStackerKernel
     DeepSkyStackerAVX
     ZClass
+    qwt-6.3.0
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)

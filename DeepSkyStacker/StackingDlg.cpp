@@ -692,7 +692,7 @@ namespace DSS
 		menu.addSeparator();
 		properties = menu.addAction(tr("Properties...", "IDM_PROPERTIES"));
 		properties->setData(int(Menuitem::properties));
-		quality = menu.addAction(tr("Plot quality metrics"));
+		quality = menu.addAction(tr("Star Quality Chart"));
 		quality->setData(int(Menuitem::quality));
 		menu.addSeparator();
 		copy = menu.addAction(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD"));

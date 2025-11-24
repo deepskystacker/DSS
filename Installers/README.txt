@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1 Beta 3
+Welcome to DeepSkyStacker 6.1.1 Beta 4
 ===============================
 
 Reporting problems:
@@ -13,7 +13,7 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.1 Beta 3
+Changes for DeepSkyStacker 6.1.1 Beta 4
 ================================
 
 1.  Support for writing and reading compressed FITS files.  Writing of compressed files is enabled by a check box
@@ -53,6 +53,10 @@ Changes for DeepSkyStacker 6.1.1 Beta 3
 
 12. Always use the Qt Widgets based File Dialog for consistency and also so that (e.g.) both .cr2 and .CR2
     files are found with a file filter that specifies *.cr2
+
+13. Add capability to produce "Contour Plots" of FWHM and "Star Circularity" for an image.  If the image has
+    been registered, right click on the image and select "Star Quality Chart".  Note that this takes a while
+    (about a minute or so) to produce the chart.   This may be useful to assess issues such as camera tilt.
 
 Changes for DeepSkyStacker 6.1.0
 ================================

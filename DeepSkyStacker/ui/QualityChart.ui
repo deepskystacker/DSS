@@ -3,18 +3,24 @@
  <class>DSS::QualityChart</class>
  <widget class="QDialog" name="DSS::QualityChart">
   <property name="windowModality">
-   <enum>Qt::WindowModality::WindowModal</enum>
+   <enum>Qt::WindowModality::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
-    <height>546</height>
+    <width>722</width>
+    <height>572</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -73,7 +79,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QCustomPlot" name="customPlot" native="true">
+    <widget class="QwtPlot" name="qualityPlot" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -82,13 +88,20 @@
      </property>
     </widget>
    </item>
+   <item>
+    <widget class="QLabel" name="message">
+     <property name="text">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>QwtPlot</class>
    <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
+   <header location="global">qwt_plot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
