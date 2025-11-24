@@ -55,8 +55,9 @@ Changes for DeepSkyStacker 6.1.1 Beta 4
     files are found with a file filter that specifies *.cr2
 
 13. Add capability to produce "Contour Plots" of FWHM and "Star Circularity" for an image.  If the image has
-    been registered, right click on the image and select "Star Quality Chart".  Note that this takes a while
-    (about a minute or so) to produce the chart.   This may be useful to assess issues such as camera tilt.
+    been registered, right click on the row with the image information in the list of images and select 
+    "Star Quality Chart".  Note that this takes a while (about a minute or so) to produce the chart.
+    This may be useful to assess issues such as camera tilt.
 
 Changes for DeepSkyStacker 6.1.0
 ================================
