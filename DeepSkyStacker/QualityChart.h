@@ -67,7 +67,6 @@ namespace DSS
 	private:
 		CLightFrameInfo lightFrameInfo;
 
-	private:
 		GridData* gridData;
 		std::vector<double> xValues;
 		std::vector<double> yValues;
