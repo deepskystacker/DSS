@@ -266,35 +266,35 @@ namespace DSS
 
 			if (!cancelled)
 			{
-			//
-			// Clear the color map data
-			// 
-			rasterData->setValueMatrix(QVector<double>{}, 0);
+				//
+				// Clear the color map data
+				// 
+				rasterData->setValueMatrix(QVector<double>{}, 0);
 
-			auto p = std::minmax_element(zgCircularity.cbegin(), zgCircularity.cend());
-			qDebug() << "zgCircularity Min:" << *p.first << "zgCircularity Max:" << *p.second;
+				auto p = std::minmax_element(zgCircularity.cbegin(), zgCircularity.cend());
+				qDebug() << "zgCircularity Min:" << *p.first << "zgCircularity Max:" << *p.second;
 
-			spectrogram->setColorMap(new LogarithmicColourMap);
-			rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
+				spectrogram->setColorMap(new LogarithmicColourMap);
+				rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
 
-			// A color bar on the right axis with a logarithmic scale
-			qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
-			QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
-			rightAxis->setTitle(tr("Star Circularity"));
-			rightAxis->setColorBarEnabled(true);
-			rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new LogarithmicColourMap);
-			qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
-			qualityPlot->setAxisVisible(QwtAxis::YRight);
+				// A color bar on the right axis with a logarithmic scale
+				qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
+				QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
+				rightAxis->setTitle(tr("Star Circularity"));
+				rightAxis->setColorBarEnabled(true);
+				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new LogarithmicColourMap);
+				qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
+				qualityPlot->setAxisVisible(QwtAxis::YRight);
 
-			qualityPlot->plotLayout()->setAlignCanvasToScales(true);
+				qualityPlot->plotLayout()->setAlignCanvasToScales(true);
 
-			//
-			// Update the color map with Star Circularity values from the interpolated grid
-			//
-			rasterData->setValueMatrix(QVector<double>(zgCircularity.cbegin(), zgCircularity.cend()), static_cast<int>(xg.size()));
+				//
+				// Update the color map with Star Circularity values from the interpolated grid
+				//
+				rasterData->setValueMatrix(QVector<double>(zgCircularity.cbegin(), zgCircularity.cend()), static_cast<int>(xg.size()));
 
-			qualityPlot->replot();
-			progressBar->reset();
+				qualityPlot->replot();
+				progressBar->reset();
 			}
 			else reject();
 		}
