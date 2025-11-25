@@ -199,12 +199,12 @@ namespace DSS
 				ZTRACE_RUNTIME("FWHM interpolation");
 				message->setText(tr("Interpolating FWHM data.  Please be patient."));
 				message->repaint();
-#if defined(Q_OS_MAC)
 				QCoreApplication::processEvents();
-#endif
+
 				interpolating = true;
 				gridData->interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNIDW, 10.f);
 				interpolating = false;
+				
 				message->setText("");
 				message->repaint();
 				ZTRACE_RUNTIME("FWHM interpolation complete");
@@ -238,6 +238,7 @@ namespace DSS
 				rasterData->setValueMatrix(QVector<double>(zgFWHM.cbegin(), zgFWHM.cend()), static_cast<int>(xg.size()));
 
 				qualityPlot->replot();
+				progressBar->reset();
 			}
 			else reject();
 		}
@@ -252,12 +253,12 @@ namespace DSS
 				ZTRACE_RUNTIME("Star Circularity interpolation");
 				message->setText(tr("Interpolating Circularity data.  Please be patient."));
 				message->repaint();
-#if defined(Q_OS_MAC)
 				QCoreApplication::processEvents();
-#endif
+
 				interpolating = true;
 				gridData->interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
 				interpolating = false;
+
 				message->setText("");
 				message->repaint();
 				ZTRACE_RUNTIME("Star Circularity interpolation complete");
@@ -293,6 +294,7 @@ namespace DSS
 			rasterData->setValueMatrix(QVector<double>(zgCircularity.cbegin(), zgCircularity.cend()), static_cast<int>(xg.size()));
 
 			qualityPlot->replot();
+			progressBar->reset();
 			}
 			else reject();
 		}
