@@ -38,23 +38,81 @@
 //
 namespace DSS
 {
-    class GridData
+	class GridData : public QObject
     {
+        Q_OBJECT
+        friend class QualityChart;
     public:
-    enum class InterpolationType
-    {
-        GRID_CSA = 0,   // Bivariate Cubic Spline Approximation
-        GRID_NNAIDW,    // Natural Neighbors with Inverse Distance Weighting
-        GRID_NNLI,      // Natural Neighbors with Linear Interpolation
-        GRID_NNIDW,     // Natural Neighbors with Inverse Distance Weighting (KNN)
-        GRID_DTLI,      // Delaunay Triangulation Linear Interpolation
-        GRID_NNI        // Natural Neighbors Interpolation
-    };
+        enum class InterpolationType
+        {
+            GRID_CSA = 0,   // Bivariate Cubic Spline Approximation
+            GRID_NNAIDW,    // Natural Neighbors with Inverse Distance Weighting
+            GRID_NNLI,      // Natural Neighbors with Linear Interpolation
+            GRID_NNIDW,     // Natural Neighbors with Inverse Distance Weighting (KNN)
+            GRID_DTLI,      // Delaunay Triangulation Linear Interpolation
+            GRID_NNI        // Natural Neighbors Interpolation
+        };
 
-    static void
-        interpolate(
-            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
-            InterpolationType type, float data = 0.0);
-	};
+        void
+            interpolate(
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
+                InterpolationType type, float data = 0.0);
+
+    signals:
+        void
+            setProgressRange(int min, int max);
+        void
+            setProgressValue(int amount);
+
+    private:
+        inline constexpr static size_t KNN_MAX_ORDER = 100;
+
+        typedef struct pt
+        {
+            double dist;
+            int item;
+        }PT;
+
+        inline static thread_local PT items[KNN_MAX_ORDER];
+
+        void
+            grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
+
+        void
+            grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
+                double threshold);
+
+        void
+            grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
+                int knn_order);
+
+#ifdef WITH_CSA
+        void
+            grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
+#endif
+
+#ifdef WITH_NN
+        void
+            grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
+                double wtmin);
+
+        void
+            grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
+#endif
+
+        void
+            dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order);
+        void
+            dist2(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y);
+
+        bool cancel{ false };
+
+    };
 }

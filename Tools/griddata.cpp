@@ -60,61 +60,11 @@ extern "C"
 }
 #endif
 
-namespace
-{
-    // forward declarations
-    static void
-        grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
-
-    static void
-        grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
-            double threshold);
-
-    static void
-        grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
-            int knn_order);
-
-#ifdef WITH_CSA
-    static void
-        grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
-#endif
-
-#ifdef WITH_NN
-    static void
-        grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
-            double wtmin);
-
-    static void
-        grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
-#endif
-
-    static void
-        dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order);
-    static void
-        dist2(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y);
-
-#define KNN_MAX_ORDER    100
-
-    typedef struct pt
-    {
-        double dist;
-        int item;
-    }PT;
-
-    thread_local PT items[KNN_MAX_ORDER];
-} // anonymous namespace
-
 namespace DSS
 {
     //--------------------------------------------------------------------------
     //
-    // GriddData::interpolate(): grids data from irregularly sampled data.
+    // GridData::interpolate(): grids data from irregularly sampled data.
     //
     //    Real world data is frequently irregularly sampled, but most 3D plots
     //    require regularly gridded data. This function does exactly this
@@ -211,6 +161,7 @@ namespace DSS
         zg.resize(zgSize, 0.0);
         // std::numeric_limits<double>::quiet_NaN() signals a not processed grid point
 
+		emit setProgressRange(0, static_cast<int>(xg.size()-1));
         switch (type)
         {
         case (InterpolationType::GRID_CSA): //  Bivariate Cubic Spline Approximation
@@ -286,10 +237,7 @@ namespace DSS
             throw invParm;
         }
     }
-}
 
-namespace
-{
 #ifdef WITH_CSA
     //
     // Bivariate Cubic Spline Approximation using Pavel Sakov's csa package
@@ -297,8 +245,8 @@ namespace
     // std::numeric_limits<double>::quiet_NaN()s are returned where no interpolation can be done.
     //
 
-    static void
-        grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         //std::vector<double> xt, yt, zt;
@@ -360,8 +308,8 @@ namespace
     // neighbor.
     //
 
-    static void
-        grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             int knn_order)
     {
@@ -389,12 +337,17 @@ namespace
 #endif
             knn_order = 15;
         }
+
+		int progress = 0;   // progress counter
         // 
 		// Use ALL available processors for the interpolation
-		//
-#pragma omp parallel for num_threads(omp_get_num_procs()) private(wi, nt)
+        // 
+		int processorCount = omp_get_num_procs();
+#pragma omp parallel for num_threads(processorCount) private(wi, nt)
         for (int i = 0; i < xg.size(); i++)
         {
+			if (cancel) continue;       // Only way to break out of an openMP parallel for loop
+
             for (int j = 0; j < yg.size(); j++)
             {
                 dist1(xg[i], yg[j], x, y, knn_order);
@@ -427,17 +380,21 @@ namespace
                 else
                     zg[i + j*xg.size()] = std::numeric_limits<double>::quiet_NaN();
             }
+            if (omp_get_thread_num() == 0)
+            {
+                emit setProgressValue(std::min(progress += processorCount, static_cast<int>(xg.size()-1)));
+                QCoreApplication::processEvents();
+            }
         }
     }
-
     // Nearest Neighbors Linear Interpolation
     //
     // The z value at the grid position will be interpolated from the
     // plane passing through the 3 nearest neighbors.
     //
 
-    static void
-        grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             double threshold)
     {
@@ -627,8 +584,8 @@ namespace
     // Inverse Distance Weighted is used as in GRID_NNIDW.
     //
 
-    static void
-        grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         double d, nt;
@@ -671,8 +628,8 @@ namespace
     // be interpolated and are set to std::numeric_limits<double>::quiet_NaN().
     //
 
-    static void
-        grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         point* pin, * pgrid, * pt;
@@ -725,8 +682,8 @@ namespace
     // be interpolated and are set to std::numeric_limits<double>::quiet_NaN().
     //
 
-    static void
-        grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             double wtmin)
     {
@@ -793,8 +750,8 @@ namespace
     // [gxvalue, gyvalue].
     //
 
-    static void
-        dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order)
+    void
+        GridData::dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order)
     {
         double d, max_dist;
         size_t   max_slot, i, j;
@@ -843,8 +800,8 @@ namespace
     // the grid point.
     //
 
-    static void
-        dist2(const double gxvalue, const double gyvalue, 
+    void
+        GridData::dist2(const double gxvalue, const double gyvalue,
             const std::vector<double> x, const std::vector<double> y)
     {
         double d;
@@ -884,8 +841,8 @@ namespace
     }
 
 #ifdef PLPLOT_NONN // another DTLI, based only on QHULL, not nn
-    static void
-        grid_adtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_adtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg  PLF2OPS zops, PLPointer zgp)
     {
         coordT* points;          // array of coordinates for each point
@@ -1056,4 +1013,4 @@ namespace
                 totlong, curlong);
     }
 #endif // PLPLOT_NONN
-} // anonymous namespace
+}

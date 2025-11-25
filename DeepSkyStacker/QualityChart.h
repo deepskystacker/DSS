@@ -44,6 +44,10 @@ class QwtPlotRescaler;
 class QwtPlotSpectrogram;
 class QwtMatrixRasterData;
 class QwtLinearColorMap;
+namespace DSS
+{
+	class GridData;
+}
 
 namespace DSS
 {
@@ -64,6 +68,7 @@ namespace DSS
 		CLightFrameInfo lightFrameInfo;
 
 	private:
+		GridData* gridData;
 		std::vector<double> xValues;
 		std::vector<double> yValues;
 		std::vector<double> fwhmValues;
@@ -77,10 +82,14 @@ namespace DSS
 		QwtMatrixRasterData* rasterData{ nullptr };
 
 		void connectSignalsToSlots();
+
+		bool cancelled{ false };
+		bool interpolating{ false };
 	
 	private slots:
 		void fwhmButtonClicked(bool checked);
 		void circularityButtonClicked(bool checked);
+		void cancelPressed();
 
 
 	};

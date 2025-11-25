@@ -399,7 +399,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="CheckAbove.h" />
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h" />
     <QtMoc Include="DeepSkyStacker.h" />
-    <ClInclude Include="..\Tools\griddata.h" />
+    <QtMoc Include="..\Tools\griddata.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
     <ClInclude Include="dslr.h" />

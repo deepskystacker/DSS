@@ -99,6 +99,7 @@ namespace DSS
 	QualityChart::QualityChart(const ListBitMap& lbmp, QWidget* parent) :
 		QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint),
 		lightFrameInfo(lbmp),
+		gridData{ new GridData },
 		spectrogram{ new QwtPlotSpectrogram("Star Quality") },
 		rasterData{ new QwtMatrixRasterData() }
 	{
@@ -177,6 +178,12 @@ namespace DSS
 			this, &QualityChart::circularityButtonClicked);
 		connect(radioFWHM, &QRadioButton::clicked,
 			this, &QualityChart::fwhmButtonClicked);
+		connect(cancelButton, &QPushButton::clicked,
+			this, &QualityChart::cancelPressed);
+		connect(gridData, &GridData::setProgressRange,
+			progressBar, &QProgressBar::setRange);
+		connect(gridData, &GridData::setProgressValue,
+			progressBar, &QProgressBar::setValue);
 	}
 
 	//
@@ -195,38 +202,44 @@ namespace DSS
 #if defined(Q_OS_MAC)
 				QCoreApplication::processEvents();
 #endif
-				GridData::interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNIDW, 10.f);
+				interpolating = true;
+				gridData->interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNIDW, 10.f);
+				interpolating = false;
 				message->setText("");
 				message->repaint();
 				ZTRACE_RUNTIME("FWHM interpolation complete");
 			}
-	
-			//
-			// Clear the color map data
-			// 
-			rasterData->setValueMatrix(QVector<double>{}, 0);
 
-			auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
-			qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
+			if (!cancelled)
+			{
+				//
+				// Clear the color map data
+				// 
+				rasterData->setValueMatrix(QVector<double>{}, 0);
 
-			spectrogram->setColorMap(new QualityColourMap);
-			rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
-			// A color bar on the right axis
-			QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
-			rightAxis->setTitle("FWHM");
-			rightAxis->setColorBarEnabled(true);
-			rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new QualityColourMap);
-			qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
-			qualityPlot->setAxisVisible(QwtAxis::YRight);
+				auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
+				qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
 
-			qualityPlot->plotLayout()->setAlignCanvasToScales(true);
-			
-			//
-			// Update the color map with FWHM values from the interpolated grid
-			//
-			rasterData->setValueMatrix(QVector<double>(zgFWHM.cbegin(), zgFWHM.cend()), static_cast<int>(xg.size()));
+				spectrogram->setColorMap(new QualityColourMap);
+				rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
+				// A color bar on the right axis
+				QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
+				rightAxis->setTitle("FWHM");
+				rightAxis->setColorBarEnabled(true);
+				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new QualityColourMap);
+				qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
+				qualityPlot->setAxisVisible(QwtAxis::YRight);
 
-			qualityPlot->replot();
+				qualityPlot->plotLayout()->setAlignCanvasToScales(true);
+
+				//
+				// Update the color map with FWHM values from the interpolated grid
+				//
+				rasterData->setValueMatrix(QVector<double>(zgFWHM.cbegin(), zgFWHM.cend()), static_cast<int>(xg.size()));
+
+				qualityPlot->replot();
+			}
+			else reject();
 		}
 	}
 
@@ -242,12 +255,16 @@ namespace DSS
 #if defined(Q_OS_MAC)
 				QCoreApplication::processEvents();
 #endif
-				GridData::interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
+				interpolating = true;
+				gridData->interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
+				interpolating = false;
 				message->setText("");
 				message->repaint();
 				ZTRACE_RUNTIME("Star Circularity interpolation complete");
 			}
 
+			if (!cancelled)
+			{
 			//
 			// Clear the color map data
 			// 
@@ -276,6 +293,18 @@ namespace DSS
 			rasterData->setValueMatrix(QVector<double>(zgCircularity.cbegin(), zgCircularity.cend()), static_cast<int>(xg.size()));
 
 			qualityPlot->replot();
+			}
+			else reject();
 		}
+	}
+
+	void QualityChart::cancelPressed()
+	{
+		if (interpolating)
+		{
+			gridData->cancel = true;		// Stop the interpolation
+			cancelled = true;
+		}
+		else reject();
 	}
 }
