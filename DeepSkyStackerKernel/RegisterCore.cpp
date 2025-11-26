@@ -206,16 +206,15 @@ namespace {
 		star.m_fSmallMinorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 270);
 
 		//
-		// Compute eccentricity
-		//
-		auto majorAxis = (star.m_fLargeMajorAxis + star.m_fSmallMajorAxis) / 2.0;
-		auto minorAxis = (star.m_fLargeMinorAxis + star.m_fSmallMinorAxis) / 2.0;
+		// Compute eccentricity - definition of the ecccentricity formula says to use the semi-minor and
+		// semi-major axis values, but using the minor and major axis values gives the same result.
+		// 
+		auto majorAxis = (star.m_fLargeMajorAxis + star.m_fSmallMajorAxis);
+		auto minorAxis = (star.m_fLargeMinorAxis + star.m_fSmallMinorAxis);
 		if (0 != majorAxis) // Just to avoid a division by zero, should never happen.
 		{
 			star.eccentricity = std::sqrt(1.0 - ((minorAxis * minorAxis)/(majorAxis * majorAxis)));
 		}
-
-
 	}
 }
 
