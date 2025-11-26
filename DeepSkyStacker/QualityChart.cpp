@@ -53,10 +53,10 @@
 #include <QwtPlotRescaler>
 #include <QwtInterval>
 #include <QwtPainter>
-class QualityColourMap : public QwtLinearColorMap
+class FWHMColourMap : public QwtLinearColorMap
 {
 public:
-	QualityColourMap() : QwtLinearColorMap(Qt::black, Qt::white, QwtColorMap::RGB)
+	FWHMColourMap() : QwtLinearColorMap(Qt::black, Qt::white, QwtColorMap::RGB)
 	{
 		setMode(QwtLinearColorMap::Mode::FixedColors);
 		addColorStop(0.05, QColor(0, 0, 96));
@@ -80,20 +80,35 @@ public:
 		addColorStop(0.95, QColorConstants::Svg::white);
 	}
 };
-class LogarithmicColourMap : public QualityColourMap
+class EccentricityColourMap : public QwtLinearColorMap
 {
 public:
-	LogarithmicColourMap() : QualityColourMap()
+	EccentricityColourMap() : QwtLinearColorMap(Qt::green, Qt::red, QwtColorMap::RGB)
 	{
-	}
-
-	QRgb rgb(const QwtInterval& interval, double value) const
-	{
-		return QwtLinearColorMap::rgb(QwtInterval(std::log10(interval.minValue()),
-			std::log10(interval.maxValue())),
-			std::log10(value));
+		setMode(QwtLinearColorMap::Mode::FixedColors);
+		addColorStop(0.125, QColorConstants::Svg::forestgreen);
+		addColorStop(0.250, QColorConstants::Svg::yellowgreen);
+		addColorStop(0.375, QColorConstants::Svg::yellow);
+		addColorStop(0.500, QColorConstants::Svg::gold);
+		addColorStop(0.625, QColorConstants::Svg::orange);
+		addColorStop(0.750, QColorConstants::Svg::orangered);
+		addColorStop(0.875, QColorConstants::Svg::red);
 	}
 };
+//class LogarithmicColourMap : public QualityColourMap
+//{
+//public:
+//	LogarithmicColourMap() : QualityColourMap()
+//	{
+//	}
+//
+//	QRgb rgb(const QwtInterval& interval, double value) const
+//	{
+//		return QwtLinearColorMap::rgb(QwtInterval(std::log10(interval.minValue()),
+//			std::log10(interval.maxValue())),
+//			std::log10(value));
+//	}
+//};
 namespace DSS
 {
 	QualityChart::QualityChart(const ListBitMap& lbmp, QWidget* parent) :
@@ -151,6 +166,7 @@ namespace DSS
 		yg.reserve(height);
 		zgFWHM.reserve(width * height);
 		zgEccentricity.reserve(width * height);
+		qDebug() << "Grid size:" << width << "x" << height << "=" << (width * height);
 
 		for (size_t x = 0; x < width; ++x)
 			xg.emplace_back(static_cast<double>(x));
@@ -220,13 +236,13 @@ namespace DSS
 				auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
 				qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
 
-				spectrogram->setColorMap(new QualityColourMap);
+				spectrogram->setColorMap(new FWHMColourMap);
 				rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
 				// A color bar on the right axis
 				QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
 				rightAxis->setTitle("FWHM");
 				rightAxis->setColorBarEnabled(true);
-				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new QualityColourMap);
+				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new FWHMColourMap);
 				qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
 				qualityPlot->setAxisVisible(QwtAxis::YRight);
 
@@ -274,7 +290,7 @@ namespace DSS
 				auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
 				qDebug() << "zgEccentricity Min:" << *p.first << "zgEccentricity Max:" << *p.second;
 
-				spectrogram->setColorMap(new QualityColourMap);
+				spectrogram->setColorMap(new EccentricityColourMap);
 				rasterData->setInterval(Qt::ZAxis, QwtInterval(0.0, 1.0));
 
 				// A color bar on the right axis
@@ -282,12 +298,13 @@ namespace DSS
 				QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
 				rightAxis->setTitle(tr("Star Eccentricity"));
 				rightAxis->setColorBarEnabled(true);
-				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new QualityColourMap);
+				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new EccentricityColourMap);
 				qualityPlot->setAxisScale(QwtAxis::YRight, 1.0, 0.0);
 				qualityPlot->setAxisVisible(QwtAxis::YRight);
 
 				qualityPlot->plotLayout()->setAlignCanvasToScales(true);
 
+				qDebug() << zgEccentricity[5202 * 3463]; // Test value
 				//
 				// Update the color map with Star Eccentricity values from the interpolated grid
 				//
