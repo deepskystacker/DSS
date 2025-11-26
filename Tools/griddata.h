@@ -53,6 +53,18 @@ namespace DSS
             GRID_NNI        // Natural Neighbors Interpolation
         };
 
+        GridData(QObject* parent = nullptr) : QObject(parent)
+        {
+		};
+
+        GridData(const GridData&) = delete;
+        GridData& operator=(const GridData&) = delete;
+        GridData(GridData&&) = delete;
+
+        ~GridData()
+        {
+        };
+
         void
             interpolate(
                 const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,

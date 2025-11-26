@@ -1505,9 +1505,9 @@ Lütfen adı değiştirin.</translation>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="56"/>
-        <location filename="../QualityChart.cpp" line="282"/>
-        <source>Star Circularity</source>
-        <translation>Yıldız Daireselliği</translation>
+        <location filename="../QualityChart.cpp" line="283"/>
+        <source>Star Eccentricity</source>
+        <translation>Yıldız Eksantrikliği</translation>
     </message>
     <message>
         <location filename="../ui/QualityChart.ui" line="131"/>
@@ -1520,9 +1520,9 @@ Lütfen adı değiştirin.</translation>
         <translation>FWHM verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="253"/>
-        <source>Interpolating Circularity data.  Please be patient.</source>
-        <translation>Dairesellik verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
+        <location filename="../QualityChart.cpp" line="254"/>
+        <source>Interpolating Eccentricity data.  Please be patient.</source>
+        <translation>Eksantriklik verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
     </message>
 </context>
 <context>

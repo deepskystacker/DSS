@@ -1501,9 +1501,9 @@ Please change the name.</source>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="56"/>
-        <location filename="../QualityChart.cpp" line="282"/>
-        <source>Star Circularity</source>
-        <translation>星形圓度</translation>
+        <location filename="../QualityChart.cpp" line="283"/>
+        <source>Star Eccentricity</source>
+        <translation>星偏心率</translation>
     </message>
     <message>
         <location filename="../ui/QualityChart.ui" line="131"/>
@@ -1516,9 +1516,9 @@ Please change the name.</source>
         <translation>正在插值半峰全寬（FWHM）資料。請耐心等待。</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="253"/>
-        <source>Interpolating Circularity data.  Please be patient.</source>
-        <translation>正在插值圓度資料。請耐心等待。</translation>
+        <location filename="../QualityChart.cpp" line="254"/>
+        <source>Interpolating Eccentricity data.  Please be patient.</source>
+        <translation>內插偏心率數據。 請耐心等待。</translation>
     </message>
 </context>
 <context>

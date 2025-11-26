@@ -71,11 +71,11 @@ namespace DSS
 		std::vector<double> xValues;
 		std::vector<double> yValues;
 		std::vector<double> fwhmValues;
-		std::vector<double> circularityValues;
+		std::vector<double> eccentricityValues;
 		std::vector<double> xg;
 		std::vector<double> yg;
 		std::vector<double> zgFWHM;
-		std::vector<double> zgCircularity;
+		std::vector<double> zgEccentricity;
 
 		QwtPlotSpectrogram* spectrogram{ nullptr };
 		QwtMatrixRasterData* rasterData{ nullptr };
@@ -87,7 +87,7 @@ namespace DSS
 	
 	private slots:
 		void fwhmButtonClicked(bool checked);
-		void circularityButtonClicked(bool checked);
+		void eccentricityButtonClicked(bool checked);
 		void cancelPressed();
 
 

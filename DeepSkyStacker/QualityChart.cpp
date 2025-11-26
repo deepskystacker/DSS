@@ -99,7 +99,7 @@ namespace DSS
 	QualityChart::QualityChart(const ListBitMap& lbmp, QWidget* parent) :
 		QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint),
 		lightFrameInfo(lbmp),
-		gridData{ new GridData },
+		gridData{ new GridData(this)},
 		spectrogram{ new QwtPlotSpectrogram("Star Quality") },
 		rasterData{ new QwtMatrixRasterData() }
 	{
@@ -114,13 +114,13 @@ namespace DSS
 		xValues.reserve(lightFrameInfo.m_vStars.size());
 		yValues.reserve(lightFrameInfo.m_vStars.size());
 		fwhmValues.reserve(lightFrameInfo.m_vStars.size());
-		circularityValues.reserve(lightFrameInfo.m_vStars.size());
+		eccentricityValues.reserve(lightFrameInfo.m_vStars.size());
 		for (const auto& star : lightFrameInfo.m_vStars)
 		{
 			xValues.emplace_back(star.m_fX);
 			yValues.emplace_back(star.m_fY);
 			fwhmValues.emplace_back((star.m_fMeanRadius / CRegisteredFrame::RadiusFactor));
-			circularityValues.emplace_back(star.m_fCircularity);
+			eccentricityValues.emplace_back(star.eccentricity);
 		}
 
 		spectrogram->setRenderThreadCount(0); // use system specific thread count
@@ -150,7 +150,7 @@ namespace DSS
 		xg.reserve(width);
 		yg.reserve(height);
 		zgFWHM.reserve(width * height);
-		zgCircularity.reserve(width * height);
+		zgEccentricity.reserve(width * height);
 
 		for (size_t x = 0; x < width; ++x)
 			xg.emplace_back(static_cast<double>(x));
@@ -174,8 +174,8 @@ namespace DSS
 
 	void QualityChart::connectSignalsToSlots()
 	{
-		connect(radioCircularity, &QRadioButton::clicked,
-			this, &QualityChart::circularityButtonClicked);
+		connect(radioEccentricity, &QRadioButton::clicked,
+			this, &QualityChart::eccentricityButtonClicked);
 		connect(radioFWHM, &QRadioButton::clicked,
 			this, &QualityChart::fwhmButtonClicked);
 		connect(cancelButton, &QPushButton::clicked,
@@ -244,24 +244,24 @@ namespace DSS
 		}
 	}
 
-	void QualityChart::circularityButtonClicked(bool checked)
+	void QualityChart::eccentricityButtonClicked(bool checked)
 	{
 		if (checked)
 		{
-			if (zgCircularity.empty())
+			if (zgEccentricity.empty())
 			{
-				ZTRACE_RUNTIME("Star Circularity interpolation");
-				message->setText(tr("Interpolating Circularity data.  Please be patient."));
+				ZTRACE_RUNTIME("Star Eccentricity interpolation");
+				message->setText(tr("Interpolating Eccentricity data.  Please be patient."));
 				message->repaint();
 				QCoreApplication::processEvents();
 
 				interpolating = true;
-				gridData->interpolate(xValues, yValues, circularityValues, xg, yg, zgCircularity, GridData::InterpolationType::GRID_NNIDW, 10.f);
+				gridData->interpolate(xValues, yValues, eccentricityValues, xg, yg, zgEccentricity, GridData::InterpolationType::GRID_NNIDW, 10.f);
 				interpolating = false;
 
 				message->setText("");
 				message->repaint();
-				ZTRACE_RUNTIME("Star Circularity interpolation complete");
+				ZTRACE_RUNTIME("Star Eccentricity interpolation complete");
 			}
 
 			if (!cancelled)
@@ -271,27 +271,27 @@ namespace DSS
 				// 
 				rasterData->setValueMatrix(QVector<double>{}, 0);
 
-				auto p = std::minmax_element(zgCircularity.cbegin(), zgCircularity.cend());
-				qDebug() << "zgCircularity Min:" << *p.first << "zgCircularity Max:" << *p.second;
+				auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
+				qDebug() << "zgEccentricity Min:" << *p.first << "zgEccentricity Max:" << *p.second;
 
-				spectrogram->setColorMap(new LogarithmicColourMap);
-				rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
+				spectrogram->setColorMap(new QualityColourMap);
+				rasterData->setInterval(Qt::ZAxis, QwtInterval(0.0, 1.0));
 
-				// A color bar on the right axis with a logarithmic scale
-				qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
+				// A color bar on the right axis
+				// qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
 				QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
-				rightAxis->setTitle(tr("Star Circularity"));
+				rightAxis->setTitle(tr("Star Eccentricity"));
 				rightAxis->setColorBarEnabled(true);
-				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new LogarithmicColourMap);
-				qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
+				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new QualityColourMap);
+				qualityPlot->setAxisScale(QwtAxis::YRight, 1.0, 0.0);
 				qualityPlot->setAxisVisible(QwtAxis::YRight);
 
 				qualityPlot->plotLayout()->setAlignCanvasToScales(true);
 
 				//
-				// Update the color map with Star Circularity values from the interpolated grid
+				// Update the color map with Star Eccentricity values from the interpolated grid
 				//
-				rasterData->setValueMatrix(QVector<double>(zgCircularity.cbegin(), zgCircularity.cend()), static_cast<int>(xg.size()));
+				rasterData->setValueMatrix(QVector<double>(zgEccentricity.cbegin(), zgEccentricity.cend()), static_cast<int>(xg.size()));
 
 				qualityPlot->replot();
 				progressBar->reset();

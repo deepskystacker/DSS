@@ -1471,8 +1471,8 @@ Please change the name.</source>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="56"/>
-        <location filename="../QualityChart.cpp" line="282"/>
-        <source>Star Circularity</source>
+        <location filename="../QualityChart.cpp" line="283"/>
+        <source>Star Eccentricity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1486,8 +1486,8 @@ Please change the name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="253"/>
-        <source>Interpolating Circularity data.  Please be patient.</source>
+        <location filename="../QualityChart.cpp" line="254"/>
+        <source>Interpolating Eccentricity data.  Please be patient.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

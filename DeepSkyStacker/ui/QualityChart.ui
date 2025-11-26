@@ -45,7 +45,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioCircularity">
+      <widget class="QRadioButton" name="radioEccentricity">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -53,7 +53,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Star Circularity</string>
+        <string>Star Eccentricity</string>
        </property>
        <attribute name="buttonGroup">
         <string notr="true">buttonGroup</string>
