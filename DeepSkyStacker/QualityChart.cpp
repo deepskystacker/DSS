@@ -173,7 +173,7 @@ namespace DSS
 		for (size_t y = 0; y < height; ++y)
 			yg.emplace_back(static_cast<double>(y));
 
-		radioFWHM->setChecked(true);
+		radioEccentricity->setChecked(true);
 
 		connectSignalsToSlots();
 
@@ -183,7 +183,7 @@ namespace DSS
 		QTimer::singleShot(100,
 			[this]()
 			{
-				QMetaObject::invokeMethod(this->radioFWHM, "clicked", Qt::ConnectionType::QueuedConnection,
+				QMetaObject::invokeMethod(this->radioEccentricity, "clicked", Qt::ConnectionType::QueuedConnection,
 					Q_ARG(bool, true));
 			});
 	}

@@ -29,22 +29,6 @@
       <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
      </property>
      <item>
-      <widget class="QRadioButton" name="radioFWHM">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>20</height>
-        </size>
-       </property>
-       <property name="text">
-        <string notr="true">FWHM</string>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">buttonGroup</string>
-       </attribute>
-      </widget>
-     </item>
-     <item>
       <widget class="QRadioButton" name="radioEccentricity">
        <property name="maximumSize">
         <size>
@@ -54,6 +38,22 @@
        </property>
        <property name="text">
         <string>Star Eccentricity</string>
+       </property>
+       <attribute name="buttonGroup">
+        <string notr="true">buttonGroup</string>
+       </attribute>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioFWHM">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="text">
+        <string notr="true">FWHM</string>
        </property>
        <attribute name="buttonGroup">
         <string notr="true">buttonGroup</string>
