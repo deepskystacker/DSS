@@ -73,6 +73,8 @@ set(Dialogs__Stacking
     "ImageProperties.h"
     "picturelist.cpp"
     "picturelist.h"
+    "QualityChart.cpp"
+    "QualityChart.h"
     "RecommendedSettings.cpp"
     "RecommendedSettings.h"
     "RenameGroup.cpp"
@@ -98,7 +100,6 @@ set(Header_Files
     "mrulist.h"
     "oldprogressdlg.h"
     "pch.h"
-    "QualityChart.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -111,7 +112,6 @@ set(Source_Files
     "oldprogressdlg.cpp"
     "selectrect.cpp"
     "toolbar.cpp"
-    "QualityChart.cpp"
 )
 if (LINUX)
     set(Source_Files ${Source_Files}
