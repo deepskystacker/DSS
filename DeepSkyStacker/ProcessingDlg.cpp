@@ -1305,7 +1305,7 @@ namespace DSS
 		{
 			dssApp->deepStack().PartialProcess(cell, processingSettings.bezierAdjust_, processingSettings.histoAdjust_);
 
-			picture->setPixmap(QPixmap::fromImage(dssApp->deepStack().getImage()));
+			picture->setImage(dssApp->deepStack().getImage());
 
 			// showHistogram(false);
 			//resetSliders();		// Will call showHistogram()

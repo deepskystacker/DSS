@@ -178,6 +178,8 @@ namespace DSS
 		void stackCheckedImages();
 		void batchStack();
 
+		void updatePixelInfo(QPoint pos, QRgb colour);
+
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr, PictureList* list = nullptr);
 		~StackingDlg();

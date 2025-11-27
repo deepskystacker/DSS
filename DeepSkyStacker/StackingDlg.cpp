@@ -525,6 +525,8 @@ namespace DSS
 		//
 		connect(pictureList->tableView, &QTableView::customContextMenuRequested, this, &StackingDlg::tableView_customContextMenuRequested);
 		connect(pictureList->tabBar, &QTabBar::customContextMenuRequested, this, &StackingDlg::tabBar_customContextMenuRequested);
+		connect(ui->picture, &DSS::ImageView::mouseMovedOverImage, 
+			this, &StackingDlg::updatePixelInfo);
 
 		retrieveLatestVersionInfo();
 	}
@@ -1092,6 +1094,23 @@ namespace DSS
 		}
 	}
 
+	void StackingDlg::updatePixelInfo(QPoint pos, QRgb colour)
+	{
+		if (pos.x() >= 0 && pos.y() >= 0)
+		{
+			ui->pixelInfo->setText(tr("X: %1 Y: %2\nR: %3 G: %4 B: %5")
+				.arg(pos.x())
+				.arg(pos.y())
+				.arg(qRed(colour))
+				.arg(qGreen(colour))
+				.arg(qBlue(colour)));
+		}
+		else
+		{
+			ui->pixelInfo->setText("");
+		}
+	}
+
 	void StackingDlg::onInitDialog()
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -1411,7 +1430,7 @@ namespace DSS
 				m_LoadedImage.m_pBitmap = pBitmap;
 				if (m_GammaTransformation.isInitialized())
 					ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-				ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
+				ui->picture->setImage(*(m_LoadedImage.m_Image));
 
 				if (frameList.isLightFrame(file))
 				{
@@ -2767,7 +2786,7 @@ namespace DSS
 		{
 			ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
 			// Refresh
-			ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
+			ui->picture->setImage(*(m_LoadedImage.m_Image));
 		}
 	}
 

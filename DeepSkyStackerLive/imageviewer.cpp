@@ -178,7 +178,7 @@ namespace DSS
 		{
 			ApplyGammaTransformation(loadedImage.m_Image.get(), loadedImage.m_pBitmap.get(), gammaTransformation);
 			// Refresh
-			picture->setPixmap(QPixmap::fromImage(*(loadedImage.m_Image)));
+			picture->setImage(*(loadedImage.m_Image));
 		}
 	}
 
@@ -195,7 +195,7 @@ namespace DSS
 		}
 		if (gammaTransformation.isInitialized())
 			ApplyGammaTransformation(loadedImage.m_Image.get(), loadedImage.m_pBitmap.get(), gammaTransformation);
-		picture->setPixmap(QPixmap::fromImage(*(loadedImage.m_Image)));
+		picture->setImage(*(loadedImage.m_Image));
 	}
 
 	/* ------------------------------------------------------------------- */
