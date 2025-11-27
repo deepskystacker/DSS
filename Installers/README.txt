@@ -54,10 +54,16 @@ Changes for DeepSkyStacker 6.1.1 Beta 4
 12. Always use the Qt Widgets based File Dialog for consistency and also so that (e.g.) both .cr2 and .CR2
     files are found with a file filter that specifies *.cr2
 
-13. Add capability to produce "Contour Plots" of FWHM and "Star Circularity" for an image.  If the image has
-    been registered, right click on the row with the image information in the list of images and select 
-    "Star Quality Chart".  Note that this takes a while (about a minute or so) to produce the chart.
-    This may be useful to assess issues such as camera tilt.
+13. Add the capability to produce "Contour Plots" of FWHM and "Star Eccentricity" for an image.
+    If the image has been registered, right click on the row with the image information in the list of images and
+    select "Star Quality Chart".  This may be useful to assess issues such as camera tilt.
+    Please note that it can take a while (about a minute or so) to produce the chart.
+
+    To make effective use of this I suggest using an image with an even distribution of similarly bright stars.
+    It may help to register the image using a manually selected star detection threshold so that a fairly large
+    number of stars are detected (perhaps in the high hundreds).
+
+14. Add a display of the colour of the pixel under the mouse pointer.
 
 Changes for DeepSkyStacker 6.1.0
 ================================
