@@ -207,8 +207,6 @@ namespace DSS
 //		bool displayGrid;
 //		uint m_tipShowCount;
 		bool disabled;
-		unsigned int starCirclesStatus;
-		std::unique_ptr<QTimer> timer;
 
 		template <bool Refstar>
 		bool isStarVoted(const int starIndex)
@@ -261,6 +259,5 @@ namespace DSS
 		{
 			Inherited::setGeometry(geom);
 		}
-		void toggleStarCircles();
     };
 }

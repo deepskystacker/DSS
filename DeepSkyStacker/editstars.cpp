@@ -181,9 +181,7 @@ namespace DSS
 		forceHere{ false },
 	//	displayGrid{ false },
 	//	m_tipShowCount{ 0 }
-		disabled{ false },
-		starCirclesStatus{ 0 },
-		timer{ std::make_unique<QTimer>() }
+		disabled{ false }
 	{
 		ZASSERT(nullptr != imageView);
 		setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -191,14 +189,6 @@ namespace DSS
 		setAttribute(Qt::WA_TranslucentBackground);
 		setAttribute(Qt::WA_WState_ExplicitShowHide);
 //		setToolTip(tr("Ctrl+G to toggle display of the Grid"));
-		connect(timer.get(), &QTimer::timeout, this, &EditStars::toggleStarCircles);
-		timer->start(500);
-	}
-
-	void EditStars::toggleStarCircles()
-	{
-		++this->starCirclesStatus;
-		update();
 	}
 
 	bool EditStars::isDirty() const
@@ -767,11 +757,6 @@ namespace DSS
 
 		// Green circles around the registered stars
 		auto circleColor = QColor("lime");
-		switch (this->starCirclesStatus % 3) {
-			case 1: circleColor = QColor("magenta"); break;
-			case 2: circleColor = QColor("transparent"); break;
-			default: circleColor = QColor("lime"); break;
-		}
 
 		for (int i = 0; const auto& star : stars)
 		{
