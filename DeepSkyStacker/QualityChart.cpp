@@ -42,7 +42,7 @@
 #include "griddata.h"
 #include <QwtLinearColorMap>
 #include <QwtPlotSpectrogram>
-#include <QWtLogScaleEngine>
+#include <QwtLogScaleEngine>
 #include <QwtMatrixRasterData>
 #include <QwtScaleWidget>
 #include <QwtScaleDraw>
