@@ -2148,7 +2148,6 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		::RegisterSettings dlgSettings{ this };
 		bool bContinue = true;
 
@@ -2185,6 +2184,8 @@ namespace DSS
 					bContinue = checkStacking(tasks);
 					if (bStackAfter)
 						bContinue = bContinue && showRecap(tasks);
+
+					DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 					const auto start{ std::chrono::steady_clock::now() };
 
