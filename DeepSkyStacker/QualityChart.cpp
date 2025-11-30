@@ -125,7 +125,6 @@ namespace DSS
 		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());
 		lightFrameInfo.SetBitmap(lbmp.filePath);
 
-		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());		lightFrameInfo.SetBitmap(lbmp.filePath);
 		//
 		// Fill the data vectors
 		//
@@ -223,6 +222,7 @@ namespace DSS
 				future = QtConcurrent::run(&GridData::interpolate, gridData.get(), xValues, yValues, eccentricityValues, xg, yg, std::ref(zgEccentricity), GridData::InterpolationType::GRID_NNIDW, 10.f);
 				futureWatcher->setFuture(future);
 			}
+			else plotEccentricity();
 		}
 	}
 
@@ -241,6 +241,7 @@ namespace DSS
 				future = QtConcurrent::run(&GridData::interpolate, gridData.get(), xValues, yValues, fwhmValues, xg, yg, std::ref(zgFWHM), GridData::InterpolationType::GRID_NNIDW, 10.f);
 				futureWatcher->setFuture(future);
 			}
+			else plotFWHM();
 		}
 	}
 
