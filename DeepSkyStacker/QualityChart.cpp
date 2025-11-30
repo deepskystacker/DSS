@@ -39,7 +39,8 @@
 #include "FrameInfo.h"
 #include "Stars.h"
 #include "QualityChart.h"
-#include "griddata.h"
+#include <QtConcurrentRun>
+#include <QFutureWatcher>
 #include <QwtLinearColorMap>
 #include <QwtPlotSpectrogram>
 #include <QwtLogScaleEngine>
@@ -109,14 +110,16 @@ public:
 //			std::log10(value));
 //	}
 //};
+
 namespace DSS
 {
 	QualityChart::QualityChart(const ListBitMap& lbmp, QWidget* parent) :
 		QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint),
 		lightFrameInfo(lbmp),
-		gridData{ new GridData(this)},
+		gridData{ std::make_unique<GridData>()},
 		spectrogram{ new QwtPlotSpectrogram("Star Quality") },
-		rasterData{ new QwtMatrixRasterData() }
+		rasterData{ new QwtMatrixRasterData() },
+		futureWatcher{ new QFutureWatcher<void>(this) }
 	{
 		setupUi(this);
 		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());
@@ -138,13 +141,8 @@ namespace DSS
 			eccentricityValues.emplace_back(star.eccentricity);
 		}
 
-		spectrogram->setRenderThreadCount(0); // use system specific thread count
+		spectrogram->setRenderThreadCount(0); // use system default thread count
 		spectrogram->setCachePolicy(QwtPlotRasterItem::PaintCache);
-
-		QList< double > contourLevels;
-		for (double level = 0.5; level < 10.0; level += 1.0)
-			contourLevels += level;
-		spectrogram->setContourLevels(contourLevels);
 
 		size_t width = lightFrameInfo.m_lWidth;
 		size_t height = lightFrameInfo.m_lHeight;
@@ -174,6 +172,7 @@ namespace DSS
 			yg.emplace_back(static_cast<double>(y));
 
 		radioEccentricity->setChecked(true);
+		progressBar->setRange(0, static_cast<int>(xg.size() - 1));
 
 		connectSignalsToSlots();
 
@@ -196,15 +195,37 @@ namespace DSS
 			this, &QualityChart::fwhmButtonClicked);
 		connect(cancelButton, &QPushButton::clicked,
 			this, &QualityChart::cancelPressed);
-		connect(gridData, &GridData::setProgressRange,
-			progressBar, &QProgressBar::setRange);
-		connect(gridData, &GridData::setProgressValue,
+		connect(futureWatcher, &QFutureWatcher<void>::progressValueChanged,
 			progressBar, &QProgressBar::setValue);
+		connect(futureWatcher, &QFutureWatcher<void>::finished,
+			this, &QualityChart::interpolationFinished);
+		connect(this, &QualityChart::showEccentricity,
+			this, &QualityChart::plotEccentricity, Qt::QueuedConnection);
+		connect(this, &QualityChart::showFWHM,
+			this, &QualityChart::plotFWHM, Qt::QueuedConnection);
 	}
 
 	//
 	// Slots
 	//
+	void QualityChart::eccentricityButtonClicked(bool checked)
+	{
+		ZFUNCTRACE_RUNTIME();
+		if (checked)
+		{
+			if (zgEccentricity.empty())
+			{
+				ZTRACE_RUNTIME("Star Eccentricity interpolation");
+				message->setText(tr("Interpolating Eccentricity data.  Please be patient."));
+				message->repaint();
+
+				interpolating = true;
+				future = QtConcurrent::run(&GridData::interpolate, gridData.get(), xValues, yValues, eccentricityValues, xg, yg, std::ref(zgEccentricity), GridData::InterpolationType::GRID_NNIDW, 10.f);
+				futureWatcher->setFuture(future);
+			}
+		}
+	}
+
 	void QualityChart::fwhmButtonClicked(bool checked)
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -215,105 +236,11 @@ namespace DSS
 				ZTRACE_RUNTIME("FWHM interpolation");
 				message->setText(tr("Interpolating FWHM data.  Please be patient."));
 				message->repaint();
-				QCoreApplication::processEvents();
 
 				interpolating = true;
-				gridData->interpolate(xValues, yValues, fwhmValues, xg, yg, zgFWHM, GridData::InterpolationType::GRID_NNIDW, 10.f);
-				interpolating = false;
-				
-				message->setText("");
-				message->repaint();
-				ZTRACE_RUNTIME("FWHM interpolation complete");
+				future = QtConcurrent::run(&GridData::interpolate, gridData.get(), xValues, yValues, fwhmValues, xg, yg, std::ref(zgFWHM), GridData::InterpolationType::GRID_NNIDW, 10.f);
+				futureWatcher->setFuture(future);
 			}
-
-			if (!cancelled)
-			{
-				//
-				// Clear the color map data
-				// 
-				rasterData->setValueMatrix(QVector<double>{}, 0);
-
-				auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
-				qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
-
-				spectrogram->setColorMap(new FWHMColourMap);
-				rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
-				// A color bar on the right axis
-				QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
-				rightAxis->setTitle("FWHM");
-				rightAxis->setColorBarEnabled(true);
-				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new FWHMColourMap);
-				qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
-				qualityPlot->setAxisVisible(QwtAxis::YRight);
-
-				qualityPlot->plotLayout()->setAlignCanvasToScales(true);
-
-				//
-				// Update the color map with FWHM values from the interpolated grid
-				//
-				rasterData->setValueMatrix(QVector<double>(zgFWHM.cbegin(), zgFWHM.cend()), static_cast<int>(xg.size()));
-
-				qualityPlot->replot();
-				progressBar->reset();
-			}
-			else reject();
-		}
-	}
-
-	void QualityChart::eccentricityButtonClicked(bool checked)
-	{
-		if (checked)
-		{
-			if (zgEccentricity.empty())
-			{
-				ZTRACE_RUNTIME("Star Eccentricity interpolation");
-				message->setText(tr("Interpolating Eccentricity data.  Please be patient."));
-				message->repaint();
-				QCoreApplication::processEvents();
-
-				interpolating = true;
-				gridData->interpolate(xValues, yValues, eccentricityValues, xg, yg, zgEccentricity, GridData::InterpolationType::GRID_NNIDW, 10.f);
-				interpolating = false;
-
-				message->setText("");
-				message->repaint();
-				ZTRACE_RUNTIME("Star Eccentricity interpolation complete");
-			}
-
-			if (!cancelled)
-			{
-				//
-				// Clear the color map data
-				// 
-				rasterData->setValueMatrix(QVector<double>{}, 0);
-
-				auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
-				qDebug() << "zgEccentricity Min:" << *p.first << "zgEccentricity Max:" << *p.second;
-
-				spectrogram->setColorMap(new EccentricityColourMap);
-				rasterData->setInterval(Qt::ZAxis, QwtInterval(0.0, 1.0));
-
-				// A color bar on the right axis
-				// qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
-				QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
-				rightAxis->setTitle(tr("Star Eccentricity"));
-				rightAxis->setColorBarEnabled(true);
-				rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new EccentricityColourMap);
-				qualityPlot->setAxisScale(QwtAxis::YRight, 1.0, 0.0);
-				qualityPlot->setAxisVisible(QwtAxis::YRight);
-
-				qualityPlot->plotLayout()->setAlignCanvasToScales(true);
-
-				qDebug() << zgEccentricity[5202 * 3463]; // Test value
-				//
-				// Update the color map with Star Eccentricity values from the interpolated grid
-				//
-				rasterData->setValueMatrix(QVector<double>(zgEccentricity.cbegin(), zgEccentricity.cend()), static_cast<int>(xg.size()));
-
-				qualityPlot->replot();
-				progressBar->reset();
-			}
-			else reject();
 		}
 	}
 
@@ -321,9 +248,112 @@ namespace DSS
 	{
 		if (interpolating)
 		{
-			gridData->cancel = true;		// Stop the interpolation
+			future.cancel();		// Stop the interpolation
 			cancelled = true;
 		}
 		else reject();
+	}
+
+	void QualityChart::interpolationFinished()
+	{
+		interpolating = false;
+		progressBar->reset();
+		message->setText(tr("Calculating contour plot.  Please be patient."));
+		update();
+		QCoreApplication::processEvents();
+
+		if (!cancelled)
+		{
+			ZTRACE_RUNTIME("Interpolation complete");
+			//
+			// Show the appropriate chart
+			//
+			if (radioEccentricity->isChecked())
+			{
+				QTimer::singleShot(100,
+					[this]()
+					{
+						emit showEccentricity();
+					});
+			}
+			else
+			{
+				QTimer::singleShot(100,
+					[this]()
+					{
+						emit showFWHM();
+					});
+
+			}
+		}
+		else
+		{
+			ZTRACE_RUNTIME("Interpolation cancelled");
+			reject();
+		}
+	}
+
+	void QualityChart::plotEccentricity()
+	{
+		//
+		// Clear the color map data
+		// 
+		rasterData->setValueMatrix(QVector<double>{}, 0);
+
+		auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
+		qDebug() << "zgEccentricity Min:" << *p.first << "zgEccentricity Max:" << *p.second;
+
+		spectrogram->setColorMap(new EccentricityColourMap);
+		rasterData->setInterval(Qt::ZAxis, QwtInterval(0.0, 1.0));
+
+		// A color bar on the right axis
+		// qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
+		QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
+		rightAxis->setTitle(tr("Star Eccentricity"));
+		rightAxis->setColorBarEnabled(true);
+		rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new EccentricityColourMap);
+		qualityPlot->setAxisScale(QwtAxis::YRight, 1.0, 0.0);
+		qualityPlot->setAxisVisible(QwtAxis::YRight);
+
+		qualityPlot->plotLayout()->setAlignCanvasToScales(true);
+
+		//
+		// Update the color map with Star Eccentricity values from the interpolated grid
+		//
+		rasterData->setValueMatrix(QVector<double>(zgEccentricity.cbegin(), zgEccentricity.cend()), static_cast<int>(xg.size()));
+
+		qualityPlot->replot();
+		message->setText("");
+	}
+
+	void QualityChart::plotFWHM()
+	{
+		//
+		// Clear the color map data
+		// 
+		rasterData->setValueMatrix(QVector<double>{}, 0);
+
+		auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
+		qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
+
+		spectrogram->setColorMap(new FWHMColourMap);
+		rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
+		// A color bar on the right axis
+		QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
+		rightAxis->setTitle("FWHM");
+		rightAxis->setColorBarEnabled(true);
+		rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new FWHMColourMap);
+		qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
+		qualityPlot->setAxisVisible(QwtAxis::YRight);
+
+		qualityPlot->plotLayout()->setAlignCanvasToScales(true);
+
+		//
+		// Update the color map with FWHM values from the interpolated grid
+		//
+		rasterData->setValueMatrix(QVector<double>(zgFWHM.cbegin(), zgFWHM.cend()), static_cast<int>(xg.size()));
+
+		qualityPlot->replot();
+		message->setText("");
 	}
 }

@@ -42,7 +42,7 @@
   <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>6.10.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts;printsupport</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts;concurrent;printsupport</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
@@ -51,7 +51,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>6.10.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts;printsupport</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts;concurrent;printsupport</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
@@ -399,7 +399,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="CheckAbove.h" />
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h" />
     <QtMoc Include="DeepSkyStacker.h" />
-    <QtMoc Include="..\Tools\griddata.h" />
+    <ClInclude Include="..\Tools\griddata.h" />
     <ClInclude Include="Delaunay.h" />
     <QtMoc Include="DropFilesDlg.h" />
     <ClInclude Include="dslr.h" />

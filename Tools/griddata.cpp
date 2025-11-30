@@ -40,6 +40,7 @@
 // Copyright (C) 2004-2015 Alan W. Irwin
 //
 #include "pch.h"
+#include <QPromise>
 #include <vector>
 #include <zexcept.h>
 
@@ -87,7 +88,7 @@ namespace DSS
     //
     //--------------------------------------------------------------------------
     void
-        GridData::interpolate(
+		GridData::interpolate(QPromise<void>& promise,
             const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
             InterpolationType type, float data)
@@ -161,12 +162,12 @@ namespace DSS
         zg.resize(zgSize, 0.0);
         // std::numeric_limits<double>::quiet_NaN() signals a not processed grid point
 
-		emit setProgressRange(0, static_cast<int>(xg.size()-1));
         switch (type)
         {
         case (InterpolationType::GRID_CSA): //  Bivariate Cubic Spline Approximation
 #ifdef WITH_CSA
-            grid_csa(x, y, z, xg, yg, zg);
+            grid_csa(promise,
+                x, y, z, xg, yg, zg);
 #else
             {
                 const char* errorMessage = "GridData::interpolate You must have the CSA library installed to use GRID_CSA.\n"
@@ -177,25 +178,30 @@ namespace DSS
                 QMessageBox::information(nullptr, "DeepSkyStacker", errorMessage);
 #endif
             }
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
 #endif
             break;
 
         case (InterpolationType::GRID_NNIDW): // Nearest Neighbors Inverse Distance Weighted
-            grid_nnidw(x, y, z, xg, yg, zg, static_cast<int>(data));
+            grid_nnidw(promise,
+                x, y, z, xg, yg, zg, static_cast<int>(data));
             break;
 
         case (InterpolationType::GRID_NNLI): // Nearest Neighbors Linear Interpolation
-            grid_nnli(x, y, z, xg, yg, zg, data);
+            grid_nnli(promise,
+                x, y, z, xg, yg, zg, data);
             break;
 
         case (InterpolationType::GRID_NNAIDW): // Nearest Neighbors "Around" Inverse Distance Weighted
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
             break;
 
         case (InterpolationType::GRID_DTLI): // Delaunay Triangulation Linear Interpolation
 #ifdef WITH_NN
-            grid_dtli(x, y, z, xg, yg, zg);
+            grid_dtli(promise,
+                x, y, z, xg, yg, zg);
 #else
             {
                 const char* errorMessage = "GridData::interpolate You must have the Qhull library installed to use GRID_DTLI.\n"
@@ -206,13 +212,15 @@ namespace DSS
                 QMessageBox::information(nullptr, "DeepSkyStacker", errorMessage);
 #endif
             }
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
 #endif
             break;
 
         case (InterpolationType::GRID_NNI): // Natural Neighbors
 #ifdef WITH_NN
-            grid_nni(x, y, z, xg, yg, zg, data);
+            grid_nni(promise,
+                x, y, z, xg, yg, zg, data);
 #else
             {
                 const char* errorMessage = "GridData::interpolate You must have the Qhull library installed to use GRID_NNI.\n"
@@ -223,7 +231,8 @@ namespace DSS
                 QMessageBox::information(nullptr, "DeepSkyStacker", errorMessage);
 #endif
             }
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
 #endif
             break;
 
@@ -246,7 +255,8 @@ namespace DSS
     //
 
     void
-        GridData::grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+        GridData::grid_csa([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         //std::vector<double> xt, yt, zt;
@@ -309,7 +319,8 @@ namespace DSS
     //
 
     void
-        GridData::grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+        GridData::grid_nnidw(QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             int knn_order)
     {
@@ -346,7 +357,7 @@ namespace DSS
 #pragma omp parallel for num_threads(processorCount) private(wi, nt)
         for (int i = 0; i < xg.size(); i++)
         {
-			if (cancel) continue;       // Only way to break out of an openMP parallel for loop
+			if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
 
             for (int j = 0; j < yg.size(); j++)
             {
@@ -382,8 +393,7 @@ namespace DSS
             }
             if (omp_get_thread_num() == 0)
             {
-                emit setProgressValue(std::min(progress += processorCount, static_cast<int>(xg.size()-1)));
-                QCoreApplication::processEvents();
+                promise.setProgressValue(std::min(progress += processorCount, static_cast<int>(xg.size()-1)));
             }
         }
     }
@@ -394,7 +404,8 @@ namespace DSS
     //
 
     void
-        GridData::grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+        GridData::grid_nnli([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             double threshold)
     {
@@ -585,7 +596,8 @@ namespace DSS
     //
 
     void
-        GridData::grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+        GridData::grid_nnaidw([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         double d, nt;
@@ -629,7 +641,8 @@ namespace DSS
     //
 
     void
-        GridData::grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+        GridData::grid_dtli([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         point* pin, * pgrid, * pt;
@@ -683,7 +696,8 @@ namespace DSS
     //
 
     void
-        GridData::grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+        GridData::grid_nni([[maybe_unused]] QPromise<void>& promise, 
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             double wtmin)
     {
@@ -842,7 +856,8 @@ namespace DSS
 
 #ifdef PLPLOT_NONN // another DTLI, based only on QHULL, not nn
     void
-        GridData::grid_adtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+        GridData::grid_adtli([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg  PLF2OPS zops, PLPointer zgp)
     {
         coordT* points;          // array of coordinates for each point

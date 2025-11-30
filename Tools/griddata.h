@@ -38,10 +38,8 @@
 //
 namespace DSS
 {
-	class GridData : public QObject
+	class GridData
     {
-        Q_OBJECT
-        friend class QualityChart;
     public:
         enum class InterpolationType
         {
@@ -53,7 +51,7 @@ namespace DSS
             GRID_NNI        // Natural Neighbors Interpolation
         };
 
-        GridData(QObject* parent = nullptr) : QObject(parent)
+        GridData()
         {
 		};
 
@@ -66,16 +64,10 @@ namespace DSS
         };
 
         void
-            interpolate(
+            interpolate(QPromise<void>& promise,
                 const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
                 const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
-                InterpolationType type, float data = 0.0);
-
-    signals:
-        void
-            setProgressRange(int min, int max);
-        void
-            setProgressValue(int amount);
+                InterpolationType type, float data = 0.0f);
 
     private:
         inline constexpr static size_t KNN_MAX_ORDER = 100;
@@ -89,33 +81,39 @@ namespace DSS
         inline static thread_local PT items[KNN_MAX_ORDER];
 
         void
-            grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+            grid_nnaidw(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
                 const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
 
         void
-            grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+            grid_nnli(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
                 const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
                 double threshold);
 
         void
-            grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+            grid_nnidw(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
                 const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
                 int knn_order);
 
 #ifdef WITH_CSA
         void
-            grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+            grid_csa(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
                 const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
 #endif
 
 #ifdef WITH_NN
         void
-            grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+            grid_nni(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
                 const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
                 double wtmin);
 
         void
-            grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+            grid_dtli(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
                 const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
 #endif
 
@@ -123,8 +121,5 @@ namespace DSS
             dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order);
         void
             dist2(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y);
-
-        bool cancel{ false };
-
     };
 }

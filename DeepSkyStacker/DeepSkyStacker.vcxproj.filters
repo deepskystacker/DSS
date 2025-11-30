@@ -203,6 +203,9 @@
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Tools\griddata.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\asinh.bmp">
@@ -723,9 +726,6 @@
     </QtMoc>
     <QtMoc Include="QualityChart.h">
       <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
-    <QtMoc Include="..\Tools\griddata.h">
-      <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
