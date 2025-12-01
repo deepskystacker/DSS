@@ -349,12 +349,13 @@ namespace DSS
             knn_order = 15;
         }
 
-		int progress = 0;   // progress counter
+        std::atomic_int progress{ 0 };   // progress counter
+        int limit{ static_cast<int>(xg.size() - 1) };
         // 
 		// Use ALL available processors for the interpolation
         // 
 		int processorCount = omp_get_num_procs();
-#pragma omp parallel for num_threads(processorCount) private(wi, nt)
+#pragma omp parallel for num_threads(processorCount) default(shared) private(wi, nt)
         for (int i = 0; i < xg.size(); i++)
         {
 			if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
@@ -391,10 +392,8 @@ namespace DSS
                 else
                     zg[i + j*xg.size()] = std::numeric_limits<double>::quiet_NaN();
             }
-            if (omp_get_thread_num() == 0)
-            {
-                promise.setProgressValue(std::min(progress += processorCount, static_cast<int>(xg.size()-1)));
-            }
+            ++progress;
+            promise.setProgressValue(std::min(progress.load(), limit));
         }
     }
     // Nearest Neighbors Linear Interpolation
