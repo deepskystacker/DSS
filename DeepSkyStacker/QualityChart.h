@@ -90,10 +90,6 @@ namespace DSS
 		void plotFWHM();
 		void plotEccentricity();
 
-	signals:
-		void showEccentricity();
-		void showFWHM();
-	
 	private slots:
 		void fwhmButtonClicked(bool checked);
 		void eccentricityButtonClicked(bool checked);

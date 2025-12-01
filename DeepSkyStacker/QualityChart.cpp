@@ -198,10 +198,6 @@ namespace DSS
 			progressBar, &QProgressBar::setValue);
 		connect(futureWatcher, &QFutureWatcher<void>::finished,
 			this, &QualityChart::interpolationFinished);
-		connect(this, &QualityChart::showEccentricity,
-			this, &QualityChart::plotEccentricity, Qt::QueuedConnection);
-		connect(this, &QualityChart::showFWHM,
-			this, &QualityChart::plotFWHM, Qt::QueuedConnection);
 	}
 
 	//
@@ -263,6 +259,7 @@ namespace DSS
 
 	void QualityChart::interpolationFinished()
 	{
+		ZFUNCTRACE_RUNTIME();
 		progressBar->reset();
 
 		if (!cancelled)
@@ -279,19 +276,11 @@ namespace DSS
 			//
 			if (radioEccentricity->isChecked())
 			{
-				QTimer::singleShot(0,
-					[this]()
-					{
-						emit showEccentricity();
-					});
+				plotEccentricity();
 			}
 			else
 			{
-				QTimer::singleShot(0,
-					[this]()
-					{
-						emit showFWHM();
-					});
+				plotFWHM();
 			}
 		}
 		else
@@ -307,6 +296,7 @@ namespace DSS
 
 	void QualityChart::plotEccentricity()
 	{
+		ZFUNCTRACE_RUNTIME();
 		message->setText("");
 
 		auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
