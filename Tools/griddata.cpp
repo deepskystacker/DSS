@@ -350,7 +350,7 @@ namespace DSS
         }
 
         std::atomic_int progress{ 0 };   // progress counter
-        int limit{ static_cast<int>(xg.size() - 1) };
+        const int limit{ static_cast<int>(xg.size() - 1) };
         // 
 		// Use ALL available processors for the interpolation
         // 
