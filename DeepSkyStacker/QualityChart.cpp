@@ -264,13 +264,17 @@ namespace DSS
 
 	void QualityChart::interpolationFinished()
 	{
-		interpolating = false;
-		progressBar->reset(); progressBar->repaint();
-		QCoreApplication::processEvents();
+		progressBar->reset();
 
 		if (!cancelled)
 		{
-			ZTRACE_RUNTIME("Interpolation complete");
+
+			if (interpolating)
+			{
+				ZTRACE_RUNTIME("Interpolation complete");
+				interpolating = false;
+			}
+
 			//
 			// Show the appropriate chart
 			//
@@ -289,12 +293,15 @@ namespace DSS
 					{
 						emit showFWHM();
 					});
-
 			}
 		}
 		else
 		{
-			ZTRACE_RUNTIME("Interpolation cancelled");
+			if (interpolating)
+			{
+				ZTRACE_RUNTIME("Interpolation cancelled");
+				interpolating = false;
+			}
 			reject();
 		}
 	}
@@ -302,14 +309,16 @@ namespace DSS
 	void QualityChart::plotEccentricity()
 	{
 		message->setText("");
-		message->repaint();
-		//
-		// Clear the color map data
-		// 
-		rasterData->setValueMatrix(QVector<double>{}, 0);
 
 		auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
 		qDebug() << "zgEccentricity Min:" << *p.first << "zgEccentricity Max:" << *p.second;
+
+		//
+		// Update the color map with Star Eccentricity values from the interpolated grid
+		//
+		valueData.clear();
+		valueData.assign(zgEccentricity.cbegin(), zgEccentricity.cend());
+		rasterData->setValueMatrix(valueData, static_cast<int>(xg.size()));
 
 		spectrogram->setColorMap(new EccentricityColourMap);
 		rasterData->setInterval(Qt::ZAxis, QwtInterval(0.0, 1.0));
@@ -325,28 +334,22 @@ namespace DSS
 
 		qualityPlot->plotLayout()->setAlignCanvasToScales(true);
 
-		//
-		// Update the color map with Star Eccentricity values from the interpolated grid
-		//
-		valueData.clear();
-		valueData.assign(zgEccentricity.cbegin(), zgEccentricity.cend());
-		rasterData->setValueMatrix(valueData, static_cast<int>(xg.size()));
-
 		qualityPlot->replot();
 	}
 
 	void QualityChart::plotFWHM()
 	{
 		message->setText("");
-		message->repaint();
-
-		//
-		// Clear the color map data
-		// 
-		rasterData->setValueMatrix(QVector<double>{}, 0);
 
 		auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
 		qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
+
+		//
+		// Update the color map with FWHM values from the interpolated grid
+		//
+		valueData.clear();
+		valueData.assign(zgFWHM.cbegin(), zgFWHM.cend());
+		rasterData->setValueMatrix(valueData, static_cast<int>(xg.size()));
 
 		spectrogram->setColorMap(new FWHMColourMap);
 		rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
@@ -360,13 +363,7 @@ namespace DSS
 
 		qualityPlot->plotLayout()->setAlignCanvasToScales(true);
 
-		//
-		// Update the color map with FWHM values from the interpolated grid
-		//
-		valueData.clear();
-		valueData.assign(zgFWHM.cbegin(), zgFWHM.cend());
-		rasterData->setValueMatrix(valueData, static_cast<int>(xg.size()));
-
 		qualityPlot->replot();
+		message->setText("");
 	}
 }
