@@ -260,6 +260,7 @@ namespace DSS
 	void QualityChart::interpolationFinished()
 	{
 		ZFUNCTRACE_RUNTIME();
+		message->setText("");
 		progressBar->reset();
 
 		if (!cancelled)
@@ -296,9 +297,6 @@ namespace DSS
 
 	void QualityChart::plotEccentricity()
 	{
-		ZFUNCTRACE_RUNTIME();
-		message->setText("");
-
 		auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
 
 		//
@@ -327,8 +325,6 @@ namespace DSS
 
 	void QualityChart::plotFWHM()
 	{
-		message->setText("");
-
 		auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
 
 		//
