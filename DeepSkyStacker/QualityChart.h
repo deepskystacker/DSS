@@ -75,6 +75,7 @@ namespace DSS
 		std::vector<double> yg;
 		std::vector<double> zgFWHM;
 		std::vector<double> zgEccentricity;
+		QVector<double>valueData;
 
 		QwtPlotSpectrogram* spectrogram{ nullptr };
 		QwtMatrixRasterData* rasterData{ nullptr };

@@ -163,6 +163,7 @@ namespace DSS
 		yg.reserve(height);
 		zgFWHM.reserve(width * height);
 		zgEccentricity.reserve(width * height);
+		valueData.reserve(width * height);
 		qDebug() << "Grid size:" << width << "x" << height << "=" << (width * height);
 
 		for (size_t x = 0; x < width; ++x)
@@ -178,7 +179,7 @@ namespace DSS
 		//
 		// Fake up a click on the FWHM button to compute and display the chart
 		//
-		QTimer::singleShot(100,
+		QTimer::singleShot(0,
 			[this]()
 			{
 				QMetaObject::invokeMethod(this->radioEccentricity, "clicked", Qt::ConnectionType::QueuedConnection,
@@ -222,7 +223,10 @@ namespace DSS
 				future = QtConcurrent::run(&GridData::interpolate, gridData.get(), xValues, yValues, eccentricityValues, xg, yg, std::ref(zgEccentricity), GridData::InterpolationType::GRID_NNIDW, 10.f);
 				futureWatcher->setFuture(future);
 			}
-			else plotEccentricity();
+			else
+			{
+				plotEccentricity();
+			}
 		}
 	}
 
@@ -241,7 +245,10 @@ namespace DSS
 				future = QtConcurrent::run(&GridData::interpolate, gridData.get(), xValues, yValues, fwhmValues, xg, yg, std::ref(zgFWHM), GridData::InterpolationType::GRID_NNIDW, 10.f);
 				futureWatcher->setFuture(future);
 			}
-			else plotFWHM();
+			else
+			{
+				plotFWHM();
+			}
 		}
 	}
 
@@ -258,9 +265,7 @@ namespace DSS
 	void QualityChart::interpolationFinished()
 	{
 		interpolating = false;
-		progressBar->reset();
-		message->setText(tr("Calculating contour plot.  Please be patient."));
-		update();
+		progressBar->reset(); progressBar->repaint();
 		QCoreApplication::processEvents();
 
 		if (!cancelled)
@@ -271,7 +276,7 @@ namespace DSS
 			//
 			if (radioEccentricity->isChecked())
 			{
-				QTimer::singleShot(100,
+				QTimer::singleShot(0,
 					[this]()
 					{
 						emit showEccentricity();
@@ -279,7 +284,7 @@ namespace DSS
 			}
 			else
 			{
-				QTimer::singleShot(100,
+				QTimer::singleShot(0,
 					[this]()
 					{
 						emit showFWHM();
@@ -296,6 +301,8 @@ namespace DSS
 
 	void QualityChart::plotEccentricity()
 	{
+		message->setText("");
+		message->repaint();
 		//
 		// Clear the color map data
 		// 
@@ -321,14 +328,18 @@ namespace DSS
 		//
 		// Update the color map with Star Eccentricity values from the interpolated grid
 		//
-		rasterData->setValueMatrix(QVector<double>(zgEccentricity.cbegin(), zgEccentricity.cend()), static_cast<int>(xg.size()));
+		valueData.clear();
+		valueData.assign(zgEccentricity.cbegin(), zgEccentricity.cend());
+		rasterData->setValueMatrix(valueData, static_cast<int>(xg.size()));
 
 		qualityPlot->replot();
-		message->setText("");
 	}
 
 	void QualityChart::plotFWHM()
 	{
+		message->setText("");
+		message->repaint();
+
 		//
 		// Clear the color map data
 		// 
@@ -352,9 +363,10 @@ namespace DSS
 		//
 		// Update the color map with FWHM values from the interpolated grid
 		//
-		rasterData->setValueMatrix(QVector<double>(zgFWHM.cbegin(), zgFWHM.cend()), static_cast<int>(xg.size()));
+		valueData.clear();
+		valueData.assign(zgFWHM.cbegin(), zgFWHM.cend());
+		rasterData->setValueMatrix(valueData, static_cast<int>(xg.size()));
 
 		qualityPlot->replot();
-		message->setText("");
 	}
 }
