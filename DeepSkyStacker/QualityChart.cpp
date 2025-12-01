@@ -164,7 +164,6 @@ namespace DSS
 		zgFWHM.reserve(width * height);
 		zgEccentricity.reserve(width * height);
 		valueData.reserve(width * height);
-		qDebug() << "Grid size:" << width << "x" << height << "=" << (width * height);
 
 		for (size_t x = 0; x < width; ++x)
 			xg.emplace_back(static_cast<double>(x));
@@ -311,7 +310,6 @@ namespace DSS
 		message->setText("");
 
 		auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
-		qDebug() << "zgEccentricity Min:" << *p.first << "zgEccentricity Max:" << *p.second;
 
 		//
 		// Update the color map with Star Eccentricity values from the interpolated grid
@@ -342,7 +340,6 @@ namespace DSS
 		message->setText("");
 
 		auto p = std::minmax_element(zgFWHM.cbegin(), zgFWHM.cend());
-		qDebug() << "zgFWHM Min:" << *p.first << "zgFWHM Max:" << *p.second;
 
 		//
 		// Update the color map with FWHM values from the interpolated grid
