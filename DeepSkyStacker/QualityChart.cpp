@@ -347,6 +347,5 @@ namespace DSS
 		qualityPlot->plotLayout()->setAlignCanvasToScales(true);
 
 		qualityPlot->replot();
-		message->setText("");
 	}
 }
