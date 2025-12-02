@@ -99,7 +99,27 @@ namespace DSS
     void ImageView::mouseMoveEvent(QMouseEvent* e)
     {
         emit Image_mouseMoveEvent(e);
-        update();
+
+		const QPointF mouseLocation = e->position();
+        //
+        // If the mouse isn't over this control there's nothing to do, if it is over the control, then
+        // if the mouse is not over the image or mouse is over the toolbar, then there's nothing to do
+        //
+        if (!underMouse() || !displayRect.contains(mouseLocation) || (m_pToolBar && m_pToolBar->underMouse()))
+        {
+            emit mouseMovedOverImage(QPoint{ -1, -1 }, QColor(0, 0, 0).rgb());
+            return;
+        }
+		auto pt = screenToImage(mouseLocation);
+        if (pt.x() >= 0 && pt.x() < imageWidth() && pt.y() >= 0 && pt.y() < imageHeight())
+        {
+            //
+            // The point is in the image emit a signal notifying watchers of the value of the image pixel under the mouse.
+            //
+			QPoint intPt{ static_cast<int>(pt.x()), static_cast<int>(pt.y()) };
+			QRgb colour = pImage->pixel(intPt);
+			emit mouseMovedOverImage(intPt, colour);
+        }
     }
 
     void ImageView::mouseReleaseEvent(QMouseEvent* e)
@@ -442,6 +462,7 @@ namespace DSS
         //
         // delete the images
         //
+		pImage = nullptr;
         pPixmap.reset(nullptr);
         pOverlayPixmap.reset(nullptr);
         if (m_pToolBar)
@@ -460,6 +481,11 @@ namespace DSS
         update();
     }
 
+    void ImageView::setImage(const QImage& img)
+    {
+		pImage = &img;
+        setPixmap(QPixmap::fromImage(img));
+	}
 #if (0)
     void ImageView::setOverlayPixmap(const QPixmap& p)
     {
@@ -474,9 +500,9 @@ namespace DSS
     void ImageView::wheelEvent(QWheelEvent* e)
     {
         //
-        // This use to read degrees = -e->angleDelta().y() / 8.0; 
+        // This used to read degrees = -e->angleDelta().y() / 8.0; 
         // 
-        // Discussion on the mailing list concluded the this resulted in mousewheel
+        // Discussion on the mailing list concluded that this resulted in mousewheel
         // zoom operated the "wrong way" compared to other applications
         // 
         const qreal degrees = e->angleDelta().y() / 8.0;

@@ -20,6 +20,7 @@ public:
 	double			m_fLargeMinorAxis{ 0.0 };
 	double			m_fSmallMinorAxis{ 0.0 };
 	double			m_fMajorAxisAngle{ 0.0 };
+	double			eccentricity{ 1.0 };
 
 public:
 	CStar() = default;

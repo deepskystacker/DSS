@@ -40,6 +40,7 @@
 // Copyright (C) 2004-2015 Alan W. Irwin
 //
 #include "pch.h"
+#include <QPromise>
 #include <vector>
 #include <zexcept.h>
 
@@ -60,61 +61,11 @@ extern "C"
 }
 #endif
 
-namespace
-{
-    // forward declarations
-    static void
-        grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
-
-    static void
-        grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
-            double threshold);
-
-    static void
-        grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
-            int knn_order);
-
-#ifdef WITH_CSA
-    static void
-        grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
-#endif
-
-#ifdef WITH_NN
-    static void
-        grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
-            double wtmin);
-
-    static void
-        grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
-#endif
-
-    static void
-        dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order);
-    static void
-        dist2(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y);
-
-#define KNN_MAX_ORDER    100
-
-    typedef struct pt
-    {
-        double dist;
-        int item;
-    }PT;
-
-    thread_local PT items[KNN_MAX_ORDER];
-} // anonymous namespace
-
 namespace DSS
 {
     //--------------------------------------------------------------------------
     //
-    // GriddData::interpolate(): grids data from irregularly sampled data.
+    // GridData::interpolate(): grids data from irregularly sampled data.
     //
     //    Real world data is frequently irregularly sampled, but most 3D plots
     //    require regularly gridded data. This function does exactly this
@@ -137,7 +88,7 @@ namespace DSS
     //
     //--------------------------------------------------------------------------
     void
-        GridData::interpolate(
+		GridData::interpolate(QPromise<void>& promise,
             const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
             InterpolationType type, float data)
@@ -215,7 +166,8 @@ namespace DSS
         {
         case (InterpolationType::GRID_CSA): //  Bivariate Cubic Spline Approximation
 #ifdef WITH_CSA
-            grid_csa(x, y, z, xg, yg, zg);
+            grid_csa(promise,
+                x, y, z, xg, yg, zg);
 #else
             {
                 const char* errorMessage = "GridData::interpolate You must have the CSA library installed to use GRID_CSA.\n"
@@ -226,25 +178,30 @@ namespace DSS
                 QMessageBox::information(nullptr, "DeepSkyStacker", errorMessage);
 #endif
             }
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
 #endif
             break;
 
         case (InterpolationType::GRID_NNIDW): // Nearest Neighbors Inverse Distance Weighted
-            grid_nnidw(x, y, z, xg, yg, zg, static_cast<int>(data));
+            grid_nnidw(promise,
+                x, y, z, xg, yg, zg, static_cast<int>(data));
             break;
 
         case (InterpolationType::GRID_NNLI): // Nearest Neighbors Linear Interpolation
-            grid_nnli(x, y, z, xg, yg, zg, data);
+            grid_nnli(promise,
+                x, y, z, xg, yg, zg, data);
             break;
 
         case (InterpolationType::GRID_NNAIDW): // Nearest Neighbors "Around" Inverse Distance Weighted
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
             break;
 
         case (InterpolationType::GRID_DTLI): // Delaunay Triangulation Linear Interpolation
 #ifdef WITH_NN
-            grid_dtli(x, y, z, xg, yg, zg);
+            grid_dtli(promise,
+                x, y, z, xg, yg, zg);
 #else
             {
                 const char* errorMessage = "GridData::interpolate You must have the Qhull library installed to use GRID_DTLI.\n"
@@ -255,13 +212,15 @@ namespace DSS
                 QMessageBox::information(nullptr, "DeepSkyStacker", errorMessage);
 #endif
             }
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
 #endif
             break;
 
         case (InterpolationType::GRID_NNI): // Natural Neighbors
 #ifdef WITH_NN
-            grid_nni(x, y, z, xg, yg, zg, data);
+            grid_nni(promise,
+                x, y, z, xg, yg, zg, data);
 #else
             {
                 const char* errorMessage = "GridData::interpolate You must have the Qhull library installed to use GRID_NNI.\n"
@@ -272,7 +231,8 @@ namespace DSS
                 QMessageBox::information(nullptr, "DeepSkyStacker", errorMessage);
 #endif
             }
-            grid_nnaidw(x, y, z, xg, yg, zg);
+            grid_nnaidw(promise,
+                x, y, z, xg, yg, zg);
 #endif
             break;
 
@@ -286,10 +246,7 @@ namespace DSS
             throw invParm;
         }
     }
-}
 
-namespace
-{
 #ifdef WITH_CSA
     //
     // Bivariate Cubic Spline Approximation using Pavel Sakov's csa package
@@ -297,8 +254,9 @@ namespace
     // std::numeric_limits<double>::quiet_NaN()s are returned where no interpolation can be done.
     //
 
-    static void
-        grid_csa(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_csa([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         //std::vector<double> xt, yt, zt;
@@ -360,8 +318,9 @@ namespace
     // neighbor.
     //
 
-    static void
-        grid_nnidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nnidw(QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             int knn_order)
     {
@@ -389,12 +348,19 @@ namespace
 #endif
             knn_order = 15;
         }
+
+        std::atomic_int progress{ 0 };   // progress counter
+        const int limit{ static_cast<int>(xg.size() - 1) };
+		promise.setProgressRange(0, limit);
         // 
 		// Use ALL available processors for the interpolation
-		//
-#pragma omp parallel for num_threads(omp_get_num_procs()) private(wi, nt)
+        // 
+		int processorCount = omp_get_num_procs();
+#pragma omp parallel for num_threads(processorCount) default(shared) private(wi, nt)
         for (int i = 0; i < xg.size(); i++)
         {
+			if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
+
             for (int j = 0; j < yg.size(); j++)
             {
                 dist1(xg[i], yg[j], x, y, knn_order);
@@ -427,24 +393,23 @@ namespace
                 else
                     zg[i + j*xg.size()] = std::numeric_limits<double>::quiet_NaN();
             }
+            ++progress;
+            promise.setProgressValue(std::min(progress.load(), limit));
         }
     }
-
     // Nearest Neighbors Linear Interpolation
     //
     // The z value at the grid position will be interpolated from the
     // plane passing through the 3 nearest neighbors.
     //
 
-    static void
-        grid_nnli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nnli([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             double threshold)
     {
 		std::array<double, 4> xx, yy, zz;
-        double t, A, B, C, D, d1, d2, d3, max_thick;
-        size_t i, j;
-        int   ii, excl, cnt, excl_item;
 
         if (threshold == 0.)
         {
@@ -468,29 +433,41 @@ namespace
             return;
         }
 
-        for (i = 0; i < xg.size(); i++)
+        std::atomic_int progress{ 0 };   // progress counter
+        const int limit{ 2* static_cast<int>(xg.size() - 1) };
+        promise.setProgressRange(0, limit);
+        // 
+        // Use ALL available processors for the interpolation
+        // 
+        int processorCount = omp_get_num_procs();
+#pragma omp parallel for num_threads(processorCount) default(shared) private(xx, yy, zz)
+        for (int i = 0; i < xg.size(); i++)
         {
-            for (j = 0; j < yg.size(); j++)
+            if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
+
+            for (int j = 0; j < yg.size(); j++)
             {
                 dist1(xg[i], yg[j], x, y, 3);
 
                 // see if the triangle is a thin one
-                for (ii = 0; ii < 3; ii++)
+                for (int ii = 0; ii < 3; ii++)
                 {
                     xx[ii] = x[items[ii].item];
                     yy[ii] = y[items[ii].item];
                     zz[ii] = z[items[ii].item];
                 }
 
-                d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
-                d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
-                d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
+                double d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
+                double d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
+                double d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
 
                 if (d1 == 0. || d2 == 0. || d3 == 0.) // coincident points
                 {
                     zg[i + j*xg.size()] = std::numeric_limits<double>::quiet_NaN();
                     continue;
                 }
+
+                double t;
 
                 // make d1 < d2
                 if (d1 > d2)
@@ -510,15 +487,17 @@ namespace
                 }
                 else                                // calculate the plane passing through the three points
                 {
-                    A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
-                    B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
-                    C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
-                    D = -A * xx[0] - B * yy[0] - C * zz[0];
+                    double A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
+                    double B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
+                    double C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
+                    double D = -A * xx[0] - B * yy[0] - C * zz[0];
 
                     // and interpolate (or extrapolate...)
                     zg[i + j*xg.size()] = (-xg[i] * A / C - yg[j] * B / C - D / C);
                 }
             }
+            ++progress;
+            promise.setProgressValue(std::min(progress.load(), limit));
         }
 
         // now deal with NaNs resulting from thin triangles. The idea is
@@ -530,94 +509,100 @@ namespace
         // the candidate triangle... otherwise one is extrapolating
         //
 
+   #pragma omp parallel for num_threads(processorCount) default(shared) private(xx, yy, zz)
+        for (int i = 0; i < xg.size(); i++)
         {
-            for (i = 0; i < xg.size(); i++)
+            if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
+
+            for (int j = 0; j < yg.size(); j++)
             {
-                for (j = 0; j < yg.size(); j++)
+                if (std::isnan(zg[i + j * xg.size()]))
                 {
-                    if (std::isnan(zg[i + j*xg.size()]))
+                    dist1(xg[i], yg[j], x, y, 4);
+
+                    // sort by distances. Not really needed!
+                    // for (ii=3; ii>0; ii--) {
+                    // for (jj=0; jj<ii; jj++) {
+                    // if (items[jj].dist > items[jj+1].dist) {
+                    // t = items[jj].dist;
+                    // items[jj].dist = items[jj+1].dist;
+                    // items[jj+1].dist = t;
+                    // }
+                    // }
+                    // }
+                    //
+
+                    double max_thick = 0.; int excl_item = -1;
+                    for (int excl = 0; excl < 4; excl++) // the excluded point
+
                     {
-                        dist1(xg[i], yg[j], x, y, 4);
-
-                        // sort by distances. Not really needed!
-                        // for (ii=3; ii>0; ii--) {
-                        // for (jj=0; jj<ii; jj++) {
-                        // if (items[jj].dist > items[jj+1].dist) {
-                        // t = items[jj].dist;
-                        // items[jj].dist = items[jj+1].dist;
-                        // items[jj+1].dist = t;
-                        // }
-                        // }
-                        // }
-                        //
-
-                        max_thick = 0.; excl_item = -1;
-                        for (excl = 0; excl < 4; excl++) // the excluded point
-
+                        int cnt = 0;
+                        for (int ii = 0; ii < 4; ii++)
                         {
-                            cnt = 0;
-                            for (ii = 0; ii < 4; ii++)
-                            {
-                                if (ii != excl)
-                                {
-                                    xx[cnt] = x[items[ii].item];
-                                    yy[cnt] = y[items[ii].item];
-                                    cnt++;
-                                }
-                            }
-
-                            d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
-                            d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
-                            d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
-                            if (d1 == 0. || d2 == 0. || d3 == 0.) // coincident points
-                                continue;
-
-                            // make d1 < d2
-                            if (d1 > d2)
-                            {
-                                t = d1; d1 = d2; d2 = t;
-                            }
-                            // and d2 < d3
-                            if (d2 > d3)
-                            {
-                                t = d2; d2 = d3; d3 = t;
-                            }
-
-                            t = (d1 + d2) / d3;
-                            if (t > max_thick)
-                            {
-                                max_thick = t;
-                                excl_item = excl;
-                            }
-                        }
-
-                        if (excl_item == -1) // all points are coincident?
-                            continue;
-
-                        // one has the thicker triangle constructed from the 4 KNN
-                        cnt = 0;
-                        for (ii = 0; ii < 4; ii++)
-                        {
-                            if (ii != excl_item)
+                            if (ii != excl)
                             {
                                 xx[cnt] = x[items[ii].item];
                                 yy[cnt] = y[items[ii].item];
-                                zz[cnt] = z[items[ii].item];
                                 cnt++;
                             }
                         }
 
-                        A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
-                        B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
-                        C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
-                        D = -A * xx[0] - B * yy[0] - C * zz[0];
+                        double d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
+                        double d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
+                        double d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
+                        if (d1 == 0. || d2 == 0. || d3 == 0.) // coincident points
+                            continue;
 
-                        // and interpolate (or extrapolate...)
-                        zg[i + j*xg.size()] = (-xg[i] * A / C - yg[j] * B / C - D / C);
+                        double t;
+                        // make d1 < d2
+                        if (d1 > d2)
+                        {
+                            t = d1; d1 = d2; d2 = t;
+                        }
+                        // and d2 < d3
+                        if (d2 > d3)
+                        {
+                            t = d2; d2 = d3; d3 = t;
+                        }
+
+                        t = (d1 + d2) / d3;
+                        if (t > max_thick)
+                        {
+                            max_thick = t;
+                            excl_item = excl;
+                        }
                     }
+
+                    if (excl_item == -1) // all points are coincident?
+                        continue;
+
+                    // one has the thicker triangle constructed from the 4 KNN
+                    int cnt = 0;
+                    for (int ii = 0; ii < 4; ii++)
+                    {
+                        if (ii != excl_item)
+                        {
+                            xx[cnt] = x[items[ii].item];
+                            yy[cnt] = y[items[ii].item];
+                            zz[cnt] = z[items[ii].item];
+                            cnt++;
+                        }
+                    }
+
+                    double A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
+                    double B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
+                    double C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
+                    double D = -A * xx[0] - B * yy[0] - C * zz[0];
+
+                    // and interpolate (or extrapolate...)
+                    zg[i + j * xg.size()] = (-xg[i] * A / C - yg[j] * B / C - D / C);
                 }
+                ++progress;
+                promise.setProgressValue(std::min(progress.load(), limit));
             }
         }
+   
+     
     }
 
     //
@@ -627,26 +612,34 @@ namespace
     // Inverse Distance Weighted is used as in GRID_NNIDW.
     //
 
-    static void
-        grid_nnaidw(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nnaidw([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
-        double d, nt;
-        size_t i, j;
-        unsigned int k;
-
-        for (i = 0; i < xg.size(); i++)
+ 
+        std::atomic_int progress{ 0 };   // progress counter
+        const int limit{ static_cast<int>(xg.size() - 1) };
+        promise.setProgressRange(0, limit);
+        // 
+        // Use ALL available processors for the interpolation
+        // 
+        int processorCount = omp_get_num_procs();
+#pragma omp parallel for num_threads(processorCount) default(shared)
+        for (int i = 0; i < xg.size(); i++)
         {
-            for (j = 0; j < yg.size(); j++)
+            if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
+
+            for (int j = 0; j < yg.size(); j++)
             {
                 dist2(xg[i], yg[j], x, y);
 				// zops->set(zgp, i, j, 0.); No need, was set to 0.0 at initialization
-                nt = 0.;
-                for (k = 0; k < 4; k++)
+                double nt = 0.;
+                for (int k = 0; k < 4; k++)
                 {
                     if (items[k].item != -1)                              // was found
                     {
-                        d = 1. / (items[k].dist * items[k].dist);         // 1/square distance
+                        double d = 1. / (items[k].dist * items[k].dist);         // 1/square distance
                         zg[i + j*xg.size()] += (d * z[items[k].item]);
                         nt += d;
                     }
@@ -656,6 +649,8 @@ namespace
                 else
                     zg[i + j*xg.size()] /= nt;
             }
+            ++progress;
+            promise.setProgressValue(std::min(progress.load(), limit));
         }
     }
 
@@ -671,8 +666,9 @@ namespace
     // be interpolated and are set to std::numeric_limits<double>::quiet_NaN().
     //
 
-    static void
-        grid_dtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_dtli([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
         point* pin, * pgrid, * pt;
@@ -725,8 +721,9 @@ namespace
     // be interpolated and are set to std::numeric_limits<double>::quiet_NaN().
     //
 
-    static void
-        grid_nni(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_nni([[maybe_unused]] QPromise<void>& promise, 
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
             double wtmin)
     {
@@ -793,8 +790,8 @@ namespace
     // [gxvalue, gyvalue].
     //
 
-    static void
-        dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order)
+    void
+        GridData::dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order)
     {
         double d, max_dist;
         size_t   max_slot, i, j;
@@ -843,8 +840,8 @@ namespace
     // the grid point.
     //
 
-    static void
-        dist2(const double gxvalue, const double gyvalue, 
+    void
+        GridData::dist2(const double gxvalue, const double gyvalue,
             const std::vector<double> x, const std::vector<double> y)
     {
         double d;
@@ -884,8 +881,9 @@ namespace
     }
 
 #ifdef PLPLOT_NONN // another DTLI, based only on QHULL, not nn
-    static void
-        grid_adtli(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+    void
+        GridData::grid_adtli([[maybe_unused]] QPromise<void>& promise,
+            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg  PLF2OPS zops, PLPointer zgp)
     {
         coordT* points;          // array of coordinates for each point
@@ -1056,4 +1054,4 @@ namespace
                 totlong, curlong);
     }
 #endif // PLPLOT_NONN
-} // anonymous namespace
+}

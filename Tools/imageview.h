@@ -119,7 +119,8 @@ namespace DSS
         void clear();
 
     public slots:
-        void setPixmap(const QPixmap&);
+		void setImage(const QImage&);
+
         // void setOverlayPixmap(const QPixmap&);
         void on_fourCorners_clicked(bool)
         {
@@ -134,6 +135,8 @@ namespace DSS
         void Image_mouseMoveEvent(QMouseEvent* e);
         void Image_mouseReleaseEvent(QMouseEvent* e);
         void Image_resizeEvent(QResizeEvent* e);
+        void mouseMovedOverImage(QPoint pt, QRgb colour);
+
 
     protected:
         bool event(QEvent* event) override;
@@ -150,8 +153,12 @@ namespace DSS
 #endif
 
     private:
+
+        void setPixmap(const QPixmap&);
+
         qreal m_scale, m_zoom;
         QPointF m_origin;
+		const QImage* pImage;       // Yes a raw pointer
         std::unique_ptr<QPixmap> pPixmap;
         std::unique_ptr<QPixmap> pOverlayPixmap;
         QPixmap m_drawingPixmap;

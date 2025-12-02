@@ -1507,21 +1507,25 @@ Wijzig de naam.</translation>
 <context>
     <name>DSS::QualityChart</name>
     <message>
-        <location filename="../ui/QualityChart.ui" line="50"/>
-        <location filename="../QualityChart.cpp" line="255"/>
-        <source>Star Circularity</source>
-        <translation>Star Circulariteit</translation>
+        <location filename="../ui/QualityChart.ui" line="56"/>
+        <location filename="../QualityChart.cpp" line="283"/>
+        <source>Star Eccentricity</source>
+        <translation>Excentriciteit van de ster</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="92"/>
-        <location filename="../QualityChart.cpp" line="181"/>
+        <location filename="../ui/QualityChart.ui" line="131"/>
+        <source>Cancel</source>
+        <translation>Annuleren</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="200"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>Interpolatie van FWHM-gegevens. Even geduld.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="230"/>
-        <source>Interpolating Circularity data.  Please be patient.</source>
-        <translation>Interpolatie van circulariteitsgegevens. Even geduld.</translation>
+        <location filename="../QualityChart.cpp" line="254"/>
+        <source>Interpolating Eccentricity data.  Please be patient.</source>
+        <translation>Interpolatie van excentriciteitsgegevens. Wees geduldig.</translation>
     </message>
 </context>
 <context>

@@ -1509,21 +1509,25 @@ Por favor, altere o nome.</translation>
 <context>
     <name>DSS::QualityChart</name>
     <message>
-        <location filename="../ui/QualityChart.ui" line="50"/>
-        <location filename="../QualityChart.cpp" line="255"/>
-        <source>Star Circularity</source>
-        <translation>Circularidade Estelar</translation>
+        <location filename="../ui/QualityChart.ui" line="56"/>
+        <location filename="../QualityChart.cpp" line="283"/>
+        <source>Star Eccentricity</source>
+        <translation>Excentricidade Estelar</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="92"/>
-        <location filename="../QualityChart.cpp" line="181"/>
+        <location filename="../ui/QualityChart.ui" line="131"/>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="200"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>Interpolando dados de FWHM. Aguarde.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="230"/>
-        <source>Interpolating Circularity data.  Please be patient.</source>
-        <translation>Interpolando dados de circularidade. Aguarde.</translation>
+        <location filename="../QualityChart.cpp" line="254"/>
+        <source>Interpolating Eccentricity data.  Please be patient.</source>
+        <translation>Interpolando dados de excentricidade. Por favor, seja paciente.</translation>
     </message>
 </context>
 <context>

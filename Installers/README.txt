@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1 Beta 4
+Welcome to DeepSkyStacker 6.1.1 Beta 5
 ===============================
 
 Reporting problems:
@@ -13,7 +13,7 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.1 Beta 4
+Changes for DeepSkyStacker 6.1.1 Beta 5
 ================================
 
 1.  Support for writing and reading compressed FITS files.  Writing of compressed files is enabled by a check box
@@ -54,9 +54,20 @@ Changes for DeepSkyStacker 6.1.1 Beta 4
 12. Always use the Qt Widgets based File Dialog for consistency and also so that (e.g.) both .cr2 and .CR2
     files are found with a file filter that specifies *.cr2
 
-13. Add capability to produce "Contour Plots" of FWHM and "Star Circularity" for an image.  If the image has
-    been registered, right click on the image and select "Star Quality Chart".  Note that this takes a while
-    (about a minute or so) to produce the chart.   This may be useful to assess issues such as camera tilt.
+13. Add the capability to produce "Contour Plots" of FWHM and "Star Eccentricity" for an image.
+    If the image has been registered, right click on the row with the image information in the list of images and
+    select "Star Quality Chart".  This may be useful to assess issues such as camera tilt.
+    Please note that it can take a while (about a minute or so) to produce the chart.
+
+    To make effective use of this I suggest using an image with an even distribution of similarly bright stars.
+    It may help to register the image using a manually selected star detection threshold so that a fairly large
+    number of stars are detected (perhaps in the high hundreds).
+
+14. Add a display of the colour of the pixel under the mouse pointer.
+
+15. Change the code used to determine the major and minor axes of a star image and thus the eccentricity value.
+    The old code wasn't robust and often returned a minor axis size that was larger than the major axis size.
+    This resulted in a computed eccentricity value that was "Not a Number".
 
 Changes for DeepSkyStacker 6.1.0
 ================================

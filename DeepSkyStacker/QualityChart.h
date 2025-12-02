@@ -38,8 +38,11 @@
 //
 #include <QWidget>
 #include "ui_QualityChart.h"
+#include "griddata.h"
+#include "FrameInfo.h"
 #include "RegisterEngine.h"
 class ListBitMap;
+class QwtPlotRescaler;
 class QwtPlotSpectrogram;
 class QwtMatrixRasterData;
 class QwtLinearColorMap;
@@ -62,25 +65,38 @@ namespace DSS
 	private:
 		CLightFrameInfo lightFrameInfo;
 
-	private:
+		std::unique_ptr<GridData> gridData;
+
 		std::vector<double> xValues;
 		std::vector<double> yValues;
 		std::vector<double> fwhmValues;
-		std::vector<double> circularityValues;
+		std::vector<double> eccentricityValues;
 		std::vector<double> xg;
 		std::vector<double> yg;
 		std::vector<double> zgFWHM;
-		std::vector<double> zgCircularity;
+		std::vector<double> zgEccentricity;
+		QVector<double>valueData;
 
 		QwtPlotSpectrogram* spectrogram{ nullptr };
 		QwtMatrixRasterData* rasterData{ nullptr };
+		QFuture<void> future;
+		QFutureWatcher<void>* futureWatcher{ nullptr };
 
 		void connectSignalsToSlots();
-	
+
+		bool cancelled{ false };
+		bool interpolating{ false };
+
+		void plotFWHM();
+		void plotEccentricity();
+
 	private slots:
 		void fwhmButtonClicked(bool checked);
-		void circularityButtonClicked(bool checked);
+		void eccentricityButtonClicked(bool checked);
 
+		void cancelPressed();
+
+		void interpolationFinished();
 
 	};
 }

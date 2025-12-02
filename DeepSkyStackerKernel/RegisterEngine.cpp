@@ -171,6 +171,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
 		fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("Eccentricity = %1").arg(star.eccentricity, 0, 'f', 2) << Qt::endl;
 		fileOut << "Rect = " << star.m_rcStar.left << ", "
 			<< star.m_rcStar.top << ", "
 			<< star.m_rcStar.right << ", "
@@ -253,7 +254,8 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		bool bNextStar = false;
 		CStar ms;
 		ms.m_fPercentage  = 0;
-		ms.m_fCircularity = 0; // Old .info.txt files don't contain that parameter.
+		ms.m_fCircularity = 0;  // Old .info.txt files don't contain that parameter.
+		ms.eccentricity = 1.0;	// Old .info.txt files don't contain that parameter.		
 
 		while (!bNextStar)
 		{
@@ -262,6 +264,8 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 				ms.m_fIntensity = strValue.toDouble();
 			else if (!strVariable.compare("MeanRadius", Qt::CaseInsensitive))
 				ms.m_fMeanRadius = strValue.toDouble();
+			else if (!strVariable.compare("Eccentricity", Qt::CaseInsensitive))
+				ms.eccentricity = strValue.toDouble();
 			else if (!strVariable.compare(CircularityParam, Qt::CaseInsensitive))
 				ms.m_fCircularity = strValue.toDouble();
 			else if (!strVariable.compare("Rect", Qt::CaseInsensitive))

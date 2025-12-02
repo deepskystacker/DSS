@@ -42,7 +42,7 @@
   <Import Project="$(QtMsBuild)\qt_defaults.props" Condition="Exists('$(QtMsBuild)\qt_defaults.props')" />
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>6.10.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts;printsupport</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts;concurrent;printsupport</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
@@ -51,7 +51,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>6.10.0_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts;printsupport</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;charts;concurrent;printsupport</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
     <QtDeploy>false</QtDeploy>
@@ -284,7 +284,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\griddata.cpp">
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">WITH_CSA;WITH_NN;;NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NOMINMAX;LIBRAW_NODLL;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ClCompile Include="..\Tools\imageview.cpp" />

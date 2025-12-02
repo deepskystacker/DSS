@@ -38,23 +38,88 @@
 //
 namespace DSS
 {
-    class GridData
+	class GridData
     {
     public:
-    enum class InterpolationType
-    {
-        GRID_CSA = 0,   // Bivariate Cubic Spline Approximation
-        GRID_NNAIDW,    // Natural Neighbors with Inverse Distance Weighting
-        GRID_NNLI,      // Natural Neighbors with Linear Interpolation
-        GRID_NNIDW,     // Natural Neighbors with Inverse Distance Weighting (KNN)
-        GRID_DTLI,      // Delaunay Triangulation Linear Interpolation
-        GRID_NNI        // Natural Neighbors Interpolation
-    };
+        enum class InterpolationType
+        {
+            GRID_CSA = 0,   // Bivariate Cubic Spline Approximation
+            GRID_NNAIDW,    // Natural Neighbors with Inverse Distance Weighting
+            GRID_NNLI,      // Natural Neighbors with Linear Interpolation
+            GRID_NNIDW,     // Natural Neighbors with Inverse Distance Weighting (KNN)
+            GRID_DTLI,      // Delaunay Triangulation Linear Interpolation
+            GRID_NNI        // Natural Neighbors Interpolation
+        };
 
-    static void
-        interpolate(
-            const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
-            const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
-            InterpolationType type, float data = 0.0);
-	};
+        GridData()
+        {
+		};
+
+        GridData(const GridData&) = delete;
+        GridData& operator=(const GridData&) = delete;
+        GridData(GridData&&) = delete;
+
+        ~GridData()
+        {
+        };
+
+        void
+            interpolate(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double>& xg, const std::vector<double>& yg, std::vector<double>& zg,
+                InterpolationType type, float data = 0.0f);
+
+    private:
+        inline constexpr static size_t KNN_MAX_ORDER = 100;
+
+        typedef struct pt
+        {
+            double dist;
+            int item;
+        }PT;
+
+        inline static thread_local PT items[KNN_MAX_ORDER];
+
+        void
+            grid_nnaidw(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
+
+        void
+            grid_nnli(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
+                double threshold);
+
+        void
+            grid_nnidw(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
+                int knn_order);
+
+#ifdef WITH_CSA
+        void
+            grid_csa(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
+#endif
+
+#ifdef WITH_NN
+        void
+            grid_nni(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg,
+                double wtmin);
+
+        void
+            grid_dtli(QPromise<void>& promise,
+                const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
+                const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg);
+#endif
+
+        void
+            dist1(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y, int knn_order);
+        void
+            dist2(const double gxvalue, const double gyvalue, const std::vector<double> x, const std::vector<double> y);
+    };
 }

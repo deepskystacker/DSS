@@ -1504,21 +1504,25 @@ Lütfen adı değiştirin.</translation>
 <context>
     <name>DSS::QualityChart</name>
     <message>
-        <location filename="../ui/QualityChart.ui" line="50"/>
-        <location filename="../QualityChart.cpp" line="255"/>
-        <source>Star Circularity</source>
-        <translation>Yıldız Daireselliği</translation>
+        <location filename="../ui/QualityChart.ui" line="56"/>
+        <location filename="../QualityChart.cpp" line="283"/>
+        <source>Star Eccentricity</source>
+        <translation>Yıldız Eksantrikliği</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="92"/>
-        <location filename="../QualityChart.cpp" line="181"/>
+        <location filename="../ui/QualityChart.ui" line="131"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="200"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>FWHM verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="230"/>
-        <source>Interpolating Circularity data.  Please be patient.</source>
-        <translation>Dairesellik verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
+        <location filename="../QualityChart.cpp" line="254"/>
+        <source>Interpolating Eccentricity data.  Please be patient.</source>
+        <translation>Eksantriklik verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
     </message>
 </context>
 <context>
