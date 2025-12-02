@@ -135,9 +135,6 @@ namespace {
 	{
 		constexpr int AngleResolution = 10; // Test the axis every 10 degrees.
 		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes;
-		double fMaxHalfRadius = 0.0;
-		double fMaxCumulated = 0.0;
-		int lMaxHalfRadiusAngle = 0;
 
 		// Preallocate the vector for the inner loop.
 		PIXELDISPATCHVECTOR vPixels;
@@ -150,7 +147,6 @@ namespace {
 		{
 			double					fSquareSum = 0.0;
 			double					fSum = 0.0;
-//			double					fNrValues = 0.0;
 
 			for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
 			{
@@ -181,36 +177,49 @@ namespace {
 			const double fStdDev = fSum > 0.0 ? std::sqrt(fSquareSum / fSum) : 0.0;
 			CStarAxisInfo ai{ .m_fRadius = fStdDev * 1.5, .m_fSum = fSum, .m_lAngle = lAngle };
 
-			if (ai.m_fSum > fMaxCumulated)
-			{
-				fMaxCumulated = ai.m_fSum;
-				fMaxHalfRadius = ai.m_fRadius;
-				lMaxHalfRadiusAngle = ai.m_lAngle;
-			}
-
 			starAxes[lAngle / AngleResolution] = std::move(ai);
 		}
 
-		const auto StarAxesRadius = [&starAxes](const int angle) -> double
+		const auto StarAxisRadius = [&starAxes](const int angle) -> double
+			{
+				const int index = ((angle + 360) % 360) / AngleResolution;
+				return starAxes[index].m_fRadius;
+			};
+
+		//
+		// Do a search over the first 180 degrees calculating the diameter, setting majorAxis to the largest found.
+		//
+		double majorAxis{ 0.0 };
+		double majorAxisAngle{ 0.0 };
+		for (int i = 0; i < starAxes.size() / 2; ++i)
 		{
-			const int index = ((angle + 360) % 360) / AngleResolution;
-			return starAxes[index].m_fRadius;
-		};
+			auto a{ starAxes[i].m_fRadius };
+			auto b{ starAxes[i + (starAxes.size() / 2)].m_fRadius };
+			auto diameter{ a + b };
+			if (diameter > majorAxis)
+			{
+				majorAxis = diameter;
+				if (a >= b) majorAxisAngle = starAxes[i].m_lAngle;
+				else majorAxisAngle = starAxes[i + (starAxes.size() / 2)].m_lAngle;
+			}
+		}
 
-		// Get the biggest value - this is the major axis
-		star.m_fLargeMajorAxis = fMaxHalfRadius;
-		star.m_fMajorAxisAngle = lMaxHalfRadiusAngle;
+		star.m_fMajorAxisAngle = majorAxisAngle;
+		auto a{ StarAxisRadius(majorAxisAngle) };
+		auto b{ StarAxisRadius(majorAxisAngle + 180) };
+		star.m_fLargeMajorAxis = std::max(a, b);
+		star.m_fSmallMajorAxis = std::min(a, b);
+		a = StarAxisRadius(majorAxisAngle + 90);
+		b = StarAxisRadius(majorAxisAngle + 270);
+		star.m_fLargeMinorAxis = std::max(a, b);
+		star.m_fSmallMinorAxis = std::min(a, b);
 
-		star.m_fSmallMajorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 180);
-		star.m_fLargeMinorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 90);
-		star.m_fSmallMinorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 270);
+		double minorAxis{ StarAxisRadius(majorAxisAngle + 90) + StarAxisRadius(majorAxisAngle + 270) };
 
 		//
 		// Compute eccentricity - definition of the ecccentricity formula says to use the semi-minor and
 		// semi-major axis values, but using the minor and major axis values gives the same result.
 		// 
-		auto majorAxis = (star.m_fLargeMajorAxis + star.m_fSmallMajorAxis);
-		auto minorAxis = (star.m_fLargeMinorAxis + star.m_fSmallMinorAxis);
 		if (0 != majorAxis) // Just to avoid a division by zero, should never happen.
 		{
 			star.eccentricity = std::sqrt(1.0 - ((minorAxis * minorAxis)/(majorAxis * majorAxis)));
