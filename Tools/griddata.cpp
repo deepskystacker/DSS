@@ -351,6 +351,7 @@ namespace DSS
 
         std::atomic_int progress{ 0 };   // progress counter
         const int limit{ static_cast<int>(xg.size() - 1) };
+		promise.setProgressRange(0, limit);
         // 
 		// Use ALL available processors for the interpolation
         // 
@@ -409,9 +410,6 @@ namespace DSS
             double threshold)
     {
 		std::array<double, 4> xx, yy, zz;
-        double t, A, B, C, D, d1, d2, d3, max_thick;
-        size_t i, j;
-        int   ii, excl, cnt, excl_item;
 
         if (threshold == 0.)
         {
@@ -435,29 +433,41 @@ namespace DSS
             return;
         }
 
-        for (i = 0; i < xg.size(); i++)
+        std::atomic_int progress{ 0 };   // progress counter
+        const int limit{ 2* static_cast<int>(xg.size() - 1) };
+        promise.setProgressRange(0, limit);
+        // 
+        // Use ALL available processors for the interpolation
+        // 
+        int processorCount = omp_get_num_procs();
+#pragma omp parallel for num_threads(processorCount) default(shared) private(xx, yy, zz)
+        for (int i = 0; i < xg.size(); i++)
         {
-            for (j = 0; j < yg.size(); j++)
+            if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
+
+            for (int j = 0; j < yg.size(); j++)
             {
                 dist1(xg[i], yg[j], x, y, 3);
 
                 // see if the triangle is a thin one
-                for (ii = 0; ii < 3; ii++)
+                for (int ii = 0; ii < 3; ii++)
                 {
                     xx[ii] = x[items[ii].item];
                     yy[ii] = y[items[ii].item];
                     zz[ii] = z[items[ii].item];
                 }
 
-                d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
-                d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
-                d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
+                double d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
+                double d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
+                double d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
 
                 if (d1 == 0. || d2 == 0. || d3 == 0.) // coincident points
                 {
                     zg[i + j*xg.size()] = std::numeric_limits<double>::quiet_NaN();
                     continue;
                 }
+
+                double t;
 
                 // make d1 < d2
                 if (d1 > d2)
@@ -477,15 +487,17 @@ namespace DSS
                 }
                 else                                // calculate the plane passing through the three points
                 {
-                    A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
-                    B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
-                    C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
-                    D = -A * xx[0] - B * yy[0] - C * zz[0];
+                    double A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
+                    double B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
+                    double C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
+                    double D = -A * xx[0] - B * yy[0] - C * zz[0];
 
                     // and interpolate (or extrapolate...)
                     zg[i + j*xg.size()] = (-xg[i] * A / C - yg[j] * B / C - D / C);
                 }
             }
+            ++progress;
+            promise.setProgressValue(std::min(progress.load(), limit));
         }
 
         // now deal with NaNs resulting from thin triangles. The idea is
@@ -497,94 +509,100 @@ namespace DSS
         // the candidate triangle... otherwise one is extrapolating
         //
 
+   #pragma omp parallel for num_threads(processorCount) default(shared) private(xx, yy, zz)
+        for (int i = 0; i < xg.size(); i++)
         {
-            for (i = 0; i < xg.size(); i++)
+            if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
+
+            for (int j = 0; j < yg.size(); j++)
             {
-                for (j = 0; j < yg.size(); j++)
+                if (std::isnan(zg[i + j * xg.size()]))
                 {
-                    if (std::isnan(zg[i + j*xg.size()]))
+                    dist1(xg[i], yg[j], x, y, 4);
+
+                    // sort by distances. Not really needed!
+                    // for (ii=3; ii>0; ii--) {
+                    // for (jj=0; jj<ii; jj++) {
+                    // if (items[jj].dist > items[jj+1].dist) {
+                    // t = items[jj].dist;
+                    // items[jj].dist = items[jj+1].dist;
+                    // items[jj+1].dist = t;
+                    // }
+                    // }
+                    // }
+                    //
+
+                    double max_thick = 0.; int excl_item = -1;
+                    for (int excl = 0; excl < 4; excl++) // the excluded point
+
                     {
-                        dist1(xg[i], yg[j], x, y, 4);
-
-                        // sort by distances. Not really needed!
-                        // for (ii=3; ii>0; ii--) {
-                        // for (jj=0; jj<ii; jj++) {
-                        // if (items[jj].dist > items[jj+1].dist) {
-                        // t = items[jj].dist;
-                        // items[jj].dist = items[jj+1].dist;
-                        // items[jj+1].dist = t;
-                        // }
-                        // }
-                        // }
-                        //
-
-                        max_thick = 0.; excl_item = -1;
-                        for (excl = 0; excl < 4; excl++) // the excluded point
-
+                        int cnt = 0;
+                        for (int ii = 0; ii < 4; ii++)
                         {
-                            cnt = 0;
-                            for (ii = 0; ii < 4; ii++)
-                            {
-                                if (ii != excl)
-                                {
-                                    xx[cnt] = x[items[ii].item];
-                                    yy[cnt] = y[items[ii].item];
-                                    cnt++;
-                                }
-                            }
-
-                            d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
-                            d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
-                            d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
-                            if (d1 == 0. || d2 == 0. || d3 == 0.) // coincident points
-                                continue;
-
-                            // make d1 < d2
-                            if (d1 > d2)
-                            {
-                                t = d1; d1 = d2; d2 = t;
-                            }
-                            // and d2 < d3
-                            if (d2 > d3)
-                            {
-                                t = d2; d2 = d3; d3 = t;
-                            }
-
-                            t = (d1 + d2) / d3;
-                            if (t > max_thick)
-                            {
-                                max_thick = t;
-                                excl_item = excl;
-                            }
-                        }
-
-                        if (excl_item == -1) // all points are coincident?
-                            continue;
-
-                        // one has the thicker triangle constructed from the 4 KNN
-                        cnt = 0;
-                        for (ii = 0; ii < 4; ii++)
-                        {
-                            if (ii != excl_item)
+                            if (ii != excl)
                             {
                                 xx[cnt] = x[items[ii].item];
                                 yy[cnt] = y[items[ii].item];
-                                zz[cnt] = z[items[ii].item];
                                 cnt++;
                             }
                         }
 
-                        A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
-                        B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
-                        C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
-                        D = -A * xx[0] - B * yy[0] - C * zz[0];
+                        double d1 = sqrt((xx[1] - xx[0]) * (xx[1] - xx[0]) + (yy[1] - yy[0]) * (yy[1] - yy[0]));
+                        double d2 = sqrt((xx[2] - xx[1]) * (xx[2] - xx[1]) + (yy[2] - yy[1]) * (yy[2] - yy[1]));
+                        double d3 = sqrt((xx[0] - xx[2]) * (xx[0] - xx[2]) + (yy[0] - yy[2]) * (yy[0] - yy[2]));
+                        if (d1 == 0. || d2 == 0. || d3 == 0.) // coincident points
+                            continue;
 
-                        // and interpolate (or extrapolate...)
-                        zg[i + j*xg.size()] = (-xg[i] * A / C - yg[j] * B / C - D / C);
+                        double t;
+                        // make d1 < d2
+                        if (d1 > d2)
+                        {
+                            t = d1; d1 = d2; d2 = t;
+                        }
+                        // and d2 < d3
+                        if (d2 > d3)
+                        {
+                            t = d2; d2 = d3; d3 = t;
+                        }
+
+                        t = (d1 + d2) / d3;
+                        if (t > max_thick)
+                        {
+                            max_thick = t;
+                            excl_item = excl;
+                        }
                     }
+
+                    if (excl_item == -1) // all points are coincident?
+                        continue;
+
+                    // one has the thicker triangle constructed from the 4 KNN
+                    int cnt = 0;
+                    for (int ii = 0; ii < 4; ii++)
+                    {
+                        if (ii != excl_item)
+                        {
+                            xx[cnt] = x[items[ii].item];
+                            yy[cnt] = y[items[ii].item];
+                            zz[cnt] = z[items[ii].item];
+                            cnt++;
+                        }
+                    }
+
+                    double A = yy[0] * (zz[1] - zz[2]) + yy[1] * (zz[2] - zz[0]) + yy[2] * (zz[0] - zz[1]);
+                    double B = zz[0] * (xx[1] - xx[2]) + zz[1] * (xx[2] - xx[0]) + zz[2] * (xx[0] - xx[1]);
+                    double C = xx[0] * (yy[1] - yy[2]) + xx[1] * (yy[2] - yy[0]) + xx[2] * (yy[0] - yy[1]);
+                    double D = -A * xx[0] - B * yy[0] - C * zz[0];
+
+                    // and interpolate (or extrapolate...)
+                    zg[i + j * xg.size()] = (-xg[i] * A / C - yg[j] * B / C - D / C);
                 }
+                ++progress;
+                promise.setProgressValue(std::min(progress.load(), limit));
             }
         }
+   
+     
     }
 
     //
@@ -599,22 +617,29 @@ namespace DSS
             const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z,
             const std::vector<double> xg, const std::vector<double> yg, std::vector<double>& zg)
     {
-        double d, nt;
-        size_t i, j;
-        unsigned int k;
-
-        for (i = 0; i < xg.size(); i++)
+ 
+        std::atomic_int progress{ 0 };   // progress counter
+        const int limit{ static_cast<int>(xg.size() - 1) };
+        promise.setProgressRange(0, limit);
+        // 
+        // Use ALL available processors for the interpolation
+        // 
+        int processorCount = omp_get_num_procs();
+#pragma omp parallel for num_threads(processorCount) default(shared)
+        for (int i = 0; i < xg.size(); i++)
         {
-            for (j = 0; j < yg.size(); j++)
+            if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
+
+            for (int j = 0; j < yg.size(); j++)
             {
                 dist2(xg[i], yg[j], x, y);
 				// zops->set(zgp, i, j, 0.); No need, was set to 0.0 at initialization
-                nt = 0.;
-                for (k = 0; k < 4; k++)
+                double nt = 0.;
+                for (int k = 0; k < 4; k++)
                 {
                     if (items[k].item != -1)                              // was found
                     {
-                        d = 1. / (items[k].dist * items[k].dist);         // 1/square distance
+                        double d = 1. / (items[k].dist * items[k].dist);         // 1/square distance
                         zg[i + j*xg.size()] += (d * z[items[k].item]);
                         nt += d;
                     }
@@ -624,6 +649,8 @@ namespace DSS
                 else
                     zg[i + j*xg.size()] /= nt;
             }
+            ++progress;
+            promise.setProgressValue(std::min(progress.load(), limit));
         }
     }
 

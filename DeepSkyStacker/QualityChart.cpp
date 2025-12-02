@@ -171,7 +171,6 @@ namespace DSS
 			yg.emplace_back(static_cast<double>(y));
 
 		radioEccentricity->setChecked(true);
-		progressBar->setRange(0, static_cast<int>(xg.size() - 1));
 
 		connectSignalsToSlots();
 
@@ -194,6 +193,8 @@ namespace DSS
 			this, &QualityChart::fwhmButtonClicked);
 		connect(cancelButton, &QPushButton::clicked,
 			this, &QualityChart::cancelPressed);
+		connect(futureWatcher, &QFutureWatcher<void>::progressRangeChanged,
+			progressBar, &QProgressBar::setRange);
 		connect(futureWatcher, &QFutureWatcher<void>::progressValueChanged,
 			progressBar, &QProgressBar::setValue);
 		connect(futureWatcher, &QFutureWatcher<void>::finished,
