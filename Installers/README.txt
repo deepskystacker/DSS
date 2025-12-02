@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1 Beta 4
+Welcome to DeepSkyStacker 6.1.1 Beta 5
 ===============================
 
 Reporting problems:
@@ -64,6 +64,10 @@ Changes for DeepSkyStacker 6.1.1 Beta 5
     number of stars are detected (perhaps in the high hundreds).
 
 14. Add a display of the colour of the pixel under the mouse pointer.
+
+15. Change the code used to determine the major and minor axes of a star image and thus the eccentricity value.
+    The old code wasn't robust and often returned a minor axis size that was larger than the major axis size.
+    This resulted in a computed eccentricity value that was "Not a Number".
 
 Changes for DeepSkyStacker 6.1.0
 ================================
