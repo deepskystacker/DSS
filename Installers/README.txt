@@ -32,7 +32,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 5
 
 4.  Update build to use Qt 6.10.0, boost 1.88 and libtiff 4.7.1
 
-5.  Bug fix: The name of the intermediate files were created incorrectly.   The stem for the file name
+5.  Bug fix: The names of the intermediate files were created incorrectly.   The stem for the file name
     used the content of the input filename up to but not including the first '.' character.
     It should have used up to but not including the last '.' character.
 
@@ -68,6 +68,9 @@ Changes for DeepSkyStacker 6.1.1 Beta 5
 15. Change the code used to determine the major and minor axes of a star image and thus the eccentricity value.
     The old code wasn't robust and often returned a minor axis size that was larger than the major axis size.
     This resulted in a computed eccentricity value that was "Not a Number".
+
+16. Bug fix: Correct loading of 16 bit monochrome PNG files. The pixel values were being incorrectly scaled.
+    Also correct gamma transformation code for 16 bit monochrome and 48 bit colour images.
 
 Changes for DeepSkyStacker 6.1.0
 ================================
