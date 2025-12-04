@@ -356,12 +356,10 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 
 	const auto* pImageData = pQImage->constBits();
 	const auto bytes_per_line = pQImage->bytesPerLine();
-	
-//	std::atomic_int loopCtr{ 0 };
 
 	const auto copyPixels = 
 		[bytes_per_line, height, width, pBitmap, pProgress, numberOfProcessors]
-		<bool Monochrome, typename PixelType, std::invocable<const PixelType&> auto GetColours>
+		<bool Monochrome, typename PixelType, std::invocable<const PixelType&> auto GetColours, double ScalingFactor = 1.0>
 		(const uchar* pSrc)
 	{
 
@@ -369,15 +367,13 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 #pragma omp parallel for shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int row = 0; row < height; ++row)
 		{
-			constexpr uchar pixelSize{ sizeof(PixelType) };
 			const auto* pPixel = reinterpret_cast<const PixelType*>(pSrc + row * bytes_per_line);
 			for (int col = 0; col < width; ++col, ++pPixel)
 			{
 				if constexpr (Monochrome)
 				{
-					auto grey = static_cast<double>(*pPixel);
-					if constexpr (2 == pixelSize) grey /= scaleFactorInt16;
-					pBitmap->SetPixel(col, row, grey);
+					const double grey = static_cast<double>(*pPixel);
+					pBitmap->SetPixel(col, row, grey * ScalingFactor);
 				}
 				else
 				{
@@ -397,7 +393,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		copyPixels.operator()<true, uchar, std::identity{}>(pImageData);
 		break;
 	case 16:
-		copyPixels.operator()<true, std::uint16_t, std::identity{}>(pImageData);
+		copyPixels.operator()<true, std::uint16_t, std::identity{}, 1.0 / scaleFactorInt16>(pImageData);
 		break;
 	case 24:
 		copyPixels.operator()<false, QRgb, [](const QRgb& c) -> std::tuple<double, double, double> { return { qRed(c), qGreen(c), qBlue(c) }; }>(pImageData);
