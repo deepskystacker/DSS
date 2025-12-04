@@ -131,90 +131,78 @@ namespace {
 		template <typename T> PixelDirection& operator=(T&&) = delete;
 	};
 
-	void findStarShape(const CGrayBitmap& bitmap, CStar& star, const double backgroundNoiseLevel)
+	void findStarShape(const CGrayBitmap& bitmap, CStar& star, double backgroundNoiseLevel)
 	{
 		constexpr int AngleResolution = 10; // Test the axis every 10 degrees.
-		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes;
+		constexpr double GradRadFactor = 3.14159265358979323846 / 180.0;
 
-		// Preallocate the vector for the inner loop.
-		PIXELDISPATCHVECTOR vPixels;
-		vPixels.reserve(10);
+		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes;
+		std::array<int, 4> xcoords, ycoords;
+
+		const auto StarAxisRadius = [&starAxes, AngleResolution](const int angle) -> double
+		{
+			const int index = ((angle + 360) % 360) / AngleResolution;
+			return starAxes[index].m_fRadius;
+		};
+
+		std::ranges::transform(std::views::iota(0, static_cast<int>(starAxes.size())), starAxes.begin(), [](const int n) { return CStarAxisInfo{ 0.0, 0.0, n * AngleResolution }; });
 
 		const int width = bitmap.Width();
 		const int height = bitmap.Height();
+		const double bitmapMultiplier = bitmap.GetMultiplier();
+		backgroundNoiseLevel *= bitmapMultiplier;
 
-		for (int lAngle = 0; lAngle < 360; lAngle += AngleResolution)
+		for (CStarAxisInfo& axisInfo : starAxes)
 		{
-			double					fSquareSum = 0.0;
-			double					fSum = 0.0;
+			double squareSum = 0.0;
 
 			for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
 			{
-				constexpr double GradRadFactor = 3.14159265358979323846 / 180.0;
-				const double fX = star.m_fX + std::cos(lAngle * GradRadFactor) * fPos;
-				const double fY = star.m_fY + std::sin(lAngle * GradRadFactor) * fPos;
-				double fLuminance = 0;
+				const double fX = star.m_fX + std::cos(axisInfo.m_lAngle * GradRadFactor) * fPos;
+				const double fY = star.m_fY + std::sin(axisInfo.m_lAngle * GradRadFactor) * fPos;
+				double luminanceOfPixel = 0;
 
-				// Compute luminance at fX, fY
-				vPixels.resize(0);
-				ComputePixelDispatch(QPointF(fX, fY), vPixels);
-
-				for (const CPixelDispatch& pixel : vPixels)
+				std::array<double, 4> proportions = ComputeAll4PixelDispatches(QPointF{ fX, fY }, xcoords, ycoords);
+				
+				for (const int n : { 0, 1, 2, 3 })
 				{
-					if (pixel.m_lX < 0 || pixel.m_lX >= width || pixel.m_lY < 0 || pixel.m_lY >= height)
-						continue;
-
-					double pixelBrightness;
-					bitmap.GetPixel(static_cast<size_t>(pixel.m_lX), static_cast<size_t>(pixel.m_lY), pixelBrightness);
-					pixelBrightness = std::max(pixelBrightness - backgroundNoiseLevel, 0.0); // Exclude negative values.
-					fLuminance += pixelBrightness * pixel.m_fPercentage;
+					if (const size_t x = xcoords[n], y = ycoords[n]; x >= 0 && x < width && y >= 0 && y < height)
+					{
+						luminanceOfPixel += proportions[n] * std::max(bitmap.getUncheckedValue(x, y) - backgroundNoiseLevel, 0.0);
+					}
 				}
-				fSquareSum += fPos * fPos * fLuminance;
-				fSum += fLuminance;
-//				fNrValues += fLuminance * 2;
+				squareSum += fPos * fPos * luminanceOfPixel;
+				axisInfo.m_fSum += luminanceOfPixel;
 			}
 
-			const double fStdDev = fSum > 0.0 ? std::sqrt(fSquareSum / fSum) : 0.0;
-			CStarAxisInfo ai{ .m_fRadius = fStdDev * 1.5, .m_fSum = fSum, .m_lAngle = lAngle };
-
-			starAxes[lAngle / AngleResolution] = std::move(ai);
+			axisInfo.m_fRadius = axisInfo.m_fSum > 0.0 ? 1.5 * std::sqrt(squareSum / axisInfo.m_fSum) : 0.0;
+			axisInfo.m_fSum /= bitmapMultiplier; // Correct the sum, because bitmap.getUncheckedValue(x, y) did not divide by the bitmap-multiplier.
 		}
-
-		const auto StarAxisRadius = [&starAxes](const int angle) -> double
-			{
-				const int index = ((angle + 360) % 360) / AngleResolution;
-				return starAxes[index].m_fRadius;
-			};
 
 		//
 		// Do a search over the first 180 degrees calculating the diameter, setting majorAxis to the largest found.
 		//
 		double majorAxis{ 0.0 };
-		double majorAxisAngle{ 0.0 };
-		for (int i = 0; i < starAxes.size() / 2; ++i)
+		int majorAxisAngle = 0;
+		for (int angle = 0; angle < 180; angle += AngleResolution)
 		{
-			auto a{ starAxes[i].m_fRadius };
-			auto b{ starAxes[i + (starAxes.size() / 2)].m_fRadius };
-			auto diameter{ a + b };
+			const double diameter = StarAxisRadius(angle) + StarAxisRadius(angle + 180);
 			if (diameter > majorAxis)
 			{
 				majorAxis = diameter;
-				if (a >= b) majorAxisAngle = starAxes[i].m_lAngle;
-				else majorAxisAngle = starAxes[i + (starAxes.size() / 2)].m_lAngle;
+				majorAxisAngle = angle;
 			}
 		}
 
-		star.m_fMajorAxisAngle = majorAxisAngle;
-		auto a{ StarAxisRadius(majorAxisAngle) };
-		auto b{ StarAxisRadius(majorAxisAngle + 180) };
-		star.m_fLargeMajorAxis = std::max(a, b);
-		star.m_fSmallMajorAxis = std::min(a, b);
+		double a = StarAxisRadius(majorAxisAngle);
+		double b = StarAxisRadius(majorAxisAngle + 180);
+		star.m_fMajorAxisAngle = a >= b ? majorAxisAngle : (majorAxisAngle + 180 + 360) % 360;
+		std::tie(star.m_fSmallMajorAxis, star.m_fLargeMajorAxis) = std::minmax(a, b);
 		a = StarAxisRadius(majorAxisAngle + 90);
 		b = StarAxisRadius(majorAxisAngle + 270);
-		star.m_fLargeMinorAxis = std::max(a, b);
-		star.m_fSmallMinorAxis = std::min(a, b);
+		std::tie(star.m_fSmallMinorAxis, star.m_fLargeMinorAxis) = std::minmax(a, b);
 
-		double minorAxis{ StarAxisRadius(majorAxisAngle + 90) + StarAxisRadius(majorAxisAngle + 270) };
+		const double minorAxis = a + b;
 
 		//
 		// Compute eccentricity - definition of the ecccentricity formula says to use the semi-minor and
@@ -222,7 +210,7 @@ namespace {
 		// 
 		if (0 != majorAxis) // Just to avoid a division by zero, should never happen.
 		{
-			star.eccentricity = std::sqrt(1.0 - ((minorAxis * minorAxis)/(majorAxis * majorAxis)));
+			star.eccentricity = std::sqrt(1.0 - ((minorAxis * minorAxis) / (majorAxis * majorAxis)));
 		}
 	}
 }
