@@ -64,4 +64,6 @@ one that is being kept up to date.
 You can download the 2.5.9 of this from [Visual Leak Detector](https://github.com/Azure/vld/releases/tag/v2.5.9).
 You should install it to C:\Program Files (x86)\Visual Leak Detector as that is the location that the DeepSkyStacker projects expect to find it.
 In the Visual Leak Detector installation wizard, be sure to check "Add VLD directory to your environmental path".
+###PVS Studio
+We use PVS-Studio for code quality checking.
 
