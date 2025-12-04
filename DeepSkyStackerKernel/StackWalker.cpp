@@ -737,7 +737,7 @@ private:
       if ((this->m_parent->m_options & StackWalker::RetrieveFileVersion) != 0)
       {
         VS_FIXEDFILEINFO* fInfo = NULL;
-        DWORD             dwHandle;
+        DWORD             dwHandle{ 0 };
         DWORD             dwSize = GetFileVersionInfoSizeA(szImg, &dwHandle);
         if (dwSize > 0)
         {
