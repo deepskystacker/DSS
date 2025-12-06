@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <numbers>
 #include "StackingEngine.h"
 
 #include "MasterFrames.h"
@@ -29,12 +30,6 @@
 #define STD_or_BOOST boost
 #else
 #define STD_or_BOOST std
-#endif
-
-#define _USE_MATH_DEFINES
-
-#ifndef M_PI
-#define M_PI			3.14159265358979323846
 #endif
 
 /* ------------------------------------------------------------------- */
@@ -2284,7 +2279,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 							m_pProgress->Progress1(QCoreApplication::translate(
 								"StackingEngine", "Stacking %1 of %2 - Offset [%3,%4] - Angle : %5\xc2\xb0 ", "IDS_STACKING_PICTURE")
 								.arg(m_lNrStacked + 1).arg(m_lNrCurrentStackable).arg(lightframeInfo.m_fXOffset, 0, 'f', 1).arg(lightframeInfo.m_fYOffset, 0, 'f', 1)
-								.arg(lightframeInfo.m_fAngle * 180 / M_PI, 0, 'f', 1), m_lNrStacked + 1);
+								.arg(lightframeInfo.m_fAngle * 180 / std::numbers::pi, 0, 'f', 1), m_lNrStacked + 1);
 						}
 
 						if (lightframeInfo.m_lNrChannels == 3)
@@ -2489,7 +2484,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, OldProgressBase
 					pBitmap = p;
 
 					CDirectionalImageFilter Filter;
-					Filter.SetAngle(m_fStarTrailsAngle + M_PI / 2.0, 2);
+					Filter.SetAngle(m_fStarTrailsAngle + std::numbers::pi / 2.0, 2);
 					ZTRACE_RUNTIME("Applying Comet Angle filter");
 					m_pComet = Filter.ApplyFilter(pBitmap.get(), pProgress);
 				}

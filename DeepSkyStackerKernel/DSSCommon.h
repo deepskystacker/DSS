@@ -1,7 +1,5 @@
 #pragma once
 
-constexpr auto PI = 3.14159265358979323846;
-
 #define REGENTRY_BASEKEY_LIVE				_T("Software\\DeepSkyStacker5\\Live")
 #define REGENTRY_BASEKEY_LIVE_POSITION _T("Software\\DeepSkyStacker5\\DeepSkyStackerLive\\Position")
 

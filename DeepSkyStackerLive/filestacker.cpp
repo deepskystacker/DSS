@@ -36,6 +36,7 @@
 // FileStacker.cpp : Defines the class behaviors for the application.
 //
 #include "pch.h"
+#include <numbers>
 #include "filestacker.h"
 #include "progresslive.h"
 #include "RegisterEngine.h"
@@ -232,7 +233,7 @@ namespace DSS
 			if (stackingEngine.ComputeOffset(lfi))
 			{
 				lfi.m_BilinearParameters.Offsets(dX, dY);
-				angle = lfi.m_BilinearParameters.Angle(lfi.RenderedWidth()) * 180.0 / M_PI;
+				angle = lfi.m_BilinearParameters.Angle(lfi.RenderedWidth()) * 180.0 / std::numbers::pi;
 				emit setImageOffsets(name, dX, dY, angle);
 				emit setImageInfo(name, II_DONTSTACK_STACK);
 
