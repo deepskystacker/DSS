@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <numbers>
 #include "RegisterEngine.h"
 #include "PixelTransform.h"
 
@@ -134,7 +135,7 @@ namespace {
 	void findStarShape(const CGrayBitmap& bitmap, CStar& star, double backgroundNoiseLevel)
 	{
 		constexpr int AngleResolution = 10; // Test the axis every 10 degrees.
-		constexpr double GradRadFactor = 3.14159265358979323846 / 180.0;
+		constexpr double GradRadFactor = std::numbers::pi / 180.0;
 
 		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes{};
 		std::array<int, 4> xcoords, ycoords;

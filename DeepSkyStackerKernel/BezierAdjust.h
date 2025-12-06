@@ -35,7 +35,7 @@
 **
 ****************************************************************************/
 /* ------------------------------------------------------------------- */
-//#undef PI
+#include <numbers>
 #include "DSSCommon.h"
 
 namespace DSS
@@ -228,27 +228,27 @@ namespace DSS
 			pt1.x = 0;
 			pt1.y = 0;
 
-			pt2.x = size * cos(m_fDarknessAngle * PI / 180.0) * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
-			pt2.y = sin(m_fDarknessAngle * PI / 180.0) * size * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
+			pt2.x = size * cos(m_fDarknessAngle * std::numbers::pi / 180.0) * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
+			pt2.y = sin(m_fDarknessAngle * std::numbers::pi / 180.0) * size * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
 
 			pt3.x = size * m_fMidtone / 100.0;
 			pt3.y = size * m_fMidtone / 100.0;
 
 			pt4 = pt3;
-			pt4.x -= sin(m_fMidtoneAngle * PI / 180.0) * size * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
-			pt4.y -= cos(m_fMidtoneAngle * PI / 180.0) * size * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
+			pt4.x -= sin(m_fMidtoneAngle * std::numbers::pi / 180.0) * size * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
+			pt4.y -= cos(m_fMidtoneAngle * std::numbers::pi / 180.0) * size * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
 
 			addBezierPoints(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y, pt4.x, pt4.y);
 
 			// Set the next 4 control points of the bezier curve
 			pt1 = pt3;
-			pt2.x = pt1.x + sin(m_fMidtoneAngle * PI / 180.0) * size * m_fHighlightPower / 100.0;
-			pt2.y = pt1.y + cos(m_fMidtoneAngle * PI / 180.0) * size * m_fHighlightPower / 100.0;;
+			pt2.x = pt1.x + sin(m_fMidtoneAngle * std::numbers::pi / 180.0) * size * m_fHighlightPower / 100.0;
+			pt2.y = pt1.y + cos(m_fMidtoneAngle * std::numbers::pi / 180.0) * size * m_fHighlightPower / 100.0;;
 			pt3.x = size;
 			pt3.y = size;
 			pt4 = pt3;
-			pt4.x -= cos(m_fHighlightAngle * PI / 180.0) * size * m_fHighlightPower * (100.0 - m_fMidtone) / 100.0 / 100.0;
-			pt4.y -= sin(m_fHighlightAngle * PI / 180.0) * size * m_fHighlightPower * (100.0 - m_fMidtone) / 100.0 / 100.0;
+			pt4.x -= cos(m_fHighlightAngle * std::numbers::pi / 180.0) * size * m_fHighlightPower * (100.0 - m_fMidtone) / 100.0 / 100.0;
+			pt4.y -= sin(m_fHighlightAngle * std::numbers::pi / 180.0) * size * m_fHighlightPower * (100.0 - m_fMidtone) / 100.0 / 100.0;
 
 			addBezierPoints(pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y, pt4.x, pt4.y);
 

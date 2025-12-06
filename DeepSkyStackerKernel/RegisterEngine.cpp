@@ -720,7 +720,7 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 	static double previousThreshold = ThresholdStartingValue;
 	// Use minLuminancy IF auto-threshold NOT selected, ELSE: 65% for first image OR previousThreshold for the others.
 	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
-	// If auto-threshold: Try to find 50 stars in first image, then relax criterion to 30. This should make found thresholds as equal as possible.
+	// If auto-threshold: Try to find 80 stars in first image, then relax criterion to 65. This should make found thresholds as equal as possible.
 	// Changed on Oct-28-2025.
 	const size_t numberWantedStars = bitmapIndex <= 0 ? 80 : 65;
 

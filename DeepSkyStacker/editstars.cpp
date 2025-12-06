@@ -34,6 +34,7 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include <numbers>
 #include "editstars.h"
 #include "Delaunay.h"
 #include "imageview.h"
@@ -790,7 +791,7 @@ namespace DSS
 				// If showRefStars: Line in direction of large majos axis.
 				if (g_bShowRefStars && star.m_fLargeMajorAxis > 0)
 				{
-					constexpr double DegRadFactor = 3.14159265358979323846 / 180.0;
+					constexpr double DegRadFactor = std::numbers::pi / 180.0;
 					QPointF	ptOrg{ star.m_fX + 0.5, star.m_fY + 0.5 };
 					QPointF ptDst{ ptOrg };
 
