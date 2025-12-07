@@ -142,9 +142,15 @@ namespace DSS
 		spectrogram->setColorMap(new FlatColourMap);
 		rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
 
+		QwtText text(tr("Intensity"));
+		QFont titleFont;
+		titleFont.setBold(true);
+		titleFont.setPointSize(12);
+		text.setFont(titleFont);
+		flatPlot->setTitle(text);
+
 		// A color bar on the right axis
 		QwtScaleWidget* rightAxis = flatPlot->axisWidget(QwtAxis::YRight);
-		rightAxis->setTitle(tr("Intensity"));
 		rightAxis->setColorBarEnabled(true);
 		rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new FlatColourMap);
 		flatPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);
