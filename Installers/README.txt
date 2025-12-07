@@ -72,6 +72,10 @@ Changes for DeepSkyStacker 6.1.1 Beta 5
 16. Bug fix: Correct loading of 16 bit monochrome PNG files. The pixel values were being incorrectly scaled.
     Also correct gamma transformation code for 16 bit monochrome and 48 bit colour images.
 
+17. Add the capability to produce a "Contour Plot" of the intensity levels of a flat.
+    To produce the plot, right click on row with information about the flat file in the list of images and
+    select "Flat Contour Chart".   This may be useful for assessing the telescope's collimation.
+
 Changes for DeepSkyStacker 6.1.0
 ================================
 
