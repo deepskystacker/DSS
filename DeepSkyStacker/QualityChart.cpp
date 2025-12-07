@@ -117,12 +117,12 @@ namespace DSS
 		QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint),
 		lightFrameInfo(lbmp),
 		gridData{ std::make_unique<GridData>()},
-		spectrogram{ new QwtPlotSpectrogram("Star Quality") },
+		spectrogram{ new QwtPlotSpectrogram(tr("Star Quality Chart")) },
 		rasterData{ new QwtMatrixRasterData() },
 		futureWatcher{ new QFutureWatcher<void>(this) }
 	{
 		setupUi(this);
-		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());
+		setWindowTitle(tr("Star Quality Chart") + " - " + lbmp.filePath.filename().generic_u16string());
 		lightFrameInfo.SetBitmap(lbmp.filePath);
 
 		//
