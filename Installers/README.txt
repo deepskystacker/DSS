@@ -20,7 +20,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 5
     on the Intermediate Files tab of the Stacking settings dialogue.  Please be aware that floating point FITS images
     (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa
     of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images
-    are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being
+    are first quantized into scaled integer pixel values (thus throwing away much of the noise) before being
     compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher
     compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also
     means that the original floating value pixel values are not exactly preserved.
@@ -73,7 +73,7 @@ Changes for DeepSkyStacker 6.1.1 Beta 5
     Also correct gamma transformation code for 16 bit monochrome and 48 bit colour images.
 
 17. Add the capability to produce a "Contour Plot" of the intensity levels of a flat.
-    To produce the plot, right click on row with information about the flat file in the list of images and
+    To produce the plot, right click on the row with information about the flat file in the list of images and
     select "Flat Contour Chart".   This may be useful for assessing the telescope's collimation.
 
 Changes for DeepSkyStacker 6.1.0
