@@ -38,7 +38,7 @@
 #include "pch.h"
 #include "FrameInfo.h"
 #include "Stars.h"
-#include "FlatChart.h"
+#include "flatchart.h"
 #include "GrayBitmap.h"
 #include "RAWUtils.h"
 #include <QtConcurrentRun>
