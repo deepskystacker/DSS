@@ -20,6 +20,7 @@ public:
 	double			m_fLargeMinorAxis{ 0.0 };
 	double			m_fSmallMinorAxis{ 0.0 };
 	double			m_fMajorAxisAngle{ 0.0 };
+	double			eccentricity{ 1.0 };
 
 public:
 	CStar() = default;
@@ -70,10 +71,12 @@ public:
 	}
 };
 
-typedef std::vector<CStar>		STARVECTOR;
-typedef STARVECTOR::iterator	STARITERATOR;
-typedef std::set<CStar>			STARSET;
-typedef STARSET::iterator		STARSETITERATOR;
+using STARVECTOR = std::vector<CStar>;
+using STARITERATOR = STARVECTOR::iterator;
+using STARSET = std::set<CStar>;
+using STARSETITERATOR = STARSET::iterator;
+
+constexpr inline const size_t MaxNumberOfConsideredStars = 100;
 
 constexpr bool CompareStarLuminancy(const CStar& ms1, const CStar& ms2)
 {

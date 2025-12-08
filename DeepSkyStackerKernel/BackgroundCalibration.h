@@ -11,16 +11,16 @@ class CBackgroundCalibration
 {
 public:
 	bool				m_bInitOk;
-	double				m_fTgtRedBk,
-						m_fTgtGreenBk,
-						m_fTgtBlueBk;
-	double				m_fSrcRedBk,
-						m_fSrcGreenBk,
-						m_fSrcBlueBk;
+	double				m_fTgtRedBk{ 0.0 },
+						m_fTgtGreenBk{ 0.0 },
+						m_fTgtBlueBk{ 0.0 };
+	double				m_fSrcRedBk{ 0.0 },
+						m_fSrcGreenBk{ 0.0 },
+						m_fSrcBlueBk{ 0.0 };
 
-	double				m_fSrcRedMax,
-						m_fSrcGreenMax,
-						m_fSrcBlueMax;
+	double				m_fSrcRedMax{ 0.0 },
+						m_fSrcGreenMax{ 0.0 },
+						m_fSrcBlueMax{ 0.0 };
 
 	BACKGROUNDCALIBRATIONMODE			m_BackgroundCalibrationMode;
 	BACKGROUNDCALIBRATIONINTERPOLATION	m_BackgroundInterpolation;
@@ -58,7 +58,7 @@ public:
 		m_BackgroundInterpolation	= BackgroundInterpolation;
 		m_RGBBackgroundMethod		= RGBBackgroundMethod;
 	}
-	void ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, bool bFirst, OldProgressBase* pProgress);
+	void ComputeBackgroundCalibration(const CMemoryBitmap* pBitmap, const char8_t* pFileName, bool bFirst, OldProgressBase* pProgress);
 
 	template <class T>
 	void ApplyCalibration(T& fRed, T& fGreen, T& fBlue) const

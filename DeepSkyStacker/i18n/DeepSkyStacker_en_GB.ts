@@ -16,7 +16,7 @@
 <context>
     <name>DSS::OldProgressDlg</name>
     <message numerus="yes">
-        <location filename="../oldprogressdlg.cpp" line="252"/>
+        <location filename="../oldprogressdlg.cpp" line="254"/>
         <source>%n Processor(s) Used</source>
         <translation>
             <numerusform>%n Processor used</numerusform>
@@ -27,7 +27,7 @@
 <context>
     <name>DSS::ProcessingDlg</name>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="651"/>
+        <location filename="../ProcessingDlg.cpp" line="656"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -39,7 +39,7 @@
 <context>
     <name>DSS::StackingDlg</name>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="915"/>
+        <location filename="../StackingDlg.cpp" line="933"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -51,7 +51,7 @@ This operation cannot be reversed or cancelled.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="1015"/>
+        <location filename="../StackingDlg.cpp" line="1033"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>

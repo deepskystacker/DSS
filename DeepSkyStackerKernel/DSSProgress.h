@@ -37,6 +37,7 @@
 // DSSProgress.h : Header file
 //
 #include <QObject>
+#include <QElapsedTimer>
 #include <QString>
 namespace DSS
 {

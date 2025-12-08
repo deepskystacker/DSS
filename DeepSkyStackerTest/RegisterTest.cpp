@@ -188,7 +188,7 @@ TEST_CASE("Register engine", "[Register][RegisterSubrect]")
 		REQUIRE(stars.cbegin()->m_fMeanRadius < 2.2);
 	}
 
-	SECTION("Rectangle of 15 pixels no star")
+	SECTION("Rectangle of 7x3 pixels no star")
 	{
 		constexpr int W = 200;
 		constexpr int H = 180;
@@ -199,21 +199,29 @@ TEST_CASE("Register engine", "[Register][RegisterSubrect]")
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 50.0;
 
+		pGray->m_vPixels[96 * W + 114] = 180.0;
 		pGray->m_vPixels[96 * W + 115] = 180.0;
 		pGray->m_vPixels[96 * W + 116] = 180.0;
 		pGray->m_vPixels[96 * W + 117] = 180.0;
 		pGray->m_vPixels[96 * W + 118] = 180.0;
 		pGray->m_vPixels[96 * W + 119] = 180.0;
+		pGray->m_vPixels[96 * W + 120] = 180.0;
+
+		pGray->m_vPixels[97 * W + 114] = 180.0;
 		pGray->m_vPixels[97 * W + 115] = 180.0;
 		pGray->m_vPixels[97 * W + 116] = 180.0;
 		pGray->m_vPixels[97 * W + 117] = 180.0;
 		pGray->m_vPixels[97 * W + 118] = 180.0;
 		pGray->m_vPixels[97 * W + 119] = 180.0;
+		pGray->m_vPixels[97 * W + 120] = 180.0;
+		
+		pGray->m_vPixels[98 * W + 114] = 180.0;
 		pGray->m_vPixels[98 * W + 115] = 180.0;
 		pGray->m_vPixels[98 * W + 116] = 180.0;
 		pGray->m_vPixels[98 * W + 117] = 180.0;
 		pGray->m_vPixels[98 * W + 118] = 180.0;
 		pGray->m_vPixels[98 * W + 119] = 180.0;
+		pGray->m_vPixels[98 * W + 120] = 180.0;
 
 		constexpr qreal iv = std::numeric_limits<qreal>::quiet_NaN();
 		STARSET stars;

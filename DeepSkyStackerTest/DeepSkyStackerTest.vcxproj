@@ -37,13 +37,13 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.9.1_msvc2022_64</QtInstall>
+    <QtInstall>6.10.0_msvc2022_64</QtInstall>
     <QtModules>core;gui</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.9.1_msvc2022_64</QtInstall>
+    <QtInstall>6.10.0_msvc2022_64</QtInstall>
     <QtModules>core;gui</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeployPluginDir>@(_-->'%(OutDir)')/plugins</QtDeployPluginDir>
@@ -94,7 +94,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../zclass;./../DeepSkyStackerKernel</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 /wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../zclass;./../DeepSkyStackerKernel</AdditionalIncludeDirectories>
       <OpenMPSupport>true</OpenMPSupport>
@@ -150,6 +150,7 @@
     <ClCompile Include="DssRectTest.cpp" />
     <ClCompile Include="OpenMpTest.cpp" />
     <ClCompile Include="PixelIteratorTest.cpp" />
+    <ClCompile Include="QtTests.cpp" />
     <ClCompile Include="RegisterTest.cpp" />
     <ClCompile Include="SkyBackGroupTest.cpp" />
     <ClCompile Include="pch.cpp">

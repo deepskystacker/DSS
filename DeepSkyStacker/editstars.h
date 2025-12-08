@@ -215,9 +215,9 @@ namespace DSS
 				return true;
 
 			if constexpr (Refstar)
-				return std::ranges::find_if(vVotedPairs, [starIndex](const CVotingPair& votedPair) { return votedPair.m_RefStar == starIndex; }) != vVotedPairs.end();
+				return std::ranges::find_if(vVotedPairs, [starIndex](const VotingPair& votedPair) { return votedPair.m_RefStar == starIndex; }) != vVotedPairs.end();
 			else
-				return std::ranges::find_if(vVotedPairs, [starIndex](const CVotingPair& votedPair) { return votedPair.m_TgtStar == starIndex; }) != vVotedPairs.end();
+				return std::ranges::find_if(vVotedPairs, [starIndex](const VotingPair& votedPair) { return votedPair.m_TgtStar == starIndex; }) != vVotedPairs.end();
 		}
 
 		bool isRefStarVoted(const int lStar)
@@ -259,6 +259,5 @@ namespace DSS
 		{
 			Inherited::setGeometry(geom);
 		}
-
     };
 }

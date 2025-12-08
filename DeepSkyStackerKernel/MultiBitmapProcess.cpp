@@ -19,7 +19,12 @@ namespace
 		path /= "DSSXXXXXX.tmp";
 		QString name{ QString::fromStdU16String(path.u16string()) };
 		QTemporaryFile tempFile{ name };
-		tempFile.open();
+		bool result = tempFile.open();
+		if (!result)
+		{
+			QString message{ QString{"Unable to create a temporary file %1" }.arg(name) };
+			throw ZException(message.toUtf8().constData());
+		}
 		tempFile.setAutoRemove(false);
 		return tempFile.fileName().toStdU16String();
 	}
@@ -342,6 +347,23 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, O
 	return std::shared_ptr<CMemoryBitmap>{};
 }
 
+std::string CMultiBitmap::GetProcessingMethodName() const
+{
+	switch (this->m_Method)
+	{
+		case MBP_AVERAGE: return "Average";
+		case MBP_MEDIAN: return "Median";
+		case MBP_MAXIMUM: return "Max";
+		case MBP_SIGMACLIP: return "SigmaClip";
+		case MBP_ENTROPYAVERAGE: return "Entropy";
+		case MBP_AUTOADAPTIVE: return "AutoAdapt";
+		case MBP_MEDIANSIGMACLIP: return "MedianSigma";
+		case MBP_FASTAVERAGE: return "FastAvg";
+		default: return "Unknown";
+	}
+	return "Unknown";
+}
+
 std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -376,7 +398,11 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgres
 		// Note:
 		// Making the file reading concurrent (e.g. with std::async) is hardly a speed improvement,
 		// because only about 7% of the time is spent for reading the data from the files.
-		ZTRACE_RUNTIME("Reading %ld files and combining using CCombineTask::process()", m_vFiles.size());
+		ZTRACE_RUNTIME("Reading %ld files and combining using CCombineTask::process(), method = %s", m_vFiles.size(), this->GetProcessingMethodName().c_str());
+
+		double fileReadTime = 0;
+		double combiningTime = 0;
+		double nrBytesRead = 0;
 
 		for (const auto& partFile : m_vFiles)
 		{
@@ -388,6 +414,9 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgres
 
 			if (fileSize > buffer.size())
 				buffer.resize(fileSize);
+
+			nrBytesRead += fileSize;
+			const double t0 = omp_get_wtime();
 
 			if (std::FILE* hFile =
 #if defined(Q_OS_WIN)
@@ -403,6 +432,8 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgres
 			else
 				bResult = false;
 
+			const double t1 = omp_get_wtime();
+
 			if (!bResult)
 				break;
 
@@ -410,11 +441,16 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgres
 			// Only 7% for reading the data from files.
 			CCombineTask{ partFile.m_lStartRow, partFile.m_lEndRow, lScanLineSize, buffer.data(), pProgress, this, pBitmap.get() }.process();
 
+			const double t2 = omp_get_wtime();
+
 			if (pProgress != nullptr)
 			{
 				pProgress->End2();
 				bResult = !pProgress->IsCanceled();
 			}
+
+			fileReadTime += t1 - t0;
+			combiningTime += t2 - t1;
 		}
 
 		if (bResult && static_cast<bool>(m_pHomBitmap))
@@ -423,6 +459,8 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgres
 			// star trails with a large filter
 			return SmoothOut(pBitmap.get(), pProgress);
 		}
+
+		ZTRACE_RUNTIME("%.0f MB read (%.1f MB/s). Performance in ms: File read %.2f, Combining %.2f", nrBytesRead / (1024 * 1024), nrBytesRead / (fileReadTime * 1024 * 1024), fileReadTime * 1000.0, combiningTime * 1000.0);
 	}
 	removeTempFiles();
 	return pBitmap;

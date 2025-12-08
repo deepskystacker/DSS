@@ -78,14 +78,14 @@ public:
 		return m_bMaster;
 	}
 
-	int RenderedWidth()
+	int RenderedWidth() const
 	{
-		return m_lWidth/(m_bSuperPixel ? 2 : 1);
+		return m_lWidth / (m_bSuperPixel ? 2 : 1);
 	}
 
-	int RenderedHeight()
+	int RenderedHeight() const
 	{
-		return m_lHeight/(m_bSuperPixel ? 2 : 1);
+		return m_lHeight / (m_bSuperPixel ? 2 : 1);
 	}
 
 	bool IsCompatible(const CFrameInfo& cfi) const;

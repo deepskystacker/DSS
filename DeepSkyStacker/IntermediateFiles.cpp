@@ -13,6 +13,20 @@ namespace DSS
 		workspace(new Workspace())
 	{
 		ui->setupUi(this);
+
+		connect (ui->compressFITS, &QCheckBox::checkStateChanged, [this](Qt::CheckState state)
+		{
+			QSettings settings;
+			switch (state)
+			{
+			case Qt::Unchecked:
+				workspace->setValue("Stacking/CompressFITS", false);
+				break;
+			case Qt::Checked:
+				workspace->setValue("Stacking/CompressFITS", true);
+				break;
+			}
+			});
 	}
 
 	void IntermediateFiles::onSetActive()
@@ -32,6 +46,9 @@ namespace DSS
 		ui->saveIntermediate->setDisabled(registerOnly);
 
 		fileFormat = workspace->value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
+
+		value = workspace->value("Stacking/CompressFITS", false).toBool();
+		ui->compressFITS->setChecked(value);
 
 		switch (fileFormat)
 		{

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <numbers>
 #include "DeBloom.h"
 #include "GrayBitmap.h"
 #include "DSSTools.h"
@@ -401,7 +402,7 @@ inline	double			GetEdgeAngle(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, d
 		//   1   2   1
 		Gy = -fValue[0]-2.0*fValue[1]-fValue[2]+fValue[5]+2.0*fValue[6]+fValue[7];
 
-		fResult = atan2(Gy, Gx)*360.0/M_PI;
+		fResult = atan2(Gy, Gx)*360.0/std::numbers::pi;
 	};
 
 	return fResult;
@@ -708,10 +709,10 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 			QPointF			pt1,
 							pt2;
 
-			pt1.rx() = fX + (double)i*cos(vAngles[a]*M_PI/180.0);
-			pt1.ry() = fY + (double)i*sin(vAngles[a]*M_PI/180.0);
-			pt2.rx() = fX + (double)(i+1)*cos(vAngles[a]*M_PI/180.0);
-			pt2.ry() = fY + (double)(i+1)*sin(vAngles[a]*M_PI/180.0);
+			pt1.rx() = fX + (double)i*cos(vAngles[a]*std::numbers::pi/180.0);
+			pt1.ry() = fY + (double)i*sin(vAngles[a]*std::numbers::pi/180.0);
+			pt2.rx() = fX + (double)(i+1)*cos(vAngles[a]*std::numbers::pi/180.0);
+			pt2.ry() = fY + (double)(i+1)*sin(vAngles[a]*std::numbers::pi/180.0);
 
 			fValue1 = InterpolatePixelValue(pBitmap, pMask, pt1, true)-m_fBackground;
 			fValue2 = InterpolatePixelValue(pBitmap, pMask, pt2, true)-m_fBackground;
@@ -1196,7 +1197,7 @@ double CDeBloom::ComputeBackgroundValue(CMemoryBitmap* pBitmap)
 
 	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
-	BackgroundCalibration.ComputeBackgroundCalibration(pBitmap, true, m_pProgress);
+	BackgroundCalibration.ComputeBackgroundCalibration(pBitmap, nullptr, true, m_pProgress);
 	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
 
 	return fResult;

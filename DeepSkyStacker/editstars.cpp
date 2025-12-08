@@ -34,6 +34,7 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include <numbers>
 #include "editstars.h"
 #include "Delaunay.h"
 #include "imageview.h"
@@ -564,10 +565,12 @@ namespace DSS
 	template <bool WithCross>
 	void EditStars::drawCircleAroundStar(const CStar& star, QPainter& painter, const QColor& color, const double radius, const double penWidth) const
 	{
-		qreal xPos1 = star.m_fX - radius;
-		qreal yPos1 = star.m_fY - radius;
-		qreal xPos2 = star.m_fX + radius;
-		qreal yPos2 = star.m_fY + radius;
+		const double effectiveRadius = std::max(radius, 2.0);
+
+		qreal xPos1 = star.m_fX - effectiveRadius;
+		qreal yPos1 = star.m_fY - effectiveRadius;
+		qreal xPos2 = star.m_fX + effectiveRadius;
+		qreal yPos2 = star.m_fY + effectiveRadius;
 		imageView->imageToScreen(xPos1, yPos1);
 		imageView->imageToScreen(xPos2, yPos2);
 
@@ -754,11 +757,13 @@ namespace DSS
 		}
 
 		// Green circles around the registered stars
+		auto circleColor = QColor("lime");
+
 		for (int i = 0; const auto& star : stars)
 		{
 			if (isTgtStarVoted(i) && !star.m_bRemoved)
 			{
-				drawCircleAroundStar<true>(star, painter, star.m_bAdded ? qRgba(0, 0, 255, 255) : qRgba(0, 190, 0, 255), star.m_fMeanRadius, 1.0);
+				drawCircleAroundStar<true>(star, painter, star.m_bAdded ? qRgba(0, 0, 255, 255) : circleColor, star.m_fMeanRadius, 1.0);
 
 				// If showRefStars: Line from ref-star to target-star.
 				// (target-star: star in the current frame, ref-star: according star in the reference frame).
@@ -786,7 +791,7 @@ namespace DSS
 				// If showRefStars: Line in direction of large majos axis.
 				if (g_bShowRefStars && star.m_fLargeMajorAxis > 0)
 				{
-					constexpr double DegRadFactor = 3.14159265358979323846 / 180.0;
+					constexpr double DegRadFactor = std::numbers::pi / 180.0;
 					QPointF	ptOrg{ star.m_fX + 0.5, star.m_fY + 0.5 };
 					QPointF ptDst{ ptOrg };
 

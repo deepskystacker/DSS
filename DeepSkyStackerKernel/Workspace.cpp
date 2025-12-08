@@ -65,10 +65,13 @@ WorkspaceSetting & WorkspaceSetting::readSetting()
 
 	// If there wasn't a valid stored value in the settings, we will be returned 
 	// a null QVariant. We for sure don't want to use that!
-	QVariant temp = settings.value(keyName);
-	if (!temp.isNull())
+	QVariant variant{ settings.value(keyName) };
+	QMetaType type{ Value.metaType() };
+	if (!variant.isNull())
 	{
-		Value = temp;
+		ZASSERT(variant.canConvert(type));
+		variant.convert(type);
+		Value = variant;
 		dirty = false;
 	}
 	return *this;
@@ -121,95 +124,96 @@ WorkspaceSetting & WorkspaceSetting::setValue(const QVariant& value)
 void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 {
 	vSettings.clear();
-	vSettings.push_back(WorkspaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
-	vSettings.push_back(WorkspaceSetting("Stacking/Light_Iteration", (uint)5));
-	vSettings.push_back(WorkspaceSetting("Stacking/Light_Kappa", 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Method", QVariant((uint)MBP_AVERAGE)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Kappa", QVariant(2.0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Debloom", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/Debloom", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN));
-	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Iteration", (uint)5));
-	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Kappa", 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Method", QVariant((uint)MBP_MEDIAN)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Kappa", QVariant(2.0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN));
-	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Iteration", (uint)5));
-	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Kappa", 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Method", QVariant((uint)MBP_MEDIAN)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Kappa", QVariant(2.0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN));
-	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Iteration", (uint)5));
-	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Kappa", 2.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Method", QVariant((uint)MBP_MEDIAN)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Kappa", QVariant(2.0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibration", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/PerChannelBackgroundCalibration", true));
+	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibration", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PerChannelBackgroundCalibration", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", (uint)BCI_RATIONAL));
-	vSettings.push_back(WorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", (uint)RBCM_MAXIMUM));
+	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", QVariant((uint)BCI_RATIONAL)));
+	vSettings.push_back(WorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", QVariant((uint)RBCM_MAXIMUM)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/DarkOptimization", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/DarkOptimization", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/UseDarkFactor", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/DarkFactor", 1.0));
+	vSettings.push_back(WorkspaceSetting("Stacking/UseDarkFactor", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/DarkFactor", QVariant(1.0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/HotPixelsDetection", true));
+	vSettings.push_back(WorkspaceSetting("Stacking/HotPixelsDetection", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/BadLinesDetection", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/BadLinesDetection", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Mosaic", (uint)0));
+	vSettings.push_back(WorkspaceSetting("Stacking/Mosaic", QVariant((uint)0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/CreateIntermediates", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibrated", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibratedDebayered", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/CreateIntermediates", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibrated", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibratedDebayered", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/AlignmentTransformation", (uint)0));
-	vSettings.push_back(WorkspaceSetting("Stacking/LockCorners", true));
+	vSettings.push_back(WorkspaceSetting("Stacking/AlignmentTransformation", QVariant((uint)0)));
+	vSettings.push_back(WorkspaceSetting("Stacking/LockCorners", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/PixelSizeMultiplier", (uint)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/PixelSizeMultiplier", QVariant((uint)1)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/AlignChannels", false));
+	vSettings.push_back(WorkspaceSetting("Stacking/AlignChannels", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/CometStackingMode", (uint)0));
+	vSettings.push_back(WorkspaceSetting("Stacking/CometStackingMode", QVariant((uint)0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/SaveCometImages", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/ApplyFilterToCometImages", true));
+	vSettings.push_back(WorkspaceSetting("Stacking/SaveCometImages", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/ApplyFilterToCometImages", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/IntermediateFileFormat", (uint)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/IntermediateFileFormat", QVariant((uint)1)));
+	vSettings.push_back(WorkspaceSetting("Stacking/CompressFITS", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanHot", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotFilter", (uint)1));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotDetection", (uint)500));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanCold", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdFilter", (uint)1));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdDetection", (uint)500));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_SaveDeltaImage", false));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ReplaceMethod", (uint)1));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanHot", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotFilter", QVariant((uint)1)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotDetection", QVariant((uint)500)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanCold", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdFilter", QVariant((uint)1)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdDetection", QVariant((uint)500)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_SaveDeltaImage", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ReplaceMethod", ((uint)1)));
 
-	vSettings.push_back(WorkspaceSetting("Register/PercentStack", (uint)80));
-  	vSettings.push_back(WorkspaceSetting("Register/StackAfter", true));
-  	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", false));
-  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", (uint)0));
-	vSettings.push_back(WorkspaceSetting("Register/UseAutoThreshold", true));
-	vSettings.push_back(WorkspaceSetting("Register/ApplyMedianFilter", false));
+	vSettings.push_back(WorkspaceSetting("Register/PercentStack", QVariant((uint)80)));
+  	vSettings.push_back(WorkspaceSetting("Register/StackAfter", QVariant(true)));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", QVariant(false)));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", QVariant((uint)0)));
+	vSettings.push_back(WorkspaceSetting("Register/UseAutoThreshold", QVariant(true)));
+	vSettings.push_back(WorkspaceSetting("Register/ApplyMedianFilter", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("RawDDP/Brightness", 1.0));
-	vSettings.push_back(WorkspaceSetting("RawDDP/RedScale", 1.0));
-	vSettings.push_back(WorkspaceSetting("RawDDP/BlueScale", 1.0));
-	vSettings.push_back(WorkspaceSetting("RawDDP/NoWB", false));
-	vSettings.push_back(WorkspaceSetting("RawDDP/CameraWB", false));
-	vSettings.push_back(WorkspaceSetting("RawDDP/BlackPointTo0", false));
-	vSettings.push_back(WorkspaceSetting("RawDDP/Interpolation", "Bilinear"));
-	vSettings.push_back(WorkspaceSetting("RawDDP/SuperPixels", false));
-	vSettings.push_back(WorkspaceSetting("RawDDP/RawBayer", false));
-	vSettings.push_back(WorkspaceSetting("RawDDP/AHD", false));
+	vSettings.push_back(WorkspaceSetting("RawDDP/Brightness", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/RedScale", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/BlueScale", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/NoWB", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/CameraWB", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/BlackPointTo0", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/Interpolation", QVariant("Bilinear")));
+	vSettings.push_back(WorkspaceSetting("RawDDP/SuperPixels", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/RawBayer", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("RawDDP/AHD", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("FitsDDP/FITSisRAW", false));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/Brightness", 1.0));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/RedScale", 1.0));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/BlueScale", 1.0));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMin", 0.0));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMax", 1.0));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/DSLR", ""));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", (uint)4));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/ForceUnsigned", false));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/FITSisRAW", QVariant(false)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/Brightness", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/RedScale", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/BlueScale", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMin", QVariant(0.0)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMax", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/DSLR", QVariant("")));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", QVariant((uint)4)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/ForceUnsigned", QVariant(false)));
 
 	std::sort(vSettings.begin(), vSettings.end());
 };
@@ -396,7 +400,7 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 	else if (theString.startsWith("#V5WS#"))
 	{
 		keyName = theString.section("#", 2, 2);
-		value = theString.section("#", 3);
+		value = theString.section("#", 3).simplified();		// Remove leading and trailing white space
 	}
 	else
 	{

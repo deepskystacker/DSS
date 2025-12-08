@@ -97,7 +97,7 @@ double CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
 	double sumWeights = 0;
 	double sum = 0;
 	// Sorted indexes -> get CStar -> filter out removed -> take max. 100 -> get circularity.
-	for (int ndx = 0; const double q : indexes | vs::transform(std::bind_front(Projector, std::identity{})) | Filter | vs::take(100) | vs::transform(&CStar::m_fCircularity))
+	for (int ndx = 0; const double q : indexes | vs::transform(std::bind_front(Projector, std::identity{})) | Filter | vs::take(MaxNumberOfConsideredStars) | vs::transform(&CStar::m_fCircularity))
 	{
 		const double w = ndx < weights.size() ? weights[ndx] : (ndx < 40 ? 1.0 : 0.1); // Star 0..26 Gaussian weights, then 1.0, above 40 0.1.
 		sumWeights += w;
@@ -171,6 +171,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
 		fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("Eccentricity = %1").arg(star.eccentricity, 0, 'f', 2) << Qt::endl;
 		fileOut << "Rect = " << star.m_rcStar.left << ", "
 			<< star.m_rcStar.top << ", "
 			<< star.m_rcStar.right << ", "
@@ -253,7 +254,8 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 		bool bNextStar = false;
 		CStar ms;
 		ms.m_fPercentage  = 0;
-		ms.m_fCircularity = 0; // Old .info.txt files don't contain that parameter.
+		ms.m_fCircularity = 0;  // Old .info.txt files don't contain that parameter.
+		ms.eccentricity = 1.0;	// Old .info.txt files don't contain that parameter.		
 
 		while (!bNextStar)
 		{
@@ -262,6 +264,8 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 				ms.m_fIntensity = strValue.toDouble();
 			else if (!strVariable.compare("MeanRadius", Qt::CaseInsensitive))
 				ms.m_fMeanRadius = strValue.toDouble();
+			else if (!strVariable.compare("Eccentricity", Qt::CaseInsensitive))
+				ms.eccentricity = strValue.toDouble();
 			else if (!strVariable.compare(CircularityParam, Qt::CaseInsensitive))
 				ms.m_fCircularity = strValue.toDouble();
 			else if (!strVariable.compare("Rect", Qt::CaseInsensitive))
@@ -336,7 +340,7 @@ double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
 	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
 	BackgroundCalibration.SetMultiplier(256.0);
-	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, true, m_pProgress);
+	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, nullptr, true, m_pProgress);
 	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
 
 	return fResult;
@@ -404,14 +408,15 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
 
 	// Lambda for stopping criterion.
-	const auto stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
+	const auto Stop = [optimizeThreshold, &oneMoreIteration, numberOfWantedStars](const double thres, const size_t nStars) -> bool
 	{
 		return !optimizeThreshold // IF optimizeThreshold == false THEN return always true (=stop after the first iteration).
 			|| (oneMoreIteration == 2)
 			|| (oneMoreIteration != 1 && (nStars >= numberOfWantedStars || thres <= LowestPossibleThreshold));
 	};
+
 	// Lambda for threshold update.
-	auto newThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
+	auto NewThreshold = [&oneMoreIteration, n1 = size_t{ 0 }, n2 = size_t{ 0 }, previousThreshold = 1.0, numberOfWantedStars, optimizeThreshold](
 		const double lastThreshold, const size_t nStars) mutable -> double
 	{
 		if (!optimizeThreshold) // IF optimizeThreshold == false THEN return last threshold.
@@ -564,8 +569,8 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		}
 
 		usedThreshold = threshold;
-		threshold = newThreshold(threshold, stars1.size());
-	} while (!stop(threshold, stars1.size())); // loop over thresholds
+		threshold = NewThreshold(threshold, stars1.size());
+	} while (!Stop(threshold, stars1.size())); // loop over thresholds
 
 	if (m_pProgress != nullptr)
 		m_pProgress->End2();
@@ -692,6 +697,7 @@ std::shared_ptr<const CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemo
 // This threshold will be used for all other images as starting threshold (the starting threshold for the first image is set to 65%).
 // The parameter 'numberOfWantedStars' is set to 50 for the first image, and 30 for the others. This makes it highly probable, that all images 
 // will be registered with the same (or a similar) threshold. 
+// These target number of wanted stars might change in the future.
 // Only if a really bad (dark or blurred) image is in the sequence, this "optimum" threshold will be lowered further down to find at least 
 // the 30 wanted stars. 
 // 
@@ -714,8 +720,9 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap, const int bitmapIn
 	static double previousThreshold = ThresholdStartingValue;
 	// Use minLuminancy IF auto-threshold NOT selected, ELSE: 65% for first image OR previousThreshold for the others.
 	const double threshold = thresholdOptimization ? (bitmapIndex <= 0 ? ThresholdStartingValue : previousThreshold) : this->m_fMinLuminancy;
-	// If auto-threshold: Try to find 50 stars in first image, then relax criterion to 30. This should make found thresholds as equal as possible.
-	const size_t numberWantedStars = bitmapIndex <= 0 ? 50 : 30;
+	// If auto-threshold: Try to find 80 stars in first image, then relax criterion to 65. This should make found thresholds as equal as possible.
+	// Changed on Oct-28-2025.
+	const size_t numberWantedStars = bitmapIndex <= 0 ? 80 : 65;
 
 	const std::shared_ptr<const CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
 	if (static_cast<bool>(pGrayBitmap))
@@ -927,7 +934,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 	{
 		const QFileInfo fileInfo(lfi.filePath);
 		const QString strPath(fileInfo.path() + QDir::separator());
-		const QString strBaseName(fileInfo.baseName());
+		const QString strBaseName(fileInfo.completeBaseName());
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
 		{
@@ -935,9 +942,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 		}
 		else
 		{
-			QString strFitsExt;
-			GetFITSExtension(fileInfo.absoluteFilePath(), strFitsExt);
-			strCalibratedFile = strPath + strBaseName + ".cal" + strFitsExt;
+			strCalibratedFile = strPath + strBaseName + ".cal.fits";
 		}
 		strCalibratedFile = QDir::toNativeSeparators(strCalibratedFile);
 

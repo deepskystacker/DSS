@@ -13,55 +13,55 @@
 <context>
     <name>DSS</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="116"/>
+        <location filename="../StackingDlg.cpp" line="118"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Dosya Listesi (*.dssfilelist)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="119"/>
+        <location filename="../StackingDlg.cpp" line="121"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Dosya Listesi (*.txt)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="120"/>
+        <location filename="../StackingDlg.cpp" line="122"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
         <translation>Tüm Dosyalar (*)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="124"/>
+        <location filename="../StackingDlg.cpp" line="126"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Resim Dosyaları (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="128"/>
+        <location filename="../StackingDlg.cpp" line="130"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>JPEG veya PNG Dosyaları (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="129"/>
+        <location filename="../StackingDlg.cpp" line="131"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>TIFF Dosyaları (*.tif *.tiff)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="130"/>
+        <location filename="../StackingDlg.cpp" line="132"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>RAW Dosyaları (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="133"/>
+        <location filename="../StackingDlg.cpp" line="135"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>FITS Dosyaları (*.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="134"/>
+        <location filename="../StackingDlg.cpp" line="136"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
         <translation>Tüm Dosyalar (*)</translation>
@@ -101,20 +101,15 @@
         <translation>DeepSkyStacker sürümü %1</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="42"/>
-        <source>(Now somewhat out of date)</source>
-        <translation>(Şimdi biraz güncel değil)</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="52"/>
+        <location filename="../About.cpp" line="49"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2024 LibRaw LLC</source>
+Copyright © 1997-2025 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>LibRaw tarafından RAW dosyası kod çözme (sürüm %1)
-Telif Hakkı © 1997-2024 LibRaw LLC</translation>
+        <translation>LibRaw tarafından RAW dosya çözümleme (sürüm %1)
+Copyright © 1997-2025 LibRaw LLC</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="62"/>
+        <location filename="../About.cpp" line="59"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
@@ -124,7 +119,7 @@ Telif Hakkı © 1988-1997 Sam Leffler
 Telif Hakkı © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="69"/>
+        <location filename="../About.cpp" line="66"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
@@ -132,99 +127,100 @@ Copyright NASA</source>
 Telif Hakkı: NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="76"/>
-        <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.0
-Copyright 2004-2023 Exiv2 authors</source>
-        <translation></translation>
+        <location filename="../About.cpp" line="73"/>
+        <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.3
+Copyright 2004-2025 Exiv2 authors</source>
+        <translation>Exiv2 tarafından sağlanan Exif, IPTC, XMP ve ICC görüntü meta verileri - Sürüm 0.28.3
+Telif Hakkı 2004-2025 Exiv2 yazarları</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="82"/>
-        <source>SMTP support by SMTP Client for Qt (C++) - Version 0.27.6
+        <location filename="../About.cpp" line="79"/>
+        <source>SMTP support by SMTP Client for Qt (C++) - Version 2.0
 Copyright Tőkés Attila</source>
-        <translation>Qt (C++) için SMTP İstemcisi tarafından SMTP desteği - Sürüm 0.27.6
+        <translation>Qt (C++) için SMTP İstemcisi tarafından sağlanan SMTP desteği - Sürüm 2.0
 Telif Hakkı Tőkés Attila</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="96"/>
+        <location filename="../About.cpp" line="93"/>
         <source>Default</source>
         <translation>Varsayılan</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="116"/>
+        <location filename="../About.cpp" line="113"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>İspanyolca Sürümü: Ricardo Contreras ve ekibi</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="120"/>
+        <location filename="../About.cpp" line="117"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Çekçe Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="124"/>
+        <location filename="../About.cpp" line="121"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>İtalyanca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="128"/>
+        <location filename="../About.cpp" line="125"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Katalan Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="129"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Almanca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="134"/>
-        <location filename="../About.cpp" line="138"/>
-        <location filename="../About.cpp" line="150"/>
-        <location filename="../About.cpp" line="154"/>
-        <location filename="../About.cpp" line="155"/>
+        <location filename="../About.cpp" line="131"/>
+        <location filename="../About.cpp" line="135"/>
+        <location filename="../About.cpp" line="147"/>
+        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="152"/>
         <source>and</source>
         <translation>ve</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="137"/>
+        <location filename="../About.cpp" line="134"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Hollandaca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="141"/>
+        <location filename="../About.cpp" line="138"/>
         <source>Simplified Chinese version: 张博 (Zhang Bo)&lt;br&gt;</source>
         <translation>Basitleştirilmiş Çince sürümü: 张博 (Zhang Bo)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="144"/>
+        <location filename="../About.cpp" line="141"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Geleneksel Çince Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="148"/>
+        <location filename="../About.cpp" line="145"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Portekizce Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="153"/>
+        <location filename="../About.cpp" line="150"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Romen sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="158"/>
+        <location filename="../About.cpp" line="155"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Rusça Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="162"/>
+        <location filename="../About.cpp" line="159"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Türkçe Sürümü:</translation>
@@ -531,35 +527,35 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="610"/>
-        <location filename="../editstars.cpp" line="1116"/>
+        <location filename="../editstars.cpp" line="613"/>
+        <location filename="../editstars.cpp" line="1121"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Kuyrukluyıldızı buraya ayarlamak için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="612"/>
-        <location filename="../editstars.cpp" line="1118"/>
+        <location filename="../editstars.cpp" line="615"/>
+        <location filename="../editstars.cpp" line="1123"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Bu yıldızı eklemek için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="620"/>
-        <location filename="../editstars.cpp" line="1125"/>
+        <location filename="../editstars.cpp" line="623"/>
+        <location filename="../editstars.cpp" line="1130"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Kuyrukluyıldızı kaldırmak için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="622"/>
-        <location filename="../editstars.cpp" line="1127"/>
+        <location filename="../editstars.cpp" line="625"/>
+        <location filename="../editstars.cpp" line="1132"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Bu yıldızı silmek için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="1175"/>
+        <location filename="../editstars.cpp" line="1180"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -569,8 +565,8 @@ Kalite: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="671"/>
-        <location filename="../editstars.cpp" line="1182"/>
+        <location filename="../editstars.cpp" line="674"/>
+        <location filename="../editstars.cpp" line="1187"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -578,7 +574,7 @@ Comet:%1</source>
 Kuyrukluyıldız:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="664"/>
+        <location filename="../editstars.cpp" line="667"/>
         <source>#Stars: %1
 Quality: %2
 FWHM: %3</source>
@@ -588,8 +584,8 @@ Kalite: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="671"/>
-        <location filename="../editstars.cpp" line="1182"/>
+        <location filename="../editstars.cpp" line="674"/>
+        <location filename="../editstars.cpp" line="1187"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Evet</translation>
@@ -801,95 +797,114 @@ Tick this box to keep the trace file.</source>
         <translation>Siyah/Beyaz Noktalar için kırpmayı göster</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="299"/>
+        <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Ayarları Kaydet...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>İstifleme Ayarları...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="342"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Varsayılan Ayarları Geriyükle</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="344"/>
+        <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>DeepSkyStacker Canlı Ayarları&apos;nı Aç</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="348"/>
+        <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Aç...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="409"/>
+        <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>DeepSkyStacker Canlı olarak kaydet</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="413"/>
+        <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Farklı Kaydet...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="577"/>
+        <location filename="../ExplorerBar.cpp" line="583"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>DeepSkyStacker ayarları aç</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="581"/>
-        <location filename="../ExplorerBar.cpp" line="629"/>
+        <location filename="../ExplorerBar.cpp" line="587"/>
+        <location filename="../ExplorerBar.cpp" line="640"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker Ayarları (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="624"/>
+        <location filename="../ExplorerBar.cpp" line="635"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>DeepSkyStacker Ayarlarını Kaydet</translation>
     </message>
 </context>
 <context>
+    <name>DSS::FlatChart</name>
+    <message>
+        <location filename="../ui/FlatChart.ui" line="76"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <location filename="../flatchart.cpp" line="80"/>
+        <location filename="../flatchart.cpp" line="84"/>
+        <source>Flat Contour Chart</source>
+        <translation>Düz Kontur Tablosu</translation>
+    </message>
+    <message>
+        <location filename="../flatchart.cpp" line="147"/>
+        <source>Intensity</source>
+        <translation>Yoğunluk</translation>
+    </message>
+</context>
+<context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="704"/>
+        <location filename="../StackingDlg.cpp" line="712"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation>Siyah</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="706"/>
+        <location filename="../StackingDlg.cpp" line="714"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation>Siyah Düz</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="705"/>
+        <location filename="../StackingDlg.cpp" line="713"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation>Düz</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="707"/>
+        <location filename="../StackingDlg.cpp" line="715"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation>Ofset</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="703"/>
+        <location filename="../StackingDlg.cpp" line="711"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation>Görüntü</translation>
@@ -1005,6 +1020,16 @@ veya yakınlaştırmak için fare tekerleğini kullanın
         <source>FITS Files</source>
         <translation>FITS dosyalar</translation>
     </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="133"/>
+        <source>Will compress FITS files.  Please be aware that floating point FITS images (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also means that the original floating value pixel values are not exactly preserved.</source>
+        <translation>FITS dosyalarını sıkıştırır. Kayan nokta FITS görüntülerinin (BITPIX = -32 veya -64 olan) piksel değerlerinin mantis değerlerinin en önemsiz bitlerinde genellikle çok fazla &quot;gürültü&quot; içerdiğini ve bu nedenle herhangi bir kayıpsız algoritmayla etkili bir şekilde sıkıştırılamayacağını lütfen unutmayın. Sonuç olarak, kayan nokta görüntüleri, belirtilen algoritma (GZIP, Rice veya HCOMPRESS) ile sıkıştırılmadan önce ölçeklendirilmiş tam sayı piksel değerlerine nicemlenir (ve böylece gürültünün büyük bir kısmı atılır). Bu teknik, tüm FITS dosyasını harici olarak sıkıştırmak için GZIP yardımcı programını kullanmaktan çok daha yüksek sıkıştırma faktörleri üretir, ancak aynı zamanda orijinal kayan nokta piksel değerlerinin tam olarak korunmadığı anlamına da gelir.</translation>
+    </message>
+    <message>
+        <location filename="../ui/IntermediateFiles.ui" line="136"/>
+        <source>Compress FITS files</source>
+        <translation>FITS dosyalarını sıkıştır</translation>
+    </message>
 </context>
 <context>
     <name>DSS::LowerDockWidget</name>
@@ -1017,42 +1042,42 @@ veya yakınlaştırmak için fare tekerleğini kullanın
 <context>
     <name>DSS::OldProgressDlg</name>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="153"/>
+        <location filename="../oldprogressdlg.cpp" line="155"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>Bu işlemi iptal etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="223"/>
+        <location filename="../oldprogressdlg.cpp" line="225"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
         <translation>Tahmin edilen kalan süre %1 sa %2 dk %3 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="226"/>
+        <location filename="../oldprogressdlg.cpp" line="228"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
         <translation>Tahmin edilen kalan süre: %1 dk %2 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="229"/>
+        <location filename="../oldprogressdlg.cpp" line="231"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
         <translation>Tahmin edilen kalan süre: %1 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="232"/>
+        <location filename="../oldprogressdlg.cpp" line="234"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
         <translation>Tahmin edilen kalan süre: &lt; 1 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="239"/>
+        <location filename="../oldprogressdlg.cpp" line="241"/>
         <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Tahmin edilen kalan süre: Bilinmiyor</translation>
     </message>
     <message numerus="yes">
-        <location filename="../oldprogressdlg.cpp" line="252"/>
+        <location filename="../oldprogressdlg.cpp" line="254"/>
         <source>%n Processor(s) Used</source>
         <translation>
             <numerusform>%n işlemci kullanıldı</numerusform>
@@ -1352,13 +1377,13 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1145"/>
+        <location filename="../ProcessingDlg.cpp" line="1150"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="414"/>
+        <location filename="../ProcessingDlg.cpp" line="419"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF veya FITS görüntüsü (*.tif *.tiff *.fits *.fit *.fts)</translation>
@@ -1376,70 +1401,70 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <translation>Yıldız Maskesini Kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="452"/>
+        <location filename="../ProcessingDlg.cpp" line="457"/>
         <source>Failed to load image %1</source>
         <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="516"/>
+        <location filename="../ProcessingDlg.cpp" line="521"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="517"/>
+        <location filename="../ProcessingDlg.cpp" line="522"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="518"/>
+        <location filename="../ProcessingDlg.cpp" line="523"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="519"/>
-        <source>FITS Image 16 bit/ch (*.fts)</source>
+        <location filename="../ProcessingDlg.cpp" line="524"/>
+        <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Görüntüsü 16 bit/ch (*.fts)</translation>
+        <translation>FITS Görüntüsü 16 bit/ch (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="520"/>
-        <source>FITS Image 32 bit/ch - integer (*.fts)</source>
+        <location filename="../ProcessingDlg.cpp" line="525"/>
+        <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fts)</translation>
+        <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="521"/>
-        <source>FITS Image 32 bit/ch - rational (*.fts)</source>
+        <location filename="../ProcessingDlg.cpp" line="526"/>
+        <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fts)</translation>
+        <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="530"/>
+        <location filename="../ProcessingDlg.cpp" line="535"/>
         <source>Save Image</source>
         <translation>Resmi Kaydet</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="622"/>
+        <location filename="../ProcessingDlg.cpp" line="627"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Kaydedilecek dosya yok.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="637"/>
+        <location filename="../ProcessingDlg.cpp" line="642"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Herhangi bir bilgi mevcut değil</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="650"/>
+        <location filename="../ProcessingDlg.cpp" line="655"/>
         <source>Exposure: %1 </source>
         <translation>Poz süresi: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="651"/>
+        <location filename="../ProcessingDlg.cpp" line="656"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1493,6 +1518,36 @@ Lütfen adı değiştirin.</translation>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
         <translation>İptal</translation>
+    </message>
+</context>
+<context>
+    <name>DSS::QualityChart</name>
+    <message>
+        <location filename="../ui/QualityChart.ui" line="40"/>
+        <location filename="../QualityChart.cpp" line="316"/>
+        <source>Star Eccentricity</source>
+        <translation>Yıldız Eksantrikliği</translation>
+    </message>
+    <message>
+        <location filename="../ui/QualityChart.ui" line="131"/>
+        <source>Cancel</source>
+        <translation>İptal</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="120"/>
+        <location filename="../QualityChart.cpp" line="125"/>
+        <source>Star Quality Chart</source>
+        <translation>Yıldız Kalite Tablosu</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="237"/>
+        <source>Interpolating FWHM data.  Please be patient.</source>
+        <translation>FWHM verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="215"/>
+        <source>Interpolating Eccentricity data.  Please be patient.</source>
+        <translation>Eksantriklik verilerinin enterpolasyonu. Lütfen sabırlı olun.</translation>
     </message>
 </context>
 <context>
@@ -2460,12 +2515,12 @@ istiyorsanız bu seçeneği kullann</translation>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="828"/>
+        <location filename="../StackingDlg.cpp" line="836"/>
         <source>Rename group</source>
         <translation>Grubu Yeniden Adlandır</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="915"/>
+        <location filename="../StackingDlg.cpp" line="933"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -2475,43 +2530,43 @@ Bu işlem geri alınamaz veya iptal edilemez.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="680"/>
+        <location filename="../StackingDlg.cpp" line="684"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Referans Kare olarak Kullan</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="684"/>
+        <location filename="../StackingDlg.cpp" line="688"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>İşaretle</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="686"/>
+        <location filename="../StackingDlg.cpp" line="690"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Kaldır</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="689"/>
+        <location filename="../StackingDlg.cpp" line="693"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Listeden Kaldır</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="695"/>
+        <location filename="../StackingDlg.cpp" line="703"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Panoya Kopyala</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="698"/>
+        <location filename="../StackingDlg.cpp" line="706"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Sürücüden sil...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="721"/>
+        <location filename="../StackingDlg.cpp" line="729"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -2522,70 +2577,80 @@ Seçili satırları kaldırmak (silmemek) için Sil tuşu
 Menüyü görüntülemek için farenin sağ tuşu</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="567"/>
-        <location filename="../StackingDlg.cpp" line="1480"/>
+        <location filename="../StackingDlg.cpp" line="571"/>
+        <location filename="../StackingDlg.cpp" line="1529"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1489"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>Failed to load image %1</source>
         <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1785"/>
+        <location filename="../StackingDlg.cpp" line="1839"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Görüntü Dosyaları:%1      -      Siyah Kareler: %2      -      Düz Kareler:%3      -   Siyah Düz Kareler: %4   -      Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2189"/>
+        <location filename="../StackingDlg.cpp" line="2242"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Kontrol ettiğiniz ışık çerçevelerinin hepsinin hesaplanmış bir kalitesi yoktur. Işık çerçevelerinizi yeniden kaydetmelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1445"/>
+        <location filename="../StackingDlg.cpp" line="1494"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Yükleniyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1537"/>
+        <location filename="../StackingDlg.cpp" line="1586"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>%1 dosyası, %2 (%3) grubunda zaten yüklü olduğu için yüklenmedi</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1561"/>
+        <location filename="../StackingDlg.cpp" line="1615"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Görüntü Dosyalarını aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1564"/>
+        <location filename="../StackingDlg.cpp" line="1618"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Siyah Dosyaları aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1582"/>
+        <location filename="../StackingDlg.cpp" line="1636"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Siyah Düz Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1570"/>
+        <location filename="../StackingDlg.cpp" line="1624"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Düz Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="692"/>
+        <location filename="../StackingDlg.cpp" line="696"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>Özellikler...</translation>
     </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="698"/>
+        <source>Star Quality Chart</source>
+        <translation>Yıldız Kalite Tablosu</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="700"/>
+        <source>Flat Contour Chart</source>
+        <translation>Düz Kontur Tablosu</translation>
+    </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="1015"/>
+        <location filename="../StackingDlg.cpp" line="1033"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -2593,13 +2658,19 @@ Menüyü görüntülemek için farenin sağ tuşu</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1576"/>
+        <location filename="../StackingDlg.cpp" line="1114"/>
+        <source>X: %1 Y: %2
+R: %3 G: %4 B: %5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1630"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Ofset Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1798"/>
+        <location filename="../StackingDlg.cpp" line="1852"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2613,37 +2684,37 @@ Siyah Düz Kareler: %4
 Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1881"/>
+        <location filename="../StackingDlg.cpp" line="1935"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Başka Bir Dosya Listesi Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2060"/>
+        <location filename="../StackingDlg.cpp" line="2114"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker Sürüm %1 indirilebilir.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2077"/>
+        <location filename="../StackingDlg.cpp" line="2131"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Sürüm kontrolü İnternet hata kodu %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2178"/>
+        <location filename="../StackingDlg.cpp" line="2231"/>
         <source>Total registering time: %1 %2</source>
         <translation>Toplam kayıt süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2205"/>
+        <location filename="../StackingDlg.cpp" line="2258"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Hizalama için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2262"/>
+        <location filename="../StackingDlg.cpp" line="2315"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2653,19 +2724,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker&apos;ın işlem sırasında bu klasörlere dosya oluşturması gerekiyor.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2283"/>
+        <location filename="../StackingDlg.cpp" line="2336"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Seçilen resimler uyumlu değil: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2287"/>
+        <location filename="../StackingDlg.cpp" line="2340"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>İstiflemek için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2335"/>
+        <location filename="../StackingDlg.cpp" line="2388"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2675,18 +2746,18 @@ Do you want to save the changes?</source>
 Değişiklikler kaydedilsin mi?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2449"/>
+        <location filename="../StackingDlg.cpp" line="2502"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Toplam istifleme süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2480"/>
+        <location filename="../StackingDlg.cpp" line="2533"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Son görüntüyü kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2564"/>
+        <location filename="../StackingDlg.cpp" line="2617"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3054,14 +3125,14 @@ Davranışı değiştirmek için sağ tıklayın.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="106"/>
+        <location filename="../DeepSkyStacker.cpp" line="110"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker&apos;ın bu beta sürümünün süresi doldu
 Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="134"/>
+        <location filename="../DeepSkyStacker.cpp" line="138"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3069,18 +3140,18 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 (Bu seçeneği daha sonra Hakkında kısmından uygulayabilir veya kaldırabilirsiniz)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="466"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsor DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="322"/>
+        <location filename="../DeepSkyStacker.cpp" line="325"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="601"/>
-        <location filename="../DeepSkyStacker.cpp" line="603"/>
+        <location filename="../DeepSkyStacker.cpp" line="637"/>
+        <location filename="../DeepSkyStacker.cpp" line="639"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

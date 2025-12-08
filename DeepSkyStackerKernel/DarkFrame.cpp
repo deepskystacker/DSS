@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <numbers>
 #include "DarkFrame.h"
 #include "ztrace.h"
 #include "DSSProgress.h"
@@ -259,7 +260,7 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 		fRMS = fRMS*fSum;
 
 		vValues.push_back(fRMS);
-		vEntropies.push_back(1.0/2.0*(1.0+log(2*M_PI*fVariance)));
+		vEntropies.push_back(1.0/2.0*(1.0+log(2 * std::numbers::pi * fVariance)));
 
 		if ((fRMS < fMinRMS) || fSelectedk == 0)
 		{

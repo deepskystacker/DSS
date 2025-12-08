@@ -34,6 +34,7 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include <numbers>
 #include "ImageListModel.h"
 
 namespace DSS
@@ -172,7 +173,7 @@ namespace DSS
                         if (Qt::EditRole == role)
                             return file.m_fAngle;
                         else
-                            return QString("%1\xc2\xb0").arg(file.m_fAngle * 180.0 / M_PI, 0, 'f', 2);
+                            return QString("%1\xc2\xb0").arg(file.m_fAngle * 180.0 / std::numbers::pi, 0, 'f', 2);
                     }
                     else
                     {

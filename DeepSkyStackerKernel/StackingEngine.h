@@ -43,19 +43,19 @@ public:
 
 class CLightFrameStackingInfo
 {
-public :
+public:
 	fs::path file;
 	QString m_strInfoFileName;
 	CBilinearParameters m_BilinearParameters;
 
-private :
+private:
 	void	CopyFrom(const CLightFrameStackingInfo & rhs)
 	{
 		file = rhs.file;
 		m_strInfoFileName = rhs.m_strInfoFileName;
 		m_BilinearParameters = rhs.m_BilinearParameters;
 	};
-public :
+public:
 	CLightFrameStackingInfo() = default;
 	CLightFrameStackingInfo(const fs::path& path) :
 		file { path }
@@ -78,49 +78,44 @@ public :
 	bool operator < (const CLightFrameStackingInfo & rhs) const
 	{
 		return (file < rhs.file);
-	};
+	}
 
 };
 
-typedef std::vector<CLightFrameStackingInfo>		LIGHTFRAMESTACKINGINFOVECTOR;
-typedef LIGHTFRAMESTACKINGINFOVECTOR::iterator		LIGHTFRAMESTACKINGINFOITERATOR;
 
-/* ------------------------------------------------------------------- */
-
-class CLightFramesStackingInfo
+class CLightFramesStackingInfo final
 {
-private :
-	fs::path referenceFrame;
-	QString m_strStackingFileInfo;
-	LIGHTFRAMESTACKINGINFOVECTOR m_vLightFrameStackingInfo;
+private:
+	fs::path referenceFrame {};
+	QString m_strStackingFileInfo {};
+	std::vector<CLightFrameStackingInfo> m_vLightFrameStackingInfo {};
 
-private :
-	void		GetInfoFileName(const fs::path& lightFrame, QString& strInfoFileName);
+private:
+	QString GetInfoFileName(const fs::path& lightFrame) const;
 
-public :
-	CLightFramesStackingInfo() {};
-	virtual ~CLightFramesStackingInfo() {};
+public:
+	CLightFramesStackingInfo() = default;
+	~CLightFramesStackingInfo() = default;
 
-	void	SetReferenceFrame(const fs::path& szReferenceFrame);
-	void	AddLightFrame(const fs::path& szLightFrame, const CBilinearParameters & bp);
-	bool	GetParameters(const fs::path& szLightFrame, CBilinearParameters & bp);
-	void	Save();
-	void	Clear()
+	void SetReferenceFrame(const fs::path& szReferenceFrame);
+	void AddLightFrame(const fs::path& szLightFrame, const CBilinearParameters& bp);
+	bool GetParameters(const fs::path& szLightFrame, CBilinearParameters& bp) const;
+	void Save();
+	void Clear()
 	{
 		referenceFrame.clear();
 		m_strStackingFileInfo.clear();
 		m_vLightFrameStackingInfo.clear();
-	};
+	}
 };
 
-/* ------------------------------------------------------------------- */
-class CTaskInfo;
+
 class CStackingEngine final
 {
 private:
-	LIGHTFRAMEINFOVECTOR		m_vBitmaps;
-	CLightFramesStackingInfo	m_StackingInfo;
-	OldProgressBase *				m_pProgress;
+	LIGHTFRAMEINFOVECTOR bitmapsToStack;
+	CLightFramesStackingInfo m_StackingInfo;
+	OldProgressBase* m_pProgress;
 	fs::path referenceFrame;
 	int						m_lNrCurrentStackable;
 	std::atomic<int>		m_lNrStackable;
@@ -139,7 +134,7 @@ private:
 	PIXELTRANSFORMVECTOR		m_vPixelTransforms;
 	CBackgroundCalibration		m_BackgroundCalibration;
 	std::shared_ptr<CMultiBitmap> m_pMasterLight;
-	CTaskInfo *					m_pLightTask;
+	CTaskInfo* pTaskInfo;
 	int						m_lNrStacked;
 	double						m_fKeptPercentage;
 	bool						m_bSaveCalibrated;
@@ -157,7 +152,7 @@ private:
 	CPostCalibrationSettings	m_PostCalibrationSettings;
 	bool						m_bChannelAlign;
 
-	std::mutex	mutex;
+	std::mutex mutex;
 
 public:
 	CStackingEngine() :
@@ -168,7 +163,7 @@ public:
 		m_lISOSpeed{ 0 },
 		m_lGain{ -1 },
 		m_fStarTrailsAngle {0.0},
-		m_pLightTask{ nullptr },
+		pTaskInfo{ nullptr },
 		m_lNrStacked{ 0 },
 		m_fTotalExposure{ 0 },
 		m_fKeptPercentage{ 100.0 },
@@ -191,27 +186,27 @@ public:
 
 	~CStackingEngine() = default;
 
-	bool ComputeLightFrameOffset(int lBitmapIndice);
+	bool ComputeLightFrameOffset(const size_t lBitmapIndice);
 	void OverrideIntermediateFileFormat(INTERMEDIATEFILEFORMAT fmt) { m_IntermediateFileFormat = fmt; }
 	inline void incStackable() { ++m_lNrStackable; }
 	inline void incCometStackableIfBitmapHasComet(const int n) {
-		if (this->m_vBitmaps[n].m_bComet)
+		if (this->bitmapsToStack[n].m_bComet)
 			++m_lNrCometStackable;
 	}
 
 private:
 	bool	AddLightFramesToList(CAllStackingTasks & tasks);
-	void	ComputeMissingCometPositions();
+//	void	ComputeMissingCometPositions();
 	void	ComputeOffsets();
-	bool	isLightFrameStackable(const fs::path& file);
-	bool	RemoveNonStackableLightFrames(CAllStackingTasks & tasks);
+	bool	isLightFrameStackable(const fs::path& file) const;
+	void	RemoveNonStackableLightFrames(CAllStackingTasks & tasks);
 	void	GetResultISOSpeed();
 	void	GetResultGain();
 	void	GetResultDateTime();
 	void	GetResultExtraInfo();
 	DSSRect	computeLargestRectangle();
 	bool	computeSmallestRectangle(DSSRect & rc);
-	int	findBitmapIndex(const fs::path& file);
+	int	findBitmapIndex(const fs::path& file) const;
 	void	ComputeBitmap();
 	std::shared_ptr<CMultiBitmap> CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor);
 	bool StackAll(CAllStackingTasks & tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap);
@@ -224,12 +219,12 @@ private:
 	bool	SaveDeltaImage(CMemoryBitmap* pBitmap) const;
 	bool	SaveCometImage(CMemoryBitmap* pBitmap) const;
 	bool	SaveCometlessImage(CMemoryBitmap* pBitmap) const;
-	TRANSFORMATIONTYPE GetTransformationType();
+	TRANSFORMATIONTYPE GetTransformationType() const;
 
 public:
 	CLightFrameInfo& getBitmap(const int n)
 	{
-		return this->m_vBitmaps[n];
+		return this->bitmapsToStack[n];
 	}
 
 	void SetReferenceFrame(const fs::path& path)
@@ -257,7 +252,7 @@ public:
 
 	LIGHTFRAMEINFOVECTOR& LightFrames()
 	{
-		return m_vBitmaps;
+		return bitmapsToStack;
 	}
 
 	void SetCometInterpolating(bool bSet)
@@ -265,7 +260,6 @@ public:
 		m_bCometInterpolating = bSet;
 	}
 
-	bool GetDefaultOutputFileName(fs::path& strFileName, const fs::path& szFileList, bool bTIFF = true);
-	void WriteDescription(CAllStackingTasks& tasks, const fs::path& outputFile);
+	bool GetDefaultOutputFileName(fs::path& strFileName, const fs::path& szFileList, bool bTIFF = true) const;
+	void WriteDescription(CAllStackingTasks& tasks, const fs::path& outputFile) const;
 };
-

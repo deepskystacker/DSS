@@ -168,6 +168,15 @@
     <ClCompile Include="lowerdockwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QualityChart.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\griddata.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="flatchart.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -196,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\griddata.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -593,6 +605,12 @@
     <QtUic Include="ui\ProgressDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\QualityChart.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\FlatChart.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BackgroundOptions.h">
@@ -711,6 +729,12 @@
     </QtMoc>
     <QtMoc Include="processingcontrols.h">
       <Filter>Dialogs\Processing</Filter>
+    </QtMoc>
+    <QtMoc Include="QualityChart.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="flatchart.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

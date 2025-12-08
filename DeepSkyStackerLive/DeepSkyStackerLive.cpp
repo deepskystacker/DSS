@@ -490,12 +490,12 @@ void DeepSkyStackerLive::onInitialise()
 	fileName /= "DSSLive.settings";		// Append the filename with a path separator
 
 	//
-	// If the file does not exist, initialise the workspace to default settings 
-	// and save it to the file.
+	// Initialise the workspace to default settings to be sure all settings exist
 	//
+	workspace.ResetToDefault();		// Reset the workspace to default settings
+
 	if (!exists(fileName))
 	{
-		workspace.ResetToDefault();		// Reset the workspace to default settings
 		ZTRACE_RUNTIME("DSSLive settings file %s does not exist, creating it", fileName.generic_u8string().c_str());
 		workspace.SaveToFile(fileName);
 	}
@@ -880,7 +880,9 @@ bool DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 			tr("Select the folder to be monitored", "IDS_SELECTMONITOREDFOLDER"),
 			startDir,
 			QFileDialog::ShowDirsOnly
-			| QFileDialog::DontResolveSymlinks);
+			| QFileDialog::DontResolveSymlinks
+			| QFileDialog::DontUseNativeDialog);	// Use Qt dialog for consistency across platforms
+
 		if (!dir.isEmpty())
 		{
 			settings.setValue("MonitoredFolder", dir);
@@ -1564,15 +1566,6 @@ int main(int argc, char* argv[])
 	// Save the program name in case we need it later
 	// 
 	global_program_name = argv[0];
-
-#if defined(Q_OS_WIN)
-	// Set the C character locale for UTF-8 so Exiv2 can open files with UTF-8 names
-	// I think this also applies to the use of regular fopen() calls.
-	std::setlocale(LC_CTYPE, ".UTF-8");
-
-	// Set console code page to UTF-8 so console knowns how to interpret string data
-	SetConsoleOutputCP(CP_UTF8);
-#endif
 
 	//
 	// Log Qt messages to the trace file as well as to the debugger.

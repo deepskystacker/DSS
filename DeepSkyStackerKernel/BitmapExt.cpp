@@ -356,14 +356,13 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 
 	const auto* pImageData = pQImage->constBits();
 	const auto bytes_per_line = pQImage->bytesPerLine();
-	
-//	std::atomic_int loopCtr{ 0 };
 
 	const auto copyPixels = 
 		[bytes_per_line, height, width, pBitmap, pProgress, numberOfProcessors]
-		<bool Monochrome, typename PixelType, std::invocable<const PixelType&> auto GetColours>
+		<bool Monochrome, typename PixelType, std::invocable<const PixelType&> auto GetColours, double ScalingFactor = 1.0>
 		(const uchar* pSrc)
 	{
+
 		std::atomic_int loopCtr = 0;
 #pragma omp parallel for shared(loopCtr) default(shared) if(numberOfProcessors > 1)
 		for (int row = 0; row < height; ++row)
@@ -373,8 +372,8 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 			{
 				if constexpr (Monochrome)
 				{
-					const auto grey = static_cast<double>(*pPixel);
-					pBitmap->SetPixel(col, row, grey);
+					const double grey = static_cast<double>(*pPixel);
+					pBitmap->SetPixel(col, row, grey * ScalingFactor);
 				}
 				else
 				{
@@ -394,7 +393,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		copyPixels.operator()<true, uchar, std::identity{}>(pImageData);
 		break;
 	case 16:
-		copyPixels.operator()<true, std::uint16_t, std::identity{}>(pImageData);
+		copyPixels.operator()<true, std::uint16_t, std::identity{}, 1.0 / scaleFactorInt16>(pImageData);
 		break;
 	case 24:
 		copyPixels.operator()<false, QRgb, [](const QRgb& c) -> std::tuple<double, double, double> { return { qRed(c), qGreen(c), qBlue(c) }; }>(pImageData);
@@ -588,29 +587,16 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		auto pImageData = pImage->bits();
 		auto bytes_per_line = pImage->bytesPerLine();
 
-		if (QImage::Format_RGB32 == pImage->format())
+		QImage::Format format{ pImage->format() };
+
+		switch (format)
+		{
+		case QImage::Format::Format_Grayscale8:
 		{
 #pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < height; j++)
 			{
-				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
-				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
-				{
-					// Init iterators
-					T* pRed = pInBitmap->GetRedPixel(0, j);
-					T* pGreen = pInBitmap->GetGreenPixel(0, j);
-					T* pBlue = pInBitmap->GetBluePixel(0, j);
-
-					for (int i = 0; i < width; i++)
-					{
-						*pOutPixel++ = qRgb(gammatrans.getTransformation(*pRed / fMultiplier),
-							gammatrans.getTransformation(*pGreen / fMultiplier),
-							gammatrans.getTransformation(*pBlue / fMultiplier));
-						pRed++;
-						pGreen++;
-						pBlue++;
-					}
-				}
+				T* pOutPixel = reinterpret_cast<T*>(pImageData + (j * bytes_per_line));
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 				{
 					// Init iterators
@@ -620,52 +606,120 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 					for (int i = 0; i < width; i++)
 					{
 						value = gammatrans.getTransformation(*pGray / fMultiplier);
-						*pOutPixel++ = qRgb(value, value, value);
+						*pOutPixel++ = value;
 						pGray++;
 					}
 				}
 			}
 			bResult = true;
 		}
-		else        // Must be RGB64
-		{
-#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-			for (int j = 0; j < height; j++)
+		break;
+		case QImage::Format::Format_Grayscale16:
 			{
-				QRgba64* pOutPixel = reinterpret_cast<QRgba64*>(pImageData + (j * bytes_per_line));
-				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
+	#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+				for (int j = 0; j < height; j++)
 				{
-					// Init iterators
-					T* pRed = pInBitmap->GetRedPixel(0, j);
-					T* pGreen = pInBitmap->GetGreenPixel(0, j);
-					T* pBlue = pInBitmap->GetBluePixel(0, j);
-
-					for (int i = 0; i < width; i++)
+					T* pOutPixel = reinterpret_cast<T*>(pImageData + (j * bytes_per_line));
+					if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
 					{
-						*pOutPixel++ = QRgba64::fromRgba64(gammatrans.getTransformation16(*pRed / fMultiplier),
-							gammatrans.getTransformation16(*pGreen / fMultiplier),
-							gammatrans.getTransformation16(*pBlue / fMultiplier),
-							std::numeric_limits<uint16_t>::max());
-						pRed++;
-						pGreen++;
-						pBlue++;
+						// Init iterators
+						const T* pGray = pInBitmap->GetGrayPixel(0, j);
+						uint16_t value = 0;
+
+						for (int i = 0; i < width; i++)
+						{
+							value = gammatrans.getTransformation16(*pGray / fMultiplier);
+							*pOutPixel++ = value;
+							pGray++;
+						}
 					}
 				}
-				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
-				{
-					// Init iterators
-					const T* pGray = pInBitmap->GetGrayPixel(0, j);
-					unsigned char value = 0;
-
-					for (int i = 0; i < width; i++)
-					{
-						value = gammatrans.getTransformation16(*pGray / fMultiplier);
-						*pOutPixel++ = qRgba64(value, value, value, std::numeric_limits<uint16_t>::max());
-						pGray++;
-					}
-				}
+				bResult = true;
 			}
-			bResult = true;
+			break;
+		case QImage::Format::Format_RGB32:
+			{
+	#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+				for (int j = 0; j < height; j++)
+				{
+					QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
+					if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
+					{
+						// Init iterators
+						T* pRed = pInBitmap->GetRedPixel(0, j);
+						T* pGreen = pInBitmap->GetGreenPixel(0, j);
+						T* pBlue = pInBitmap->GetBluePixel(0, j);
+
+						for (int i = 0; i < width; i++)
+						{
+							*pOutPixel++ = qRgb(gammatrans.getTransformation(*pRed / fMultiplier),
+								gammatrans.getTransformation(*pGreen / fMultiplier),
+								gammatrans.getTransformation(*pBlue / fMultiplier));
+							pRed++;
+							pGreen++;
+							pBlue++;
+						}
+					}
+					if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
+					{
+						// Init iterators
+						const T* pGray = pInBitmap->GetGrayPixel(0, j);
+						unsigned char value = 0;
+
+						for (int i = 0; i < width; i++)
+						{
+							value = gammatrans.getTransformation(*pGray / fMultiplier);
+							*pOutPixel++ = qRgb(value, value, value);
+							pGray++;
+						}
+					}
+				}
+				bResult = true;
+			}
+			break;
+		case QImage::Format::Format_RGBA64:
+			{
+	#pragma omp parallel for default(shared)schedule(dynamic, 50) if (Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+				for (int j = 0; j < height; j++)
+				{
+					QRgba64* pOutPixel = reinterpret_cast<QRgba64*>(pImageData + (j * bytes_per_line));
+					if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
+					{
+						// Init iterators
+						T* pRed = pInBitmap->GetRedPixel(0, j);
+						T* pGreen = pInBitmap->GetGreenPixel(0, j);
+						T* pBlue = pInBitmap->GetBluePixel(0, j);
+
+						for (int i = 0; i < width; i++)
+						{
+							*pOutPixel++ = QRgba64::fromRgba64(gammatrans.getTransformation16(*pRed / fMultiplier),
+								gammatrans.getTransformation16(*pGreen / fMultiplier),
+								gammatrans.getTransformation16(*pBlue / fMultiplier),
+								std::numeric_limits<uint16_t>::max());
+							pRed++;
+							pGreen++;
+							pBlue++;
+						}
+					}
+					if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
+					{
+						// Init iterators
+						const T* pGray = pInBitmap->GetGrayPixel(0, j);
+						uint16_t value = 0;
+
+						for (int i = 0; i < width; i++)
+						{
+							value = gammatrans.getTransformation16(*pGray / fMultiplier);
+							*pOutPixel++ = qRgba64(value, value, value, std::numeric_limits<uint16_t>::max());
+							pGray++;
+						}
+					}
+				}
+				bResult = true;
+			}
+			break;
+		default:
+			break;
 		}
 	}
 	return bResult;
@@ -853,7 +907,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		else if (isJpeg || isPng)
 		{
 			QFile file{ path };
-			file.open(QIODevice::ReadOnly);
+			std::ignore = file.open(QIODevice::ReadOnly);
 			if (file.isOpen())
 			{
 				//

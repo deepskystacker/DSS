@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.0
+Welcome to DeepSkyStacker 6.1.1
 ===============================
 
 Reporting problems:
@@ -19,7 +19,71 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
+Changes for DeepSkyStacker 6.1.1
+================================
+
+1.  Support for writing and reading compressed FITS files.  Writing of compressed files is enabled by a check box
+    on the Intermediate Files tab of the Stacking settings dialogue.  Please be aware that floating point FITS images
+    (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa
+    of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images
+    are first quantized into scaled integer pixel values (thus throwing away much of the noise) before being
+    compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher
+    compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also
+    means that the original floating value pixel values are not exactly preserved.
+
+2.  FITS files will now be written with the extension .fits rather than .fit or .fts.
+
+3.  Resolve problem of 0xC0000409 abend at startup when the user's "Documents" directory path contained non-Latin1
+    characters.
+
+4.  Update build to use Qt 6.10.0, boost 1.88 and libtiff 4.7.1
+
+5.  Bug fix: The names of the intermediate files were created incorrectly.   The stem for the file name
+    used the content of the input filename up to but not including the first '.' character.
+    It should have used up to but not including the last '.' character.
+
+6.  Bug fix: Incorrect master flat files were created when bias frames were being used.   This bug was
+    introduced during the development of 6.1.0.
+
+7.  Update build so that Exiv2 png file support is included (along with bmff).
+    This fixes the problem where an assertion was thrown when opening PNG files.
+
+8.  Bug fix: Nasty problem with save/restore of Workspace settings to and from files.  Trailing end-of-line wasn't
+    trimmed off and also datatype information was often lost.  This error dates back to DeepSkyStacker 5.1.0 :(
+
+9.  Set correct bit-depth for images in DeepSkyStackerLive - was defaulting to 16 bits for 8-bit images.
+
+10. Change to FITS compression support code to work round problems with () and [] in file-ids.
+
+11. Update exiv2 to 28.7#1
+
+12. Always use the Qt Widgets based File Dialog for consistency and also so that (e.g.) both .cr2 and .CR2
+    files are found with a file filter that specifies *.cr2
+
+13. Add the capability to produce "Contour Plots" of FWHM and "Star Eccentricity" for an image.
+    If the image has been registered, right click on the row with the image information in the list of images and
+    select "Star Quality Chart".  This may be useful to assess issues such as camera tilt.
+    Please note that it can take a while (about a minute or so) to produce the chart.
+
+    To make effective use of this I suggest using an image with an even distribution of similarly bright stars.
+    It may help to register the image using a manually selected star detection threshold so that a fairly large
+    number of stars are detected (perhaps in the high hundreds).
+
+14. Add a display of the colour of the pixel under the mouse pointer.
+
+15. Change the code used to determine the major and minor axes of a star image and thus the eccentricity value.
+    The old code wasn't robust and often returned a minor axis size that was larger than the major axis size.
+    This resulted in a computed eccentricity value that was "Not a Number".
+
+16. Bug fix: Correct loading of 16 bit monochrome PNG files. The pixel values were being incorrectly scaled.
+    Also correct gamma transformation code for 16 bit monochrome and 48 bit colour images.
+
+17. Add the capability to produce a "Contour Plot" of the intensity levels of a flat.
+    To produce the plot, right click on the row with information about the flat file in the list of images and
+    select "Flat Contour Chart".   This may be useful for assessing the telescope's collimation.
+
 Changes for DeepSkyStacker 6.1.0
+================================
 
 1.  Both macOS (Ventura 13.4 and upward) on both ARM and x86_64 systems and also Linux are now supported.
     The Linux version is built on Lubuntu 22.04 (Jammy Jellyfish) and should work on most recent Linux systems.
@@ -74,10 +138,8 @@ Changes for DeepSkyStacker 6.1.0
 
 22. Implement SIMD decoding for GRBG and BGGR Bayer patterns.
 	
-Welcome to DeepSkyStacker 5.1.10
-======================================
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.10
+=================================
 
 1.  Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.
 	If present use these to determine the minimum and maximum pixel values instead of scanning the image data which
@@ -115,10 +177,8 @@ Changes since the last release:
 11. Implement default values for FITS keywords DATAMIN and DATAMAX which can be set using FITS/DDP settings
 
 
-Welcome to DeepSkyStacker 5.1.8
-======================================
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.8
+================================
 
 1. Bug fix: When saving the project to a file-list, a default file name is suggested which is equal to the name of the current directory.
 
@@ -197,15 +257,6 @@ Changes since the last release:
     This should be a) much faster, and b) should result in consistent image scaling.
     Also write these keywords when writing FITS floating point files.
 
-Welcome to DeepSkyStacker 5.1.6
-===============================
-
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
-This is primarily a bug fix release, but there are a few enhancements as well.
-
-Changes since the last release:
-
 1. Bug fix: The Image List dock widget was not always visible (e.g. after DSS was maximised and then closed with the processing dialog visible).
 
 2. Modify CFITSIO 4.3.0 to support UTF-8 file names.  The fix has been submitted to the FITSIO team who look like they will adopt it.
@@ -254,12 +305,8 @@ Changes since the last release:
 
 24. Bug fix: Crash during startup initialising ImageListModel array of icons.
 
-Welcome to DeepSkyStacker 5.1.5
-===============================
-
-Only 64 bit versions of Windows 10 and later are supported in this release.
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.5
+================================
 
 1. Write Intermediate TIFF format files with COMPRESSION_NONE.  Final output files will still be compressed.
 
@@ -272,10 +319,8 @@ Changes since the last release:
 
 4. Bug fix: Revert change to create masters as float - it caused incompatibility problems.
 
-Welcome to DeepSkyStacker 5.1.4
-===============================
-
-Changes since the last release:
+Changes for DeepSkyStacker 5.1.4
+================================
 
 1. Upgrade CFITSIO library to 4.2.0
 
@@ -394,10 +439,8 @@ Changes since the last release:
 
 52. Resolve problem of clipped controls on processing page when the native language is set to Japanese.
 
-Welcome to DeepSkyStacker 5.1.3
-===============================
-
-This is a bug fix release for problems reported against 5.1.0, 5.1.1, 5.1.2
+Changes for DeepSkyStacker 5.1.3
+================================
 
 1. Possible bug fix - DeepSkyStacker terminated at startup when running on ARM version of Windows 11 in x64 emulation mode.  Unable to test.
 
@@ -443,12 +486,8 @@ This is a bug fix release for problems reported against 5.1.0, 5.1.1, 5.1.2
 
 22. Bug fix - Register settings set a value of 0 for the luminance threshold when it was initially set to 20.
 
-Welcome to DeepSkyStacker 5.1.0
-===============================
-
-This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows.
-
-Here are the main changes that were made for DeepSkyStacker 5.1.0:
+Changes for DeepSkyStacker 5.1.0
+================================
 
 1. The bulk of the code for the "Stacking" panel has been converted to Qt.  This includes a completely reworked image display.
 

@@ -64,6 +64,8 @@
 #include "ProcessingDlg.h"
 #include "zexcept.h"
 #include "ImageProperties.h"
+#include "QualityChart.h"
+#include "flatchart.h"
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -524,6 +526,8 @@ namespace DSS
 		//
 		connect(pictureList->tableView, &QTableView::customContextMenuRequested, this, &StackingDlg::tableView_customContextMenuRequested);
 		connect(pictureList->tabBar, &QTabBar::customContextMenuRequested, this, &StackingDlg::tabBar_customContextMenuRequested);
+		connect(ui->picture, &DSS::ImageView::mouseMovedOverImage, 
+			this, &StackingDlg::updatePixelInfo);
 
 		retrieveLatestVersionInfo();
 	}
@@ -691,6 +695,10 @@ namespace DSS
 		menu.addSeparator();
 		properties = menu.addAction(tr("Properties...", "IDM_PROPERTIES"));
 		properties->setData(int(Menuitem::properties));
+		quality = menu.addAction(tr("Star Quality Chart"));
+		quality->setData(int(Menuitem::quality));
+		flatchart = menu.addAction(tr("Flat Contour Chart"));
+		flatchart->setData(int(Menuitem::flatchart));
 		menu.addSeparator();
 		copy = menu.addAction(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD"));
 		copy->setData(int(Menuitem::copy));
@@ -867,11 +875,19 @@ namespace DSS
 			else
 				markAsReference->setChecked(false);
 
-			markAsReference->setEnabled(rowCount == 1); // Only enable the "Set reference" checkbox if only a single image was selected.
+			// Only enable the "Set reference" checkbox if a single image was selected, and it is a light frame
+			markAsReference->setEnabled(rowCount == 1 && imageModel->mydata[ndx.row()].IsLightFrame());
 			check->setEnabled(true);
 			uncheck->setEnabled(true);
 			remove->setEnabled(true);
 			properties->setEnabled(true);
+			// Only enable the "Star Quality Chart" if a single image was selected, and it is a light frame, and it has been registered
+			quality->setEnabled(rowCount == 1 && 
+				imageModel->mydata[ndx.row()].IsLightFrame() &&
+				imageModel->mydata[ndx.row()].m_bRegistered == true);
+			// Only enable the "Flat chart" if a single image was selected, and it is a flat frame
+			flatchart->setEnabled(rowCount == 1 &&
+				imageModel->mydata[ndx.row()].IsFlatFrame());
 			erase->setEnabled(true);
 		}
 		else
@@ -881,6 +897,8 @@ namespace DSS
 			uncheck->setEnabled(false);
 			remove->setEnabled(false);
 			properties->setEnabled(false);
+			quality->setEnabled(false);
+			flatchart->setEnabled(false);
 			erase->setEnabled(false);
 		}
 
@@ -1003,7 +1021,7 @@ namespace DSS
 
 			if (Menuitem::properties == item)
 			{
-				int row = selectedRows[0].row();
+				int row = selectedRows.front().row();
 				ImageProperties dlg(pictureList->tableView);
 
 				if (1 == rowCount)
@@ -1072,6 +1090,37 @@ namespace DSS
 				}
 
 			}
+			if (Menuitem::quality == item)
+			{
+				int row = ndx.row();
+				qDebug() << "Plot quality metrics for row" << row;
+				QualityChart dlg(imageModel->mydata[row], this );
+				dlg.exec();
+			}
+			if (Menuitem::flatchart == item)
+			{
+				int row = ndx.row();
+				qDebug() << "Flat chart for row" << row;
+				FlatChart dlg(imageModel->mydata[row], this);
+				dlg.exec();
+			}
+		}
+	}
+
+	void StackingDlg::updatePixelInfo(QPoint pos, QRgb colour)
+	{
+		if (pos.x() >= 0 && pos.y() >= 0)
+		{
+			ui->pixelInfo->setText(tr("X: %1 Y: %2\nR: %3 G: %4 B: %5")
+				.arg(pos.x())
+				.arg(pos.y())
+				.arg(qRed(colour))
+				.arg(qGreen(colour))
+				.arg(qBlue(colour)));
+		}
+		else
+		{
+			ui->pixelInfo->setText("");
 		}
 	}
 
@@ -1394,7 +1443,7 @@ namespace DSS
 				m_LoadedImage.m_pBitmap = pBitmap;
 				if (m_GammaTransformation.isInitialized())
 					ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-				ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
+				ui->picture->setImage(*(m_LoadedImage.m_Image));
 
 				if (frameList.isLightFrame(file))
 				{
@@ -1553,6 +1602,11 @@ namespace DSS
 		QString				extension;
 		uint				filterIndex = 0;
 		QString				strTitle;
+
+		//
+		// Always use the Qt Widget file dialog for consistency
+		// 
+		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
 
 		bool				checked{ true };  // Automatically check all frames
 		switch (type)
@@ -2107,7 +2161,6 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 		::RegisterSettings dlgSettings{ this };
 		bool bContinue = true;
 
@@ -2144,6 +2197,8 @@ namespace DSS
 					bContinue = checkStacking(tasks);
 					if (bStackAfter)
 						bContinue = bContinue && showRecap(tasks);
+
+					DSS::OldProgressDlg dlg{ DeepSkyStacker::instance() };
 
 					const auto start{ std::chrono::steady_clock::now() };
 
@@ -2745,7 +2800,7 @@ namespace DSS
 		{
 			ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
 			// Refresh
-			ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
+			ui->picture->setImage(*(m_LoadedImage.m_Image));
 		}
 	}
 

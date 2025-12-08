@@ -181,7 +181,10 @@ namespace DSS
 		QSettings settings;
 		static const QString settingKey = QStringLiteral("Folders/ListFolder");
 		const QString& baseDir = settings.value(settingKey, QString()).toString();
-		auto files = QFileDialog::getOpenFileNames(this, QString(), baseDir, OUTPUTLIST_FILTERS.join(QStringLiteral(";;")));
+		//
+		// Always use non-native dialog for consistency
+		//
+		auto files = QFileDialog::getOpenFileNames(this, QString(), baseDir, OUTPUTLIST_FILTERS.join(QStringLiteral(";;")), nullptr, QFileDialog::DontUseNativeDialog);
 
 		const auto& filePaths = getFilePaths();
 		QStringList pathsToAdd;

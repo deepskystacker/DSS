@@ -57,6 +57,8 @@ OldProgressDlg::OldProgressDlg(QWidget* parent) :
 	retainHiddenWidgetSize(*ui->ProcessText2);
 	retainHiddenWidgetSize(*ui->ProgressBar1);
 	retainHiddenWidgetSize(*ui->ProgressBar2);
+	raise();
+	show();
 }
 
 OldProgressDlg::~OldProgressDlg()
@@ -175,8 +177,8 @@ void OldProgressDlg::initialise()
 	setFocus();
 	applyTitleText(GetTitleText());
 
-	raise();
-	show();
+	//raise();
+	//show();
 }
 
 void OldProgressDlg::applyStart1Text(const QString& strText)

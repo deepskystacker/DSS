@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
+message("CMake version: " ${CMAKE_VERSION})
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 cmake_policy(SET CMP0115 NEW)
@@ -32,13 +33,11 @@ message ("VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET})
 
 # Require C++20 and disable extensions for all targets.
 # NOTE: See further below for how to do this more robustly.
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
-
-project(DeepSkyStacker VERSION 6.1.0 LANGUAGES C CXX)
+project(DeepSkyStacker VERSION 6.1.1 LANGUAGES C CXX)
 
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
@@ -75,20 +74,21 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
-find_package(Qt6 6.9.1 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets LinguistTools)
+find_package(Qt6 6.10.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets Concurrent LinguistTools Svg PrintSupport)
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
-find_package(cfitsio 4.6.2 REQUIRED)
+find_package(cfitsio REQUIRED)
 find_package(boost_align CONFIG REQUIRED)
 find_package(boost_container CONFIG REQUIRED)
 find_package(boost_interprocess CONFIG REQUIRED)
 if (APPLE)
+find_package(boost_atomic CONFIG REQUIRED)	
 find_package(Iconv REQUIRED)
 find_package(CURL REQUIRED)
 endif()
 find_package(exiv2 CONFIG REQUIRED)
 find_package(expat CONFIG REQUIRED)
-find_package(TIFF 4.7 REQUIRED)
+find_package(TIFF 4.7.1 REQUIRED)
 find_package(libraw CONFIG REQUIRED)
 find_package(SmtpMime 2.0 REQUIRED)
 if(NOT WIN32)
@@ -133,6 +133,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
+add_subdirectory(qwt-6.3.0)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStackerKernel)
 # 

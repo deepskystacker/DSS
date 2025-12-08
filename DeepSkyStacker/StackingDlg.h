@@ -178,6 +178,8 @@ namespace DSS
 		void stackCheckedImages();
 		void batchStack();
 
+		void updatePixelInfo(QPoint pos, QRgb colour);
+
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr, PictureList* list = nullptr);
 		~StackingDlg();
@@ -244,6 +246,8 @@ namespace DSS
 			uncheck,
 			remove,
 			properties,
+			quality,
+			flatchart,
 			copy,
 			erase
 		};
@@ -292,6 +296,8 @@ namespace DSS
 		QAction* toOffset;
 		QAction* remove;
 		QAction* properties;
+		QAction* quality;
+		QAction* flatchart;
 		QAction* copy;
 		QAction* erase;
 

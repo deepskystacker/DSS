@@ -257,39 +257,96 @@ bool CFITSReader::Open()
 		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
 
 		// File ok - move to the first image HDU
-		QString			strSimple;
+		QString		strSimple;
 		int			lNrAxis = 0;
 		int			lWidth  = 0,
-						lHeight = 0,
-						lNrChannels = 0;
-		double			fExposureTime = 0;
-		QString			strMake;
-		QString			strISOSpeed;
-		QString			CFAPattern("");
-		QString			filterName("");
+					lHeight = 0,
+					lNrChannels = 1;
+		double		fExposureTime = 0;
+		QString		strMake;
+		QString		strISOSpeed;
+		QString		CFAPattern("");
+		QString		filterName("");
 		int			lISOSpeed = 0;
 		int			lGain = -1;
-		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
+		double		xBayerOffset = 0.0, yBayerOffset = 0.0;
+
 
 		m_bDSI = false;
 
-		bResult = ReadKey("SIMPLE", strSimple);
-		bResult = ReadKey("NAXIS", lNrAxis);
+		ReadKey("SIMPLE", strSimple);
+		ReadKey("NAXIS", lNrAxis);
+
+		//
+		// Check if this HDU is an empty one, if so, move to the next one
+		// and check if it is a compressed image
+		//
+		if ((0 == lNrAxis) && ("T" == strSimple))
+		{
+			fits_movrel_hdu(m_fits, 1, nullptr, &status);
+			// Check if this is a compressed image
+			if (fits_is_compressed_image(m_fits, &status))
+			{
+				ZTRACE_RUNTIME("Compressed FITS image");
+				isCompressed = true;
+				bResult = ReadKey("ZSIMPLE", strSimple);
+				bResult = ReadKey("ZNAXIS", lNrAxis);
+
+			}
+			else
+			{
+				QString errorMessage(QCoreApplication::translate("FITSUtil",
+					"The second HDU of file %1 does not contain a compressed image.")
+					.arg(file.generic_u16string().c_str()));
+
+				ZTRACE_RUNTIME(errorMessage);
+				DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
+				if (m_fits)
+				{
+					fits_close_file(m_fits, &status);
+					m_fits = nullptr;
+					return false;
+				}
+			}
+		}
+
+		// 
+		// Compressed images have critical information held in different keywords
+		// than non-compressed images.
+		//		
+		if (!isCompressed)
+		{
+			bResult = ReadKey("NAXIS1", lWidth);
+			bResult = ReadKey("NAXIS2", lHeight);
+			if (lNrAxis >= 3)
+				bResult = ReadKey("NAXIS3", lNrChannels);
+			bResult = ReadKey("BITPIX", m_bitPix);
+		}
+		else
+		{
+			bResult = ReadKey("ZNAXIS1", lWidth);
+			bResult = ReadKey("ZNAXIS2", lHeight);
+			if (lNrAxis >= 3)
+				bResult = ReadKey("ZNAXIS3", lNrChannels);
+			bResult = ReadKey("ZBITPIX", m_bitPix);
+		}
+
+
+
 		if ((strSimple == "T") && (lNrAxis >= 2 && lNrAxis <= 3))
 		{
 			QString				strComment;
 			ReadAllKeys();
 
-			bResult = ReadKey("INSTRUME", strMake);
+			ReadKey("INSTRUME", strMake);
 
 			//
 			// Attempt to get the exposure time
 			//
-			bResult = ReadKey("EXPTIME", fExposureTime, strComment);
-			if (!bResult)
-				bResult = ReadKey("EXPOSURE", fExposureTime, strComment);
+			if (!ReadKey("EXPTIME", fExposureTime, strComment))
+				ReadKey("EXPOSURE", fExposureTime, strComment);
 
-			if (bResult && !strComment.isEmpty())
+			if (!strComment.isEmpty())
 			{
 				if ((strComment.indexOf("in seconds")<0) &&
 					((strComment.indexOf("ms")>0) || (fExposureTime>3600)))
@@ -310,10 +367,9 @@ bool CFITSReader::Open()
 			//
 			// Number of frames in stack
 			//
-			bResult = ReadKey("NCOMBINE", m_nrframes);
+			ReadKey("NCOMBINE", m_nrframes);
 
-			bResult = ReadKey("ISOSPEED", strISOSpeed);
-			if (bResult)
+			if (ReadKey("ISOSPEED", strISOSpeed))
 			{
 
 				if (strISOSpeed.startsWith("ISO"))
@@ -323,17 +379,9 @@ bool CFITSReader::Open()
 				};
 			};
 
-			bResult = ReadKey("GAIN", lGain);
+			ReadKey("GAIN", lGain);
 
-			bResult = ReadKey("FILTER", filterName);
-
-			bResult = ReadKey("NAXIS1", lWidth);
-			bResult = ReadKey("NAXIS2", lHeight);
-			if (lNrAxis>=3)
-				bResult = ReadKey("NAXIS3", lNrChannels);
-			else
-				lNrChannels = 1;
-			bResult = ReadKey("BITPIX", m_bitPix);
+			ReadKey("FILTER", filterName);
 
 			//
 			// One time action to create a mapping between the character name of the CFA
@@ -1311,14 +1359,41 @@ bool CFITSWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
+	Workspace	workspace;
+	char error_text[31] = "";			// Error text for FITS errors.
+
+	bool compressFITSFile{ workspace.value("Stacking/CompressFITS", false).toBool() };
 
 	// Create a new fits file
-	int				nStatus = 0;
+	int				status = 0;
 
 	fs::remove(file);
-	fits_create_diskfile(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &nStatus);
-	if (m_fits && nStatus == 0)
+
+	fits_create_diskfile(&m_fits, reinterpret_cast<const char*>(file.generic_u8string().c_str()), &status);
+	if (0 != status)
 	{
+		fits_get_errstatus(status, error_text);
+		QString errorMessage(QCoreApplication::translate("FITSUtil",
+			"fits_create_diskfile %1\nreturned a status of %2, error text is:\n\"%3\"")
+			.arg(file.generic_u16string().c_str())
+			.arg(status)
+			.arg(error_text));
+		ZTRACE_RUNTIME(errorMessage);
+		DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
+	}
+
+	if (m_fits && status == 0)
+	{
+		//
+		// Is the output file to be compressed?
+		//
+		if (compressFITSFile)
+		{
+			// Yes, so turn on Rice compression
+			fits_set_compression_type(m_fits, RICE_1, &status);
+			ZASSERT(0 == status);
+		}
+
 		bResult = OnOpen();
 		if (bResult)
 		{
@@ -1347,8 +1422,8 @@ bool CFITSWriter::Open()
 					nBitPixels = ULONG_IMG;
 			};
 
-			fits_create_img(m_fits, nBitPixels, nAxis, nAxes, &nStatus);
-			if (nStatus == 0)
+			fits_create_img(m_fits, nBitPixels, nAxis, nAxes, &status);
+			if (status == 0)
 			{
 				bResult = true;
 
@@ -1377,7 +1452,7 @@ bool CFITSWriter::Open()
 		};
 		if (!bResult)
 		{
-			fits_close_file(m_fits, &nStatus);
+			fits_close_file(m_fits, &status);
 			m_fits = nullptr;
 		};
 	};
@@ -1436,7 +1511,7 @@ bool CFITSWriter::Write()
 				if (m_bFloat)
 					datatype = TFLOAT;
 				else
-					datatype = TULONG;
+					datatype = TUINT;
 				break;
 			case 64 :
 				datatype = TFLOAT;
@@ -1884,28 +1959,4 @@ int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::sh
 			result = 1; // Failed to read file
 	}
 	return result;
-}
-
-void GetFITSExtension(const QString& path, QString& strExtension)
-{
-	QFileInfo fileInfo(path);
-
-	const QString strExt("." + fileInfo.suffix());
-	if (strExt.compare(".FITS", Qt::CaseInsensitive) == 0)
-		strExtension = strExt;
-	else if (strExt.compare(".FIT", Qt::CaseInsensitive) == 0)
-		strExtension = strExt;
-	else
-		strExtension = ".fts";
-}
-
-void GetFITSExtension(const fs::path& file, QString& strExtension)
-{
-	GetFITSExtension(QString::fromStdU16String(file.generic_u16string().c_str()), strExtension);
-}
-
-void GetFITSExtension(fs::path path, QString& strExtension)
-{
-	QDir qPath(path);
-	GetFITSExtension(qPath.absolutePath(), strExtension);
 }

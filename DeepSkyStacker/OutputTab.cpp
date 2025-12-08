@@ -135,7 +135,8 @@ namespace DSS
 		QString dir = QFileDialog::getExistingDirectory(this, tr("Select Output Folder", "IDS_SELECTOUTPUTFOLDER"),
 			QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
 			QFileDialog::ShowDirsOnly
-			| QFileDialog::DontResolveSymlinks);
+			| QFileDialog::DontResolveSymlinks
+			| QFileDialog::DontUseNativeDialog);	// Always use non-native dialog for consistency
 
 		if (dir.length() > 0)
 		{

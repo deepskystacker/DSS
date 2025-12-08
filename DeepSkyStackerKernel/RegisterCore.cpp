@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <numbers>
 #include "RegisterEngine.h"
 #include "PixelTransform.h"
 
@@ -24,8 +25,6 @@ namespace {
 	//
 	bool computeStarCenter(const CGrayBitmap& inputBitmap, CStar& star, const double backgroundLevel)
 	{
-		double fSumX = 0;
-		double fSumY = 0;
 		double fNrValuesX = 0;
 		double fNrValuesY = 0;
 		double fAverageX = 0;
@@ -39,7 +38,7 @@ namespace {
 
 		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 		{
-			fSumX = 0;
+			double fSumX = 0;
 			fNrValuesX = 0;
 			for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 			{
@@ -59,7 +58,7 @@ namespace {
 		int lNrColumns = 0;
 		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 		{
-			fSumY = 0;
+			double fSumY = 0;
 			fNrValuesY = 0;
 			for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 			{
@@ -82,7 +81,7 @@ namespace {
 		// Then compute the radius
 		double fSquareSumX = 0;
 		double fStdDevX = 0;
-		fSumX = 0;
+//		fSumX = 0;
 		fNrValuesX = 0;
 		const size_t yCoord = std::round(star.m_fY);
 		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
@@ -90,7 +89,7 @@ namespace {
 			double fValue;
 			inputBitmap.GetPixel(x, yCoord, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
-			fSumX += fValue * x;
+//			fSumX += fValue * x;
 			fSquareSumX += (x - star.m_fX) * (x - star.m_fX) * fValue;
 			fNrValuesX += fValue;
 		}
@@ -98,7 +97,7 @@ namespace {
 
 		double fSquareSumY = 0;
 		double fStdDevY = 0;
-		fSumY = 0;
+//		fSumY = 0;
 		fNrValuesY = 0;
 		const size_t xCoord = std::round(star.m_fX);
 		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
@@ -106,7 +105,7 @@ namespace {
 			double fValue;
 			inputBitmap.GetPixel(xCoord, y, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
-			fSumY += fValue * y;
+//			fSumY += fValue * y;
 			fSquareSumY += (y - star.m_fY) * (y - star.m_fY) * fValue;
 			fNrValuesY += fValue;
 		}
@@ -133,79 +132,91 @@ namespace {
 		template <typename T> PixelDirection& operator=(T&&) = delete;
 	};
 
-	void findStarShape(const CGrayBitmap& bitmap, CStar& star, const double backgroundNoiseLevel)
+	void findStarShape(const CGrayBitmap& bitmap, CStar& star, double backgroundNoiseLevel)
 	{
 		constexpr int AngleResolution = 10; // Test the axis every 10 degrees.
-		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes;
-		double fMaxHalfRadius = 0.0;
-		double fMaxCumulated = 0.0;
-		int lMaxHalfRadiusAngle = 0;
+		constexpr double GradRadFactor = std::numbers::pi / 180.0;
 
-		// Preallocate the vector for the inner loop.
-		PIXELDISPATCHVECTOR vPixels;
-		vPixels.reserve(10);
+		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes{};
+		std::array<int, 4> xcoords, ycoords;
 
-		const int width = bitmap.Width();
-		const int height = bitmap.Height();
-
-		for (int lAngle = 0; lAngle < 360; lAngle += AngleResolution)
-		{
-			double					fSquareSum = 0.0;
-			double					fSum = 0.0;
-//			double					fNrValues = 0.0;
-
-			for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
-			{
-				constexpr double GradRadFactor = 3.14159265358979323846 / 180.0;
-				const double fX = star.m_fX + std::cos(lAngle * GradRadFactor) * fPos;
-				const double fY = star.m_fY + std::sin(lAngle * GradRadFactor) * fPos;
-				double fLuminance = 0;
-
-				// Compute luminance at fX, fY
-				vPixels.resize(0);
-				ComputePixelDispatch(QPointF(fX, fY), vPixels);
-
-				for (const CPixelDispatch& pixel : vPixels)
-				{
-					if (pixel.m_lX < 0 || pixel.m_lX >= width || pixel.m_lY < 0 || pixel.m_lY >= height)
-						continue;
-
-					double pixelBrightness;
-					bitmap.GetPixel(static_cast<size_t>(pixel.m_lX), static_cast<size_t>(pixel.m_lY), pixelBrightness);
-					pixelBrightness = std::max(pixelBrightness - backgroundNoiseLevel, 0.0); // Exclude negative values.
-					fLuminance += pixelBrightness * pixel.m_fPercentage;
-				}
-				fSquareSum += fPos * fPos * fLuminance;
-				fSum += fLuminance;
-//				fNrValues += fLuminance * 2;
-			}
-
-			const double fStdDev = fSum > 0.0 ? std::sqrt(fSquareSum / fSum) : 0.0;
-			CStarAxisInfo ai{ .m_fRadius = fStdDev * 1.5, .m_fSum = fSum, .m_lAngle = lAngle };
-
-			if (ai.m_fSum > fMaxCumulated)
-			{
-				fMaxCumulated = ai.m_fSum;
-				fMaxHalfRadius = ai.m_fRadius;
-				lMaxHalfRadiusAngle = ai.m_lAngle;
-			}
-
-			starAxes[lAngle / AngleResolution] = std::move(ai);
-		}
-
-		const auto StarAxesRadius = [&starAxes](const int angle) -> double
+		const auto StarAxisRadius = [&starAxes, AngleResolution](const int angle) -> double
 		{
 			const int index = ((angle + 360) % 360) / AngleResolution;
 			return starAxes[index].m_fRadius;
 		};
 
-		// Get the biggest value - this is the major axis
-		star.m_fLargeMajorAxis = fMaxHalfRadius;
-		star.m_fMajorAxisAngle = lMaxHalfRadiusAngle;
+		for (int n = 0; auto& axis : starAxes)
+		{
+			axis.m_lAngle = n * AngleResolution;
+			++n;
+		}
 
-		star.m_fSmallMajorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 180);
-		star.m_fLargeMinorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 90);
-		star.m_fSmallMinorAxis = StarAxesRadius(lMaxHalfRadiusAngle + 270);
+		const int width = bitmap.Width();
+		const int height = bitmap.Height();
+		const double bitmapMultiplier = bitmap.GetMultiplier();
+		backgroundNoiseLevel *= bitmapMultiplier;
+
+		for (CStarAxisInfo& axisInfo : starAxes)
+		{
+			double squareSum = 0.0;
+
+			for (double fPos = 0.0; fPos <= star.m_fMeanRadius * 2.0; fPos += 0.10)
+			{
+				const double fX = star.m_fX + std::cos(axisInfo.m_lAngle * GradRadFactor) * fPos;
+				const double fY = star.m_fY + std::sin(axisInfo.m_lAngle * GradRadFactor) * fPos;
+				double luminanceOfPixel = 0;
+
+				std::array<double, 4> proportions = ComputeAll4PixelDispatches(QPointF{ fX, fY }, xcoords, ycoords);
+				
+				for (const int n : { 0, 1, 2, 3 })
+				{
+					if (const size_t x = xcoords[n], y = ycoords[n]; x >= 0 && x < width && y >= 0 && y < height)
+					{
+						luminanceOfPixel += proportions[n] * std::max(bitmap.getUncheckedValue(x, y) - backgroundNoiseLevel, 0.0);
+					}
+				}
+				squareSum += fPos * fPos * luminanceOfPixel;
+				axisInfo.m_fSum += luminanceOfPixel;
+			}
+
+			axisInfo.m_fRadius = axisInfo.m_fSum > 0.0 ? 1.5 * std::sqrt(squareSum / axisInfo.m_fSum) : 0.0;
+			axisInfo.m_fSum /= bitmapMultiplier; // Correct the sum, because bitmap.getUncheckedValue(x, y) did not divide by the bitmap-multiplier.
+		}
+
+		//
+		// Do a search over the first 180 degrees calculating the diameter, setting majorAxis to the largest found.
+		//
+		double majorAxis{ 0.0 };
+		int majorAxisAngle = 0;
+		for (int angle = 0; angle < 180; angle += AngleResolution)
+		{
+			const double diameter = StarAxisRadius(angle) + StarAxisRadius(angle + 180);
+			if (diameter > majorAxis)
+			{
+				majorAxis = diameter;
+				majorAxisAngle = angle;
+			}
+		}
+
+		double a = StarAxisRadius(majorAxisAngle);
+		double b = StarAxisRadius(majorAxisAngle + 180);
+		star.m_fMajorAxisAngle = a >= b ? majorAxisAngle : (majorAxisAngle + 180 + 360) % 360;
+		std::tie(star.m_fSmallMajorAxis, star.m_fLargeMajorAxis) = std::minmax(a, b);
+		a = StarAxisRadius(majorAxisAngle + 90);
+		b = StarAxisRadius(majorAxisAngle + 270);
+		std::tie(star.m_fSmallMinorAxis, star.m_fLargeMinorAxis) = std::minmax(a, b);
+
+		const double minorAxis = a + b;
+
+		//
+		// Compute eccentricity - definition of the ecccentricity formula says to use the semi-minor and
+		// semi-major axis values, but using the minor and major axis values gives the same result.
+		// 
+		if (0 != majorAxis) // Just to avoid a division by zero, should never happen.
+		{
+			star.eccentricity = std::sqrt(1.0 - ((minorAxis * minorAxis) / (majorAxis * majorAxis)));
+		}
 	}
 }
 
@@ -235,7 +246,7 @@ namespace DSS {
 	//
 	// CGrayBitmap is a typedef for CGrayBitmapT<double>
 	// So the gray raw values are in the range [0, 256), CGrayBitmap::m_fMultiplier is 256.0.
-	// getValue() ant getUncheckedValue() return values in the range [0.0, 256.0).
+	// getValue() and getUncheckedValue() return values in the range [0.0, 256.0).
 	// GetPixel() returns values in the range [0.0, 1.0).
 	//
 
@@ -279,7 +290,7 @@ namespace DSS {
 			size_t fiftyPercentQuantile = static_cast<size_t>(-1);
 			while (nrValues < fiftyPercentValues)
 			{
-				++fiftyPercentQuantile;
+				++fiftyPercentQuantile; // Will be zero after the first iteration.
 				nrValues += histo[fiftyPercentQuantile];
 			}
 			const double v = static_cast<double>(fiftyPercentQuantile) / static_cast<double>(HistoSize);
@@ -337,7 +348,7 @@ namespace DSS {
 
 								// Hot pixel prevention.
 								// The pixel is a hot-pixel, if: of the 8 surrounding pixels, (i) 7 are darker than the center minus background-noise, and (ii) 4 are much darker.
-								const auto isHotPixel = [&directions, backgroundLevel, th1 = fIntensity - backgroundLevel, th2 = 0.6 * (fIntensity - backgroundLevel)]() -> bool
+								const auto IsHotPixel = [&directions, backgroundLevel, th1 = fIntensity - backgroundLevel, th2 = 0.6 * (fIntensity - backgroundLevel)]() -> bool
 								{
 									int numberOfDarkerPixels = 0;
 									int numberOfMuchDarkerPixels = 0;
@@ -355,7 +366,7 @@ namespace DSS {
 								};
 
 								bool bBrighterPixel = false;
-								bool bMainOk = !isHotPixel();
+								bool bMainOk = !IsHotPixel();
 								int	lMaxRadius = 0;
 
 								// We search the pixels around the center (i, j) up to a distance of 'STARMAXSIZE'.
@@ -392,14 +403,14 @@ namespace DSS {
 										// As long as we did not yet find at least 2 pixels darker than 25% of the center -> cannot be a star.
 										if (testPixel.m_Ok)
 											bMainOk = true;
-										if (testPixel.m_lNrBrighterPixels > 2) // If at least 2 pixels are brighter than the center -> NO star.
+										if (testPixel.m_lNrBrighterPixels >= 2) // If at least 2 pixels are brighter than the center -> NO star.
 											bBrighterPixel = true;
 									} // Loop over 8 test directions.
 								}
 								//
 								// If bMainOk == false -> there is a candidate star at the center pixel (i, j).
 								// This is the case, if
-								//   Max. 1 pixel brighter than the center, no pixel brighter than +5%.
+								//   Max. 1 pixel brighter than the center, but no pixel brighter than +5%.
 								//   In every of the 8 test directions we found 2 pixels that are darker than 25% of the center (above the background level).
 								//   The largest distance (over all directions) of such a darker pixel is at least 2 pixels (so stars cannot be too small).
 								//   - Additionally we stored for every direction the distance of the second of the darker pixels in m_Radius.
@@ -411,7 +422,7 @@ namespace DSS {
 								if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2)) // We found darker pixels, no brighter pixels, candidate is not too small.
 								{
 									int maxDeltaRadii = 0;
-									const auto compareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](std::ranges::viewable_range auto dirs) -> bool
+									const auto CompareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](std::ranges::viewable_range auto dirs) -> bool
 									{
 										bool OK = true;
 										for (const Dirs k1 : dirs)
@@ -429,24 +440,25 @@ namespace DSS {
 									// Compare directions up, down, left, right: delta of radii must be smaller than deltaRadius (loop 0 -> 4)
 									// Compare the 4 diagonal directions: delta of radii must also be smaller than deltaRadius.
 									bool validCandidate =
-										compareDeltaRadii(std::array{ Dirs::Up, Dirs::Right, Dirs::Down, Dirs::Left })
-										&& compareDeltaRadii(std::array{ Dirs::UpRight, Dirs::DnRight, Dirs::DnLeft, Dirs::UpLeft });
+										CompareDeltaRadii(std::array{ Dirs::Up, Dirs::Right, Dirs::Down, Dirs::Left })
+										&& CompareDeltaRadii(std::array{ Dirs::UpRight, Dirs::DnRight, Dirs::DnLeft, Dirs::UpLeft });
 
 									// Additional check for super-small stars, which could be "larger" hot-pixels or just noise.
 									// The ratio of the radii must not be too large.
-									const auto checkDiameterRatio = [lMaxRadius, &directions](const Dirs d1, const Dirs d2, const Dirs d3, const Dirs d4) -> bool
+									const auto CheckDiameterRatio = [lMaxRadius, &directions](const Dirs d1, const Dirs d2, const Dirs d3, const Dirs d4) -> bool
 									{
+										constexpr double MaxAllowedRatio = 1.5;
 										if (lMaxRadius > 10)
 											return true;
 										const auto diameter1 = directions[static_cast<size_t>(d1)].m_Radius + directions[static_cast<size_t>(d2)].m_Radius;
 										const auto diameter2 = directions[static_cast<size_t>(d3)].m_Radius + directions[static_cast<size_t>(d4)].m_Radius;
 										const double ratio1 = diameter1 != 0 ? diameter2 / static_cast<double>(diameter1) : 0; // 0 if one of the diameters is 0
 										const double ratio2 = diameter2 != 0 ? diameter1 / static_cast<double>(diameter2) : 0; // 0 if one of the diameters is 0
-										return ratio1 <= 1.3 && ratio2 <= 1.3;
+										return ratio1 <= MaxAllowedRatio && ratio2 <= MaxAllowedRatio;
 									};
 									validCandidate = validCandidate
-										&& checkDiameterRatio(Dirs::Up, Dirs::Down, Dirs::Right, Dirs::Left)
-										&& checkDiameterRatio(Dirs::UpRight, Dirs::DnLeft, Dirs::DnRight, Dirs::UpLeft);
+										&& CheckDiameterRatio(Dirs::Up, Dirs::Down, Dirs::Right, Dirs::Left)
+										&& CheckDiameterRatio(Dirs::UpRight, Dirs::DnLeft, Dirs::DnRight, Dirs::UpLeft);
 
 									const double fMeanRadius1 = // top, bottom, left, right
 										std::accumulate(directions.cbegin(), directions.cbegin() + 4, 0.0, [](const double acc, const PixelDirection& d) { return acc + d.m_Radius; })
@@ -530,6 +542,7 @@ namespace DSS {
 
 											if (validCandidate)
 											{
+												// Calculate major/minor axis, and axis angle.
 												findStarShape(inputBitmap, ms, backgroundLevel * (1.0 / 256.0));
 												stars.insert(std::move(ms));
 												++nStars;

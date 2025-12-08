@@ -1,6 +1,7 @@
 {
-  "builtin-baseline": "a345bbdc68cdfda65603e24413b21afb28f110fb",
+  "builtin-baseline": "a62ce77d56ee07513b4b67de1ec2daeaebfae51a",
   "dependencies": [
+    "brotli",
     {
       "name": "boost-atomic",
       "platform": "osx"
@@ -8,42 +9,49 @@
     "boost-align",
     "boost-container",
     "boost-interprocess",
-	"cfitsio",
-    "exiv2",
+    "cfitsio",
+    {
+      "name": "exiv2",
+      "features": [
+        "bmff",
+        "png",
+		"xmp"
+      ]
+    },
     "expat",
     "libraw",
     "smtpmime",
     "tiff",
-	{
+    {
       "name": "uchmviewer",
       "platform": "osx"
     },
-	"zlib"
+    "zlib"
   ],
   "overrides": [
     {
       "name": "boost-align",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "boost-atomic",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "boost-container",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "boost-interprocess",
-      "version": "1.86.0"
+      "version": "1.88.0"
     },
     {
       "name": "exiv2",
-      "version": "0.28.3"
+      "version": "0.28.7#1"
     },
     {
       "name": "expat",
-      "version": "2.6.4"
+      "version": "2.7.3"
     },
     {
       "name": "freeglut",
@@ -55,7 +63,7 @@
     },
     {
       "name": "tiff",
-      "version": "4.7.0"
+      "version": "4.7.1"
     },
     {
       "name": "zlib",

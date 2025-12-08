@@ -74,7 +74,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		REQUIRE(avxCfaProcessing.interpolate(0, 1, 2) == 1);
 	}
 
-	SECTION("Interpolate fails if CFA type is NONE")
+	SECTION("Interpolate succeeds if CFA type is NONE but result is zero")
 	{
 		pBitmap->Init(64, 8);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
@@ -83,10 +83,16 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->SetCFAType(CFATYPE_NONE);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) == 0);
+
+		std::uint16_t d[64] = { 0 };
+		REQUIRE(memcmp(avxCfaProcessing.redCfaLine<std::uint16_t>(0), d, 128) == 0);
+		REQUIRE(memcmp(avxCfaProcessing.greenCfaLine<std::uint16_t>(0), d, 128) == 0);
+		REQUIRE(memcmp(avxCfaProcessing.blueCfaLine<std::uint16_t>(0), d, 128) == 0);
 	}
 
-	SECTION("Interpolate fails if CFA type is BGGR")
+	SECTION("Interpolate succeeds if CFA type is BGGR")
 	{
 		pBitmap->Init(64, 8);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
@@ -95,10 +101,10 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->SetCFAType(CFATYPE_BGGR);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) == 0);
 	}
 
-	SECTION("Interpolate fails if CFA type is GRBG")
+	SECTION("Interpolate succeeds if CFA type is GRBG")
 	{
 		pBitmap->Init(64, 8);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
@@ -107,10 +113,10 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->SetCFAType(CFATYPE_GRBG);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) == 0);
 	}
 
-	SECTION("Interpolate fails if CFA transform is superpixel although CFA type is RGGB")
+	SECTION("Interpolate succeeds if CFA transform is superpixel and CFA type is RGGB")
 	{
 		pBitmap->Init(64, 8);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
@@ -119,10 +125,10 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->SetCFAType(CFATYPE_RGGB);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) == 0);
 	}
 
-	SECTION("Interpolate fails if CFA transform is superpixel although CFA type is GBRG")
+	SECTION("Interpolate succeeds if CFA transform is superpixel and CFA type is GBRG")
 	{
 		pBitmap->Init(64, 8);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
@@ -131,10 +137,10 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->SetCFAType(CFATYPE_GBRG);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) == 0);
 	}
 
-	SECTION("Interpolate fails if CFA transform is rawbayer although CFA type is RGGB")
+	SECTION("Interpolate succeeds if CFA transform is rawbayer and CFA type is RGGB")
 	{
 		pBitmap->Init(64, 8);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
@@ -143,10 +149,10 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->SetCFAType(CFATYPE_RGGB);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) == 0);
 	}
 
-	SECTION("Interpolate fails if CFA transform is AHD although CFA type is RGGB")
+	SECTION("Interpolate succeeds if CFA transform is AHD and CFA type is RGGB")
 	{
 		pBitmap->Init(64, 8);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
@@ -155,7 +161,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		pGray->SetCFAType(CFATYPE_RGGB);
 		memset(pGray->m_vPixels.data(), 0, sizeof(std::uint16_t) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) == 0);
 	}
 
 	SECTION("Interpolate zeros gives zeros")
