@@ -1,13 +1,7 @@
 Welcome to DeepSkyStacker 6.1.1
 ===============================
 
-Reporting problems:
-
-Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
-<https://groups.io/g/DeepSkyStacker>
-Thank you.
-
-Reporting problems:
+RReporting problems:
 
 Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
 <https://groups.io/g/DeepSkyStacker>
