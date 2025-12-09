@@ -76,6 +76,10 @@ Changes for DeepSkyStacker 6.1.1
     To produce the plot, right click on the row with information about the flat file in the list of images and
     select "Flat Contour Chart".   This may be useful for assessing the telescope's collimation.
 
+18. The star registration and alignment code was updated so that it will find more stars in automatic mode.
+    As a result, fewer images should be rejected for stacking (showing "NC" in the columns dx, dy, and angle).
+    This was originally left off the list of changes made in 6.1.1.
+
 Changes for DeepSkyStacker 6.1.0
 ================================
 
