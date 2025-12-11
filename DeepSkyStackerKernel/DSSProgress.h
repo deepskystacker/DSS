@@ -139,8 +139,9 @@ namespace DSS
 	// some common functionality that is used by all progress classes.
 	// 
 
-	class ProgressBase
+	class ProgressBase : public QObject
 	{
+		Q_OBJECT
 	protected:
 		bool firstProgress{ false };
 		bool cancelEnabled{ false };
@@ -184,21 +185,24 @@ namespace DSS
 		ProgressBase& operator=(const ProgressBase&) = delete;
 		ProgressBase& operator=(ProgressBase&&) = delete;
 		virtual ~ProgressBase() = default;
+		virtual bool wasCanceled() const = 0;
 
+	public slots:
 		//
-		// These eleven mfs define the interface implemented in subclasses
+		// These twelve mfs define the interface implemented in subclasses
 		//
+		virtual void setMode(ProgressMode mode) = 0;
 		virtual void setTitleText(const QString& title) = 0;
-		virtual void setTopText(QStringView text) = 0;
+		virtual void setTopText(QString& text) = 0;
 		virtual void setPartialMinimum(int minimum) = 0;
 		virtual void setPartialMaximum(int maximum) = 0;
+		virtual void setPartialRange(int minimum, int maximum) = 0;
 		virtual void setPartialValue(int value) = 0;
 		virtual void setTotalMinimum(int minimum) = 0;
 		virtual void setTotalMaximum(int maximum) = 0;
+		virtual void setTotalRange(int minimum, int maximum) = 0;
 		virtual void setTotalValue(int value) = 0;
-		virtual void setBottomText(QStringView text) = 0;
-
-		virtual bool wasCanceled() const = 0;
+		virtual void setBottomText(QString& text) = 0;
 	};
 }
 

@@ -493,9 +493,6 @@
     <ClInclude Include="BezierAdjust.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include=".\DSSProgress.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="imageloader.h">
@@ -505,6 +502,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="QEventLogger.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include=".\DSSProgress.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -64,45 +64,44 @@ using namespace DSS;
   The \a enableCancel argument specifies whether the cancel button is enabled or not.
   The default is \c true, which means the cancel button is enabled.
 
-  \sa setTopText(), setBottomText(), setPartialMinimum(), setPartialMaximum(),
-  setTotalMinimum() and setTotalMaximum()
+  \sa setTopText(), setBottomText(),
+  setPartialMinimum(), setPartialMaximum(), setPartialRange(), setPartialValue(),
+  setTotalMinimum() and setTotalMaximum(), setTotalRange(), setTotalValue()
 */
 ProgressDlg::ProgressDlg(
 	QWidget* parent,
-	ProgressMode mode,
 	bool enableCancel,
 	Qt::WindowFlags f) :
 	QDialog{ parent, f },
-	ProgressBase{ },
-	ui{ new Ui::ProgressDlg }
+	ProgressBase{ }
 {
 	Inherited::cancelEnabled = enableCancel;
 
-	ui->setupUi(this);
+	setupUi(this);
 
 	// Don't mess with size of our hidden widgets
-	retainHiddenWidgetSize(ui->topLabel);
-	retainHiddenWidgetSize(ui->bottomLabel);
-	retainHiddenWidgetSize(ui->partialProgress);
-	retainHiddenWidgetSize(ui->totalProgess);
+	retainHiddenWidgetSize(topLabel);
+	retainHiddenWidgetSize(bottomLabel);
+	retainHiddenWidgetSize(partialProgress);
+	retainHiddenWidgetSize(totalProgess);
 
 	//
 	// Hide the partial text and progress bar if we are in single mode
 	//
 	if (mode == ProgressMode::Single)
 	{
-		ui->topLabel->setVisible(false);
-		ui->partialProgress->setVisible(false);
+		topLabel->setVisible(false);
+		partialProgress->setVisible(false);
 	}
 	else
 	{
-		ui->topLabel->setVisible(true);
-		ui->partialProgress->setVisible(true);
+		topLabel->setVisible(true);
+		partialProgress->setVisible(true);
 
 	}
 
 
-	connect(ui->cancelButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
+	connect(cancelButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
 }
 
 ProgressDlg::~ProgressDlg()
@@ -110,58 +109,80 @@ ProgressDlg::~ProgressDlg()
 	Close();
 }
 
-void ProgressDlg::setTitleText(const QString& title)
+//
+// Slots
+//
+void ProgressDlg::setMode(ProgressMode mode)
 {
-	QMetaObject::invokeMethod(this, "slotSetTitleText", Qt::AutoConnection,
-		Q_ARG(const QString&, title));
+	//
+	// Hide the partial text and progress bar if we are in single mode
+	//
+	if (mode == ProgressMode::Single)
+	{
+		topLabel->setVisible(false);
+		partialProgress->setVisible(false);
+	}
+	else
+	{
+		topLabel->setVisible(true);
+		partialProgress->setVisible(true);
+
+	}
 }
 
-void ProgressDlg::setTopText(QStringView text)
+void ProgressDlg::setTitleText(const QString& title)
 {
-	QMetaObject::invokeMethod(this, "slotSetTopText", Qt::AutoConnection,
-		Q_ARG(QStringView, text));
+	setWindowTitle(title);
+}
+
+void ProgressDlg::setTopText(QString& text)
+{
+	topLabel->setText(text);
 }
 
 void ProgressDlg::setPartialMinimum(int minimum)
 {
-	QMetaObject::invokeMethod(this, "slotSetPartialMinimum", Qt::AutoConnection,
-		Q_ARG(int, minimum));
+	partialProgress->setMinimum(minimum);
 }
 
 void ProgressDlg::setPartialMaximum(int maximum)
 {
-	QMetaObject::invokeMethod(this, "slotSetPartialMaximum", Qt::AutoConnection,
-		Q_ARG(int, maximum));
+	partialProgress->setMaximum(maximum);
+}
+
+void ProgressDlg::setPartialRange(int minimum, int maximum)
+{
+	partialProgress->setRange(minimum, maximum);
 }
 
 void ProgressDlg::setPartialValue(int value)
 {
-	QMetaObject::invokeMethod(this, "slotSetPartialValue", Qt::AutoConnection,
-		Q_ARG(int, value));
+	partialProgress->setValue(value);
 }
 
 void ProgressDlg::setTotalMinimum(int minimum)
 {
-	QMetaObject::invokeMethod(this, "slotSetTotalMinimum", Qt::AutoConnection,
-		Q_ARG(int, minimum));
+	totalProgress->setMinimum(minimum);
 }
 
 void ProgressDlg::setTotalMaximum(int maximum)
 {
-	QMetaObject::invokeMethod(this, "slotSetTotalMaximum", Qt::AutoConnection,
-		Q_ARG(int, maximum));
+	totalProgress->setMaximum(maximum);
+}
+
+void ProgressDlg::setTotalRange(int minimum, int maximum)
+{
+	totalProgress->setRange(minimum, maximum);
 }
 
 void ProgressDlg::setTotalValue(int value)
 {
-	QMetaObject::invokeMethod(this, "slotSetTotalValue", Qt::AutoConnection,
-		Q_ARG(int, value));
+	totalProgress->setValue(value);
 }
 
-void ProgressDlg::setBottomText(QStringView text)
+void ProgressDlg::setBottomText(QString& text)
 {
-	QMetaObject::invokeMethod(this, "slotSetBottomText", Qt::AutoConnection,
-		Q_ARG(QStringView, text));
+	bottomLabel->setText(text);
 }
 
 
@@ -184,24 +205,24 @@ void ProgressDlg::retainHiddenWidgetSize(QWidget* widget)
 
 void ProgressDlg::EnableCancelButton(bool value)
 {
-	ui->cancelButton->setEnabled(value);
+	cancelButton->setEnabled(value);
 }
 
 void ProgressDlg::setProgress1Range(int nMin, int nMax)
 {
-	ui->ProgressBar1->setRange(nMin, nMax);
+	ProgressBar1->setRange(nMin, nMax);
 }
 void ProgressDlg::setProgress2Range(int nMin, int nMax)
 {
-	ui->ProgressBar2->setRange(nMin, nMax);
+	ProgressBar2->setRange(nMin, nMax);
 }
 void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 {
-	ui->ProcessText1->setVisible(bSet1);
-	ui->ProgressBar1->setVisible(bSet1);
+	ProcessText1->setVisible(bSet1);
+	ProgressBar1->setVisible(bSet1);
 
-	ui->ProcessText2->setVisible(bSet2);
-	ui->ProgressBar2->setVisible(bSet2);
+	ProcessText2->setVisible(bSet2);
+	ProgressBar2->setVisible(bSet2);
 }
 
 void ProgressDlg::closeEvent(QCloseEvent* pEvent)
@@ -215,13 +236,13 @@ void ProgressDlg::cancelPressed()
 	if (QMessageBox::question(this, "DeepSkyStacker", tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		canceled = true;
-		ui->cancelButton->setEnabled(false);
+		cancelButton->setEnabled(false);
 	}
 }
 
 void ProgressDlg::setTimeRemaining(const QString& strText)
 {
-	ui->timeRemaining->setText(strText);
+	timeRemaining->setText(strText);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -239,12 +260,12 @@ void ProgressDlg::initialise()
 
 void ProgressDlg::applyStart1Text(const QString& strText)
 {
-	ui->ProcessText1->setText(strText);
+	ProcessText1->setText(strText);
 }
 
 void ProgressDlg::applyStart2Text(const QString& strText)
 {
-	ui->ProcessText2->setText(strText);
+	ProcessText2->setText(strText);
 	setProgress2Range(0, m_total2);
 	if (m_total2 == 0)
 	{
@@ -259,7 +280,7 @@ void ProgressDlg::applyStart2Text(const QString& strText)
 
 void ProgressDlg::applyProgress1(int lAchieved)
 {
-	ui->ProgressBar1->setValue(lAchieved);
+	ProgressBar1->setValue(lAchieved);
 
 	// Now do time remaining as well
 	if (m_total1 > 1 && lAchieved > 1)
@@ -302,12 +323,12 @@ void ProgressDlg::applyProgress1(int lAchieved)
 
 void ProgressDlg::applyProgress2(int lAchieved)
 {
-	ui->ProgressBar2->setValue(lAchieved);
+	ProgressBar2->setValue(lAchieved);
 }
 
 void ProgressDlg::applyProcessorsUsed(int nCount)
 {
-	ui->Processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
+	processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
 }
 
 void ProgressDlg::endProgress2()

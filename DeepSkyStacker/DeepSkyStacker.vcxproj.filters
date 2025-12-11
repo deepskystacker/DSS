@@ -177,6 +177,9 @@
     <ClCompile Include="flatchart.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
+    <ClCompile Include="progressdlg.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -735,6 +738,9 @@
     </QtMoc>
     <QtMoc Include="flatchart.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="progressdlg.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
