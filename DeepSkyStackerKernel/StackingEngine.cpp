@@ -876,14 +876,7 @@ bool computeOffsets(CStackingEngine* const pStackingEngine, OldProgressBase* con
 	return !stop;
 }
 
-
-void CStackingEngine::ComputeOffsets()
-{
-	ZFUNCTRACE_RUNTIME();
-
-	if (bitmapsToStack.empty())
-		return;
-
+namespace {
 	constexpr auto QualityComp = [](const CLightFrameInfo& l, const CLightFrameInfo& r)
 	{
 		if (l.m_bStartingFrame)
@@ -892,6 +885,15 @@ void CStackingEngine::ComputeOffsets()
 			return false;
 		return l.quality > r.quality;
 	};
+}
+
+void CStackingEngine::ComputeOffsets()
+{
+	ZFUNCTRACE_RUNTIME();
+
+	if (bitmapsToStack.empty())
+		return;
+
 	std::ranges::sort(bitmapsToStack, QualityComp);
 
 	this->m_lNrStackable = bitmapsToStack[0].m_bDisabled ? 0 : std::min(static_cast<int>(bitmapsToStack.size()), 1);
@@ -966,13 +968,15 @@ void CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks& tasks)
 					newFrameInfoList.push_back(frameInfo);
 			}
 
-			// If the list is empty - consider that the task is done
-			if (newFrameInfoList.empty())
-				taskInfo.m_bDone = true;
+			const bool nothingToDo = newFrameInfoList.empty();
 
-			// Remove non stackable light frames from the list
+			// Remove non stackable light frames from the list.
 			if (newFrameInfoList.size() < taskInfo.m_vBitmaps.size())
-				taskInfo.m_vBitmaps = std::move(newFrameInfoList);
+				taskInfo.m_vBitmaps.swap(newFrameInfoList);
+
+			// If the list was empty, consider that the task is done.
+			if (nothingToDo)
+				taskInfo.m_bDone = true;
 		}
 	}
 }
@@ -1175,7 +1179,10 @@ int CStackingEngine::findBitmapIndex(const fs::path& file) const
 {
 	ZFUNCTRACE_RUNTIME();
 
-	const auto it = std::ranges::find(this->bitmapsToStack, file, &CLightFrameInfo::filePath);
+	const auto it = std::ranges::find_if(
+		this->bitmapsToStack,
+		[&file](CLightFrameInfo const& bitmapToStack) { return bitmapToStack.filePath.compare(file) == 0; }
+	);
 	return it == std::ranges::end(bitmapsToStack) ? -1 : static_cast<int>(std::ranges::distance(std::ranges::begin(bitmapsToStack), it));
 /*
 	for (size_t i = 0; i < bitmapsToStack.size(); i++)
@@ -2189,16 +2196,38 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						pTaskInfo->m_Method = MBP_FASTAVERAGE;
 					}
 
+					// bitmapsToStack:
+					// Is a vector<LightFrameInfo>, so it contains the bi-linear alignment parameters, the image quality, etc.
+					// It is sorted by quality.
+					//
+					// pStackingInfo->m_pLightTask->m_vBitmaps:
+					// Is a vector<FrameInfo>, so it contains only basic information, like file path, picture type, etc.
+					//
+					// FYI: LightFrameInfo derives from FrameInfo.
+
+					const auto GetLightframeInfoIndexes = [this](FRAMEINFOVECTOR const& frameInfoVector) -> std::vector<int>
+					{
 					constexpr bool UseQualityOrder = true;
 
-					const auto ReadTask = [this, pStackingInfo, UseQualityOrder](const size_t lightFrameNdx, OldProgressBase* pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
+						std::vector<int> indexes(frameInfoVector.size());
+						std::ranges::transform(frameInfoVector, indexes.begin(), [this](CFrameInfo const& frameInfo) { return findBitmapIndex(frameInfo.filePath); });
+						// Indexes contains the indexes of the frameInfoVector into the vector bitmapsToStack.
+						if constexpr (UseQualityOrder)
+							std::ranges::sort(indexes);
+						// After sorting, the light frames are sorted by quality, because bitmapsToStack is sorted by quality.
+						return indexes;
+					};
+
+					const auto ReadTask = [this, lightFrameIndexes = GetLightframeInfoIndexes(pStackingInfo->m_pLightTask->m_vBitmaps)](
+						const size_t lightFrameNdx, OldProgressBase* pProgress
+					) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
 					{
-						if (lightFrameNdx >= (UseQualityOrder ? bitmapsToStack.size() : pStackingInfo->m_pLightTask->m_vBitmaps.size()))
+						if (lightFrameNdx >= lightFrameIndexes.size())
 							return { {}, -1 };
-						const int bitmapNdx = UseQualityOrder ? static_cast<int>(lightFrameNdx) : findBitmapIndex(pStackingInfo->m_pLightTask->m_vBitmaps[lightFrameNdx].filePath);
+						const int bitmapNdx = lightFrameIndexes[lightFrameNdx]; // That's the index into the vector this->bitmapsToStack.
 						if (bitmapNdx < 0)
 							return { {}, -1 };
-						const auto& lightframeInfo = bitmapsToStack[bitmapNdx];
+						const auto& lightframeInfo = this->bitmapsToStack[bitmapNdx];
 						if (lightframeInfo.m_bDisabled)
 							return { {}, -1 };
 
@@ -2217,8 +2246,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 					using T = std::future<bool>;
 					T futureForWriteTempFile{};
 
-					const size_t sizeOfBitmapVector = UseQualityOrder ? this->bitmapsToStack.size() : pStackingInfo->m_pLightTask->m_vBitmaps.size();
-					for (size_t i = 0; i < sizeOfBitmapVector && !bStop; ++i)
+					for (size_t i = 0; i < pStackingInfo->m_pLightTask->m_vBitmaps.size() && !bStop; ++i)
 					{
 						auto [pBitmap, bitmapNdx] = futureForRead.get();
 						futureForRead = std::async(std::launch::async, ReadTask, i + 1, nullptr); // Immediately load next lightframe asynchronously (need to set progress pointer to null).
