@@ -117,13 +117,20 @@ namespace DSS
 		QDialog(parent, Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint | Qt::WindowTitleHint),
 		lightFrameInfo(lbmp),
 		gridData{ std::make_unique<GridData>()},
-		spectrogram{ new QwtPlotSpectrogram("Star Quality") },
+		spectrogram{ new QwtPlotSpectrogram(tr("Star Quality Chart")) },
 		rasterData{ new QwtMatrixRasterData() },
 		futureWatcher{ new QFutureWatcher<void>(this) }
 	{
 		setupUi(this);
-		setWindowTitle("Star Quality Chart - " + lbmp.filePath.filename().generic_u16string());
+		setWindowTitle(tr("Star Quality Chart") + " - " + lbmp.filePath.filename().generic_u16string());
 		lightFrameInfo.SetBitmap(lbmp.filePath);
+
+		QwtText text(tr("Star Eccentricity"));
+		QFont titleFont;
+		titleFont.setBold(true);
+		titleFont.setPointSize(12);
+		text.setFont(titleFont);
+		qualityPlot->setTitle(text);
 
 		//
 		// Fill the data vectors
@@ -310,10 +317,16 @@ namespace DSS
 		spectrogram->setColorMap(new EccentricityColourMap);
 		rasterData->setInterval(Qt::ZAxis, QwtInterval(0.0, 1.0));
 
+		QwtText text(tr("Star Eccentricity"));
+		QFont titleFont;
+		titleFont.setBold(true);
+		titleFont.setPointSize(12);
+		text.setFont(titleFont);
+		qualityPlot->setTitle(text);
+
 		// A color bar on the right axis
 		// qualityPlot->setAxisScaleEngine(QwtPlot::yRight, new QwtLogScaleEngine());
 		QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
-		rightAxis->setTitle(tr("Star Eccentricity"));
 		rightAxis->setColorBarEnabled(true);
 		rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new EccentricityColourMap);
 		qualityPlot->setAxisScale(QwtAxis::YRight, 1.0, 0.0);
@@ -335,11 +348,17 @@ namespace DSS
 		valueData.assign(zgFWHM.cbegin(), zgFWHM.cend());
 		rasterData->setValueMatrix(valueData, static_cast<int>(xg.size()));
 
+		QwtText text(tr("FWHM"));
+		QFont titleFont;
+		titleFont.setBold(true);
+		titleFont.setPointSize(12);
+		text.setFont(titleFont);
+		qualityPlot->setTitle(text);
+
 		spectrogram->setColorMap(new FWHMColourMap);
 		rasterData->setInterval(Qt::ZAxis, QwtInterval(*p.first, *p.second));
 		// A color bar on the right axis
 		QwtScaleWidget* rightAxis = qualityPlot->axisWidget(QwtAxis::YRight);
-		rightAxis->setTitle("FWHM");
 		rightAxis->setColorBarEnabled(true);
 		rightAxis->setColorMap(rasterData->interval(Qt::ZAxis), new FWHMColourMap);
 		qualityPlot->setAxisScale(QwtAxis::YRight, *p.first, *p.second);

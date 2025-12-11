@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1 Beta 5
+Welcome to DeepSkyStacker 6.1.1
 ===============================
 
 Reporting problems:
@@ -13,14 +13,14 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.1 Beta 5
+Changes for DeepSkyStacker 6.1.1
 ================================
 
 1.  Support for writing and reading compressed FITS files.  Writing of compressed files is enabled by a check box
     on the Intermediate Files tab of the Stacking settings dialogue.  Please be aware that floating point FITS images
     (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa
     of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images
-    are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being
+    are first quantized into scaled integer pixel values (thus throwing away much of the noise) before being
     compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher
     compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also
     means that the original floating value pixel values are not exactly preserved.
@@ -71,6 +71,14 @@ Changes for DeepSkyStacker 6.1.1 Beta 5
 
 16. Bug fix: Correct loading of 16 bit monochrome PNG files. The pixel values were being incorrectly scaled.
     Also correct gamma transformation code for 16 bit monochrome and 48 bit colour images.
+
+17. Add the capability to produce a "Contour Plot" of the intensity levels of a flat.
+    To produce the plot, right click on the row with information about the flat file in the list of images and
+    select "Flat Contour Chart".   This may be useful for assessing the telescope's collimation.
+
+18. The star registration and alignment code was updated so that it will find more stars in automatic mode.
+    As a result, fewer images should be rejected for stacking (showing "NC" in the columns dx, dy, and angle).
+    This was originally left off the list of changes made in 6.1.1.
 
 Changes for DeepSkyStacker 6.1.0
 ================================
@@ -241,6 +249,11 @@ Changes for DeepSkyStacker 5.1.8
 23. Bug fix/enhancement: Changes to support RAW files from monochrome cameras such as the Leica M series.
 
 24. Resolve problems with editing controls on Processing Panel.
+
+25. Add code to FITSUtil.cpp to process FITS keywords DATAMIN and DATAMAX when reading floating point FITS files.   If present use these to determine
+    the minumum and maximum pixel values instead of scanning the image data.
+    This should be a) much faster, and b) should result in consistent image scaling.
+    Also write these keywords when writing FITS floating point files.
 
 Changes for DeepSkyStacker 5.1.6
 ================================

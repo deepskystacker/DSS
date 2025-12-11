@@ -21,7 +21,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -31,7 +31,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -314,6 +314,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="editstars.cpp" />
+    <ClCompile Include="flatchart.cpp" />
     <ClCompile Include="ImageProperties.cpp" />
     <ClCompile Include="lowerdockwidget.cpp" />
     <ClCompile Include="picturelist.cpp" />
@@ -411,6 +412,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageProperties.h" />
     <QtMoc Include="lowerdockwidget.h" />
+    <QtMoc Include="flatchart.h" />
     <ClInclude Include="mrulist.h" />
     <QtMoc Include="OutputTab.h" />
     <QtMoc Include="picturelist.h" />
@@ -561,6 +563,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\CometStacking.ui" />
     <QtUic Include="ui\DropFilesDlg.ui" />
     <QtUic Include="ui\ExplorerBar.ui" />
+    <QtUic Include="ui\FlatChart.ui" />
     <QtUic Include="ui\ImageProperties.ui" />
     <QtUic Include="ui\IntermediateFiles.ui" />
     <QtUic Include="ui\OutputTab.ui" />

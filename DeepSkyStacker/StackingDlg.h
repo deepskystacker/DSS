@@ -247,6 +247,7 @@ namespace DSS
 			remove,
 			properties,
 			quality,
+			flatchart,
 			copy,
 			erase
 		};
@@ -296,6 +297,7 @@ namespace DSS
 		QAction* remove;
 		QAction* properties;
 		QAction* quality;
+		QAction* flatchart;
 		QAction* copy;
 		QAction* erase;
 

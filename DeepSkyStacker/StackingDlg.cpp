@@ -65,6 +65,7 @@
 #include "zexcept.h"
 #include "ImageProperties.h"
 #include "QualityChart.h"
+#include "flatchart.h"
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -696,6 +697,8 @@ namespace DSS
 		properties->setData(int(Menuitem::properties));
 		quality = menu.addAction(tr("Star Quality Chart"));
 		quality->setData(int(Menuitem::quality));
+		flatchart = menu.addAction(tr("Flat Contour Chart"));
+		flatchart->setData(int(Menuitem::flatchart));
 		menu.addSeparator();
 		copy = menu.addAction(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD"));
 		copy->setData(int(Menuitem::copy));
@@ -878,10 +881,13 @@ namespace DSS
 			uncheck->setEnabled(true);
 			remove->setEnabled(true);
 			properties->setEnabled(true);
-			// Only enable the "Plot quality metrics" if a single image was selected, and it is a light frame, and it has been registered
+			// Only enable the "Star Quality Chart" if a single image was selected, and it is a light frame, and it has been registered
 			quality->setEnabled(rowCount == 1 && 
 				imageModel->mydata[ndx.row()].IsLightFrame() &&
 				imageModel->mydata[ndx.row()].m_bRegistered == true);
+			// Only enable the "Flat chart" if a single image was selected, and it is a flat frame
+			flatchart->setEnabled(rowCount == 1 &&
+				imageModel->mydata[ndx.row()].IsFlatFrame());
 			erase->setEnabled(true);
 		}
 		else
@@ -892,6 +898,7 @@ namespace DSS
 			remove->setEnabled(false);
 			properties->setEnabled(false);
 			quality->setEnabled(false);
+			flatchart->setEnabled(false);
 			erase->setEnabled(false);
 		}
 
@@ -1090,7 +1097,13 @@ namespace DSS
 				QualityChart dlg(imageModel->mydata[row], this );
 				dlg.exec();
 			}
-
+			if (Menuitem::flatchart == item)
+			{
+				int row = ndx.row();
+				qDebug() << "Flat chart for row" << row;
+				FlatChart dlg(imageModel->mydata[row], this);
+				dlg.exec();
+			}
 		}
 	}
 
