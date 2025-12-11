@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.1
+Welcome to DeepSkyStacker 6.1.1 Fix 1
 ===============================
 
 RReporting problems:
@@ -12,6 +12,11 @@ Known problems:
 1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
+
+Changes for DeepSkyStacker 6.1.1 Fix 1
+======================================
+
+1.  Bug fix: Fix problem stacking multiple groups - all files from all groups were being stacked for each group!
 
 Changes for DeepSkyStacker 6.1.1
 ================================
