@@ -10,7 +10,7 @@ constexpr int DSSBETAEXPIREMONTH = 3;
 
 #define DSSVER_MAJOR			6
 #define DSSVER_MINOR			1
-#define DSSVER_SUB				2
+#define DSSVER_SUB				1
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
@@ -24,7 +24,7 @@ constexpr int DSSBETAEXPIREMONTH = 3;
 #define VERSTRING(M, m, s, b)	FB(M) "." FB(m) "." FB(s) " Beta " FB(b)
 #define VERSION_DEEPSKYSTACKER	VERSTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #else
-#define VERSTRING(M, m, s)		FB(M) "." FB(m) "." FB(s)
+#define VERSTRING(M, m, s)		FB(M) "." FB(m) "." FB(s) " Fix 1"
 #define VERSION_DEEPSKYSTACKER	VERSTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB)
 #endif
 
