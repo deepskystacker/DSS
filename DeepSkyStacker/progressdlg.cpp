@@ -172,12 +172,45 @@ void ProgressDlg::setTotalMaximum(int maximum)
 
 void ProgressDlg::setTotalRange(int minimum, int maximum)
 {
+	totalMinumum = minimum; totalMaximum = maximum;
 	totalProgress->setRange(minimum, maximum);
 }
 
 void ProgressDlg::setTotalValue(int value)
 {
 	totalProgress->setValue(value);
+
+	//
+	// Guesstimate time remaining
+	//
+	ZASSERT(value > 0);
+	std::uint32_t remainingTime = static_cast<std::uint32_t>(static_cast<double>(timer.elapsed()) / static_cast<double>(value - 1) * static_cast<double>(totalMaximum - value + 1));
+	if (value > totalMaximum)	// If OpemMP tasks are not multiple of processors, this gets too large!
+		remainingTime = 0;
+	else
+		remainingTime /= 1000;
+
+	const std::uint32_t hours = remainingTime / 3600;
+	remainingTime -= hours * 3600;
+	const std::uint32_t minutes = remainingTime / 60;
+	remainingTime -= minutes * 60;
+	const std::uint32_t seconds = remainingTime;
+
+	QString text;
+	if (hours != 0)
+		text = tr("Estimated remaining time: %1 hr %2 mn %3 s ",
+			"IDS_ESTIMATED3").arg(hours).arg(minutes).arg(seconds);
+	else if (minutes != 0)
+		text = tr("Estimated remaining time: %1 mn %2 s ",
+			"IDS_ESTIMATED2").arg(minutes).arg(seconds);
+	else if (seconds != 0)
+		text = tr("Estimated remaining time : %1 s ",
+			"IDS_ESTIMATED1").arg(seconds);
+	else
+		text = tr("Estimated remaining time: < 1 s ",
+			"IDS_ESTIMATED0");
+
+	timeRemaining->setText(text);
 }
 
 void ProgressDlg::setBottomText(QString& text)
@@ -203,28 +236,6 @@ void ProgressDlg::retainHiddenWidgetSize(QWidget* widget)
 	widget->setSizePolicy(sp_retain);
 }
 
-void ProgressDlg::EnableCancelButton(bool value)
-{
-	cancelButton->setEnabled(value);
-}
-
-void ProgressDlg::setProgress1Range(int nMin, int nMax)
-{
-	ProgressBar1->setRange(nMin, nMax);
-}
-void ProgressDlg::setProgress2Range(int nMin, int nMax)
-{
-	ProgressBar2->setRange(nMin, nMax);
-}
-void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
-{
-	ProcessText1->setVisible(bSet1);
-	ProgressBar1->setVisible(bSet1);
-
-	ProcessText2->setVisible(bSet2);
-	ProgressBar2->setVisible(bSet2);
-}
-
 void ProgressDlg::closeEvent(QCloseEvent* pEvent)
 {
 	cancelPressed();
@@ -238,11 +249,6 @@ void ProgressDlg::cancelPressed()
 		canceled = true;
 		cancelButton->setEnabled(false);
 	}
-}
-
-void ProgressDlg::setTimeRemaining(const QString& strText)
-{
-	timeRemaining->setText(strText);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -261,64 +267,6 @@ void ProgressDlg::initialise()
 void ProgressDlg::applyStart1Text(const QString& strText)
 {
 	ProcessText1->setText(strText);
-}
-
-void ProgressDlg::applyStart2Text(const QString& strText)
-{
-	ProcessText2->setText(strText);
-	setProgress2Range(0, m_total2);
-	if (m_total2 == 0)
-	{
-		setItemVisibility(true, false);
-	}
-	else
-	{
-		setItemVisibility(true, true);
-		applyProgress2(0);
-	}
-}
-
-void ProgressDlg::applyProgress1(int lAchieved)
-{
-	ProgressBar1->setValue(lAchieved);
-
-	// Now do time remaining as well
-	if (m_total1 > 1 && lAchieved > 1)
-	{
-		std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(m_timer.elapsed()) / static_cast<double>(lAchieved - 1) * static_cast<double>(m_total1 - lAchieved + 1));
-		if (lAchieved > m_total1)	// If OpemMP tasks are not multiple of processors, this gets too large!
-			dwRemainingTime = 0;
-		else
-			dwRemainingTime /= 1000;
-
-		const std::uint32_t dwHour = dwRemainingTime / 3600;
-		dwRemainingTime -= dwHour * 3600;
-		const std::uint32_t dwMin = dwRemainingTime / 60;
-		dwRemainingTime -= dwMin * 60;
-		const std::uint32_t dwSec = dwRemainingTime;
-
-		QString qStrText;
-		if (dwHour != 0)
-			qStrText = tr("Estimated remaining time: %1 hr %2 mn %3 s ",
-				"IDS_ESTIMATED3").arg(dwHour).arg(dwMin).arg(dwSec);
-		else if (dwMin != 0)
-			qStrText = tr("Estimated remaining time: %1 mn %2 s ",
-				"IDS_ESTIMATED2").arg(dwMin).arg(dwSec);
-		else if (dwSec != 0)
-			qStrText = tr("Estimated remaining time : %1 s ",
-				"IDS_ESTIMATED1").arg(dwSec);
-		else
-			qStrText = tr("Estimated remaining time: < 1 s ",
-				"IDS_ESTIMATED0");
-
-		setTimeRemaining(qStrText);
-	}
-	else
-	{
-		const QString qStrText = tr("Estimated remaining time: Unknown",
-			"IDS_ESTIMATEDUNKNOWN");
-		setTimeRemaining(qStrText);
-	};
 }
 
 void ProgressDlg::applyProgress2(int lAchieved)

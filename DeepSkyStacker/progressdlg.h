@@ -85,8 +85,6 @@ namespace DSS
 
 		virtual bool wasCanceled() const override;
 
-		void setTimeRemaining(QStringView text);
-
 		void initialise();
 		void closeProgress();
 

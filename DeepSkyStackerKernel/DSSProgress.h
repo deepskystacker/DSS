@@ -153,7 +153,7 @@ namespace DSS
 		int totalMaximum{ 100 };
 		int totalValue{ 0 };	
 
-		QElapsedTimer m_timer;
+		QElapsedTimer timer;
 		// Properties
 		QString topText{};
 		QString bottomText{};
