@@ -1,7 +1,7 @@
-Welcome to DeepSkyStacker 6.1.1 Fix 1
+Welcome to DeepSkyStacker 6.1.2
 ===============================
 
-RReporting problems:
+Reporting problems:
 
 Please report problems with DeepSkyStacker to the DeepSkyStacker mailing list hosted at groups.io:
 <https://groups.io/g/DeepSkyStacker>
@@ -13,10 +13,10 @@ Known problems:
    This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.1 Fix 1
+Changes for DeepSkyStacker 6.1.2
 ======================================
 
-1.  Bug fix: Fix problem stacking multiple groups - all files from all groups were being stacked for each group!
+1.  Critical Bug fix: Fix problem stacking multiple groups - all files from all groups were being stacked for each group!
 
 Changes for DeepSkyStacker 6.1.1
 ================================
