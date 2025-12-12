@@ -14,7 +14,7 @@ Known problems:
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
 Changes for DeepSkyStacker 6.1.2
-======================================
+================================
 
 1.  Critical Bug fix: Fix problem stacking multiple groups - all files from all groups were being stacked for each group!
 
