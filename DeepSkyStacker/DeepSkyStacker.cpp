@@ -78,6 +78,7 @@ namespace bip = boost::interprocess;
 #include "QEventLogger.h"
 #include "QMessageLogger.h"
 #include "Multitask.h"
+#include "progressdlg.h"
 
 bool	g_bShowRefStars = false;
 
@@ -217,13 +218,13 @@ DeepSkyStacker::DeepSkyStacker() :
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
-	m_progress{ false },
 	sponsorText{ new QLabel("") },
 	statusBarText{ new QLabel("") },
 	m_DeepStack{ std::make_unique<CDeepStack>() },
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
-	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
+	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) },
+	progressDlg{ new ProgressDlg(this)}
 {
 	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);

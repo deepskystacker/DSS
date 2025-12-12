@@ -42,7 +42,8 @@
 namespace DSS
 {
 
-	class ProgressDlg final : public QDialog, public ProgressBase, public Ui::ProgressDlg	{
+	class ProgressDlg final : public QDialog, public ProgressBase, public Ui::ProgressDlg
+	{
 		Q_OBJECT
 
 	using Inherited = ProgressBase;
@@ -51,11 +52,27 @@ namespace DSS
 		bool cancelInProgress;
 
 	public:
-		ProgressDlg(
-			QWidget* parent = nullptr,
-			bool enableCancel = true,
-			Qt::WindowFlags f = Qt::WindowFlags());
+		ProgressDlg(QWidget* parent = nullptr);
 		~ProgressDlg();
+
+		void enableCancel(bool value = true)
+		{
+			cancelButton->setEnabled(value);
+		}
+
+		virtual bool isCanceled() const override;
+
+		void showProgress();
+		void hideProgress();
+
+	protected:
+		void closeEvent(QCloseEvent* bar);
+		void retainHiddenWidgetSize(QWidget* widget);
+
+		//
+		// Slots
+		//
+	public slots:
 
 		//
 		// These twelve mfs implement the public interface defined in DSS::ProgressBase
@@ -76,26 +93,11 @@ namespace DSS
 		virtual void setTotalValue(int value) override;
 		virtual void setBottomText(QString& text) override;
 
-		void enableCancel(bool value = true)
-		{
-			cancelButton->setEnabled(value);
-		}
-
-		virtual bool wasCanceled() const override;
-
-		void showProgress();
-		void hideProgress();
-
 		// ProgressBase
 		virtual void applyProcessorsUsed(int nCount) override;
-
-		void slotClose();
 
 	private slots:
 		void cancelPressed();
 
-	private:
-		void closeEvent(QCloseEvent* bar);
-		void retainHiddenWidgetSize(QWidget* widget);
 	};
 }

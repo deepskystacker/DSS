@@ -67,38 +67,17 @@ using namespace DSS;
   setPartialMinimum(), setPartialMaximum(), setPartialRange(), setPartialValue(),
   setTotalMinimum() and setTotalMaximum(), setTotalRange(), setTotalValue()
 */
-ProgressDlg::ProgressDlg(
-	QWidget* parent,
-	bool enableCancel,
-	Qt::WindowFlags f) :
-	QDialog{ parent, f },
+ProgressDlg::ProgressDlg(QWidget* parent) :
+	QDialog{ parent },
 	ProgressBase{ }
 {
-	Inherited::cancelEnabled = enableCancel;
-
 	setupUi(this);
 
-	// Don't mess with size of our hidden widgets
+	// Don't mess with the size of our hidden widgets
 	retainHiddenWidgetSize(topLabel);
 	retainHiddenWidgetSize(bottomLabel);
 	retainHiddenWidgetSize(partialProgress);
-	retainHiddenWidgetSize(totalProgess);
-
-	//
-	// Hide the partial text and progress bar if we are in single mode
-	//
-	if (mode == ProgressMode::Single)
-	{
-		topLabel->setVisible(false);
-		partialProgress->setVisible(false);
-	}
-	else
-	{
-		topLabel->setVisible(true);
-		partialProgress->setVisible(true);
-
-	}
-
+	retainHiddenWidgetSize(totalProgress);
 
 	connect(cancelButton, &QPushButton::clicked, this, &ProgressDlg::cancelPressed);
 }
@@ -111,6 +90,11 @@ ProgressDlg::~ProgressDlg()
 //
 // Slots
 //
+void ProgressDlg::applyProcessorsUsed(int number)
+{
+	processors->setText(tr("%n Processor(s) Used", nullptr, number));
+}
+
 void ProgressDlg::setMode(ProgressMode mode)
 {
 	//
@@ -224,7 +208,7 @@ void ProgressDlg::setBottomText(QString& text)
 }
 
 
-bool ProgressDlg::wasCanceled() const
+bool ProgressDlg::isCanceled() const
 {
 	return canceled;
 }
@@ -272,128 +256,32 @@ void ProgressDlg::hideProgress()
 }
 
 /************************************************************************************/
-/* SLOTS                                                                            */
-/************************************************************************************/
-void ProgressDlg::slotSetTitleText(const QString& title)
-{
-	if (windowTitle().compare(title, Qt::CaseInsensitive) != 0)
-	{
-		setWindowTitle(title);
-	}
-	updateProcessorsUsed();
-	QCoreApplication::processEvents();
-}
 
-/************************************************************************************/
-
-void ProgressDlg::slotProgress1(const QString& szText, int lAchieved1)
-{
-	// Always update on first loop, then only if 100ms has passed or a min progress has occurred.
-	if (!(m_firstProgress ||
-		(static_cast<double>(lAchieved1 - m_lastTotal1) > (m_total1 / 100.0) * m_minProgressStep) ||	// Update only if diff is sm_fMinProgressStep %age change
-		(m_timer.elapsed() > 100)		// Was 1s (1000)
-		))
-		return;
-
-	m_firstProgress = false;
-	m_lastTotal1 = lAchieved1;
-
-	if (GetStart1Text().compare(szText, Qt::CaseInsensitive) != 0)
-	{
-		if (!szText.isEmpty())
-			m_strLastOut[OT_TEXT1] = szText;
-		applyStart1Text(GetStart1Text());
-	}
-
-	if (m_total1)
-	{
-		double percentage = (double)m_lastTotal1 / (double)m_total1 * 100.0;
-		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
-		applyProgress1(lAchieved1);
-	}
-	updateProcessorsUsed();
-	QCoreApplication::processEvents();
-}
-
-/************************************************************************************/
-
-void ProgressDlg::slotStart2(const QString& szText, int lTotal2)
-{
-	m_lastTotal2 = 0;
-	m_total2 = lTotal2;
-	if (GetStart2Text().compare(szText, Qt::CaseInsensitive) != 0)
-	{
-		if (!szText.isEmpty())
-			m_strLastOut[OT_TEXT2] = szText;
-		applyStart2Text(GetStart2Text());
-	}
-
-	if (m_jointProgress)
-		Start1(GetStart2Text(), m_total2, m_enableCancel);
-
-	updateProcessorsUsed();
-	QCoreApplication::processEvents();
-}
-
-/************************************************************************************/
-
-void ProgressDlg::slotProgress2(const QString& szText, int lAchieved2)
-{
-	// Always update after a min progress has occurred.
-	float fAmountSoFar = (float)m_lastTotal2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
-	float fRoundedSoFar = ceil(fAmountSoFar);
-
-	float fAmountGoingTo = (float)lAchieved2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
-	float fRoundedGoingTo = ceil(fAmountGoingTo);
-
-	if (fRoundedGoingTo <= fRoundedSoFar &&
-		lAchieved2 < m_total2)
-		return;
-
-	if (lAchieved2 > m_total2)
-		m_total2 = lAchieved2;
-	m_lastTotal2 = lAchieved2;
-
-	double percentage = 0.0f;
-	if (m_total2)
-		percentage = (double)m_lastTotal2 / (double)m_total2 * 100.0;
-
-	if (GetStart2Text().compare(szText, Qt::CaseInsensitive) != 0)
-	{
-		if (!szText.isEmpty())
-			m_strLastOut[OT_TEXT2] = szText;
-		if (!m_jointProgress)
-			applyStart2Text(GetStart2Text());
-	}
-
-	if (m_jointProgress)
-	{
-		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
-		applyProgress1(lAchieved2);
-		m_total2 = 0;
-	}
-	else if (m_total2)
-	{
-		m_strLastOut[OT_PROGRESS2] = QString("%1%").arg(percentage, 0, 'f', 0);
-		applyProgress2(lAchieved2);
-	}
-	updateProcessorsUsed();
-
-	QCoreApplication::processEvents();
-}
-
-/************************************************************************************/
-
-void ProgressDlg::slotEnd2()
-{
-	ProgressBase::Progress2(m_total2);	// Set to 100% is ending.
-	updateProcessorsUsed();
-	endProgress2();
-}
-
-/************************************************************************************/
-
-void ProgressDlg::slotClose()
-{
-	closeProgress();
-}
+//void ProgressDlg::slotProgress1(const QString& szText, int lAchieved1)
+//{
+//	// Always update on first loop, then only if 100ms has passed or a min progress has occurred.
+//	if (!(m_firstProgress ||
+//		(static_cast<double>(lAchieved1 - m_lastTotal1) > (m_total1 / 100.0) * m_minProgressStep) ||	// Update only if diff is sm_fMinProgressStep %age change
+//		(m_timer.elapsed() > 100)		// Was 1s (1000)
+//		))
+//		return;
+//
+//	m_firstProgress = false;
+//	m_lastTotal1 = lAchieved1;
+//
+//	if (GetStart1Text().compare(szText, Qt::CaseInsensitive) != 0)
+//	{
+//		if (!szText.isEmpty())
+//			m_strLastOut[OT_TEXT1] = szText;
+//		applyStart1Text(GetStart1Text());
+//	}
+//
+//	if (m_total1)
+//	{
+//		double percentage = (double)m_lastTotal1 / (double)m_total1 * 100.0;
+//		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
+//		applyProgress1(lAchieved1);
+//	}
+//	updateProcessorsUsed();
+//	QCoreApplication::processEvents();
+//}

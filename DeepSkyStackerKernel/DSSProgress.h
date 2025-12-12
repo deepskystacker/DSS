@@ -143,7 +143,7 @@ namespace DSS
 	{
 	protected:
 		bool firstProgress{ false };
-		bool cancelEnabled{ false };
+		bool cancelEnabled{ true };
 		bool canceled{ false };
 		int partialMinimum{ 0 };
 		int partialMaximum{ 100 };
@@ -173,7 +173,7 @@ namespace DSS
 		ProgressBase& operator=(const ProgressBase&) = delete;
 		ProgressBase& operator=(ProgressBase&&) = delete;
 		virtual ~ProgressBase() = default;
-		virtual bool wasCanceled() const = 0;
+		virtual bool isCanceled() const = 0;
 
 		//
 		// These twelve mfs define the interface implemented in subclasses
