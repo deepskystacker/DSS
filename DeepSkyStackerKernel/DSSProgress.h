@@ -139,9 +139,8 @@ namespace DSS
 	// some common functionality that is used by all progress classes.
 	// 
 
-	class ProgressBase : public QObject
+	class ProgressBase
 	{
-		Q_OBJECT
 	protected:
 		bool firstProgress{ false };
 		bool cancelEnabled{ false };
@@ -149,7 +148,7 @@ namespace DSS
 		int partialMinimum{ 0 };
 		int partialMaximum{ 100 };
 		int partialValue{ 0 };
-		int totalMininum{ 0 };
+		int totalMinimum{ 0 };
 		int totalMaximum{ 100 };
 		int totalValue{ 0 };	
 
@@ -165,18 +164,7 @@ namespace DSS
 		virtual void applyProcessorsUsed(int nCount) = 0;
 
 	public:
-		ProgressBase() :
-			firstProgress{ false },
-			cancelEnabled{ false },
-			canceled{ false },
-			partialMinimum{ 0 },
-			partialMaximum{ 100 },
-			partialValue{ 0 },
-			totalMininum{ 0 },
-			totalMaximum{ 100 },
-			totalValue{ 0 },
-			topText{},
-			bottomText{}
+		ProgressBase() 
 			{}
 
 		// Deleted copy and move constructors and assignment operators
@@ -187,7 +175,6 @@ namespace DSS
 		virtual ~ProgressBase() = default;
 		virtual bool wasCanceled() const = 0;
 
-	public slots:
 		//
 		// These twelve mfs define the interface implemented in subclasses
 		//

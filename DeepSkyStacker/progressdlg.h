@@ -37,12 +37,10 @@
 // ProgressDlg.h : Defines the NEW DSS Progress Dialog class
 //
 #include "DSSProgress.h"
+#include "ui_ProgressDlg.h"
 
 namespace DSS
 {
-	namespace Ui {
-		class ProgressDlg;
-	}
 
 	class ProgressDlg final : public QDialog, public ProgressBase, public Ui::ProgressDlg	{
 		Q_OBJECT
@@ -85,8 +83,8 @@ namespace DSS
 
 		virtual bool wasCanceled() const override;
 
-		void initialise();
-		void closeProgress();
+		void showProgress();
+		void hideProgress();
 
 		// ProgressBase
 		virtual void applyProcessorsUsed(int nCount) override;

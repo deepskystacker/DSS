@@ -37,7 +37,6 @@
 //
 #include "pch.h"
 #include "progressdlg.h"
-#include "ui/ui_ProgressDlg.h"
 #include "DeepSkyStacker.h"
 
 using namespace DSS;
@@ -106,7 +105,7 @@ ProgressDlg::ProgressDlg(
 
 ProgressDlg::~ProgressDlg()
 {
-	Close();
+	hideProgress();
 }
 
 //
@@ -142,37 +141,43 @@ void ProgressDlg::setTopText(QString& text)
 
 void ProgressDlg::setPartialMinimum(int minimum)
 {
+	partialMinimum = minimum;
 	partialProgress->setMinimum(minimum);
 }
 
 void ProgressDlg::setPartialMaximum(int maximum)
 {
+	partialMaximum = maximum;
 	partialProgress->setMaximum(maximum);
 }
 
 void ProgressDlg::setPartialRange(int minimum, int maximum)
 {
+	partialMinimum = minimum; partialMaximum = maximum;
 	partialProgress->setRange(minimum, maximum);
 }
 
 void ProgressDlg::setPartialValue(int value)
 {
+	partialValue = value;
 	partialProgress->setValue(value);
 }
 
 void ProgressDlg::setTotalMinimum(int minimum)
 {
+	totalMinimum = minimum;
 	totalProgress->setMinimum(minimum);
 }
 
 void ProgressDlg::setTotalMaximum(int maximum)
 {
+	totalMaximum = maximum;
 	totalProgress->setMaximum(maximum);
 }
 
 void ProgressDlg::setTotalRange(int minimum, int maximum)
 {
-	totalMinumum = minimum; totalMaximum = maximum;
+	totalMinimum = minimum; totalMaximum = maximum;
 	totalProgress->setRange(minimum, maximum);
 }
 
@@ -224,10 +229,6 @@ bool ProgressDlg::wasCanceled() const
 	return canceled;
 }
 
-void ProgressDlg::Close()
-{
-	QMetaObject::invokeMethod(this, "slotClose", Qt::AutoConnection);
-}
 
 void ProgressDlg::retainHiddenWidgetSize(QWidget* widget)
 {
@@ -253,38 +254,18 @@ void ProgressDlg::cancelPressed()
 
 //////////////////////////////////////////////////////////////////////////
 // ProgressBase
-void ProgressDlg::initialise()
+void ProgressDlg::showProgress()
 {
 	// Disable child dialogs of DeepSkyStackerDlg
 	DeepSkyStacker::instance()->disableSubDialogs();
 
-	enableCancelButton(cancelEnabled);
+	enableCancel(true);
 	setFocus();
 	raise();
 	show();
 }
 
-void ProgressDlg::applyStart1Text(const QString& strText)
-{
-	ProcessText1->setText(strText);
-}
-
-void ProgressDlg::applyProgress2(int lAchieved)
-{
-	ProgressBar2->setValue(lAchieved);
-}
-
-void ProgressDlg::applyProcessorsUsed(int nCount)
-{
-	processors->setText(tr("%n Processor(s) Used", nullptr, nCount));
-}
-
-void ProgressDlg::endProgress2()
-{
-	setItemVisibility(true, false);
-}
-
-void ProgressDlg::closeProgress()
+void ProgressDlg::hideProgress()
 {
 	DeepSkyStacker::instance()->enableSubDialogs();
 	hide();
