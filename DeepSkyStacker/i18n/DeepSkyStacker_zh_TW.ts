@@ -354,31 +354,36 @@ Do you want...</source>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
+        <source>Offset</source>
+        <translation>相抵</translation>
+    </message>
+    <message>
+        <location filename="../ui/BackgroundOptions.ui" line="42"/>
         <source>Rational</source>
         <translation>有理數</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="60"/>
+        <location filename="../ui/BackgroundOptions.ui" line="67"/>
         <source>RGB Background Calibration Method</source>
         <translation>RGB背景校正方式</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="68"/>
+        <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>None</source>
         <translation>無</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="75"/>
+        <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Minimum</source>
         <translation>極小值</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="82"/>
+        <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Middle</source>
         <translation>中間值</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="89"/>
+        <location filename="../ui/BackgroundOptions.ui" line="96"/>
         <source>Maximum</source>
         <translation>最大值</translation>
     </message>
@@ -868,7 +873,7 @@ Tick this box to keep the trace file.</source>
         <translation>平坦輪廓圖</translation>
     </message>
     <message>
-        <location filename="../flatchart.cpp" line="147"/>
+        <location filename="../flatchart.cpp" line="145"/>
         <source>Intensity</source>
         <translation>強度</translation>
     </message>
@@ -1515,12 +1520,49 @@ Please change the name.</source>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../progressdlg.cpp" line="95"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>%n 個處理器正在使用中</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="190"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>預計剩餘時間: %1 時 %2 分 %3 秒 </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="193"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>預計剩餘時間: %1 分 %2 秒 </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="196"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>預計剩餘時間: %1 秒 </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="199"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>預計剩餘時間: &lt;1 秒 </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="232"/>
+        <source>Are you sure you wish to cancel this operation?</source>
+        <translation>您確定要取消此操作嗎？</translation>
+    </message>
 </context>
 <context>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="40"/>
-        <location filename="../QualityChart.cpp" line="316"/>
+        <location filename="../QualityChart.cpp" line="128"/>
+        <location filename="../QualityChart.cpp" line="320"/>
         <source>Star Eccentricity</source>
         <translation>星偏心率</translation>
     </message>
@@ -1536,12 +1578,17 @@ Please change the name.</source>
         <translation>星級品質圖</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="237"/>
+        <location filename="../QualityChart.cpp" line="244"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>正在插值半峰全寬（FWHM）資料。請耐心等待。</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="215"/>
+        <location filename="../QualityChart.cpp" line="351"/>
+        <source>FWHM</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="222"/>
         <source>Interpolating Eccentricity data.  Please be patient.</source>
         <translation>內插偏心率數據。 請耐心等待。</translation>
     </message>
@@ -3114,14 +3161,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="110"/>
+        <location filename="../DeepSkyStacker.cpp" line="111"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker 測試版已過期
 您可能會得到另一個或從網站下載最終版本。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="138"/>
+        <location filename="../DeepSkyStacker.cpp" line="139"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3129,18 +3176,18 @@ You can probably get another one or download the final release from the web site
 （稍後您可在&quot;&quot;關於&quot;&quot;對話框啟動或取消此選項）</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="466"/>
+        <location filename="../DeepSkyStacker.cpp" line="467"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>贊助 DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="325"/>
+        <location filename="../DeepSkyStacker.cpp" line="326"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="637"/>
-        <location filename="../DeepSkyStacker.cpp" line="639"/>
+        <location filename="../DeepSkyStacker.cpp" line="638"/>
+        <location filename="../DeepSkyStacker.cpp" line="640"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

@@ -357,31 +357,36 @@ Chcete...</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
+        <source>Offset</source>
+        <translation>Odsazení</translation>
+    </message>
+    <message>
+        <location filename="../ui/BackgroundOptions.ui" line="42"/>
         <source>Rational</source>
         <translation>Rozumná</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="60"/>
+        <location filename="../ui/BackgroundOptions.ui" line="67"/>
         <source>RGB Background Calibration Method</source>
         <translation>Způsob kalibrace RGB pozadí</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="68"/>
+        <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>None</source>
         <translation>Žádná</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="75"/>
+        <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Minimum</source>
         <translation>Minimální</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="82"/>
+        <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Middle</source>
         <translation>Střední</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="89"/>
+        <location filename="../ui/BackgroundOptions.ui" line="96"/>
         <source>Maximum</source>
         <translation>Maximum</translation>
     </message>
@@ -876,7 +881,7 @@ Zaškrtnutím tohoto políčka uchováte trasovací soubor.</translation>
         <translation>Plochý konturový graf</translation>
     </message>
     <message>
-        <location filename="../flatchart.cpp" line="147"/>
+        <location filename="../flatchart.cpp" line="145"/>
         <source>Intensity</source>
         <translation>Intenzita</translation>
     </message>
@@ -1527,12 +1532,51 @@ Změňte prosím název.</translation>
         <source>Cancel</source>
         <translation>Zrušení</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../progressdlg.cpp" line="95"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>Použitý %n procesor</numerusform>
+            <numerusform>Použité %n procesory</numerusform>
+            <numerusform>Použito %n procesorů</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="190"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Odhadovaný zbývající čas: %1 hod  %2 min  %3 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="193"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Odhadovaný zbývající čas: %1 min  %2 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="196"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Odhadovaný zbývající čas: %1 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="199"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Odhadovaný zbývající čas: &lt; 1 s </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="232"/>
+        <source>Are you sure you wish to cancel this operation?</source>
+        <translation>Opravdu chcete tuto operaci zrušit?</translation>
+    </message>
 </context>
 <context>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="40"/>
-        <location filename="../QualityChart.cpp" line="316"/>
+        <location filename="../QualityChart.cpp" line="128"/>
+        <location filename="../QualityChart.cpp" line="320"/>
         <source>Star Eccentricity</source>
         <translation>Hvězdná excentricita</translation>
     </message>
@@ -1548,12 +1592,17 @@ Změňte prosím název.</translation>
         <translation>Graf kvality hvězd</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="237"/>
+        <location filename="../QualityChart.cpp" line="244"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>Interpolace dat FWHM. Prosím o trpělivost.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="215"/>
+        <location filename="../QualityChart.cpp" line="351"/>
+        <source>FWHM</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="222"/>
         <source>Interpolating Eccentricity data.  Please be patient.</source>
         <translation>Interpolace dat excentricity. Buďte prosím trpěliví.</translation>
     </message>
@@ -3141,14 +3190,14 @@ Kliknutím pravým tlačítkem změníte chování.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="110"/>
+        <location filename="../DeepSkyStacker.cpp" line="111"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Platnost této beta verze DeepSkyStacker vypršela
 Pravděpodobně můžete získat další nebo stáhnout finální verzi z webových stránek.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="138"/>
+        <location filename="../DeepSkyStacker.cpp" line="139"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3156,18 +3205,18 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 (Tuto volbu můžete nastavit nebo vyřadit kdykoliv později v okně informace o programu)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="466"/>
+        <location filename="../DeepSkyStacker.cpp" line="467"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponzorujte DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="325"/>
+        <location filename="../DeepSkyStacker.cpp" line="326"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 neexistuje nebo to není soubor</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="637"/>
-        <location filename="../DeepSkyStacker.cpp" line="639"/>
+        <location filename="../DeepSkyStacker.cpp" line="638"/>
+        <location filename="../DeepSkyStacker.cpp" line="640"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>

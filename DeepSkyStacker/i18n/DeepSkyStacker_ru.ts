@@ -357,31 +357,36 @@ Do you want...</source>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
+        <source>Offset</source>
+        <translation>Компенсировать</translation>
+    </message>
+    <message>
+        <location filename="../ui/BackgroundOptions.ui" line="42"/>
         <source>Rational</source>
         <translation>Дробные</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="60"/>
+        <location filename="../ui/BackgroundOptions.ui" line="67"/>
         <source>RGB Background Calibration Method</source>
         <translation>Метод RGB калибровки фона</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="68"/>
+        <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="75"/>
+        <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Minimum</source>
         <translation>Минимальный</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="82"/>
+        <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Middle</source>
         <translation>Средний</translation>
     </message>
     <message>
-        <location filename="../ui/BackgroundOptions.ui" line="89"/>
+        <location filename="../ui/BackgroundOptions.ui" line="96"/>
         <source>Maximum</source>
         <translation>Максимум</translation>
     </message>
@@ -875,7 +880,7 @@ Tick this box to keep the trace file.</source>
         <translation>Плоская контурная диаграмма</translation>
     </message>
     <message>
-        <location filename="../flatchart.cpp" line="147"/>
+        <location filename="../flatchart.cpp" line="145"/>
         <source>Intensity</source>
         <translation>Интенсивность</translation>
     </message>
@@ -1526,12 +1531,51 @@ Please change the name.</source>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../progressdlg.cpp" line="95"/>
+        <source>%n Processor(s) Used</source>
+        <translation>
+            <numerusform>Используется %n процессор</numerusform>
+            <numerusform>Используются %n процессора</numerusform>
+            <numerusform>Используются %n процессоров</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="190"/>
+        <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
+        <comment>IDS_ESTIMATED3</comment>
+        <translation>Осталось времени: %1 ч %2 мин %3 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="193"/>
+        <source>Estimated remaining time: %1 mn %2 s </source>
+        <comment>IDS_ESTIMATED2</comment>
+        <translation>Осталось времени: %1 мин %2 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="196"/>
+        <source>Estimated remaining time : %1 s </source>
+        <comment>IDS_ESTIMATED1</comment>
+        <translation>Осталось времени: %1 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="199"/>
+        <source>Estimated remaining time: &lt; 1 s </source>
+        <comment>IDS_ESTIMATED0</comment>
+        <translation>Осталось времени: &lt; 1 сек </translation>
+    </message>
+    <message>
+        <location filename="../progressdlg.cpp" line="232"/>
+        <source>Are you sure you wish to cancel this operation?</source>
+        <translation>Вы уверены, что хотите отменить эту операцию?</translation>
+    </message>
 </context>
 <context>
     <name>DSS::QualityChart</name>
     <message>
         <location filename="../ui/QualityChart.ui" line="40"/>
-        <location filename="../QualityChart.cpp" line="316"/>
+        <location filename="../QualityChart.cpp" line="128"/>
+        <location filename="../QualityChart.cpp" line="320"/>
         <source>Star Eccentricity</source>
         <translation>Звездная эксцентричность</translation>
     </message>
@@ -1547,12 +1591,17 @@ Please change the name.</source>
         <translation>График качества звёзд</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="237"/>
+        <location filename="../QualityChart.cpp" line="244"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>Интерполяция данных FWHM. Пожалуйста, проявите терпение.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="215"/>
+        <location filename="../QualityChart.cpp" line="351"/>
+        <source>FWHM</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../QualityChart.cpp" line="222"/>
         <source>Interpolating Eccentricity data.  Please be patient.</source>
         <translation>Интерполяция данных эксцентриситета. Пожалуйста, будьте терпеливы.</translation>
     </message>
@@ -3139,14 +3188,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="110"/>
+        <location filename="../DeepSkyStacker.cpp" line="111"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Срок действия этой бета-версии DeepSkyStacker истек
 Вы, вероятно, можете получить еще один или загрузить финальную версию с веб-сайта.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="138"/>
+        <location filename="../DeepSkyStacker.cpp" line="139"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3154,18 +3203,18 @@ You can probably get another one or download the final release from the web site
 (Эту опцию можно выключить и включить позже в)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="466"/>
+        <location filename="../DeepSkyStacker.cpp" line="467"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Спонсор DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="325"/>
+        <location filename="../DeepSkyStacker.cpp" line="326"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 не существует или не является файлом</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="637"/>
-        <location filename="../DeepSkyStacker.cpp" line="639"/>
+        <location filename="../DeepSkyStacker.cpp" line="638"/>
+        <location filename="../DeepSkyStacker.cpp" line="640"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
