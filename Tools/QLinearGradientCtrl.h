@@ -131,6 +131,7 @@ public:
 	int		moveSelected(qreal newpos, bool bUpdate);
 	QColor	setSelectedPegColour(QColor newColour, bool bUpdate);
 	void	setColorAt(double pos, QColor colour);
+	void	changeColorAt(double pos, QColor colour);
 	int		setPeg(int index, qreal position);
 
 	// Internals
