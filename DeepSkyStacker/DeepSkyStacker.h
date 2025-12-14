@@ -45,6 +45,7 @@ namespace DSS
 	class PictureList;
 	class ProcessingControls;
 	class ProcessingDlg;
+	class ProgressDlg;
 	class StackingDlg;
 }
 class QStackedWidget;
@@ -83,7 +84,6 @@ private:
 	QStringList args;
 	QString baseTitle;
 	QString currentPathName;
-	bool m_progress;
 	QLabel* sponsorText;
 	QLabel* statusBarText;
 	QErrorMessage* errorMessageDialog;
@@ -92,6 +92,7 @@ private:
 #if !defined(Q_OS_WIN)
 	QProcess* helpProcess{ nullptr };
 #endif // !defined(Q_OS_WIN)
+	DSS::ProgressDlg* progressDlg{ nullptr };
 
 	void createStatusBar();
 	void updatePanel();
@@ -109,6 +110,10 @@ public:
 	inline static DeepSkyStacker* instance()
 	{
 		return dynamic_cast<DeepSkyStacker*>(DSSBase::instance());
+	}
+	inline DSS::ProgressDlg* progressDialog() const
+	{
+		return progressDlg;
 	}
 
 	DeepSkyStacker();

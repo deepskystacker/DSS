@@ -322,6 +322,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessingSettingsDlg.cpp" />
     <ClCompile Include="oldprogressdlg.cpp" />
+    <ClCompile Include="progressdlg.cpp" />
     <ClCompile Include="QualityChart.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
@@ -386,6 +387,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="toolbar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="progressdlg.h" />
     <QtMoc Include="QualityChart.h" />
     <QtMoc Include="..\Tools\imageview.h" />
     <QtMoc Include="..\Tools\QLinearGradientCtrl.h" />

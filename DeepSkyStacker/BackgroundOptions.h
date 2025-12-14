@@ -34,6 +34,7 @@ namespace DSS
 	private slots:
 		void on_rbLinear_clicked();
 		void on_rbRational_clicked();
+		void on_rbOffset_clicked();
 		void on_rbNone_clicked();
 		void on_rbMinimum_clicked();
 		void on_rbMiddle_clicked();
@@ -53,6 +54,7 @@ namespace DSS
 		QPixmap pxMax;
 		QPixmap pxLinear;
 		QPixmap pxRational;
+		QPixmap pxOffset;
 
 		void updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation);
 	};

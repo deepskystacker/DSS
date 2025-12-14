@@ -10,7 +10,7 @@ constexpr int DSSBETAEXPIREMONTH = 3;
 
 #define DSSVER_MAJOR			6
 #define DSSVER_MINOR			1
-#define DSSVER_SUB				2
+#define DSSVER_SUB				3
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE

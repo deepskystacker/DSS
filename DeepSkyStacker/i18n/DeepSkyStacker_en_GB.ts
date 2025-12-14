@@ -37,6 +37,17 @@
     </message>
 </context>
 <context>
+    <name>DSS::ProgressDlg</name>
+    <message numerus="yes">
+        <location filename="../progressdlg.cpp" line="95"/>
+        <source>%n Processor(s) Used</source>
+        <translation type="unfinished">
+            <numerusform>%n Processor used</numerusform>
+            <numerusform>%n Processors used</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>DSS::StackingDlg</name>
     <message numerus="yes">
         <location filename="../StackingDlg.cpp" line="933"/>
