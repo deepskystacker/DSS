@@ -332,25 +332,9 @@ void CLightFrameInfo::Reset()
 	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
 }
 
-double CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
+double CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap) const
 {
-	double fResult = 0.0;
-	CBackgroundCalibration BackgroundCalibration;
-
-	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
-	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
-	BackgroundCalibration.SetMultiplier(256.0);
-	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, nullptr, true, m_pProgress);
-	fResult = BackgroundCalibration.m_fTgtRedBk / 256.0;
-
-	const double rm = BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(Bitmap.BitPerSample(), Bitmap.IsIntegralType())->calculateModelParameters(Bitmap, false) / 256.0;
-	if (rm != fResult)
-	{
-		auto s = std::format("Old: {}, new: {}", fResult, rm);
-		throw s;
-	}
-
-	return fResult;
+	return BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(Bitmap.BitPerSample(), Bitmap.IsIntegralType())->calculateModelParameters(Bitmap, false) / 256.0;
 }
 
 //
