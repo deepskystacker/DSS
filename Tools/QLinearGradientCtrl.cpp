@@ -960,9 +960,6 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 	else
 	{
 		int peg{ index };
-		if (objectName() == "redGradient" && 3 == peg) qDebug() << peg << colour << position;
-		if (objectName() == "redGradient" && 3 == peg) qDebug() << "setPeg before " << stops;
-		if (objectName() == "redGradient" && 3 == peg) qDebug() << "stops.size() " << stops.size();
 		//position = std::clamp(position, 0.001, 0.999);
 		position = std::clamp(position, 0.0, 1.0);
 		//auto it = std::find_if(stops.cbegin(), stops.cend(), [position](const auto& v) { return v.first == position; });
@@ -989,10 +986,6 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 			if (stops[i].first == position)
 				index = i;
 		index = std::clamp(index, startPegStop + 1, endPegStop - 1);
-		if (objectName() == "redGradient" && 3 == peg) qDebug() << "setPeg after " << stops;
-		if (objectName() == "redGradient" && 3 == peg) qDebug() << "index " << index;
-		if (objectName() == "redGradient" && 3 == peg) qDebug() << "stops.size() " << stops.size();
-
 	}
 	//
 	// Bug fix: Need to update the QLinearGradient's stops after updating our local
@@ -1356,7 +1349,6 @@ QRegion QLinearGradientCtrl::getPegRegion()
 void QLinearGradientCtrl::setGradientFromStops()
 {
 	QGradientStops s = stops;
-	qDebug() << "sizeof stops " << stops.size();
 
 	for (auto it = s.begin(); it != s.end() && it->first < 1; ++it)
 	{
@@ -1370,7 +1362,6 @@ void QLinearGradientCtrl::setGradientFromStops()
 			if (it2->first == it->first)
 				it2->first -= 0.001;
 	}
-	qDebug() << "sizeof s " << s.size();
 
 	m_Gradient.setStops(std::move(s));
 }
