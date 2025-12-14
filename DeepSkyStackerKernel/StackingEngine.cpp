@@ -1714,7 +1714,8 @@ namespace
 		std::shared_ptr<CMemoryBitmap> m_pBitmap;
 		CPixelTransform m_PixTransform{};
 		CTaskInfo* pStackTaskInfo{ nullptr };
-		CBackgroundCalibration m_BackgroundCalibration{};
+		CBackgroundCalibration backgroundCalibration{};
+		std::shared_ptr<BackgroundCalibrationInterface> bgCal{};
 		DSSRect m_rcResult{};
 		std::shared_ptr<CMemoryBitmap> m_pOutput{};
 		AvxEntropy* m_pAvxEntropy{ nullptr };
@@ -1730,17 +1731,18 @@ namespace
 		CStackTask(CStackTask const&) = delete;
 
 
-		void init(CPixelTransform const& pixTr, CTaskInfo *pTi, CBackgroundCalibration const& backCal, 
+		void init(CPixelTransform const& pixTr, CTaskInfo *pTi, CBackgroundCalibration const& backCal, std::shared_ptr<BackgroundCalibrationInterface>,
 			DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy *pEnt);
 		void process();
 	};
 
-	void CStackTask::init(CPixelTransform const& pixTr, CTaskInfo* pTi, CBackgroundCalibration const& backCal,
+	void CStackTask::init(CPixelTransform const& pixTr, CTaskInfo* pTi, CBackgroundCalibration const& backCal, std::shared_ptr<BackgroundCalibrationInterface> bgc,
 		DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy* pEnt)
 	{
 		m_PixTransform = pixTr;
 		pStackTaskInfo = pTi;
-		m_BackgroundCalibration = backCal;
+		backgroundCalibration = backCal;
+		bgCal = std::move(bgc);
 		m_rcResult = rect;
 		m_lPixelSizeMultiplier = pixSize;
 		static_assert(!std::is_reference_v<decltype(pOut)>);
@@ -1764,7 +1766,7 @@ namespace
 		{
 			const int endRow = std::min(row + lineBlockSize, height);
 			avxStacking.init(row, endRow);
-			avxStacking.stack(m_PixTransform, *pStackTaskInfo, m_BackgroundCalibration, m_pOutput, m_lPixelSizeMultiplier);
+			avxStacking.stack(m_PixTransform, *pStackTaskInfo, backgroundCalibration, bgCal, m_pOutput, m_lPixelSizeMultiplier);
 
 			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
 				ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
@@ -1797,15 +1799,17 @@ std::shared_ptr<CMultiBitmap> CStackingEngine::CreateMasterLightMultiBitmap(cons
 }
 
 
-template <class T>
-std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet, T futureForWrite)
+template <class FutureType>
+std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
+	std::shared_ptr<CMemoryBitmap> pInBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet, FutureType futureForWrite
+)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	bool bResult = false;
 	QString strStart2;
 	QString strText;
-	const bool bFirst{ m_lNrStacked == 0 };
+	const bool isFirstLightframe{ m_lNrStacked == 0 };
 	std::shared_ptr<CMemoryBitmap> pBitmap;
 
 	// Two cases : Bayer Drizzle or not Bayer Drizzle - that is the question
@@ -1822,11 +1826,15 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 			{
 				strText = QCoreApplication::translate("StackingEngine", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING");
 				m_pProgress->Start2(strText, 0);
-			};
+			}
 			AHDDemosaicing<std::uint16_t>(pGrayBitmap, pBitmap, m_pProgress);
 		}
 		else
 			pBitmap = pInBitmap;
+
+		if (isFirstLightframe)
+			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(pBitmap->BitPerSample(), pBitmap->IsIntegralType());
+		backgroundCalib->calculateModelParameters(*pBitmap, isFirstLightframe);
 
 		CStackTask StackTask{ pBitmap, m_pProgress };
 
@@ -1878,7 +1886,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 				strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
 				m_pProgress->Start2(strText, 0);
 			}
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), bFirst ? this->currentLightFrame.generic_u8string().c_str() : nullptr, bFirst, m_pProgress);
+			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), isFirstLightframe ? this->currentLightFrame.generic_u8string().c_str() : nullptr, isFirstLightframe, m_pProgress);
 		}
 
 		// Create a master light to enable stacking
@@ -1933,7 +1941,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 
 			AvxEntropy avxEntropy(*pBitmap, StackTask.m_EntropyWindow, m_pEntropyCoverage.get());
 
-			StackTask.init(PixTransform, pTaskInfo, m_BackgroundCalibration, m_rcResult, m_lPixelSizeMultiplier, m_pOutput, std::addressof(avxEntropy));
+			StackTask.init(PixTransform, pTaskInfo, m_BackgroundCalibration, backgroundCalib, m_rcResult, m_lPixelSizeMultiplier, m_pOutput, std::addressof(avxEntropy));
 			StackTask.process();
 
 			if (m_bCreateCometImage)
@@ -2207,7 +2215,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 					const auto GetLightframeInfoIndexes = [this](FRAMEINFOVECTOR const& frameInfoVector) -> std::vector<int>
 					{
-					constexpr bool UseQualityOrder = true;
+						constexpr bool UseQualityOrder = true;
 
 						std::vector<int> indexes(frameInfoVector.size());
 						std::ranges::transform(frameInfoVector, indexes.begin(), [this](CFrameInfo const& frameInfo) { return findBitmapIndex(frameInfo.filePath); });

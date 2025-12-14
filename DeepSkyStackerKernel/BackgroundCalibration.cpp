@@ -178,3 +178,484 @@ void CBackgroundCalibration::ComputeBackgroundCalibration(const CMemoryBitmap* p
 
 	m_bInitOk = true;
 }
+
+// ****************************************************************************************************
+// ****************************************************************************************************
+
+// --------------------------
+// Interface
+// --------------------------
+
+namespace {
+	using BCI = BackgroundCalibrationInterface;
+	using Interpolation = BCI::Interpolation;
+
+	template <int Mult, typename Type, typename... OtherTypes>
+		requires (
+			(std::same_as<Type, std::uint8_t> || std::same_as<Type, std::uint16_t> || std::same_as<Type, std::uint32_t> || std::same_as<Type, float> || std::same_as<Type, double>)
+			&& (Mult == 1 || Mult == 256) // we only support those 2 multipliers
+		)
+	std::shared_ptr<BCI> createTyped(const Interpolation interpolationMethod, const int bitsPerSample, const bool isIntegral)
+	{
+		if (bitsPerSample == sizeof(Type) * 8 && isIntegral == std::integral<Type>)
+		{
+			switch (interpolationMethod)
+			{
+			case Interpolation::Linear: return std::make_shared<BackgroundCalibrationLinear<Mult, Type>>();
+			case Interpolation::Rational: return std::make_shared<BackgroundCalibrationRational<Mult, Type>>();
+			case Interpolation::Offset: return std::make_shared<BackgroundCalibrationOffset<Mult, Type>>();
+			default: return {};
+			}
+		}
+		if constexpr (sizeof...(OtherTypes) != 0)
+			return createTyped<Mult, OtherTypes...>(interpolationMethod, bitsPerSample, isIntegral);
+		else
+			return {};
+	}
+}
+
+template <int Mult>
+	requires (Mult == 1 || Mult == 256)
+std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator(const int bitsPerSample, const bool integral)
+{
+	Interpolation intMethod = Interpolation::Linear;
+	switch (CAllStackingTasks::GetBackgroundCalibrationInterpolation())
+	{
+	case BACKGROUNDCALIBRATIONINTERPOLATION::BCI_LINEAR: break;
+	case BACKGROUNDCALIBRATIONINTERPOLATION::BCI_RATIONAL:
+		intMethod = Interpolation::Rational; break;
+	case BACKGROUNDCALIBRATIONINTERPOLATION::BCI_OFFSET:
+		intMethod = Interpolation::Offset; break;
+	default: break;
+	}
+
+	return createTyped<Mult, std::uint8_t, std::uint16_t, std::uint32_t, float, double>(intMethod, bitsPerSample, integral);
+}
+
+template
+std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(const int bitsPerSample, const bool integral);
+template
+std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(const int bitsPerSample, const bool integral);
+
+// -----------------------------
+// Background Calibration Common 
+// -----------------------------
+
+template <int Mult, typename T>
+BackgroundCalibrationCommon<Mult, T>::BackgroundCalibrationCommon()
+{
+	const auto md = CAllStackingTasks::GetBackgroundCalibrationMode();
+	const auto me = CAllStackingTasks::GetRGBBackgroundCalibrationMethod();
+	this->mode = md == BCM_RGB ? Mode::RGB : (md == BCM_PERCHANNEL ? Mode::PerChannel : Mode::None);
+	this->rgbMethod = me == RBCM_MINIMUM ? RgbMethod::Minimum : (me == RBCM_MIDDLE ? RgbMethod::Median : RgbMethod::Maximum);
+}
+
+template <int Mult, typename T>
+std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> BackgroundCalibrationCommon<Mult, T>::calcHistogram(CMemoryBitmap const& bitmap)
+{
+	AvxHistogram avxHistogram(bitmap);
+	const int height = bitmap.Height();
+	const auto nrProcessors = Multitask::GetNrProcessors();
+
+	AvxHistogram::HistogramVectorType redHisto(HistogramSize, 0);
+	AvxHistogram::HistogramVectorType greenHisto(HistogramSize, 0);
+	AvxHistogram::HistogramVectorType blueHisto(HistogramSize, 0);
+
+#pragma omp parallel default(shared) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram) if(nrProcessors > 1)
+	{
+		constexpr int Bulksize = 50;
+#pragma omp for
+		for (int startNdx = 0; startNdx < height; startNdx += Bulksize)
+		{
+			const int endNdx = std::min(startNdx + Bulksize, height);
+			avxHistogram.calcHistogram(startNdx, endNdx, Multiplier);
+		}
+#pragma omp critical(OmpLockHistoMerge)
+		{
+			avxHistogram.mergeHistograms(redHisto, greenHisto, blueHisto);
+		}
+	} // omp parallel
+
+	return { redHisto, greenHisto, blueHisto };
+}
+
+template <int Mult, typename T>
+std::pair<double, double> BackgroundCalibrationCommon<Mult, T>::findMedianAndMax(std::span<const int> histo, const size_t halfNumberOfPixels)
+{
+	size_t index = 0;
+	for (size_t nrValues = 0; nrValues < halfNumberOfPixels;)
+		nrValues += histo[index++];
+	const double median = static_cast<double>(index) / Multiplier;
+
+	double maximum = 0;
+	index = HistogramSize - 1;
+	for (auto it = histo.crbegin(); it != histo.crend(); ++it, --index)
+	{
+		if (*it != 0)
+		{
+			maximum = static_cast<double>(index);
+			break;
+		}
+	}
+
+	return { median, maximum };
+}
+
+template <int Mult, typename T>
+void BackgroundCalibrationCommon<Mult, T>::calculateReferenceParameters(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax)
+{
+	if (this->mode == Mode::RGB)
+	{
+		double targetBackground = 0;
+
+		constexpr auto Median3 = [](double a, double b, double c) -> double
+		{
+			if (a > b) std::swap(a, b);
+			if (b > c) std::swap(b, c);
+			if (a > b) std::swap(a, b);
+			return b;
+		};
+
+		if (this->rgbMethod == RgbMethod::Maximum)
+		{
+			targetBackground = std::ranges::max({ redMedian, greenMedian, blueMedian });
+		}
+		else if (this->rgbMethod == RgbMethod::Minimum)
+		{
+			targetBackground = std::ranges::min({ redMedian, greenMedian, blueMedian });
+		}
+		else
+		{
+			targetBackground = Median3(redMedian, greenMedian, blueMedian);
+		}
+
+		this->referenceBackgroundRed = std::min(redMax, targetBackground);
+		this->referenceBackgroundGreen = std::min(greenMax, targetBackground);
+		this->referenceBackgroundBlue = std::min(blueMax, targetBackground);
+	}
+	else // per channel or even None
+	{
+		this->referenceBackgroundRed = redMedian;
+		this->referenceBackgroundGreen = greenMedian;
+		this->referenceBackgroundBlue = blueMedian;
+	}
+}
+
+// Initialize the calibration model (offset, linear, ...).
+// Returns the median value of the red channel.
+template <int Mult, typename T>
+double BackgroundCalibrationCommon<Mult, T>::calculateModelParameters(CMemoryBitmap const& bitmap, const bool calcReference)
+{
+	if (this->mode == Mode::None)
+		return 0;
+
+	const size_t halfNumberOfPixels = static_cast<size_t>(bitmap.Width()) * static_cast<size_t>(bitmap.Height()) / 2;
+
+	const auto [redHisto, greenHisto, blueHisto] = calcHistogram(bitmap);
+	const auto [redMedian, redMaximum] = findMedianAndMax(redHisto, halfNumberOfPixels);
+	const auto [greenMedian, greenMaximum] = findMedianAndMax(greenHisto, halfNumberOfPixels);
+	const auto [blueMedian, blueMaximum] = findMedianAndMax(blueHisto, halfNumberOfPixels);
+
+	if (calcReference)
+		calculateReferenceParameters(redMedian, redMaximum, greenMedian, greenMaximum, blueMedian, blueMaximum);
+
+	initializeModel(redMedian, redMaximum, greenMedian, greenMaximum, blueMedian, blueMaximum);
+
+	return redMedian;
+}
+
+// ------------------------------
+// Offset Calibrator
+// ------------------------------
+
+template <int Mult, typename T>
+void BackgroundCalibrationOffset<Mult, T>::initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax)
+{
+	constexpr auto Initialize = [](Model& model, double x0, double x1, double x2, double, double y1, double)
+	{
+		model.offset = y1 - x1;
+		const auto [mn, mx] = std::ranges::minmax({ x0, x1, x2 });
+		model.minValue = mn;
+		model.maxValue = mx;
+		if (mn != 0)
+			throw "Offset calibrator should have a minimum value of zero";
+	};
+
+	Initialize(this->redParams, 0, redMedian, redMax, 0, this->referenceBackgroundRed, redMax);
+	Initialize(this->greenParams, 0, greenMedian, greenMax, 0, this->referenceBackgroundGreen, greenMax);
+	Initialize(this->blueParams, 0, blueMedian, blueMax, 0, this->referenceBackgroundBlue, blueMax);
+}
+
+template <int Mult, typename T>
+std::tuple<double, double, double> BackgroundCalibrationOffset<Mult, T>::calibratePixel(const double r, const double g, const double b) const
+{
+	constexpr auto Calibrate = [](const Model& model, const double x)
+	{
+		// std::clamp(x + model.offset, model.minValue, model.maxValue);
+		return std::abs(std::min(x + model.offset, model.maxValue));
+	};
+
+	return this->mode == BackgroundCalibrationCommon<Mult, T>::Mode::None
+		? std::make_tuple(r, g, b)
+		: std::make_tuple(Calibrate(this->redParams, r), Calibrate(this->greenParams, g), Calibrate(this->blueParams, b));
+}
+
+//template <typename T>
+//void BackgroundCalibrationOffset<T>::calibrateRedRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), [this](auto v) { return v + this->redOffset; });
+//}
+//template <typename T>
+//void BackgroundCalibrationOffset<T>::calibrateGreenRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), [this](auto v) { return v + this->greenOffset; });
+//}
+//template <typename T>
+//void BackgroundCalibrationOffset<T>::calibrateBlueRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), [this](auto v) { return v + this->blueOffset; });
+//}
+
+// ------------------------------
+// Linear Calibrator
+// ------------------------------
+
+template <int Mult, typename T>
+void BackgroundCalibrationLinear<Mult, T>::initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax)
+{
+	constexpr auto Initialize = [](Model& model, double x0, double x1, double x2, double y0, double y1, double y2)
+	{
+		model.median = x1;
+		model.a0 = (x0 < x1) ? (y0 - y1) / (x0 - x1) : 0.0;
+		model.a1 = (x1 < x2) ? (y1 - y2) / (x1 - x2) : 0.0;
+		model.b0 = y0 - model.a0 * x0;
+		model.b1 = y1 - model.a1 * x1;
+	};
+
+	Initialize(this->redParams, 0, redMedian, redMax, 0, this->referenceBackgroundRed, redMax);
+	Initialize(this->greenParams, 0, greenMedian, greenMax, 0, this->referenceBackgroundGreen, greenMax);
+	Initialize(this->blueParams, 0, blueMedian, blueMax, 0, this->referenceBackgroundBlue, blueMax);
+}
+
+template <int Mult, typename T>
+std::tuple<double, double, double> BackgroundCalibrationLinear<Mult, T>::calibratePixel(const double r, const double g, const double b) const
+{
+	constexpr auto Calibrate = [](const Model& model, const double x)
+	{
+		return (x < model.median) ? (model.a0 * x + model.b0) : (model.a1 * x + model.b1);
+	};
+
+	return this->mode == BackgroundCalibrationCommon<Mult, T>::Mode::None
+		? std::make_tuple(r, g, b)
+		: std::make_tuple(Calibrate(this->redParams, r), Calibrate(this->greenParams, g), Calibrate(this->blueParams, b));
+}
+
+//template <typename T>
+//void BackgroundCalibrationLinear<T>::calibrateRedRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), std::identity{});
+//}
+//template <typename T>
+//void BackgroundCalibrationLinear<T>::calibrateGreenRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), std::identity{});
+//}
+//template <typename T>
+//void BackgroundCalibrationLinear<T>::calibrateBlueRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), std::identity{});
+//}
+
+// ---------------------------------------------------------
+// Rational Calibrator
+// ---------------------------------------------------------
+
+template <int Mult, typename T>
+void BackgroundCalibrationRational<Mult, T>::initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax)
+{
+	constexpr auto Initialize = [](Model& model, double x0, double x1, double x2, double y0, double y1, double y2)
+	{
+		const double t1 = ((x0 * y0 - x1 * y1) * (y0 - y2) - (x0 * y0 - x2 * y2) * (y0 - y1));
+		const double t2 = ((x0 - x1) * (y0 - y2) - (x0 - x2) * (y0 - y1));
+		const double t3 = (y0 - y1);
+
+		model.b = t1 != 0 ? t2 / t1 : 0.0;
+		model.c = t3 != 0 ? ((x0 - x1) - model.b * (x0 * y0 - x1 * y1)) / t3 : 0.0;
+		model.a = (model.b * x0 + model.c) * y0 - x0;
+		const auto [mn, mx] = std::ranges::minmax({ y0, y1, y2 });
+		model.minValue = mn;
+		model.maxValue = mx;
+	};
+
+	Initialize(this->redParams, 0, redMedian, redMax, 0, this->referenceBackgroundRed, redMax);
+	Initialize(this->greenParams, 0, greenMedian, greenMax, 0, this->referenceBackgroundGreen, greenMax);
+	Initialize(this->blueParams, 0, blueMedian, blueMax, 0, this->referenceBackgroundBlue, blueMax);
+}
+
+template <int Mult, typename T>
+std::tuple<double, double, double> BackgroundCalibrationRational<Mult, T>::calibratePixel(const double r, const double g, const double b) const
+{
+	constexpr auto Calibrate = [](const Model& model, const double x)
+	{
+		return (model.b != 0 || model.c != 0)
+			? std::clamp((x + model.a) / (model.b * x + model.c), model.minValue, model.maxValue)
+			: std::clamp((x + model.a), model.minValue, model.maxValue);
+	};
+
+	return this->mode == BackgroundCalibrationCommon<Mult, T>::Mode::None
+		? std::make_tuple(r, g, b)
+		: std::make_tuple(Calibrate(this->redParams, r), Calibrate(this->greenParams, g), Calibrate(this->blueParams, b));
+}
+
+//template <typename T>
+//void BackgroundCalibrationRational<T>::calibrateRedRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), std::identity{});
+//}
+//template <typename T>
+//void BackgroundCalibrationRational<T>::calibrateGreenRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), std::identity{});
+//}
+//template <typename T>
+//void BackgroundCalibrationRational<T>::calibrateBlueRow(std::span<T> row) const
+//{
+//	std::ranges::transform(row, row.begin(), std::identity{});
+//}
+
+// **********************************************************************************************************************
+
+class BcInterface
+{
+public:
+	virtual std::tuple<double, double, double> calibrate(const double r, const double g, const double b) const = 0;
+	// Factory
+	static std::shared_ptr<BcInterface> makeBC(const int bitsPerSample, const bool integral);
+};
+
+class BcOffset : public BcInterface
+{
+	double offset{ 0 };
+public:
+	virtual std::tuple<double, double, double> calibrate(const double r, const double g, const double b) const override
+	{
+		return { r + offset, g + offset, b + offset };
+	}
+};
+
+class BcLinear : public BcInterface
+{
+	double k{ 1 };
+	double d{ 0 };
+public:
+	virtual std::tuple<double, double, double> calibrate(const double r, const double g, const double b) const override
+	{
+		return { k * r + d, k * g + d, k * b + d };
+	}
+};
+
+std::shared_ptr<BcInterface> BcInterface::makeBC(const int bitsPerSample, const bool)
+{
+	switch (bitsPerSample) {
+	case 16: return std::make_shared<BcOffset>();
+	default: return std::make_shared<BcLinear>();
+	}
+}
+
+// **********************************************************************************************************************
+
+//template <typename... Mixins>
+//class BcIntf2 : public Mixins...
+//{
+//public:
+//	std::tuple<double, double, double> calibrate(const double r, const double g, const double b) const
+//	{
+//		return doCali(r, g, b);
+//	}
+//};
+//
+//class BcOff2
+//{
+//	double off{ 0 };
+//protected:
+//	std::tuple<double, double, double> doCali(const double r, const double g, const double b) const
+//	{
+//		return { r + off, g + off, b + off };
+//	}
+//};
+
+enum class BcAlg { Offset, Lin, Rational };
+template <typename T>
+using RT = std::tuple<T, T, T>;
+
+class Bc
+{
+public:
+	template <typename F>
+	Bc(F f) : self(std::make_unique<Model<F, double>>(std::move(f))) {}
+
+	template <typename T>
+	RT<T> operator()(const T r, const T g, const T b) const {
+		return self->call(r, g, b);
+	}
+
+private:
+	template <typename T>
+	struct Concept
+	{
+		virtual RT<T> call(const T r, const T g, const T b) const = 0;
+	};
+
+	template <typename F, typename T>
+	struct Model : Concept<T>
+	{
+		F func;
+		Model(F f) : func{ std::move(f) } {}
+		RT<T> call(const T r, const T g, const T b) const override {
+			return func(r, g, b);
+		}
+	};
+
+	std::unique_ptr<Concept<double>> self;
+};
+
+template <typename T>
+struct BcOff
+{
+	T o;
+	RT<T> operator()(const T r, const T g, const T b) const { return { r + o, g + o, b + o }; }
+};
+
+template <typename T>
+struct BcLin
+{
+	T k;
+	T d;
+	RT<T> operator()(const T r, const T g, const T b) const { return { k * r + d, k * g + d, k * b + d }; }
+};
+
+Bc makeBc(BcAlg a)
+{
+	switch (a)
+	{
+	case BcAlg::Offset:
+		return Bc(BcOff<double>{ 0 });
+	case BcAlg::Lin:
+	default:
+		return Bc(BcLin<double>{ 1, 0 });
+	}
+}
+
+std::vector<double> rdat, gdat, bdat;
+
+void ftest()
+{
+	Bc calibrator = makeBc(BcAlg::Offset);
+	for (size_t n = 0; n < rdat.size(); ++n)
+	{
+		const auto [r, g, b] = calibrator(rdat[n], gdat[n], bdat[n]);
+		rdat[n] = r;
+		gdat[n] = g;
+		bdat[n] = b;
+	}
+}

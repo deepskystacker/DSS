@@ -43,6 +43,7 @@ class AvxEntropy;
 class CPixelTransform;
 class CTaskInfo;
 class CBackgroundCalibration;
+class BackgroundCalibrationInterface;
 class AvxStacking
 {
 private:
@@ -76,7 +77,7 @@ public:
 
 	void init(const int lStart, const int lEnd);
 
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
+	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface> bgc, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
 private:
 	void resizeColorVectors(const size_t nrVectors);
 	inline float* row(VectorType& vector, const size_t rowIndex)
@@ -98,7 +99,7 @@ private:
 	AvxStacking& stackData;
 	Avx256Stacking(AvxStacking& sd) : stackData{ sd } {}
 
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier);
+	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface> bgc, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier);
 
 	template <class T>
 	int doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier);
@@ -127,5 +128,5 @@ private:
 	AvxStacking& stackData;
 	NonAvxStacking(AvxStacking& sd) : stackData{ sd } {}
 
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
+	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface> bgc, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
 };

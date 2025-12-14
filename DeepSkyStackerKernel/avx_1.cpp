@@ -82,12 +82,12 @@ void AvxStacking::init(const int lStart, const int lEnd)
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface> bgc, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
 	return SimdSelector<Avx256Stacking, NonAvxStacking>(
-		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, outputBitmap, pixelSizeMultiplier); }
+		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, bgc, outputBitmap, pixelSizeMultiplier); }
 	);
 }
 
@@ -95,7 +95,7 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 // Non-AVX Stacking
 // ****************
 
-int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface> bgc, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	const int width = this->stackData.width;
 	PIXELDISPATCHVECTOR vPixels;
@@ -122,8 +122,15 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 			float Green = crColor.green;
 			float Blue = crColor.blue;
 
+			const auto [rd, gn, bl] = bgc->calibratePixel(Red, Green, Blue);
 			if (backgroundCalibrationDef.m_BackgroundCalibrationMode != BCM_NONE)
 				backgroundCalibrationDef.ApplyCalibration(Red, Green, Blue);
+
+			if (static_cast<float>(rd) != Red || static_cast<float>(gn) != Green || static_cast<float>(bl) != Blue)
+			{
+				auto s = std::format("Red: {}/{}, Green: {}/{}, Blue: {}/{}", rd, Red, gn, Green, bl, Blue);
+				throw s;
+			}
 
 			if ((0 != Red || 0 != Green || 0 != Blue) && DSSRect { 0, 0, this->stackData.resultWidth, this->stackData.resultHeight }.contains(ptOut))
 			{

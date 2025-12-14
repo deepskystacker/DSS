@@ -63,7 +63,7 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 // AVX 256 Stacking
 // ****************
 
-int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
+int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface>, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
 {
 	if (!this->stackData.avxEnabled)
 		return 1;
