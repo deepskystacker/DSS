@@ -538,8 +538,8 @@ namespace DSS
 				u16transform[i] = std::numeric_limits<uint16_t>::max();
 			else
 			{
-				const double fValue = ri.Interpolate(i / static_cast<double>(std::numeric_limits<uint16_t>::max()));
-				u16transform[i] = static_cast<double>(std::numeric_limits<uint16_t>::max()) * fValue;//pow(fValue, fGamma);
+				const double fValue = ri.Interpolate(i / uint16Max_asDouble);
+				u16transform[i] = uint16Max_asDouble * fValue;//pow(fValue, fGamma);
 			}
 		}
 
@@ -552,7 +552,7 @@ namespace DSS
 				u8transform[i] = std::numeric_limits<uint8_t>::max();
 			else
 			{
-				const double fValue = ri.Interpolate(i / static_cast<double>(std::numeric_limits<uint16_t>::max()));
+				const double fValue = ri.Interpolate(i / uint16Max_asDouble);
 				u8transform[i] = static_cast<double>(std::numeric_limits<uint8_t>::max()) * fValue;//pow(fValue, fGamma);
 			}
 		}
