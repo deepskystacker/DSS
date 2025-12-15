@@ -959,7 +959,6 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 	}
 	else
 	{
-		int peg{ index };
 		//position = std::clamp(position, 0.001, 0.999);
 		position = std::clamp(position, 0.0, 1.0);
 		//auto it = std::find_if(stops.cbegin(), stops.cend(), [position](const auto& v) { return v.first == position; });
