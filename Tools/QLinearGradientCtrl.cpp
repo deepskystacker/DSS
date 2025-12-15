@@ -616,6 +616,7 @@ void QLinearGradientCtrl::mouseReleaseEvent(QMouseEvent *event)
 		setMouseTracking(false);
 	}
 	Inherited::mouseReleaseEvent(event);
+	repaint();
 }
 
 void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
