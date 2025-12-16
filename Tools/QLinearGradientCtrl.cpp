@@ -68,6 +68,15 @@ void QLinearGradientCtrl::setColorAt(double pos, QColor colour)
 
 }
 
+void QLinearGradientCtrl::changeColorAt(double pos, QColor colour)
+{
+	for (auto stop : stops)
+	{
+		if (stop.first == pos) stop.second = colour;
+	}
+	m_Gradient.setStops(stops);
+}
+
 int QLinearGradientCtrl::getDrawWidth() const
 {
 	return (m_Width == GCW_AUTO) ? (isVertical() ? clientRect.right()+1 :
@@ -607,6 +616,7 @@ void QLinearGradientCtrl::mouseReleaseEvent(QMouseEvent *event)
 		setMouseTracking(false);
 	}
 	Inherited::mouseReleaseEvent(event);
+	repaint();
 }
 
 void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)

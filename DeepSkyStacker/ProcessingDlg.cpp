@@ -377,9 +377,16 @@ namespace DSS
 			processingSettingsList.clear();
 			picture->clear();
 			processAndShow(true);
-			QGuiApplication::restoreOverrideCursor();
 			setDirty(false);
-		};
+		}
+		else
+		{
+			QApplication::beep();
+			QString message{ QString(tr("Failed to load image %1").arg(file.generic_u16string())) };
+			QMessageBox::warning(this, "DeepSkyStacker",
+				message);
+		}
+		QGuiApplication::restoreOverrideCursor();
 
 		timer.start();
 	}
@@ -389,7 +396,7 @@ namespace DSS
 	void ProcessingDlg::loadImage()
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << "Load image";
+		bool ok{ false };
 
 		if (askToSave())
 		{
@@ -444,54 +451,53 @@ namespace DSS
 				settings.setValue("Folders/SaveDSIFolder", directory);
 				settings.setValue("Folders/SavePictureExtension", extension);
 
-				//
-				// Finally load the file of interest
-				//
-				currentFile = file;				// Remember the current file
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				dssApp->deepStack().reset();
 				dssApp->deepStack().SetProgress(&dlg);
-				bool result = dssApp->deepStack().LoadStackedInfo(file);
-				if (!result)
+				ok = dssApp->deepStack().LoadStackedInfo(file);
+				dssApp->deepStack().SetProgress(nullptr);
+				QGuiApplication::restoreOverrideCursor();
+
+				if (ok)
+				{
+					currentFile = file;
+					modifyRGBKGradientControls();
+
+					updateInformation();
+					QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+					dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
+					dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
+					updateControlsFromSettings();
+
+					resetSliders();
+
+					//
+					// When loading a external image (not the auto-save file) the histogram adjustment curves 
+					// should be reset to linear.
+					//
+					setRedAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+					setGreenAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+					setBlueAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+
+					int height = dssApp->deepStack().GetHeight();
+					rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
+
+					processingSettingsList.clear();
+					picture->clear();
+					processAndShow(true);
+					setDirty(false);
+				}
+				else
 				{
 					QApplication::beep();
 					QString message{ QString(tr("Failed to load image %1").arg(file.generic_u16string())) };
 					QMessageBox::warning(this, "DeepSkyStacker",
 						message);
 				}
-
-				dssApp->deepStack().SetProgress(nullptr);
-
-				modifyRGBKGradientControls();
-				updateInformation();
-
-				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
-				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
-
-				updateControlsFromSettings();
-
-				showHistogram(false);
-				//
-				// When loading a external image (not the auto-save file) the histogram adjustment curves 
-				// should be reset to linear.
-				//
-				setRedAdjustmentCurve(HistogramAdjustmentCurve::Linear);
-				setGreenAdjustmentCurve(HistogramAdjustmentCurve::Linear);
-				setBlueAdjustmentCurve(HistogramAdjustmentCurve::Linear);
-
-				//resetSliders();
-				int height = dssApp->deepStack().GetHeight();
-				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
-
-				processingSettingsList.clear();
-				picture->clear();
-				processAndShow(true);
-
-				setDirty(false);
-
-				timer.start();
-
 				QGuiApplication::restoreOverrideCursor();
 
+				timer.start();
 			}
 		}
 	}
@@ -501,7 +507,6 @@ namespace DSS
 	bool ProcessingDlg::saveImage()
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << "Save image to file";
 		bool result = false;
 
 
@@ -1074,7 +1079,8 @@ namespace DSS
 			0.0,
 			Histogram.GetBlueHistogram().GetMax()
 		};
-
+		
+		updateGradientAdjustmentValues(rgbParams);
 		adjustRgbGradientPegs(rgbParams);
 
 		//
@@ -1106,7 +1112,6 @@ namespace DSS
 		const RgbParams rgbParams = calcHistogramAdjustment(this->processingSettings.histoAdjust_);
 
 		updateGradientAdjustmentValues(rgbParams);
-
 		adjustRgbGradientPegs(rgbParams);
 	}
 
