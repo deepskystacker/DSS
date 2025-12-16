@@ -11,7 +11,6 @@
 #include <ztrace.h>
 #include <zexcbase.h>
 #include <zexcept.h>
-#include "RationalInterpolation.h"
 #include "RAWUtils.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
@@ -525,8 +524,6 @@ namespace DSS
 		u8transform.resize(transformSize);
 		u16transform.resize(transformSize);
 
-		CRationalInterpolation ri;
-		ri.Initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 		BackgroundCalibrationRational<1, double> rationalCalib{ BackgroundCalibrationInterface::Mode::PerChannel };
 		rationalCalib.resetModel<0>(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 
@@ -539,12 +536,7 @@ namespace DSS
 				u16transform[i] = std::numeric_limits<uint16_t>::max();
 			else
 			{
-				const double fValue = ri.Interpolate(i / uint16Max_asDouble);
 				const double r = std::get<0>(rationalCalib.calibratePixel(i / uint16Max_asDouble, 0, 0));
-				if (fValue != r) {
-					auto s = std::format("{} / {}", fValue, r);
-					throw s;
-				}
 				u16transform[i] = uint16Max_asDouble * r; //pow(fValue, fGamma);
 			}
 		}
@@ -558,12 +550,7 @@ namespace DSS
 				u8transform[i] = std::numeric_limits<uint8_t>::max();
 			else
 			{
-				const double fValue = ri.Interpolate(i / uint16Max_asDouble);
 				const double r = std::get<0>(rationalCalib.calibratePixel(i / uint16Max_asDouble, 0, 0));
-				if (fValue != r) {
-					auto s = std::format("{} / {}", fValue, r);
-					throw s;
-				}
 				u8transform[i] = static_cast<double>(std::numeric_limits<uint8_t>::max()) * r; //pow(fValue, fGamma);
 			}
 		}

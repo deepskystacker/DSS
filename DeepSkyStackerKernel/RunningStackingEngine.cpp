@@ -10,13 +10,13 @@
 #include "Stars.h"
 #include "RegisterEngine.h"
 
+using namespace DSS;
 
 
 CRunningStackingEngine::CRunningStackingEngine() :
 	m_lNrStacked{ 0 },
 	m_fTotalExposure{ 0 }
 {}
-
 
 void CRunningStackingEngine::CreatePublicBitmap()
 {

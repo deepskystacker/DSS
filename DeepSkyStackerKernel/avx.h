@@ -42,7 +42,6 @@
 class AvxEntropy;
 class CPixelTransform;
 class CTaskInfo;
-class CBackgroundCalibration;
 class BackgroundCalibrationInterface;
 class AvxStacking
 {
