@@ -1714,7 +1714,6 @@ namespace
 		std::shared_ptr<CMemoryBitmap> m_pBitmap;
 		CPixelTransform m_PixTransform{};
 		CTaskInfo* pStackTaskInfo{ nullptr };
-		CBackgroundCalibration backgroundCalibration{};
 		std::shared_ptr<BackgroundCalibrationInterface> bgCal{};
 		DSSRect m_rcResult{};
 		std::shared_ptr<CMemoryBitmap> m_pOutput{};
@@ -1724,25 +1723,22 @@ namespace
 	public:
 		CStackTask() = delete;
 		~CStackTask() = default;
-		explicit CStackTask(std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase* pProgress) : // pBitmap must not be a reference!
+		// Note: pBitmap and bgc are by-value and will be moved into the member variables.
+		explicit CStackTask(std::shared_ptr<CMemoryBitmap> pBitmap, std::shared_ptr<BackgroundCalibrationInterface> bgc, OldProgressBase* pProgress) :
 			m_pProgress{ pProgress },
-			m_pBitmap{ std::move(pBitmap) }
+			m_pBitmap{ std::move(pBitmap) },
+			bgCal{ std::move(bgc) }
 		{}
 		CStackTask(CStackTask const&) = delete;
 
-
-		void init(CPixelTransform const& pixTr, CTaskInfo *pTi, CBackgroundCalibration const& backCal, std::shared_ptr<BackgroundCalibrationInterface>,
-			DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy *pEnt);
+		void init(CPixelTransform const& pixTr, CTaskInfo *pTi, DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy *pEnt);
 		void process();
 	};
 
-	void CStackTask::init(CPixelTransform const& pixTr, CTaskInfo* pTi, CBackgroundCalibration const& backCal, std::shared_ptr<BackgroundCalibrationInterface> bgc,
-		DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy* pEnt)
+	void CStackTask::init(CPixelTransform const& pixTr, CTaskInfo* pTi, DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy* pEnt)
 	{
 		m_PixTransform = pixTr;
 		pStackTaskInfo = pTi;
-		backgroundCalibration = backCal;
-		bgCal = std::move(bgc);
 		m_rcResult = rect;
 		m_lPixelSizeMultiplier = pixSize;
 		static_assert(!std::is_reference_v<decltype(pOut)>);
@@ -1766,7 +1762,7 @@ namespace
 		{
 			const int endRow = std::min(row + lineBlockSize, height);
 			avxStacking.init(row, endRow);
-			avxStacking.stack(m_PixTransform, *pStackTaskInfo, backgroundCalibration, bgCal, m_pOutput, m_lPixelSizeMultiplier);
+			avxStacking.stack(m_PixTransform, *pStackTaskInfo, bgCal, m_pOutput, m_lPixelSizeMultiplier);
 
 			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
 				ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
@@ -1832,11 +1828,21 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 		else
 			pBitmap = pInBitmap;
 
-		if (isFirstLightframe)
-			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(pBitmap->BitPerSample(), pBitmap->IsIntegralType());
+		// -------------------- Background calibration model initialisation ----------------------
+
+		if (m_pProgress != nullptr)
+		{
+			strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
+			m_pProgress->Start2(strText, 0);
+		}
+		if (isFirstLightframe) {
+			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
+				CAllStackingTasks::GetBackgroundCalibrationMode(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
+			);
+		}
 		backgroundCalib->calculateModelParameters(*pBitmap, isFirstLightframe);
 
-		CStackTask StackTask{ pBitmap, m_pProgress };
+		CStackTask StackTask{ pBitmap, backgroundCalib, m_pProgress };
 
 		// Create the output bitmap
 		const int lHeight = pBitmap->Height();
@@ -1875,18 +1881,6 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 				m_pProgress->Start2(strText, 0);
 			}
 			StackTask.m_EntropyWindow.Init(pBitmap, 10, m_pProgress);
-		}
-
-		// Compute histogram for median/min/max and picture backgound calibration
-		// information
-		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
-		{
-			if (m_pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
-				m_pProgress->Start2(strText, 0);
-			}
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), isFirstLightframe ? this->currentLightFrame.generic_u8string().c_str() : nullptr, isFirstLightframe, m_pProgress);
 		}
 
 		// Create a master light to enable stacking
@@ -1941,7 +1935,7 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 
 			AvxEntropy avxEntropy(*pBitmap, StackTask.m_EntropyWindow, m_pEntropyCoverage.get());
 
-			StackTask.init(PixTransform, pTaskInfo, m_BackgroundCalibration, backgroundCalib, m_rcResult, m_lPixelSizeMultiplier, m_pOutput, std::addressof(avxEntropy));
+			StackTask.init(PixTransform, pTaskInfo, m_rcResult, m_lPixelSizeMultiplier, m_pOutput, std::addressof(avxEntropy));
 			StackTask.process();
 
 			if (m_bCreateCometImage)

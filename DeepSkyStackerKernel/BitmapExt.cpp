@@ -500,7 +500,8 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	return true;
 }
 
-/* ------------------------------------------------------------------- */
+
+#include "BackgroundCalibration.h"
 
 namespace DSS
 {
@@ -515,8 +516,6 @@ namespace DSS
 		initTransformation(fBlackPoint, fGrayPoint, fWhitePoint);
 	}
 
-	/* ------------------------------------------------------------------- */
-
 	void GammaTransformation::initTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint)
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -528,6 +527,8 @@ namespace DSS
 
 		CRationalInterpolation ri;
 		ri.Initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
+		BackgroundCalibrationRational<1, double> rationalCalib{ BackgroundCalibrationInterface::Mode::PerChannel };
+		rationalCalib.resetModel<0>(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 
 		// Perform rational interpolation for uint16_t
 		for (int i = 0; i < transformSize; i++)
@@ -539,7 +540,12 @@ namespace DSS
 			else
 			{
 				const double fValue = ri.Interpolate(i / uint16Max_asDouble);
-				u16transform[i] = uint16Max_asDouble * fValue;//pow(fValue, fGamma);
+				const double r = std::get<0>(rationalCalib.calibratePixel(i / uint16Max_asDouble, 0, 0));
+				if (fValue != r) {
+					auto s = std::format("{} / {}", fValue, r);
+					throw s;
+				}
+				u16transform[i] = uint16Max_asDouble * r; //pow(fValue, fGamma);
 			}
 		}
 
@@ -553,7 +559,12 @@ namespace DSS
 			else
 			{
 				const double fValue = ri.Interpolate(i / uint16Max_asDouble);
-				u8transform[i] = static_cast<double>(std::numeric_limits<uint8_t>::max()) * fValue;//pow(fValue, fGamma);
+				const double r = std::get<0>(rationalCalib.calibratePixel(i / uint16Max_asDouble, 0, 0));
+				if (fValue != r) {
+					auto s = std::format("{} / {}", fValue, r);
+					throw s;
+				}
+				u8transform[i] = static_cast<double>(std::numeric_limits<uint8_t>::max()) * r; //pow(fValue, fGamma);
 			}
 		}
 

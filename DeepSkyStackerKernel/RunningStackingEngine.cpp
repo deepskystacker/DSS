@@ -86,11 +86,14 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pPr
 			m_pStackedBitmap->Init(lWidth, lHeight);
 		}
 
-		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
+		const bool isFirst = m_lNrStacked == 0;
+		if (isFirst) // This is the first light frame
 		{
-			const bool isFirst = m_lNrStacked == 0;
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), isFirst ? lfi.filePath.generic_u8string().c_str() : nullptr, isFirst, pProgress);
+			backgroundCalibration = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
+				CAllStackingTasks::GetBackgroundCalibrationMode(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
+			);
 		}
+		backgroundCalibration->calculateModelParameters(*pBitmap, isFirst);
 
 		// Stack it (average)
 		CPixelTransform PixTransform(lfi.m_BilinearParameters);
@@ -111,16 +114,14 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pPr
 		{
 			for (int i = 0; i < lWidth; i++)
 			{
-				double fRed, fGreen, fBlue;
-
 				const QPointF ptOut = PixTransform.transform(QPointF(i, j));
+
+				double fRed, fGreen, fBlue;
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
-				if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
-					m_BackgroundCalibration.ApplyCalibration(fRed, fGreen, fBlue);
+				const auto [red, green, blue] = backgroundCalibration->calibratePixel(fRed, fGreen, fBlue);
 
-				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && 
-					DSSRect { 0, 0, lWidth, lHeight }.contains(ptOut))
+				if ((red != 0.0 || green != 0.0 || blue != 0.0) && DSSRect { 0, 0, lWidth, lHeight }.contains(ptOut))
 				{
 					vPixels.resize(0);
 					ComputePixelDispatch(ptOut, 1.0, vPixels);
@@ -132,9 +133,9 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pPr
 						{
 							double fPreviousRed, fPreviousGreen, fPreviousBlue;
 							m_pStackedBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-							fPreviousRed += fRed * Pixel.m_fPercentage;
-							fPreviousGreen += fGreen * Pixel.m_fPercentage;
-							fPreviousBlue += fBlue * Pixel.m_fPercentage;
+							fPreviousRed += red * Pixel.m_fPercentage;
+							fPreviousGreen += green * Pixel.m_fPercentage;
+							fPreviousBlue += blue * Pixel.m_fPercentage;
 							m_pStackedBitmap->SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
 						}
 					}

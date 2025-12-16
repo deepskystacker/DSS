@@ -82,12 +82,12 @@ void AvxStacking::init(const int lStart, const int lEnd)
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface> bgc, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
 	return SimdSelector<Avx256Stacking, NonAvxStacking>(
-		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibrationDef, bgc, outputBitmap, pixelSizeMultiplier); }
+		this, [&](auto&& o) { return o.stack(pixelTransformDef, taskInfo, backgroundCalibration, outputBitmap, pixelSizeMultiplier); }
 	);
 }
 
@@ -95,7 +95,7 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 // Non-AVX Stacking
 // ****************
 
-int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<BackgroundCalibrationInterface> bgc, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	const int width = this->stackData.width;
 	PIXELDISPATCHVECTOR vPixels;
@@ -118,21 +118,9 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 			else
 				this->stackData.inputBitmap.GetPixel16(i, j, crColor);
 
-			float Red = crColor.red;
-			float Green = crColor.green;
-			float Blue = crColor.blue;
+			const auto [red, green, blue] = backgroundCalibration->calibratePixel(crColor.red, crColor.green, crColor.blue);
 
-			const auto [rd, gn, bl] = bgc->calibratePixel(Red, Green, Blue);
-			if (backgroundCalibrationDef.m_BackgroundCalibrationMode != BCM_NONE)
-				backgroundCalibrationDef.ApplyCalibration(Red, Green, Blue);
-
-			if (static_cast<float>(rd) != Red || static_cast<float>(gn) != Green || static_cast<float>(bl) != Blue)
-			{
-				auto s = std::format("Red: {}/{}, Green: {}/{}, Blue: {}/{}", rd, Red, gn, Green, bl, Blue);
-				throw s;
-			}
-
-			if ((0 != Red || 0 != Green || 0 != Blue) && DSSRect { 0, 0, this->stackData.resultWidth, this->stackData.resultHeight }.contains(ptOut))
+			if ((0 != red || 0 != green || 0 != blue) && DSSRect { 0, 0, this->stackData.resultWidth, this->stackData.resultHeight }.contains(ptOut))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, pixelSizeMultiplier, vPixels);
@@ -156,9 +144,9 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 								this->stackData.entropyData.pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
 
 								outputBitmap->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-								fOldRed += Red * Pixel.m_fPercentage * fRedEntropy;
-								fOldGreen += Green * Pixel.m_fPercentage * fGreenEntropy;
-								fOldBlue += Blue * Pixel.m_fPercentage * fBlueEntropy;
+								fOldRed += red * Pixel.m_fPercentage * fRedEntropy;
+								fOldGreen += green * Pixel.m_fPercentage * fGreenEntropy;
+								fOldBlue += blue * Pixel.m_fPercentage * fBlueEntropy;
 								outputBitmap->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
 							}
 							else
@@ -170,7 +158,7 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 								this->stackData.entropyData.pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
 
 								outputBitmap->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-								fOldGray += Red * Pixel.m_fPercentage * fRedEntropy;
+								fOldGray += red * Pixel.m_fPercentage * fRedEntropy;
 								outputBitmap->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
 							}
 						}
@@ -178,9 +166,9 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 						double fPreviousRed, fPreviousGreen, fPreviousBlue;
 
 						this->stackData.tempBitmap.GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-						fPreviousRed += static_cast<double>(Red) / 256.0 * Pixel.m_fPercentage;
-						fPreviousGreen += static_cast<double>(Green) / 256.0 * Pixel.m_fPercentage;
-						fPreviousBlue += static_cast<double>(Blue) / 256.0 * Pixel.m_fPercentage;
+						fPreviousRed += red / 256.0 * Pixel.m_fPercentage;
+						fPreviousGreen += green / 256.0 * Pixel.m_fPercentage;
+						fPreviousBlue += blue / 256.0 * Pixel.m_fPercentage;
 						fPreviousRed = std::min(fPreviousRed, 255.0);
 						fPreviousGreen = std::min(fPreviousGreen, 255.0);
 						fPreviousBlue = std::min(fPreviousBlue, 255.0);
