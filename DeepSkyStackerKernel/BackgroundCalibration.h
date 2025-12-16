@@ -77,7 +77,7 @@ public:
 	virtual ~BackgroundCalibrationInterface() = default;
 
 	virtual std::tuple<double, double, double> calibratePixel(const double r, const double g, const double b) const = 0;
-	virtual double calculateModelParameters(CMemoryBitmap const&, const bool calcReference) = 0;
+	virtual double calculateModelParameters(CMemoryBitmap const&, const bool calcReference, const char8_t* pFileName) = 0;
 	virtual ModelRef model() const = 0;
 protected:
 	virtual void initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax) = 0;
@@ -109,7 +109,7 @@ protected:
 	std::pair<double, double> findMedianAndMax(std::span<const int> histo, const size_t halfNumberOfPixels);
 	void calculateReferenceParameters(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax);
 public:
-	virtual double calculateModelParameters(CMemoryBitmap const&, const bool calcReference) override;
+	virtual double calculateModelParameters(CMemoryBitmap const&, const bool calcReference, const char8_t* pFileName) override;
 };
 
 // ---------------------------------------------------------

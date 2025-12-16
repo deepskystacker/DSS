@@ -168,12 +168,15 @@ void BackgroundCalibrationCommon<Mult, T>::calculateReferenceParameters(const do
 		this->referenceBackgroundGreen = greenMedian;
 		this->referenceBackgroundBlue = blueMedian;
 	}
+	ZTRACE_RUNTIME(std::format("Reference Background: red = {:.2f}, green = {:.2f}, blue = {:.2f}",
+		referenceBackgroundRed / 256.0, referenceBackgroundGreen / 256.0, referenceBackgroundBlue / 256.0)
+	);
 }
 
 // Initialize the calibration model (offset, linear, ...).
 // Returns the median value of the red channel.
 template <int Mult, typename T>
-double BackgroundCalibrationCommon<Mult, T>::calculateModelParameters(CMemoryBitmap const& bitmap, const bool calcReference)
+double BackgroundCalibrationCommon<Mult, T>::calculateModelParameters(CMemoryBitmap const& bitmap, const bool calcReference, const char8_t* pFileName)
 {
 	if (this->mode == Mode::None)
 		return 0;
@@ -185,8 +188,31 @@ double BackgroundCalibrationCommon<Mult, T>::calculateModelParameters(CMemoryBit
 	const auto [greenMedian, greenMaximum] = findMedianAndMax(greenHisto, halfNumberOfPixels);
 	const auto [blueMedian, blueMaximum] = findMedianAndMax(blueHisto, halfNumberOfPixels);
 
+	ZTRACE_RUNTIME(std::format("Background Calibration median parameters: red = {:.2f}, green = {:.2f}, blue = {:.2f}", redMedian / 256.0, greenMedian / 256.0, blueMedian / 256.0));
+
 	if (calcReference)
+	{
+		const char* calibratorName = std::visit([](auto const& variantRef)
+			{
+				auto const& model = variantRef.get();
+				using ModelType = std::decay_t<decltype(model)>;
+				if constexpr (std::same_as<ModelType, NoneModel>) return "None";
+				else if constexpr (std::same_as<ModelType, OffsetModel>) return "Offset";
+				else if constexpr (std::same_as<ModelType, LinearModel>) return "Linear";
+				else if constexpr (std::same_as<ModelType, RationalModel>) return "Rational";
+				else return "Unknown";
+			},
+			this->model()
+		);
+		ZTRACE_RUNTIME("Reference frame: %s | Calibrator Algorithm = %s, Mode = %s, RGB-Point = %s",
+			pFileName == nullptr ? u8"-" : pFileName,
+			calibratorName,
+			mode == Mode::PerChannel ? "Per Channel" : (mode == Mode::RGB ? "RGB" : "None"),
+			mode == Mode::RGB ? (rgbMethod == RgbMethod::Minimum ? "Min" : (rgbMethod == RgbMethod::Median ? "Median" : "Max")) : "-"
+		);
+
 		calculateReferenceParameters(redMedian, redMaximum, greenMedian, greenMaximum, blueMedian, blueMaximum);
+	}
 
 	initializeModel(redMedian, redMaximum, greenMedian, greenMaximum, blueMedian, blueMaximum);
 

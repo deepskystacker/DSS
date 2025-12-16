@@ -1194,7 +1194,7 @@ double CDeBloom::ComputeBackgroundValue(CMemoryBitmap const* pBitmap) const
 {
 	return BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
 		BCM_PERCHANNEL, pBitmap->BitPerSample(), pBitmap->IsIntegralType()
-	)->calculateModelParameters(*pBitmap, false) / 256.0;
+	)->calculateModelParameters(*pBitmap, false, nullptr) / 256.0;
 }
 
 

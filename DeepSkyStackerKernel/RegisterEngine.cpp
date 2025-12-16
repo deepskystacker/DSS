@@ -334,7 +334,7 @@ void CLightFrameInfo::Reset()
 
 double CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& bitmap) const
 {
-	return BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(BCM_PERCHANNEL, bitmap.BitPerSample(), bitmap.IsIntegralType())->calculateModelParameters(bitmap, false) / 256.0;
+	return BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(BCM_PERCHANNEL, bitmap.BitPerSample(), bitmap.IsIntegralType())->calculateModelParameters(bitmap, false, nullptr) / 256.0;
 }
 
 //

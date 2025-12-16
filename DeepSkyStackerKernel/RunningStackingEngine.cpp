@@ -93,7 +93,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pPr
 				CAllStackingTasks::GetBackgroundCalibrationMode(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
 			);
 		}
-		backgroundCalibration->calculateModelParameters(*pBitmap, isFirst);
+		backgroundCalibration->calculateModelParameters(*pBitmap, isFirst, nullptr);
 
 		// Stack it (average)
 		CPixelTransform PixTransform(lfi.m_BilinearParameters);

@@ -1802,8 +1802,14 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 {
 	ZFUNCTRACE_RUNTIME();
 
+	const auto ProgressStart2 = [pPrg = m_pProgress](auto&& textGenerator, const int hundredPercent)
+	{
+		if (pPrg == nullptr)
+			return;
+		pPrg->Start2(std::invoke(std::forward<decltype(textGenerator)>(textGenerator)), hundredPercent);
+	};
+
 	bool bResult = false;
-	QString strStart2;
 	QString strText;
 	const bool isFirstLightframe{ m_lNrStacked == 0 };
 	std::shared_ptr<CMemoryBitmap> pBitmap;
@@ -1811,18 +1817,13 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 	// Two cases : Bayer Drizzle or not Bayer Drizzle - that is the question
 	if (static_cast<bool>(pInBitmap) && pTaskInfo != nullptr)
 	{
-		if (m_pProgress != nullptr)
-			strStart2 = m_pProgress->GetStart2Text();
+		const QString previousStart2Text = m_pProgress != nullptr ? m_pProgress->GetStart2Text() : QString{};
 
 		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap.get());
 		if (pGrayBitmap != nullptr && pGrayBitmap->GetCFATransformation() == CFAT_AHD)
 		{
 			// Start by demosaicing the input bitmap
-			if (m_pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("StackingEngine", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING");
-				m_pProgress->Start2(strText, 0);
-			}
+			ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING"); }, 0);
 			AHDDemosaicing<std::uint16_t>(pGrayBitmap, pBitmap, m_pProgress);
 		}
 		else
@@ -1830,17 +1831,13 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 
 		// -------------------- Background calibration model initialisation ----------------------
 
-		if (m_pProgress != nullptr)
-		{
-			strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
-			m_pProgress->Start2(strText, 0);
-		}
+		ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION"); }, 1);
 		if (isFirstLightframe) {
 			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
 				CAllStackingTasks::GetBackgroundCalibrationMode(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
 			);
 		}
-		backgroundCalib->calculateModelParameters(*pBitmap, isFirstLightframe);
+		backgroundCalib->calculateModelParameters(*pBitmap, isFirstLightframe, isFirstLightframe ? currentLightFrame.generic_u8string().c_str() : nullptr);
 
 		CStackTask StackTask{ pBitmap, backgroundCalib, m_pProgress };
 
@@ -1875,11 +1872,7 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 
 		if (pTaskInfo->m_Method == MBP_ENTROPYAVERAGE)
 		{
-			if (m_pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("StackingEngine", "Computing Entropy", "IDS_COMPUTINGENTROPY");
-				m_pProgress->Start2(strText, 0);
-			}
+			ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Computing Entropy", "IDS_COMPUTINGENTROPY"); }, 0);
 			StackTask.m_EntropyWindow.Init(pBitmap, 10, m_pProgress);
 		}
 
@@ -1928,10 +1921,7 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 
 		if (static_cast<bool>(StackTask.m_pTempBitmap))
 		{
-			//int lProgress = 0;
-
-			if (m_pProgress)
-				m_pProgress->Start2(strStart2, lHeight);
+			ProgressStart2([&previousStart2Text] { return previousStart2Text; }, lHeight);
 
 			AvxEntropy avxEntropy(*pBitmap, StackTask.m_EntropyWindow, m_pEntropyCoverage.get());
 
@@ -1946,10 +1936,7 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 			else if (static_cast<bool>(m_pComet) && bComet)
 			{
 				// Subtract the comet from the light frame
-				//WriteTIFF("E:\\BeforeCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
-				//WriteTIFF("E:\\SubtractedComet.tiff", m_pComet, m_pProgress, nullptr);
 				ShiftAndSubtract(StackTask.m_pTempBitmap, m_pComet, m_pProgress, -PixTransform.m_fXCometShift, -PixTransform.m_fYCometShift);
-				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
 			}
 
 			// First try AVX accelerated code, if not supported -> run conventional code.
