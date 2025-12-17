@@ -134,7 +134,8 @@ if(MSVC)
             /Zi;
             /GS-
         >
-	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
+	    -W4 /wd4244 /wd4652 /wd4702 /wd4828
+		/WX		
 		-Zc:__cplusplus /openmp:experimental
         /MP;
         /utf-8;
@@ -155,11 +156,11 @@ if(MSVC)
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     if(APPLE)
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -Xclang -fopenmp
+            -Weverything -Werror -Xclang -fopenmp
         )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -fopenmp
+             -Wall -Wextra -Wpedantic -Werror -fopenmp
         )
     endif()
 endif()
