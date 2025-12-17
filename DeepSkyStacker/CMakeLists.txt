@@ -11,6 +11,10 @@ set(Dialogs
     "About.h"
     "ExplorerBar.cpp"
     "ExplorerBar.h"
+    "oldprogressdlg.cpp"
+    "oldprogressdlg.h"
+    "progressdlg.cpp"
+    "progressdlg.h"
 )
 source_group("Dialogs" FILES ${Dialogs})
 
@@ -91,17 +95,21 @@ set(Dialogs__Stacking
 source_group("Dialogs\\Stacking" FILES ${Dialogs__Stacking})
 
 set(Header_Files
-    "../DeepSkyStackerKernel/histogram.h"
+    "BaseDialog.h"
     "DeepSkyStacker.h"
     "Delaunay.h"
     "dslr.h"
     "DSS-versionhelpers.h"
     "DSS-winapifamily.h"
     "DSS-winpackagefamily.h"
+    "editstars.h"
+    "../DeepSkyStackerKernel/histogram.h"
     "lowerdockwidget.h"
     "mrulist.h"
-    "oldprogressdlg.h"
     "pch.h"
+    "selectrect.h"
+    "toolbar.h"
+
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -111,7 +119,6 @@ set(Source_Files
     "Delaunay.cpp"
     "editstars.cpp"
     "lowerdockwidget.cpp"
-    "oldprogressdlg.cpp"
     "selectrect.cpp"
     "toolbar.cpp"
 )
@@ -143,6 +150,7 @@ set(Ui_Files
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
 	"ui/ProcessingSettingsDlg.ui"
+    "ui/ProgressDlg.ui"
 	"ui/QualityChart.ui"
 	"ui/RawDDPSettings.ui"
 	"ui/RecommendedSettings.ui"
