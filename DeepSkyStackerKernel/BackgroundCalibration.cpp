@@ -347,3 +347,7 @@ std::tuple<double, double, double> BackgroundCalibrationRational<Mult, T>::calib
 		? std::make_tuple(r, g, b)
 		: std::make_tuple(Calibrate(std::get<0>(modelParams), r), Calibrate(std::get<1>(modelParams), g), Calibrate(std::get<2>(modelParams), b));
 }
+// Explicit template instantiation for the types we need.
+
+template void BackgroundCalibrationRational<1, double>::resetModel<0ul>(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax);
+template BackgroundCalibrationRational<1, double>::BackgroundCalibrationRational(const Mode m);
