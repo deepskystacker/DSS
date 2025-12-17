@@ -13,11 +13,6 @@
 using namespace DSS;
 
 
-CRunningStackingEngine::CRunningStackingEngine() :
-	m_lNrStacked{ 0 },
-	m_fTotalExposure{ 0 }
-{}
-
 void CRunningStackingEngine::CreatePublicBitmap()
 {
 	if (static_cast<bool>(m_pStackedBitmap) && m_lNrStacked != 0)
