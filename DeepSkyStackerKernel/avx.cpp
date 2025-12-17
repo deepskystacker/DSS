@@ -507,7 +507,7 @@ int Avx256Stacking::backgroundCalibration(std::shared_ptr<BackgroundCalibrationI
 						for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
 						{
 							const float fcolor = readColorValue(*pColor);
-							*pResult = std::clamp(fcolor + params.offset, params.minValue, params.maxValue);
+							*pResult = std::clamp(fcolor + static_cast<float>(params.offset), static_cast<float>(params.minValue), static_cast<float>(params.maxValue));
 						}
 					}
 				};
@@ -548,9 +548,9 @@ int Avx256Stacking::backgroundCalibration(std::shared_ptr<BackgroundCalibrationI
 						for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
 						{
 							const float fcolor = readColorValue(*pColor);
-							*pResult = fcolor < accessSimdElementConst(xm, 0)
-								? (fcolor * accessSimdElementConst(a0, 0) + accessSimdElementConst(b0, 0))
-								: (fcolor * accessSimdElementConst(a1, 0) + accessSimdElementConst(b1, 0));
+							*pResult = fcolor < static_cast<float>(params.median)
+								? (fcolor * static_cast<float>(params.a0) + static_cast<float>(params.b0))
+								: (fcolor * static_cast<float>(params.a1) + static_cast<float>(params.b1));
 						}
 					}
 				};
@@ -593,15 +593,16 @@ int Avx256Stacking::backgroundCalibration(std::shared_ptr<BackgroundCalibrationI
 						for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
 						{
 							const float fcolor = readColorValue(*pColor);
-							const float denom = accessSimdElementConst(b, 0) * fcolor + accessSimdElementConst(c, 0);
-							const float xplusa = fcolor + accessSimdElementConst(a, 0);
-							*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), accessSimdElementConst(fmax, 0)), accessSimdElementConst(fmin, 0));
+							const float denom = static_cast<float>(params.b) * fcolor + static_cast<float>(params.c);
+							const float xplusa = fcolor + static_cast<float>(params.a);
+							*pResult = std::clamp(denom == 0.0f ? xplusa : (xplusa / denom), static_cast<float>(params.minValue), static_cast<float>(params.maxValue));
 						}
 					}
 				};
 				return backgroundCalibLoop<T>(Loop, avxInputSupport, std::get<0>(model), std::get<1>(model), std::get<2>(model));
 			}
 			else
+				// Unknow type of model, so we either have not (yet) a SIMD implementation or there's some other problem -> fall back to scalar code.
 				return 2;
 		},
 		backgroundCalibration->model()
