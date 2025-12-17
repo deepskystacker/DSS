@@ -28,11 +28,15 @@ class CMemoryBitmap;
 
 struct NoneParams {
 };
+struct NoneParamsName { static inline constexpr std::string_view name = "None"; };
+
 struct OffsetParams {
 	double offset{ 0 }; // Must be added to the (red/green/blue) pixel values.
 	double minValue{ 0 };
 	double maxValue{ 0 };
 };
+struct OffsetParamsName { static inline constexpr std::string_view name = "Offset"; };
+
 struct LinearParams {
 	double median{ 0 };
 	double a0{ 0 };
@@ -40,6 +44,8 @@ struct LinearParams {
 	double b0{ 0 };
 	double b1{ 0 };
 };
+struct LinearParamsName { static inline constexpr std::string_view name = "Linear"; };
+
 struct RationalParams {
 	double a{ 0 };
 	double b{ 0 };
@@ -47,10 +53,12 @@ struct RationalParams {
 	double minValue{ 0 };
 	double maxValue{ 0 };
 };
-using NoneModel = std::tuple<NoneParams, NoneParams, NoneParams>;
-using OffsetModel = std::tuple<OffsetParams, OffsetParams, OffsetParams>;
-using LinearModel = std::tuple<LinearParams, LinearParams, LinearParams>;
-using RationalModel = std::tuple<RationalParams, RationalParams, RationalParams>;
+struct RationalParamsName { static inline constexpr std::string_view name = "Rational"; };
+
+using NoneModel = std::tuple<NoneParams, NoneParams, NoneParams, NoneParamsName>;
+using OffsetModel = std::tuple<OffsetParams, OffsetParams, OffsetParams, OffsetParamsName>;
+using LinearModel = std::tuple<LinearParams, LinearParams, LinearParams, LinearParamsName>;
+using RationalModel = std::tuple<RationalParams, RationalParams, RationalParams, RationalParamsName>;
 
 using ModelRef = std::variant<
 	std::reference_wrapper<const NoneModel>,

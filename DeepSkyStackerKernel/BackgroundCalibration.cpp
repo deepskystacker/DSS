@@ -192,21 +192,14 @@ double BackgroundCalibrationCommon<Mult, T>::calculateModelParameters(CMemoryBit
 
 	if (calcReference)
 	{
-		const char* calibratorName = std::visit([](auto const& variantRef)
-			{
-				auto const& model = variantRef.get();
-				using ModelType = std::decay_t<decltype(model)>;
-				if constexpr (std::same_as<ModelType, NoneModel>) return "None";
-				else if constexpr (std::same_as<ModelType, OffsetModel>) return "Offset";
-				else if constexpr (std::same_as<ModelType, LinearModel>) return "Linear";
-				else if constexpr (std::same_as<ModelType, RationalModel>) return "Rational";
-				else return "Unknown";
-			},
-			this->model()
-		);
+		const auto calibratorName = std::visit([](auto const& variantRef) {
+			using ModelType = std::remove_cvref_t<decltype(variantRef.get())>;
+			return std::tuple_element_t<3, ModelType>::name;
+		}, this->model());
+
 		ZTRACE_RUNTIME("Reference frame: %s | Calibrator Algorithm = %s, Mode = %s, RGB-Point = %s",
 			pFileName == nullptr ? u8"-" : pFileName,
-			calibratorName,
+			calibratorName.data(),
 			mode == Mode::PerChannel ? "Per Channel" : (mode == Mode::RGB ? "RGB" : "None"),
 			mode == Mode::RGB ? (rgbMethod == RgbMethod::Minimum ? "Min" : (rgbMethod == RgbMethod::Median ? "Median" : "Max")) : "-"
 		);
