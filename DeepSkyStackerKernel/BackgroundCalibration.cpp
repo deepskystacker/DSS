@@ -118,7 +118,7 @@ std::pair<double, double> BackgroundCalibrationCommon<Mult, T>::findMedianAndMax
 
 	double maximum = 0;
 	index = HistogramSize - 1;
-	for (auto it = histo.crbegin(); it != histo.crend(); ++it, --index)
+	for (auto it = histo.rbegin(); it != histo.rend(); ++it, --index)
 	{
 		if (*it != 0)
 		{
