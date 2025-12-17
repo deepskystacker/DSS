@@ -9,8 +9,9 @@ Thank you.
 
 Known problems:
 
-1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, then the exposure is set to zero.
-   This would be a lot of work to fix as it would require us to implement our own custom edit control for the table cell.
+1. When the image exposure is less than 1ms and double-click to edit is used, if the user clicks away from the editor, 
+   then the exposure is set to zero.   This would be a lot of work to fix as it would require us to implement our own
+   custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
 Changes for DeepSkyStacker 6.1.3 Beta 1
@@ -18,6 +19,9 @@ Changes for DeepSkyStacker 6.1.3 Beta 1
 
 1.  Improve handling of images in the processing tab where the greatest pixel value was well below the maximum.  This
     could result in the image being displayed "whited out".
+
+2.  Add a new background calibration method that simply offsets the pixel values so that the background level is adjusted to 
+    be the same as that of the reference frame.
 
 Changes for DeepSkyStacker 6.1.2
 ================================

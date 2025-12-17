@@ -31,13 +31,12 @@ set(VCPKG_TARGET_TRIPLET
 endif()
 message ("VCPKG_TARGET_TRIPLET: " ${VCPKG_TARGET_TRIPLET})
 
-# Require C++23 and disable extensions for all targets.
-# NOTE: See further below for how to do this more robustly.
+# Require C++23 and enable extensions for all targets.
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-project(DeepSkyStacker VERSION 6.1.2 LANGUAGES C CXX)
+project(DeepSkyStacker VERSION 6.1.3 LANGUAGES C CXX)
 
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
