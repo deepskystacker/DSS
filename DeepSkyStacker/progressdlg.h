@@ -66,7 +66,7 @@ namespace DSS
 		void hideProgress();
 
 	protected:
-		void closeEvent(QCloseEvent* bar);
+		void closeEvent(QCloseEvent* bar) override;
 		void retainHiddenWidgetSize(QWidget* widget);
 
 		//

@@ -7,7 +7,7 @@
    xml:space="preserve"
    style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;"
    id="svg9"
-   sodipodi:docname="Calibration_Offset.svg"
+   sodipodi:docname="Calibration_Offset-1.svg"
    inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
    inkscape:export-filename="Calibration_Offset.png"
    inkscape:export-xdpi="96"
@@ -26,7 +26,7 @@
    inkscape:deskcolor="#d1d1d1"
    inkscape:zoom="0.54688395"
    inkscape:cx="1243.4082"
-   inkscape:cy="1050.4971"
+   inkscape:cy="1196.7804"
    inkscape:window-width="3840"
    inkscape:window-height="2131"
    inkscape:window-x="-9"
@@ -63,7 +63,7 @@
    id="path2" />
     </g>
     <g
-   transform="matrix(8.914946,0,0,4.2398944,-21044.208,-7333.7696)"
+   transform="matrix(8.914946,0,0,2.8170612,-21044.208,-4454.0762)"
    id="g4">
         <path
    d="M 2456.004,1915.223 V 2023.37"
@@ -71,7 +71,7 @@
    id="path3" />
     </g>
     <g
-   transform="matrix(8.914946,0,0,8.914946,-21048.779,-16286.509)"
+   transform="matrix(8.914946,0,0,8.914946,-21048.779,-16146.509)"
    id="g5"
    inkscape:transform-center-x="13.043974"
    inkscape:transform-center-y="-36.570831">
@@ -82,15 +82,7 @@
     </g>
     
     
-    <g
-   transform="matrix(10.933139,-2.7234507,-2.7116021,8.1125598,-21401.351,-8068.6539)"
-   id="g8"
-   style="fill:#000000;fill-opacity:1;stroke-width:1.65799;stroke-dasharray:none">
-        <path
-   d="m 2457.9344,1956.0217 160.9472,-52.2964"
-   style="fill:#000000;fill-opacity:1;stroke:#fe0707;stroke-width:1.65799;stroke-dasharray:none"
-   id="path7" />
-    </g>
+    
     <defs
    id="defs9"><marker
    style="overflow:visible"
@@ -189,9 +181,58 @@
    close="false"
    join="false"
    linkedpaths="#path11,0,1"
-   id="path-effect12" /></defs>
+   id="path-effect12" /><inkscape:path-effect
+   effect="bspline"
+   id="path-effect10-0"
+   is_visible="true"
+   lpeversion="1.3"
+   weight="33.333333"
+   steps="2"
+   helper_size="0"
+   apply_no_weight="true"
+   apply_with_weight="true"
+   only_selected="false"
+   uniform="false" /><inkscape:path-effect
+   effect="bspline"
+   id="path-effect10-0-8"
+   is_visible="true"
+   lpeversion="1.3"
+   weight="33.333333"
+   steps="2"
+   helper_size="0"
+   apply_no_weight="true"
+   apply_with_weight="true"
+   only_selected="false"
+   uniform="false" /><marker
+   style="overflow:visible"
+   id="DartArrow-4"
+   refX="0"
+   refY="0"
+   orient="auto-start-reverse"
+   inkscape:stockid="Dart arrow"
+   markerWidth="1"
+   markerHeight="1"
+   viewBox="0 0 1 1"
+   inkscape:isstock="true"
+   inkscape:collect="always"
+   preserveAspectRatio="xMidYMid"><path
+     style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+     d="M 0,0 5,-5 -12.5,0 5,5 Z"
+     transform="scale(-0.5)"
+     id="path6-5" /></marker><inkscape:path-effect
+   effect="bspline"
+   id="path-effect14-5"
+   is_visible="true"
+   lpeversion="1.3"
+   weight="33.333333"
+   steps="2"
+   helper_size="0"
+   apply_no_weight="true"
+   apply_with_weight="true"
+   only_selected="false"
+   uniform="false" /></defs>
 <path
-   style="fill:#ff0000;fill-opacity:1;stroke:#ff0000;stroke-width:14.55729851;stroke-dasharray:none;stroke-opacity:1"
+   style="fill:#ff0000;fill-opacity:1;stroke:#ff0000;stroke-width:14.55729851;stroke-dasharray:29.11459732,29.11459732;stroke-opacity:1;stroke-dashoffset:0"
    d="m 2144.8793,242.28175 c 59.4276,0.91427 118.8552,1.82855 178.2828,2.74282"
    id="path9"
    inkscape:path-effect="#path-effect9"
@@ -199,26 +240,49 @@
    inkscape:highlight-color="#ff0000"
    transform="matrix(1.373359,-0.00950756,0.01522662,0.77299671,-876.65811,75.635896)"
    sodipodi:nodetypes="cc" /><path
-   style="fill:#ff0000;fill-opacity:1;stroke:#ff0000;stroke-width:12;stroke-dasharray:48, 96;stroke-dashoffset:0;stroke-opacity:1"
+   style="fill:#ff0000;fill-opacity:1;stroke:#ff0000;stroke-width:12;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
    d="M 157.25457,1242.494 C 877.69995,909.69943 1598.1453,576.90487 2318.5907,244.1103"
    id="path10"
    inkscape:path-effect="#path-effect10"
    inkscape:original-d="M 157.25457,1242.494 C 877.69995,909.69942 1598.1453,576.90486 2318.5907,244.1103"
    transform="matrix(0.99325636,0,0,0.98906413,15.642044,2.6758409)" /><path
-   style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:8.01233423;stroke-dasharray:24.03700269,24.03700269;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DartArrow)"
-   d="m 1234.7903,746.04608 c 0,-42.02166 0,-84.04332 0,-126.06498"
+   style="clip-rule:evenodd;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;stroke-dasharray:36, 36;stroke-dashoffset:0;stroke-opacity:1"
+   d="M 157.25457,1242.494 C 877.69995,909.69943 1598.1453,576.90487 2318.5907,244.1103"
+   id="path10-4"
+   inkscape:path-effect="#path-effect10-0"
+   inkscape:original-d="M 157.25457,1242.494 C 877.69995,909.69942 1598.1453,576.90486 2318.5907,244.1103"
+   transform="matrix(0.8774089,0,0,0.85554009,28.879419,36.605541)" /><path
+   style="fill:#0000ff;fill-opacity:1;stroke:#0000ff;stroke-width:8.01233;stroke-dasharray:24.037, 24.037;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DartArrow)"
+   d="m 1234.7903,746.04608 c 0,46.6181 0,93.2362 0,139.85431"
    id="path14"
    inkscape:path-effect="#path-effect14"
-   inkscape:original-d="m 1234.7903,746.04608 c 0,-42.02166 0,-84.04332 0,-126.06498"
-   transform="matrix(1,0,0,0.7632696,0,177.22787)"
+   inkscape:original-d="m 1234.7903,746.04608 c 0,46.6181 0,93.2362 0,139.85431"
+   transform="matrix(1,0,0,0.65012751,-3.657083,136.843)"
    inkscape:export-filename="Calibration Offset.png"
    inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96" /><g
-   transform="matrix(8.914946,0,0,8.914946,-21050.876,-16144.946)"
+   inkscape:export-ydpi="96"
+   sodipodi:nodetypes="cc" /><g
+   transform="matrix(8.914946,0,0,8.914946,-21046.876,-16010.946)"
    id="g6"
    style="clip-rule:evenodd;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5">
         <path
    d="m 2456.004,1894.136 -4.837,9.186 h 10.311 z"
    style="fill:#2b3fff;stroke:#0016bf;stroke-width:0.93px"
    id="path5" />
-    </g></svg>
+    </g><path
+   style="clip-rule:evenodd;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#ff0000;stroke-width:12;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;stroke-dasharray:36, 36;stroke-dashoffset:0;stroke-opacity:1"
+   d="M 157.25457,1242.494 C 877.69995,909.69943 1598.1453,576.90487 2318.5907,244.1103"
+   id="path10-4-2"
+   inkscape:path-effect="#path-effect10-0-8"
+   inkscape:original-d="M 157.25457,1242.494 C 877.69995,909.69942 1598.1453,576.90486 2318.5907,244.1103"
+   transform="matrix(0.83281709,0,0,0.81210638,389.05104,228.52443)" /><path
+   style="clip-rule:evenodd;fill:#0000ff;fill-opacity:1;fill-rule:evenodd;stroke:#0000ff;stroke-width:8.01233;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;stroke-dasharray:24.037, 24.037;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DartArrow-4)"
+   d="m 1234.7903,1027.305 c 0,-47.13488 0,-94.26974 0,-141.40461"
+   id="path14-7"
+   inkscape:path-effect="#path-effect14-5"
+   inkscape:original-d="m 1234.7903,1027.305 c 0,-47.13488 0,-94.26974 0,-141.40461"
+   transform="matrix(1,0,0,0.84655597,26.525932,32.09312)"
+   inkscape:export-filename="Calibration Offset.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   sodipodi:nodetypes="cc" /></svg>
