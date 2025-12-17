@@ -2087,12 +2087,12 @@ void CAllStackingTasks::SetTemporaryFilesFolder(QString strFolder)
 
 /* ------------------------------------------------------------------- */
 
-BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
+BACKGROUNDCALIBRATIONMODE CAllStackingTasks::GetBackgroundCalibrationMode()
 {
-	Workspace			workspace;
+	Workspace workspace{};
 
-	bool backgroundCalibration = workspace.value("Stacking/BackgroundCalibration", true).toBool();
-	bool perChannelCalibration = workspace.value("Stacking/PerChannelBackgroundCalibration", false).toBool();
+	const bool backgroundCalibration = workspace.value("Stacking/BackgroundCalibration", true).toBool();
+	const bool perChannelCalibration = workspace.value("Stacking/PerChannelBackgroundCalibration", false).toBool();
 
 	if (backgroundCalibration)
 		return BCM_RGB;
@@ -2100,30 +2100,24 @@ BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
 		return BCM_PERCHANNEL;
 	else
 		return BCM_NONE;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
-BACKGROUNDCALIBRATIONINTERPOLATION	CAllStackingTasks::GetBackgroundCalibrationInterpolation()
+BACKGROUNDCALIBRATIONINTERPOLATION CAllStackingTasks::GetBackgroundCalibrationInterpolation()
 {
-	Workspace			workspace;
-	int				interpolation = (int)BCI_RATIONAL;
-
-	interpolation = workspace.value("Stacking/BackgroundCalibrationInterpolation").toUInt();
-
-	return (BACKGROUNDCALIBRATIONINTERPOLATION)interpolation;
-};
+	int interpolation = static_cast<int>(BCI_RATIONAL);
+	interpolation = Workspace{}.value("Stacking/BackgroundCalibrationInterpolation").toUInt();
+	return static_cast<BACKGROUNDCALIBRATIONINTERPOLATION>(interpolation);
+}
 
 /* ------------------------------------------------------------------- */
 
-RGBBACKGROUNDCALIBRATIONMETHOD	CAllStackingTasks::GetRGBBackgroundCalibrationMethod()
+RGBBACKGROUNDCALIBRATIONMETHOD CAllStackingTasks::GetRGBBackgroundCalibrationMethod()
 {
-	Workspace			workspace;
-
-	int method = workspace.value("Stacking/RGBBackgroundCalibrationMethod", (int)RBCM_MAXIMUM).toUInt();
-
-	return (RGBBACKGROUNDCALIBRATIONMETHOD)method;
-};
+	const int method = Workspace{}.value("Stacking/RGBBackgroundCalibrationMethod", static_cast<int>(RBCM_MAXIMUM)).toUInt();
+	return static_cast<RGBBACKGROUNDCALIBRATIONMETHOD>(method);
+}
 
 /* ------------------------------------------------------------------- */
 

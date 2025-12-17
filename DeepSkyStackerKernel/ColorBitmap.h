@@ -16,6 +16,7 @@ public:
 };
 
 template <typename TType>
+//requires (std::same_as<TType, std::uint8_t> || std::same_as<TType, std::uint16_t> || std::same_as<TType, std::uint32_t> || std::same_as<TType, float> || std::same_as<TType, double>)
 class CColorBitmapT : public CMemoryBitmap, public CColorBitmap
 {
 	//friend CColorMedianFilterEngineT<TType>;
@@ -46,6 +47,11 @@ public:
 	virtual int BitPerSample() const override
 	{
 		return sizeof(TType) * 8;
+	}
+
+	virtual bool IsIntegralType() const override
+	{
+		return std::integral<TType>;
 	}
 
 	virtual bool IsFloat() const override

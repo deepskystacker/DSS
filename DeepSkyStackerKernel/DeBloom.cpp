@@ -44,7 +44,7 @@ inline bool IsEdge(const double pfGray[])
 }
 
 
-bool CDeBloom::IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y)
+bool CDeBloom::IsLeftEdge(CMemoryBitmap const* pBitmap, int x, int y) const
 {
 	double			fGray[5];
 
@@ -61,7 +61,7 @@ bool CDeBloom::IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y)
 }
 
 
-bool CDeBloom::IsRightEdge(CMemoryBitmap * pBitmap, int x, int y)
+bool CDeBloom::IsRightEdge(CMemoryBitmap const* pBitmap, int x, int y) const
 {
 	double			fGray[5];
 
@@ -78,7 +78,7 @@ bool CDeBloom::IsRightEdge(CMemoryBitmap * pBitmap, int x, int y)
 }
 
 
-bool	CDeBloom::IsTopEdge(CMemoryBitmap * pBitmap, int x, int y)
+bool	CDeBloom::IsTopEdge(CMemoryBitmap const* pBitmap, int x, int y) const
 {
 	double			fGray[5];
 
@@ -95,7 +95,7 @@ bool	CDeBloom::IsTopEdge(CMemoryBitmap * pBitmap, int x, int y)
 }
 
 
-bool CDeBloom::IsBottomEdge(CMemoryBitmap * pBitmap, int x, int y)
+bool CDeBloom::IsBottomEdge(CMemoryBitmap const* pBitmap, int x, int y) const
 {
 	double			fGray[5];
 
@@ -801,7 +801,7 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vec
 
 /* ------------------------------------------------------------------- */
 
-void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y)
+void CDeBloom::ExpandBloomedArea(CMemoryBitmap const* pBitmap, C8BitGrayBitmap * pMask, int x, int y)
 {
 	bool bEnd = false;
 	std::vector<QPoint>	vBloomed;
@@ -992,7 +992,7 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 }
 
 
-std::shared_ptr<C8BitGrayBitmap> CDeBloom::CreateMask(CMemoryBitmap* pBitmap)
+std::shared_ptr<C8BitGrayBitmap> CDeBloom::CreateMask(CMemoryBitmap const* pBitmap)
 {
 	std::shared_ptr<C8BitGrayBitmap> pMask;
 
@@ -1190,17 +1190,11 @@ void    CDeBloom::SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * p
 }
 
 
-double CDeBloom::ComputeBackgroundValue(CMemoryBitmap* pBitmap)
+double CDeBloom::ComputeBackgroundValue(CMemoryBitmap const* pBitmap) const
 {
-	double					fResult = 0.0;
-	CBackgroundCalibration	BackgroundCalibration;
-
-	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
-	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
-	BackgroundCalibration.ComputeBackgroundCalibration(pBitmap, nullptr, true, m_pProgress);
-	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
-
-	return fResult;
+	return BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
+		BCM_PERCHANNEL, pBitmap->BitPerSample(), pBitmap->IsIntegralType()
+	)->calculateModelParameters(*pBitmap, false, nullptr) / 256.0;
 }
 
 

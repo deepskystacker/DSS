@@ -332,19 +332,10 @@ void CLightFrameInfo::Reset()
 	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
 }
 
-double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
+double CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& bitmap) const
 {
-	double					fResult = 0.0;
-	CBackgroundCalibration	BackgroundCalibration;
-
-	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
-	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
-	BackgroundCalibration.SetMultiplier(256.0);
-	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, nullptr, true, m_pProgress);
-	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
-
-	return fResult;
-};
+	return BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(BCM_PERCHANNEL, bitmap.BitPerSample(), bitmap.IsIntegralType())->calculateModelParameters(bitmap, false, nullptr) / 256.0;
+}
 
 //
 // MT, August 2024

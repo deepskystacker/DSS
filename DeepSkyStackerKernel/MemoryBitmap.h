@@ -145,6 +145,7 @@ public:
 	virtual int Height() const = 0;
 	virtual int BitPerSample() const = 0;
 	virtual bool IsFloat() const = 0;
+	virtual bool IsIntegralType() const = 0;
 
 	virtual int RealWidth() const
 	{
@@ -161,7 +162,7 @@ public:
 		m_bTopDown = bTopDown;
 	}
 
-	virtual bool	IsMonochrome() const = 0;
+	virtual bool IsMonochrome() const = 0;
 
 	void SetMaster(bool bMaster)
 	{

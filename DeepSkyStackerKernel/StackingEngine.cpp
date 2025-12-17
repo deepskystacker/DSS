@@ -1714,7 +1714,7 @@ namespace
 		std::shared_ptr<CMemoryBitmap> m_pBitmap;
 		CPixelTransform m_PixTransform{};
 		CTaskInfo* pStackTaskInfo{ nullptr };
-		CBackgroundCalibration m_BackgroundCalibration{};
+		std::shared_ptr<BackgroundCalibrationInterface> bgCal{};
 		DSSRect m_rcResult{};
 		std::shared_ptr<CMemoryBitmap> m_pOutput{};
 		AvxEntropy* m_pAvxEntropy{ nullptr };
@@ -1723,24 +1723,22 @@ namespace
 	public:
 		CStackTask() = delete;
 		~CStackTask() = default;
-		explicit CStackTask(std::shared_ptr<CMemoryBitmap> pBitmap, OldProgressBase* pProgress) : // pBitmap must not be a reference!
+		// Note: pBitmap and bgc are by-value and will be moved into the member variables.
+		explicit CStackTask(std::shared_ptr<CMemoryBitmap> pBitmap, std::shared_ptr<BackgroundCalibrationInterface> bgc, OldProgressBase* pProgress) :
 			m_pProgress{ pProgress },
-			m_pBitmap{ std::move(pBitmap) }
+			m_pBitmap{ std::move(pBitmap) },
+			bgCal{ std::move(bgc) }
 		{}
 		CStackTask(CStackTask const&) = delete;
 
-
-		void init(CPixelTransform const& pixTr, CTaskInfo *pTi, CBackgroundCalibration const& backCal, 
-			DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy *pEnt);
+		void init(CPixelTransform const& pixTr, CTaskInfo *pTi, DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy *pEnt);
 		void process();
 	};
 
-	void CStackTask::init(CPixelTransform const& pixTr, CTaskInfo* pTi, CBackgroundCalibration const& backCal,
-		DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy* pEnt)
+	void CStackTask::init(CPixelTransform const& pixTr, CTaskInfo* pTi, DSSRect const& rect, int const pixSize, std::shared_ptr<CMemoryBitmap> pOut, AvxEntropy* pEnt)
 	{
 		m_PixTransform = pixTr;
 		pStackTaskInfo = pTi;
-		m_BackgroundCalibration = backCal;
 		m_rcResult = rect;
 		m_lPixelSizeMultiplier = pixSize;
 		static_assert(!std::is_reference_v<decltype(pOut)>);
@@ -1764,7 +1762,7 @@ namespace
 		{
 			const int endRow = std::min(row + lineBlockSize, height);
 			avxStacking.init(row, endRow);
-			avxStacking.stack(m_PixTransform, *pStackTaskInfo, m_BackgroundCalibration, m_pOutput, m_lPixelSizeMultiplier);
+			avxStacking.stack(m_PixTransform, *pStackTaskInfo, bgCal, m_pOutput, m_lPixelSizeMultiplier);
 
 			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
 				ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
@@ -1797,38 +1795,51 @@ std::shared_ptr<CMultiBitmap> CStackingEngine::CreateMasterLightMultiBitmap(cons
 }
 
 
-template <class T>
-std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet, T futureForWrite)
+template <class FutureType>
+std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
+	std::shared_ptr<CMemoryBitmap> pInBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet, FutureType futureForWrite
+)
 {
 	ZFUNCTRACE_RUNTIME();
 
+	const auto ProgressStart2 = [pPrg = m_pProgress](auto&& textGenerator, const int hundredPercent)
+	{
+		if (pPrg == nullptr)
+			return;
+		pPrg->Start2(std::invoke(std::forward<decltype(textGenerator)>(textGenerator)), hundredPercent);
+	};
+
 	bool bResult = false;
-	QString strStart2;
 	QString strText;
-	const bool bFirst{ m_lNrStacked == 0 };
+	const bool isFirstLightframe{ m_lNrStacked == 0 };
 	std::shared_ptr<CMemoryBitmap> pBitmap;
 
 	// Two cases : Bayer Drizzle or not Bayer Drizzle - that is the question
 	if (static_cast<bool>(pInBitmap) && pTaskInfo != nullptr)
 	{
-		if (m_pProgress != nullptr)
-			strStart2 = m_pProgress->GetStart2Text();
+		const QString previousStart2Text = m_pProgress != nullptr ? m_pProgress->GetStart2Text() : QString{};
 
 		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap.get());
 		if (pGrayBitmap != nullptr && pGrayBitmap->GetCFATransformation() == CFAT_AHD)
 		{
 			// Start by demosaicing the input bitmap
-			if (m_pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("StackingEngine", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING");
-				m_pProgress->Start2(strText, 0);
-			};
+			ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING"); }, 0);
 			AHDDemosaicing<std::uint16_t>(pGrayBitmap, pBitmap, m_pProgress);
 		}
 		else
 			pBitmap = pInBitmap;
 
-		CStackTask StackTask{ pBitmap, m_pProgress };
+		// -------------------- Background calibration model initialisation ----------------------
+
+		ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION"); }, 1);
+		if (isFirstLightframe) {
+			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
+				CAllStackingTasks::GetBackgroundCalibrationMode(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
+			);
+		}
+		backgroundCalib->calculateModelParameters(*pBitmap, isFirstLightframe, isFirstLightframe ? currentLightFrame.generic_u8string().c_str() : nullptr);
+
+		CStackTask StackTask{ pBitmap, backgroundCalib, m_pProgress };
 
 		// Create the output bitmap
 		const int lHeight = pBitmap->Height();
@@ -1861,24 +1872,8 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 
 		if (pTaskInfo->m_Method == MBP_ENTROPYAVERAGE)
 		{
-			if (m_pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("StackingEngine", "Computing Entropy", "IDS_COMPUTINGENTROPY");
-				m_pProgress->Start2(strText, 0);
-			}
+			ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Computing Entropy", "IDS_COMPUTINGENTROPY"); }, 0);
 			StackTask.m_EntropyWindow.Init(pBitmap, 10, m_pProgress);
-		}
-
-		// Compute histogram for median/min/max and picture backgound calibration
-		// information
-		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
-		{
-			if (m_pProgress != nullptr)
-			{
-				strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
-				m_pProgress->Start2(strText, 0);
-			}
-			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), bFirst ? this->currentLightFrame.generic_u8string().c_str() : nullptr, bFirst, m_pProgress);
 		}
 
 		// Create a master light to enable stacking
@@ -1926,14 +1921,11 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 
 		if (static_cast<bool>(StackTask.m_pTempBitmap))
 		{
-			//int lProgress = 0;
-
-			if (m_pProgress)
-				m_pProgress->Start2(strStart2, lHeight);
+			ProgressStart2([&previousStart2Text] { return previousStart2Text; }, lHeight);
 
 			AvxEntropy avxEntropy(*pBitmap, StackTask.m_EntropyWindow, m_pEntropyCoverage.get());
 
-			StackTask.init(PixTransform, pTaskInfo, m_BackgroundCalibration, m_rcResult, m_lPixelSizeMultiplier, m_pOutput, std::addressof(avxEntropy));
+			StackTask.init(PixTransform, pTaskInfo, m_rcResult, m_lPixelSizeMultiplier, m_pOutput, std::addressof(avxEntropy));
 			StackTask.process();
 
 			if (m_bCreateCometImage)
@@ -1944,10 +1936,7 @@ std::pair<bool, T> CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitma
 			else if (static_cast<bool>(m_pComet) && bComet)
 			{
 				// Subtract the comet from the light frame
-				//WriteTIFF("E:\\BeforeCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
-				//WriteTIFF("E:\\SubtractedComet.tiff", m_pComet, m_pProgress, nullptr);
 				ShiftAndSubtract(StackTask.m_pTempBitmap, m_pComet, m_pProgress, -PixTransform.m_fXCometShift, -PixTransform.m_fYCometShift);
-				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
 			}
 
 			// First try AVX accelerated code, if not supported -> run conventional code.
@@ -2207,7 +2196,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 					const auto GetLightframeInfoIndexes = [this](FRAMEINFOVECTOR const& frameInfoVector) -> std::vector<int>
 					{
-					constexpr bool UseQualityOrder = true;
+						constexpr bool UseQualityOrder = true;
 
 						std::vector<int> indexes(frameInfoVector.size());
 						std::ranges::transform(frameInfoVector, indexes.begin(), [this](CFrameInfo const& frameInfo) { return findBitmapIndex(frameInfo.filePath); });
