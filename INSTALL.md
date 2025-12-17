@@ -18,11 +18,11 @@ If you are running a different flavour of Linux, then you'll need to install it 
 
 Once you've downloaded the installer on Linux, you will most likely need to make it executable.  For example:
 
-    chmod +x DeepSkyStacker-6.1.0-linux-x64-installer.run
+    chmod +x DeepSkyStacker-6.1.3-linux-x64-installer.run
 
 You need to run the installer with root authority, so you should invoke it like this (for example):
 
-    sudo ~/Downloads/DeepSkyStacker-6.1.0-linux-x64-installer.run
+    sudo ~/Downloads/DeepSkyStacker-6.1.3-linux-x64-installer.run
 
 If DeepSkyStacker won't start from the Desktop entries then you should try open a terminal window and run:
 
@@ -58,8 +58,17 @@ should do the trick.
 
 ### macOS:
 
-Just open the downloaded .dmg and run the installer that it contains
+Just open the downloaded .dmg and run the installer that it contains.
 
+If you get a message like:
+
+<img width="527" height="210" alt="image" src="https://github.com/user-attachments/assets/01f4337b-9b0c-4329-b3ab-4d2b3f380031" />
+
+then you will need to override it in System Settings -> Privacy & Security -> App Management e.g.:
+
+<img width="607" height="183" alt="image" src="https://github.com/user-attachments/assets/5ac0e5f5-e638-4efd-be3f-d39f9a040550" />
+
+then re-run the installer.
 #### Setting up a symlink for using DeepSkyStackerCL on macOS
 
 DeepSkyStackerCL is delivered in the DeepSkyStacker.app bundle.   To use it you'll need define a symlink to it in e.g. /usr/local/bin
