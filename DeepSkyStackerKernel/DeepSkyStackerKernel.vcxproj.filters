@@ -424,16 +424,10 @@
     <ClInclude Include="FlatPart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinearInterpolationh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MedianFilterEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MultiBitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RationalInterpolation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SkyBackground.h">

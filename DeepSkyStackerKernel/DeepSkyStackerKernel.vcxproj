@@ -383,11 +383,9 @@
     <ClInclude Include="FlatPart.h" />
     <ClInclude Include="FrameInfoSupport.h" />
     <QtMoc Include="imageloader.h" />
-    <ClInclude Include="LinearInterpolationh.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="MedianFilterEngine.h" />
     <ClInclude Include="MultiBitmap.h" />
-    <ClInclude Include="RationalInterpolation.h" />
     <ClInclude Include="RunningStackingEngine.h" />
     <ClInclude Include="SkyBackground.h" />
     <ClInclude Include="StackedBitmap.h" />
