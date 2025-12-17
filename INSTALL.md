@@ -18,11 +18,11 @@ If you are running a different flavour of Linux, then you'll need to install it 
 
 Once you've downloaded the installer on Linux, you will most likely need to make it executable.  For example:
 
-    chmod +x DeepSkyStacker-6.1.0-linux-x64-installer.run
+    chmod +x DeepSkyStacker-6.1.2-linux-x64-installer.run
 
 You need to run the installer with root authority, so you should invoke it like this (for example):
 
-    sudo ~/Downloads/DeepSkyStacker-6.1.0-linux-x64-installer.run
+    sudo ~/Downloads/DeepSkyStacker-6.1.2-linux-x64-installer.run
 
 If DeepSkyStacker won't start from the Desktop entries then you should try open a terminal window and run:
 
