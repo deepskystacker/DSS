@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "catch.h"
+#include "catch_amalgamated.hpp"
 #include "avx_bitmap_filler.h"
 #include "ColorBitmap.h"
 #include "MedianFilterEngine.h"

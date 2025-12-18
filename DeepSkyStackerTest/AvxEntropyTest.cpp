@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "catch.h"
+#include "catch_amalgamated.hpp"
 #include "avx_entropy.h"
 #include "ColorBitmap.h"
 #include "Multitask.h"
