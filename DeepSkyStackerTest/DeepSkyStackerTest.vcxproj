@@ -163,7 +163,6 @@
   <ItemGroup>
     <ClInclude Include="AvxAccumulateTest.h" />
     <ClInclude Include="AvxEntropyTest.h" />
-    <ClInclude Include="catch.h" />
     <ClInclude Include="catch_amalgamated.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
