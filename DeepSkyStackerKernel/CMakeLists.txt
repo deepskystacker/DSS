@@ -444,6 +444,7 @@ if(MSVC)
         >
         /MP;
         /W4;
+		/WX;
         ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
         -Zc:__cplusplus;
         /openmp:experimental;
@@ -457,11 +458,11 @@ if(MSVC)
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     if(APPLE)
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -Xclang -fopenmp
+            -Weverything -Werror -Xclang -fopenmp
         )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -fopenmp
+            -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp
         )
     endif()
 endif()

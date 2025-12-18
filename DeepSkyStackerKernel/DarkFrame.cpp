@@ -460,6 +460,8 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 					else
 						sBlueValuePairs.insert(vp);
 					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -500,6 +502,8 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 				if (it != sBlueValuePairs.end() && (*it).m_lCount>0)
 					(const_cast<CValuePair&>(*it)).m_lCount--;
 					//(*it).m_lCount--;
+				break;
+			default:
 				break;
 			}
 		}
@@ -731,6 +735,8 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						else
 							sBlueValuePairs.insert(vp);
 						break;
+					default:
+						break;
 					}
 				}
 			}
@@ -767,6 +773,8 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						break;
 					case BAYER_BLUE:
 						reduceCount(sBlueValuePairs);
+						break;
+					default:
 						break;
 					}
 				}
@@ -1094,6 +1102,8 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 				case BAYER_BLUE :
 					rgbHistogram.GetBlueHistogram().AddValue(fGray);
 					break;
+				default:
+					break;
 				}
 			}
 			else if (bMonochrome)
@@ -1192,6 +1202,8 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 							pxMaxBlue.SetPixel(vColumns[i], j);
 						}
 						break;
+					default:
+						break;
 					}
 				}
 				else
@@ -1237,37 +1249,36 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 	else
 	{
 		// Check all the points
-#pragma warning (suppress:4456)
-		double			fMaxRed, fMaxGreen, fMaxBlue;
+		double			fMaxR, fMaxG, fMaxB;
 
 		DSSRect			rcMaxRed,
 						rcMaxGreen,
 						rcMaxBlue;
 
 		rcMaxRed = getRectAroundPoint(lWidth, lHeight, 20, pxMaxRed);
-		fMaxRed = computeMedianValueInRect(pBitmap, rcMaxRed);
+		fMaxR = computeMedianValueInRect(pBitmap, rcMaxRed);
 		rcMaxGreen = getRectAroundPoint(lWidth, lHeight, 20, pxMaxGreen);
-		fMaxGreen = computeMedianValueInRect(pBitmap, rcMaxGreen);
+		fMaxG = computeMedianValueInRect(pBitmap, rcMaxGreen);
 		rcMaxBlue = getRectAroundPoint(lWidth, lHeight, 20, pxMaxBlue);
-		fMaxBlue = computeMedianValueInRect(pBitmap, rcMaxBlue);
+		fMaxB = computeMedianValueInRect(pBitmap, rcMaxBlue);
 
 		double			fMax;
 
-		fMax = std::max(fMaxRed, std::max(fMaxGreen, fMaxBlue));
-		if (fMax == fMaxRed)
+		fMax = std::max(fMaxR, std::max(fMaxG, fMaxB));
+		if (fMax == fMaxR)
 		{
 			m_rcHotest = rcMaxRed;
-			m_fMedianHotest = fMaxRed;
+			m_fMedianHotest = fMaxR;
 		}
-		else if (fMax == fMaxBlue)
+		else if (fMax == fMaxB)
 		{
 			m_rcHotest = rcMaxBlue;
-			m_fMedianHotest = fMaxBlue;
+			m_fMedianHotest = fMaxB;
 		}
 		else
 		{
 			m_rcHotest = rcMaxGreen;
-			m_fMedianHotest = fMaxGreen;
+			m_fMedianHotest = fMaxG;
 		}
 	}
 
@@ -1467,6 +1478,8 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 						break;
 					case BAYER_BLUE :
 						vBlueRatios.push_back(fRatio);
+						break;
+					default:
 						break;
 					}
 				}

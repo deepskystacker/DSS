@@ -24,11 +24,11 @@ public:
 	CStarTriangle() = default;
 
 	explicit constexpr CStarTriangle(const size_t Star1, const size_t Star2, const size_t Star3, float fX, float fY) noexcept :
+		m_fX{ fX },
+		m_fY{ fY },
 		m_Star1{ static_cast<decltype(m_Star1)>(Star1) },
 		m_Star2{ static_cast<decltype(m_Star2)>(Star2) },
-		m_Star3{ static_cast<decltype(m_Star3)>(Star3) },
-		m_fX{ fX },
-		m_fY{ fY }
+		m_Star3{ static_cast<decltype(m_Star3)>(Star3) }
 	{}
 
 	CStarTriangle(const CStarTriangle&) = default;

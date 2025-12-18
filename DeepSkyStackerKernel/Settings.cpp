@@ -133,9 +133,8 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, const fs::path& file)
 		bool				bFITS = false;
 		bool				bRAW  = false;
 		int				lWidth = 0,
-							lHeight = 0,
-							lBitPerChannels = 0,
-							lNrChannels = 0;
+						lHeight = 0,
+						lNrChannels = 0;
 
 
 		for (size_t i = 0; i < pTask->m_vBitmaps.size(); i++)
@@ -149,7 +148,6 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, const fs::path& file)
 				bRAW = true;
 			lWidth  = pTask->m_vBitmaps[i].m_lWidth;
 			lHeight = pTask->m_vBitmaps[i].m_lHeight;
-			lBitPerChannels = pTask->m_vBitmaps[i].m_lBitsPerChannel;
 			lNrChannels     = pTask->m_vBitmaps[i].m_lNrChannels;
 		};
 

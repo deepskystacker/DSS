@@ -6,7 +6,9 @@
 #include "BitmapExtraInfo.h"
 #include "fitsio.h"
 
+#if defined(_MSC_VER) && (_MSC_VER >= 1020)	
 #pragma comment(lib, "cfitsio.lib")
+#endif
 
 class CFITSHeader
 {
@@ -139,8 +141,8 @@ public:
 		m_fGreenRatio{ 1.0 },
 		m_fRedRatio{ 1.0 },
 		m_fBlueRatio{ 1.0 },
-		m_bDSI{ false },
-		m_fBrightnessRatio{ 0.0 }
+		m_fBrightnessRatio{ 0.0 },
+		m_bDSI{ false }
 	{}
 
 	virtual ~CFITSReader()

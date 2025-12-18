@@ -1078,6 +1078,8 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 					case BAYER_RED:
 						fRed = std::min(maxValue, fRed * m_fRedRatio);
 						break;
+					default:
+						break;
 					}
 				}
 				else
@@ -1349,6 +1351,15 @@ void CFITSWriter::SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFAT
 		m_lNrChannels = 1;
 		m_lBitsPerPixel = 32;
 		m_bFloat = true;
+		break;
+	default:
+		ZInvalidParameter invParm("Invalid format",
+			7,
+			ZException::recoverable);
+		invParm.setErrorCodeGroup(ZException::other);
+		invParm.addLocation(ZEXCEPTION_LOCATION());
+		invParm.logExceptionData();
+		throw invParm;
 		break;
 	};
 };

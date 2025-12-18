@@ -354,6 +354,8 @@ namespace DSS
 				return editor;
 			}
 			break;
+		default:
+			break;
 		}
 		//
 		// Not one we want to handle so return the default
@@ -478,6 +480,8 @@ namespace DSS
 		pictureList{ pictures },
 		ui(new Ui::StackingDlg),
 		initialised(false),
+		m_tipShowCount{ 0 },
+		networkManager{ nullptr },
 		markAsReference{ nullptr },
 		check{ nullptr },
 		uncheck{ nullptr },
@@ -489,9 +493,7 @@ namespace DSS
 		remove{ nullptr },
 		properties{ nullptr },
 		copy{ nullptr },
-		erase{ nullptr },
-		networkManager{ nullptr },
-		m_tipShowCount{ 0 }
+		erase{ nullptr }
 	{
 		ui->setupUi(this);
 		isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
@@ -1296,6 +1298,8 @@ namespace DSS
 						addFileIfValid(entry);
 					}
 				}
+				break;
+			default:
 				break;
 			}
 		}

@@ -23,6 +23,8 @@ public :
 		return (*this);
 	};
 
+	WorkspaceSetting(const WorkspaceSetting&) = default;
+
 	bool operator < (const WorkspaceSetting & s) const
 	{
 		if (keyName < s.keyName)

@@ -146,12 +146,11 @@ enum class ActivePanel
 
 
 // TODO: reference additional headers your program requires here
-
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4018 )
+#endif
 
 #include "DSSVersion.h"
-#define VERSION_LIBTIFF						"4.0.9"
-#define VERSION_CFITSIO						"3.43"
 
 #define NEWENGINE

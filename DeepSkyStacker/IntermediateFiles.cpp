@@ -25,6 +25,8 @@ namespace DSS
 			case Qt::Checked:
 				workspace->setValue("Stacking/CompressFITS", true);
 				break;
+			default:
+				break;
 			}
 			});
 	}

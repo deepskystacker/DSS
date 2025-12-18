@@ -764,9 +764,6 @@ namespace DSS
 
 		ZASSERT(nullptr != pStackingTasks);
 
-		STACKINGMODE stackingMode{ pStackingTasks->getStackingMode() };
-
-
 		StackSettings			dlg(this);
 		DSSRect					rcCustom;
 
@@ -783,7 +780,6 @@ namespace DSS
 
 		if (dlg.exec())
 		{
-			stackingMode = pStackingTasks->getStackingMode();
 			pStackingTasks->UpdateTasksMethods();
 			fillWithAllTasks();
 		};

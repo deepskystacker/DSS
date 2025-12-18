@@ -268,16 +268,16 @@ int	StackedBitmap::GetNrStackedFrames() const
 
 
 /* ------------------------------------------------------------------- */
-namespace
-{
-	void limitColorValues(double& red, double& green, double& blue)
-	{
-		constexpr double UpperLimit = 255.0;
-		red = std::min(red, UpperLimit);
-		green = std::min(green, UpperLimit);
-		blue = std::min(blue, UpperLimit);
-	}
-}
+//namespace
+//{
+//	void limitColorValues(double& red, double& green, double& blue)
+//	{
+//		constexpr double UpperLimit = 255.0;
+//		red = std::min(red, UpperLimit);
+//		green = std::min(green, UpperLimit);
+//		blue = std::min(blue, UpperLimit);
+//	}
+//}
 
 //
 // MT, 11-March-2024

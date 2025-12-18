@@ -85,11 +85,11 @@ namespace DSS
 		QWidget(parent),
 		controls{ processingControls },
 		dirty_ { false },
-		timer {this},
+		hacMenu{ this },
+		timer{ this },
 		redAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
 		greenAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
-		blueAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
-		hacMenu{ this }
+		blueAdjustmentCurve_{ HistogramAdjustmentCurve::Linear }
 	{
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);

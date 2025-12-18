@@ -917,16 +917,11 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 
 void QLinearGradientCtrl::deleteSelected(bool bUpdate)
 {
-	int oldsel;
-	float oldpos;
 
 	if (selectedPeg == NONE)
 		return;
 	if (selectedPeg >= endPegStop)
 		return;
-
-	oldsel = selectedPeg;
-	oldpos = stops[selectedPeg].first;
 
 	stops.remove(selectedPeg);
 	--endPegStop;				// There's now one fewer pegs

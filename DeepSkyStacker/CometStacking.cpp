@@ -9,8 +9,8 @@ namespace DSS
 	CometStacking::CometStacking(QWidget* parent) :
 		QWidget(parent),
 		ui(new Ui::CometStacking),
-		m_CometStackingMode{ CSM_STANDARD },
-		workspace(new Workspace())
+		workspace(new Workspace()),
+		m_CometStackingMode{ CSM_STANDARD }
 	{
 		ui->setupUi(this);
 	}

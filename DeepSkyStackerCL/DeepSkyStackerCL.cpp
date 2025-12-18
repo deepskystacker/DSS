@@ -334,6 +334,8 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 		case TF_32BITRGBFLOAT:
 			fitsformat = bMonochrome ? FF_32BITGRAYFLOAT : FF_32BITRGBFLOAT;
 			break;
+		default:
+			break;
 		}
 		WriteFITS(stackingParams.GetOutputFilename().toStdU16String(), pBitmap.get(), &progress, fitsformat, nullptr);
 	}

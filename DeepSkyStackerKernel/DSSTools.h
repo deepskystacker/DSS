@@ -106,7 +106,7 @@ template <class T>
 inline T Maximum(const std::vector<T>& values)
 {
     if (values.empty())
-        return 0;
+		return 0;
 
 	return *std::max_element(values.begin(), values.end());
 }

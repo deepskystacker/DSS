@@ -60,10 +60,10 @@ public:
 	CMedianImageFilter() :
 		m_bMonochrome{ false },
 		m_bCFA{ false },
-		m_lFilterSize{ 1 },
 		m_lWidth{ 0 },
 		m_lHeight{ 0 },
-		m_pInBitmap{ nullptr }
+		m_pInBitmap{ nullptr },
+		m_lFilterSize{ 1 }
 	{}
 
 	virtual ~CMedianImageFilter()

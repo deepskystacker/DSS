@@ -1137,23 +1137,24 @@ private :
 	double m_fXShift;
 	double m_fYShift;
 	double m_fMinimum;
-	bool m_bMonochrome;
 	bool m_bAddMode;
+	bool m_bMonochrome;
+
 
 public :
     CSubtractTask() :
 		m_pTarget{},
 		m_pSource{},
-		m_fXShift{ 0 },
-        m_fYShift{ 0 },
-        m_bAddMode{ false },
-        m_fMinimum{ 0 },
-        m_fRedFactor{ 0 },
+		m_pProgress{ nullptr },
+		m_fRedFactor{ 0 },
         m_fGreenFactor{ 0 },
         m_fBlueFactor{ 0 },
         m_fGrayFactor{ 0 },
-        m_bMonochrome{ false },
-        m_pProgress{ nullptr }
+		m_fXShift{ 0 },
+		m_fYShift{ 0 },
+		m_fMinimum{ 0 },
+		m_bAddMode{ false },
+		m_bMonochrome{ false }
 	{}
 
 	~CSubtractTask() = default;

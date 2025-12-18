@@ -162,23 +162,24 @@ public:
 		m_lNrCometStackable{ 0 },
 		m_lISOSpeed{ 0 },
 		m_lGain{ -1 },
-		m_fStarTrailsAngle {0.0},
-		pTaskInfo{ nullptr },
-		m_lNrStacked{ 0 },
 		m_fTotalExposure{ 0 },
+		m_fStarTrailsAngle{ 0.0 },
+		pTaskInfo{ nullptr },
 		m_fKeptPercentage{ 100.0 },
+		m_lNrStacked{ 0 },
 		m_bSaveCalibrated{ CAllStackingTasks::GetSaveCalibrated() },
-		m_bSaveCalibratedDebayered{ CAllStackingTasks::GetSaveCalibratedDebayered() },
 		m_bSaveIntermediate{ CAllStackingTasks::GetCreateIntermediates() },
+		m_bSaveCalibratedDebayered{ CAllStackingTasks::GetSaveCalibratedDebayered() },
 		m_InputCFAType{ CFATYPE_NONE },
 		m_lPixelSizeMultiplier{ CAllStackingTasks::GetPixelSizeMultiplier() },
 		m_IntermediateFileFormat{ CAllStackingTasks::GetIntermediateFileFormat() },
 		m_bCometStacking{ false },
+		m_bCometInterpolating{ false },
 		m_bCreateCometImage{ false },
 		m_bSaveIntermediateCometImages{ CAllStackingTasks::GetSaveIntermediateCometImages() },
 		m_bApplyFilterToCometImage{ CAllStackingTasks::GetApplyMedianFilterToCometImage() },
-		m_bChannelAlign{ CAllStackingTasks::GetChannelAlign() },
-		m_bCometInterpolating{ false }
+		m_bChannelAlign{ CAllStackingTasks::GetChannelAlign() }
+
 
 	{
 		CAllStackingTasks::GetPostCalibrationSettings(m_PostCalibrationSettings);

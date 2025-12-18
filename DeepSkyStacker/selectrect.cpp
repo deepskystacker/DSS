@@ -561,6 +561,8 @@ namespace DSS
             temp = std::min(imageView->imageHeight(), selectRect.bottom() + deltaY);
             selectRect.setBottom(temp);
             break;
+        default:
+            break;
         };
 
         QRectF	rect2xDrizzle, rect3xDrizzle;

@@ -46,8 +46,8 @@ public:
 	virtual ~CGrayBitmapT() = default;
 
 private:
-	int m_lHeight;
-	int m_lWidth;
+	int m_lWidth{ 0 };
+	int m_lHeight{ 0 };
 	constexpr static bool m_bWord{ std::is_same_v<TType, std::uint16_t> };
 	constexpr static bool m_bFloat{ std::is_same_v<TType, float> };
 	constexpr static double clampValue{ initClamp<TType>() };
@@ -61,7 +61,8 @@ private:
 
 	inline bool	IsXYOk(size_t x, size_t y) const
 	{
-		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
+		// Remove the test for >= 0 for size_t
+		return (x < m_lWidth && y < m_lHeight);
 	}
 
 	size_t GetOffset(const size_t x, const size_t y) const

@@ -56,9 +56,9 @@ class StackingTask : public QObject
 public:
 	StackingTask(QObject* parent, std::function<void(StackingParams&, QTextStream&)> func, StackingParams& params, QTextStream& consoleOut) :
 		QObject(parent),
+		stackFunction(func),
 		m_parameters(params),
-		m_consoleOut(consoleOut),
-		stackFunction(func)
+		m_consoleOut(consoleOut)
 	{}
 
 public slots:
