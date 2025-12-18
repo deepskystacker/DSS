@@ -145,7 +145,7 @@ CFATYPE AvxBitmapUtil::getCfaType() const
 		return CFATYPE_NONE;
 }
 
-const int AvxBitmapUtil::width() const {
+int AvxBitmapUtil::width() const {
 	return bitmap.Width();
 }
 

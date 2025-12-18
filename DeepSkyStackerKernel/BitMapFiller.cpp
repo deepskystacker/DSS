@@ -28,8 +28,8 @@ bool BitmapFillerInterface::isThreadSafe() const { return false; }
 // ----------------------------------
 
 BitmapFillerBase::BitmapFillerBase(CMemoryBitmap* pB, OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
-	pBitmap{ pB },
 	pProgress{ pP },
+	pBitmap{ pB },
 	redScale{ static_cast<float>(redWb) },
 	greenScale{ static_cast<float>(greenWb) },
 	blueScale{ static_cast<float>(blueWb) },
@@ -66,6 +66,7 @@ void BitmapFillerBase::setCfaFactors()
 	case CFATYPE_GRBG: return setFactors(greenScale, redScale, blueScale, greenScale);
 	case CFATYPE_GBRG: return setFactors(greenScale, blueScale, redScale, greenScale);
 	case CFATYPE_RGGB: return setFactors(redScale, greenScale, greenScale, blueScale);
+	default: return setFactors(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 };
 
@@ -77,8 +78,8 @@ bool BitmapFillerBase::isRgbBayerPattern() const
 	case CFATYPE_GRBG:
 	case CFATYPE_GBRG:
 	case CFATYPE_RGGB: return true;
+	default: return false;
 	}
-	return false;
 }
 
 void BitmapFillerBase::setGrey(bool grey)

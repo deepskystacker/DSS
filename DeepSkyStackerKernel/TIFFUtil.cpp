@@ -828,6 +828,15 @@ void CTIFFWriter::SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFAT
 		samplemin    = 0;
 		samplemax    = 1.0;
 		break;
+	default:
+		ZInvalidParameter invParm("Invalid format",
+			7,
+			ZException::recoverable);
+		invParm.setErrorCodeGroup(ZException::other);
+		invParm.addLocation(ZEXCEPTION_LOCATION());
+		invParm.logExceptionData();
+		throw invParm;
+		break;
 	}
 }
 
@@ -1815,15 +1824,6 @@ int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::sh
 }
 
 CTIFFHeader::CTIFFHeader() :
-	samplemax{ 1.0 },
-	samplemin{ 0.0 },
-	exposureTime{ 0.0f },
-	aperture{ 0.0f },
-	isospeed{ 0 },
-	gain{ -1 },
-	cfatype{ 0 },
-	cfa{ false },
-	nrframes{ 0 },
 	w{ 0 },
 	h{ 0 },
 	spp{ 0 },
@@ -1832,7 +1832,16 @@ CTIFFHeader::CTIFFHeader() :
 	compression{ 0 },
 	planarconfig{ 0 },
 	sampleformat{ 0 },
-	master{ 0 }
+	cfa{ false },
+	cfatype{ 0 },
+	master{ 0 },
+	samplemin{ 0.0 },
+	samplemax{ 1.0 },
+	exposureTime{ 0.0f },
+	aperture{ 0.0f },
+	isospeed{ 0 },
+	gain{ -1 },
+	nrframes{ 0 }
 {
 	TIFFSetWarningHandler(nullptr);
 	TIFFSetWarningHandlerExt(nullptr);

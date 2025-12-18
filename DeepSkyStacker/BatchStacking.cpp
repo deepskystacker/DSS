@@ -38,8 +38,8 @@ namespace DSS
 	extern QStringList OUTPUTLIST_FILTERS;
 
 	BatchStacking::BatchStacking(QWidget* parent) :
-		stackingDlg { dynamic_cast<StackingDlg*>(parent) },
 		Inherited(Behaviour::PersistGeometry, parent),
+		stackingDlg{ dynamic_cast<StackingDlg*>(parent) },
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
 	{
@@ -156,7 +156,6 @@ namespace DSS
 				++processedListCount;
 
 				if (successfulProcessing) {
-					auto index = m_fileListModel->index(i, 0);
 					item->setText(QStringLiteral("->") + outputFile);
 					item->setEnabled(false);
 					item->setCheckState(Qt::Unchecked);

@@ -171,7 +171,8 @@ namespace {
 				
 				for (const int n : { 0, 1, 2, 3 })
 				{
-					if (const size_t x = xcoords[n], y = ycoords[n]; x >= 0 && x < width && y >= 0 && y < height)
+					// Remove check for >= 0 for size_t
+					if (const size_t x = xcoords[n], y = ycoords[n]; x < width && y < height)
 					{
 						luminanceOfPixel += proportions[n] * std::max(bitmap.getUncheckedValue(x, y) - backgroundNoiseLevel, 0.0);
 					}

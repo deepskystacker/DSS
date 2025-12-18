@@ -110,7 +110,7 @@ namespace Medianhelper
 template <class T>
 inline T qMedian(T arr[], const int n, const int quantile)
 {
-	T a, b;
+	T a{ 0 }, b{ 0 };
 	bool x = false, y = false;
 	Medianhelper::MedianUtil(arr, 0, n - 1, quantile, a, b, x, y);
 

@@ -332,6 +332,8 @@ namespace DSS
             case Column::Exposure:
                 return tr("Double click to edit");
                 break;
+            default:
+                break;
             }
 
         if (Qt::BackgroundRole == role)
@@ -343,6 +345,8 @@ namespace DSS
             case Column::ISO:
             case Column::Exposure:
                 return tr("Double click to edit");
+                break;
+            default:
                 break;
             }
         return QVariant();
@@ -396,6 +400,8 @@ namespace DSS
                 return tr("#Stars", "IDS_COLUMN_STARS");
             case Column::Background:
                 return tr("Sky Background", "IDS_COLUMN_SKYBACKGROUND");
+            default:
+                break;
             }
         }
         return QVariant();

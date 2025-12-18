@@ -139,6 +139,7 @@ namespace DSS
 
 		switch (type)
 		{
+		case PICTURETYPE_REFLIGHTFRAME:
 		case PICTURETYPE_LIGHTFRAME:
 			ui->stackedWidget->setCurrentIndex((int)type - 1);
 			// Make the Light frame specific controls visible
@@ -264,6 +265,8 @@ namespace DSS
 			//
 			ui->modeEWA->setEnabled(false);
 			break;
+		default:
+			break;
 		};
 		updateControls(method);
 	}
@@ -299,6 +302,8 @@ namespace DSS
 			break;
 		case MBP_ENTROPYAVERAGE:
 			ui->modeEWA->setChecked(true);
+			break;
+		default:
 			break;
 		};
 
@@ -383,6 +388,7 @@ namespace DSS
 			switch (type)
 			{
 			case PICTURETYPE_LIGHTFRAME:
+			case PICTURETYPE_REFLIGHTFRAME:
 				workspace->setValue("Stacking/Light_Method", (uint)method);
 				break;
 			case PICTURETYPE_DARKFRAME:
@@ -393,6 +399,8 @@ namespace DSS
 				break;
 			case PICTURETYPE_OFFSETFRAME:
 				workspace->setValue("Stacking/Offset_Method", (uint)method);
+				break;
+			default:
 				break;
 			}
 			emit methodChanged(method);
@@ -502,6 +510,7 @@ namespace DSS
 		{
 			switch (type)
 			{
+			case PICTURETYPE_REFLIGHTFRAME:
 			case PICTURETYPE_LIGHTFRAME:
 				workspace->setValue("Stacking/Light_Iteration", value);
 				break;
@@ -513,6 +522,8 @@ namespace DSS
 				break;
 			case PICTURETYPE_OFFSETFRAME:
 				workspace->setValue("Stacking/Offset_Iteration", value);
+				break;
+			default:
 				break;
 			}
 		}
@@ -533,6 +544,7 @@ namespace DSS
 				kappa = temp;
 				switch (type)
 				{
+				case PICTURETYPE_REFLIGHTFRAME:
 				case PICTURETYPE_LIGHTFRAME:
 					workspace->setValue("Stacking/Light_Kappa", kappa);
 					break;
@@ -545,6 +557,8 @@ namespace DSS
 				case PICTURETYPE_OFFSETFRAME:
 					workspace->setValue("Stacking/Offset_Kappa", kappa);
 					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -553,6 +567,7 @@ namespace DSS
 			QApplication::beep();
 			switch (type)
 			{
+			case PICTURETYPE_REFLIGHTFRAME:
 			case PICTURETYPE_LIGHTFRAME:
 				kappa = workspace->value("Stacking/Light_Kappa", 2.0).toDouble();
 				break;
@@ -564,6 +579,8 @@ namespace DSS
 				break;
 			case PICTURETYPE_OFFSETFRAME:
 				kappa = workspace->value("Stacking/Offset_Kappa", 2.0).toDouble();
+			default:
+				break;
 			}
 			ui->kappa->setText(QString("%L1").arg(kappa, 0, 'f', 2));
 		}

@@ -85,7 +85,7 @@ double CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
 	constexpr auto Filter = vs::filter([](const CStar& star) { return !star.m_bRemoved; });
 	const auto Projector = [&stars](auto&& getter, const int ndx) { return std::invoke(getter, std::cref(stars[ndx])); };
 
-	auto activeStars = Filter(stars);
+	//auto activeStars = Filter(stars);
 
 	std::vector<int> indexes(stars.size());
 	std::iota(indexes.begin(), indexes.end(), 0);

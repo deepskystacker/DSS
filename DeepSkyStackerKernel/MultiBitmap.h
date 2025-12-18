@@ -15,12 +15,12 @@ protected:
 	int m_lNrIterations;
 	int m_lNrBitmaps;
 	int m_lNrAddedBitmaps;
-	std::vector<CBitmapPartFile> m_vFiles;
 	int m_lWidth;
 	int m_lHeight;
 	std::atomic_bool m_bInitDone;
 	bool m_bHomogenization;
 	double m_fMaxWeight;
+	std::vector<CBitmapPartFile> m_vFiles;
 	std::vector<int> m_vImageOrder;
 
 private:
@@ -30,16 +30,17 @@ private:
 
 public:
 	CMultiBitmap() :
+		m_Method{ MULTIBITMAPPROCESSMETHOD{0} },
+		m_fKappa{ 0.0 },
+		m_lNrIterations{ 0 },
 		m_lNrBitmaps{ 0 },
+		m_lNrAddedBitmaps{ 0 },
 		m_lWidth{ 0 },
 		m_lHeight{ 0 },
 		m_bInitDone{ false },
-		m_lNrAddedBitmaps{ 0 },
 		m_bHomogenization{ false },
-		m_fMaxWeight{ 0 },
-		m_Method{ MULTIBITMAPPROCESSMETHOD{0} },
-		m_fKappa{ 0.0 },
-		m_lNrIterations{ 0 }
+		m_fMaxWeight{ 0 }
+
 	{}
 
 	virtual ~CMultiBitmap()

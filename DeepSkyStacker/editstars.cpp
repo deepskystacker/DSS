@@ -328,6 +328,8 @@ namespace DSS
 //					qDebug() << "Processing StarAction::ResetComet";
 //					m_bComet = false;
 //					break;
+				default:
+					break;
 			}
 			if (m_Action != EditStarAction::None)
 			{

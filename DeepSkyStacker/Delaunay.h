@@ -47,7 +47,7 @@ class vertex
 {
 public:
 	vertex()					: m_Pnt(0.0F, 0.0F)			{}
-	vertex(const vertex& v)		: m_Pnt(v.m_Pnt)			{}
+	vertex(const vertex& v) = default;
 	vertex(const QPointF& pnt)	: m_Pnt(pnt)				{}
 	vertex(float x, float y)	: m_Pnt(x, y)				{}
 	vertex(int x, int y)		: m_Pnt((float) x, (float) y)	{}

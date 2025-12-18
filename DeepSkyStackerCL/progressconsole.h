@@ -159,6 +159,8 @@ namespace DSS
 			case OT_PROGRESS2:
 				m_out << (bColour ? "\033[32m" : "") << szText << "\r";
 				break;
+			default:
+				break;
 			}
 			m_out.flush();
 		}

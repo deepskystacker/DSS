@@ -75,6 +75,8 @@ T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor) const
 	case BAYER_BLUE:
 		return crColor.blue;
 		break;
+	default:
+		break;
 	}
 
 	return 0;
@@ -93,6 +95,8 @@ double CGrayBitmapT<T>::GetPrimary(size_t x, size_t y, double fRed, double fGree
 		break;
 	case BAYER_BLUE:
 		return fBlue;
+		break;
+	default:
 		break;
 	}
 
@@ -356,6 +360,8 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 				fGreen = ((*(pValue + m_lWidth)) + (*(pValue + 1))) / 2.0 / m_fMultiplier;
 				fBlue = (*(pValue + 1 + m_lWidth)) / m_fMultiplier;
 				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -374,6 +380,8 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 			break;
 		case BAYER_BLUE:
 			fBlue = (*pValue) / m_fMultiplier;
+			break;
+		default:
 			break;
 		}
 	}
@@ -411,6 +419,8 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 				fRed = InterpolateRed(i, j, pValue) / m_fMultiplier;
 				fGreen = InterpolateGreen(i, j, pValue) / m_fMultiplier;
 				fBlue = (*pValue) / m_fMultiplier;
+				break;
+			default:
 				break;
 			}
 		}
@@ -512,9 +522,10 @@ void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc) const
 	bc.m_lBitsPerPixel = BitPerSample();
 }
 
-
+#if defined(_MSC_VER)
 #pragma warning( push )
 #pragma warning( disable : 4189 ) // unreachable code from initial constexpr if statement.
+#endif
 
 template <typename T>
 void CGrayBitmapT<T>::RemoveHotPixels(OldProgressBase* pProgress)
@@ -566,7 +577,9 @@ void CGrayBitmapT<T>::RemoveHotPixels(OldProgressBase* pProgress)
 		pProgress->End2();
 }
 
+#if defined(_MSC_VER)
 #pragma warning( pop )
+#endif
 
 // Define these here so that we can simple headers. We only run with these types so this isn't too bad.
 template class CGrayBitmapT<std::uint8_t>;

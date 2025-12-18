@@ -228,28 +228,26 @@ bool CMatchingStars::ComputeTransformation(std::span<const VotingPair> vVotingPa
 		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
 			const QPointF& Star = TgtStar(vVotingPairs[i]);
-#pragma warning (suppress:4456)
-			const double X = Star.x() / fXWidth;
-			const double X2 = X * X;
-			const double X3 = X * X * X;
-#pragma warning (suppress:4456)
-			const double Y = Star.y() / fYWidth;
-			const double Y2 = Y * Y;
-			const double Y3 = Y * Y * Y;
+			const double X1 = Star.x() / fXWidth;
+			const double X2 = X1 * X1;
+			const double X3 = X1 * X1 * X1;
+			const double Y1 = Star.y() / fYWidth;
+			const double Y2 = Y1 * Y1;
+			const double Y3 = Y1 * Y1 * Y1;
 
 			M(i, 0) = 1;
-			M(i, 1) = X;
-			M(i, 2) = Y;
-			M(i, 3) = X*Y;
+			M(i, 1) = X1;
+			M(i, 2) = Y1;
+			M(i, 3) = X1*Y1;
 			M(i, 4) = X2;
 			M(i, 5) = Y2;
-			M(i, 6) = X2*Y;
-			M(i, 7) = X*Y2;
+			M(i, 6) = X2*Y1;
+			M(i, 7) = X1*Y2;
 			M(i, 8) = X2*Y2;
 			M(i, 9) = X3;
 			M(i, 10) = Y3;
-			M(i, 11) = X3*Y;
-			M(i, 12) = X*Y3;
+			M(i, 11) = X3*Y1;
+			M(i, 12) = X1*Y3;
 			M(i, 13) = X3*Y2;
 			M(i, 14) = X2*Y3;
 			M(i, 15) = X3*Y3;
@@ -325,21 +323,19 @@ bool CMatchingStars::ComputeTransformation(std::span<const VotingPair> vVotingPa
 		{
 			const QPointF& Star = TgtStar(vVotingPairs[i]);
 
-#pragma warning (suppress:4456)
-			const double X = Star.x() / fXWidth;
-			const double X2 = X * X;
-#pragma warning (suppress:4456)
-			const double Y = Star.y() / fYWidth;
-			const double Y2 = Y * Y;
+			const double X1 = Star.x() / fXWidth;
+			const double X2 = X1 * X1;
+			const double Y1 = Star.y() / fYWidth;
+			const double Y2 = Y1 * Y1;
 
 			M(i, 0) = 1;
-			M(i, 1) = X;
-			M(i, 2) = Y;
-			M(i, 3) = X*Y;
+			M(i, 1) = X1;
+			M(i, 2) = Y1;
+			M(i, 3) = X1*Y1;
 			M(i, 4) = X2;
 			M(i, 5) = Y2;
-			M(i, 6) = X2 * Y;
-			M(i, 7) = X * Y2;
+			M(i, 6) = X2 * Y1;
+			M(i, 7) = X1 * Y2;
 			M(i, 8) = X2 * Y2;
 		}
 
@@ -398,15 +394,13 @@ bool CMatchingStars::ComputeTransformation(std::span<const VotingPair> vVotingPa
 		for (const size_t i : std::views::iota(Zero, vVotingPairs.size()))
 		{
 			const QPointF& Star = TgtStar(vVotingPairs[i]);
-#pragma warning (suppress:4456)
-			const double X = Star.x() / fXWidth;
-#pragma warning (suppress:4456) 
-			const double Y = Star.y() / fYWidth;
+			const double X1 = Star.x() / fXWidth;
+			const double Y1 = Star.y() / fYWidth;
 
 			M(i, 0) = 1;
-			M(i, 1) = X;
-			M(i, 2) = Y;
-			M(i, 3) = X * Y;
+			M(i, 1) = X1;
+			M(i, 2) = Y1;
+			M(i, 3) = X1 * Y1;
 		}
 
 		const DMATRIX MT = ~M;

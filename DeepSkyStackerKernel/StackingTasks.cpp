@@ -99,11 +99,14 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, OldProgressBase
 				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_LIGHTFRAME:
+		case PICTURETYPE_REFLIGHTFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
 				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
 				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			bOverrideRAW = false;
+			break;
+		default:
 			break;
 		};
 
@@ -206,6 +209,8 @@ public:
 				break;
 			case PICTURETYPE_FLATFRAME:
 				bResult = checkFrame(this->m_dwFlatTaskID, this->m_pFlatBitmap);
+				break;
+			default:
 				break;
 			}
 		}

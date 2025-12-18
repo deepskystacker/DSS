@@ -336,7 +336,9 @@ namespace DSS
 					// If not just leave it as the absolute path.
 					//
 					fs::path path{ it->filePath.lexically_proximate(directory) };
+#if defined (_MSC_VER)
 #pragma warning (suppress:4477)
+#endif
 					fprintf(hFile, "%d\t%s\t%s\n", checked,
 						type.toUtf8().constData(),
 						const_cast<char *>(reinterpret_cast<const char *>(path.generic_u8string().c_str())));
@@ -430,8 +432,6 @@ namespace DSS
 					QString			strGroupName;
 					QString			strLine{ QString::fromUtf8(charBuffer).trimmed() };
 
-					bool			bUseAsStarting = false;
-
 					if (workspace.ReadFromString(strLine))
 					{
 					}
@@ -466,7 +466,6 @@ namespace DSS
 						else if ("reflight" == strType)
 						{
 							Type = PICTURETYPE_REFLIGHTFRAME;
-							bUseAsStarting = true;
 						}
 
 						if (Type != PICTURETYPE_UNKNOWN)

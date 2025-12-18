@@ -91,6 +91,8 @@ public :
 		case BAYER_GREEN2 :
 			fAdjustGray *= m_fMeanGreen2 / max(1.0, fFlatGray);
 			break;
+		default:
+			break;
 		};
 		fAdjustGray = min(fAdjustGray, 255.0);
 	};

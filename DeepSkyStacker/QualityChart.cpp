@@ -305,8 +305,6 @@ namespace DSS
 
 	void QualityChart::plotEccentricity()
 	{
-		auto p = std::minmax_element(zgEccentricity.cbegin(), zgEccentricity.cend());
-
 		//
 		// Update the color map with Star Eccentricity values from the interpolated grid
 		//

@@ -214,6 +214,8 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 				// Pixel value
 				fVGreen = fHGreen = *(pGrayPixel) / fMultiplier;
 				break;
+			default:
+				break;
 			};
 
 			*pHGreenPixel = ClampPixel(fHGreen * fMultiplier);
@@ -374,6 +376,8 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 					*pHBluePixel = ClampPixel(valH * fMultiplier);
 				}
 			}
+			break;
+			default:
 			break;
 			}
 
@@ -597,6 +601,8 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			*pOutputGreenPixel1 = (v1 + v2) / 2.0;
 			*pOutputRedPixel1 = *(pOutputRedPixel1 + 1);
 			break;
+		default:
+			break;
 		};
 
 		BayerColor = pGrayBitmap->GetBayerColor(x2, y);
@@ -626,6 +632,8 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			*pOutputBluePixel2 = *pGrayPixel2;
 			*pOutputGreenPixel2 = (v1 + v2) / 2.0;
 			*pOutputRedPixel2 = *(pOutputRedPixel2 - 1);
+			break;
+		default:
 			break;
 		};
 
@@ -679,6 +687,8 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			*pOutputGreenPixel1 = (v1 + v2) / 2.0;
 			*pOutputRedPixel1 = *(pOutputRedPixel1 + width);
 			break;
+		default:
+			break;
 		};
 
 		BayerColor = pGrayBitmap->GetBayerColor(x, y2);
@@ -708,6 +718,8 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			*pOutputBluePixel2 = *pGrayPixel2;
 			*pOutputGreenPixel2 = (v1 + v2) / 2.0;
 			*pOutputRedPixel2 = *(pOutputRedPixel2 - width);
+			break;
+		default:
 			break;
 		};
 

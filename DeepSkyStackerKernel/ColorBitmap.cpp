@@ -11,7 +11,10 @@
 template <typename TType>
 void CColorBitmapT<TType>::CheckXY(size_t x, size_t y) const
 {
-	ZASSERTSTATE(x >= 0 && x < m_lWidth&& y >= 0 && y < m_lHeight);
+	//
+	// Remove tests for unsigned types >= 0
+	//
+	ZASSERTSTATE(x < m_lWidth && y < m_lHeight);
 }
 
 template <typename TType>

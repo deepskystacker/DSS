@@ -98,9 +98,9 @@ public:
 	const float* redEntropyData() const { return m_vRedEntropies.data(); }
 	const float* greenEntropyData() const { return m_vGreenEntropies.data(); }
 	const float* blueEntropyData() const { return m_vBlueEntropies.data(); }
-	const int nrSquaresX() const { return m_lNrSquaresX; }
-	const int nrSquaresY() const { return m_lNrSquaresY; }
-	const int windowSize() const { return m_lWindowSize; }
+	int nrSquaresX() const { return m_lNrSquaresX; }
+	int nrSquaresY() const { return m_lNrSquaresY; }
+	int windowSize() const { return m_lWindowSize; }
 
 	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, DSS::OldProgressBase* pProgress = nullptr);
 	void GetPixel(int x, int y, double& fRedEntropy, double& fGreenEntropy, double& fBlueEntropy, COLORREF16& crResult) const;

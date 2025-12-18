@@ -57,7 +57,7 @@ QEventLogger::~QEventLogger()
 bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
     static QMouseEvent* mouseEvent;
     static QKeyEvent* keyEvent;
-    static QHoverEvent* hoverEvent;
+    //static QHoverEvent* hoverEvent;
     static QFocusEvent* focusEvent;
     static QString eventType, details;
     static int inputType, mouseButton, modifierKey, id;
@@ -212,7 +212,7 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
         inputTypeAsString = "Keyboard";
     }
     else if (inputType == HOVER) {
-        hoverEvent = static_cast<QHoverEvent*>(event);
+        //hoverEvent = static_cast<QHoverEvent*>(event);
 
         // qDebug() << hoverEvent << hoverEvent->pos() << obj->metaObject()->className() << obj->inherits("QWidget");
     }
@@ -244,6 +244,8 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
             break;
         case Qt::OtherFocusReason:
             details += "Other";
+            break;
+        default:
             break;
         }
 

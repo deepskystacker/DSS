@@ -33,9 +33,9 @@ protected:
     void appendToLog(const QString& inputType, const QString& eventType, const QString& targetWidget, const QString& details);
 
 private:
-    bool screenshotsEnabled;
     QString screenshotDirName;
     QWidget* mainWidget;
+    bool screenshotsEnabled;
     QFile* logFile;
     QTextStream* log;
     QElapsedTimer* timer;

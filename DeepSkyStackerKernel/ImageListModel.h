@@ -90,6 +90,8 @@ namespace DSS
             case Column::Exposure:
                 flags |= (Qt::ItemIsEditable);
                 break;
+            default:
+                break;
             }
             return flags;
         }

@@ -90,7 +90,7 @@ public:
 	template <class T>
 	std::vector<T>& grayPixels() { return getGrayPtr<T>()->m_vPixels; }
 
-	const int width() const;
+	int width() const;
 
 	template <class T>
 	bool bitmapHasCorrectType() const;

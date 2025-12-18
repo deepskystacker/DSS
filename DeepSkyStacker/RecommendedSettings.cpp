@@ -14,7 +14,7 @@ namespace DSS
 		Workspace				workspace;
 
 		// Check that the current values are (or not)
-		for (const auto setting : vSettings)
+		for (const auto& setting : vSettings)
 		{
 			QString				keyName;
 			QVariant			value;

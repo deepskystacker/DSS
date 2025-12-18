@@ -29,8 +29,8 @@ public:
 	virtual ~CColorBitmapT() = default;
 
 private:
-	int m_lHeight;
 	int m_lWidth;
+	int m_lHeight;
 	constexpr static bool m_bWord{ std::is_same_v<TType, std::uint16_t> };
 	constexpr static bool m_bFloat{ std::is_same_v<TType, float> };
 	constexpr static double m_fMultiplier{ initMultiplier<TType>() };

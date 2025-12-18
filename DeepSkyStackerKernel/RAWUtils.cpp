@@ -239,13 +239,13 @@ namespace { // Only use in this .cpp file
 			pLibRaw {std::make_unique<DSSLibRaw>()},
 			rawProcessor{ *pLibRaw },
 			file{ path },
-			m_bColorRAW{ false },
-			m_CFAType{ CFATYPE_NONE },
 			m_lISOSpeed{ 0 },
 			m_fExposureTime{ 0.0 },
 			m_fAperture{ 0.0 },
 			m_lHeight{ 0 },
 			m_lWidth{ 0 },
+			m_bColorRAW{ false },
+			m_CFAType{ CFATYPE_NONE },
 #if defined(Q_OS_WIN)
 			m_isRawFile{ rawProcessor.open_file(file.wstring().c_str()) == LIBRAW_SUCCESS }
 #else
@@ -1276,12 +1276,15 @@ void DSSLibRaw::write_ppm_tiff()
 				FORCC ppm2[col*colors + c] = curve[image[soff][c]];
 		}
 		if (output_bps == 16 && !output_tiff && littleEndian)
-#if defined(Q_OS_WIN)		
-			_swab((char*)ppm2, (char*)ppm2, width*colors * 2);
-#else
-			swab((char*)ppm2, (char*)ppm2, width * colors * 2);
-#endif
-
+		{
+			// PPM wants big-endian 16 bit samples
+			// so swap bytes on little-endian machines
+#pragma omp parallel for default(shared) private(col)
+			for (col = 0; col < width*colors; col++)
+			{
+				ppm2[col] = std::byteswap(ppm2[col]);
+			}
+		}
 
 		//
 		// Instead of writing the bitmap data to an output file

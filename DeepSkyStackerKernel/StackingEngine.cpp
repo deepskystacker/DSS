@@ -444,10 +444,6 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 					lfi = bitmap; // Copy FrameInfo part
 					lfi.RefreshSuperPixel();
 
-					//
-					// m_strReferenceFrame is a CString but contains the reference frame path
-					// with / separators rather than \\
-					//
 					if (referenceFrame.compare(lfi.filePath) == 0)
 					{
 						lfi.m_bStartingFrame = true;
@@ -1368,6 +1364,8 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 								update(pGreen); break;
 							case BAYER_BLUE:  //fBlueCover  += pixDispatch.m_fPercentage; break;
 								update(pBlue); break;
+							default:
+								break;
 							}
 						}
 					}
