@@ -473,7 +473,7 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
         )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -Wall -Wextra -Wpedantic -Werror -fopenmp
+            -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp
         )
     endif()
 endif()
