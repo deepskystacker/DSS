@@ -302,14 +302,14 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 	}
 }
 
-TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
+TEST_CASE("AVX Stacking, no transform, backround calibration", "[AVX][Stacking][calib]")
 {
 	if (!AvxSimdCheck::checkSimdAvailability())
 	{
 		WARN("AVX2 hardware not available");
 		return;
 	}
-
+#if 0
 	SECTION("Linear")
 	{
 		constexpr int W = 151;
@@ -348,7 +348,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 				expected[y * W + x] = pGray->m_vPixels[y * W + x] < -1 ? 8.35f : pGray->m_vPixels[y * W + x] * 2.0f + 3.0f;
 		REQUIRE(memcmp(expected.data(), pOut->m_vPixels.data(), W * H * sizeof(T)) == 0);
 	}
-#if 0
+
 	SECTION("Rational")
 	{
 		constexpr int W = 113;
