@@ -14,13 +14,14 @@ namespace {
 	using BCI = BackgroundCalibrationInterface;
 	using Interpolation = BCI::Interpolation;
 	using Mode = BCI::Mode;
+	using RgbMethod = BCI::RgbMethod;
 
 	template <int Mult, typename Type, typename... OtherTypes>
 		requires (
 			(std::same_as<Type, std::uint8_t> || std::same_as<Type, std::uint16_t> || std::same_as<Type, std::uint32_t> || std::same_as<Type, float> || std::same_as<Type, double>)
 			&& (Mult == 1 || Mult == 256) // we only support those 2 multipliers
 		)
-	std::shared_ptr<BCI> createTyped(const Interpolation interpolationMethod, const Mode mode, const int bitsPerSample, const bool isIntegral)
+	std::shared_ptr<BCI> createTyped(const Interpolation interpolationMethod, const Mode mode, const RgbMethod rgbm, const int bitsPerSample, const bool isIntegral)
 	{
 		if (bitsPerSample == sizeof(Type) * 8 && isIntegral == std::integral<Type>)
 		{
@@ -28,14 +29,14 @@ namespace {
 				return std::make_shared<BackgroundCalibrationNone<Mult, Type>>();
 			switch (interpolationMethod)
 			{
-			case Interpolation::Linear: return std::make_shared<BackgroundCalibrationLinear<Mult, Type>>(mode);
-			case Interpolation::Rational: return std::make_shared<BackgroundCalibrationRational<Mult, Type>>(mode);
-			case Interpolation::Offset: return std::make_shared<BackgroundCalibrationOffset<Mult, Type>>(mode);
+			case Interpolation::Linear: return std::make_shared<BackgroundCalibrationLinear<Mult, Type>>(mode, rgbm);
+			case Interpolation::Rational: return std::make_shared<BackgroundCalibrationRational<Mult, Type>>(mode, rgbm);
+			case Interpolation::Offset: return std::make_shared<BackgroundCalibrationOffset<Mult, Type>>(mode, rgbm);
 			default: return {};
 			}
 		}
 		if constexpr (sizeof...(OtherTypes) != 0)
-			return createTyped<Mult, OtherTypes...>(interpolationMethod, mode, bitsPerSample, isIntegral);
+			return createTyped<Mult, OtherTypes...>(interpolationMethod, mode, rgbm, bitsPerSample, isIntegral);
 		else
 			return {};
 	}
@@ -43,10 +44,12 @@ namespace {
 
 template <int Mult>
 	requires (Mult == 1 || Mult == 256)
-std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator(const BACKGROUNDCALIBRATIONMODE bcmd, const int bitsPerSample, const bool integral)
+std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator(const BACKGROUNDCALIBRATIONINTERPOLATION interpolation,
+	const BACKGROUNDCALIBRATIONMODE bcmd, const RGBBACKGROUNDCALIBRATIONMETHOD rgbme, const int bitsPerSample, const bool integral)
 {
 	Interpolation intMethod = Interpolation::Linear;
-	switch (CAllStackingTasks::GetBackgroundCalibrationInterpolation())
+//	switch (CAllStackingTasks::GetBackgroundCalibrationInterpolation())
+	switch (interpolation)
 	{
 	case BACKGROUNDCALIBRATIONINTERPOLATION::BCI_LINEAR: break;
 	case BACKGROUNDCALIBRATIONINTERPOLATION::BCI_RATIONAL:
@@ -57,26 +60,31 @@ std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::
 	}
 
 	const Mode mode = bcmd == BCM_RGB ? Mode::RGB : (bcmd == BCM_PERCHANNEL ? Mode::PerChannel : Mode::None);
+	const RgbMethod rgbMethod = rgbme == RBCM_MINIMUM ? RgbMethod::Minimum : (rgbme == RBCM_MIDDLE ? RgbMethod::Median : RgbMethod::Maximum);
 
-	return createTyped<Mult, std::uint8_t, std::uint16_t, std::uint32_t, float, double>(intMethod, mode, bitsPerSample, integral);
+	return createTyped<Mult, std::uint8_t, std::uint16_t, std::uint32_t, float, double>(intMethod, mode, rgbMethod, bitsPerSample, integral);
 }
 
+// Explicit template instantiations
+// --------------------------------
 template
-std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(const BACKGROUNDCALIBRATIONMODE bcmd, const int bitsPerSample, const bool integral);
+std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
+	const BACKGROUNDCALIBRATIONINTERPOLATION, const BACKGROUNDCALIBRATIONMODE, const RGBBACKGROUNDCALIBRATIONMETHOD, const int, const bool);
 template
-std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(const BACKGROUNDCALIBRATIONMODE bcmd, const int bitsPerSample, const bool integral);
+std::shared_ptr<BackgroundCalibrationInterface> BackgroundCalibrationInterface::makeBackgroundCalibrator<256>(
+	const BACKGROUNDCALIBRATIONINTERPOLATION, const BACKGROUNDCALIBRATIONMODE, const RGBBACKGROUNDCALIBRATIONMETHOD, const int, const bool);
 
 // -----------------------------
 // Background Calibration Common 
 // -----------------------------
 
 template <int Mult, typename T>
-BackgroundCalibrationCommon<Mult, T>::BackgroundCalibrationCommon(const Mode m) : mode{ m }
+BackgroundCalibrationCommon<Mult, T>::BackgroundCalibrationCommon(const Mode m, const RgbMethod rgbme) : mode{ m }, rgbMethod{ rgbme }
 {
 //	const auto md = CAllStackingTasks::GetBackgroundCalibrationMode();
 //	this->mode = md == BCM_RGB ? Mode::RGB : (md == BCM_PERCHANNEL ? Mode::PerChannel : Mode::None);
-	const auto me = CAllStackingTasks::GetRGBBackgroundCalibrationMethod();
-	this->rgbMethod = me == RBCM_MINIMUM ? RgbMethod::Minimum : (me == RBCM_MIDDLE ? RgbMethod::Median : RgbMethod::Maximum);
+//	const auto me = CAllStackingTasks::GetRGBBackgroundCalibrationMethod();
+//	this->rgbMethod = me == RBCM_MINIMUM ? RgbMethod::Minimum : (me == RBCM_MIDDLE ? RgbMethod::Median : RgbMethod::Maximum);
 }
 
 template <int Mult, typename T>
@@ -217,7 +225,7 @@ double BackgroundCalibrationCommon<Mult, T>::calculateModelParameters(CMemoryBit
 // ------------------------------
 
 template <int Mult, typename T>
-BackgroundCalibrationOffset<Mult, T>::BackgroundCalibrationOffset(const Mode m) : BackgroundCalibrationCommon<Mult, T>{ m } {}
+BackgroundCalibrationOffset<Mult, T>::BackgroundCalibrationOffset(const Mode m, const RgbMethod rgbme) : BackgroundCalibrationCommon<Mult, T>{ m, rgbme } {}
 
 
 template <int Mult, typename T>
@@ -257,7 +265,7 @@ std::tuple<double, double, double> BackgroundCalibrationOffset<Mult, T>::calibra
 // ------------------------------
 
 template <int Mult, typename T>
-BackgroundCalibrationLinear<Mult, T>::BackgroundCalibrationLinear(const Mode m) : BackgroundCalibrationCommon<Mult, T>{ m } {}
+BackgroundCalibrationLinear<Mult, T>::BackgroundCalibrationLinear(const Mode m, const RgbMethod rgbme) : BackgroundCalibrationCommon<Mult, T>{ m, rgbme } {}
 
 template <int Mult, typename T>
 void BackgroundCalibrationLinear<Mult, T>::initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax)
@@ -294,7 +302,7 @@ std::tuple<double, double, double> BackgroundCalibrationLinear<Mult, T>::calibra
 // ---------------------------------------------------------
 
 template <int Mult, typename T>
-BackgroundCalibrationRational<Mult, T>::BackgroundCalibrationRational(const Mode m) : BackgroundCalibrationCommon<Mult, T>{ m } {}
+BackgroundCalibrationRational<Mult, T>::BackgroundCalibrationRational(const Mode m, const RgbMethod rgbme) : BackgroundCalibrationCommon<Mult, T>{ m, rgbme } {}
 
 
 template <int Mult, typename T>
@@ -340,7 +348,8 @@ std::tuple<double, double, double> BackgroundCalibrationRational<Mult, T>::calib
 		? std::make_tuple(r, g, b)
 		: std::make_tuple(Calibrate(std::get<0>(modelParams), r), Calibrate(std::get<1>(modelParams), g), Calibrate(std::get<2>(modelParams), b));
 }
-// Explicit template instantiation for the types we need.
 
+// Explicit template instantiation for the types we need.
+// ------------------------------------------------------
 template void BackgroundCalibrationRational<1, double>::resetModel<0ul>(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax);
-template BackgroundCalibrationRational<1, double>::BackgroundCalibrationRational(const Mode m);
+template BackgroundCalibrationRational<1, double>::BackgroundCalibrationRational(const Mode, const RgbMethod);

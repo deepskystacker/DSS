@@ -1833,8 +1833,8 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 
 		ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION"); }, 1);
 		if (isFirstLightframe) {
-			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
-				CAllStackingTasks::GetBackgroundCalibrationMode(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
+			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(CAllStackingTasks::GetBackgroundCalibrationInterpolation(),
+				CAllStackingTasks::GetBackgroundCalibrationMode(), CAllStackingTasks::GetRGBBackgroundCalibrationMethod(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
 			);
 		}
 		backgroundCalib->calculateModelParameters(*pBitmap, isFirstLightframe, isFirstLightframe ? currentLightFrame.generic_u8string().c_str() : nullptr);
