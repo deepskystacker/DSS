@@ -114,7 +114,7 @@ protected:
 	RgbMethod rgbMethod{ RgbMethod::Median };
 protected:
 	explicit BackgroundCalibrationCommon(const Mode m, const RgbMethod rgbme);
-	virtual ~BackgroundCalibrationCommon() = default;
+	virtual ~BackgroundCalibrationCommon() override = default;
 	std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> calcHistogram(CMemoryBitmap const&);
 	std::pair<double, double> findMedianAndMax(std::span<const int> histo, const size_t halfNumberOfPixels);
 	void calculateReferenceParameters(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax);
@@ -135,7 +135,7 @@ private:
 	NoneModel modelParams{};
 public:
 	explicit BackgroundCalibrationNone() : BackgroundCalibrationCommon<Mult, T>{ Mode::None, RgbMethod::Median } {}
-	virtual ~BackgroundCalibrationNone() = default;
+	virtual ~BackgroundCalibrationNone() override = default;
 	virtual void initializeModel(const double, const double, const double, const double, const double, const double) override {}
 	virtual std::tuple<double, double, double> calibratePixel(const double r, const double g, const double b) const override { return { r, g, b }; }
 	virtual ModelRef model() const override { return std::cref(modelParams); }
@@ -154,7 +154,7 @@ private:
 	OffsetModel modelParams{};
 public:
 	explicit BackgroundCalibrationOffset(const Mode m, const RgbMethod rgbme);
-	virtual ~BackgroundCalibrationOffset() = default;
+	virtual ~BackgroundCalibrationOffset() override = default;
 	virtual void initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax) override;
 	virtual std::tuple<double, double, double> calibratePixel(const double r, const double g, const double b) const override;
 	virtual ModelRef model() const override { return std::cref(modelParams); }
@@ -173,7 +173,7 @@ private:
 	LinearModel modelParams{};
 public:
 	explicit BackgroundCalibrationLinear(const Mode m, const RgbMethod rgbme);
-	virtual ~BackgroundCalibrationLinear() = default;
+	virtual ~BackgroundCalibrationLinear() override = default;
 	virtual void initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax) override;
 	virtual std::tuple<double, double, double> calibratePixel(const double r, const double g, const double b) const override;
 	virtual ModelRef model() const override { return std::cref(modelParams); }
@@ -192,7 +192,7 @@ private:
 	RationalModel modelParams{};
 public:
 	explicit BackgroundCalibrationRational(const Mode m, const RgbMethod rgbme);
-	virtual ~BackgroundCalibrationRational() = default;
+	virtual ~BackgroundCalibrationRational() override = default;
 
 	template <size_t Ndx>
 	void resetModel(const double x0, const double x1, const double x2, const double y0, const double y1, const double y2);

@@ -34,7 +34,6 @@ extern template class CColorBitmapT<float>;
 extern template class CColorBitmapT<double>;
 
 extern template void BackgroundCalibrationRational<1, double>::resetModel<0ul>(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax);
-extern template BackgroundCalibrationRational<1, double>::BackgroundCalibrationRational(const Mode m);
 
 using namespace DSS;
 
