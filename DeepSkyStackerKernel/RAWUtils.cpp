@@ -28,6 +28,10 @@ namespace {
 	//
 	constexpr bool littleEndian{ std::endian::native == std::endian::little };
 
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-member-function"
+#endif
 	class Timer
 	{
 	private:
@@ -80,10 +84,14 @@ namespace {
 				return (*this);
 			}
 		};
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
 
 	std::list<CRAWSettings> g_RawSettingsStack;
 
 }
+
 
 /* ------------------------------------------------------------------- */
 
@@ -169,18 +177,18 @@ namespace { // Only use in this .cpp file
 	{
 	public:
 		DSSLibRaw() = default;
-		~DSSLibRaw() = default;
+		~DSSLibRaw() override = default;
 
 		void setBitMapFiller(BitmapFillerInterface* pFiller) noexcept
 		{
 			pDSSBitMapFiller = pFiller;
-		};
+		}
 
 		int dcraw_ppm_tiff_writer(const char* filename);
 		inline unsigned get_fuji_layout() noexcept
 		{
 			return libraw_internal_data.unpacker_data.fuji_layout;
-		};
+		}
 
 		void adjust_bl() { this->LibRaw::adjust_bl(); }
 		virtual int is_phaseone_compressed() noexcept override {
@@ -258,7 +266,7 @@ namespace { // Only use in this .cpp file
 				m_strModel = P1.normalized_model;
 				m_lHeight = S.iheight;
 				m_lWidth = S.iwidth;
-				m_lISOSpeed = P2.iso_speed;
+				m_lISOSpeed = static_cast<int>(P2.iso_speed);
 
 				m_fExposureTime = std::isfinite(P2.shutter) ? P2.shutter : 0.0;
 				m_fAperture = std::isfinite(P2.aperture) ? P2.aperture : 0.0;
@@ -292,7 +300,7 @@ namespace { // Only use in this .cpp file
 		virtual ~CRawDecod()
 		{
 			rawProcessor.recycle();
-		};
+		}
 
 		bool IsRawFile() const;
 		bool LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, OldProgressBase* pProgress);
@@ -300,44 +308,44 @@ namespace { // Only use in this .cpp file
 		QString getModel()
 		{
 			return (m_strMake + " " + m_strModel);
-		};
+		}
 
 //		void checkCameraSupport(const QString& strModel);
 
 		int	GetISOSpeed() noexcept
 		{
 			return m_lISOSpeed;
-		};
+		}
 
 		double GetExposureTime() noexcept
 		{
 			return m_fExposureTime;
-		};
+		}
 
 		double getAperture() noexcept
 		{
 			return m_fAperture;
-		};
+		}
 
 		int Width() noexcept
 		{
 			return m_lWidth;
-		};
+		}
 
 		int Height() noexcept
 		{
 			return m_lHeight;
-		};
+		}
 
 		bool IsColorRAW() noexcept
 		{
 			return m_bColorRAW;
-		};
+		}
 
 		CFATYPE GetCFAType()
 		{
 			return m_CFAType;
-		};
+		}
 
 		CFATYPE GetCurrentCFAType()
 		{
@@ -348,6 +356,8 @@ namespace { // Only use in this .cpp file
 				case 0xb4b4b4b4: return CFATYPE_GMYC;
 				case 0xe1e4e1e4: return CFATYPE_GMCYMGCY;
 				case 0x1e4e1e4e: return CFATYPE_CYGMCYMG;
+				default:
+					break;
 				}
 			}
 			else // RGB Bayer Pattern
@@ -362,19 +372,20 @@ namespace { // Only use in this .cpp file
 				case 0x49494949: return CFATYPE_GBRG;
 				case 0xb4b4b4b4:
 				case 0x94949494: return CFATYPE_RGGB;
-				default: return CFATYPE_NONE;
+				default:
+					break;
 				}
 			}
 
 			return CFATYPE_NONE;
-		};
+		}
 
 		/* ------------------------------------------------------------------- */
 
 		QDateTime GetDateTime()
 		{
 			return m_DateTime;
-		};
+		}
 	};
 
 #if (0)
@@ -1011,8 +1022,15 @@ int DSSLibRaw::dcraw_ppm_tiff_writer(const char*)
 	try {
 		if (!libraw_internal_data.output_data.histogram)
 		{
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
+#endif
 			libraw_internal_data.output_data.histogram =
 				(int(*)[LIBRAW_HISTOGRAM_SIZE]) malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
 		//	merror(libraw_internal_data.output_data.histogram, "LibRaw::dcraw_ppm_tiff_writer()");
 		}
 		write_ppm_tiff();
@@ -1218,7 +1236,7 @@ void DSSLibRaw::write_ppm_tiff()
 #ifdef LIBRAW_LIBRARY_BUILD
 	perc = width * height * auto_bright_thr;
 #else
-	perc = width * height * 0.01;		/* 99th percentile white level */
+	perc = static_cast<int>(width * height * 0.01);		/* 99th percentile white level */
 #endif
 	if (fuji_width) perc /= 2;
 	if (!((highlight & ~2) || no_auto_bright))
@@ -1227,13 +1245,13 @@ void DSSLibRaw::write_ppm_tiff()
 				if ((total += histogram[c][val]) > perc) break;
 			if (t_white < val) t_white = val;
 		}
-	gamma_curve(gamm[0], gamm[1], 2, (t_white << 3) / bright);
+	gamma_curve(gamm[0], gamm[1], 2, static_cast<int>((t_white << 3) / bright));
 	iheight = height;
 	iwidth = width;
 	if (flip & 4) SWAP(height, width);
-	ppm = (uchar *)calloc(width, colors*output_bps / 8);
+	ppm = static_cast<uchar *>(calloc(width, colors*output_bps / 8));
 	if (nullptr == ppm) throw LIBRAW_EXCEPTION_ALLOC;
-	ppm2 = (ushort *)ppm;
+	ppm2 = reinterpret_cast<ushort*>(ppm);
 	// merror(ppm, "write_ppm_tiff()");
 
 	//

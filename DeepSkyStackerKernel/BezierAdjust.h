@@ -51,11 +51,11 @@ namespace DSS
 			x{ nx },
 			y{ ny }
 		{
-		};
+		}
 
 		BezierCurvePoint(const BezierCurvePoint& rhs) = default;
 
-		virtual ~BezierCurvePoint() {};
+		virtual ~BezierCurvePoint() {}
 
 		BezierCurvePoint& operator = (const BezierCurvePoint& rhs) = default;
 
@@ -88,7 +88,7 @@ namespace DSS
 		}
 
 		BezierAdjust(const BezierAdjust& rhs) = default;
-		virtual ~BezierAdjust() {};
+		virtual ~BezierAdjust() {}
 		BezierAdjust& operator = (const BezierAdjust& rhs) = default;
 
 		void	clear()
@@ -210,8 +210,8 @@ namespace DSS
 			{
 				BezierCurvePoint	pt;
 
-				pt.x = (double)x1 * pow((1 - t), 3) + 3 * vx1 * pow((1 - t), 2) * t + 3 * vx2 * (1 - t) * t * t + x2 * t * t * t;
-				pt.y = (double)y1 * pow((1 - t), 3) + 3 * vy1 * pow((1 - t), 2) * t + 3 * vy2 * (1 - t) * t * t + y2 * t * t * t;
+				pt.x = static_cast<double>(x1 * pow((1 - t), 3) + 3 * vx1 * pow((1 - t), 2) * t + 3 * vx2 * (1 - t) * t * t + x2 * t * t * t);
+				pt.y = static_cast<double>(y1 * pow((1 - t), 3) + 3 * vy1 * pow((1 - t), 2) * t + 3 * vy2 * (1 - t) * t * t + y2 * t * t * t);
 
 				curvePoints.push_back(pt);
 			};
@@ -269,7 +269,7 @@ namespace DSS
 					nEnd = szString.indexOf("}", nStart);
 				if (nEnd > nStart)
 				{
-					fValue = szString.mid(nStart, nEnd - nStart).toFloat();
+					fValue = szString.mid(nStart, nEnd - nStart).toDouble();
 				}
 			}
 			return fValue;

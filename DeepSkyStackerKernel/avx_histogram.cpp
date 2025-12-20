@@ -41,6 +41,7 @@
 #include "histogram.h"
 #include "BezierAdjust.h"
 
+using namespace DSS;
 // *****************
 // AVX-256 Histogram
 // *****************

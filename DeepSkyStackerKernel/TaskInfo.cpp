@@ -3,6 +3,8 @@
 #include "MemoryBitmap.h"
 #include "MultiBitmap.h"
 
+using namespace DSS;
+
 void CTaskInfo::SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 {
 	m_Method = Method;

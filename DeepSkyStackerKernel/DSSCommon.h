@@ -114,7 +114,7 @@ typedef enum TIFFCOMPRESSION
 enum class TERMINAL_OUTPUT_MODE
 {
 	BASIC = 0,
-	COLOURED = 1,
+	COLOURED = 1
 };
 
 typedef enum FITSFORMAT

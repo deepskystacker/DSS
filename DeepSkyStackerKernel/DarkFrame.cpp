@@ -71,11 +71,11 @@ public :
 public :
 	CSplittedValuePairs()
 	{
-	};
+	}
 
 	virtual ~CSplittedValuePairs()
 	{
-	};
+	}
 
 	void	SplitValuePairs(VALUEPAIRSET & sValuePairs)
 	{
@@ -114,7 +114,7 @@ public :
 
 		m_vRMSMultiplier.resize(m_vsValuePairs.size());
 		m_vEntropyMultiplier.resize(m_vsValuePairs.size());
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -142,7 +142,7 @@ static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 		{
 			if (it->m_wLightValue + MINNEGATIVE >= static_cast<double>(it->m_wDarkValue) * k)
 			{
-				int lIndice = static_cast<double>(it->m_wLightValue) - static_cast<double>(it->m_wDarkValue) * k;
+				int lIndice = static_cast<int>(static_cast<double>(it->m_wLightValue) - static_cast<double>(it->m_wDarkValue) * k);
 				lIndice /= (static_cast<int>(std::numeric_limits<std::uint16_t>::max()) + 1) / MINNEGATIVE;
 				lIndice += MINNEGATIVE;
 
@@ -162,7 +162,7 @@ static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 			{
 				double			fProbability;
 
-				fProbability = (double)vHisto[i] / (double)lNrPixels;
+				fProbability = static_cast<double>(vHisto[i]) / static_cast<double>(lNrPixels);
 				fEntropy += -fProbability * log(fProbability) / log(2.0);
 			}
 		}
@@ -238,7 +238,7 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 			//if ((*it).m_wLightValue >= (*it).m_wDarkValue )
 			{
 				{
-					double			fValue = (double)(*it).m_wLightValue- ((double)(*it).m_wDarkValue)*k;
+					double	fValue = static_cast<double>((*it).m_wLightValue) - static_cast<double>((*it).m_wDarkValue))*k);
 
 					//if (fValue >= 0)
 					{
@@ -293,8 +293,8 @@ static void	RetrictValues(VALUEPAIRSET & sValuePairs)
 	double					fMean;
 	VALUEPAIRSET			sTempValuePairs;
 
-	fMean   = fSum / (double)lNrValues;
-	fStdDev = sqrt(fPowSum/(double)lNrValues - pow(fMean, 2));
+	fMean   = fSum / static_cast<double>(lNrValues);
+	fStdDev = sqrt(fPowSum/static_cast<double>(lNrValues - pow(fMean, 2)));
 
 	for (it = sValuePairs.begin();it != sValuePairs.end();it++)
 	{
@@ -522,15 +522,15 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 
 		for (it = sRedValuePairs.begin();it != sRedValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				RedStats.AddValue(std::max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				RedStats.AddValue(std::max(0.0, static_cast<double>((*it).m_wLightValue) - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		for (it = sGreenValuePairs.begin();it != sGreenValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				GreenStats.AddValue(std::max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				GreenStats.AddValue(std::max(0.0, static_cast<double>((*it).m_wLightValue) - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		for (it = sBlueValuePairs.begin();it != sBlueValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				BlueStats.AddValue(std::max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				BlueStats.AddValue(std::max(0.0, static_cast<double>((*it).m_wLightValue) - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		fRatio -= 0.1;
 	}
@@ -918,44 +918,47 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-IMAGEREGION	GetPixelRegion(int lX, int lY, int lWidth, int lHeight)
-{
-	IMAGEREGION				Result = IR_NONE;
-	int					lPosition;
-
-	lPosition = (10 * std::max(1, std::min(3, lX * 3 / lWidth + 1)) + std::max(1, std::min(3, lY * 3 / lHeight + 1)));
-	switch (lPosition)
+namespace {
+	static IMAGEREGION	GetPixelRegion(int lX, int lY, int lWidth, int lHeight)
 	{
-	case 11 :
-		Result = IR_TOPLEFT;
-		break;
-	case 12 :
-		Result = IR_TOPCENTER;
-		break;
-	case 13 :
-		Result = IR_TOPRIGHT;
-		break;
-	case 21 :
-		Result = IR_CENTERLEFT;
-		break;
-	case 22 :
-		Result = IR_CENTERCENTER;
-		break;
-	case 23 :
-		Result = IR_CENTERRIGHT;
-		break;
-	case 31 :
-		Result = IR_BOTTOMLEFT;
-		break;
-	case 32 :
-		Result = IR_BOTTOMCENTER;
-		break;
-	case 33 :
-		Result = IR_BOTTOMRIGHT;
-		break;
-	}
+		IMAGEREGION				Result = IR_NONE;
+		int					lPosition;
 
-	return Result;
+		lPosition = (10 * std::max(1, std::min(3, lX * 3 / lWidth + 1)) + std::max(1, std::min(3, lY * 3 / lHeight + 1)));
+		switch (lPosition)
+		{
+		case 11:
+			Result = IR_TOPLEFT;
+			break;
+		case 12:
+			Result = IR_TOPCENTER;
+			break;
+		case 13:
+			Result = IR_TOPRIGHT;
+			break;
+		case 21:
+			Result = IR_CENTERLEFT;
+			break;
+		case 22:
+			Result = IR_CENTERCENTER;
+			break;
+		case 23:
+			Result = IR_CENTERRIGHT;
+			break;
+		case 31:
+			Result = IR_BOTTOMLEFT;
+			break;
+		case 32:
+			Result = IR_BOTTOMCENTER;
+			break;
+		case 33:
+			Result = IR_BOTTOMRIGHT;
+			break;
+		default: break;
+		}
+
+		return Result;
+	}
 }
 
 
@@ -1549,7 +1552,7 @@ void CDarkFrame::FindBadVerticalLines(OldProgressBase*)
 						lNrOutPixels++;
 						lNrConsecutiveOutPixels++;
 						// End the line ?
-						if ((double)lNrOutPixels/(double)lNrPixels > 0.10)
+						if (static_cast<double>(lNrOutPixels)/static_cast<double>(lNrPixels) > 0.10)
 						{
 							// End the line - save it
 							bLineInProgress = false;
@@ -1783,10 +1786,9 @@ void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int
 		{
 			if ((i != lX) || (j != lY))
 			{
-				int				lWeight;
-				bool				bAdd = false;
+				bool	bAdd = false;
 
-				lWeight = labs(1+lRadius-labs(lX - i)) + labs(1+lRadius-labs(lY - j));
+				int lWeight = static_cast<int>(labs(1+lRadius-labs(lX - i)) + labs(1+lRadius-labs(lY - j)));
 				CHotPixel			hp(i, j, lWeight);
 
 				if (!std::binary_search(m_vHotPixels.begin(), m_vHotPixels.end(), hp))

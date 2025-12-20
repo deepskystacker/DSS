@@ -293,7 +293,7 @@ namespace DSS
                 {
                     if (Qt::EditRole == role)
                         return file.m_SkyBackground.m_fLight;
-                    else if (file.m_SkyBackground.m_fLight)
+                    else if (0. != file.m_SkyBackground.m_fLight)
                     {
                         return QString("%1 %").arg(file.m_SkyBackground.m_fLight * 100.0, 0, 'f', 2);
                     }
@@ -460,6 +460,8 @@ namespace DSS
                             file.m_PictureType = PICTURETYPE_OFFSETFRAME;
                             file.m_bUseAsStarting = false;
                             break;
+						default:
+                            break;
                         }
                     }
                     break;
@@ -515,7 +517,7 @@ namespace DSS
 
     bool ImageListModel::setSkyBackground(const int row, const CSkyBackground& bg, int role)
     {
-        QModelIndex index(createIndex(row, (int)Column::Background));
+        QModelIndex index(createIndex(row, static_cast<int>(Column::Background)));
         if (index.isValid() && !(index.row() >= mydata.size() || index.row() < 0))
         {
             if (role == Qt::DisplayRole || role == Qt::EditRole)
@@ -629,12 +631,12 @@ namespace DSS
     {
         QString strText;
 
-        if (exposure)
+        if (0. != exposure)
         {
             if (exposure > 86399.999) exposure = 86399.999;		// 24 hours less 1 ms
             double msecs = exposure * 1000.0;
             QTime time{ QTime(0, 0) };
-            time = time.addMSecs(msecs);
+            time = time.addMSecs(static_cast<int>(msecs));
             if (exposure >= 1.0)
             {
                 int hours{ time.hour() };

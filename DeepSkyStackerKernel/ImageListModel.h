@@ -68,13 +68,13 @@ namespace DSS
         {
             // Return number of images we know about
             return static_cast<int>(mydata.size());
-        };
+        }
 
         [[nodiscard]] inline int columnCount([[maybe_unused]] const QModelIndex& parent = QModelIndex()) const override
         {
             // Pretty simple really
             return static_cast<int>(Column::MAX_COLS);
-        };
+        }
 
 
         [[nodiscard]] inline Qt::ItemFlags flags(const QModelIndex& index) const override

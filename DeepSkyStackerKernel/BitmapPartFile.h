@@ -24,7 +24,7 @@ public:
 		file { std::move(tmpFile) },
 		m_lStartRow{ lStartRow },
 		m_lEndRow{ lEndRow }
-	{};
+	{}
 
 	CBitmapPartFile(const CBitmapPartFile&) = default;
 	CBitmapPartFile(CBitmapPartFile&&) noexcept = default;

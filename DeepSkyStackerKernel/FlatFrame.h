@@ -29,17 +29,17 @@ public :
 		m_fMeanYellow  = 0;
 
 		m_bUseGray	= false;
-	};
+	}
 
 	virtual ~CFlatNormalization()
 	{
-	};
+	}
 
 	void	SetParameters(double fMeanGray)
 	{
 		m_fMeanGray = fMeanGray;
 		m_bUseGray  = true;
-	};
+	}
 
 	void	SetParameters(double fMeanRed, double fMeanGreen, double fMeanBlue)
 	{
@@ -47,7 +47,7 @@ public :
 		m_fMeanGreen = fMeanGreen;
 		m_fMeanBlue  = fMeanBlue;
 		m_bUseGray   = false;
-	};
+	}
 
 	void	SetParameters(double fMeanCyan, double fMeanMagenta, double fMeanYellow, double fMeanGreen2)
 	{
@@ -56,12 +56,12 @@ public :
 		m_fMeanGreen2	= fMeanGreen2;
 		m_fMeanMagenta  = fMeanMagenta;
 		m_bUseGray   = false;
-	};
+	}
 
 	bool	UseGray()
 	{
 		return m_bUseGray;
-	};
+	}
 
 	void	Normalize(double & fAdjustGray, double fFlatGray, BAYERCOLOR BayerColor = BAYER_UNKNOWN)
 	{
@@ -95,7 +95,7 @@ public :
 			break;
 		};
 		fAdjustGray = min(fAdjustGray, 255.0);
-	};
+	}
 
 	void	Normalize(double & fAdjustRed, double & fAdjustGreen, double & fAdjustBlue, double fFlatRed, double fFlatGreen, double fFlatBlue)
 	{
@@ -106,7 +106,7 @@ public :
 		fAdjustRed = min(fAdjustRed, 255.0);
 		fAdjustGreen = min(fAdjustGreen, 255.0);
 		fAdjustBlue = min(fAdjustBlue, 255.0);
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */

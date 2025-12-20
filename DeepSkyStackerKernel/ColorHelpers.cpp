@@ -69,7 +69,7 @@ void CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	fGreen = std::max(0.0, std::min(255.0, fGreen));
 	fBlue = std::max(0.0, std::min(255.0, fBlue));
 }
-
+#if (0)
 void CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, double& fRed, double& fGreen, double& fBlue)
 {
 	double			Y, U, V;
@@ -144,6 +144,7 @@ void CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, d
 	fBlue = max(0.0, fBlue);
 	fGreen = max(0.0, fGreen);
 }
+#endif
 
 void ToHSL(double Red, double Green, double Blue, double& H, double& S, double& L)
 {
@@ -152,12 +153,12 @@ void ToHSL(double Red, double Green, double Blue, double& H, double& S, double& 
 	double mdiff = maxval - minval;
 	double msum = maxval + minval;
 
-	L = msum / 510.0f;
+	L = msum / 510.0;
 
 	if (maxval == minval)
 	{
-		S = 0.0f;
-		H = 0.0f;
+		S = 0.0;
+		H = 0.0;
 	}
 	else
 	{
@@ -165,13 +166,13 @@ void ToHSL(double Red, double Green, double Blue, double& H, double& S, double& 
 		double gnorm = (maxval - Green) / mdiff;
 		double bnorm = (maxval - Blue) / mdiff;
 
-		S = (L <= 0.5f) ? (mdiff / msum) : (mdiff / (510.0f - msum));
+		S = (L <= 0.5) ? (mdiff / msum) : (mdiff / (510.0 - msum));
 
-		if (Red == maxval) H = 60.0f * (6.0f + bnorm - gnorm);
-		if (Green == maxval) H = 60.0f * (2.0f + rnorm - bnorm);
-		if (Blue == maxval) H = 60.0f * (4.0f + gnorm - rnorm);
-		if (H > 360.0f)
-			H = H - 360.0f;
+		if (Red == maxval) H = 60.0 * (6.0 + bnorm - gnorm);
+		if (Green == maxval) H = 60.0 * (2.0 + rnorm - bnorm);
+		if (Blue == maxval) H = 60.0 * (4.0 + gnorm - rnorm);
+		if (H > 360.0)
+			H = H - 360.0;
 	}
 }
 
@@ -185,33 +186,33 @@ void ToRGB(double H, double S, double L, double& Red, double& Green, double& Blu
 	{
 		double rm1, rm2;
 
-		if (L <= 0.5f)
-			rm2 = (double)(L + L * S);
+		if (L <= 0.5)
+			rm2 = L + L * S;
 		else
-			rm2 = (double)(L + S - L * S);
-		rm1 = (double)(2.0f * L - rm2);
+			rm2 = L + S - L * S;
+		rm1 = 2.0 * L - rm2;
 
-		Red = ToRGB1(rm1, rm2, (double)(H + 120.0f));
-		Green = ToRGB1(rm1, rm2, (double)H);
-		Blue = ToRGB1(rm1, rm2, (double)(H - 120.0f));
+		Red = ToRGB1(rm1, rm2, H + 120.0);
+		Green = ToRGB1(rm1, rm2, H);
+		Blue = ToRGB1(rm1, rm2, H - 120.0);
 	}
 }
 
-double ToRGB1(float rm1, float rm2, float rh)
+double ToRGB1(double rm1, double rm2, double rh)
 {
-	if (rh > 360.0f)
-		rh -= 360.0f;
-	else if (rh < 0.0f)
-		rh += 360.0f;
+	if (rh > 360.0)
+		rh -= 360.0;
+	else if (rh < 0.0)
+		rh += 360.0;
 
-	if (rh < 60.0f)
-		rm1 = rm1 + (rm2 - rm1) * rh / 60.0f;
-	else if (rh < 180.0f)
+	if (rh < 60.0)
+		rm1 = rm1 + (rm2 - rm1) * rh / 60.0;
+	else if (rh < 180.0)
 		rm1 = rm2;
-	else if (rh < 240.0f)
-		rm1 = rm1 + (rm2 - rm1) * (240.0f - rh) / 60.0f;
+	else if (rh < 240.0)
+		rm1 = rm1 + (rm2 - rm1) * (240. - rh) / 60.0;
 
-	return (rm1 * 255.0);
+	return rm1 * 255.0;
 }
 
 // --- Don't this this is used ---

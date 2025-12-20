@@ -613,8 +613,8 @@ namespace DSS
 						group.pictures->setData(row, Column::Quality, bmpInfo.quality);
 						group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 						it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
-						group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
-						group.pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
+						group.pictures->setData(row, Column::Stars, static_cast<int>(bmpInfo.m_vStars.size()));
+						group.pictures->setData(row, Column::Background, static_cast<int>(bmpInfo.m_vStars.size()));
 						group.pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
 					}
 					else
@@ -654,8 +654,8 @@ namespace DSS
 					group.pictures->setData(row, Column::Quality, bmpInfo.quality);
 					group.pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
 					it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
-					group.pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
-					group.pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
+					group.pictures->setData(row, Column::Stars, static_cast<int>(bmpInfo.m_vStars.size()));
+					group.pictures->setData(row, Column::Background, static_cast<int>(bmpInfo.m_vStars.size()));
 					group.pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
 				}
 				else
@@ -718,7 +718,7 @@ namespace DSS
 
 	void FrameList::checkAllDarks(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsDarkFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		constexpr auto Selector = [](const auto& file, const bool ischecked) { return std::make_pair(file.IsDarkFrame(), ischecked ? Qt::Checked : Qt::Unchecked); };
 		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
@@ -743,7 +743,7 @@ namespace DSS
 
 	void FrameList::checkAllFlats(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsFlatFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		constexpr auto Selector = [](const auto& file, const bool ischecked) { return std::make_pair(file.IsFlatFrame(), ischecked ? Qt::Checked : Qt::Unchecked); };
 		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
@@ -769,7 +769,7 @@ namespace DSS
 
 	void FrameList::checkAllOffsets(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsOffsetFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		constexpr auto Selector = [](const auto& file, const bool ischecked) { return std::make_pair(file.IsOffsetFrame(), ischecked ? Qt::Checked : Qt::Unchecked); };
 		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
@@ -795,7 +795,7 @@ namespace DSS
 
 	void FrameList::checkAllLights(bool check)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check) { return std::make_pair(file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked); };
+		constexpr auto Selector = [](const auto& file, const bool ischecked) { return std::make_pair(file.IsLightFrame(), ischecked ? Qt::Checked : Qt::Unchecked); };
 		checkSelective<Selector, false>(check);
 		//for (auto& group : imageGroups)
 		//{
@@ -818,12 +818,12 @@ namespace DSS
 		//}
 	}
 
-	void FrameList::checkImage(const fs::path& image, bool check)
+	void FrameList::checkImage(const fs::path& image, bool checked)
 	{
-		constexpr auto Selector = [](const auto& file, const bool check, const fs::path& image) {
-			return std::make_pair(image == file.filePath && file.IsLightFrame(), check ? Qt::Checked : Qt::Unchecked);
+		constexpr auto Selector = [](const auto& file, const bool ischecked, const fs::path& theimage) {
+			return std::make_pair(theimage == file.filePath && file.IsLightFrame(), ischecked ? Qt::Checked : Qt::Unchecked);
 		};
-		checkSelective<Selector, true>(check, image);
+		checkSelective<Selector, true>(checked, image);
 		//for (auto& group : imageGroups)
 		//{
 		//	for (int idx = 0; idx < group.pictures->mydata.size(); ++idx)
@@ -850,8 +850,8 @@ namespace DSS
 
 	void FrameList::checkAbove(const double threshold)
 	{
-		constexpr auto Selector = [](const auto& file, const bool, const double threshold) {
-			return std::make_pair(file.IsLightFrame(), file.quality >= threshold ? Qt::Checked : Qt::Unchecked);
+		constexpr auto Selector = [](const auto& file, const bool, const double thrshold) {
+			return std::make_pair(file.IsLightFrame(), file.quality >= thrshold ? Qt::Checked : Qt::Unchecked);
 		};
 		checkSelective<Selector, false>(true, threshold);
 		//for (auto& group : imageGroups)

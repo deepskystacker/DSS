@@ -30,6 +30,19 @@ std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, 
 bool IsFITSRawBayer();		// From FITSUtil.h
 bool IsFITSSuperPixels();	// From FITSUtil.h
 
+//void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double, double& fRed, double& fGreen, double& fBlue);
+
+namespace little_endian
+{
+	unsigned read_word(std::istream& ins);
+	unsigned read_dword(std::istream& ins);
+}
+namespace big_endian
+{
+	unsigned read_word(std::istream& ins);
+	unsigned read_dword(std::istream& ins);
+}
+
 namespace DSS
 {
 	class	GammaTransformation
@@ -43,8 +56,8 @@ namespace DSS
 
 	public:
 		GammaTransformation() : valid{ false }
-		{};
-		~GammaTransformation() {};
+		{}
+		~GammaTransformation() {}
 
 		//
 		// Don't intend this to be copied or assigned.
@@ -79,8 +92,8 @@ public:
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	std::shared_ptr<QImage> m_Image;
 
-    CAllDepthBitmap() : m_bDontUseAHD(false) {};
-	~CAllDepthBitmap() {};
+    CAllDepthBitmap() : m_bDontUseAHD(false) {}
+	~CAllDepthBitmap() {}
 	CAllDepthBitmap(const CAllDepthBitmap& adb) = default;
 	CAllDepthBitmap& operator=(const CAllDepthBitmap& adb) = default;
 
@@ -90,6 +103,8 @@ public:
 };
 
 bool LoadPicture(const fs::path& file, CAllDepthBitmap & AllDepthBitmap, DSS::OldProgressBase* pProgress = nullptr);
+bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::OldProgressBase* const pProgress,
+	std::shared_ptr<QImage>& pQImage);
 bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, DSS::OldProgressBase* pProgress);
 
 bool	ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, DSS::GammaTransformation& gammatrans);

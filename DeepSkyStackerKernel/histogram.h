@@ -103,6 +103,8 @@ inline QString HistoAdjustTypeText(DSS::HistogramAdjustmentCurve hat)
 	case DSS::HistogramAdjustmentCurve::ASinH:
 		return QCoreApplication::translate("Histogram", "ASinH", "IDS_HAT_ASINH");
 		break;
+	default:
+		break;
 	};
 	return "";
 };
@@ -145,7 +147,7 @@ namespace DSS
 			usedMinimum = settings.value("UsedMinimum").toDouble();
 			usedMaximum = settings.value("UsedMaximum").toDouble();
 			adjustmentCurve = static_cast<HistogramAdjustmentCurve>(settings.value("AdjustmentCurve").toUInt());
-		};
+		}
 
 		void saveSettings(const QString& groupName) const
 		{
@@ -160,7 +162,7 @@ namespace DSS
 			settings.setValue("UsedMinimum", usedMinimum);
 			settings.setValue("UsedMaximum", usedMaximum);
 			settings.setValue("AdjustmentCurve", static_cast<uint>(adjustmentCurve));
-		};
+		}
 
 		double	AdjustValue(double fValue) const
 		{
@@ -192,7 +194,7 @@ namespace DSS
 				return LinearAdjust(fValue);
 				break;
 			};
-		};
+		}
 
 		double	ExtractValue(const QString& szString, const QString& szVariable)
 		{
@@ -206,7 +208,7 @@ namespace DSS
 				if (nEnd < 0)
 					nEnd = szString.indexOf("}", nStart);
 				if (nEnd > nStart)
-					fValue = szString.mid(nStart, nEnd - nStart).toFloat();
+					fValue = szString.mid(nStart, nEnd - nStart).toDouble();
 			}
 			return fValue;
 		}
@@ -220,9 +222,9 @@ namespace DSS
 			minimum = 0;
 			maximum = 0;
 			shift = 0;
-		};
+		}
 
-		virtual ~HistogramAdjust() {};
+		virtual ~HistogramAdjust() {}
 
 		double getOriginalMinimum() const { return originalMinimum; }
 		double getOriginalMaximum() const { return originalMaximum; }
@@ -235,7 +237,7 @@ namespace DSS
 			adjustmentCurve = HistogramAdjustmentCurve::LogSquareRoot;
 			setOriginalValues(0.0, 65535.0);
 			SetNewValues(0.0, 65535.0, 0.0);
-		};
+		}
 
 		HistogramAdjust(const HistogramAdjust& ha) = default;
 
@@ -247,39 +249,39 @@ namespace DSS
 			originalMaximum = max;
 			usedMinimum = (originalMaximum - originalMinimum) * 0.05;
 			usedMaximum = originalMaximum - usedMinimum;
-		};
+		}
 
 		void	SetNewValues(double fMin, double fMax, double fShift)
 		{
 			minimum = fMin;
 			maximum = fMax;
 			shift = fShift;
-		};
+		}
 
 		void	setAdjustMethod(HistogramAdjustmentCurve hat)
 		{
 			adjustmentCurve = hat;
-		};
+		}
 
 		HistogramAdjustmentCurve getAdjustMethod() const
 		{
 			return adjustmentCurve;
-		};
+		}
 
 		double	GetMin() const
 		{
 			return minimum;
-		};
+		}
 
 		double	GetMax() const
 		{
 			return maximum;
-		};
+		}
 
 		double	GetShift() const
 		{
 			return shift;
-		};
+		}
 
 		double	Adjust(double fValue) const
 		{
@@ -300,7 +302,7 @@ namespace DSS
 				fResult = originalMaximum - (fValue - maximum) / max(1.0, originalMaximum - maximum) * (originalMaximum - usedMaximum);
 
 			return fResult;
-		};
+		}
 
 		void	ToText(QString& strParameters) const
 		{
@@ -313,7 +315,7 @@ namespace DSS
 				.arg(usedMinimum, 0, 'f', 2)
 				.arg(usedMaximum, 0, 'f', 2)
 				.arg(static_cast<int>(adjustmentCurve));
-		};
+		}
 
 		void	FromText(const QString& szParameters)
 		{
@@ -325,11 +327,8 @@ namespace DSS
 			usedMinimum = ExtractValue(szParameters, "MinUsed");
 			usedMaximum = ExtractValue(szParameters, "MaxUsed");
 
-			int				lValue;
-
-			lValue = ExtractValue(szParameters, "HAT");
-			adjustmentCurve = (HistogramAdjustmentCurve)lValue;
-		};
+			adjustmentCurve = static_cast<HistogramAdjustmentCurve>(ExtractValue(szParameters, "HAT"));
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -365,15 +364,15 @@ namespace DSS
 		}
 
 	public:
-		RGBHistogramAdjust() {	};
-		virtual ~RGBHistogramAdjust() {};
+		RGBHistogramAdjust() {	}
+		virtual ~RGBHistogramAdjust() {}
 
 		void	reset()
 		{
 			redAdjustment.reset();
 			greenAdjustment.reset();
 			blueAdjustment.reset();
-		};
+		}
 
 		RGBHistogramAdjust(const RGBHistogramAdjust& ha) = default;
 		//{
@@ -391,37 +390,37 @@ namespace DSS
 			fRed = redAdjustment.Adjust(fRed);
 			fGreen = greenAdjustment.Adjust(fGreen);
 			fBlue = blueAdjustment.Adjust(fBlue);
-		};
+		}
 
 		const HistogramAdjust& GetRedAdjust() const
 		{
 			return redAdjustment;
-		};
+		}
 
 		HistogramAdjust& GetRedAdjust()
 		{
 			return redAdjustment;
-		};
+		}
 
 		const HistogramAdjust& GetGreenAdjust() const
 		{
 			return greenAdjustment;
-		};
+		}
 
 		HistogramAdjust& GetGreenAdjust()
 		{
 			return greenAdjustment;
-		};
+		}
 
 		const HistogramAdjust& GetBlueAdjust() const
 		{
 			return blueAdjustment;
-		};
+		}
 
 		HistogramAdjust& GetBlueAdjust()
 		{
 			return blueAdjustment;
-		};
+		}
 
 		void loadSettings(const QString& group)
 		{
@@ -457,7 +456,7 @@ namespace DSS
 				.arg(strRedParameters)
 				.arg(strGreenParameters)
 				.arg(strBlueParameters);
-		};
+		}
 
 		void	FromText(const QString& szParameters)
 		{
@@ -467,7 +466,7 @@ namespace DSS
 			ExtractParameters(szParameters, strRedAdjust, redAdjustment);
 			ExtractParameters(szParameters, strGreenAdjust, greenAdjustment);
 			ExtractParameters(szParameters, strBlueAdjust, blueAdjustment);
-		};
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -498,11 +497,11 @@ namespace DSS
 			initialised = false;
 			absoluteMax = 0;
 			step = 0;
-		};
+		}
 
 		Histogram& operator=(const Histogram&) = default;
 
-		virtual ~Histogram() {};
+		virtual ~Histogram() {}
 
 		void	init()
 		{
@@ -516,7 +515,7 @@ namespace DSS
 			values.resize(lNrValues);
 
 			initialised = true;
-		};
+		}
 		void init(const size_t size)
 		{
 			initialised = false;
@@ -539,10 +538,10 @@ namespace DSS
 			{
 				int		lNrValues;
 
-				lNrValues = (int)(absoluteMax / step + 1);
+				lNrValues = static_cast<int>(absoluteMax / step + 1);
 				values.resize(lNrValues);
 			};
-		};
+		}
 
 		void	SetSize(double fMax, double fStep)
 		{
@@ -550,7 +549,7 @@ namespace DSS
 			step = fStep;
 
 			init();
-		};
+		}
 
 		void	SetSize(double fMax, int lNrValues)
 		{
@@ -558,18 +557,18 @@ namespace DSS
 			step = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (lNrValues - 1));
 
 			init(lNrValues);
-		};
+		}
 
 		int	GetSize()
 		{
-			return (int)values.size();
-		};
+			return static_cast<int>(values.size());
+		}
 
 		void	AddValue(double fValue, int lNrValues = 1)
 		{
 			int		lNrStep;
 
-			lNrStep = (int)(fValue / step);
+			lNrStep = static_cast<int>((fValue / step));
 
 			if (lNrStep < values.size())
 			{
@@ -585,7 +584,7 @@ namespace DSS
 				else
 					minimum = min(minimum, fValue);
 			};
-		};
+		}
 
 		void	AddValues(const Histogram& Histogram)
 		{
@@ -594,27 +593,27 @@ namespace DSS
 				if (Histogram.values[i])
 					AddValue(i * step, Histogram.values[i]);
 			};
-		};
+		}
 
 		int	GetNrValues()
 		{
-			return (int)values.size();
-		};
+			return static_cast<int>(values.size());
+		}
 
 		int	GetValue(double fValue)
 		{
-			return values[(int)(fValue / step)];
-		};
+			return values[static_cast<size_t>(fValue / step)];
+		}
 
 		int	GetValue(int lValue)
 		{
 			return values[lValue];
-		};
+		}
 
 		double	GetComponentValue(int lIndice)
 		{
-			return (double)lIndice * step;
-		};
+			return static_cast<double>(lIndice * step);
+		}
 
 		double	GetAverage()
 		{
@@ -624,17 +623,17 @@ namespace DSS
 				fResult = sum / valueCount;
 
 			return fResult;
-		};
+		}
 
 		double	GetMin()
 		{
 			return minimum;
-		};
+		}
 
 		double	GetMax()
 		{
 			return maximum;
-		};
+		}
 
 		double	GetStdDeviation()
 		{
@@ -644,7 +643,7 @@ namespace DSS
 				fResult = sqrt(sumOfSquares / valueCount - pow(sum / valueCount, 2));
 
 			return fResult;
-		};
+		}
 
 		double	GetMedian()
 		{
@@ -655,7 +654,7 @@ namespace DSS
 				unsigned int		lCount = 0;
 				int		i = 0;
 
-				while ((lCount + values[i]) <= (unsigned int)(valueCount / 2))
+				while ((lCount + values[i]) <= static_cast<unsigned int>(valueCount / 2))
 				{
 					lCount += values[i];
 					i++;
@@ -665,12 +664,12 @@ namespace DSS
 			};
 
 			return fResult;
-		};
+		}
 
 		int	GetMaximumNrValues()
 		{
 			return intMax;
-		};
+		}
 	};
 
 
@@ -685,74 +684,74 @@ namespace DSS
 		Histogram				blueHistogram;
 
 	public:
-		RGBHistogram() {};
-		virtual ~RGBHistogram() {};
+		RGBHistogram() {}
+		virtual ~RGBHistogram() {}
 
 		void	clear()
 		{
 			redHistogram.clear();
 			greenHistogram.clear();
 			blueHistogram.clear();
-		};
+		}
 
 		bool	IsInitialized()
 		{
 			return redHistogram.GetSize() && greenHistogram.GetSize() && blueHistogram.GetSize();
-		};
+		}
 
 		int	GetSize()
 		{
 			return redHistogram.GetSize();
-		};
+		}
 
 		void	SetSize(double fMax, double fStep)
 		{
 			redHistogram.SetSize(fMax, fStep);
 			greenHistogram.SetSize(fMax, fStep);
 			blueHistogram.SetSize(fMax, fStep);
-		};
+		}
 
 		void	SetSize(double fMax, int lNrValues)
 		{
 			redHistogram.SetSize(fMax, lNrValues);
 			greenHistogram.SetSize(fMax, lNrValues);
 			blueHistogram.SetSize(fMax, lNrValues);
-		};
+		}
 
 		void	AddValues(double fRed, double fGreen, double fBlue)
 		{
 			redHistogram.AddValue(fRed);
 			greenHistogram.AddValue(fGreen);
 			blueHistogram.AddValue(fBlue);
-		};
+		}
 
 		void	AddValues(const RGBHistogram& RGBHistogram)
 		{
 			redHistogram.AddValues(RGBHistogram.redHistogram);
 			greenHistogram.AddValues(RGBHistogram.greenHistogram);
 			blueHistogram.AddValues(RGBHistogram.blueHistogram);
-		};
+		}
 
 		void	GetValues(int lValue, int& lNrReds, int& lNrGreens, int& lNrBlues)
 		{
 			lNrReds = redHistogram.GetValue(lValue);
 			lNrGreens = greenHistogram.GetValue(lValue);
 			lNrBlues = blueHistogram.GetValue(lValue);
-		};
+		}
 
 		Histogram& GetRedHistogram()
 		{
 			return redHistogram;
-		};
+		}
 
 		Histogram& GetGreenHistogram()
 		{
 			return greenHistogram;
-		};
+		}
 
 		Histogram& GetBlueHistogram()
 		{
 			return blueHistogram;
-		};
+		}
 	};
 } // namespace DSS

@@ -72,14 +72,14 @@ bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
 		// Exposure time
 		if (iterator = exposureTime(exifData); exifData.end() != iterator)
 		{
-			BitmapInfo.m_fExposure = iterator->toFloat();
+			BitmapInfo.m_fExposure = static_cast<double>(iterator->toFloat());
 			result = true;
 		}
 
 		// Aperture
 		if (iterator = fNumber(exifData); exifData.end() != iterator)
 		{
-			BitmapInfo.m_fAperture = iterator->toFloat();
+			BitmapInfo.m_fAperture = static_cast<double>(iterator->toFloat());
 			result = true;
 		}
 		//else if (iterator = apertureValue(exifData); exifData.end() != iterator)
@@ -91,7 +91,7 @@ bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
 		// ISO
 		if (iterator = isoSpeed(exifData); exifData.end() != iterator)
 		{
-			BitmapInfo.m_lISOSpeed = iterator->toInt64(0);	// Return 1st element if multi-element IFD
+			BitmapInfo.m_lISOSpeed = static_cast<int>(iterator->toInt64(0));	// Return 1st element if multi-element IFD
 			result = true;
 		}
 

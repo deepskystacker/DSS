@@ -17,7 +17,7 @@ namespace {
 		std::uint32_t dwAlignmentTransformation = 2;
 		TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
 
-		dwAlignmentTransformation = Workspace{}.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
+		dwAlignmentTransformation = Workspace{}.value("Stacking/AlignmentTransformation", 2U).toUInt();
 
 		if (dwAlignmentTransformation > TT_LAST)
 			dwAlignmentTransformation = 0;
@@ -146,24 +146,25 @@ void CMatchingStars::InitVotingGrid(VOTINGPAIRVECTOR& vVotingPairs)
 	}
 }
 
+namespace {
+	static void AddVote(const std::uint32_t RefStar, const std::uint32_t TgtStar, VOTINGPAIRVECTOR& vVotingPairs, const size_t lNrTgtStars)
+	{
+		const size_t offset = RefStar * lNrTgtStars + TgtStar;
+		vVotingPairs[offset].m_lNrVotes++;
+	}
 
-void AddVote(const std::uint8_t RefStar, const std::uint8_t TgtStar, VOTINGPAIRVECTOR& vVotingPairs, const size_t lNrTgtStars)
-{
-	const size_t offset = RefStar * lNrTgtStars + TgtStar;
-	vVotingPairs[offset].m_lNrVotes++;
-}
-
-void AddAllVotes(const STARTRIANGLEVECTOR::const_iterator itRef, const STARTRIANGLEVECTOR::const_iterator itTgt, VOTINGPAIRVECTOR& vVotingPairs, const size_t nrTargetStars)
-{
-	AddVote(itRef->m_Star1, itTgt->m_Star1, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star1, itTgt->m_Star2, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star1, itTgt->m_Star3, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star2, itTgt->m_Star1, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star2, itTgt->m_Star2, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star2, itTgt->m_Star3, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star3, itTgt->m_Star1, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star3, itTgt->m_Star2, vVotingPairs, nrTargetStars);
-	AddVote(itRef->m_Star3, itTgt->m_Star3, vVotingPairs, nrTargetStars);
+	static void AddAllVotes(const STARTRIANGLEVECTOR::const_iterator itRef, const STARTRIANGLEVECTOR::const_iterator itTgt, VOTINGPAIRVECTOR& vVotingPairs, const size_t nrTargetStars)
+	{
+		AddVote(itRef->m_Star1, itTgt->m_Star1, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star1, itTgt->m_Star2, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star1, itTgt->m_Star3, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star2, itTgt->m_Star1, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star2, itTgt->m_Star2, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star2, itTgt->m_Star3, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star3, itTgt->m_Star1, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star3, itTgt->m_Star2, vVotingPairs, nrTargetStars);
+		AddVote(itRef->m_Star3, itTgt->m_Star3, vVotingPairs, nrTargetStars);
+	}
 }
 
 
@@ -946,8 +947,8 @@ bool CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 			while (itRef != m_vRefTriangles.cend() && (itRef->m_fX < itTgt->m_fX + TRIANGLETOLERANCE))
 			{
 				// Check real distance between triangles
-				const float fDistance = Distance(itRef->m_fX, itRef->m_fY, itTgt->m_fX, itTgt->m_fY);
-				if (fDistance <= TRIANGLETOLERANCE)
+				const auto distance = Distance(itRef->m_fX, itRef->m_fY, itTgt->m_fX, itTgt->m_fY);
+				if (distance <= TRIANGLETOLERANCE)
 				{
 					// Vote for the all the pairs
 					AddAllVotes(itRef, itTgt, vVotingPairs, m_vTgtStars.size());
@@ -1026,7 +1027,7 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 	const auto TargetStar = [&targetStarDistances, &targetStarIndices](const size_t ndx) { return targetStarDistances[targetStarIndices[ndx]]; };
 	const auto ReferenceStar = [&dist = m_vRefStarDistances, &ind = m_vRefStarIndices](const size_t ndx) { return dist[ind[ndx]]; };
 
-	const auto getRefStarDistance = [this, b = m_vRefStarDistances.data(), e = m_vRefStarDistances.data() + m_vRefStarDistances.size()](
+	const auto getRefStarDistance = [b = m_vRefStarDistances.data(), e = m_vRefStarDistances.data() + m_vRefStarDistances.size()](
 		const int star1, const int star2) -> float
 	{
 #if !defined(NDEBUG) // Accelerate the search in debug mode by using raw pointers and avoiding iterators.

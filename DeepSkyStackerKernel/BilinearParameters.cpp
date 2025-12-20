@@ -23,9 +23,9 @@ bool CBilinearParameters::GetNextParameter(QString& strParameters, double& fValu
 	qsizetype nPos = strParameters.indexOf(",");
 	if (nPos >= 0)
 		strValue = strParameters.mid(0, nPos);
-	fValue = strValue.toFloat();
+	fValue = strValue.toDouble();
 
-	strParameters = strParameters.mid(nPos+1, std::max(0, (int)(strParameters.length() - strValue.length() - 1)));
+	strParameters = strParameters.mid(nPos+1, std::max(0, static_cast<int>(strParameters.length() - strValue.length() - 1)));
 	return true;
 }
 

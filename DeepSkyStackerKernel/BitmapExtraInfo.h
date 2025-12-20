@@ -8,6 +8,12 @@ public:
 
 public:
 	CBitmapExtraInfo() = default;
+	CBitmapExtraInfo(const CBitmapExtraInfo& rhs) = default;
+	CBitmapExtraInfo(CBitmapExtraInfo&& rhs) = default;
+
+	CBitmapExtraInfo& operator = (const CBitmapExtraInfo& rhs) = default;
+	CBitmapExtraInfo& operator = (CBitmapExtraInfo&& rhs) = default;
+
 	~CBitmapExtraInfo() = default;
 
 	void AddInfo(const ExtraInfo& ei)
@@ -33,3 +39,4 @@ public:
 		m_vExtras.clear();
 	}
 };
+

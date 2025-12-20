@@ -52,7 +52,7 @@
 // AVX Bitmap Filler
 // ---------------------------------
 
-AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
+AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
 	BitmapFillerBase{ pB, pP, redWb, greenWb, blueWb },
 	sourceBuffer{}
 {}

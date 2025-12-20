@@ -126,17 +126,17 @@ void CDetectCosmeticTask::doProcess()
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 			m_pProgress->Progress2(progress += nrProcessors);
 
-		const auto countColdHotPixels = [&](const int col, const int row, const bool changed) -> void
+		const auto countColdHotPixels = [&](const int acol, const int arow, const bool ischanged) -> void
 		{
-			if (changed)
+			if (ischanged)
 			{
 				if (m_bHot)
 					++nrHotPixels;
 				else
 					++nrColdPixels;
 			}
-			if (static_cast<bool>(m_pDelta) && (changed || m_bInitDelta))
-				m_pDelta->SetPixel(col, row, changed ? (m_bHot ? 255 : 50) : 128);
+			if (static_cast<bool>(m_pDelta) && (ischanged || m_bInitDelta))
+				m_pDelta->SetPixel(acol, arow, ischanged ? (m_bHot ? 255 : 50) : 128);
 		};
 
 		if constexpr (Monochrome)

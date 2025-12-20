@@ -47,7 +47,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 	unsigned int dwAlignmentTransformation = 2;
 	Workspace workspace;
 
-	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
+	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", 2U).toUInt();
 
 	// Init from the file
 	m_vLightFrameStackingInfo.clear();
@@ -229,7 +229,7 @@ void CLightFramesStackingInfo::Save()
 
 		// Save the alignment transformation used
 		unsigned int dwAlignmentTransformation = 2;
-		dwAlignmentTransformation = Workspace{}.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
+		dwAlignmentTransformation = Workspace{}.value("Stacking/AlignmentTransformation", 2U).toUInt();
 		stream << dwAlignmentTransformation << Qt::endl;
 
 		stream << GetInfoFileName(referenceFrame) << Qt::endl;
@@ -250,7 +250,7 @@ void CLightFramesStackingInfo::Save()
 	}
 }
 
-
+#if (0)
 void RemoveStars(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, const STARVECTOR& vStars)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -291,7 +291,7 @@ void RemoveStars(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, const ST
 							fIntensity += fGray;
 							lNrIntensities ++;
 						};*/
-						pBitmap->SetPixel(i + 0.5, j + 0.5, 0.0);
+						pBitmap->SetPixel(static_cast<size_t>(i + 0.5), static_cast<size_t>(j + 0.5), 0.0);
 					}
 				}
 			}
@@ -383,7 +383,7 @@ void RemoveStars(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, const ST
 		};*/
 	}
 }
-
+#endif
 
 TRANSFORMATIONTYPE CStackingEngine::GetTransformationType() const
 {
@@ -393,7 +393,7 @@ TRANSFORMATIONTYPE CStackingEngine::GetTransformationType() const
 	unsigned int dwAlignmentTransformation = 2;
 	Workspace workspace;
 
-	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
+	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", 2U).toUInt();
 
 	switch (dwAlignmentTransformation)
 	{
@@ -412,6 +412,7 @@ TRANSFORMATIONTYPE CStackingEngine::GetTransformationType() const
 	case 5:
 		TTResult = TT_NONE;
 		break;
+	default: break;
 	}
 
 	return TTResult;
@@ -556,323 +557,190 @@ bool CStackingEngine::ComputeLightFrameOffset(const size_t lBitmapIndice)
 	return bResult;
 }
 
-
-bool interpolateCometPositions(CStackingEngine& stackingEngine)
+namespace
 {
-	ZFUNCTRACE_RUNTIME();
+	bool interpolateCometPositions(CStackingEngine& stackingEngine)
+	{
+		ZFUNCTRACE_RUNTIME();
 
-	if (stackingEngine.LightFrames().empty())
-		return false;
+		if (stackingEngine.LightFrames().empty())
+			return false;
 
-	using ValT = double;
-	using VecT = std::vector<ValT>;
+		using ValT = double;
+		using VecT = std::vector<ValT>;
 
-	VecT times;
-	VecT xPositions;
-	VecT yPositions;
-	times.reserve(8);
-	xPositions.reserve(8);
-	yPositions.reserve(8);
+		VecT times;
+		VecT xPositions;
+		VecT yPositions;
+		times.reserve(8);
+		xPositions.reserve(8);
+		yPositions.reserve(8);
 
-	const CLightFrameInfo& firstLightframe = stackingEngine.getBitmap(0);
+		const CLightFrameInfo& firstLightframe = stackingEngine.getBitmap(0);
 
-	std::for_each(stackingEngine.LightFrames().cbegin(), stackingEngine.LightFrames().cend(),
-		[&times, &xPositions, &yPositions, &firstLightframe](const CLightFrameInfo& lightframe) {
-			// We use all lightframes (even those that are below a possible quality threshold), so there's no check for !lightframe.m_bDisabled.
-			if (lightframe.m_bComet)
-			{
-				const QPointF position = lightframe.m_BilinearParameters.transform(QPointF{ lightframe.m_fXComet, lightframe.m_fYComet });
-				times.emplace_back(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
-				xPositions.push_back(position.x());
-				yPositions.push_back(position.y());
+		std::for_each(stackingEngine.LightFrames().cbegin(), stackingEngine.LightFrames().cend(),
+			[&times, &xPositions, &yPositions, &firstLightframe](const CLightFrameInfo& lightframe) {
+				// We use all lightframes (even those that are below a possible quality threshold), so there's no check for !lightframe.m_bDisabled.
+				if (lightframe.m_bComet)
+				{
+					const QPointF position = lightframe.m_BilinearParameters.transform(QPointF{ lightframe.m_fXComet, lightframe.m_fYComet });
+					times.emplace_back(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
+					xPositions.push_back(position.x());
+					yPositions.push_back(position.y());
+				}
 			}
-		}
-	);
-
-	if (times.size() < 2)
-		return false;
-
-	const auto average = [](const VecT& vec) {
-		return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [](const ValT accu, const ValT value) { return accu + value; }) / static_cast<ValT>(vec.size());
-	};
-	const auto secondMoment = [](const VecT& vec, const ValT average) {
-		return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [average](const ValT accu, const ValT value) { const ValT y = value - average; return accu + y * y; });
-	};
-	const auto crossCorrelation = [](const VecT& r, const ValT rMean, const VecT& s, const ValT sMean) {
-		return std::inner_product(r.cbegin(), r.cend(), s.cbegin(), 0.0,
-			[](const ValT product, const ValT accu) { return accu + product; },
-			[rMean, sMean](const ValT rVal, const ValT sVal) { return (rVal - rMean) * (sVal - sMean); }
 		);
-	};
 
-	const ValT tAvg = average(times);
-	const ValT xAvg = average(xPositions);
-	const ValT yAvg = average(yPositions);
-	const ValT tSecondMoment = secondMoment(times, tAvg);
+		if (times.size() < 2)
+			return false;
 
-	if (tSecondMoment == 0.0) // All elapsed times are equal?
-		return false;
+		const auto average = [](const VecT& vec) {
+			return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [](const ValT accu, const ValT value) { return accu + value; }) / static_cast<ValT>(vec.size());
+			};
+		const auto secondMoment = [](const VecT& vec, const ValT avg) {
+			return std::accumulate(vec.cbegin(), vec.cend(), 0.0, [avg](const ValT accu, const ValT value) { const ValT y = value - avg; return accu + y * y; });
+			};
+		const auto crossCorrelation = [](const VecT& r, const ValT rMean, const VecT& s, const ValT sMean) {
+			return std::inner_product(r.cbegin(), r.cend(), s.cbegin(), 0.0,
+				[](const ValT product, const ValT accu) { return accu + product; },
+				[rMean, sMean](const ValT rVal, const ValT sVal) { return (rVal - rMean) * (sVal - sMean); }
+			);
+			};
 
-	const ValT xGradient = crossCorrelation(times, tAvg, xPositions, xAvg) / tSecondMoment;
-	const ValT xOffset = xAvg - xGradient * tAvg;
+		const ValT tAvg = average(times);
+		const ValT xAvg = average(xPositions);
+		const ValT yAvg = average(yPositions);
+		const ValT tSecondMoment = secondMoment(times, tAvg);
 
-	const ValT yGradient = crossCorrelation(times, tAvg, yPositions, yAvg) / tSecondMoment;
-	const ValT yOffset = yAvg - yGradient * tAvg;
+		if (tSecondMoment == 0.0) // All elapsed times are equal?
+			return false;
 
-	// Check if the deviations of the given comet positions is within +- 3*sigma of the linear regression.
-	// Works with at least 3 positions.
-	// It is an indication of an incorrectly marked comet position if the deviation is too large.
-	// So we present a warning.
-	if (times.size() > 2)
-	{
-		VecT deviations{ times };
-		auto vIt = deviations.begin();
-		auto tIt = times.cbegin();
-		for (const ValT val : xPositions)
-			*vIt++ = val - (*tIt++ * xGradient) - xOffset; // Given x-pos minus estimation_from_linear_regression (= time * gradient + offset)
-		const ValT xVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of x-deviations
+		const ValT xGradient = crossCorrelation(times, tAvg, xPositions, xAvg) / tSecondMoment;
+		const ValT xOffset = xAvg - xGradient * tAvg;
 
-		for (const ValT d : deviations)
-			if ((d * d) > 9 * xVariance)
-			{
-				// TO DO
-				// Shall we show a warning if the x-deviation of this position is larger than 3*sigma?
-			}
+		const ValT yGradient = crossCorrelation(times, tAvg, yPositions, yAvg) / tSecondMoment;
+		const ValT yOffset = yAvg - yGradient * tAvg;
 
-		vIt = deviations.begin();
-		tIt = times.cbegin();
-		for (const ValT val : yPositions)
-			*vIt++ = val - (*tIt++ * yGradient) - yOffset; // Given y-pos minus estimation_from_linear_regression (= time * gradient + offset)
-		const ValT yVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of y-deviations
-
-		for (const ValT d : deviations)
-			if ((d * d) > 9 * yVariance)
-			{
-				// TO DO
-				// Shall we show a warning if the y-deviation of this position is larger than 3*sigma?
-			}
-
-		constexpr ValT MaxVariance = 25;
-		ZTRACE_RUNTIME("interpolateCometPositions: x-stddev=%.1f, y-stddev=%.1f", std::sqrt(xVariance), std::sqrt(yVariance));
-
-		if (xVariance > MaxVariance || yVariance > MaxVariance)
+		// Check if the deviations of the given comet positions is within +- 3*sigma of the linear regression.
+		// Works with at least 3 positions.
+		// It is an indication of an incorrectly marked comet position if the deviation is too large.
+		// So we present a warning.
+		if (times.size() > 2)
 		{
-			// Show a warning if the standard deviation is larger than 5 pixels
-			const QString errorMessage{ QCoreApplication::translate(
-				"StackingEngine",
-				"The standard deviations of the marked comet positions are unusually large (x: %L1 pixels, y: %L2 pixels).\nThey should be smaller than %L3 pixels, so please check the defined comet centres.")
-				.arg(std::sqrt(xVariance), 0, 'f', 1)
-				.arg(std::sqrt(yVariance), 0, 'f', 1)
-				.arg(std::sqrt(MaxVariance), 0, 'f', 1) };
-			DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
+			VecT deviations{ times };
+			auto vIt = deviations.begin();
+			auto tIt = times.cbegin();
+			for (const ValT val : xPositions)
+				*vIt++ = val - (*tIt++ * xGradient) - xOffset; // Given x-pos minus estimation_from_linear_regression (= time * gradient + offset)
+			const ValT xVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of x-deviations
+
+			for (const ValT d : deviations)
+				if ((d * d) > 9 * xVariance)
+				{
+					// TO DO
+					// Shall we show a warning if the x-deviation of this position is larger than 3*sigma?
+				}
+
+			vIt = deviations.begin();
+			tIt = times.cbegin();
+			for (const ValT val : yPositions)
+				*vIt++ = val - (*tIt++ * yGradient) - yOffset; // Given y-pos minus estimation_from_linear_regression (= time * gradient + offset)
+			const ValT yVariance = secondMoment(deviations, average(deviations)) / static_cast<ValT>(times.size() - 1); // sigma^2 of y-deviations
+
+			for (const ValT d : deviations)
+				if ((d * d) > 9 * yVariance)
+				{
+					// TO DO
+					// Shall we show a warning if the y-deviation of this position is larger than 3*sigma?
+				}
+
+			constexpr ValT MaxVariance = 25;
+			ZTRACE_RUNTIME("interpolateCometPositions: x-stddev=%.1f, y-stddev=%.1f", std::sqrt(xVariance), std::sqrt(yVariance));
+
+			if (xVariance > MaxVariance || yVariance > MaxVariance)
+			{
+				// Show a warning if the standard deviation is larger than 5 pixels
+				const QString errorMessage{ QCoreApplication::translate(
+					"StackingEngine",
+					"The standard deviations of the marked comet positions are unusually large (x: %L1 pixels, y: %L2 pixels).\nThey should be smaller than %L3 pixels, so please check the defined comet centres.")
+					.arg(std::sqrt(xVariance), 0, 'f', 1)
+					.arg(std::sqrt(yVariance), 0, 'f', 1)
+					.arg(std::sqrt(MaxVariance), 0, 'f', 1) };
+				DSSBase::instance()->reportError(errorMessage, "", DSSBase::Severity::Warning);
+			}
 		}
+
+		for (int i = 0; CLightFrameInfo& lightframe : stackingEngine.LightFrames())
+		{
+			// All active lightframes (those that are NOT disabled) without a comet position will get one using the linear regression.
+			if (!lightframe.m_bComet && !lightframe.m_bDisabled)
+			{
+				const ValT time = static_cast<ValT>(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
+				lightframe.m_fXComet = xGradient * time + xOffset;
+				lightframe.m_fYComet = yGradient * time + yOffset;
+				lightframe.m_bTransformedCometPosition = true;
+				lightframe.m_bComet = true;
+				stackingEngine.incCometStackableIfBitmapHasComet(i);
+			}
+			++i;
+		}
+
+		return true;
 	}
 
-	for (int i = 0; CLightFrameInfo& lightframe : stackingEngine.LightFrames())
+	// Returns:
+	//   true:  offsets have been computed.
+	//   false: offset calculation was stopped by pressing "Cancel".
+	bool computeOffsets(CStackingEngine* const pStackingEngine, OldProgressBase* const pProg, const int nrBitmaps)
 	{
-		// All active lightframes (those that are NOT disabled) without a comet position will get one using the linear regression.
-		if (!lightframe.m_bComet && !lightframe.m_bDisabled)
+		ZFUNCTRACE_RUNTIME();
+		const int nrProcessors = Multitask::GetNrProcessors();
+
+		std::atomic_bool stop{ false };
+		std::atomic<int> nLoopCount{ 1 };
+		const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
+		if (pProg != nullptr)
+			pProg->Progress1(strText, 0);
+
+	#pragma omp parallel for schedule(dynamic) default(shared) shared(stop, nLoopCount, strText) if(nrProcessors > 1)
+		for (int i = 1; i < nrBitmaps; ++i)
 		{
-			const ValT time = static_cast<ValT>(firstLightframe.m_DateTime.secsTo(lightframe.m_DateTime));
-			lightframe.m_fXComet = xGradient * time + xOffset;
-			lightframe.m_fYComet = yGradient * time + yOffset;
-			lightframe.m_bTransformedCometPosition = true;
-			lightframe.m_bComet = true;
-			stackingEngine.incCometStackableIfBitmapHasComet(i);
-		}
-		++i;
-	}
+			// OpenMP loops need to loop till the end, breaking earlier is difficult. 
+			// Therefore, if "Cancel" has been pressed, we finish the loop by calling continue.
+			if (stop.load())
+				continue;
 
-	return true;
-}
-
-
-//void CStackingEngine::ComputeMissingCometPositions()
-//{
-//	ZFUNCTRACE_RUNTIME();
-//
-//	if (m_lNrCometStackable >= 2)
-//	{
-//		// Add all the valid light frames to a vector
-//		std::vector<CLightFrameInfo*> vpLightFrames;
-//
-//		for (auto& bitmap : bitmapsToStack)
-//		{
-//			if (!bitmap.m_bDisabled)
-//				vpLightFrames.push_back(&bitmap);
-//		}
-//
-//		// Now sort the list by ascending date/time
-//		std::ranges::sort(vpLightFrames, [](const CLightFrameInfo* pLfi1, const CLightFrameInfo* pLfi2) {
-//			return (pLfi2->m_DateTime > pLfi1->m_DateTime);
-//		});
-//
-//		std::vector<int> vNewComet;
-//
-//		for (size_t i = 1; !vpLightFrames.empty() && i < vpLightFrames.size() - 1; i++)
-//		{
-//			//if (!vpLightFrames[i]->m_bComet)
-//			{
-//				CLightFrameInfo* pPreviousComet = nullptr;
-//				CLightFrameInfo* pNextComet = nullptr;
-//				int64_t lPreviousIndex{ 0 }, lNextIndex{ 0 };
-//
-//				for (ptrdiff_t j = i - 1; j >= 0 && pPreviousComet == nullptr; j--)
-//				{
-//					if (vpLightFrames[j]->m_bComet)
-//					{
-//						pPreviousComet = vpLightFrames[j];
-//						lPreviousIndex = j;
-//					};
-//				};
-//
-//				for (size_t j = i + 1; j < vpLightFrames.size() && pNextComet == nullptr; j++)
-//				{
-//					if (vpLightFrames[j]->m_bComet)
-//					{
-//						pNextComet = vpLightFrames[j];
-//						lNextIndex = j;
-//					};
-//				};
-//
-//				if (pPreviousComet != nullptr && pNextComet != nullptr)
-//				{
-//					// Try to find another previous and/or next computed comet position
-//					// so that the elapsed time between the two is less than 12 hours
-//					bool bContinue = false;
-//					do
-//					{
-//						bool bFound = false;
-//						qint64 elapsedSeconds;
-//
-//						bContinue = false;
-//						for (ptrdiff_t j = lPreviousIndex - 1; j >= 0 && !bFound; j--)
-//						{
-//							if (vpLightFrames[j]->m_bComet)
-//							{
-//								elapsedSeconds = vpLightFrames[j]->m_DateTime.secsTo(pNextComet->m_DateTime);
-//								if (elapsedSeconds / 3600 < 12)
-//								{
-//									bFound = true;
-//									bContinue = true;
-//									pPreviousComet = vpLightFrames[j];
-//									lPreviousIndex = j;
-//								};
-//							};
-//						};
-//						bFound = false;
-//						for (size_t j = lNextIndex + 1; j < vpLightFrames.size() && !bFound; j++)
-//						{
-//							if (vpLightFrames[j]->m_bComet)
-//							{
-//								elapsedSeconds = pPreviousComet->m_DateTime.secsTo(vpLightFrames[j]->m_DateTime);
-//								if (elapsedSeconds / 3600 < 12)
-//								{
-//									bFound = true;
-//									bContinue = true;
-//									pNextComet = vpLightFrames[j];
-//									lNextIndex = j;
-//								};
-//							};
-//						};
-//					} while (bContinue);
-//
-//					// Compute the comet position in the two frames
-//					QPointF			ptPreviousComet = QPointF(pPreviousComet->m_fXComet, pPreviousComet->m_fYComet);
-//					QPointF			ptNextComet     = QPointF(pNextComet->m_fXComet, pNextComet->m_fYComet);
-//
-//					ptPreviousComet = pPreviousComet->m_BilinearParameters.transform(ptPreviousComet);
-//					ptNextComet		= pNextComet->m_BilinearParameters.transform(ptNextComet);
-//
-//					qint64				fElapsed2,
-//										fElapsedCurrent;
-//
-//					fElapsed2 = pPreviousComet->m_DateTime.secsTo(pNextComet->m_DateTime);
-//					fElapsedCurrent = pPreviousComet->m_DateTime.secsTo(vpLightFrames[i]->m_DateTime);
-//
-//					if (fElapsed2)
-//					{
-//						QPointF			ptCurrentComet;
-//						double				fAdvance = fElapsedCurrent/fElapsed2;
-//
-//						ptCurrentComet.rx() = ptPreviousComet.x() + fAdvance * (ptNextComet.x() - ptPreviousComet.x());
-//						ptCurrentComet.ry() = ptPreviousComet.y() + fAdvance * (ptNextComet.y() - ptPreviousComet.y());
-//
-//						// Set the comet position - already shifted
-//						vNewComet.push_back(static_cast<int>(i));
-//						vpLightFrames[i]->m_bTransformedCometPosition = true;
-//						vpLightFrames[i]->m_fXComet = ptCurrentComet.x();
-//						vpLightFrames[i]->m_fYComet = ptCurrentComet.y();
-//
-//						if (!vpLightFrames[i]->m_bComet)
-//							m_lNrCometStackable++;
-//					};
-//
-//					/*QPointF			ptTestComet = QPointF(vpLightFrames[i]->m_fXComet, vpLightFrames[i]->m_fYComet);
-//					vpLightFrames[i]->m_BilinearParameters.Transform(ptTestComet);*/
-//				}
-//			}
-//		}
-//
-//		for (const int cometIndex : vNewComet)
-//			vpLightFrames[cometIndex]->m_bComet = true;
-//	}
-//}
-
-
-// Returns:
-//   true:  offsets have been computed.
-//   false: offset calculation was stopped by pressing "Cancel".
-bool computeOffsets(CStackingEngine* const pStackingEngine, OldProgressBase* const pProg, const int nrBitmaps)
-{
-	ZFUNCTRACE_RUNTIME();
-	const int nrProcessors = Multitask::GetNrProcessors();
-
-	std::atomic_bool stop{ false };
-	std::atomic<int> nLoopCount{ 1 };
-	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
-	if (pProg != nullptr)
-		pProg->Progress1(strText, 0);
-
-#pragma omp parallel for schedule(dynamic) default(shared) shared(stop, nLoopCount, strText) if(nrProcessors > 1)
-	for (int i = 1; i < nrBitmaps; ++i)
-	{
-		// OpenMP loops need to loop till the end, breaking earlier is difficult. 
-		// Therefore, if "Cancel" has been pressed, we finish the loop by calling continue.
-		if (stop.load())
-			continue;
-
-		if (omp_get_thread_num() == 0 && pProg != nullptr)
-			pProg->Progress1(strText, nLoopCount.load());
-
-		if (pStackingEngine->ComputeLightFrameOffset(i))
-		{
-			pStackingEngine->getBitmap(i).m_bDisabled = false;
-			pStackingEngine->incStackable();
-			pStackingEngine->incCometStackableIfBitmapHasComet(i);
-
- 			if (omp_get_thread_num() == 0 && pProg != nullptr)
- 			{
-				pProg->Progress1(strText, nLoopCount.load());
- 				stop = pProg->IsCanceled();
- 			}
-		}
-		else
-		{
 			if (omp_get_thread_num() == 0 && pProg != nullptr)
-			{
 				pProg->Progress1(strText, nLoopCount.load());
-				stop = pProg->IsCanceled();
+
+			if (pStackingEngine->ComputeLightFrameOffset(i))
+			{
+				pStackingEngine->getBitmap(i).m_bDisabled = false;
+				pStackingEngine->incStackable();
+				pStackingEngine->incCometStackableIfBitmapHasComet(i);
+
+ 				if (omp_get_thread_num() == 0 && pProg != nullptr)
+ 				{
+					pProg->Progress1(strText, nLoopCount.load());
+ 					stop = pProg->IsCanceled();
+ 				}
 			}
-			pStackingEngine->getBitmap(i).m_bDisabled = true;			
+			else
+			{
+				if (omp_get_thread_num() == 0 && pProg != nullptr)
+				{
+					pProg->Progress1(strText, nLoopCount.load());
+					stop = pProg->IsCanceled();
+				}
+				pStackingEngine->getBitmap(i).m_bDisabled = true;			
+			}
+
+			++nLoopCount; // Note: For atomic<> ++x is faster than x++.
 		}
-
-		++nLoopCount; // Note: For atomic<> ++x is faster than x++.
+		return !stop;
 	}
-	return !stop;
-}
 
-namespace {
+
 	constexpr auto QualityComp = [](const CLightFrameInfo& l, const CLightFrameInfo& r)
 	{
 		if (l.m_bStartingFrame)
@@ -1076,8 +944,8 @@ DSSRect CStackingEngine::computeLargestRectangle()
 
 			if (bFirst)
 			{
-				lLeft = lRight = pt1.x();
-				lTop  = lBottom = pt1.y();
+				lLeft = lRight = static_cast<int>(pt1.x());
+				lTop  = lBottom = static_cast<int>(pt1.y());
 				bFirst = false;
 			}
 			else
@@ -1131,10 +999,10 @@ bool CStackingEngine::computeSmallestRectangle(DSSRect& rc)
 
 			if (bFirst)
 			{
-				lLeft = pt1.x();
-				lRight = pt4.x();
-				lTop = pt1.y();
-				lBottom = pt4.y();
+				lLeft = static_cast<int>(pt1.x());
+				lRight = static_cast<int>(pt4.x());
+				lTop = static_cast<int>(pt1.y());
+				lBottom = static_cast<int>(pt4.y());
 				bFirst = false;
 			}
 			else
@@ -1957,9 +1825,9 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 
 								m_pOutput->GetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
 								StackTask.m_pTempBitmap->GetPixel(i, j, fNewRed, fNewGreen, fNewBlue);
-								fOutRed = (fOutRed * m_lNrStacked + fNewRed) / (double)(m_lNrStacked + 1);
-								fOutGreen = (fOutGreen * m_lNrStacked + fNewGreen) / (double)(m_lNrStacked + 1);
-								fOutBlue = (fOutBlue * m_lNrStacked + fNewBlue) / (double)(m_lNrStacked + 1);
+								fOutRed = (fOutRed * m_lNrStacked + fNewRed) / static_cast<double>((m_lNrStacked + 1));
+								fOutGreen = (fOutGreen * m_lNrStacked + fNewGreen) / static_cast<double>((m_lNrStacked + 1));
+								fOutBlue = (fOutBlue * m_lNrStacked + fNewBlue) / static_cast<double>((m_lNrStacked + 1));
 								m_pOutput->SetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
 							}
 							else
@@ -1969,7 +1837,7 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 
 								m_pOutput->GetPixel(i, j, fOutGray);
 								StackTask.m_pTempBitmap->GetPixel(i, j, fNewGray);
-								fOutGray = (fOutGray * m_lNrStacked + fNewGray) / (double)(m_lNrStacked + 1);
+								fOutGray = (fOutGray * m_lNrStacked + fNewGray) / static_cast<double>((m_lNrStacked + 1));
 								m_pOutput->SetPixel(i, j, fOutGray);
 							}
 						}
@@ -2129,6 +1997,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 			//m_rcResult.right = m_vBitmaps[lBitmapIndex].RenderedWidth() * m_lPixelSizeMultiplier;
 			//m_rcResult.bottom = m_vBitmaps[lBitmapIndex].RenderedHeight() * m_lPixelSizeMultiplier;
 		} break;
+		default: break;
 
 		} // switch
 
@@ -2220,9 +2089,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 						ZTRACE_RUNTIME("StackingEngine: Reading %s", lightframeInfo.filePath.generic_u8string().c_str());
 
-						std::shared_ptr<CMemoryBitmap> rpBitmap;
-						if (::LoadFrame(lightframeInfo.filePath, PICTURETYPE_LIGHTFRAME, pProgress, rpBitmap))
-							return { rpBitmap, bitmapNdx };
+						std::shared_ptr<CMemoryBitmap> rpBmp;
+						if (::LoadFrame(lightframeInfo.filePath, PICTURETYPE_LIGHTFRAME, pProgress, rpBmp))
+							return { rpBmp, bitmapNdx };
 						else
 							return { {}, -1 };
 					};
@@ -2707,6 +2576,7 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	case SM_CUSTOM :
 		stream << QCoreApplication::translate("StackRecap", "Custom Rectangle", "IDS_RECAP_STACKINGMODE_CUSTOM");
 		break;
+	default: break;
 	};
 
 	stream << "<br>";
@@ -2732,6 +2602,7 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 	case 5 :
 		stream << QCoreApplication::translate("StackRecap", "No Alignment", "IDS_ALIGN_NONE");
 		break;
+	default: break;
 	};
 	stream << "<br>" << Qt::endl;
 
@@ -2761,6 +2632,7 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 		case CSM_COMETSTAR :
 			stream << QCoreApplication::translate("StackRecap", "Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
 			break;
+		default: break;
 		};
 		stream << "<br>" << Qt::endl;
 	};
@@ -2784,7 +2656,7 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 		stream << "<br><br>";
 
 	// Now the list of tasks
-	int				lTotalExposure = 0;
+	// int lTotalExposure = 0;
 	QString				strBackgroundCalibration;
 	QString				strPerChannelBackgroundCalibration;
 	QString				strExposure;
@@ -2815,10 +2687,10 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 
 			for (size_t j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
 			{
-				lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;
+				lTaskExposure += static_cast<int>(si.m_pLightTask->m_vBitmaps[j].m_fExposure);
 			}
 
-			lTotalExposure += lTaskExposure;
+			//lTotalExposure += lTaskExposure;
 
 			strExposure = exposureToString(lTaskExposure);
 			GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, strISOGainText, strISOGainValue);

@@ -18,7 +18,7 @@ public:
 		m_pProgress{ nullptr }
 	{}
 
-	virtual ~CMedianFilterEngine() {};
+	virtual ~CMedianFilterEngine() {}
 
 	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, DSS::OldProgressBase* pProgress) const = 0;
 };
@@ -31,8 +31,8 @@ private:
 
 public:
 	CGrayMedianFilterEngineT() : m_pInBitmap{ nullptr }
-	{};
-	virtual ~CGrayMedianFilterEngineT() {};
+	{}
+	virtual ~CGrayMedianFilterEngineT() override {}
 
 	void SetInputBitmap(const CGrayBitmapT<TType>* pInBitmap)
 	{
@@ -51,8 +51,8 @@ private:
 public:
 	CColorMedianFilterEngineT() : 
 		m_pInBitmap{ nullptr }
-	{};
-	virtual ~CColorMedianFilterEngineT() {};
+	{}
+	virtual ~CColorMedianFilterEngineT() override {}
 
 	void SetInputBitmap(const CColorBitmapT<TType>* pInBitmap)
 	{
@@ -128,7 +128,7 @@ public:
 		m_lFilterSize{ 0 }
 	{}
 
-	virtual ~CInternalMedianFilterEngineT() {};
+	virtual ~CInternalMedianFilterEngineT() {}
 
 	void ApplyFilter(DSS::OldProgressBase* pProgress);
 };

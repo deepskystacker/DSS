@@ -22,7 +22,7 @@ public:
 		m_bCYMG = pCFABitmapInfo->m_bCYMG;
 		m_xBayerOffset = pCFABitmapInfo->m_xBayerOffset;
 		m_yBayerOffset = pCFABitmapInfo->m_yBayerOffset;
-	};
+	}
 
 public:
 	CCFABitmapInfo() :
@@ -33,17 +33,19 @@ public:
 		m_yBayerOffset{ 0 }
 	{}
 
+	virtual ~CCFABitmapInfo() {}
+
 	void	SetCFAType(CFATYPE Type)
 	{
 		m_CFAType = Type;
 		m_bCYMG = IsCYMGType(m_CFAType);
-	};
+	}
 
 	CCFABitmapInfo& setXoffset(int xOffset) noexcept
 	{
 		m_xBayerOffset = xOffset;
 		return *this;
-	};
+	}
 
 	inline int xOffset() const noexcept
 	{
@@ -54,7 +56,7 @@ public:
 	{
 		m_yBayerOffset = yOffset;
 		return *this;
-	};
+	}
 
 	inline int yOffset() const noexcept
 	{
@@ -64,7 +66,7 @@ public:
 	inline CFATYPE GetCFAType() const noexcept
 	{
 		return m_CFAType;
-	};
+	}
 
 	void	UseSuperPixels(bool bUse)
 	{
@@ -75,7 +77,7 @@ public:
 		}
 		else
 			m_CFATransform = CFAT_NONE;
-	};
+	}
 
 	void	UseRawBayer(bool bUse)
 	{
@@ -86,7 +88,7 @@ public:
 		}
 		else
 			m_CFATransform = CFAT_NONE;
-	};
+	}
 
 	void	UseBilinear(bool bUse)
 	{
@@ -97,7 +99,7 @@ public:
 		}
 		else
 			m_CFATransform = CFAT_NONE;
-	};
+	}
 
 	void	UseAHD(bool bUse)
 	{
@@ -108,10 +110,10 @@ public:
 		}
 		else
 			m_CFATransform = CFAT_NONE;
-	};
+	}
 
 	CFATRANSFORMATION GetCFATransformation() const
 	{
 		return m_CFATransform;
-	};
+	}
 };

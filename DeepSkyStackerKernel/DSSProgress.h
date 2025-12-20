@@ -92,7 +92,7 @@ namespace DSS
 		virtual bool IsCanceled() const = 0;
 		virtual bool Warning(const QString& szText) = 0;
 
-		void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; };
+		void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; }
 		virtual const QString& GetStart1Text() const { return m_strLastOut[OT_TEXT1]; }
 		virtual const QString& GetStart2Text() const { return m_strLastOut[OT_TEXT2]; }
 		const QString& GetTitleText() const { return m_strLastOut[OT_TITLE]; }

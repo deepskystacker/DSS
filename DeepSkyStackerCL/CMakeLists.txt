@@ -156,7 +156,15 @@ if(MSVC)
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     if(APPLE)
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -Weverything -Werror -Xclang -fopenmp
+            -Weverything -Wno-missing-include-dirs -Wno-poison-system-directories
+			-Wno-c++98-compat -Wno-reserved-macro-identifier -Wno-global-constructors
+			-Wno-c++98-compat-pedantic -Wno-padded -Wno-pre-c++20-compat-pedantic
+			-Wno-c++20-compat -Wno-float-equal -Wno-exit-time-destructors
+			-Wno-sign-conversion -Wno-sign-compare -Wno-ctad-maybe-unsupported
+			-Wno-weak-vtables -Wno-covered-switch-default -Wno-undefined-func-template
+			-Wno-double-promotion -Wno-unreachable-code-break -Wno-disabled-macro-expansion
+			-Wno-unused-macros -Wno-pessimizing-move
+			-Werror -Xclang -fopenmp
         )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE

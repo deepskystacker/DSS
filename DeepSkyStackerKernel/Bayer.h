@@ -16,8 +16,8 @@ typedef enum
 
 inline int CMYGZeroIndex(BAYERCOLOR Color) { return Color - BAYER_CYAN; }
 
-BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffset = 0, int yOffset = 0);
-bool IsBayerBlueLine(size_t baseY, CFATYPE CFAType, int yOffset = 0);
-bool IsBayerBlueColumn(size_t baseX, CFATYPE CFAType, int xOffset = 0);
-bool IsBayerRedLine(size_t baseY, CFATYPE CFAType, int yOffset = 0);
-bool IsBayerRedColumn(size_t baseX, CFATYPE CFAType, int xOffset = 0);
+BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, size_t xOffset = 0, size_t yOffset = 0);
+bool IsBayerBlueLine(size_t baseY, CFATYPE CFAType, size_t yOffset = 0);
+bool IsBayerBlueColumn(size_t baseX, CFATYPE CFAType, size_t xOffset = 0);
+bool IsBayerRedLine(size_t baseY, CFATYPE CFAType, size_t yOffset = 0);
+bool IsBayerRedColumn(size_t baseX, CFATYPE CFAType, size_t xOffset = 0);

@@ -120,7 +120,7 @@ namespace {
 		if (!fileIn->atEnd())
 		{
 			const QString strText = fileIn->readLine();
-			int nPos = strText.indexOf("="); // Search = sign
+			auto nPos = strText.indexOf("="); // Search = sign
 			if (nPos >= 0)
 			{
 				strVariable = strText.left(nPos - 1).trimmed();
@@ -475,7 +475,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 		std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
 
-		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, StepSize, RectSize, &progress, &nStars, nrSubrectsX, &backgroundLevelCache](
+		const auto processDisjointArea = [this, threshold, &Bitmap, &progress, &nStars, nrSubrectsX, &backgroundLevelCache](
 					const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer)
 		{
 			try
@@ -489,7 +489,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 					for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
 					{
-						nStars += registerSubRect(Bitmap,
+						nStars += DSS::registerSubRect(Bitmap,
 							threshold,
 							DSSRect(StarMaxSize + colNdx * StepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * StepSize + RectSize), bottom),
 							stars,
@@ -763,12 +763,12 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 			fSumBlueX += fBlue * i;
 			fNrValuesBlueX += fBlue;
 		}
-		if (fNrValuesRedX)
+		if (0. != fNrValuesRedX)
 		{
 			fAverageRedX += fSumRedX / fNrValuesRedX;
 			lNrRedLines++;
 		}
-		if (fNrValuesBlueX)
+		if (0. != fNrValuesBlueX)
 		{
 			fAverageBlueX += fSumBlueX / fNrValuesBlueX;
 			lNrBlueLines++;
@@ -797,12 +797,12 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 			fSumBlueY += fBlue * i;
 			fNrValuesBlueY += fBlue;
 		}
-		if (fNrValuesRedY)
+		if (0. != fNrValuesRedY)
 		{
 			fAverageRedY += fSumRedY / fNrValuesRedY;
 			lNrRedColumns++;
 		}
-		if (fNrValuesBlueY)
+		if (0. != fNrValuesBlueY)
 		{
 			fAverageBlueY += fSumBlueY / fNrValuesBlueY;
 			lNrBlueColumns++;
@@ -1029,7 +1029,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 	//
 	// This lambda does the actual registering of the light frame.
 	//
-	auto DoRegister = [pProgress, this, nrTotalImages, successfulRegisteredPictures = 0, referenceFrame = fs::path{}](
+	auto DoRegister = [pProgress, this, nrTotalImages, successfulRegisteredPictures = 0, refFrame = fs::path{}](
 		ReadReturnType&& data, CMasterFrames& masterFrames, const CStackingInfo& stackingInfo, const int fileNumber, const bool isReferenceFrame) mutable
 	{
 		if (pProgress != nullptr)
@@ -1043,8 +1043,8 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 			return false;
 
 		if (isReferenceFrame)
-			referenceFrame = lfInfo->filePath;
-		else if (lfInfo->filePath == referenceFrame)
+			refFrame = lfInfo->filePath;
+		else if (lfInfo->filePath == refFrame)
 			return true; // Has already been registered.
 
 		ZTRACE_RUNTIME("Register %s file # %d: %s", isReferenceFrame ? "REFERENCE" : "", successfulRegisteredPictures, lfInfo->filePath.generic_u8string().c_str());

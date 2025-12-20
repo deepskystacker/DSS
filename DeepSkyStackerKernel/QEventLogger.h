@@ -25,11 +25,11 @@ class QEventLogger : public QObject {
     Q_OBJECT
 
 public:
-    explicit QEventLogger(const QString& logFileBaseName, QWidget* mainWidget, bool screenshotsEnabled, QObject* parent = 0);
-    ~QEventLogger();
+    explicit QEventLogger(const QString& logFileBaseName, QWidget* mainWidget, bool screenshotsEnabled, QObject* parent = nullptr);
+    virtual ~QEventLogger() override;
 
 protected:
-    bool eventFilter(QObject* obj, QEvent* event);
+    bool eventFilter(QObject* obj, QEvent* event) override;
     void appendToLog(const QString& inputType, const QString& eventType, const QString& targetWidget, const QString& details);
 
 private:

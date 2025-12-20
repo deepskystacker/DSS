@@ -98,9 +98,9 @@ void CExtendedMedianImageFilter::AnalyzeImage(const CMemoryBitmap * pInBitmap, b
 			if (bComputeThresholds)
 			{
 				if (fPosition>0)
-					vHotPixels[min(fPosition*1000, 1000.0)]++;
+					vHotPixels[static_cast<size_t>(std::min(fPosition*1000, 1000.0))]++;
 				else if (fPosition<0)
-					vColdPixels[min(-fPosition*1000, 1000.0)]++;
+					vColdPixels[static_cast<size_t>(std::min(-fPosition*1000, 1000.0))]++;
 			}
 			else
 			{
@@ -114,8 +114,8 @@ void CExtendedMedianImageFilter::AnalyzeImage(const CMemoryBitmap * pInBitmap, b
 	if (bComputeThresholds)
 	{
 		int	lNrPixels = lWidth*lHeight;
-		int	lNrRejectedHotPixels = lNrPixels * m_fRejectHotThreshold;
-		int	lNrRejectedColdPixels = lNrPixels * m_fRejectColdThreshold;
+		int	lNrRejectedHotPixels = static_cast<int>(static_cast<double>(lNrPixels) * m_fRejectHotThreshold);
+		int	lNrRejectedColdPixels = static_cast<int>(static_cast<double>(lNrPixels) * m_fRejectColdThreshold);
 
 		int	lThreshold;
 
@@ -125,7 +125,7 @@ void CExtendedMedianImageFilter::AnalyzeImage(const CMemoryBitmap * pInBitmap, b
 			lNrRejectedHotPixels-=vHotPixels[lThreshold];
 			lThreshold--;
 		};
-		m_fHotThreshold = (double)lThreshold/1000.0;
+		m_fHotThreshold = static_cast<double>(lThreshold/1000.0);
 
 		lThreshold = 1000;
 		while ((lNrRejectedColdPixels>0) && (lThreshold>0))
@@ -133,7 +133,7 @@ void CExtendedMedianImageFilter::AnalyzeImage(const CMemoryBitmap * pInBitmap, b
 			lNrRejectedColdPixels-=vColdPixels[lThreshold];
 			lThreshold--;
 		};
-		m_fColdThreshold = (double)lThreshold/1000.0;
+		m_fColdThreshold = static_cast<double>(lThreshold/1000.0);
 	};
 };
 
@@ -329,18 +329,18 @@ std::shared_ptr<CMemoryBitmap> CMedianImageFilter::ApplyFilter(const CMemoryBitm
 
 void	CDirectionalImageFilter::GetValuesAlongAngle(const CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vValues)
 {
-	for (int l = -m_lSize;l<=m_lSize;l++)
+	for (int l = -m_lSize; l <= m_lSize; l++)
 	{
 		int				i, j;
 
-		i = (double)x + (double)l * cos(fAngle) + 0.5;
-		j = (double)y + (double)l * sin(fAngle) + 0.5;
+		i = static_cast<int>(static_cast<double>(x) + static_cast<double>(l) * std::cos(fAngle) + 0.5);
+		j = static_cast<int>(static_cast<double>(y) + static_cast<double>(l) * std::sin(fAngle) + 0.5);
 
 		double				fValue;
 
 		pInBitmap->GetPixel(i, j, fValue);
 
-		if (fValue)
+		if (0 != fValue)
 			vValues.push_back(fValue);
 	}
 }
@@ -349,22 +349,22 @@ void	CDirectionalImageFilter::GetValuesAlongAngle(const CMemoryBitmap* pInBitmap
 
 void	CDirectionalImageFilter::GetValuesAlongAngle(const CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vRedValues, std::vector<double>& vGreenValues, std::vector<double>& vBlueValues)
 {
-	for (int l = -m_lSize;l<=m_lSize;l++)
+	for (int l = -m_lSize; l <= m_lSize; l++)
 	{
 		int				i, j;
 
-		i = (double)x + (double)l * cos(fAngle) + 0.5;
-		j = (double)y + (double)l * sin(fAngle) + 0.5;
+		i = static_cast<int>(static_cast<double>(x) + static_cast<double>(l) * std::cos(fAngle) + 0.5);
+		j = static_cast<int>(static_cast<double>(y) + static_cast<double>(l) * std::sin(fAngle) + 0.5);
 
 		double				fRed, fGreen, fBlue;
 
 		pInBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
-		if (fRed)
+		if (0. != fRed)
 			vRedValues.push_back(fRed);
-		if (fGreen)
+		if (0. != fGreen)
 			vGreenValues.push_back(fGreen);
-		if (fBlue)
+		if (0. != fBlue)
 			vBlueValues.push_back(fBlue);
 	}
 }
@@ -406,7 +406,7 @@ std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(const CMemor
 				pInBitmap->GetPixel(i, j, fValue);
 				GetValuesAlongAngle(pInBitmap, i, j, m_fAngle, vValues);
 				fMedian = Median(vValues);
-				if (fValue > fMedian || !fValue)
+				if (fValue > fMedian || 0 == fValue)
 					pOutBitmap->SetPixel(i, j, fMedian);
 			}
 			else
@@ -426,11 +426,11 @@ std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(const CMemor
 				fRedMedian		= Median(vRedValues);
 				fGreenMedian	= Median(vGreenValues);
 				fBlueMedian		= Median(vBlueValues);
-				if (fRed > fRedMedian || !fRed)
+				if (fRed > fRedMedian || 0 == fRed)
 					fRed = fRedMedian;
-				if (fGreen > fGreenMedian || !fGreen)
+				if (fGreen > fGreenMedian || 0 == fGreen)
 					fGreen = fGreenMedian;
-				if (fBlue > fBlueMedian || !fBlue)
+				if (fBlue > fBlueMedian || 0 == fBlue)
 					fBlue = fBlueMedian;
 
 				pOutBitmap->SetPixel(i, j, fRed, fGreen, fBlue);

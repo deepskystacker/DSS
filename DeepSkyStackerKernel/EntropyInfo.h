@@ -20,7 +20,7 @@ private :
 		m_fRedEntropy	= es.m_fRedEntropy;
 		m_fGreenEntropy = es.m_fGreenEntropy;
 		m_fBlueEntropy  = es.m_fBlueEntropy;
-	};
+	}
 
 public :
 	CEntropySquare()
@@ -28,7 +28,7 @@ public :
         m_fRedEntropy = 0;
         m_fGreenEntropy = 0;
         m_fBlueEntropy = 0;
-	};
+	}
 
 	CEntropySquare(const QPointF & pt, double fRedEntropy, double fGreenEntropy, double fBlueEntropy)
 	{
@@ -36,22 +36,22 @@ public :
 		m_fRedEntropy	= fRedEntropy;
 		m_fGreenEntropy = fGreenEntropy;
 		m_fBlueEntropy	= fBlueEntropy;
-	};
+	}
 
 	CEntropySquare(const CEntropySquare & es)
 	{
 		CopyFrom(es);
-	};
+	}
 
 	virtual ~CEntropySquare()
 	{
-	};
+	}
 
 	const CEntropySquare & operator = (const CEntropySquare & es)
 	{
 		CopyFrom(es);
 		return (*this);
-	};
+	}
 };
 
 class CMemoryBitmap;
@@ -93,7 +93,7 @@ public:
 	CEntropyInfo(CEntropyInfo&&) = delete;
 	CEntropyInfo& operator=(const CEntropyInfo&) = delete;
 	CEntropyInfo& operator=(CEntropyInfo&&) = delete;
-	~CEntropyInfo() = default;
+	virtual ~CEntropyInfo() = default;
 
 	const float* redEntropyData() const { return m_vRedEntropies.data(); }
 	const float* greenEntropyData() const { return m_vGreenEntropies.data(); }

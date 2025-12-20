@@ -14,23 +14,23 @@ private :
 	{
 		m_strVariable = s.m_strVariable;
 		m_strValue	  = s.m_strValue;
-	};
+	}
 
 public :
 	CSetting()
 	{
-	};
+	}
 
 	CSetting(const CSetting & s)
 	{
 		CopyFrom(s);
-	};
+	}
 
 	CSetting & operator = (const CSetting & s)
 	{
 		CopyFrom(s);
 		return (*this);
-	};
+	}
 
 	bool operator == (const CSetting & s) const
 	{
@@ -38,7 +38,7 @@ public :
 			return (m_strValue == s.m_strValue);
 		else
 			return false;
-	};
+	}
 
 	bool operator < (const CSetting & s) const
 	{
@@ -46,14 +46,13 @@ public :
 			return true;
 		else
 			return false;
-	};
+	}
 
 	bool	Read(const QString&  strLine)
 	{
 		bool			bResult = false;
-		int				nPos;
 
-		nPos = strLine.indexOf("=");
+		const auto nPos = strLine.indexOf("=");
 		if (nPos >= 0)
 		{
 			m_strVariable = strLine.left(nPos).trimmed();
@@ -61,7 +60,7 @@ public :
 			bResult = true;
 		}
 		return bResult;
-	};
+	}
 
 	bool	Read(FILE * hFile)
 	{
@@ -72,7 +71,7 @@ public :
 			bResult = Read(QString::fromLatin1(szBuffer));
 
 		return bResult;
-	};
+	}
 
 	bool	Write(FILE * hFile)
 	{
@@ -81,7 +80,7 @@ public :
 		fprintf(hFile, "%s=%s\n", m_strVariable.toStdString().c_str(), m_strValue.toStdString().c_str());
 
 		return bResult;
-	};
+	}
 };
 
 typedef std::set<CSetting>			SETTINGSET;
@@ -116,7 +115,7 @@ protected :
 		m_sSettings.insert(s);
 
 		return true;
-	};
+	}
 
 	void	AddVariable(const QString& variable, int lValue)
 	{
@@ -127,7 +126,7 @@ protected :
 
 		if (m_sSettings.find(s) == m_sSettings.end())
 			m_sSettings.insert(s);
-	};
+	}
 
 	void	AddVariable(const QString& variable, const QString& value)
 	{
@@ -138,7 +137,7 @@ protected :
 
 		if (m_sSettings.find(s) == m_sSettings.end())
 			m_sSettings.insert(s);
-	};
+	}
 
 	void	AddFileVariable(const QString& variable, const fs::path& file)
 	{
@@ -150,7 +149,7 @@ protected :
 			QString value = QString("%1[%2]").arg(file.generic_u16string(), bmpInfo.m_strDateTime);
 			AddVariable(variable, value);
 		};
-	};
+	}
 
 	void	AddRAWSettings()
 	{
@@ -160,7 +159,7 @@ protected :
 		ReadVariableFromWorkspace("RawDDP/NoWB", "0", "Raw");
 		ReadVariableFromWorkspace("RawDDP/CameraWB", "0", "Raw");
 		ReadVariableFromWorkspace("RawDDP/BlackPointTo0", "0", "Raw");
-	};
+	}
 
 	void	AddFITSSettings()
 	{
@@ -171,22 +170,22 @@ protected :
 		ReadVariableFromWorkspace("FitsDDP/DSLR", "", "Fits");
 		ReadVariableFromWorkspace("FitsDDP/BayerPattern", "4", "Fits");
 		ReadVariableFromWorkspace("FitsDDP/ForceUnsigned", "0", "Fits");
-	};
+	}
 
 public :
 	CGlobalSettings()
 	{
-	};
+	}
 
 	virtual ~CGlobalSettings()
 	{
-	};
+	}
 
 	bool	ReadFromFile(const fs::path&);
 	bool	InitFromCurrent(CTaskInfo * pTask, const fs::path&);
 	void	WriteToFile(const fs::path&);
 
-	virtual void	ReadFromRegistry() {};
+	virtual void	ReadFromRegistry() {}
 
 	bool operator == (const CGlobalSettings & gs) const;
 };
@@ -197,20 +196,20 @@ class CDarkSettings : public CGlobalSettings
 {
 public :
 	CDarkSettings() {}
-	virtual ~CDarkSettings() {};
+	virtual ~CDarkSettings() override {}
 
 	virtual void	ReadFromRegistry() override
 	{
 		ReadVariableFromWorkspace("Stacking/Dark_Method", "0");
 		ReadVariableFromWorkspace("Stacking/Dark_Iteration", "5");
 		ReadVariableFromWorkspace("Stacking/Dark_Kappa", "2.0");
-	};
+	}
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
 		if (pTask && !pTask->m_strOutputFile.empty())
 			AddFileVariable("MasterOffset", pTask->m_strOutputFile);
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -219,25 +218,25 @@ class CFlatSettings : public CGlobalSettings
 {
 public :
 	CFlatSettings() {}
-	virtual ~CFlatSettings() {};
+	virtual ~CFlatSettings() override {}
 
 	virtual void	ReadFromRegistry() override
 	{
 		ReadVariableFromWorkspace("Stacking/Flat_Method", "0");
 		ReadVariableFromWorkspace("Stacking/Flat_Iteration", "5");
 		ReadVariableFromWorkspace("Stacking/Flat_Kappa", "2.0");
-	};
+	}
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
 		if (pTask && !pTask->m_strOutputFile.empty())
 			AddFileVariable("MasterOffset", pTask->m_strOutputFile);
-	};
+	}
 	void	SetMasterDarkFlat(CTaskInfo * pTask)
 	{
 		if (pTask && !pTask->m_strOutputFile.empty())
 			AddFileVariable("MasterDarkFlat", pTask->m_strOutputFile);
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -246,14 +245,14 @@ class COffsetSettings : public CGlobalSettings
 {
 public :
 	COffsetSettings() {}
-	virtual ~COffsetSettings() {};
+	virtual ~COffsetSettings() override {}
 
 	virtual void	ReadFromRegistry() override
 	{
 		ReadVariableFromWorkspace("Stacking/Offset_Method", "0");
 		ReadVariableFromWorkspace("Stacking/Offset_Iteration", "5");
 		ReadVariableFromWorkspace("Stacking/Offset_Kappa", "2.0");
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */

@@ -2,16 +2,15 @@
 inline QString exposureToString(double fExposure)
 {
 	QString strText;
+	qint64	exposure{ 0 };
 
-	if (fExposure)
+	if (0. != fExposure)
 	{
-		qint64			exposure;
-
 		if (fExposure >= 1)
 		{
-			exposure = fExposure;
-			qint64			remainingTime = exposure;
-			qint64			hours, mins, secs;
+			exposure = static_cast<qint64>(fExposure);
+			qint64	remainingTime = exposure;
+			qint64	hours, mins, secs;
 
 			hours = remainingTime / 3600;
 			remainingTime -= hours * 3600;
@@ -34,7 +33,7 @@ inline QString exposureToString(double fExposure)
 		}
 		else
 		{
-			exposure = 1.0 / fExposure + 0.5;
+			exposure = static_cast<qint64>(1.0 / fExposure + 0.5);
 			strText = QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF")
 				.arg(exposure);
 		};

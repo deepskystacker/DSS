@@ -308,6 +308,10 @@ template <int Mult, typename T>
 template <size_t Ndx>
 void BackgroundCalibrationRational<Mult, T>::resetModel(const double x0, const double x1, const double x2, const double y0, const double y1, const double y2)
 {
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wshadow-uncaptured-local"
+#endif
 	constexpr auto Initialize = [](RationalParams& model, double x0, double x1, double x2, double y0, double y1, double y2)
 	{
 		const double t1 = ((x0 * y0 - x1 * y1) * (y0 - y2) - (x0 * y0 - x2 * y2) * (y0 - y1));
@@ -321,6 +325,9 @@ void BackgroundCalibrationRational<Mult, T>::resetModel(const double x0, const d
 		model.minValue = mn;
 		model.maxValue = mx;
 	};
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
 
 	Initialize(std::get<Ndx>(modelParams), x0, x1, x2, y0, y1, y2);
 }

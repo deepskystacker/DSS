@@ -1,6 +1,7 @@
 #pragma once
 #include "GrayBitmap.h"
 
+namespace DSS { class OldProgressBase; }
 class CColorBitmap
 {
 public:
@@ -26,7 +27,7 @@ public:
 	CGrayBitmapT<TType> m_Blue;
 
 	CColorBitmapT();
-	virtual ~CColorBitmapT() = default;
+	virtual ~CColorBitmapT() override = default;
 
 private:
 	int m_lWidth;
@@ -129,7 +130,7 @@ public:
 		return m_fMultiplier * 256.0;
 	}
 
-	virtual void RemoveHotPixels(OldProgressBase* pProgress = nullptr) override;
+	virtual void RemoveHotPixels(DSS::OldProgressBase* pProgress = nullptr) override;
 	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const override;
 
 	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) override;

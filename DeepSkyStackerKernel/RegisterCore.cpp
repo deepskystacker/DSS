@@ -2,6 +2,7 @@
 #include <numbers>
 #include "RegisterEngine.h"
 #include "PixelTransform.h"
+using namespace DSS;
 
 namespace {
 
@@ -83,7 +84,7 @@ namespace {
 		double fStdDevX = 0;
 //		fSumX = 0;
 		fNrValuesX = 0;
-		const size_t yCoord = std::round(star.m_fY);
+		const size_t yCoord = static_cast<size_t>(std::round(star.m_fY));
 		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 		{
 			double fValue;
@@ -99,7 +100,7 @@ namespace {
 		double fStdDevY = 0;
 //		fSumY = 0;
 		fNrValuesY = 0;
-		const size_t xCoord = std::round(star.m_fX);
+		const size_t xCoord = static_cast<size_t>(std::round(star.m_fX));
 		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 		{
 			double fValue;
@@ -128,7 +129,7 @@ namespace {
 
 		constexpr PixelDirection(const std::int8_t x, const std::int8_t y) noexcept : m_lXDir{ x }, m_lYDir{ y } {}
 		constexpr PixelDirection(const PixelDirection&) noexcept = default;
-		constexpr PixelDirection(PixelDirection&&) noexcept = default;
+		constexpr PixelDirection(PixelDirection&&) = delete;
 		template <typename T> PixelDirection& operator=(T&&) = delete;
 	};
 
@@ -140,7 +141,7 @@ namespace {
 		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes{};
 		std::array<int, 4> xcoords, ycoords;
 
-		const auto StarAxisRadius = [&starAxes, AngleResolution](const int angle) -> double
+		const auto StarAxisRadius = [&starAxes](const int angle) -> double
 		{
 			const int index = ((angle + 360) % 360) / AngleResolution;
 			return starAxes[index].m_fRadius;
@@ -274,7 +275,7 @@ namespace DSS {
 				{
 					const double value = inputBitmap.getUncheckedValue(x, y); // Range [0, 256)
 					maxIntensity = std::max(maxIntensity, value);
-					++histo[value * 32.0]; // Implicit type cast generates the fastest code.
+					++histo[static_cast<size_t>(value * 32.0)]; 
 				}
 			if (backgroundLevelCache != nullptr)
 				backgroundLevelCache->first = maxIntensity;

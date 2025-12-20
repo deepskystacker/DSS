@@ -4,12 +4,12 @@
 #include <QTableView>
 
 QEventLogger::QEventLogger(const QString& logFileBaseName,
-    QWidget* mainWidget,
-    bool screenshotsEnabled,
+    QWidget* widget,
+    bool areScreenshotsEnabled,
     QObject* parent) :
     QObject(parent),
-    mainWidget(mainWidget),
-    screenshotsEnabled(screenshotsEnabled),
+    mainWidget(widget),
+    screenshotsEnabled(areScreenshotsEnabled),
     tableView{ mainWidget->findChild<QTableView*>("tableView") }
 {
     // Build log file name.
@@ -255,7 +255,7 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
     if (!inputTypeAsString.isEmpty()) {
         className = obj->metaObject()->className();
         if (!this->widgetPointerToID.contains(className) || !this->widgetPointerToID[className].contains(obj)) {
-            this->widgetPointerToID[className][obj] = this->widgetPointerToID[className].size();
+            this->widgetPointerToID[className][obj] = static_cast<uint>(this->widgetPointerToID[className].size());
         }
         id = this->widgetPointerToID[className][obj];
         targetWidget = className + " " + QString::number(id);
@@ -267,7 +267,7 @@ bool QEventLogger::eventFilter(QObject* obj, QEvent* event) {
 }
 
 void QEventLogger::appendToLog(const QString& inputType, const QString& eventType, const QString& targetWidget, const QString& details) {
-    static int elapsedTime;
+    static qint64 elapsedTime;
 
     // Store the amount of time that has elapsed, so there are no inconsistencies between further usages.
     elapsedTime = this->timer->elapsed();
