@@ -146,6 +146,7 @@
     <ClCompile Include="AvxHistogramTest.cpp" />
     <ClCompile Include="AvxStackingTest.cpp" />
     <ClCompile Include="BitMapFillerTest.cpp" />
+    <ClCompile Include="catch_amalgamated.cpp" />
     <ClCompile Include="DeepSkyStackerTest.cpp" />
     <ClCompile Include="DssRectTest.cpp" />
     <ClCompile Include="OpenMpTest.cpp" />
@@ -162,7 +163,7 @@
   <ItemGroup>
     <ClInclude Include="AvxAccumulateTest.h" />
     <ClInclude Include="AvxEntropyTest.h" />
-    <ClInclude Include="catch.h" />
+    <ClInclude Include="catch_amalgamated.hpp" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

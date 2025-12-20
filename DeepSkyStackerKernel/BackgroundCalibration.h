@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <tuple>
+#include <string_view>
 #include "DSSCommon.h"
 
 // -----------------------------------------------------------------------------------------------------------------------------------------
@@ -24,15 +25,18 @@
 // -----------------------------------------------------------------------------------------------------------------------------------------
 
 class CMemoryBitmap;
-namespace DSS { class OldProgressBase; }
 
 struct NoneParams {
 };
+struct NoneParamsName { static inline constexpr std::string_view name = "None"; };
+
 struct OffsetParams {
 	double offset{ 0 }; // Must be added to the (red/green/blue) pixel values.
 	double minValue{ 0 };
 	double maxValue{ 0 };
 };
+struct OffsetParamsName { static inline constexpr std::string_view name = "Offset"; };
+
 struct LinearParams {
 	double median{ 0 };
 	double a0{ 0 };
@@ -40,6 +44,8 @@ struct LinearParams {
 	double b0{ 0 };
 	double b1{ 0 };
 };
+struct LinearParamsName { static inline constexpr std::string_view name = "Linear"; };
+
 struct RationalParams {
 	double a{ 0 };
 	double b{ 0 };
@@ -47,10 +53,12 @@ struct RationalParams {
 	double minValue{ 0 };
 	double maxValue{ 0 };
 };
-using NoneModel = std::tuple<NoneParams, NoneParams, NoneParams>;
-using OffsetModel = std::tuple<OffsetParams, OffsetParams, OffsetParams>;
-using LinearModel = std::tuple<LinearParams, LinearParams, LinearParams>;
-using RationalModel = std::tuple<RationalParams, RationalParams, RationalParams>;
+struct RationalParamsName { static inline constexpr std::string_view name = "Rational"; };
+
+using NoneModel = std::tuple<NoneParams, NoneParams, NoneParams, NoneParamsName>;
+using OffsetModel = std::tuple<OffsetParams, OffsetParams, OffsetParams, OffsetParamsName>;
+using LinearModel = std::tuple<LinearParams, LinearParams, LinearParams, LinearParamsName>;
+using RationalModel = std::tuple<RationalParams, RationalParams, RationalParams, RationalParamsName>;
 
 using ModelRef = std::variant<
 	std::reference_wrapper<const NoneModel>,
@@ -69,10 +77,12 @@ class BackgroundCalibrationInterface
 public:
 	enum class Interpolation { Linear = 0, Rational, Offset };
 	enum class Mode { None = 0, PerChannel, RGB };
+	enum class RgbMethod { Minimum = 0, Median, Maximum };
 
 	template <int Mult>
 		requires (Mult == 1 || Mult == 256)
-	static std::shared_ptr<BackgroundCalibrationInterface> makeBackgroundCalibrator(const BACKGROUNDCALIBRATIONMODE mode, const int bitsPerSample, const bool integral);
+	static std::shared_ptr<BackgroundCalibrationInterface> makeBackgroundCalibrator(const BACKGROUNDCALIBRATIONINTERPOLATION interpolation,
+		const BACKGROUNDCALIBRATIONMODE mode, const RGBBACKGROUNDCALIBRATIONMETHOD rgbmethod, const int bitsPerSample, const bool integral);
 
 	virtual ~BackgroundCalibrationInterface() = default;
 
@@ -92,7 +102,7 @@ class BackgroundCalibrationCommon : public BackgroundCalibrationInterface
 {
 protected:
 	using Mode = BackgroundCalibrationInterface::Mode;
-	enum class RgbMethod { Minimum = 0, Median, Maximum };
+	using RgbMethod = BackgroundCalibrationInterface::RgbMethod;
 
 	static inline constexpr size_t HistogramSize = std::numeric_limits<std::uint16_t>::max() + size_t{ 1 };
 	static inline constexpr double Multiplier = static_cast<double>(Mult);
@@ -103,8 +113,8 @@ protected:
 	Mode mode{ Mode::None };
 	RgbMethod rgbMethod{ RgbMethod::Median };
 protected:
-	explicit BackgroundCalibrationCommon(const Mode m);
-	virtual ~BackgroundCalibrationCommon() override = default;
+	explicit BackgroundCalibrationCommon(const Mode m, const RgbMethod rgbme);
+	virtual ~BackgroundCalibrationCommon() = default;
 	std::tuple<std::vector<int>, std::vector<int>, std::vector<int>> calcHistogram(CMemoryBitmap const&);
 	std::pair<double, double> findMedianAndMax(std::span<const int> histo, const size_t halfNumberOfPixels);
 	void calculateReferenceParameters(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax);
@@ -120,11 +130,12 @@ template <int Mult, typename T>
 class BackgroundCalibrationNone : public BackgroundCalibrationCommon<Mult, T>
 {
 	using Mode = BackgroundCalibrationInterface::Mode;
+	using RgbMethod = BackgroundCalibrationInterface::RgbMethod;
 private:
 	NoneModel modelParams{};
 public:
-	explicit BackgroundCalibrationNone() : BackgroundCalibrationCommon<Mult, T>{ Mode::None } {}
-	virtual ~BackgroundCalibrationNone() override = default;
+	explicit BackgroundCalibrationNone() : BackgroundCalibrationCommon<Mult, T>{ Mode::None, RgbMethod::Median } {}
+	virtual ~BackgroundCalibrationNone() = default;
 	virtual void initializeModel(const double, const double, const double, const double, const double, const double) override {}
 	virtual std::tuple<double, double, double> calibratePixel(const double r, const double g, const double b) const override { return { r, g, b }; }
 	virtual ModelRef model() const override { return std::cref(modelParams); }
@@ -138,11 +149,12 @@ template <int Mult, typename T>
 class BackgroundCalibrationOffset : public BackgroundCalibrationCommon<Mult, T>
 {
 	using Mode = BackgroundCalibrationInterface::Mode;
+	using RgbMethod = BackgroundCalibrationInterface::RgbMethod;
 private:
 	OffsetModel modelParams{};
 public:
-	explicit BackgroundCalibrationOffset(const Mode m);
-	virtual ~BackgroundCalibrationOffset() override = default;
+	explicit BackgroundCalibrationOffset(const Mode m, const RgbMethod rgbme);
+	virtual ~BackgroundCalibrationOffset() = default;
 	virtual void initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax) override;
 	virtual std::tuple<double, double, double> calibratePixel(const double r, const double g, const double b) const override;
 	virtual ModelRef model() const override { return std::cref(modelParams); }
@@ -156,11 +168,12 @@ template <int Mult, typename T>
 class BackgroundCalibrationLinear : public BackgroundCalibrationCommon<Mult, T>
 {
 	using Mode = BackgroundCalibrationInterface::Mode;
+	using RgbMethod = BackgroundCalibrationInterface::RgbMethod;
 private:
 	LinearModel modelParams{};
 public:
-	explicit BackgroundCalibrationLinear(const Mode m);
-	virtual ~BackgroundCalibrationLinear() override = default;
+	explicit BackgroundCalibrationLinear(const Mode m, const RgbMethod rgbme);
+	virtual ~BackgroundCalibrationLinear() = default;
 	virtual void initializeModel(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax) override;
 	virtual std::tuple<double, double, double> calibratePixel(const double r, const double g, const double b) const override;
 	virtual ModelRef model() const override { return std::cref(modelParams); }
@@ -174,11 +187,12 @@ template <int Mult, typename T>
 class BackgroundCalibrationRational : public BackgroundCalibrationCommon<Mult, T>
 {
 	using Mode = BackgroundCalibrationInterface::Mode;
+	using RgbMethod = BackgroundCalibrationInterface::RgbMethod;
 private:
 	RationalModel modelParams{};
 public:
-	explicit BackgroundCalibrationRational(const Mode m);
-	virtual ~BackgroundCalibrationRational() override = default;
+	explicit BackgroundCalibrationRational(const Mode m, const RgbMethod rgbme);
+	virtual ~BackgroundCalibrationRational() = default;
 
 	template <size_t Ndx>
 	void resetModel(const double x0, const double x1, const double x2, const double y0, const double y1, const double y2);

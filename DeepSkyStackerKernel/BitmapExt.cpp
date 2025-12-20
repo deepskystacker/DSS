@@ -544,7 +544,7 @@ namespace DSS
 		u8transform.resize(transformSize);
 		u16transform.resize(transformSize);
 
-		BackgroundCalibrationRational<1, double> rationalCalib{ BackgroundCalibrationInterface::Mode::PerChannel };
+		BackgroundCalibrationRational<1, double> rationalCalib{ BackgroundCalibrationInterface::Mode::PerChannel, BackgroundCalibrationInterface::RgbMethod::Median };
 		rationalCalib.resetModel<0>(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 
 		// Perform rational interpolation for uint16_t

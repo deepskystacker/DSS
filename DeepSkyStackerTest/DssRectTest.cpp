@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "catch.h"
-#include "DSSTools.h"
+#include "catch_amalgamated.hpp"
+//#include "DSSTools.h"
 #include "dssrect.h"
 
 
