@@ -47,7 +47,7 @@ namespace DSS
 
 	public:
 		FolderMonitor();
-		~FolderMonitor();
+		~FolderMonitor() override;
 
 		//
 		// Don't intend this to be copied or assigned.

@@ -16,7 +16,7 @@ namespace DSS
 
 	public:
 		EmailSettings(QWidget* parent);
-		~EmailSettings();
+		~EmailSettings() override;
 
 	protected:
 		void showEvent(QShowEvent* event) override;

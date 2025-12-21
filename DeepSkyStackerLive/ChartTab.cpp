@@ -282,6 +282,7 @@ namespace DSS
 				}
 			}
 			break;
+		default: break;
 		}
 	}
 
@@ -608,6 +609,7 @@ namespace DSS
 		case II_WARNING_SKYBACKGROUND:
 			setPoint(name, PT_WARNING, CT_SKYBACKGROUND);
 			break;
+		default: break;
 		};
 	}
 

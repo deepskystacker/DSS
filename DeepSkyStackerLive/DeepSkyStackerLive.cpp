@@ -73,7 +73,6 @@
 #include "LiveSettings.h"
 #include <zexcept.h>
 #include <ztrace.h>
-#include "tracecontrol.h"
 #include "Workspace.h"
 #include "foldermonitor.h"
 #include "fileregistrar.h"
@@ -97,6 +96,14 @@ bool	g_bShowRefStars = false;
 
 namespace
 {
+	void atexitHandler()
+	{
+		//
+		// Delete the back pocket storage
+		//
+		backPocket.reset();
+	}
+
 	//
 	// Convert a QLabel with "plain text" to a hyperlink
 	//
@@ -142,29 +149,29 @@ namespace
 #endif
 		return bResult;
 	}
+
+	bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
+	{
+		QString translatorFileName(prefix);
+		translatorFileName += (language == "") ? QLocale::system().name() : language;
+
+		//qDebug() << "Loading translator file [" << translatorFileName << "] from path: " << path;
+		if (!translator.load(translatorFileName, path))
+		{
+			//qDebug() << " *** Failed to load file [" << translatorFileName << "] into translator";
+			return false;
+		}
+
+		if (!app.installTranslator(&translator))
+		{
+			//qDebug() << " *** Failed to install translator for file [" << translatorFileName << "]";
+			return false;
+		}
+		return true;
+	}
 }
 
-bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
-{
-	QString translatorFileName(prefix);
-	translatorFileName += (language == "") ? QLocale::system().name() : language;
-
-	//qDebug() << "Loading translator file [" << translatorFileName << "] from path: " << path;
-	if (!translator.load(translatorFileName, path))
-	{
-		//qDebug() << " *** Failed to load file [" << translatorFileName << "] into translator";
-		return false;
-	}
-
-	if (!app.installTranslator(&translator))
-	{
-		//qDebug() << " *** Failed to install translator for file [" << translatorFileName << "]";
-		return false;
-	}
-	return true;
-}
-
-bool LoadTranslations()
+bool loadTranslations()
 {
 	if (!qApp)
 		return false;
@@ -569,8 +576,8 @@ void DeepSkyStackerLive::onInitialise()
 	double height = verticalHeader->defaultSectionSize();
 	height *= 0.734;		// reduce height (if the default is 30 this reduces it to 22)
 	// Need to set minimum size as well (otherwise default size may be smaller).
-	verticalHeader->setMinimumSectionSize(height);
-	verticalHeader->setDefaultSectionSize(height);
+	verticalHeader->setMinimumSectionSize(static_cast<int>(height));
+	verticalHeader->setDefaultSectionSize(static_cast<int>(height));
 
 	// 
 	// Set image list headers and their alignments
@@ -616,6 +623,7 @@ void DeepSkyStackerLive::onInitialise()
 		case ImageListColumns::CFA:
 			alignment = Qt::AlignHCenter;
 			break;
+		default: break;
 		}
 		item->setTextAlignment(alignment);
 	}
@@ -1159,6 +1167,7 @@ void DeepSkyStackerLive::addImageToList(fs::path path)
 		case ImageListColumns::CFA:
 			alignment = Qt::AlignHCenter;
 			break;
+		default: break;
 		}
 		item->setTextAlignment(alignment);
 		imageList->setItem(row, column, item);
@@ -1255,6 +1264,7 @@ void DeepSkyStackerLive::changeImageStatus(const QString& name, ImageStatus stat
 	case ImageStatus::stacked:
 		newStatus = tr("Stacked", "IDS_STATUS_STACKED");
 		break;
+	default: break;
 	}
 
 	for (int row = 0; row < imageList->rowCount(); ++row)
@@ -1544,14 +1554,6 @@ constexpr size_t backPocketSize{ 1024 * 1024 };
 
 char const* global_program_name;
 
-void atexitHandler()
-{
-	//
-	// Delete the back pocket storage
-	//
-	backPocket.reset();
-}
-
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1622,7 +1624,7 @@ int main(int argc, char* argv[])
 	//
 	app.setStyle(QStyleFactory::create("Fusion"));
 
-	LoadTranslations();
+	loadTranslations();
 
 	AvxSimdCheck::reportCpuType();
 

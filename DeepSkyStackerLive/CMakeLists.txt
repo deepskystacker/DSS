@@ -8,6 +8,7 @@ set(COMPILE_WARNING_AS_ERROR YES)
 ################################################################################
 set(Header_Files
     "dssliveenums.h"
+    "DeepSkyStackerLive.h"
     "EmailSettings.h"
     "LiveSettings.h"
     "fileregistrar.h"

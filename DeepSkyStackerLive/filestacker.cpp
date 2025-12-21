@@ -428,7 +428,7 @@ namespace DSS
 		const int numberOfProcessors = Multitask::GetNrProcessors();
 		uchar* pImageData{ nullptr };
 
-		std::shared_ptr<QImage> image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
+		std::shared_ptr<QImage> image = std::make_shared<QImage>(static_cast<int>(width), static_cast<int>(height), QImage::Format_RGB32);
 
 		struct thread_vars {
 			const CMemoryBitmap* source;
@@ -468,7 +468,7 @@ namespace DSS
 			auto bytes_per_line = image->bytesPerLine();
 
 #pragma omp parallel for schedule(guided, 50) default(shared) if(numberOfProcessors > 1)
-			for (int j = 0; j < height; j++)
+			for (int j = 0; j < static_cast<int>(height); j++)
 			{
 				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
 				for (int i = 0; i < width; i++)
@@ -476,9 +476,10 @@ namespace DSS
 					double			fRed, fGreen, fBlue;
 					pStackedImage->GetPixel(i, j, fRed, fGreen, fBlue);
 
-					*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
-						std::clamp(fGreen, 0.0, 255.0),
-						std::clamp(fBlue, 0.0, 255.0));
+					*pOutPixel++ = qRgb(
+						static_cast<int>(std::clamp(fRed, 0.0, 255.0)),
+						static_cast<int>(std::clamp(fGreen, 0.0, 255.0)),
+						static_cast<int>(std::clamp(fBlue, 0.0, 255.0)));
 				}
 			}
 		}
@@ -497,7 +498,7 @@ namespace DSS
 			thread_vars threadVars(pStackedImage.get());
 
 #pragma omp parallel for schedule(guided, 50) firstprivate(threadVars) default(shared) if(numberOfProcessors > 1)
-			for (int j = 0; j < height; j++)
+			for (int j = 0; j < static_cast<int>(height); j++)
 			{
 				QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
 				threadVars.pixelItSrc.Reset(0, j);
@@ -507,9 +508,10 @@ namespace DSS
 					double			fRed, fGreen, fBlue;
 					threadVars.pixelItSrc.GetPixel(fRed, fGreen, fBlue);
 
-					*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
-						std::clamp(fGreen, 0.0, 255.0),
-						std::clamp(fBlue, 0.0, 255.0));
+					*pOutPixel = qRgb(
+						static_cast<int>(std::clamp(fRed, 0.0, 255.0)),
+						static_cast<int>(std::clamp(fGreen, 0.0, 255.0)),
+						static_cast<int>(std::clamp(fBlue, 0.0, 255.0)));
 				}
 			}
 		};

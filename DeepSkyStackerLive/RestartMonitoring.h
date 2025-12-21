@@ -48,7 +48,7 @@ namespace DSS
 
 	public:
 		RestartMonitoring(QWidget* parent = nullptr);
-		~RestartMonitoring();
+		~RestartMonitoring() override;
 		bool clearStackedImage() { return clearStackedImage_; }
 		bool dropPendingImages() { return dropPendingImages_; }
 

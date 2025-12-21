@@ -248,7 +248,7 @@ namespace DSS
 			if (fStarCount < liveSettings->GetStars())
 			{
 				result = false;
-				error = tr("Star count(%L1) is less than %L2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
+				error = tr("Star count(%L1) is less than %L2").arg(fStarCount, 0, 'f').arg(static_cast<double>(liveSettings->GetStars()), 0, 'f');
 				emit setImageInfo(name, II_DONTSTACK_STARS);
 			};
 		};
@@ -258,7 +258,7 @@ namespace DSS
 			if (fFWHM > liveSettings->GetFWHM())
 			{
 				result = false;
-				error = tr("FWHM (%L1 pixels) is greater than %L2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
+				error = tr("FWHM (%L1 pixels) is greater than %L2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg(static_cast<double>(liveSettings->GetFWHM()), 0, 'f', 2);
 				emit setImageInfo(name, II_DONTSTACK_FWHM);
 			};
 		};
@@ -268,7 +268,7 @@ namespace DSS
 			if (fSkyBackground > liveSettings->GetSkyBackground())
 			{
 				result = false;
-				error = tr("Sky Background (%L1%) is greater than %L2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
+				error = tr("Sky Background (%L1%) is greater than %L2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg(static_cast<double>(liveSettings->GetSkyBackground()), 0, 'f', 2);
 				emit setImageInfo(name, II_DONTSTACK_SKYBACKGROUND);
 			};
 		};
@@ -299,7 +299,7 @@ namespace DSS
 			if (fStarCount < liveSettings->GetStars())
 			{
 				result = true;
-				warning = tr("Star count(%L1) is less than %L2").arg(fStarCount, 0, 'f').arg((double)liveSettings->GetStars(), 0, 'f');
+				warning = tr("Star count(%L1) is less than %L2").arg(fStarCount, 0, 'f').arg(static_cast<double>(liveSettings->GetStars()), 0, 'f');
 				emit setImageInfo(name, II_WARNING_STARS);
 			};
 		};
@@ -309,7 +309,7 @@ namespace DSS
 			if (fFWHM > liveSettings->GetFWHM())
 			{
 				result = true;
-				warning = tr("FWHM (%L1 pixels) is greater than %L2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg((double)liveSettings->GetFWHM(), 0, 'f', 2);
+				warning = tr("FWHM (%L1 pixels) is greater than %L2 pixels", "IDS_NOSTACK_FWHM").arg(fFWHM, 0, 'f', 2).arg(static_cast<double>(liveSettings->GetFWHM()), 0, 'f', 2);
 				emit setImageInfo(name, II_WARNING_FWHM);
 			};
 		};
@@ -319,7 +319,7 @@ namespace DSS
 			if (fSkyBackground > liveSettings->GetSkyBackground())
 			{
 				result = true;
-				warning = tr("Sky Background (%L1%) is greater than %L2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg((double)liveSettings->GetSkyBackground(), 0, 'f', 2);
+				warning = tr("Sky Background (%L1%) is greater than %L2%", "IDS_NOSTACK_SKYBACKGROUND").arg(fSkyBackground, 0, 'f', 2).arg(static_cast<double>(liveSettings->GetSkyBackground()), 0, 'f', 2);
 				emit setImageInfo(name, II_WARNING_SKYBACKGROUND);
 			};
 		};
