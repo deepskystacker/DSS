@@ -327,7 +327,7 @@ protected:
 // Constructors
   TraceFn ();
 
-  virtual ~TraceFn();
+  virtual ~TraceFn() {}
 
 virtual void exceptionLogged ( );
 }; // TraceFn
