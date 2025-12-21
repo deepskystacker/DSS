@@ -55,9 +55,9 @@ void CRGBToLab::RGBToLab(const double fRed, const double fGreen, const double fB
 	double Y = 0.212671 * fRed + 0.715160 * fGreen + 0.072169 * fBlue;
 	double Z = 0.017758 * fRed + 0.109477 * fGreen + 0.872766 * fBlue;
 
-	X = static_cast<double>(g_vLUT[static_cast<int>(std::floor(X * 65535.0))]);
-	Y = static_cast<double>(g_vLUT[static_cast<int>(std::floor(Y * 65535.0))]);
-	Z = static_cast<double>(g_vLUT[static_cast<int>(std::floor(Z * 65535.0))]);
+	X = g_vLUT[static_cast<int>(std::floor(X * 65535.0))];
+	Y = g_vLUT[static_cast<int>(std::floor(Y * 65535.0))];
+	Z = g_vLUT[static_cast<int>(std::floor(Z * 65535.0))];
 
 	L = 116.0 * Y - 16.0;
 	a = 500.0 * (X - Y);
