@@ -1027,7 +1027,12 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 	const auto TargetStar = [&targetStarDistances, &targetStarIndices](const size_t ndx) { return targetStarDistances[targetStarIndices[ndx]]; };
 	const auto ReferenceStar = [&dist = m_vRefStarDistances, &ind = m_vRefStarIndices](const size_t ndx) { return dist[ind[ndx]]; };
 
-	const auto getRefStarDistance = [b = m_vRefStarDistances.data(), e = m_vRefStarDistances.data() + m_vRefStarDistances.size()](
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-lambda-capture"
+#endif
+
+	const auto getRefStarDistance = [this, b = m_vRefStarDistances.data(), e = m_vRefStarDistances.data() + m_vRefStarDistances.size()](
 		const int star1, const int star2) -> float
 	{
 #if !defined(NDEBUG) // Accelerate the search in debug mode by using raw pointers and avoiding iterators.
@@ -1038,6 +1043,9 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 		return it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
 #endif
 	};
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
 
 
 	for (size_t i = 0, j = 0; i < targetStarDistances.size() && j < m_vRefStarDistances.size();)
