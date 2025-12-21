@@ -674,10 +674,7 @@ int Avx256Stacking::pixelPartitioning()
 	const __m256i resultHeightVec = _mm256_set1_epi32(stackData.resultHeight);
 
 	const __m256i outWidthVec = _mm256_set1_epi32(outWidth);
-#if defined(Q_CC_CLANG)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-lambda-capture"
-#endif
+	
 	const auto getColorPointer = [this](const auto& colorPixels, const size_t row) -> const float*
 	{
 		if constexpr (ISRGB)
@@ -685,9 +682,7 @@ int Avx256Stacking::pixelPartitioning()
 		else
 			return nullptr;
 	};
-#if defined(Q_CC_CLANG)
-#pragma clang diagnostic pop
-#endif
+
 	const auto getColorValue = [](const float* const pColor) -> __m256
 	{
 		if constexpr (ISRGB)
