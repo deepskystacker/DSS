@@ -89,7 +89,7 @@ public:
 
 	inline static std::tuple<__m256d, __m256d> cvtEpu32Pd(const __m256i x) noexcept
 	{
-		const __m256i mask = _mm256_cmpgt_epi32(_mm256_setzero_si256(), x); // 0 > x (= x < 0)
+		// Unused const __m256i mask = _mm256_cmpgt_epi32(_mm256_setzero_si256(), x); // 0 > x (= x < 0)
 		const __m256d d1 = _mm256_cvtepi32_pd(_mm256_castsi256_si128(x));
 		const __m256d d2 = _mm256_cvtepi32_pd(_mm256_extracti128_si256(x, 1));
 		const __m256d corr1 = _mm256_add_pd(_mm256_set1_pd(static_cast<double>(0x100000000ULL)), d1); // UINTMAX - x (Note: 'add_pd' is correct!)
@@ -139,21 +139,21 @@ public:
 	{
 		const __m256i highBit = _mm256_set1_epi16(std::uint16_t{ 0x8000 });
 		return _mm256_cmpgt_epi16(_mm256_xor_si256(a, highBit), _mm256_xor_si256(b, highBit));
-	};
+	}
 
 	// Read color values from T* and return 2 x 8 packed single.
 	inline static std::tuple<__m256, __m256> read16PackedSingle(const std::uint16_t* const pColor) noexcept
 	{
-		const __m256i icolor = _mm256_loadu_si256((const __m256i*)pColor);
+		const __m256i icolor = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pColor));
 		const __m256 lo8 = wordToPackedFloat(_mm256_castsi256_si128(icolor));
 		const __m256 hi8 = wordToPackedFloat(_mm256_extracti128_si256(icolor, 1));
 		return { lo8, hi8 };
-	};
+	}
 	inline static std::tuple<__m256, __m256> read16PackedSingle(const std::uint32_t* const pColor) noexcept
 	{
 		return {
-			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_si256((const __m256i*)pColor), 16)), // Shift 16 bits right while shifting in zeros.
-			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_si256(((const __m256i*)pColor) + 1), 16))
+			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_si256(reinterpret_cast<const __m256i*>(pColor)), 16)), // Shift 16 bits right while shifting in zeros.
+			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_si256((reinterpret_cast<const __m256i*>(pColor)) + 1), 16))
 		};
 	}
 	inline static std::tuple<__m256, __m256> read16PackedSingle(const float* const pColor) noexcept
@@ -165,8 +165,8 @@ public:
 	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const std::uint16_t* const pColor, const int stride) noexcept
 	{
 		const __m256i ndx = _mm256_mullo_epi32(_mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7), _mm256_set1_epi32(stride));
-		const __m256i v1 = _mm256_i32gather_epi32((const int*)pColor, ndx, 2);
-		const __m256i v2 = _mm256_i32gather_epi32((const int*)pColor, _mm256_add_epi32(ndx, _mm256_set1_epi32(8 * stride)), 2); // 8, 9, 10, 11, 12, 13, 14, 15
+		const __m256i v1 = _mm256_i32gather_epi32(reinterpret_cast<const int*>(pColor), ndx, 2);
+		const __m256i v2 = _mm256_i32gather_epi32(reinterpret_cast<const int*>(pColor), _mm256_add_epi32(ndx, _mm256_set1_epi32(8 * stride)), 2); // 8, 9, 10, 11, 12, 13, 14, 15
 		return {
 			_mm256_cvtepi32_ps(_mm256_blend_epi16(v1, _mm256_setzero_si256(), 0xaa)),
 			_mm256_cvtepi32_ps(_mm256_blend_epi16(v2, _mm256_setzero_si256(), 0xaa))
@@ -176,8 +176,8 @@ public:
 	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const std::uint32_t* const pColor, const int stride) noexcept
 	{
 		const __m256i ndx = _mm256_mullo_epi32(_mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7), _mm256_set1_epi32(stride));
-		const __m256i v1 = _mm256_i32gather_epi32((const int*)pColor, ndx, 4);
-		const __m256i v2 = _mm256_i32gather_epi32((const int*)pColor, _mm256_add_epi32(ndx, _mm256_set1_epi32(8 * stride)), 4);
+		const __m256i v1 = _mm256_i32gather_epi32(reinterpret_cast<const int*>(pColor), ndx, 4);
+		const __m256i v2 = _mm256_i32gather_epi32(reinterpret_cast<const int*>(pColor), _mm256_add_epi32(ndx, _mm256_set1_epi32(8 * stride)), 4);
 		return {
 			_mm256_cvtepi32_ps(v1),
 			_mm256_cvtepi32_ps(v2)
@@ -198,12 +198,12 @@ public:
 	// Read color values from T* and return 16 x packed short
 	inline static __m256i read16PackedShort(const std::uint16_t* const pColor)
 	{
-		return _mm256_loadu_si256((const __m256i*)pColor);
+		return _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pColor));
 	}
 	inline static __m256i read16PackedShort(const std::uint32_t* const pColor)
 	{
-		const __m256i lo = _mm256_srli_epi32(_mm256_loadu_si256((const __m256i*)pColor), 16); // Shift 16 bits right while shifting in zeros.
-		const __m256i hi = _mm256_srli_epi32(_mm256_loadu_si256(((const __m256i*)pColor) + 1), 16);
+		const __m256i lo = _mm256_srli_epi32(_mm256_loadu_si256(reinterpret_cast<const __m256i*>(pColor)), 16); // Shift 16 bits right while shifting in zeros.
+		const __m256i hi = _mm256_srli_epi32(_mm256_loadu_si256((reinterpret_cast<const __m256i*>(pColor)) + 1), 16);
 		return cvt2xEpi32Epu16(lo, hi);
 	}
 	inline static __m256i read16PackedShort(const float* const pColor)
@@ -219,7 +219,7 @@ public:
 	// Read color values from T* and return 2 x 8 x packed int
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const std::uint16_t* const pColor)
 	{
-		const __m256i epi16 = _mm256_loadu_si256((const __m256i*)pColor);
+		const __m256i epi16 = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pColor));
 		return {
 			_mm256_cvtepu16_epi32(_mm256_castsi256_si128(epi16)),
 			_mm256_cvtepu16_epi32(_mm256_extracti128_si256(epi16, 1))
@@ -228,8 +228,8 @@ public:
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const std::uint32_t* const pColor)
 	{
 		return {
-			_mm256_srli_epi32(_mm256_loadu_si256((const __m256i*)pColor), 16), // Shift 16 bits right while shifting in zeros (divide by 65536).
-			_mm256_srli_epi32(_mm256_loadu_si256(((const __m256i*)pColor) + 1), 16)
+			_mm256_srli_epi32(_mm256_loadu_si256(reinterpret_cast<const __m256i*>(pColor)), 16), // Shift 16 bits right while shifting in zeros (divide by 65536).
+			_mm256_srli_epi32(_mm256_loadu_si256((reinterpret_cast<const __m256i*>(pColor)) + 1), 16)
 		};
 	}
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const float* const pColor)
@@ -304,9 +304,9 @@ public:
 		else
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
-			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
+			const auto checkWrite = [pOutputBitmap, iMask](const int amask, const size_t ndx, const float color) -> void
 				{
-					if ((iMask & mask) != 0)
+					if ((iMask & amask) != 0)
 						pOutputBitmap[ndx] = static_cast<std::uint16_t>(color);
 				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
@@ -331,9 +331,9 @@ public:
 		else
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
-			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
+			const auto checkWrite = [pOutputBitmap, iMask](const int amask, const size_t ndx, const float color) -> void
 				{
-					if ((iMask & mask) != 0)
+					if ((iMask & amask) != 0)
 						pOutputBitmap[ndx] = static_cast<std::uint32_t>(color);
 				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
@@ -356,9 +356,9 @@ public:
 		else
 		{
 			const int iMask = _mm256_movemask_epi8(mask);
-			const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
+			const auto checkWrite = [pOutputBitmap, iMask](const int amask, const size_t ndx, const float color) -> void
 				{
-					if ((iMask & mask) != 0)
+					if ((iMask & amask) != 0)
 						pOutputBitmap[ndx] = color;
 				};
 			__m128 color = _mm256_castps256_ps128(colorValue);
@@ -443,6 +443,7 @@ public:
 		case 29: return shiftRightEpi8<29>(x);
 		case 30: return shiftRightEpi8<30>(x);
 		case 31: return shiftRightEpi8<31>(x);
+		default: break;
 		}
 		return _mm256_setzero_si256();
 	}

@@ -147,36 +147,36 @@ public:
  * construction and assignment is disallowed.  The parameter specifies the name
  * of the failing GUI function.
  */
-  ZGUIErrorInfo ( const char* GUIFunctionName = 0 );
+  ZGUIErrorInfo ( const char* GUIFunctionName = nullptr );
 
 virtual
- ~ZGUIErrorInfo ( );
+ ~ZGUIErrorInfo ( ) override;
 
 /*---------------------------- Error Information -----------------------------*/
 /**
  * the const char* cast operator returns the error text.
  */
 virtual
-  operator const char* ( ) const;
+  operator const char* ( ) const override;
 
 /**
  * text returns the error text.
  */
 virtual const char
- *text ( ) const;
+ *text ( ) const override;
 
 /**
  * Returns the errorId.  In the case of a Windows GUI error, the constructor obtains
  * the errorId using getLastError.
  */
 virtual unsigned long
-  errorId ( ) const;
+  errorId ( ) const override;
 
 /**
  * If error information is available, true is returned.
  */
 virtual bool
-  isAvailable ( ) const;
+  isAvailable ( ) const override;
 
 /*------------------------------ Throw Support -------------------------------*/
 /**
@@ -252,35 +252,35 @@ public:
  * can be obtained, the default text "No error text is available." will be used.
  */
   ZSystemErrorInfo ( unsigned long systemErrorId,
-                     const char* systemFunctionName = 0 );
+                     const char* systemFunctionName = nullptr );
 
 virtual
- ~ZSystemErrorInfo ( );
+ ~ZSystemErrorInfo ( ) override;
 
 /*---------------------------- Error Information -----------------------------*/
 /**
  * the const char* cast operator returns the error text.
  */
 virtual
-  operator const char* ( ) const;
+  operator const char* ( ) const override;
 
 /**
  * text returns the error text.
  */
 virtual const char
- *text ( ) const;
+ *text ( ) const override;
 
 /**
  * Returns the errorId.
  */
 virtual unsigned long
-  errorId ( ) const;
+  errorId ( ) const override;
 
 /**
  * If error information is available, true is returned.
  */
 virtual bool
-  isAvailable ( ) const;
+  isAvailable ( ) const override;
 
 /*------------------------------ Throw Support -------------------------------*/
 /**
@@ -354,35 +354,35 @@ public:
  * If no error text can be obtained, the default text "No error text is available." 
  * will be used.
  */
-ZCLibErrorInfo ( const char* CLibFunctionName = 0 );
+ZCLibErrorInfo ( const char* CLibFunctionName = nullptr );
 
 virtual
- ~ZCLibErrorInfo ( );
+ ~ZCLibErrorInfo ( ) override;
 
 /*---------------------------- Error Information -----------------------------*/
 /**
  * the const char* cast operator returns the error text.
  */
 virtual
-operator const char* ( ) const;
+operator const char* ( ) const override;
 
 /**
  * text returns the error text.
  */
 virtual const char
- *text ( ) const;
+ *text ( ) const override;
 
 /**
  * Returns the errorId which is set to the value of errno.
  */
 virtual unsigned long
-  errorId ( ) const;
+  errorId ( ) const override;
 
 /**
  * If error information is available, true is returned.
  */
 virtual bool
-  isAvailable ( ) const;
+  isAvailable ( ) const override;
 
 /*------------------------------ Throw Support -------------------------------*/
 /**

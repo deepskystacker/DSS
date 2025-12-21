@@ -548,7 +548,7 @@ bool CStackingEngine::ComputeLightFrameOffset(const size_t lBitmapIndice)
 			BilinearParameters.Offsets(bitmap.m_fXOffset, bitmap.m_fYOffset);
 			bitmap.m_fAngle = BilinearParameters.Angle(bitmap.RenderedWidth());
 			bitmap.m_BilinearParameters = BilinearParameters;
-			bitmap.m_vVotedPairs = std::move(matchingStars.GetVotedPairsCopy());
+			bitmap.m_vVotedPairs = matchingStars.GetVotedPairsCopy();
 			const std::lock_guard<std::mutex> lock(mutex);
 			m_StackingInfo.AddLightFrame(bitmap.filePath, BilinearParameters);
 		}

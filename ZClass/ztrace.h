@@ -146,9 +146,9 @@ public:
  *  not specify the optional values, this constructor creates a ZTrace object,
  *  but no logging occurs on construction or destruction.
  */ 
-  ZTrace                   ( const char* traceName =0,
-                             const char* fileName=0,
-                             long        lineNumber=0 );
+  ZTrace                   ( const char* traceName = nullptr,
+                             const char* fileName = nullptr,
+                             long        lineNumber = 0 );
 
  ~ZTrace                   ( );
 

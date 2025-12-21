@@ -74,7 +74,7 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 		return static_cast<float>(histogram[std::min(static_cast<size_t>(value), Unsigned_short_max)]);
 	};
 
-	const auto calcEntropyOfSquare = [squareSize, width, height, vectorLen, &getDistribution](const int col, const int row, const T* const pColor, auto& histogram) -> EntropyVectorType::value_type
+	const auto calcEntropyOfSquare = [squareSize, width, height, &getDistribution](const int col, const int row, const T* const pColor, auto& histogram) -> EntropyVectorType::value_type
 	{
 		const int xmin = col * squareSize;
 		const int xmax = std::min(xmin + squareSize, width);
@@ -131,8 +131,8 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 
 	const auto calcEntropy = [nSquaresX, nSquaresY, &calcEntropyOfSquare](const T* const pColor, EntropyVectorType& entropyVector) -> void
 	{
-#pragma warning (suppress: 4189)
-		const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+
+		[[maybe_unused]] const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		constexpr size_t HistoSize = std::numeric_limits<std::uint16_t>::max() + size_t{ 1 };
 		std::vector<int> histogram(HistoSize, 0);
 

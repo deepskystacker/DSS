@@ -41,12 +41,12 @@
 #include "avx_simd_check.h"
 
 AvxHistogram::AvxHistogram(const CMemoryBitmap& inputbm) :
-	avxEnabled(AvxSimdCheck::checkSimdAvailability()),
 	redHisto(HistogramSize(), 0),
 	greenHisto(HistogramSize(), 0),
 	blueHisto(HistogramSize(), 0),
 	avxCfa{ 0, 0, inputbm },
-	inputBitmap{ inputbm }
+	inputBitmap{ inputbm },
+	avxEnabled(AvxSimdCheck::checkSimdAvailability())
 {
 	static_assert(sizeof(HistogramVectorType::value_type) == sizeof(int));
 }
@@ -74,9 +74,9 @@ std::tuple<float*, float*, float*> AvxBezierAndSaturation::getBufferPtr()
 }
 
 AvxBezierAndSaturation::AvxBezierAndSaturation(const size_t bufferLen) :
-	avxEnabled(AvxSimdCheck::checkSimdAvailability()),
 	redBuffer(bufferLen), greenBuffer(bufferLen), blueBuffer(bufferLen),
-	bezierX{}, bezierY{}
+	bezierX{}, bezierY{},
+	avxEnabled(AvxSimdCheck::checkSimdAvailability())
 {}
 
 void AvxBezierAndSaturation::copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome)
@@ -222,9 +222,9 @@ int NonAvxBezierAndSaturation::avxToHsl()
 	{
 		double h, s, l;
 		ToHSL(this->histoData.redBuffer[n], this->histoData.greenBuffer[n], this->histoData.blueBuffer[n], h, s, l);
-		this->histoData.redBuffer[n] = h;
-		this->histoData.greenBuffer[n] = s;
-		this->histoData.blueBuffer[n] = l;
+		this->histoData.redBuffer[n] = static_cast<float>(h);
+		this->histoData.greenBuffer[n] = static_cast<float>(s);
+		this->histoData.blueBuffer[n] = static_cast<float>(l);
 	}
 	return 0;
 }
@@ -270,15 +270,15 @@ int NonAvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 			const bool notoverexposed = l <= 1.0f;
 			const bool notunderexposed = l > (2.0f / 255.0f);
 
-			this->histoData.redBuffer[n] = notoverexposed ? (notunderexposed ? r : 0.0f) : 255.0f;
-			this->histoData.greenBuffer[n] = (notoverexposed && notunderexposed) ? g : 0.0f;
-			this->histoData.blueBuffer[n] = notunderexposed ? (notoverexposed ? b : 0.0f) : 255.0f;
+			this->histoData.redBuffer[n] = notoverexposed ? (notunderexposed ? static_cast<float>(r) : 0.0f) : 255.0f;
+			this->histoData.greenBuffer[n] = (notoverexposed && notunderexposed) ? static_cast<float>(g) : 0.0f;
+			this->histoData.blueBuffer[n] = notunderexposed ? (notoverexposed ? static_cast<float>(b) : 0.0f) : 255.0f;
 		}
 		else
 		{
-			this->histoData.redBuffer[n] = r;
-			this->histoData.greenBuffer[n] = g;
-			this->histoData.blueBuffer[n] = b;
+			this->histoData.redBuffer[n] = static_cast<float>(r);
+			this->histoData.greenBuffer[n] = static_cast<float>(g);
+			this->histoData.blueBuffer[n] = static_cast<float>(b);
 		}
 	}
 	return 0;

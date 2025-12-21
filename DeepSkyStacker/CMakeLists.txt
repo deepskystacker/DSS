@@ -476,10 +476,10 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
 			-Wno-sign-conversion -Wno-sign-compare -Wno-ctad-maybe-unsupported
 			-Wno-weak-vtables -Wno-covered-switch-default -Wno-undefined-func-template
 			-Wno-double-promotion -Wno-unreachable-code-break -Wno-disabled-macro-expansion
-			-Wno-unused-macros -Wno-pessimizing-move -Wno-reserved-identifier
+			-Wno-unused-macros -Wno-reserved-identifier
 			-Wno-missing-braces -Wno-documentation-unknown-command
 			-Werror -Xclang -fopenmp
-         )
+        )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp

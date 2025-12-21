@@ -108,16 +108,16 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 	const auto storePixel = [&pRed, &pGreen, &pBlue](const auto rgbVec) -> void
 	{
 		const auto [r, g, b] = rgbVec;
-		_mm256_storeu_si256((__m256i*)pRed, r);
-		_mm256_storeu_si256((__m256i*)pGreen, g);
-		_mm256_storeu_si256((__m256i*)pBlue, b);
+		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pRed), r);
+		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pGreen), g);
+		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pBlue), b);
 	};
-	const auto loadRemainingPixels = [remainingPixels](const std::uint16_t* pGray, const bool doLoad) -> __m256i
+	const auto loadRemainingPixels = [remainingPixels](const std::uint16_t* pgray, const bool doLoad) -> __m256i
 	{
 		if (!doLoad)
 			return _mm256_setzero_si256();
 		__m256i vec = _mm256_setzero_si256();
-		memcpy(&vec, pGray, remainingPixels * sizeof(pGray[0]));
+		memcpy(&vec, pgray, remainingPixels * sizeof(pGray[0]));
 		return vec;
 	};
 	const auto storeRemainingPixel = [remainingPixels, &pRed, &pGreen, &pBlue](const auto rgbVec) -> void
@@ -166,13 +166,13 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 		const std::int16_t nextRowMask = lineNdx == height - 1 ? 0x0 : -1; // Prevent loading pixels of the following row if the current one is already the last.
 
 		thisRowCurrent = _mm256_setzero_si256();
-		thisRowNext = _mm256_loadu_si256((__m256i*)pGray);
+		thisRowNext = _mm256_loadu_si256(reinterpret_cast<__m256i*>(const_cast<std::uint16_t *>(pGray)));
 		thisRowLast = 0;
 		prevRowCurrent = _mm256_setzero_si256();
-		prevRowNext = _mm256_maskload_epi32((int*)(pGray - width), _mm256_set1_epi32(prevRowMask)); // Load entire vector or nothing.
+		prevRowNext = _mm256_maskload_epi32(reinterpret_cast<int*>(const_cast<std::uint16_t*>(pGray - width)), _mm256_set1_epi32(prevRowMask)); // Load entire vector or nothing.
 		prevRowLast = 0;
 		nextRowCurrent = _mm256_setzero_si256();
-		nextRowNext = _mm256_maskload_epi32((int*)(pGray + width), _mm256_set1_epi32(nextRowMask)); // Load entire vector or nothing.
+		nextRowNext = _mm256_maskload_epi32(reinterpret_cast<int*>(const_cast<std::uint16_t*>(pGray + width)), _mm256_set1_epi32(nextRowMask)); // Load entire vector or nothing.
 		nextRowLast = 0;
 
 		pRed = REVERSE == 0 ? cfaData.redCfaLine(row) : cfaData.blueCfaLine(row); // REVERSE==0: RGGB/GBRG, REVERSE==1: BGGR/GRBG
@@ -183,13 +183,13 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 		{
 			thisRowLast = extract15(thisRowCurrent);
 			thisRowCurrent = thisRowNext;
-			thisRowNext = _mm256_loadu_si256((__m256i*)(pGray + VecSize));
+			thisRowNext = _mm256_loadu_si256(reinterpret_cast<__m256i*>(const_cast<std::uint16_t*>(pGray + VecSize)));
 			prevRowLast = extract15(prevRowCurrent);
 			prevRowCurrent = prevRowNext;
-			prevRowNext = _mm256_maskload_epi32((int*)(pGray + VecSize - width), _mm256_set1_epi32(prevRowMask));
+			prevRowNext = _mm256_maskload_epi32(reinterpret_cast<int*>(const_cast<std::uint16_t*>(pGray + VecSize - width)), _mm256_set1_epi32(prevRowMask));
 			nextRowLast = extract15(nextRowCurrent);
 			nextRowCurrent = nextRowNext;
-			nextRowNext = _mm256_maskload_epi32((int*)(pGray + VecSize + width), _mm256_set1_epi32(nextRowMask));
+			nextRowNext = _mm256_maskload_epi32(reinterpret_cast<int*>(const_cast<std::uint16_t*>(pGray + VecSize + width)), _mm256_set1_epi32(nextRowMask));
 
 			storePixel(debayer(thisRowLast, thisRowCurrent, extract0(thisRowNext), prevRowLast, prevRowCurrent, extract0(prevRowNext), nextRowLast, nextRowCurrent, extract0(nextRowNext)));
 		}

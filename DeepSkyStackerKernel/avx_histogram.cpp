@@ -231,7 +231,7 @@ void Avx256Histogram::calcHistoOfVectorEpi32(const __m256i colorVec, T& histogra
 {
 	const auto [nrEqualColors, bitMask] = detectConflictsEpi32(colorVec);
 
-	const __m256i sourceHisto = _mm256_i32gather_epi32((const int*)&*histogram.begin(), colorVec, 4);
+	const __m256i sourceHisto = _mm256_i32gather_epi32(static_cast<const int*>(& *histogram.begin()), colorVec, 4);
 	const __m256i updatedHisto = _mm256_add_epi32(sourceHisto, nrEqualColors);
 
 	if ((bitMask & 1) == 0) // No conflict 
@@ -269,13 +269,13 @@ namespace {
 		using VecType = __m256;
 		constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
 
-		const VecType mn = _mm256_set1_ps(hadj.GetMin());
-		const VecType mx = _mm256_set1_ps(hadj.GetMax());
-		const VecType sh = _mm256_set1_ps(hadj.GetShift());
-		const VecType omn = _mm256_set1_ps(hadj.getOriginalMinimum());
-		const VecType omx = _mm256_set1_ps(hadj.getOriginalMaximum());
-		const VecType umn = _mm256_set1_ps(hadj.getUsedMinimum());
-		const VecType umx = _mm256_set1_ps(hadj.getUsedMaximum());
+		const VecType mn = _mm256_set1_ps(static_cast<float>(hadj.GetMin()));
+		const VecType mx = _mm256_set1_ps(static_cast<float>(hadj.GetMax()));
+		const VecType sh = _mm256_set1_ps(static_cast<float>(hadj.GetShift()));
+		const VecType omn = _mm256_set1_ps(static_cast<float>(hadj.getOriginalMinimum()));
+		const VecType omx = _mm256_set1_ps(static_cast<float>(hadj.getOriginalMaximum()));
+		const VecType umn = _mm256_set1_ps(static_cast<float>(hadj.getUsedMinimum()));
+		const VecType umx = _mm256_set1_ps(static_cast<float>(hadj.getUsedMaximum()));
 		const VecType usedMinusOrgMin = _mm256_sub_ps(umn, omn);
 		const VecType orgMinusUsedMax = _mm256_sub_ps(omx, umx);
 		const VecType minMinusOrgMin = _mm256_sub_ps(mn, omn);
@@ -345,8 +345,6 @@ namespace {
 // ----------------------------------------------------------------------------------
 // AVX-256 Bezier functions
 // ----------------------------------------------------------------------------------
-
-#pragma warning (disable: 4100)
 
 // static
 __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal)
@@ -548,7 +546,7 @@ int Avx256BezierAndSaturation::avxBezierAdjust(const size_t len)
 	float* const pBlue = this->histoData.blueBuffer.data();
 	const int nBezier = static_cast<int>(this->histoData.bezierX.size());
 
-	const auto gatherBezierData = [this, pBlue, nBezier](const VecType arg) -> VecType
+	const auto gatherBezierData = [this, nBezier](const VecType arg) -> VecType
 	{
 		const __m256i ndx = avx256LowerBoundPs(this->histoData.bezierX.data(), nBezier, arg);
 		return _mm256_mask_i32gather_ps(arg, this->histoData.bezierY.data(), ndx, _mm256_castsi256_ps(_mm256_cmpgt_epi32(_mm256_set1_epi32(nBezier), ndx)), sizeof(float));
