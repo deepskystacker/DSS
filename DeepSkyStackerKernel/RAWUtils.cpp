@@ -1022,17 +1022,23 @@ int DSSLibRaw::dcraw_ppm_tiff_writer(const char*)
 	try {
 		if (!libraw_internal_data.output_data.histogram)
 		{
-#if defined(Q_CC_CLANG)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Weverything"
-#endif
+			// #define LIBRAW_HISTOGRAM_SIZE 0x2000
+			// typedef struct
+			// {
+			//   int (*histogram)[LIBRAW_HISTOGRAM_SIZE];
+			//	 unsigned* oprof;
+			// } output_data_t;
+
 			libraw_internal_data.output_data.histogram =
-				(int(*)[LIBRAW_HISTOGRAM_SIZE]) malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
-#if defined(Q_CC_CLANG)
-#pragma clang diagnostic pop
-#endif
-		//	merror(libraw_internal_data.output_data.histogram, "LibRaw::dcraw_ppm_tiff_writer()");
+				//				(int(*)[LIBRAW_HISTOGRAM_SIZE]) malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
+				reinterpret_cast<int(*)[LIBRAW_HISTOGRAM_SIZE]>(malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4));
+			if (nullptr == libraw_internal_data.output_data.histogram)
+			{
+				ZOutOfMemory exception("Unable to allocate memory", 0, ZException::unrecoverable);
+				ZTHROW(exception);
+			}
 		}
+		
 		write_ppm_tiff();
 		SET_PROC_FLAG(LIBRAW_PROGRESS_FLIP);
 		return 0;
