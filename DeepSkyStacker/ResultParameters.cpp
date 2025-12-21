@@ -123,7 +123,7 @@ namespace DSS
 	void	ResultParameters::on_normalMode_clicked()
 	{
 		if (pStackingTasks) pStackingTasks->enableCustomRect(false);
-		workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
+		workspace->setValue("Stacking/Mosaic", static_cast<uint>(SM_NORMAL));
 		if (normalPix.isNull())
 		{
 			normalPix.load(":/stacking/normalmode.bmp");
@@ -136,7 +136,7 @@ namespace DSS
 	void	ResultParameters::on_mosaicMode_clicked()
 	{
 		if (pStackingTasks) pStackingTasks->enableCustomRect(false);
-		workspace->setValue("Stacking/Mosaic", (uint)SM_MOSAIC);
+		workspace->setValue("Stacking/Mosaic", static_cast<uint>(SM_MOSAIC));
 		if (mosaicPix.isNull())
 		{
 			mosaicPix.load(":/stacking/mosaicmode.bmp");
@@ -150,7 +150,7 @@ namespace DSS
 	void	ResultParameters::on_intersectionMode_clicked()
 	{
 		if (pStackingTasks) pStackingTasks->enableCustomRect(false);
-		workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
+		workspace->setValue("Stacking/Mosaic", static_cast<uint>(SM_INTERSECTION));
 		if (intersectionPix.isNull())
 		{
 			intersectionPix.load(":/stacking/intersectionmode.bmp");
@@ -178,10 +178,10 @@ namespace DSS
 		if (ui->drizzle2x->isChecked())
 		{
 			ui->drizzle3x->setChecked(false);
-			workspace->setValue("Stacking/PixelSizeMultiplier", uint(2));
+			workspace->setValue("Stacking/PixelSizeMultiplier", 2U);
 		}
 		else
-			workspace->setValue("Stacking/PixelSizeMultiplier", uint(1));
+			workspace->setValue("Stacking/PixelSizeMultiplier", 1U);
 	}
 
 	void	ResultParameters::on_drizzle3x_clicked()
@@ -189,10 +189,10 @@ namespace DSS
 		if (ui->drizzle3x->isChecked())
 		{
 			ui->drizzle2x->setChecked(false);
-			workspace->setValue("Stacking/PixelSizeMultiplier", uint(3));
+			workspace->setValue("Stacking/PixelSizeMultiplier", 3U);
 		}
 		else
-			workspace->setValue("Stacking/PixelSizeMultiplier", uint(1));
+			workspace->setValue("Stacking/PixelSizeMultiplier", 1U);
 	}
 
 	void	ResultParameters::on_alignRGB_clicked()

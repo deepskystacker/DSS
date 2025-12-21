@@ -50,7 +50,7 @@ namespace DSS
 			Inherited;
 	public:
 		explicit DropFilesDlg(QWidget* parent = nullptr);
-		~DropFilesDlg();
+		~DropFilesDlg() override;
 
 		DropFilesDlg(const DropFilesDlg& rhs) = delete;
 		DropFilesDlg& operator = (const DropFilesDlg& rhs) = delete;
@@ -58,7 +58,7 @@ namespace DSS
 		inline PICTURETYPE	dropType()
 		{
 			return type;
-		};
+		}
 
 		inline void setFileCount(size_t count)
 		{

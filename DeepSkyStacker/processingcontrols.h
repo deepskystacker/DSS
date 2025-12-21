@@ -47,7 +47,7 @@ class ProcessingControls  : public QWidget, public Ui::ProcessingControls
 
 public:
 	ProcessingControls(QWidget *parent = nullptr);
-	~ProcessingControls();
+	~ProcessingControls() override;
 
 protected:
 	void changeEvent(QEvent* e) override;

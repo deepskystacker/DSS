@@ -22,7 +22,7 @@ namespace DSS
 		BatchMode(FrameList* fl) : frameList{fl}
 		{
 			frameList->setBatchStacking(true);
-		};
+		}
 		~BatchMode()
 		{
 			frameList->setBatchStacking(false);

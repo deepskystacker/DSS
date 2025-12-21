@@ -50,7 +50,7 @@ namespace DSS
         explicit ToolBar(QWidget* parent);
 
         
-        ~ToolBar() {};
+        ~ToolBar() override {}
 
         // No assignment of or copy construction of this
         ToolBar(const ToolBar& rhs) = delete;
@@ -62,7 +62,7 @@ namespace DSS
             setGraphicsEffect(&opacityEffect);
 
             if (upd) update();
-        };
+        }
 
         inline void setSaveEnabled(bool value)
         {
@@ -74,13 +74,13 @@ namespace DSS
         {
             Inherited::enterEvent(e);
             setOpacity(1.0, true);
-        };
+        }
 
         inline void leaveEvent([[maybe_unused]] QEvent* e) override
         {
             setOpacity(0.6, true);
             Inherited::leaveEvent(e);
-        };
+        }
 
         QGraphicsOpacityEffect opacityEffect;
 

@@ -55,29 +55,29 @@ namespace DSS
 			name_ = rhs.name_;
 			bezierAdjust_ = rhs.bezierAdjust_;
 			histoAdjust_ = rhs.histoAdjust_;
-		};
+		}
 
 	public:
 		ProcessingSettings(const QString& name = "") :
 			name_ {name}
 		{
 			if (!name_.isEmpty()) loadSettings();
-		};
+		}
 
 		virtual ~ProcessingSettings()
 		{
-		};
+		}
 
 		ProcessingSettings(const ProcessingSettings& rhs)
 		{
 			CopyFrom(rhs);
-		};
+		}
 
 		ProcessingSettings& operator = (const ProcessingSettings& rhs)
 		{
 			CopyFrom(rhs);
 			return (*this);
-		};
+		}
 
 		bool operator < (const ProcessingSettings& rhs) const
 		{
@@ -93,7 +93,7 @@ namespace DSS
 				return true;
 			else
 				return false;
-		};
+		}
 
 		void loadSettings()
 		{
@@ -102,7 +102,7 @@ namespace DSS
 			qDebug() << "Load settings for " << groupName;
 			bezierAdjust_.loadSettings(groupName);
 			histoAdjust_.loadSettings(groupName);
-		};
+		}
 
 		void saveSettings() const
 		{
@@ -111,7 +111,7 @@ namespace DSS
 			qDebug() << "Save settings for " << groupName;
 			bezierAdjust_.saveSettings(groupName);
 			histoAdjust_.saveSettings(groupName);
-		};
+		}
 
 		void removeSettings()
 		{
@@ -119,7 +119,7 @@ namespace DSS
 			const QString groupName{ "ProcessingSettings/" + name_ };
 			QSettings settings;
 			settings.remove(groupName);
-		};
+		}
 	};
 
 }

@@ -19,12 +19,12 @@ namespace DSS
 			Inherited;
 	public:
 		explicit StackRecap(QWidget* parent = nullptr);
-		~StackRecap();
+		~StackRecap() override;
 
 		inline void setStackingTasks(CAllStackingTasks* stackingTasks) noexcept
 		{
 			pStackingTasks = stackingTasks;
-		};
+		}
 
 
 	private slots:

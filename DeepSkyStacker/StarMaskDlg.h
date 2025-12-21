@@ -48,7 +48,7 @@ namespace DSS {
 
 	public:
 		StarMaskDlg(QWidget* parent, const fs::path& file);
-		~StarMaskDlg() {}
+		~StarMaskDlg() override {}
 
 		StarMaskDlg(const StarMaskDlg& rhs) = delete;
 

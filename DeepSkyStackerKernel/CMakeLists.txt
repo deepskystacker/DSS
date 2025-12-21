@@ -465,7 +465,8 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
 			-Wno-sign-conversion -Wno-sign-compare -Wno-ctad-maybe-unsupported
 			-Wno-weak-vtables -Wno-covered-switch-default -Wno-undefined-func-template
 			-Wno-double-promotion -Wno-unreachable-code-break -Wno-disabled-macro-expansion
-			-Wno-unused-macros -Wno-pessimizing-move
+			-Wno-unused-macros -Wno-pessimizing-move -Wno-reserved-identifier
+			-Wno-missing-braces -Wno-documentation-unknown-command
 			-Werror -Xclang -fopenmp
         )
     else()

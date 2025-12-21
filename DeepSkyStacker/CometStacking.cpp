@@ -23,7 +23,7 @@ namespace DSS
 	void CometStacking::onSetActive()
 	{
 		m_CometStackingMode = static_cast<COMETSTACKINGMODE>
-			(workspace->value("Stacking/CometStackingMode", (uint)CSM_STANDARD).toUInt());
+			(workspace->value("Stacking/CometStackingMode", static_cast<uint>(CSM_STANDARD)).toUInt());
 
 		switch (m_CometStackingMode)
 		{
@@ -36,6 +36,7 @@ namespace DSS
 		case CSM_COMETSTAR:
 			ui->modeAdvanced->setChecked(true);
 			break;
+		default: break;
 		}
 		updateImage();
 	}

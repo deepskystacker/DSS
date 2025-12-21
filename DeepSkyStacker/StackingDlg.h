@@ -64,6 +64,7 @@ class Workspace;
 
 namespace DSS
 {
+	extern QStringList OUTPUTLIST_FILTERS;
 	namespace Ui
 	{
 		class StackingDlg;
@@ -182,7 +183,7 @@ namespace DSS
 
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr, PictureList* list = nullptr);
-		~StackingDlg();
+		~StackingDlg() override ;
 		StackingDlg(const StackingDlg&) = delete;
 		StackingDlg& operator=(const StackingDlg&) = delete;
 
@@ -194,7 +195,7 @@ namespace DSS
 		void setFileList(const fs::path& file)
 		{
 			fileList = file;
-		};
+		}
 
 		void showImageList(bool visible = true);
 

@@ -18,18 +18,18 @@ namespace DSS
 			Inherited;
 
 	public:
-		explicit BackgroundOptions(QWidget* parent = 0);
-		~BackgroundOptions();
+		explicit BackgroundOptions(QWidget* parent = nullptr);
+		~BackgroundOptions() override;
 
 		void	SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode)
 		{
 			m_CalibrationMode = Mode;
-		};
+		}
 
 		BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode()
 		{
 			return m_CalibrationMode;
-		};
+		}
 
 	private slots:
 		void on_rbLinear_clicked();

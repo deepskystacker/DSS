@@ -20,11 +20,11 @@ namespace DSS
 		RecommendationItem() :
 			linkID(0)
 		{
-		};
+		}
 
 		~RecommendationItem()
 		{
-		};
+		}
 
 		RecommendationItem(const RecommendationItem& rhs) :
 			vSettings(rhs.vSettings),
@@ -45,7 +45,7 @@ namespace DSS
 			vSettings.clear();
 			linkID = 0;
 			recommendation.clear();
-		};
+		}
 
 		bool differsFromWorkspace();
 		void applySettings();
@@ -53,12 +53,12 @@ namespace DSS
 		void	setRecommendation(QString text)
 		{
 			recommendation = text;
-		};
+		}
 
 		void	addSetting(QString keyName, QVariant value)
 		{
 			vSettings.emplace_back(keyName, value);
-		};
+		}
 	};
 
 	typedef std::vector<RecommendationItem>			RECOMMENDATIONITEMVECTOR;
@@ -80,11 +80,11 @@ namespace DSS
 			isImportant(true),
 			breakBefore(false)
 		{
-		};
+		}
 
 		~Recommendation()
 		{
-		};
+		}
 
 		Recommendation(const Recommendation& rhs) :
 			vRecommendations(rhs.vRecommendations),
@@ -107,12 +107,12 @@ namespace DSS
 		void	setText(const QString& t)
 		{
 			text = t;
-		};
+		}
 
 		void	addItem(const RecommendationItem& ri)
 		{
 			vRecommendations.push_back(ri);
-		};
+		}
 	};
 
 	typedef std::vector<Recommendation>	RECOMMENDATIONVECTOR;
@@ -132,12 +132,12 @@ namespace DSS
 			Inherited;
 	public:
 		explicit RecommendedSettings(QWidget* parent = nullptr);
-		~RecommendedSettings();
+		~RecommendedSettings() override;
 
 		inline void setStackingTasks(CAllStackingTasks* tasks) noexcept
 		{
 			pStackingTasks = tasks;
-		};
+		}
 
 
 	private slots:

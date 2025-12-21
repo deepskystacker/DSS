@@ -53,7 +53,7 @@ namespace DSS
 
         GridData()
         {
-		};
+		}
 
         GridData(const GridData&) = delete;
         GridData& operator=(const GridData&) = delete;
@@ -61,7 +61,7 @@ namespace DSS
 
         ~GridData()
         {
-        };
+        }
 
         void
             interpolate(QPromise<void>& promise,

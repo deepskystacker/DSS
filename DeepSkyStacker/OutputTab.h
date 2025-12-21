@@ -18,7 +18,7 @@ namespace DSS
 
 	public:
 		explicit OutputTab(QWidget* parent = nullptr);
-		~OutputTab();
+		~OutputTab() override;
 
 		void saveOutputSettings();
 

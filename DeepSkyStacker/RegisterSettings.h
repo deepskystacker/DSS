@@ -53,7 +53,7 @@ namespace DSS
 			Inherited;
 	public:
 		explicit RegisterSettings(QWidget* parent = nullptr);
-		~RegisterSettings();
+		~RegisterSettings() override;
 
 		inline void	setSettingsOnly(bool bSettingsOnly) noexcept
 		{

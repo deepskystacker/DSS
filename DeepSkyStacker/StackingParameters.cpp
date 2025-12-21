@@ -141,13 +141,13 @@ namespace DSS
 		{
 		case PICTURETYPE_REFLIGHTFRAME:
 		case PICTURETYPE_LIGHTFRAME:
-			ui->stackedWidget->setCurrentIndex((int)type - 1);
+			ui->stackedWidget->setCurrentIndex(type - 1);
 			// Make the Light frame specific controls visible
 			ui->backgroundCalibration->setVisible(true);
 
 			method = static_cast<MULTIBITMAPPROCESSMETHOD>
-				(workspace->value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt());
-			iteration = workspace->value("Stacking/Light_Iteration", (uint)5).toUInt();
+				(workspace->value("Stacking/Light_Method", static_cast<uint>(MBP_AVERAGE)).toUInt());
+			iteration = workspace->value("Stacking/Light_Iteration", 5U).toUInt();
 			kappa = workspace->value("Stacking/Light_Kappa", 2.0).toDouble();
 			setControls();
 
@@ -188,6 +188,7 @@ namespace DSS
 			case BCM_RGB:
 				string = rgbbgCalString;
 				break;
+			default: break;
 			}
 			ui->backgroundCalibration->setText(string);
 
@@ -195,7 +196,7 @@ namespace DSS
 
 
 		case PICTURETYPE_DARKFRAME:
-			ui->stackedWidget->setCurrentIndex((int)type - 1);
+			ui->stackedWidget->setCurrentIndex(type - 1);
 
 			// Make the Dark frame specific controls visible
 			ui->hotPixels->setVisible(true);
@@ -209,8 +210,8 @@ namespace DSS
 			ui->modeEWA->setEnabled(false);
 
 			method = static_cast<MULTIBITMAPPROCESSMETHOD>
-				(workspace->value("Stacking/Dark_Method", (uint)MBP_AVERAGE).toUInt());
-			iteration = workspace->value("Stacking/Dark_Iteration", (uint)5).toUInt();
+				(workspace->value("Stacking/Dark_Method", static_cast<uint>(MBP_AVERAGE)).toUInt());
+			iteration = workspace->value("Stacking/Dark_Iteration", 5U).toUInt();
 			kappa = workspace->value("Stacking/Dark_Kappa", 2.0).toDouble();
 			setControls();
 
@@ -242,8 +243,8 @@ namespace DSS
 
 		case PICTURETYPE_FLATFRAME:
 			method = static_cast<MULTIBITMAPPROCESSMETHOD>
-				(workspace->value("Stacking/Flat_Method", (uint)MBP_AVERAGE).toUInt());
-			iteration = workspace->value("Stacking/Flat_Iteration", (uint)5).toUInt();
+				(workspace->value("Stacking/Flat_Method", static_cast<uint>(MBP_AVERAGE)).toUInt());
+			iteration = workspace->value("Stacking/Flat_Iteration", 5U).toUInt();
 			kappa = workspace->value("Stacking/Flat_Kappa", 2.0).toDouble();
 			setControls();
 
@@ -255,8 +256,8 @@ namespace DSS
 
 		case PICTURETYPE_OFFSETFRAME:
 			method = static_cast<MULTIBITMAPPROCESSMETHOD>
-				(workspace->value("Stacking/Offset_Method", (uint)MBP_AVERAGE).toUInt());
-			iteration = workspace->value("Stacking/Offset_Iteration", (uint)5).toUInt();
+				(workspace->value("Stacking/Offset_Method", static_cast<uint>(MBP_AVERAGE)).toUInt());
+			iteration = workspace->value("Stacking/Offset_Iteration", 5U).toUInt();
 			kappa = workspace->value("Stacking/Offset_Kappa", 2.0).toDouble();
 			setControls();
 
@@ -338,6 +339,7 @@ namespace DSS
 			workspace->setValue("Stacking/BackgroundCalibration", true);
 			workspace->setValue("Stacking/PerChannelBackgroundCalibration", false);
 			break;
+		default: break;
 		}
 	}
 
@@ -389,16 +391,16 @@ namespace DSS
 			{
 			case PICTURETYPE_LIGHTFRAME:
 			case PICTURETYPE_REFLIGHTFRAME:
-				workspace->setValue("Stacking/Light_Method", (uint)method);
+				workspace->setValue("Stacking/Light_Method", static_cast<uint>(method));
 				break;
 			case PICTURETYPE_DARKFRAME:
-				workspace->setValue("Stacking/Dark_Method", (uint)method);
+				workspace->setValue("Stacking/Dark_Method", static_cast<uint>(method));
 				break;
 			case PICTURETYPE_FLATFRAME:
-				workspace->setValue("Stacking/Flat_Method", (uint)method);
+				workspace->setValue("Stacking/Flat_Method", static_cast<uint>(method));
 				break;
 			case PICTURETYPE_OFFSETFRAME:
-				workspace->setValue("Stacking/Offset_Method", (uint)method);
+				workspace->setValue("Stacking/Offset_Method", static_cast<uint>(method));
 				break;
 			default:
 				break;

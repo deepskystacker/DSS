@@ -157,6 +157,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{
@@ -282,6 +283,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{
@@ -405,6 +407,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{

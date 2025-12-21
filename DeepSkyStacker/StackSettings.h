@@ -30,7 +30,7 @@ namespace DSS
 
 	public:
 		explicit StackSettings(QWidget* parent = nullptr);
-		~StackSettings();
+		~StackSettings() override;
 
 		void accept() override;
 		void reject() override;
@@ -39,21 +39,21 @@ namespace DSS
 		{
 			startingTab = lStartingTab;
 			return *this;
-		};
+		}
 
 		inline StackSettings& setRegisteringOnly(bool bRegisteringOnly)
 		{
 			registeringOnly = bRegisteringOnly;
 			updateControls();
 			return *this;
-		};
+		}
 
 		inline StackSettings& enableCometStacking(bool value)
 		{
 			cometStacking = value;
 			updateControls();
 			return *this;
-		};
+		}
 
 		StackSettings& setStackingTasks(CAllStackingTasks* tasks) noexcept;
 
@@ -64,14 +64,14 @@ namespace DSS
 			enableBias = bBias;
 			updateControls();
 			return *this;
-		};
+		}
 
 		inline StackSettings& setEnableAll(bool value)
 		{
 			enableAll = value;
 			updateControls();
 			return *this;
-		};
+		}
 
 	private:
 		Ui::StackSettings* ui;

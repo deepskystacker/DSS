@@ -17,7 +17,7 @@ namespace DSS
 
 	public:
 		explicit IntermediateFiles(QWidget* parent = nullptr, bool regOnly = false);
-		~IntermediateFiles();
+		~IntermediateFiles() override;
 
 	public slots:
 		void onSetActive();

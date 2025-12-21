@@ -58,9 +58,9 @@ namespace DSS
 		QualityChart& operator=(const QualityChart&) = delete;
 		QualityChart(QualityChart&&) = delete;
 
-		~QualityChart()
+		~QualityChart() override
 		{
-		};
+		}
 
 	private:
 		CLightFrameInfo lightFrameInfo;

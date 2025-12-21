@@ -98,11 +98,11 @@ void triangle::SetCircumCircle()
 		m_Center.setY(m0 * (m_Center.x() - mx0) + my0);
 	}
 
-	float dx = x0 - m_Center.x();
-	float dy = y0 - m_Center.y();
+	float dx = static_cast<float>(x0 - m_Center.x());
+	float dy = static_cast<float>(y0 - m_Center.y());
 
 	m_R2 = dx * dx + dy * dy;	// the radius of the circumcircle, squared
-	m_R = (float) sqrt(m_R2);	// the proper radius
+	m_R = static_cast<float>(std::sqrt(m_R2));	// the proper radius
 
 	// Version 1.1: make m_R2 slightly higher to ensure that all edges
 	// of co-circular vertices will be caught.

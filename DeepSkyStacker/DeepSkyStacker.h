@@ -37,6 +37,13 @@
 #include "dssbase.h"
 #include "DeepStack.h"
 #include "ProcessingSettings.h"
+#include "tracecontrol.h"
+
+extern bool g_bShowRefStars;
+extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
+extern char const* global_program_name;
+extern bool loadTranslations();
 
 namespace DSS
 {
@@ -117,7 +124,7 @@ public:
 	}
 
 	DeepSkyStacker();
-	~DeepSkyStacker() {};
+	~DeepSkyStacker() override {}
 
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
 	inline ActivePanel panel() const { return activePanel; }
