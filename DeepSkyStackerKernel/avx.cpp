@@ -63,7 +63,7 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 // AVX 256 Stacking
 // ****************
 
-int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
+int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
 {
 	if (!this->stackData.avxEnabled)
 		return 1;
@@ -78,7 +78,7 @@ int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 }
 
 template <class T>
-int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration, const int pixelSizeMultiplier)
+int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, const int pixelSizeMultiplier)
 {
 	if (pixelSizeMultiplier != 1 || pixelTransformDef.m_lPixelSizeMultiplier != 1)
 		return 1;
@@ -441,16 +441,15 @@ inline float readColorValue(const std::uint32_t c) { return static_cast<float>(c
 inline float readColorValue(const float c) { return c; }
 
 template <class T>
-int Avx256Stacking::backgroundCalibration(std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration)
+int Avx256Stacking::backgroundCalibration(BackgroundCalibrator const& backgroundCalibration)
 {
 	// We calculate vectors with 16 pixels each, so this is the number of vectors to process.
 	const int nrVectors = stackData.width / 16;
 	const AvxBitmapUtil avxInputSupport{ stackData.inputBitmap };
 
-	return std::visit([nrVectors, this, &avxInputSupport](auto const& variantRef)
+	return std::visit([nrVectors, this, &avxInputSupport](auto const& calib)
 		{
-			auto const& model = variantRef.get();
-			using ModelType = std::decay_t<decltype(model)>;
+			using ModelType = std::decay_t<decltype(calib)>;
 
 			// No background calibration
 			// -------------------------
@@ -511,7 +510,7 @@ int Avx256Stacking::backgroundCalibration(std::shared_ptr<BackgroundCalibrationI
 						}
 					}
 				};
-				return backgroundCalibLoop<T>(Loop, avxInputSupport, std::get<0>(model), std::get<1>(model), std::get<2>(model));
+				return backgroundCalibLoop<T>(Loop, avxInputSupport, calib.redParams, calib.greenParams, calib.blueParams);
 			}
 			// Linear background calibration
 			// -----------------------------
@@ -554,7 +553,7 @@ int Avx256Stacking::backgroundCalibration(std::shared_ptr<BackgroundCalibrationI
 						}
 					}
 				};
-				return backgroundCalibLoop<T>(Loop, avxInputSupport, std::get<0>(model), std::get<1>(model), std::get<2>(model));
+				return backgroundCalibLoop<T>(Loop, avxInputSupport, calib.redParams, calib.greenParams, calib.blueParams);
 			}
 			// Rational background calibration
 			// -------------------------------
@@ -599,13 +598,13 @@ int Avx256Stacking::backgroundCalibration(std::shared_ptr<BackgroundCalibrationI
 						}
 					}
 				};
-				return backgroundCalibLoop<T>(Loop, avxInputSupport, std::get<0>(model), std::get<1>(model), std::get<2>(model));
+				return backgroundCalibLoop<T>(Loop, avxInputSupport, calib.redParams, calib.greenParams, calib.blueParams);
 			}
 			else
 				// Unknow type of model, so we either have not (yet) a SIMD implementation or there's some other problem -> fall back to scalar code.
 				return 2;
 		},
-		backgroundCalibration->model()
+		backgroundCalibration.getCalibratorVariant()
 	);
 }
 

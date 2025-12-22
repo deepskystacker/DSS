@@ -1192,9 +1192,7 @@ void    CDeBloom::SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * p
 
 double CDeBloom::ComputeBackgroundValue(CMemoryBitmap const* pBitmap) const
 {
-	return BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(
-		BCI_LINEAR, BCM_PERCHANNEL, RBCM_MIDDLE, pBitmap->BitPerSample(), pBitmap->IsIntegralType()
-	)->calculateModelParameters(*pBitmap, false, nullptr) / 256.0;
+	return makeBackgroundCalibrator(BCI_LINEAR, BCM_PERCHANNEL, RBCM_MIDDLE, 1.0).calculateModelParameters(*pBitmap, false, nullptr) / 256.0;
 }
 
 

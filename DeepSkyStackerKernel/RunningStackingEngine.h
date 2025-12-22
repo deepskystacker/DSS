@@ -12,7 +12,7 @@ class CRunningStackingEngine
 private:
 	std::shared_ptr<CMemoryBitmap> m_pStackedBitmap{};
 	std::shared_ptr<CMemoryBitmap> m_pPublicBitmap{};
-	std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration{};
+	std::unique_ptr<BackgroundCalibrator> backgroundCalibration{};
 	int m_lNrStacked{ 0 };
 	double m_fTotalExposure{ 0 };
 	CMatchingStars m_MatchingStars{};

@@ -82,7 +82,7 @@ void AvxStacking::init(const int lStart, const int lEnd)
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
@@ -95,7 +95,7 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 // Non-AVX Stacking
 // ****************
 
-int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, std::shared_ptr<BackgroundCalibrationInterface> backgroundCalibration, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
+int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier)
 {
 	const int width = this->stackData.width;
 	PIXELDISPATCHVECTOR vPixels;
@@ -118,7 +118,7 @@ int NonAvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskI
 			else
 				this->stackData.inputBitmap.GetPixel16(i, j, crColor);
 
-			const auto [red, green, blue] = backgroundCalibration->calibratePixel(crColor.red, crColor.green, crColor.blue);
+			const auto [red, green, blue] = backgroundCalibration.calibratePixel(crColor.red, crColor.green, crColor.blue);
 
 			if ((0 != red || 0 != green || 0 != blue) && DSSRect { 0, 0, this->stackData.resultWidth, this->stackData.resultHeight }.contains(ptOut))
 			{

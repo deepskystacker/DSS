@@ -524,8 +524,8 @@ namespace DSS
 		u8transform.resize(transformSize);
 		u16transform.resize(transformSize);
 
-		BackgroundCalibrationRational<1, double> rationalCalib{ BackgroundCalibrationInterface::Mode::PerChannel, BackgroundCalibrationInterface::RgbMethod::Median };
-		rationalCalib.resetModel<0>(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
+		RationalModel rationalCalib;
+		rationalCalib.redParams.initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 
 		// Perform rational interpolation for uint16_t
 		for (int i = 0; i < transformSize; i++)
@@ -536,7 +536,7 @@ namespace DSS
 				u16transform[i] = std::numeric_limits<uint16_t>::max();
 			else
 			{
-				const double r = std::get<0>(rationalCalib.calibratePixel(i / uint16Max_asDouble, 0, 0));
+				const double r = std::get<0>(rationalCalib.calibrate(i / uint16Max_asDouble, 0, 0));
 				u16transform[i] = uint16Max_asDouble * r; //pow(fValue, fGamma);
 			}
 		}
@@ -550,7 +550,7 @@ namespace DSS
 				u8transform[i] = std::numeric_limits<uint8_t>::max();
 			else
 			{
-				const double r = std::get<0>(rationalCalib.calibratePixel(i / uint16Max_asDouble, 0, 0));
+				const double r = std::get<0>(rationalCalib.calibrate(i / uint16Max_asDouble, 0, 0));
 				u8transform[i] = static_cast<double>(std::numeric_limits<uint8_t>::max()) * r; //pow(fValue, fGamma);
 			}
 		}

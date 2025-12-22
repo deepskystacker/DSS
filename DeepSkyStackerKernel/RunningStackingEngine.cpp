@@ -84,9 +84,8 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, OldProgressBase* pPr
 		const bool isFirst = m_lNrStacked == 0;
 		if (isFirst) // This is the first light frame
 		{
-			backgroundCalibration = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(CAllStackingTasks::GetBackgroundCalibrationInterpolation(),
-				CAllStackingTasks::GetBackgroundCalibrationMode(), CAllStackingTasks::GetRGBBackgroundCalibrationMethod(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
-			);
+			this->backgroundCalibration = std::make_unique<BackgroundCalibrator>(makeBackgroundCalibrator(CAllStackingTasks::GetBackgroundCalibrationInterpolation(),
+				CAllStackingTasks::GetBackgroundCalibrationMode(), CAllStackingTasks::GetRGBBackgroundCalibrationMethod(), 1.0));
 		}
 		backgroundCalibration->calculateModelParameters(*pBitmap, isFirst, nullptr);
 

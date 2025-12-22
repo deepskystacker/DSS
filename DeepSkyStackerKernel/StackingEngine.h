@@ -132,7 +132,7 @@ private:
 	std::vector<CImageCometShift> m_vCometShifts;
 	double m_fStarTrailsAngle;
 	PIXELTRANSFORMVECTOR m_vPixelTransforms;
-	std::shared_ptr<BackgroundCalibrationInterface> backgroundCalib{};
+	std::shared_ptr<BackgroundCalibrator> backgroundCalib{};
 	std::shared_ptr<CMultiBitmap> m_pMasterLight;
 	CTaskInfo* pTaskInfo;
 	double m_fKeptPercentage;

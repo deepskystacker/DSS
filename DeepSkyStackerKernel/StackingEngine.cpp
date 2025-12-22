@@ -1712,7 +1712,7 @@ namespace
 		std::shared_ptr<CMemoryBitmap> m_pBitmap;
 		CPixelTransform m_PixTransform{};
 		CTaskInfo* pStackTaskInfo{ nullptr };
-		std::shared_ptr<BackgroundCalibrationInterface> bgCal{};
+		BackgroundCalibrator const& bgCal;
 		DSSRect m_rcResult{};
 		std::shared_ptr<CMemoryBitmap> m_pOutput{};
 		AvxEntropy* m_pAvxEntropy{ nullptr };
@@ -1722,10 +1722,10 @@ namespace
 		CStackTask() = delete;
 		~CStackTask() = default;
 		// Note: pBitmap and bgc are by-value and will be moved into the member variables.
-		explicit CStackTask(std::shared_ptr<CMemoryBitmap> pBitmap, std::shared_ptr<BackgroundCalibrationInterface> bgc, OldProgressBase* pProgress) :
+		explicit CStackTask(std::shared_ptr<CMemoryBitmap> pBitmap, BackgroundCalibrator const& bgc, OldProgressBase* pProgress) :
 			m_pProgress{ pProgress },
 			m_pBitmap{ std::move(pBitmap) },
-			bgCal{ std::move(bgc) }
+			bgCal{ bgc }
 		{}
 		CStackTask(CStackTask const&) = delete;
 
@@ -1830,14 +1830,15 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 		// -------------------- Background calibration model initialisation ----------------------
 
 		ProgressStart2([] { return QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION"); }, 1);
-		if (isFirstLightframe) {
-			backgroundCalib = BackgroundCalibrationInterface::makeBackgroundCalibrator<1>(CAllStackingTasks::GetBackgroundCalibrationInterpolation(),
-				CAllStackingTasks::GetBackgroundCalibrationMode(), CAllStackingTasks::GetRGBBackgroundCalibrationMethod(), pBitmap->BitPerSample(), pBitmap->IsIntegralType()
-			);
+
+		if (isFirstLightframe)
+		{
+			this->backgroundCalib = std::make_shared<BackgroundCalibrator>(makeBackgroundCalibrator(CAllStackingTasks::GetBackgroundCalibrationInterpolation(),
+				CAllStackingTasks::GetBackgroundCalibrationMode(), CAllStackingTasks::GetRGBBackgroundCalibrationMethod(), 1.0));
 		}
 		backgroundCalib->calculateModelParameters(*pBitmap, isFirstLightframe, isFirstLightframe ? currentLightFrame.generic_u8string().c_str() : nullptr);
 
-		CStackTask StackTask{ pBitmap, backgroundCalib, m_pProgress };
+		CStackTask StackTask{ pBitmap, *backgroundCalib, m_pProgress };
 
 		// Create the output bitmap
 		const int lHeight = pBitmap->Height();
