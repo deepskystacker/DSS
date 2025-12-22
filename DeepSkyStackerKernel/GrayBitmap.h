@@ -235,8 +235,14 @@ public:
 };
 
 
-typedef CGrayBitmapT<double> CGrayBitmap;
-typedef CGrayBitmapT<std::uint8_t> C8BitGrayBitmap;
-typedef CGrayBitmapT<std::uint16_t> C16BitGrayBitmap;
-typedef CGrayBitmapT<std::uint32_t> C32BitGrayBitmap;
-typedef CGrayBitmapT<float> C32BitFloatGrayBitmap;
+using C8BitGrayBitmap = CGrayBitmapT<std::uint8_t>;
+using C16BitGrayBitmap = CGrayBitmapT<std::uint16_t>;
+using C32BitGrayBitmap = CGrayBitmapT<std::uint32_t>;
+using C32BitFloatGrayBitmap = CGrayBitmapT<float>;
+using CGrayBitmap = CGrayBitmapT<double>;
+
+extern template class CGrayBitmapT<std::uint8_t>;
+extern template class CGrayBitmapT<std::uint16_t>;
+extern template class CGrayBitmapT<std::uint32_t>;
+extern template class CGrayBitmapT<float>;
+extern template class CGrayBitmapT<double>;

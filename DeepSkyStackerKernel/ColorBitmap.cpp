@@ -300,7 +300,9 @@ void CColorBitmapT<TType>::ReceiveValue(void* pRed, void* pGreen, void* pBlue, c
 	*static_cast<TType*>(pBlue) = value;
 }
 
-// Define these here so that we can simple headers. We only run with these types so this isn't too bad.
+// Explicit template instantiations.
+// Note: If additional template instantiations will be added, then you also need to add them to the extern template declaration in the header file.
+
 template class CColorBitmapT<std::uint8_t>;
 template class CColorBitmapT<std::uint16_t>;
 template class CColorBitmapT<std::uint32_t>;

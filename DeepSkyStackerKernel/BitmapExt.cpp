@@ -19,28 +19,11 @@
 #include "omp.h"
 #include "dssbase.h"
 
-extern template bool AHDDemosaicing<std::uint16_t>(CGrayBitmapT<std::uint16_t>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, OldProgressBase* pProgress);
-
-extern template class CGrayBitmapT<std::uint8_t>;
-extern template class CGrayBitmapT<std::uint16_t>;
-extern template class CGrayBitmapT<std::uint32_t>;
-extern template class CGrayBitmapT<float>;
-extern template class CGrayBitmapT<double>;
-
-extern template class CColorBitmapT<std::uint8_t>;
-extern template class CColorBitmapT<std::uint16_t>;
-extern template class CColorBitmapT<std::uint32_t>;
-extern template class CColorBitmapT<float>;
-extern template class CColorBitmapT<double>;
-
-extern template void BackgroundCalibrationRational<1, double>::resetModel<0ul>(const double redMedian, const double redMax, const double greenMedian, const double greenMax, const double blueMedian, const double blueMax);
-
 using namespace DSS;
 
 const QStringList rawFileExtensions{ "cr2", "cr3", "crw", "nef", "mrw", "orf", "raf", "pef", "x3f", "dcr",
 		"kdc", "srf", "arw", "raw", "dng", "ia", "rw2" };
 
-/* ------------------------------------------------------------------- */
 
 namespace
 {

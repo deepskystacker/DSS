@@ -7,18 +7,6 @@
 #include "ColorHelpers.h"
 #include "DSSTools.h"
 
-//extern template class CGrayBitmapT<std::uint8_t>;
-//extern template class CGrayBitmapT<std::uint16_t>;
-//extern template class CGrayBitmapT<std::uint32_t>;
-//extern template class CGrayBitmapT<float>;
-//extern template class CGrayBitmapT<double>;
-//
-//extern template class CColorBitmapT<std::uint8_t>;
-//extern template class CColorBitmapT<std::uint16_t>;
-//extern template class CColorBitmapT<std::uint32_t>;
-//extern template class CColorBitmapT<float>;
-//extern template class CColorBitmapT<double>;
-
 using namespace DSS;
 
 static std::vector<float> g_vLUT;
@@ -822,4 +810,5 @@ bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBi
 	return false;
 }
 
+// Explicit template instantiation.
 template bool AHDDemosaicing<std::uint16_t>(CGrayBitmapT<std::uint16_t>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, OldProgressBase* pProgress);

@@ -144,7 +144,13 @@ public:
 };
 
 
-typedef CColorBitmapT<std::uint8_t> C24BitColorBitmap;
-typedef CColorBitmapT<std::uint16_t> C48BitColorBitmap;
-typedef CColorBitmapT<std::uint32_t> C96BitColorBitmap;
-typedef CColorBitmapT<float> C96BitFloatColorBitmap;
+using C24BitColorBitmap = CColorBitmapT<std::uint8_t>;
+using C48BitColorBitmap = CColorBitmapT<std::uint16_t>;
+using C96BitColorBitmap = CColorBitmapT<std::uint32_t>;
+using C96BitFloatColorBitmap = CColorBitmapT<float>;
+
+extern template class CColorBitmapT<std::uint8_t>;
+extern template class CColorBitmapT<std::uint16_t>;
+extern template class CColorBitmapT<std::uint32_t>;
+extern template class CColorBitmapT<float>;
+extern template class CColorBitmapT<double>;
