@@ -595,48 +595,5 @@ BackgroundCalibrator makeBackgroundCalibrator(
 }
 
 
-
-// Test code
-
-//BackgroundCali backNo{ NonModel{}, Mode::None, RgbMethod::Median };
-auto backNo = makeBackgroundCalibrator(BACKGROUNDCALIBRATIONINTERPOLATION::BCI_LINEAR, BACKGROUNDCALIBRATIONMODE::BCM_NONE, RGBBACKGROUNDCALIBRATIONMETHOD::RBCM_MIDDLE, 1.0);
-BackgroundCalibrator backCO{ OffsetModel{}, 1.0, Mode::PerChannel, RgbMethod::Median };
-BackgroundCalibrator backCL{ LinearModel{}, 1.0, Mode::RGB, RgbMethod::Minimum };
-BackgroundCalibrator backCR{ RationalModel{}, 256.0, Mode::RGB, RgbMethod::Maximum };
-std::array<BackgroundCalibrator, 4> backArr = { std::move(backNo), std::move(backCO), std::move(backCL), std::move(backCR) };
-
-void f(CMemoryBitmap const& b)
-{
-	backArr[0].calculateModelParameters(b, false, nullptr);
-	backArr[1].calculateModelParameters(b, true, nullptr);
-	backArr[2].calculateModelParameters(b, true, nullptr);
-	backArr[1].calibratePixel(3, 4, 5);
-
-	char const *const nnn = std::visit([](auto const& d)
-		{
-			using D = std::decay_t<decltype(d)>;
-			if constexpr (std::same_as<D, NoneModel>)
-				return "1";
-			else if constexpr (std::same_as<D, OffsetModel>)
-				return d.redParams.offset > 0 ? "2+" : "2-";
-			else if constexpr (std::same_as<D, LinearModel>)
-				return d.greenParams.a1 < 10 ? "3A" : "3b";
-			else if constexpr (std::same_as<D, RationalModel>)
-				return d.blueParams.c < 100 ? "4c" : "4x";
-			else
-				return "---";
-		},
-		backArr[3].getCalibratorVariant()
-	);
-
-	std::visit([](auto& d)
-		{
-			using D = std::decay_t<decltype(d)>;
-			if constexpr (std::same_as<D, OffsetModel>)
-				d.redParams.initialize(1, 2, 3, 4, 5, 6);
-		},
-		backArr[1].getCalibratorVariant()
-	);
-
-	printf("%s", nnn);
-}
+// Explicit template instantiation
+template class BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel>;
