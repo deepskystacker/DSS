@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "FlatPart.h"
 #include "DynamicStats.h"
 #include "avx_median.h"
@@ -91,12 +91,12 @@ inline T Minimum(const std::vector<T>& values, bool ignoreZeros)
 
 	if (!values.empty())
 	{
-		if (values.front() || !ignoreZeros)
+		if (0 != values.front() || !ignoreZeros)
 			result = values.front();
 	}
 
 	for (T const& val : values)
-		if (val || !ignoreZeros)
+		if (0 != val || !ignoreZeros)
 			result = std::min(result, val);
 
 	return result;
@@ -182,7 +182,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	vVariations.reserve(vValues.size());
 	vAbsVariations.reserve(vValues.size());
 
-	for (int i = 0;i<vValues.size();i++)
+	for (size_t i = 0;i<vValues.size();i++)
 	{
 		if (!i)
 		{
@@ -191,8 +191,8 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 		}
 		else
 		{
-			vVariations.push_back((double)(vValues[i]-vValues[i-1])/(double)std::max(static_cast<T>(1), vValues[i-1])*sqrt(vValues[i]/fMaximum));
-			vAbsVariations.push_back((double)(vValues[i]-vValues[i-1])/fMaximum);
+			vVariations.push_back(static_cast<double>((vValues[i]-vValues[i-1])/std::max(static_cast<T>(1), static_cast<T>(vValues[i-1]*std::sqrt(vValues[i]/fMaximum)))));
+			vAbsVariations.push_back(static_cast<double>(vValues[i]-vValues[i-1])/fMaximum);
 		};
 		fTotalVariation += fabs(vAbsVariations[i]);
 		fAverage += vValues[i];
@@ -207,7 +207,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	for (double fThreshold = 0.05;fThreshold<=0.20;fThreshold+=0.05)
 	{
 		fSummedVariation = 0;
-		for (int i = 0;i<vValues.size();i++)
+		for (std::int64_t i = 0; i<vValues.size(); i++)
 		{
 			if (bInFlatPart)
 			{
@@ -267,9 +267,9 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 		// Check that at least one flat part is below the average
 		bool				bFound = false;
 
-		for (int i = 0;i<vFlatParts.size() && !bFound;i++)
+		for (size_t i = 0;i<vFlatParts.size() && !bFound;i++)
 			bFound = (vFlatParts[i].m_fAverage <= fAverage);
-		for (int i = 0;i<vFlatParts.size() && bFound;i++)
+		for (size_t i = 0;i<vFlatParts.size() && bFound;i++)
 		{
 			if (vFlatParts[i].m_fAverage > fAverage)
 			{
@@ -299,7 +299,7 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 
 		vAuxValues.reserve(vFlatParts[0].Length());
 
-		for (int i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
+		for (size_t i = vFlatParts[0].m_lStart; i<=vFlatParts[0].m_lEnd; i++)
 			vAuxValues.push_back(vValues[i]);
 
 		vValues = vAuxValues;
@@ -414,7 +414,7 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 		v2AuxValues.reserve(vFlatParts[0].Length());
 		v3AuxValues.reserve(vFlatParts[0].Length());
 
-		for (int i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
+		for (size_t i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
 		{
 			v1AuxValues.push_back(v1Values[i]);
 			v2AuxValues.push_back(v2Values[i]);
@@ -451,7 +451,6 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 {
 	if (vValues.size()>3)
 	{
-		bool				bEnd = false;
 		int				i;
 
 		std::sort(vValues.begin(), vValues.end());
@@ -615,15 +614,15 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, int l
 		double			fSigma;
 		T				fMedian;
 
-		fMedian = Median(vecCurrentPass);
+		fMedian = static_cast<T>(Median(vecCurrentPass));
 		fSigma = Sigma2(vecCurrentPass, fAverage);
 
 		// Go through and populate the temp buffer according to the values.
 		vecTempBuffer.clear();
 		for (int j = 0;j< vecCurrentPass.size();j++)
 		{
-			if (((double)vecCurrentPass[j]>= (fAverage - fKappa*fSigma)) &&
-				((double)vecCurrentPass[j]<= (fAverage + fKappa*fSigma)))
+			if ((static_cast<double>(vecCurrentPass[j]) >= (fAverage - fKappa*fSigma)) &&
+				(static_cast<double>(vecCurrentPass[j]) <= (fAverage + fKappa*fSigma)))
 				vecTempBuffer.push_back(vecCurrentPass[j]);
 			else
 				vecTempBuffer.push_back(fMedian);
@@ -655,8 +654,8 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, int lIteratio
 	//	"The Techniques of Least Squares and Stellar Photometry with CCDs"
 	//
 	// Which was presented at:
-	//	V Escola Avançada de Astrofísica,
-	//	Aguas de São Pedro, Brazil
+	//	V Escola Avancada de Astrofisica,
+	//	Aguas de Sao Pedro, Brazil
 	//
 	// and is archived online at:
 	//	https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html
@@ -693,7 +692,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, int lIteratio
 		double		fMaximum = vValues[0];
 
 		for (i = 1; i < nElements; i++)
-			fMaximum = std::max(fMaximum, (double)vValues[i]);
+			fMaximum = std::max(fMaximum, static_cast<double>(vValues[i]));
 
 		if (fMaximum > 0)
 		{
@@ -706,7 +705,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, int lIteratio
 			// Calculate weights for the values, but re-iterate with the
 			// new "weighted" average each time. This should converge on
 			// a single value over time. Rumour has it that 5 will do :)
-			for (int nIteration = 0; nIteration < (int)lIterations; nIteration++)
+			for (int nIteration = 0; nIteration < lIterations; nIteration++)
 			{
 				//
 				// Calculate the standard deviation from the current running average.

@@ -58,9 +58,9 @@ namespace DSS
 		ValuedRect()
 		{
 			m_fScore = 0.0;
-		};
+		}
 
-		~ValuedRect() {};
+		~ValuedRect() {}
 
 		ValuedRect(const ValuedRect& vr) = default;
 
@@ -69,7 +69,7 @@ namespace DSS
 		bool operator < (const ValuedRect& rhs) const
 		{
 			return m_fScore < rhs.m_fScore;
-		};
+		}
 	};
 
 	class ProcessRect final
@@ -96,7 +96,7 @@ namespace DSS
 				(m_rcToProcess.top < m_rcToProcess.bottom);
 
 			return bResult;
-		};
+		}
 
 	public:
 		ProcessRect()
@@ -110,8 +110,8 @@ namespace DSS
 			m_lWidth = 0;
 			m_lHeight = 0;
 			m_lSize = 0;
-		};
-		virtual ~ProcessRect() {};
+		}
+		virtual ~ProcessRect() {}
 
 		ProcessRect(const ValuedRect& vr) = delete;
 
@@ -139,26 +139,26 @@ namespace DSS
 					rcCell.m_rc.top = j;
 					rcCell.m_rc.bottom = min(j + m_lSize, m_lHeight);
 
-					rcCell.m_fScore = fabs(((i + m_lSize / 2.0) - m_lWidth / 2.0) / (double)m_lWidth) + fabs(((j + m_lSize / 2) - m_lHeight / 2.0) / (double)m_lHeight);
+					rcCell.m_fScore = fabs(((i + m_lSize / 2.0) - m_lWidth / 2.0) / static_cast<double>(m_lWidth)) + fabs(((j + m_lSize / 2) - m_lHeight / 2.0) / static_cast<double>(m_lHeight));
 
 					m_vRects.push_back(rcCell);
 					m_vProcessed.push_back(false);
 				};
 			};
 			std::sort(m_vRects.begin(), m_vRects.end());
-		};
+		}
 
 		void	SetProcessRect(const DSSRect& rc)
 		{
 			m_rcToProcess = rc;
-		};
+		}
 
 		void	Reset()
 		{
 			for (int i = 0; i < m_vProcessed.size(); i++)
 				m_vProcessed[i] = false;
 			m_bToProcess = true;
-		};
+		}
 
 		bool	GetNextUnProcessedRect(DSSRect& rcCell)
 		{
@@ -192,7 +192,7 @@ namespace DSS
 			};
 
 			return bResult;
-		};
+		}
 
 		float GetPercentageComplete() const
 		{
@@ -224,26 +224,26 @@ namespace DSS
 		ProcessingSettingsList()
 		{
 			m_lCurrent = -1;
-		};
+		}
 		virtual ~ProcessingSettingsList()
 		{
-		};
+		}
 
 		int size()
 		{
-			return (int)m_lParams.size();
-		};
+			return static_cast<int>(m_lParams.size());
+		}
 
 		int current()
 		{
 			return m_lCurrent;
-		};
+		}
 
 		void clear()
 		{
 			m_lParams.clear();
 			m_lCurrent = -1;
-		};
+		}
 
 		bool	MoveForward()
 		{
@@ -255,7 +255,7 @@ namespace DSS
 				bResult = true;
 			};
 			return bResult;
-		};
+		}
 		bool	MoveBackward()
 		{
 			bool			bResult = false;
@@ -266,22 +266,22 @@ namespace DSS
 				bResult = true;
 			};
 			return bResult;
-		};
+		}
 
 		bool IsBackwardAvailable()
 		{
 			return (m_lCurrent - 1 >= 0);
-		};
+		}
 
 		bool IsForwardAvailable()
 		{
 			return (m_lCurrent + 1 < size());
-		};
+		}
 
 		bool	GetCurrentSettings(ProcessingSettings& pp)
 		{
 			return GetSettings(m_lCurrent, pp);
-		};
+		}
 
 		bool	GetSettings(int lIndice, ProcessingSettings& pp)
 		{
@@ -300,7 +300,7 @@ namespace DSS
 			};
 
 			return bResult;
-		};
+		}
 
 		bool	AddParams(const ProcessingSettings& pp)
 		{
@@ -325,7 +325,7 @@ namespace DSS
 			bResult = true;
 
 			return bResult;
-		};
+		}
 
 	};
 
@@ -337,10 +337,10 @@ namespace DSS
 
 	public:
 		ProcessingDlg(QWidget *parent, ProcessingControls* processingControls);
-		~ProcessingDlg();
+		~ProcessingDlg() override;
 
-		inline bool dirty() const { return dirty_; };
-		inline void setDirty(bool v = true) { dirty_ = v; };
+		inline bool dirty() const { return dirty_; }
+		inline void setDirty(bool v = true) { dirty_ = v; }
 
 		void copyToClipboard();
 		void createStarMask();
@@ -480,19 +480,19 @@ namespace DSS
 			redAdjustmentCurve_ = hac;
 			setRedButtonIcon();
 			updateBezierCurve();
-		};
+		}
 		inline void setGreenAdjustmentCurve(HistogramAdjustmentCurve hac)
 		{
 			greenAdjustmentCurve_ = hac;
 			setGreenButtonIcon();
 			updateBezierCurve();
-		};
+		}
 		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac)
 		{
 			blueAdjustmentCurve_ = hac;
 			setBlueButtonIcon();
 			updateBezierCurve();
-		};
+		}
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);

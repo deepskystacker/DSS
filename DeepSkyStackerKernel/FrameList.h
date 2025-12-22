@@ -22,7 +22,8 @@ namespace DSS
 			// Add Main Group AND Group 1 (user enhancement request)
 			//
 			imageGroups.emplace_back(); imageGroups.emplace_back();
-		};
+		}
+
 		FrameList(const FrameList&) = delete;
 		FrameList(FrameList&&) = delete;
 		FrameList& operator=(const FrameList&) = delete;

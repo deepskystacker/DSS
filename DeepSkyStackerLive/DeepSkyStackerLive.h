@@ -39,9 +39,16 @@
 #include "dssbase.h"
 #include "ui/ui_DeepSkyStackerLive.h"
 #include <QStyledItemDelegate>
+#include "tracecontrol.h"
 
 class QWinHost;
 class CLightFrameInfo;
+
+extern bool g_bShowRefStars;
+extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
+extern char const* global_program_name;
+bool loadTranslations();
 
 namespace DSS
 {
@@ -72,7 +79,7 @@ signals:
 
 public:
 	DeepSkyStackerLive();
-	~DeepSkyStackerLive();
+	~DeepSkyStackerLive() override;
 
 	//
 	// Don't intend this to be copied or assigned.

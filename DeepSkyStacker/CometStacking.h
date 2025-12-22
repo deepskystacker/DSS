@@ -19,7 +19,7 @@ namespace DSS
 			Inherited;
 	public:
 		explicit CometStacking(QWidget* parent = nullptr);
-		~CometStacking();
+		~CometStacking() override;
 
 		void setCometStackingMode(COMETSTACKINGMODE);
 

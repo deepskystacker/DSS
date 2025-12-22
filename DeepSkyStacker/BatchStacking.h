@@ -20,7 +20,7 @@ namespace DSS
 
 	public:
 		BatchStacking(QWidget* parent);
-		virtual ~BatchStacking();
+		virtual ~BatchStacking() override;
 
 		void setMRUPaths(const std::vector<fs::path>& mruPaths);
 

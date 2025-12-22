@@ -52,7 +52,7 @@
 // AVX Bitmap Filler
 // ---------------------------------
 
-AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
+AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
 	BitmapFillerBase{ pB, pP, redWb, greenWb, blueWb },
 	sourceBuffer{}
 {}
@@ -84,7 +84,7 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 			const std::uint8_t* pData = static_cast<const std::uint8_t*>(source);
 			for (size_t n = 0; n < nrVectors; ++n, pData += 16, pBuf += 16)
 			{
-				const __m128i epu8 = _mm_loadu_si128((const __m128i*)pData); // Load 16 pixels (each 8 bits)
+				const __m128i epu8 = _mm_loadu_si128(reinterpret_cast<const __m128i*>(pData)); // Load 16 pixels (each 8 bits)
 				const __m256i epu16 = _mm256_slli_epi16(_mm256_cvtepu8_epi16(epu8), 8);
 				const __m256 lo8 = AvxSupport::wordToPackedFloat(_mm256_castsi256_si128(epu16));
 				const __m256 hi8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(epu16, 1));
@@ -134,7 +134,7 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 		pBuf = redBuffer.data();
 		std::uint16_t* pOut = pGray16Bitmap->m_vPixels.data() + rowIndex * nrPixels;
 		for (size_t i = 0; i < nrPixels / 8; ++i, pBuf += 8, pOut += 8)
-			_mm_storeu_si128((__m128i*)pOut, AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pBuf)));
+			_mm_storeu_si128(reinterpret_cast<__m128i*>(pOut), AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pBuf)));
 		for (size_t i = (nrPixels / 8) * 8; i < nrPixels; ++i, ++pBuf, ++pOut) // Remaining pixels of line
 			*pOut = static_cast<std::uint16_t>(*pBuf);
 	}
@@ -157,7 +157,7 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 			// 8 RGB pixels at once (each 8 bits)
 			for (size_t n = 0; n < nrPixels / 8; ++n, pData += 24, pRed += 8, pGreen += 8, pBlue += 8)
 			{
-				const __m256i data = _mm256_loadu_si256((const __m256i*)pData); // Load 8 RGB pixels of 8 bits per channel (24 bytes), 8 bytes are ignored.
+				const __m256i data = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pData)); // Load 8 RGB pixels of 8 bits per channel (24 bytes), 8 bytes are ignored.
 				const __m256i rgb = _mm256_permute2x128_si256(data, AvxSupport::shiftLeftEpi32<1>(data), 0x30); // 4 pixels (rgb) in lo lane, 4 pixels in hi lane (4 bytes gap ignored).
 				// We make 3 steps: for red, green, and blue.
 				// In each step, we directly convert the 4 color bytes to 4 ints in each 128 bit lane, then to 4 floats.
@@ -186,7 +186,7 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 			// 4 RGB pixels at once (each 16 bits)
 			for (size_t n = 0; n < nrPixels / 4; ++n, pData += 12, pRed += 4, pGreen += 4, pBlue += 4)
 			{
-				const __m256i data = _mm256_loadu_si256((const __m256i*)pData); // Load 4 RGB pixels of 16 bits per channel (24 bytes), 8 bytes are ignored.
+				const __m256i data = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pData)); // Load 4 RGB pixels of 16 bits per channel (24 bytes), 8 bytes are ignored.
 				const __m256i rgb = _mm256_permute2x128_si256(data, AvxSupport::shiftLeftEpi32<1>(data), 0x30); // 2 pixels (rgb) in lo lane, 2 pixels in hi lane (4 bytes gap ignored).
 				// 3 steps (R, G, B): Convert the 2 color WORDs to 2 ints in each 128 bit lane, be->le, then convert to float.
 				const __m256i red32 = _mm256_shuffle_epi8(rgb, indices); // 2 red values per lane as int32 (original value converted be -> le)
@@ -235,9 +235,9 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 		pBlue = blueBuffer.data();
 		for (size_t n = 0; n < nrPixels / 8; ++n, pOutRed += 8, pOutGreen += 8, pOutBlue += 8, pRed += 8, pGreen += 8, pBlue += 8)
 		{
-			_mm_storeu_si128((__m128i*)pOutRed, AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pRed)));
-			_mm_storeu_si128((__m128i*)pOutGreen, AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pGreen)));
-			_mm_storeu_si128((__m128i*)pOutBlue, AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pBlue)));
+			_mm_storeu_si128(reinterpret_cast<__m128i*>(pOutRed), AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pRed)));
+			_mm_storeu_si128(reinterpret_cast<__m128i*>(pOutGreen), AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pGreen)));
+			_mm_storeu_si128(reinterpret_cast<__m128i*>(pOutBlue), AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pBlue)));
 		}
 		for (size_t i = (nrPixels / 8) * 8; i < nrPixels; ++i, ++pOutRed, ++pOutGreen, ++pOutBlue, ++pRed, ++pGreen, ++pBlue)
 		{

@@ -67,13 +67,13 @@ T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor) const
 	switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 	{
 	case BAYER_RED:
-		return crColor.red;
+		return static_cast<T>(crColor.red);
 		break;
 	case BAYER_GREEN:
-		return crColor.green;
+		return static_cast<T>(crColor.green);
 		break;
 	case BAYER_BLUE:
-		return crColor.blue;
+		return static_cast<T>(crColor.blue);
 		break;
 	default:
 		break;

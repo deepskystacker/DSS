@@ -24,7 +24,7 @@ private:
 		m_bUseCometShift = pt.m_bUseCometShift;
 		m_fXCometShift = pt.m_fXCometShift;
 		m_fYCometShift = pt.m_fYCometShift;
-	};
+	}
 
 public:
 	CPixelTransform()
@@ -33,7 +33,7 @@ public:
 		m_fXCometShift = m_fYCometShift = 0;
 		m_lPixelSizeMultiplier = 1;
 		m_bUseCometShift = false;
-	};
+	}
 
 	CPixelTransform(const CBilinearParameters& transform)
 	{
@@ -42,13 +42,13 @@ public:
 		m_fXCometShift = m_fYCometShift = 0;
 		m_lPixelSizeMultiplier = 1;
 		m_bUseCometShift = false;
-	};
+	}
 
 	void	SetShift(double fXShift, double fYShift)
 	{
 		m_fXShift = fXShift;
 		m_fYShift = fYShift;
-	};
+	}
 
 	void	ComputeCometShift(double fXOrgComet, double fYOrgComet, double fXTgtComet, double fYTgtComet, bool bDoNotUse, bool bAlreadyTransformed)
 	{
@@ -60,25 +60,25 @@ public:
 		m_fXCometShift = fXOrgComet - ptComet.x();
 		m_fYCometShift = fYOrgComet - ptComet.y();
 		m_bUseCometShift = !bDoNotUse;
-	};
+	}
 
 	void	SetPixelSizeMultiplier(int lPixelSizeMultiplier)
 	{
 		m_lPixelSizeMultiplier = lPixelSizeMultiplier;
-	};
+	}
 
-	virtual ~CPixelTransform() {};
+	virtual ~CPixelTransform() {}
 
 	CPixelTransform(const CPixelTransform& pt)
 	{
 		CopyFrom(pt);
-	};
+	}
 
 	CPixelTransform& operator = (const CPixelTransform& pt)
 	{
 		CopyFrom(pt);
 		return (*this);
-	};
+	}
 
 	QPointF transform(const QPointF& pp) const
 	{

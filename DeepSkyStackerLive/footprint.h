@@ -27,7 +27,7 @@ namespace DSS
 
 	public:
 		Footprint(QWidget *parent);
-		~Footprint();
+		~Footprint() override;
 
 		inline void setFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4)
 		{
@@ -35,13 +35,13 @@ namespace DSS
 			pt2_ = pt2;
 			pt3_ = pt3;
 			pt4_ = pt4;
-		};
+		}
 
 		inline void clearFootprint()
 		{
 			QPointF null;
 			pt1_ = pt2_ = pt3_ = pt4_ = null;
-		};
+		}
 	};
 
 

@@ -137,7 +137,7 @@ inline int FindNearestStarWithinDistance(const double fX, const double fY, const
 			if (testDistanceSqr < minDistanceSqr)
 			{
 				minDistanceSqr = testDistanceSqr;
-				lResult = std::distance(vStars.cbegin(), it);
+				lResult = static_cast<int>(std::distance(vStars.cbegin(), it));
 				bIn = it->IsInRadius(QPointF{ fX, fY });
 			}
 		}

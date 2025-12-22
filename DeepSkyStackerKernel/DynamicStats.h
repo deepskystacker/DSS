@@ -17,8 +17,8 @@ public:
 		m_fPowSum = 0;
 		m_fMin = 0;
 		m_fMax = 0;
-	};
-	virtual ~CDynamicStats() {};
+	}
+	virtual ~CDynamicStats() {}
 
 	void AddValue(double fValue, int lNrValues = 1) noexcept
 	{
@@ -34,22 +34,22 @@ public:
 		m_lNrValues += lNrValues;
 		m_fPowSum += (fValue * fValue) * lNrValues;
 		m_fSum += fValue * lNrValues;
-	};
+	}
 
 	void RemoveValue(double fValue, int lNrValues = 1) noexcept
 	{
 		m_lNrValues -= lNrValues;
 		m_fPowSum -= (fValue * fValue) * lNrValues;
 		m_fSum -= fValue * lNrValues;
-	};
+	}
 
 	double	Average() noexcept
 	{
 		if (m_lNrValues)
-			return m_fSum / (double)m_lNrValues;
+			return m_fSum / static_cast<double>(m_lNrValues);
 		else
 			return 0;
-	};
+	}
 
 	double Sigma() noexcept
 	{
@@ -57,17 +57,17 @@ public:
 			return sqrt(m_fPowSum / m_lNrValues - pow(m_fSum / m_lNrValues, 2));
 		else
 			return 0;
-	};
+	}
 
 	double Min() noexcept
 	{
 		return m_fMin;
-	};
+	}
 
 	double Max() noexcept
 	{
 		return m_fMax;
-	};
+	}
 };
 
 template <class T> inline
@@ -75,4 +75,4 @@ void	FillDynamicStat(const std::vector<T>& vValues, CDynamicStats& DynStats)
 {
 	for (int i = 0; i < vValues.size(); i++)
 		DynStats.AddValue(vValues[i]);
-};
+}

@@ -483,9 +483,9 @@ int Avx256Stacking::backgroundCalibration(BackgroundCalibrator const& background
 			{
 				const auto Loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const OffsetParams& params, AvxStacking::VectorType& result) -> void
 				{
-					const auto Interpolate = [offset = _mm256_set1_ps(params.offset),
-						yMin = _mm256_set1_ps(params.minValue),
-						yMax = _mm256_set1_ps(params.maxValue)
+					const auto Interpolate = [offset = _mm256_set1_ps(static_cast<float>(params.offset)),
+						yMin = _mm256_set1_ps(static_cast<float>(params.minValue)),
+						yMax = _mm256_set1_ps(static_cast<float>(params.maxValue))
 					](const __m256 x) noexcept -> __m256
 					{
 						const __m256 y = _mm256_add_ps(x, offset);
@@ -518,11 +518,11 @@ int Avx256Stacking::backgroundCalibration(BackgroundCalibrator const& background
 			{
 				const auto Loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const LinearParams& params, AvxStacking::VectorType& result) -> void
 				{
-					const __m256 a0 = _mm256_set1_ps(params.a0);
-					const __m256 a1 = _mm256_set1_ps(params.a1);
-					const __m256 b0 = _mm256_set1_ps(params.b0);
-					const __m256 b1 = _mm256_set1_ps(params.b1);
-					const __m256 xm = _mm256_set1_ps(params.median);
+					const __m256 a0 = _mm256_set1_ps(static_cast<float>(params.a0));
+					const __m256 a1 = _mm256_set1_ps(static_cast<float>(params.a1));
+					const __m256 b0 = _mm256_set1_ps(static_cast<float>(params.b0));
+					const __m256 b1 = _mm256_set1_ps(static_cast<float>(params.b1));
+					const __m256 xm = _mm256_set1_ps(static_cast<float>(params.median));
 
 					const auto Interpolate = [a0, a1, b0, b1, xm](const __m256 x) noexcept -> __m256
 					{
@@ -561,11 +561,11 @@ int Avx256Stacking::backgroundCalibration(BackgroundCalibrator const& background
 			{
 				const auto Loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const RationalParams& params, AvxStacking::VectorType& result) -> void
 				{
-					const __m256 a = _mm256_set1_ps(params.a);
-					const __m256 b = _mm256_set1_ps(params.b);
-					const __m256 c = _mm256_set1_ps(params.c);
-					const __m256 fmin = _mm256_set1_ps(params.minValue);
-					const __m256 fmax = _mm256_set1_ps(params.maxValue);
+					const __m256 a = _mm256_set1_ps(static_cast<float>(params.a));
+					const __m256 b = _mm256_set1_ps(static_cast<float>(params.b));
+					const __m256 c = _mm256_set1_ps(static_cast<float>(params.c));
+					const __m256 fmin = _mm256_set1_ps(static_cast<float>(params.minValue));
+					const __m256 fmax = _mm256_set1_ps(static_cast<float>(params.maxValue));
 
 					const auto Interpolate = [a, b, c, fmin, fmax](const __m256 color) noexcept -> __m256
 					{
@@ -673,6 +673,7 @@ int Avx256Stacking::pixelPartitioning()
 	const __m256i resultHeightVec = _mm256_set1_epi32(stackData.resultHeight);
 
 	const __m256i outWidthVec = _mm256_set1_epi32(outWidth);
+	
 	const auto getColorPointer = [this](const auto& colorPixels, const size_t row) -> const float*
 	{
 		if constexpr (ISRGB)
@@ -680,6 +681,7 @@ int Avx256Stacking::pixelPartitioning()
 		else
 			return nullptr;
 	};
+
 	const auto getColorValue = [](const float* const pColor) -> __m256
 	{
 		if constexpr (ISRGB)

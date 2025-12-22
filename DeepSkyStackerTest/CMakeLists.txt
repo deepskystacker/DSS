@@ -10,7 +10,7 @@ qt_standard_project_setup()
 # Source groups
 ################################################################################
 set(Header_Files
-    "catch_amalgamated.h"
+    "catch_amalgamated.hpp"
 )
 source_group("Header Files" FILES ${Header_Files})
 

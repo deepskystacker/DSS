@@ -27,7 +27,7 @@ public:
 public:
 	CFilterMatrix() : m_vMatrix{}, m_lSize{ 0 } {}
 	CFilterMatrix(const CFilterMatrix&) = default;
-	~CFilterMatrix() {};
+	~CFilterMatrix() {}
 	CFilterMatrix& operator= (const CFilterMatrix&) = default;
 
 	void Init(const int lSize)
@@ -66,7 +66,7 @@ public:
 		m_lFilterSize{ 1 }
 	{}
 
-	virtual ~CMedianImageFilter()
+	virtual ~CMedianImageFilter() override
 	{}
 
 	void SetFilterSize(int lFilterSize)
@@ -119,28 +119,28 @@ public :
 		m_fRejectHotThreshold  = 0;
 		m_fRejectColdThreshold = 0;
 		m_bUseRejectThreshold  = false;
-	};
+	}
 
-	virtual ~CExtendedMedianImageFilter() {};
+	virtual ~CExtendedMedianImageFilter() override {}
 
 	void	SetRejectThreshold(double fRejectColdThreshold, double fRejectHotThreshold)
 	{
 		m_fRejectColdThreshold = fRejectColdThreshold;
 		m_fRejectHotThreshold  = fRejectHotThreshold;
 		m_bUseRejectThreshold  = true;
-	};
+	}
 
 	void	SetUseRecursive(bool bSet)
 	{
 		m_bRecursive = bSet;
-	};
+	}
 
 	void	SetThresholds(double fColdThreshold, double fHotThreshold)
 	{
 		m_fColdThreshold = fColdThreshold;
 		m_fHotThreshold  = fHotThreshold;
 		m_bUseRejectThreshold  = false;
-	};
+	}
 
 	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, DSS::OldProgressBase* pProgress = nullptr) override;
 };
@@ -151,7 +151,7 @@ class CDirectionalImageFilter : public CImageFilter
 {
 private :
 	double m_fAngle;
-	double m_lSize;
+	int m_lSize;
 
 private :
 	void GetValuesAlongAngle(const CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vValues);
@@ -160,7 +160,7 @@ private :
 
 public :
 	CDirectionalImageFilter() : m_fAngle{ 0 }, m_lSize{ 1 } {}
-	~CDirectionalImageFilter() {};
+	~CDirectionalImageFilter() override {}
 
 	void SetAngle(double fAngle, int lSize)
 	{

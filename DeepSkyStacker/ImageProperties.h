@@ -10,6 +10,6 @@ namespace DSS
 
 	public:
 		ImageProperties(QWidget *parent);
-		~ImageProperties();
+		~ImageProperties() override;
 	};
 } // namespace DSS

@@ -45,7 +45,7 @@ private:
 public:
 	AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
 	AvxBitmapFiller(const AvxBitmapFiller&) = default; // For cloning.
-	virtual ~AvxBitmapFiller() {}
+	virtual ~AvxBitmapFiller() override {}
 
 	virtual bool isThreadSafe() const override;
 	virtual std::unique_ptr<BitmapFillerInterface> clone() override;
@@ -58,7 +58,7 @@ class NonAvxBitmapFiller : public BitmapFillerBase
 public:
 	NonAvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
 	NonAvxBitmapFiller(const NonAvxBitmapFiller&) = default; // For cloning.
-	virtual ~NonAvxBitmapFiller() {}
+	virtual ~NonAvxBitmapFiller() override {}
 
 	virtual bool isThreadSafe() const override;
 	virtual std::unique_ptr<BitmapFillerInterface> clone() override;

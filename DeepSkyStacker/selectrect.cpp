@@ -94,7 +94,7 @@ namespace DSS
                 arg(std::round(selectRect.width()), 0, 'f', 0).
                 arg(std::round(selectRect.height()), 0, 'f', 0));
 
-            if (selecting) painter.drawText(rect.left() + 2, rect.top() - 2, text);
+            if (selecting) painter.drawText(static_cast<int>(rect.left() + 2), static_cast<int>(rect.top() - 2), text);
 
             if (rect.height() > 30 && rect.width() > 30)
             {
@@ -102,28 +102,28 @@ namespace DSS
                 // add a cross hair at the middle.
                 //
                 painter.drawLine(
-                    rect.left() + rect.width() / 2 - 10,
-                    rect.top() + rect.height() / 2,
-                    rect.left() + rect.width() / 2 - 3,
-                    rect.top() + rect.height() / 2
+                    static_cast<int>(rect.left() + rect.width() / 2 - 10),
+                    static_cast<int>(rect.top() + rect.height() / 2),
+                    static_cast<int>(rect.left() + rect.width() / 2 - 3),
+                    static_cast<int>(rect.top() + rect.height() / 2)
                 );
                 painter.drawLine(
-                    rect.left() + rect.width() / 2 + 10,
-                    rect.top() + rect.height() / 2,
-                    rect.left() + rect.width() / 2 + 3,
-                    rect.top() + rect.height() / 2
+                    static_cast<int>(rect.left() + rect.width() / 2 + 10),
+                    static_cast<int>(rect.top() + rect.height() / 2),
+                    static_cast<int>(rect.left() + rect.width() / 2 + 3),
+                    static_cast<int>(rect.top() + rect.height() / 2)
                 );
                 painter.drawLine(
-                    rect.left() + rect.width() / 2,
-                    rect.top() + rect.height() / 2 - 10,
-                    rect.left() + rect.width() / 2,
-                    rect.top() + rect.height() / 2 - 3
+                    static_cast<int>(rect.left() + rect.width() / 2),
+                    static_cast<int>(rect.top() + rect.height() / 2 - 10),
+                    static_cast<int>(rect.left() + rect.width() / 2),
+                    static_cast<int>(rect.top() + rect.height() / 2 - 3)
                 );
                 painter.drawLine(
-                    rect.left() + rect.width() / 2,
-                    rect.top() + rect.height() / 2 + 10,
-                    rect.left() + rect.width() / 2,
-                    rect.top() + rect.height() / 2 + 3
+                    static_cast<int>(rect.left() + rect.width() / 2),
+                    static_cast<int>(rect.top() + rect.height() / 2 + 10),
+                    static_cast<int>(rect.left() + rect.width() / 2),
+                    static_cast<int>(rect.top() + rect.height() / 2 + 3)
                 );
             }
         }
@@ -144,7 +144,7 @@ namespace DSS
             painter.drawRect(rect
                 .adjusted(0, 0, -1, -1));
             size = fontMetrics.size(0, x2Text);
-            painter.drawText(rect.right() - ((qreal)size.width() + 2), rect.bottom() - 2, x2Text);
+            painter.drawText(static_cast<int>(rect.right() - (static_cast<qreal>(size.width()) + 2)), static_cast<int>(rect.bottom() - 2), x2Text);
         }
 
         if (!rect3x.isEmpty() && selecting)
@@ -153,7 +153,7 @@ namespace DSS
             painter.drawRect(rect
                 .adjusted(0, 0, -1, -1));
             size = fontMetrics.size(0, x3Text);
-            painter.drawText(rect.right() - ((qreal)size.width() + 2), rect.bottom() - 2, x3Text);
+            painter.drawText(static_cast<int>(rect.right() - (static_cast<qreal>(size.width()) + 2)), static_cast<int>(rect.bottom() - 2), x3Text);
         }
 
     }
@@ -273,10 +273,10 @@ namespace DSS
                 selectRect.setSize(QSizeF(0.0, 0.0));
 
             selectRect = selectRect.normalized();
-            if (!selectRect.isEmpty())
-            {
-                QRectF screenRect(imageView->imageToScreen(selectRect));
-            }
+            //if (!selectRect.isEmpty())
+            //{
+            //    QRectF screenRect(imageView->imageToScreen(selectRect));
+            //}
             if (QGuiApplication::overrideCursor())
             {
                 QGuiApplication::restoreOverrideCursor();

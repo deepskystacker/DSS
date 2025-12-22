@@ -1,5 +1,5 @@
 {
-  "builtin-baseline": "a62ce77d56ee07513b4b67de1ec2daeaebfae51a",
+  "builtin-baseline": "37dcabc43809a960f41758e00e615cc6e26e8bbf",
   "dependencies": [
     "brotli",
     {
@@ -15,7 +15,7 @@
       "features": [
         "bmff",
         "png",
-		"xmp"
+        "xmp"
       ]
     },
     "expat",
@@ -31,19 +31,19 @@
   "overrides": [
     {
       "name": "boost-align",
-      "version": "1.88.0"
+      "version": "1.89.0"
     },
     {
       "name": "boost-atomic",
-      "version": "1.88.0"
+      "version": "1.89.0"
     },
     {
       "name": "boost-container",
-      "version": "1.88.0"
+      "version": "1.89.0"
     },
     {
       "name": "boost-interprocess",
-      "version": "1.88.0"
+      "version": "1.89.0"
     },
     {
       "name": "exiv2",

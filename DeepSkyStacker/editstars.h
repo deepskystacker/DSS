@@ -64,10 +64,10 @@ namespace DSS
 	public:
 		DelaunayTriangle() : cr1 {}, cr2{}, cr3{}
 		{
-		};
+		}
 		~DelaunayTriangle()
 		{
-		};
+		}
 
 		DelaunayTriangle(const DelaunayTriangle& rhs) = default;
 		DelaunayTriangle(DelaunayTriangle&& rhs) = default;
@@ -77,9 +77,9 @@ namespace DSS
 
 		QPointF inCentre()
 		{
-			const qreal a{ hypotf(pt1.x() - pt2.x(), pt1.y() - pt2.y()) };
-			const qreal b{ hypotf(pt2.x() - pt3.x(), pt2.y() - pt3.y()) };
-			const qreal c{ hypotf(pt3.x() - pt1.x(), pt3.y() - pt1.y()) };
+			const qreal a{ std::hypot(pt1.x() - pt2.x(), pt1.y() - pt2.y()) };
+			const qreal b{ std::hypot(pt2.x() - pt3.x(), pt2.y() - pt3.y()) };
+			const qreal c{ std::hypot(pt3.x() - pt1.x(), pt3.y() - pt1.y()) };
 
 			const qreal x{ (a * pt1.x() + b * pt2.x() + c * pt3.x()) /
 				(a + b + c) };
@@ -136,7 +136,7 @@ namespace DSS
 		EditStars(EditStars&&) = delete;
         EditStars& operator=(const EditStars&) = delete;
 
-		~EditStars() = default;
+		~EditStars() override = default;
 
 		bool isDirty() const;
 

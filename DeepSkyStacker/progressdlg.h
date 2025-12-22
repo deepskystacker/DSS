@@ -53,7 +53,7 @@ namespace DSS
 
 	public:
 		ProgressDlg(QWidget* parent = nullptr);
-		~ProgressDlg();
+		~ProgressDlg() override;
 
 		void enableCancel(bool value = true)
 		{

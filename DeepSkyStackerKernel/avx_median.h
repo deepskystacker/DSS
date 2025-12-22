@@ -105,7 +105,7 @@ namespace Medianhelper
 		}
 	}
 
-};
+}
 
 template <class T>
 inline T qMedian(T arr[], const int n, const int quantile)

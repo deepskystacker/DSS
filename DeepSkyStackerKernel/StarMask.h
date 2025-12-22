@@ -26,14 +26,14 @@ namespace DSS
 		StarMaskFunction()
 		{
 			m_fRadius = 0;
-		};
+		}
 
 		virtual ~StarMaskFunction() { }
 
 		virtual void	SetRadius(double fRadius)
 		{
 			m_fRadius = fRadius;
-		};
+		}
 		virtual double	Compute(double fValue) = 0;
 	};
 
@@ -50,19 +50,19 @@ namespace DSS
 		{
 			fFactor1 = 0;
 			fFactor2 = 0;
-		};
+		}
 
 		virtual void	SetRadius(double fRadius) override
 		{
 			StarMaskFunction::SetRadius(fRadius);
 			fFactor1 = 1.0;
 			fFactor2 = 2 * fRadius * fRadius;
-		};
+		}
 
 		virtual double	Compute(double fValue) override
 		{
 			return fFactor1 * exp(-(fValue * fValue) / fFactor2);
-		};
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -72,18 +72,18 @@ namespace DSS
 	public:
 		StarMaskFunction_BellTruncated()
 		{
-		};
+		}
 
 		virtual void	SetRadius(double fRadius) override
 		{
 			StarMaskFunction_Bell::SetRadius(fRadius);
 			fFactor1 = 1.0 / exp(-0.5);
-		};
+		}
 
 		virtual double	Compute(double fValue) override
 		{
 			return min(1.0, fFactor1 * exp(-(fValue * fValue) / fFactor2));
-		};
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -95,17 +95,17 @@ namespace DSS
 	public:
 		StarMaskFunction_Linear()
 		{
-		};
+		}
 
 		virtual void	SetRadius(double fRadius) override
 		{
 			StarMaskFunction::SetRadius(fRadius);
-		};
+		}
 
 		virtual double	Compute(double fValue) override
 		{
 			return max(0.0, 1 - fValue / 3.0 / m_fRadius);
-		};
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -117,17 +117,17 @@ namespace DSS
 	public:
 		StarMaskFunction_LinearTruncated()
 		{
-		};
+		}
 
 		virtual void	SetRadius(double fRadius) override
 		{
 			StarMaskFunction::SetRadius(fRadius);
-		};
+		}
 
 		virtual double	Compute(double fValue) override
 		{
 			return max(0.0, 1.5 - fValue * 1.5 / 3.0 / m_fRadius);
-		};
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -139,18 +139,18 @@ namespace DSS
 	public:
 		StarMaskFunction_Cubic()
 		{
-		};
+		}
 
 		virtual void	SetRadius(double fRadius) override
 		{
 			StarMaskFunction::SetRadius(fRadius);
-		};
+		}
 
 		virtual double	Compute(double fValue) override
 		{
 			fValue /= 3.0 * m_fRadius;
 			return max(0.0, 1.0 - fValue * fValue * fValue);
-		};
+		}
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -162,12 +162,12 @@ namespace DSS
 	public:
 		StarMaskFunction_Quadratic()
 		{
-		};
+		}
 
 		virtual void	SetRadius(double fRadius) override
 		{
 			StarMaskFunction::SetRadius(fRadius);
-		};
+		}
 
 		virtual double	Compute(double fValue) override
 		{
@@ -199,6 +199,7 @@ namespace DSS
 			case SMS_TRUNCATEDLINEAR: return std::make_unique<StarMaskFunction_LinearTruncated>(); break;
 			case SMS_CUBIC: return std::make_unique<StarMaskFunction_Cubic>(); break;
 			case SMS_QUADRATIC: return std::make_unique<StarMaskFunction_Quadratic>(); break;
+			default: break;
 			}
 			return std::unique_ptr<StarMaskFunction>{};
 		}
@@ -211,20 +212,20 @@ namespace DSS
 			bool bHotPixels = settings.value("StarMask/DetectHotPixels", false).toBool();
 			m_bRemoveHotPixels = bHotPixels;
 			const auto dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
-			m_fMinLuminancy = (double)dwThreshold / 100.0;
+			m_fMinLuminancy = static_cast<double>(dwThreshold / 100.0);
 
 			const auto dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
-			m_fPercentIncrease = (double)dwPercent / 100.0;
+			m_fPercentIncrease = static_cast<double>(dwPercent / 100.0);
 			const auto dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
-			m_fPixelIncrease = (double)dwPixel;
+			m_fPixelIncrease = static_cast<double>(dwPixel);
 
 			const auto dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
-			m_fMinSize = (double)dwMinSize;
+			m_fMinSize = static_cast<double>(dwMinSize);
 			const auto dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
-			m_fMaxSize = (double)dwMaxSize;
+			m_fMaxSize = static_cast<double>(dwMaxSize);
 
 			const auto dwStarShape = settings.value("StarMask/StarShape", 1).toUInt();
-			m_StarShape = (STARMASKSTYLE)dwStarShape;
+			m_StarShape = static_cast<STARMASKSTYLE>(dwStarShape);
 		}
 
 		virtual ~StarMaskEngine() {}

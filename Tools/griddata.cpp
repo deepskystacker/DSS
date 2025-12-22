@@ -357,11 +357,11 @@ namespace DSS
         // 
 		int processorCount = omp_get_num_procs();
 #pragma omp parallel for num_threads(processorCount) default(shared) private(wi, nt)
-        for (int i = 0; i < xg.size(); i++)
+        for (int i = 0; i < static_cast<int>(xg.size()); i++)
         {
 			if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
 
-            for (int j = 0; j < yg.size(); j++)
+            for (int j = 0; j < static_cast<int>(yg.size()); j++)
             {
                 dist1(xg[i], yg[j], x, y, knn_order);
 
@@ -430,7 +430,6 @@ namespace DSS
             invParm.addLocation(ZEXCEPTION_LOCATION());
             invParm.logExceptionData();
             throw invParm;
-            return;
         }
 
         std::atomic_int progress{ 0 };   // progress counter
@@ -441,7 +440,7 @@ namespace DSS
         // 
         int processorCount = omp_get_num_procs();
 #pragma omp parallel for num_threads(processorCount) default(shared) private(xx, yy, zz)
-        for (int i = 0; i < xg.size(); i++)
+        for (int i = 0; i < static_cast<int>(xg.size()); i++)
         {
             if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
 
@@ -510,7 +509,7 @@ namespace DSS
         //
 
    #pragma omp parallel for num_threads(processorCount) default(shared) private(xx, yy, zz)
-        for (int i = 0; i < xg.size(); i++)
+        for (int i = 0; i < static_cast<int>(xg.size()); i++)
         {
             if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
 
@@ -626,7 +625,7 @@ namespace DSS
         // 
         int processorCount = omp_get_num_procs();
 #pragma omp parallel for num_threads(processorCount) default(shared)
-        for (int i = 0; i < xg.size(); i++)
+        for (int i = 0; i < static_cast<int>(xg.size()); i++)
         {
             if (promise.isCanceled()) continue;       // Only way to break out of an openMP parallel for loop
 

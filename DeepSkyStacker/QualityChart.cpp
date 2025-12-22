@@ -41,6 +41,10 @@
 #include "QualityChart.h"
 #include <QtConcurrentRun>
 #include <QFutureWatcher>
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
+#endif
 #include <QwtLinearColorMap>
 #include <QwtPlotSpectrogram>
 #include <QwtLogScaleEngine>
@@ -54,6 +58,9 @@
 #include <QwtPlotRescaler>
 #include <QwtInterval>
 #include <QwtPainter>
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
 class FWHMColourMap : public QwtLinearColorMap
 {
 public:

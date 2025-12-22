@@ -47,7 +47,7 @@ namespace DSS {
 
 	public:
 		ProcessingSettingsDlg(QWidget *parent, ProcessingSettings settings);
-		~ProcessingSettingsDlg();
+		~ProcessingSettingsDlg() override;
 
 		ProcessingSettingsDlg(const ProcessingSettingsDlg& rhs) = delete;
 

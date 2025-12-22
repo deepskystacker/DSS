@@ -24,7 +24,7 @@ namespace DSS
 
 	public:
 		explicit StackingParameters(QWidget* parent = nullptr, PICTURETYPE = PICTURETYPE_UNKNOWN);
-		~StackingParameters();
+		~StackingParameters() override;
 
 	public slots:
 		void onSetActive();

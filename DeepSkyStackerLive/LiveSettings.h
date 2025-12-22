@@ -83,67 +83,67 @@ namespace DSS
 		void	load();
 		void	save();
 
-		bool	IsDontStack_Quality() { return (m_dwStackingFlags & LSSF_QUALITY) ? true : false; };
-		bool	IsDontStack_Stars() { return (m_dwStackingFlags & LSSF_STARS) ? true : false; };
-		bool	IsDontStack_FWHM() { return (m_dwStackingFlags & LSSF_FWHM) ? true : false; };
-		bool	IsDontStack_Offset() { return (m_dwStackingFlags & LSSF_OFFSET) ? true : false; };
-		bool	IsDontStack_Angle() { return (m_dwStackingFlags & LSSF_ANGLE) ? true : false; };
-		bool	IsDontStack_SkyBackground() { return (m_dwStackingFlags & LSSF_SKY) ? true : false; };
-		bool	IsDontStack_Until() { return (m_dwStackingFlags & LSSF_DELAYED) ? true : false; };
-		bool	IsStack_Save() { return (m_dwStackingFlags & LSSF_SAVE) ? true : false; };
-		bool	IsStack_Move() { return (m_dwStackingFlags & LSSF_MOVE) ? true : false; };
+		bool	IsDontStack_Quality() { return (m_dwStackingFlags & LSSF_QUALITY) ? true : false; }
+		bool	IsDontStack_Stars() { return (m_dwStackingFlags & LSSF_STARS) ? true : false; }
+		bool	IsDontStack_FWHM() { return (m_dwStackingFlags & LSSF_FWHM) ? true : false; }
+		bool	IsDontStack_Offset() { return (m_dwStackingFlags & LSSF_OFFSET) ? true : false; }
+		bool	IsDontStack_Angle() { return (m_dwStackingFlags & LSSF_ANGLE) ? true : false; }
+		bool	IsDontStack_SkyBackground() { return (m_dwStackingFlags & LSSF_SKY) ? true : false; }
+		bool	IsDontStack_Until() { return (m_dwStackingFlags & LSSF_DELAYED) ? true : false; }
+		bool	IsStack_Save() { return (m_dwStackingFlags & LSSF_SAVE) ? true : false; }
+		bool	IsStack_Move() { return (m_dwStackingFlags & LSSF_MOVE) ? true : false; }
 
-		bool	IsWarning_Quality() { return (m_dwWarningFlags & LSWF_QUALITY) ? true : false; };
-		bool	IsWarning_Stars() { return (m_dwWarningFlags & LSWF_STARS) ? true : false; };
-		bool	IsWarning_FWHM() { return (m_dwWarningFlags & LSWF_FWHM) ? true : false; };
-		bool	IsWarning_Offset() { return (m_dwWarningFlags & LSWF_OFFSET) ? true : false; };
-		bool	IsWarning_Angle() { return (m_dwWarningFlags & LSWF_ANGLE) ? true : false; };
-		bool	IsWarning_SkyBackground() { return (m_dwWarningFlags & LSWF_SKY) ? true : false; };
+		bool	IsWarning_Quality() { return (m_dwWarningFlags & LSWF_QUALITY) ? true : false; }
+		bool	IsWarning_Stars() { return (m_dwWarningFlags & LSWF_STARS) ? true : false; }
+		bool	IsWarning_FWHM() { return (m_dwWarningFlags & LSWF_FWHM) ? true : false; }
+		bool	IsWarning_Offset() { return (m_dwWarningFlags & LSWF_OFFSET) ? true : false; }
+		bool	IsWarning_Angle() { return (m_dwWarningFlags & LSWF_ANGLE) ? true : false; }
+		bool	IsWarning_SkyBackground() { return (m_dwWarningFlags & LSWF_SKY) ? true : false; }
 
-		bool	IsWarning_Sound() { return (m_dwWarningActions & LSWA_SOUND) ? true : false; };
-		bool	IsWarning_Flash() { return (m_dwWarningActions & LSWA_FLASH) ? true : false; };
-		bool	IsWarning_Email() { return (m_dwWarningActions & LSWA_EMAIL) ? true : false; };
-		bool	IsWarning_File() { return (m_dwWarningActions & LSWA_FILE) ? true : false; };
-		bool	IsWarning_SendMultipleEmails() { return (m_dwWarningActions & LSWA_SENDMULTIPLEEMAILS) ? true : false; };
+		bool	IsWarning_Sound() { return (m_dwWarningActions & LSWA_SOUND) ? true : false; }
+		bool	IsWarning_Flash() { return (m_dwWarningActions & LSWA_FLASH) ? true : false; }
+		bool	IsWarning_Email() { return (m_dwWarningActions & LSWA_EMAIL) ? true : false; }
+		bool	IsWarning_File() { return (m_dwWarningActions & LSWA_FILE) ? true : false; }
+		bool	IsWarning_SendMultipleEmails() { return (m_dwWarningActions & LSWA_SENDMULTIPLEEMAILS) ? true : false; }
 
-		bool	IsProcess_RAW() { return (m_dwProcessFlags & LSPF_RAW) ? true : false; };
-		bool	IsProcess_FITS() { return (m_dwProcessFlags & LSPF_FITS) ? true : false; };
-		bool	IsProcess_TIFF() { return (m_dwProcessFlags & LSPF_TIFF) ? true : false; };
-		bool	IsProcess_Others() { return (m_dwProcessFlags & LSPF_OTHERS) ? true : false; };
+		bool	IsProcess_RAW() { return (m_dwProcessFlags & LSPF_RAW) ? true : false; }
+		bool	IsProcess_FITS() { return (m_dwProcessFlags & LSPF_FITS) ? true : false; }
+		bool	IsProcess_TIFF() { return (m_dwProcessFlags & LSPF_TIFF) ? true : false; }
+		bool	IsProcess_Others() { return (m_dwProcessFlags & LSPF_OTHERS) ? true : false; }
 
-		void	setDontStack_Quality(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_QUALITY) : (m_dwStackingFlags &= ~LSSF_QUALITY); };
-		void	SetDontStack_Stars(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_STARS) : (m_dwStackingFlags &= ~LSSF_STARS); };
-		void	SetDontStack_FWHM(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_FWHM) : (m_dwStackingFlags &= ~LSSF_FWHM); };
-		void	SetDontStack_Offset(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_OFFSET) : (m_dwStackingFlags &= ~LSSF_OFFSET); };
-		void	SetDontStack_Angle(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_ANGLE) : (m_dwStackingFlags &= ~LSSF_ANGLE); };
-		void	SetDontStack_SkyBackground(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_SKY) : (m_dwStackingFlags &= ~LSSF_SKY); };
-		void	SetDontStack_Until(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_DELAYED) : (m_dwStackingFlags &= ~LSSF_DELAYED); };
-		void	SetStack_Save(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_SAVE) : (m_dwStackingFlags &= ~LSSF_SAVE); };
-		void	SetStack_Move(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_MOVE) : (m_dwStackingFlags &= ~LSSF_MOVE); };
+		void	setDontStack_Quality(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_QUALITY) : (m_dwStackingFlags &= ~LSSF_QUALITY); }
+		void	SetDontStack_Stars(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_STARS) : (m_dwStackingFlags &= ~LSSF_STARS); }
+		void	SetDontStack_FWHM(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_FWHM) : (m_dwStackingFlags &= ~LSSF_FWHM); }
+		void	SetDontStack_Offset(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_OFFSET) : (m_dwStackingFlags &= ~LSSF_OFFSET); }
+		void	SetDontStack_Angle(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_ANGLE) : (m_dwStackingFlags &= ~LSSF_ANGLE); }
+		void	SetDontStack_SkyBackground(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_SKY) : (m_dwStackingFlags &= ~LSSF_SKY); }
+		void	SetDontStack_Until(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_DELAYED) : (m_dwStackingFlags &= ~LSSF_DELAYED); }
+		void	SetStack_Save(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_SAVE) : (m_dwStackingFlags &= ~LSSF_SAVE); }
+		void	SetStack_Move(bool bSet) { bSet ? (m_dwStackingFlags |= LSSF_MOVE) : (m_dwStackingFlags &= ~LSSF_MOVE); }
 
-		void	setWarning_Quality(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_QUALITY) : (m_dwWarningFlags &= ~LSWF_QUALITY); };
-		void	SetWarning_Stars(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_STARS) : (m_dwWarningFlags &= ~LSWF_STARS); };
-		void	SetWarning_FWHM(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_FWHM) : (m_dwWarningFlags &= ~LSWF_FWHM); };
-		void	SetWarning_Offset(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_OFFSET) : (m_dwWarningFlags &= ~LSWF_OFFSET); };
-		void	SetWarning_Angle(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_ANGLE) : (m_dwWarningFlags &= ~LSWF_ANGLE); };
-		void	SetWarning_SkyBackground(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_SKY) : (m_dwWarningFlags &= ~LSWF_SKY); };
+		void	setWarning_Quality(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_QUALITY) : (m_dwWarningFlags &= ~LSWF_QUALITY); }
+		void	SetWarning_Stars(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_STARS) : (m_dwWarningFlags &= ~LSWF_STARS); }
+		void	SetWarning_FWHM(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_FWHM) : (m_dwWarningFlags &= ~LSWF_FWHM); }
+		void	SetWarning_Offset(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_OFFSET) : (m_dwWarningFlags &= ~LSWF_OFFSET); }
+		void	SetWarning_Angle(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_ANGLE) : (m_dwWarningFlags &= ~LSWF_ANGLE); }
+		void	SetWarning_SkyBackground(bool bSet) { bSet ? (m_dwWarningFlags |= LSWF_SKY) : (m_dwWarningFlags &= ~LSWF_SKY); }
 
-		void	SetWarning_Sound(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_SOUND) : (m_dwWarningActions &= ~LSWA_SOUND); };
-		void	SetWarning_Flash(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_FLASH) : (m_dwWarningActions &= ~LSWA_FLASH); };
-		void	SetWarning_Email(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_EMAIL) : (m_dwWarningActions &= ~LSWA_EMAIL); };
-		void	SetWarning_File(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_FILE) : (m_dwWarningActions &= ~LSWA_FILE); };
-		void	SetWarning_SendMultipleEmails(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_SENDMULTIPLEEMAILS) : (m_dwWarningActions &= ~LSWA_SENDMULTIPLEEMAILS); };
+		void	SetWarning_Sound(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_SOUND) : (m_dwWarningActions &= ~LSWA_SOUND); }
+		void	SetWarning_Flash(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_FLASH) : (m_dwWarningActions &= ~LSWA_FLASH); }
+		void	SetWarning_Email(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_EMAIL) : (m_dwWarningActions &= ~LSWA_EMAIL); }
+		void	SetWarning_File(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_FILE) : (m_dwWarningActions &= ~LSWA_FILE); }
+		void	SetWarning_SendMultipleEmails(bool bSet) { bSet ? (m_dwWarningActions |= LSWA_SENDMULTIPLEEMAILS) : (m_dwWarningActions &= ~LSWA_SENDMULTIPLEEMAILS); }
 
-		QString	GetWarning_FileFolder() { return m_strWarnFileFolder; };
-		void	SetWarning_FileFolder(const QString& folder) { m_strWarnFileFolder = folder; };
+		QString	GetWarning_FileFolder() { return m_strWarnFileFolder; }
+		void	SetWarning_FileFolder(const QString& folder) { m_strWarnFileFolder = folder; }
 
-		QString	GetStackedOutputFolder() { return m_strStackedOutputFolder; };
-		void	SetStackedOutputFolder(const QString& folder) { m_strStackedOutputFolder = folder; };
+		QString	GetStackedOutputFolder() { return m_strStackedOutputFolder; }
+		void	SetStackedOutputFolder(const QString& folder) { m_strStackedOutputFolder = folder; }
 
-		void	SetProcess_RAW(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_RAW) : (m_dwProcessFlags &= ~LSPF_RAW); };
-		void	SetProcess_FITS(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_FITS) : (m_dwProcessFlags &= ~LSPF_FITS); };
-		void	SetProcess_TIFF(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_TIFF) : (m_dwProcessFlags &= ~LSPF_TIFF); };
-		void	SetProcess_Others(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_OTHERS) : (m_dwProcessFlags &= ~LSPF_OTHERS); };
+		void	SetProcess_RAW(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_RAW) : (m_dwProcessFlags &= ~LSPF_RAW); }
+		void	SetProcess_FITS(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_FITS) : (m_dwProcessFlags &= ~LSPF_FITS); }
+		void	SetProcess_TIFF(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_TIFF) : (m_dwProcessFlags &= ~LSPF_TIFF); }
+		void	SetProcess_Others(bool bSet) { bSet ? (m_dwProcessFlags |= LSPF_OTHERS) : (m_dwProcessFlags &= ~LSPF_OTHERS); }
 
 		void getEmailSettings(QString& email, QString& subject, QString& SMTP, int& port, uint& encryption,
 			QString& account, QString& pw)
@@ -155,7 +155,7 @@ namespace DSS
 			encryption = smtpEncryption;
 			account = emailAccount;
 			pw = emailPassword;
-		};
+		}
 
 		QString	emailAddress()
 		{
@@ -172,97 +172,97 @@ namespace DSS
 			smtpEncryption = encryption;
 			emailAccount = account;
 			emailPassword = pw;
-		};
+		}
 
 		double	getQuality()
 		{
-			return (double)m_dwQuality / 10.0;
-		};
+			return static_cast<double>(m_dwQuality / 10.0);
+		}
 
 		void	setQuality(double fQuality)
 		{
-			m_dwQuality = fQuality * 10.0;
-		};
+			m_dwQuality = static_cast<std::uint32_t>(fQuality * 10.0);
+		}
 
 		std::uint32_t	GetStars()
 		{
-			return (double)m_dwStars;
-		};
+			return m_dwStars;
+		}
 
 		void	SetStars(std::uint32_t dwStars)
 		{
 			m_dwStars = dwStars;
-		};
+		}
 
 		std::uint32_t	GetMinImages()
 		{
-			return (double)m_dwMinImages;
-		};
+			return m_dwMinImages;
+		}
 
 		void	SetMinImages(std::uint32_t dwMinImages)
 		{
 			m_dwMinImages = dwMinImages;
-		};
+		}
 
 		std::uint32_t GetSaveCount()
 		{
 			return m_dwSaveCount;
-		};
+		}
 
 		void SetSaveCount(std::uint32_t count)
 		{
 			m_dwSaveCount = count;
-		};
+		}
 
 		double	GetFWHM()
 		{
-			return (double)m_dwFWHM / 10.0;
-		};
+			return static_cast<double>(m_dwFWHM / 10.0);
+		}
 
 		void	SetFWHM(double fFWHM)
 		{
-			m_dwFWHM = fFWHM * 10.0;
-		};
+			m_dwFWHM = static_cast<std::uint32_t>(fFWHM * 10.0);
+		}
 
 		std::uint32_t	GetSkyBackground()
 		{
 			return m_dwSkyBackground;
-		};
+		}
 
 		void	SetSkyBackground(std::uint32_t dwSkyBackground)
 		{
 			m_dwSkyBackground = dwSkyBackground;
-		};
+		}
 
 		double	GetOffset()
 		{
-			return (double)m_dwOffset / 10.0;
-		};
+			return static_cast<double>(m_dwOffset / 10.0);
+		}
 
 		void	SetOffset(double fOffset)
 		{
-			m_dwOffset = fOffset * 10.0;
-		};
+			m_dwOffset = static_cast<std::uint32_t>(fOffset * 10.0);
+		}
 
 		double	GetAngle()
 		{
-			return (double)m_dwAngle / 10.0;
-		};
+			return static_cast<double>(m_dwAngle / 10.0);
+		}
 
 		void	SetAngle(double fAngle)
 		{
-			m_dwAngle = fAngle * 10.0;
-		};
+			m_dwAngle = static_cast<std::uint32_t>(fAngle * 10.0);
+		}
 
 		void	GetFileFolder(QString& strFileFolder)
 		{
 			strFileFolder = m_strFileFolder;
-		};
+		}
 
 		void	SetFileFolder(const QString& fileFolder)
 		{
 			m_strFileFolder = fileFolder;
-		};
+		}
 
 	private:
 		std::uint32_t m_dwStackingFlags;

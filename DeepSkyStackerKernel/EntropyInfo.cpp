@@ -47,9 +47,9 @@ void CEntropyInfo::InitSquareEntropies() // virtual
 				double fBlueEntropy;
 				ComputeEntropies(lMinX, lMinY, lMaxX, lMaxY, fRedEntropy, fGreenEntropy, fBlueEntropy);
 
-				m_vRedEntropies[i + j * m_lNrSquaresX] = fRedEntropy;
-				m_vGreenEntropies[i + j * m_lNrSquaresX] = fGreenEntropy;
-				m_vBlueEntropies[i + j * m_lNrSquaresX] = fBlueEntropy;
+				m_vRedEntropies[i + j * m_lNrSquaresX] = static_cast<float>(fRedEntropy);
+				m_vGreenEntropies[i + j * m_lNrSquaresX] = static_cast<float>(fGreenEntropy);
+				m_vBlueEntropies[i + j * m_lNrSquaresX] = static_cast<float>(fBlueEntropy);
 			}
 
 			if (m_pProgress != nullptr && i % m_lWindowSize == 0)

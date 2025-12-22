@@ -50,6 +50,6 @@ namespace DSS
 
 	public:
 		PictureList(QWidget* parent = nullptr);
-		~PictureList();
+		~PictureList() override;
 	};
 }

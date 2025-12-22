@@ -37,6 +37,7 @@ namespace
 		case QtFatalMsg:
 			ZTRACE_RUNTIME("Qt Fatal: (%s:%u) %s", name, context.line, localMsg.constData());
 			break;
+		default: break;
 		}
 		originalHandler(type, context, msg);
 	}

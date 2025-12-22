@@ -58,6 +58,7 @@ namespace DSS
 		case EditSaveMode::AskAlways:
 			askAlways->setChecked(true);
 			break;
+		default: break;
 		};
 
 	}
@@ -90,7 +91,7 @@ namespace DSS
 	{
 		QSettings settings;
 
-		uint value = settings.value("EditStars/AutoSave", (uint)0).toUInt();
+		uint value = settings.value("EditStars/AutoSave", 0U).toUInt();
 
 		return static_cast<EditSaveMode>(value);
 	};

@@ -232,6 +232,7 @@ namespace DSS
 						"QLabel { color: black; background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 						"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 234, 63)) }");
 					break;
+				default: break;
 				};
 			}
 			else
@@ -335,8 +336,6 @@ namespace DSS
 	void RegisterSettings::stackingSettings_clicked()
 	{
 		StackSettings dlg(this);
-
-		DSSRect	rcCustom;
 
 		if (pStackingTasks)
 		{

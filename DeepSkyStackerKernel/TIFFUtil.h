@@ -96,22 +96,22 @@ public:
 
 	double GetExposureTime() const
 	{
-		return exposureTime;
+		return static_cast<double>(exposureTime);
 	}
 
 	void SetExposureTime(double fExposureTime)
 	{
-		exposureTime = fExposureTime;
+		exposureTime = static_cast<float>(fExposureTime);
 	}
 
 	double GetAperture() const
 	{
-		return aperture;
+		return static_cast<double>(aperture);
 	}
 
 	void SetAperture(double fAperture)
 	{
-		aperture = fAperture;
+		aperture = static_cast<float>(fAperture);
 	}
 
 	void SetNrFrames(int lNrFrames)
@@ -180,7 +180,7 @@ protected:
 public:
 	CTIFFReader(const fs::path& p, OldProgressBase* pProgress);
 
-	virtual ~CTIFFReader()
+	virtual ~CTIFFReader() override
 	{
 		Close();
 	}
@@ -194,7 +194,7 @@ private:
 
 	virtual bool OnOpen() { return true; }
 	virtual bool OnRead(int, int, double, double, double) { return true; }
-	virtual bool OnClose() { return true; };
+	virtual bool OnClose() { return true; }
 
 private:
 	void decodeCfaDimPat(int patternSize, const char* tagName);
@@ -222,7 +222,7 @@ public:
 	CTIFFWriter& operator=(const CTIFFWriter&) = delete;
 	CTIFFWriter(CTIFFWriter&&) = delete;
 
-	virtual ~CTIFFWriter()
+	virtual ~CTIFFWriter() override
 	{
 		Close();
 	}
@@ -240,9 +240,9 @@ public:
 private:
 	bool Close();
 
-	virtual bool OnOpen() { return true; };
+	virtual bool OnOpen() { return true; }
 	virtual bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) = 0;
-	virtual bool OnClose() { return true; };
+	virtual bool OnClose() { return true; }
 };
 
 /* ------------------------------------------------------------------- */

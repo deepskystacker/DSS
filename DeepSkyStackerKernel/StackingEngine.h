@@ -54,26 +54,26 @@ private:
 		file = rhs.file;
 		m_strInfoFileName = rhs.m_strInfoFileName;
 		m_BilinearParameters = rhs.m_BilinearParameters;
-	};
+	}
 public:
 	CLightFrameStackingInfo() = default;
 	CLightFrameStackingInfo(const fs::path& path) :
 		file { path }
 	{
-	};
+	}
 
-	~CLightFrameStackingInfo() {};
+	~CLightFrameStackingInfo() {}
 
 	CLightFrameStackingInfo(const CLightFrameStackingInfo & rhs)
 	{
 		CopyFrom(rhs);
-	};
+	}
 
 	CLightFrameStackingInfo & operator = (const CLightFrameStackingInfo & lfsi)
 	{
 		CopyFrom(lfsi);
 		return (*this);
-	};
+	}
 
 	bool operator < (const CLightFrameStackingInfo & rhs) const
 	{
@@ -115,7 +115,7 @@ class CStackingEngine final
 private:
 	LIGHTFRAMEINFOVECTOR bitmapsToStack;
 	CLightFramesStackingInfo m_StackingInfo;
-	OldProgressBase* m_pProgress;
+	DSS::OldProgressBase* m_pProgress;
 	fs::path referenceFrame;
 	int m_lNrCurrentStackable;
 	std::atomic<int> m_lNrStackable;
@@ -248,8 +248,8 @@ public:
 		m_fKeptPercentage = fPercent;
 	}
 
-	void ComputeOffsets(CAllStackingTasks& tasks, OldProgressBase* pProgress);
-	bool StackLightFrames(CAllStackingTasks& tasks, OldProgressBase* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+	void ComputeOffsets(CAllStackingTasks& tasks, DSS::OldProgressBase* pProgress);
+	bool StackLightFrames(CAllStackingTasks& tasks, DSS::OldProgressBase* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 
 	LIGHTFRAMEINFOVECTOR& LightFrames()
 	{

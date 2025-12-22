@@ -1,6 +1,11 @@
 #pragma once
 #include "dssbase.h"
 #include "DSSCommon.h"
+#include "tracecontrol.h"
+
+extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
+
 class CMemoryBitmap;
 
 class StackingParams
@@ -87,7 +92,7 @@ class DeepSkyStackerCommandLine :
 
 public:
 	DeepSkyStackerCommandLine(int& argc, char** argv);
-	~DeepSkyStackerCommandLine() = default;
+	~DeepSkyStackerCommandLine() override = default;
 
 	bool Initialise();
 	bool Run();

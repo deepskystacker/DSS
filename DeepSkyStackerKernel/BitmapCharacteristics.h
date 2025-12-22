@@ -16,7 +16,7 @@ private:
 		m_bFloat = bc.m_bFloat;
 		m_dwWidth = bc.m_dwWidth;
 		m_dwHeight = bc.m_dwHeight;
-	};
+	}
 
 public:
 	CBitmapCharacteristics() :
@@ -26,16 +26,16 @@ public:
 		m_dwWidth{ 0 },
 		m_dwHeight{ 0 }
 	{}
-	~CBitmapCharacteristics() {};
+	~CBitmapCharacteristics() {}
 
 	CBitmapCharacteristics(const CBitmapCharacteristics& bc)
 	{
 		CopyFrom(bc);
-	};
+	}
 
 	CBitmapCharacteristics& operator= (const CBitmapCharacteristics& bc)
 	{
 		CopyFrom(bc);
 		return *this;
-	};
+	}
 };

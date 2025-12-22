@@ -128,9 +128,9 @@ public:
  * *  Using the ZEXCEPTION_LOCATION macro. This macro captures the current 
  *    location information using compiler defined macros
  */
-  ZExceptionLocation (const char *  fileName = 0,
-                      const char *  functionName = 0,
-                      unsigned long lineNumber = 0);
+  ZExceptionLocation (const char *  fileName = nullptr,
+                      const char *  functionName = nullptr,
+                      unsigned long lineNumber = 0UL);
 //
 // Note that the DEFAULT destructor is used. We only hold the
 // supplied pointers and number, we don't own the storage they 
@@ -174,7 +174,7 @@ unsigned long
 #if defined (__FUNCTION__)
   #define   ZEXCEPTION_LOCATION() ZExceptionLocation(__FILE__, __FUNCTION__, __LINE__)
 #else
-  #define   ZEXCEPTION_LOCATION() ZExceptionLocation(__FILE__, 0, __LINE__)
+  #define   ZEXCEPTION_LOCATION() ZExceptionLocation(__FILE__, nullptr, __LINE__)
 #endif
 
 //
@@ -327,6 +327,8 @@ protected:
 // Constructors
   TraceFn ();
 
+  virtual ~TraceFn() {}
+
 virtual void exceptionLogged ( );
 }; // TraceFn
 
@@ -468,12 +470,11 @@ static void
   assertParameter ( const char *       exceptionText, 
                     ZExceptionLocation location );
 
-private:
 //
 // Nobody assigns me
 //
 ZException
- &operator = (const ZException& exc);
+& operator = (const ZException& exc) = delete;
 
 //
 // If this gal really needs to rummage in my privates she can
@@ -527,11 +528,9 @@ ErrorCodeGroup
 public:\
   child(const char* a, unsigned long b = 0,\
         Severity c = ZException::unrecoverable);\
-  virtual const char* name() const;\
-  virtual ~child();\
+  virtual const char* name() const override;\
+  virtual ~child() override;\
   child(const child &);\
-private:\
-  child& operator = ( const child & );\
 }
 
 /**

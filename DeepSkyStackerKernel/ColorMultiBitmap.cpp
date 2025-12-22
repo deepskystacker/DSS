@@ -85,11 +85,11 @@ bool CColorMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap
 			pGreenValue = pRedValue + lWidth;
 			pBlueValue = pGreenValue + lWidth;
 
-			if (*pRedValue || !m_vImageOrder.empty())	// Remove 0
+			if (0 != *pRedValue || !m_vImageOrder.empty())	// Remove 0
 				vRedValues.push_back(*pRedValue);
-			if (*pGreenValue || !m_vImageOrder.empty())	// Remove 0
+			if (0 != *pGreenValue || !m_vImageOrder.empty())	// Remove 0
 				vGreenValues.push_back(*pGreenValue);
-			if (*pBlueValue || !m_vImageOrder.empty())	// Remove 0
+			if (0 != *pBlueValue || !m_vImageOrder.empty())	// Remove 0
 				vBlueValues.push_back(*pBlueValue);
 		}
 
@@ -124,7 +124,7 @@ bool CColorMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap
 				std::swap(vAuxBlueValues, vBlueValues);
 				for (const size_t imgOrder : m_vImageOrder)
 				{
-					if (vAuxRedValues[imgOrder] || vAuxGreenValues[imgOrder] || vAuxBlueValues[imgOrder])
+					if (0 != vAuxRedValues[imgOrder] || 0 != vAuxGreenValues[imgOrder] || 0 != vAuxBlueValues[imgOrder])
 					{
 						vRedValues.push_back(vAuxRedValues[imgOrder]);
 						vGreenValues.push_back(vAuxGreenValues[imgOrder]);
@@ -164,39 +164,39 @@ bool CColorMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap
 		// Process the value
 		if (m_Method == MBP_MEDIAN)
 		{
-			*pRedCurrentValue = Median(vRedValues);
-			*pGreenCurrentValue = Median(vGreenValues);
-			*pBlueCurrentValue = Median(vBlueValues);
+			*pRedCurrentValue = static_cast<TTypeOutput>(Median(vRedValues));
+			*pGreenCurrentValue = static_cast<TTypeOutput>(Median(vGreenValues));
+			*pBlueCurrentValue = static_cast<TTypeOutput>(Median(vBlueValues));
 		}
 		else if (m_Method == MBP_AVERAGE)
 		{
-			*pRedCurrentValue = Average(vRedValues);
-			*pGreenCurrentValue = Average(vGreenValues);
-			*pBlueCurrentValue = Average(vBlueValues);
+			*pRedCurrentValue = static_cast<TTypeOutput>(Average(vRedValues));
+			*pGreenCurrentValue = static_cast<TTypeOutput>(Average(vGreenValues));
+			*pBlueCurrentValue = static_cast<TTypeOutput>(Average(vBlueValues));
 		}
 		else if (m_Method == MBP_MAXIMUM)
 		{
-			*pRedCurrentValue = Maximum(vRedValues);
-			*pGreenCurrentValue = Maximum(vGreenValues);
-			*pBlueCurrentValue = Maximum(vBlueValues);
+			*pRedCurrentValue = static_cast<TTypeOutput>(Maximum(vRedValues));
+			*pGreenCurrentValue = static_cast<TTypeOutput>(Maximum(vGreenValues));
+			*pBlueCurrentValue = static_cast<TTypeOutput>(Maximum(vBlueValues));
 		}
 		else if (m_Method == MBP_SIGMACLIP)
 		{
-			*pRedCurrentValue = KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
-			*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
-			*pBlueCurrentValue = KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+			*pRedCurrentValue = static_cast<TTypeOutput>(KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1));
+			*pGreenCurrentValue = static_cast<TTypeOutput>(KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1));
+			*pBlueCurrentValue = static_cast<TTypeOutput>(KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1));
 		}
 		else if (m_Method == MBP_MEDIANSIGMACLIP)
 		{
-			*pRedCurrentValue = MedianKappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
-			*pGreenCurrentValue = MedianKappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
-			*pBlueCurrentValue = MedianKappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
+			*pRedCurrentValue = static_cast<TTypeOutput>(MedianKappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2));
+			*pGreenCurrentValue = static_cast<TTypeOutput>(MedianKappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2));
+			*pBlueCurrentValue = static_cast<TTypeOutput>(MedianKappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2));
 		}
 		else if (m_Method == MBP_AUTOADAPTIVE)
 		{
-			*pRedCurrentValue = AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations, vdWork1);
-			*pGreenCurrentValue = AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations, vdWork1);
-			*pBlueCurrentValue = AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations, vdWork1);
+			*pRedCurrentValue = static_cast<TTypeOutput>(AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations, vdWork1));
+			*pGreenCurrentValue = static_cast<TTypeOutput>(AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations, vdWork1));
+			*pBlueCurrentValue = static_cast<TTypeOutput>(AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations, vdWork1));
 		};
 
 		pRedCurrentValue++;

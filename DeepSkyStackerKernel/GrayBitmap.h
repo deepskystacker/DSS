@@ -3,7 +3,6 @@
 #include "CFABitmapInfo.h"
 
 namespace DSS { class OldProgressDlg; }
-using namespace DSS;
 
 namespace {
 	template <typename TType>
@@ -23,7 +22,7 @@ namespace {
 		if constexpr (std::is_same_v<TType, double>)
 			return std::numeric_limits<double>::max();
 		else if constexpr (std::is_same_v<TType, float>)
-			return std::numeric_limits<float>::max();
+			return std::numeric_limits<double>::max();
 		else if constexpr (std::is_same_v<TType, std::uint16_t>)
 			return static_cast<double>(std::numeric_limits<std::uint16_t>::max());	// Range of [0.0, 65535.0]
 		else if constexpr (std::is_same_v<TType, std::uint32_t>)
@@ -43,7 +42,7 @@ public:
 	std::vector<TType>	m_vPixels;
 
 	CGrayBitmapT();
-	virtual ~CGrayBitmapT() = default;
+	virtual ~CGrayBitmapT() override = default;
 
 private:
 	int m_lWidth{ 0 };
@@ -159,7 +158,7 @@ public:
 	virtual void SetValue(size_t i, size_t j, double fGray) override
 	{
 		CheckXY(i, j);
-		m_vPixels[GetOffset(i, j)] = fGray;
+		m_vPixels[GetOffset(i, j)] = static_cast<TType>(fGray);
 	}
 
 	virtual void GetValue(size_t i, size_t j, double& fGray) const override
@@ -189,7 +188,7 @@ public:
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override;
 
-	virtual void RemoveHotPixels(OldProgressBase* pProgress = nullptr) override;
+	virtual void RemoveHotPixels(DSS::OldProgressBase* pProgress = nullptr) override;
 
 	TType* GetGrayPixel(const int i, const int j)
 	{

@@ -57,7 +57,7 @@ namespace DSS
 
 	public:
 		ImageViewer(QWidget* parent = nullptr);
-		~ImageViewer();
+		~ImageViewer() override;
 	
 		//
 		// Don't intend this to be copied or assigned.

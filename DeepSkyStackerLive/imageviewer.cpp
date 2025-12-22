@@ -135,6 +135,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{

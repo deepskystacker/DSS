@@ -58,9 +58,9 @@ namespace DSS
 		FlatChart& operator=(const FlatChart&) = delete;
 		FlatChart(FlatChart&&) = delete;
 
-		~FlatChart()
+		~FlatChart() override
 		{
-		};
+		}
 
 	private:
 		size_t width{ 0 };

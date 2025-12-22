@@ -74,9 +74,9 @@ void CColorBitmapT<TType>::SetValue(size_t i, size_t j, double fRed, double fGre
 
 	const size_t lOffset = GetOffset(i, j);
 
-	m_Red.m_vPixels[lOffset] = fRed;
-	m_Green.m_vPixels[lOffset] = fGreen;
-	m_Blue.m_vPixels[lOffset] = fBlue;
+	m_Red.m_vPixels[lOffset] = static_cast<TType>(fRed);
+	m_Green.m_vPixels[lOffset] = static_cast<TType>(fGreen);
+	m_Blue.m_vPixels[lOffset] = static_cast<TType>(fBlue);
 }
 
 template <typename TType>
@@ -86,9 +86,9 @@ void CColorBitmapT<TType>::GetValue(size_t i, size_t j, double& fRed, double& fG
 
 	const size_t lOffset = GetOffset(i, j);
 
-	fRed = m_Red.m_vPixels[lOffset];
-	fGreen = m_Green.m_vPixels[lOffset];
-	fBlue = m_Blue.m_vPixels[lOffset];
+	fRed = static_cast<TType>(m_Red.m_vPixels[lOffset]);
+	fGreen = static_cast<TType>(m_Green.m_vPixels[lOffset]);
+	fBlue = static_cast<TType>(m_Blue.m_vPixels[lOffset]);
 }
 
 template <typename TType>
@@ -107,9 +107,9 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fRed, double fGre
 	CheckXY(i, j);
 
 	const size_t lOffset = GetOffset(i, j);
-	m_Red.m_vPixels[lOffset] = std::clamp(fRed * m_fMultiplier, 0.0, clampValue);
-	m_Green.m_vPixels[lOffset] = std::clamp(fGreen * m_fMultiplier, 0.0, clampValue);
-	m_Blue.m_vPixels[lOffset] = std::clamp(fBlue * m_fMultiplier, 0.0, clampValue);
+	m_Red.m_vPixels[lOffset] = static_cast<TType>(std::clamp(fRed * m_fMultiplier, 0.0, clampValue));
+	m_Green.m_vPixels[lOffset] = static_cast<TType>(std::clamp(fGreen * m_fMultiplier, 0.0, clampValue));
+	m_Blue.m_vPixels[lOffset] = static_cast<TType>(std::clamp(fBlue * m_fMultiplier, 0.0, clampValue));
 }
 
 template <typename TType>
@@ -120,9 +120,9 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fGray)
 
 	const size_t lOffset = GetOffset(i, j);
 	const double value = std::clamp(fGray * m_fMultiplier, 0.0, clampValue);
-	m_Red.m_vPixels[lOffset] = value;
-	m_Green.m_vPixels[lOffset] = value;
-	m_Blue.m_vPixels[lOffset] = value;
+	m_Red.m_vPixels[lOffset] = static_cast<TType>(value);
+	m_Green.m_vPixels[lOffset] = static_cast<TType>(value);
+	m_Blue.m_vPixels[lOffset] = static_cast<TType>(value);
 }
 
 template <typename TType>
@@ -134,9 +134,9 @@ void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fG
 
 	const size_t lOffset = GetOffset(i, j);
 
-	fRed = m_Red.m_vPixels[lOffset] / m_fMultiplier;
-	fGreen = m_Green.m_vPixels[lOffset] / m_fMultiplier;
-	fBlue = m_Blue.m_vPixels[lOffset] / m_fMultiplier;
+	fRed = static_cast<double>(m_Red.m_vPixels[lOffset] / m_fMultiplier);
+	fGreen = static_cast<double>(m_Green.m_vPixels[lOffset] / m_fMultiplier);
+	fBlue = static_cast<double>(m_Blue.m_vPixels[lOffset] / m_fMultiplier);
 }
 
 template <typename TType>
@@ -227,7 +227,7 @@ std::shared_ptr<CMedianFilterEngine> CColorBitmapT<TType>::GetMedianFilterEngine
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::RemoveHotPixels(OldProgressBase* pProgress/*=nullptr*/)
+void CColorBitmapT<TType>::RemoveHotPixels(DSS::OldProgressBase* pProgress/*=nullptr*/)
 {
 	m_Red.RemoveHotPixels(pProgress);
 	m_Green.RemoveHotPixels(pProgress);

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Bayer.h"
 
-BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffset/*=0*/, int yOffset/*=0*/)
+BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, size_t xOffset, size_t yOffset)
 {
 	const size_t x = baseX + xOffset;		// Apply the X Bayer offset if supplied
 	const size_t y = baseY + yOffset;		// Apply the Y Bayer offset if supplied
@@ -10,7 +10,6 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 	{
 	case CFATYPE_NONE:
 		return BAYER_UNKNOWN;
-		break;
 	case CFATYPE_BGGR:
 		if (x & 1)
 		{
@@ -26,7 +25,6 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 			else
 				return BAYER_BLUE;
 		};
-		break;
 	case CFATYPE_GRBG:
 		if (x & 1)
 		{
@@ -42,7 +40,6 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 			else
 				return BAYER_GREEN;
 		};
-		break;
 	case CFATYPE_GBRG:
 		if (x & 1)
 		{
@@ -58,7 +55,6 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 			else
 				return BAYER_GREEN;
 		};
-		break;
 	case CFATYPE_RGGB:
 		if (x & 1)
 		{
@@ -74,7 +70,6 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 			else
 				return BAYER_RED;
 		};
-		break;
 	default:
 	{	// CYMG Type
 		if (IsSimpleCYMG(CFAType))
@@ -83,16 +78,16 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 			if (y & 1)
 			{
 				if (x & 1)
-					return (BAYERCOLOR)(CFAType & 0xF);
+					return static_cast<BAYERCOLOR>(CFAType & 0xF);
 				else
-					return (BAYERCOLOR)((CFAType >> 4) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 4) & 0xF);
 			}
 			else
 			{
 				if (x & 1)
-					return (BAYERCOLOR)((CFAType >> 8) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 8) & 0xF);
 				else
-					return (BAYERCOLOR)((CFAType >> 12) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 12) & 0xF);
 			};
 		}
 		else
@@ -101,30 +96,30 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 			if (y % 4 == 0)
 			{
 				if (x & 1)
-					return (BAYERCOLOR)((CFAType >> 24) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 24) & 0xF);
 				else
-					return (BAYERCOLOR)((CFAType >> 28) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 28) & 0xF);
 			}
 			else if (y % 4 == 1)
 			{
 				if (x & 1)
-					return (BAYERCOLOR)((CFAType >> 16) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 16) & 0xF);
 				else
-					return (BAYERCOLOR)((CFAType >> 20) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 20) & 0xF);
 			}
 			else if (y % 4 == 2)
 			{
 				if (x & 1)
-					return (BAYERCOLOR)((CFAType >> 8) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 8) & 0xF);
 				else
-					return (BAYERCOLOR)((CFAType >> 12) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 12) & 0xF);
 			}
 			else
 			{
 				if (x & 1)
-					return (BAYERCOLOR)((CFAType >> 0) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 0) & 0xF);
 				else
-					return (BAYERCOLOR)((CFAType >> 4) & 0xF);
+					return static_cast<BAYERCOLOR>((CFAType >> 4) & 0xF);
 			};
 		};
 	};
@@ -134,7 +129,7 @@ BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffse
 //
 // Add parameter yOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-bool	IsBayerBlueLine(size_t baseY, CFATYPE CFAType, int yOffset /* = 0 */)
+bool	IsBayerBlueLine(size_t baseY, CFATYPE CFAType, size_t yOffset )
 {
 	size_t y = baseY + yOffset;
 
@@ -147,7 +142,7 @@ bool	IsBayerBlueLine(size_t baseY, CFATYPE CFAType, int yOffset /* = 0 */)
 //
 // Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-bool IsBayerBlueColumn(size_t baseX, CFATYPE CFAType, int xOffset /* = 0 */)
+bool IsBayerBlueColumn(size_t baseX, CFATYPE CFAType, size_t xOffset )
 {
 	size_t x = baseX + xOffset;
 
@@ -157,7 +152,7 @@ bool IsBayerBlueColumn(size_t baseX, CFATYPE CFAType, int xOffset /* = 0 */)
 		return (x & 1) ? false : true;
 }
 
-bool IsBayerRedLine(size_t baseY, CFATYPE CFAType, int yOffset /* = 0 */)
+bool IsBayerRedLine(size_t baseY, CFATYPE CFAType, size_t yOffset )
 {
 	return !IsBayerBlueLine(baseY, CFAType, yOffset);
 }
@@ -165,7 +160,7 @@ bool IsBayerRedLine(size_t baseY, CFATYPE CFAType, int yOffset /* = 0 */)
 //
 // Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-bool IsBayerRedColumn(size_t baseX, CFATYPE CFAType, int xOffset /* = 0 */)
+bool IsBayerRedColumn(size_t baseX, CFATYPE CFAType, size_t xOffset )
 {
 	return !IsBayerBlueColumn(baseX, CFAType, xOffset);
 }

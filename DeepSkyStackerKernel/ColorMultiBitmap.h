@@ -12,19 +12,19 @@ protected:
 public:
 	CColorMultiBitmapT()
 	{
-	};
+	}
 
-	virtual ~CColorMultiBitmapT()
+	virtual ~CColorMultiBitmapT () override
 	{
-	};
+	}
 
 	virtual int GetNrChannels() const override
 	{
 		return 3;
-	};
+	}
 
 	virtual int GetNrBytesPerChannel() const override
 	{
 		return sizeof(TType);
-	};
+	}
 };

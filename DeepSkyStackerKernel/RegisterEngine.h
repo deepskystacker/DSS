@@ -40,6 +40,11 @@ public:
 		Reset();
 	}
 
+	CRegisteredFrame(const CRegisteredFrame&) = default;
+	CRegisteredFrame(CRegisteredFrame&&) = default;
+	CRegisteredFrame& operator=(const CRegisteredFrame&) = default;
+	CRegisteredFrame& operator=(CRegisteredFrame&&) = default;
+
 	virtual ~CRegisteredFrame() = default;
 
 	static double ComputeScore(const STARVECTOR& stars);

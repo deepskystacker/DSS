@@ -56,14 +56,14 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 #pragma omp parallel sections default(shared) shared(Histo, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 		{
 #pragma omp section
-			for (const auto& color: redPixels)
-				Histo.GetRedHistogram().AddValue(color * scalingFactor);
+			for (const auto& color : redPixels)
+				Histo.GetRedHistogram().AddValue(static_cast<double>(color * scalingFactor));
 #pragma omp section
-			for (const auto& color: greenPixels)
-				Histo.GetGreenHistogram().AddValue(color * scalingFactor);
+			for (const auto& color : greenPixels)
+				Histo.GetGreenHistogram().AddValue(static_cast<double>(color * scalingFactor));
 #pragma omp section
 			for (const auto& color: bluePixels)
-				Histo.GetBlueHistogram().AddValue(color * scalingFactor);
+				Histo.GetBlueHistogram().AddValue(static_cast<double>(color * scalingFactor));
 		}
 	}
 	else

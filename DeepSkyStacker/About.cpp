@@ -252,6 +252,6 @@ namespace DSS
         settings.setValue("Language", m_Language);
         settings.setValue("InternetCheck", m_InternetCheck);
 
-        LoadTranslations();
+        loadTranslations();
     }
 }

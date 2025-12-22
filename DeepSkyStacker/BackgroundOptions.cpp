@@ -75,6 +75,7 @@ namespace DSS
 			ui->laCalibration->setPixmap(pxOffset);
 			ui->rbOffset->setChecked(true);
 			break;
+		default: break;
 		}
 	}
 
@@ -141,7 +142,7 @@ namespace DSS
 			m_CalibrationInterpolation = BCI_OFFSET;
 
 
-		workspace.setValue("Stacking/BackgroundCalibrationInterpolation", (uint)m_CalibrationInterpolation);
+		workspace.setValue("Stacking/BackgroundCalibrationInterpolation", static_cast<uint>(m_CalibrationInterpolation));
 
 		if (!ui->rbNone->isChecked())
 		{
@@ -154,7 +155,7 @@ namespace DSS
 				m_RGBCalibrationMethod = RBCM_MAXIMUM;
 
 
-			workspace.setValue("Stacking/RGBBackgroundCalibrationMethod", (uint)m_RGBCalibrationMethod);
+			workspace.setValue("Stacking/RGBBackgroundCalibrationMethod", static_cast<uint>(m_RGBCalibrationMethod));
 		}
 		else if (m_CalibrationMode == BCM_RGB)
 		{

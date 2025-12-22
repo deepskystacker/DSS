@@ -6,6 +6,7 @@
 #include "MultiBitmap.h"
 #include "MedianFilterEngine.h"
 #include "avx_simd_check.h"
+using namespace DSS;
 
 TEST_CASE("AVX CFA", "[AVX][CFA]")
 {

@@ -5,6 +5,18 @@
 #include "GrayBitmap.h"
 #include "ColorBitmap.h"
 
+//extern template class CGrayBitmapT<std::uint8_t>;
+//extern template class CGrayBitmapT<std::uint16_t>;
+//extern template class CGrayBitmapT<std::uint32_t>;
+//extern template class CGrayBitmapT<float>;
+//extern template class CGrayBitmapT<double>;
+//
+//extern template class CColorBitmapT<std::uint8_t>;
+//extern template class CColorBitmapT<std::uint16_t>;
+//extern template class CColorBitmapT<std::uint32_t>;
+//extern template class CColorBitmapT<float>;
+//extern template class CColorBitmapT<double>;
+
 std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics& bc)
 {
 	ZFUNCTRACE_RUNTIME();

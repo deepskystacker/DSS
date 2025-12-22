@@ -95,9 +95,11 @@ int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<vo
 	return 1;
 }
 
+#if defined(_MSC_VER)
 #pragma warning( push )
 #pragma warning( disable : 4324 ) // Structure was padded
 #pragma warning( disable : 4100 ) // Unreferenced variable
+#endif
 
 template <typename T, AvxOutputComposition::MethodSelection Method>
 int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses)
@@ -175,11 +177,11 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 		{
 			for (int n = 0; n < N / 8; ++n)
 			{
-				const __m128i v = _mm_loadu_si128(((const __m128i*)pData) + n);
+				const __m128i v = _mm_loadu_si128((reinterpret_cast<const __m128i*>(pData)) + n);
 				const __m256i v32 = _mm256_cvtepu16_epi32(v);
 				const __m256i outOfRange = _mm256_or_si256(_mm256_cmpgt_epi32(_mm256_set1_epi32(lowerBound), v32), _mm256_cmpgt_epi32(v32, _mm256_set1_epi32(upperBound)));
 				const __m256i vCorrected = _mm256_blendv_epi8(v32, _mm256_set1_epi32(currentMedian), outOfRange);
-				_mm_storeu_si128(((__m128i*)pData) + n, AvxSupport::cvtEpi32Epu16(vCorrected));
+				_mm_storeu_si128((reinterpret_cast<__m128i*>(pData)) + n, AvxSupport::cvtEpi32Epu16(vCorrected));
 			}
 			for (int n = (N / 8) * 8; n < N; ++n)
 				if (pData[n] < lowerBound || pData[n] > upperBound)
@@ -287,15 +289,15 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 				if constexpr (Method == MedianKappaSigma)
 				{
 					vectorMedian(loMedian, hiMedian, lowerBound1, lowerBound2, upperBound1, upperBound2);
-					N1 = _mm256_cvtepi32_ps(_mm256_loadu_si256((const __m256i*)&sizes[0]));
-					N2 = _mm256_cvtepi32_ps(_mm256_loadu_si256((const __m256i*)&sizes[8]));
+					N1 = _mm256_cvtepi32_ps(_mm256_loadu_si256(reinterpret_cast<const __m256i*>(&sizes[0])));
+					N2 = _mm256_cvtepi32_ps(_mm256_loadu_si256(reinterpret_cast<const __m256i*>(&sizes[8])));
 				}
 
 				// Loop over the light frames
 //				for (auto frameAddress : lineAddresses)
 				for (int lightFrame = 0; lightFrame < nrLightframes; ++lightFrame)
 				{
-					__m256 lo8, hi8;
+					__m256 lo8{ 0 }, hi8{ 0 };
 					if constexpr (Method == MedianKappaSigma)
 					{
 						const T* const pColor = medianData.data() + lightFrame;
@@ -343,8 +345,8 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 			float lowerBound = 1.0f;
 			float upperBound = static_cast<float>(std::numeric_limits<T>::max());
 			float my = 0.0f;
-#pragma warning (suppress: 4189)
-			float median = 0.0f;
+
+			//float median = 0.0f;
 
 			if constexpr (Method == MedianKappaSigma)
 				initMedianData(n + colorOffset, 1); // 1 = only 1 pixel.
@@ -357,13 +359,13 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 				if constexpr (Method == MedianKappaSigma)
 				{
-					median = quickMedian(0, lowerBound, upperBound, median);
+					//median = quickMedian(0, lowerBound, upperBound, median);
 					N = static_cast<float>(sizes[0]);
 				}
 
 				for (int lightFrame = 0; lightFrame < nrLightframes; ++lightFrame)
 				{
-					float colorValue;
+					float colorValue{ 0.0 };
 					if constexpr (Method == MedianKappaSigma)
 					{
 						const T* const pColor = medianData.data() + lightFrame;
@@ -594,4 +596,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 	return 1;
 }
 
+#if defined(_MSC_VER)
 #pragma warning( pop )
+#endif
+

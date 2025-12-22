@@ -25,8 +25,8 @@ public :
 		m_bNewStackedBitmap{false},
 		m_pProgress{nullptr}
 	{
-	};
-	virtual ~CDeepStack() {};
+	}
+	virtual ~CDeepStack() {}
 
 	void	reset()
 	{
@@ -35,17 +35,17 @@ public :
 		imageData_.clear();
 		m_OriginalHisto.clear();
 		m_bNewStackedBitmap = false;
-	};
+	}
 
 	int	GetWidth()
 	{
 		return m_StackedBitmap.GetWidth();
-	};
+	}
 
 	int	GetHeight()
 	{
 		return m_StackedBitmap.GetHeight();
-	};
+	}
 
 private :
 	void	ComputeOriginalHistogram(DSS::RGBHistogram & Histo);
@@ -55,7 +55,7 @@ public :
 	void	SetProgress(DSS::OldProgressBase *	pProgress)
 	{
 		m_pProgress = pProgress;
-	};
+	}
 
 	bool	IsNewStackedBitmap(bool bReset = false)
 	{
@@ -65,7 +65,7 @@ public :
 			m_bNewStackedBitmap = false;
 
 		return bResult;
-	};
+	}
 
 	bool	LoadStackedInfo(const fs::path& file);
 
@@ -104,7 +104,7 @@ public :
 			ComputeOriginalHistogram(m_OriginalHisto);
 
 		AdjustHistogram(m_OriginalHisto, Histo, histogramAdjust);
-	};
+	}
 
 	DSS::RGBHistogram & GetOriginalHistogram()
 	{
@@ -112,10 +112,10 @@ public :
 			ComputeOriginalHistogram(m_OriginalHisto);
 
 		return m_OriginalHisto;
-	};
+	}
 
 	bool	IsLoaded()
 	{
 		return GetWidth() && GetHeight();
-	};
+	}
 };

@@ -142,5 +142,5 @@ add_subdirectory(DeepSkyStackerKernel)
 add_subdirectory(DeepSkyStackerCL)
 add_subdirectory(DeepSkyStacker)
 add_subdirectory(DeepSkyStackerLive)
-#add_subdirectory(DeepSkyStackerTest)
+add_subdirectory(DeepSkyStackerTest)
 

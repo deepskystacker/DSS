@@ -39,7 +39,7 @@ QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor 
 	setFocusPolicy(Qt::StrongFocus);		// Make sure we get key events.
 
 	stops = m_Gradient.stops();				// Grab the gradient stops
-	endPegStop = stops.size() - 1;
+	endPegStop = static_cast<int>(stops.size() - 1);
 
 	setToolTip(QCoreApplication::translate("QLinearGradientCtrl",
 		"After selecting a slider with the mouse, you can move it"
@@ -51,7 +51,7 @@ QLinearGradientCtrl & QLinearGradientCtrl::setGradient(QLinearGradient const& sr
 {
 	m_Gradient = src;
 	stops = m_Gradient.stops();
-	endPegStop = stops.size() - 1;
+	endPegStop = static_cast<int>(stops.size() - 1);
 	return *this;
 }
 
@@ -64,7 +64,7 @@ void QLinearGradientCtrl::setColorAt(double pos, QColor colour)
 {
 	m_Gradient.setColorAt(pos, colour);
 	stops = m_Gradient.stops();				// Grab the gradient stops
-	endPegStop = stops.size() - 1;
+	endPegStop = static_cast<int>(stops.size() - 1);
 
 }
 
@@ -308,9 +308,9 @@ void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direc
 		poly[2].ry() = point.y() - 8;
 		break;
 	case 2:
-		poly[0].rx() = point.x() - 9, poly[0].ry() = point.y() - 3;
-		poly[1].rx() = point.x() - 3, poly[1].ry() = point.y();
-		poly[2].rx() = point.x() - 9, poly[2].ry() = point.y() + 3;
+		poly[0].rx() = point.x() - 9; poly[0].ry() = point.y() - 3;
+		poly[1].rx() = point.x() - 3; poly[1].ry() = point.y();
+		poly[2].rx() = point.x() - 9; poly[2].ry() = point.y() + 3;
 		break;
 	default:
 		poly[0].rx() = point.x() - 3;
@@ -504,13 +504,11 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 	if (Qt::LeftButton == event->buttons() && selectedPeg > -1)
 	{
 		QPoint point(event->pos());
-		QPoint tippoint;
-		//QString tiptext;
 		bool vertical = isVertical();
 		int selpegpos;
 
 		//----- Prepare -----//
-		float pos;
+		qreal pos;
 		//----- Checks to see if the mouse is far enough away to "drop out" -----//
 		if (vertical)
 		{
@@ -623,7 +621,7 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if (Qt::LeftButton == event->buttons())
 	{
-		float pos;
+		qreal pos;
 		QPoint point(event->pos());
 		QRect pegrect;
 		bool edit = false;
@@ -1002,7 +1000,6 @@ int QLinearGradientCtrl::setSelected(int iSel)
 {
 	if (selectedPeg != iSel)
 	{
-		QRect lastRect, selRect;
 		ZASSERT(iSel >= STARTPEG); //Nothing smaller than -3 ok?
 		ZASSERT(iSel < endPegStop); //Make sure things are in range
 		lastSelectedPeg = selectedPeg;
@@ -1029,7 +1026,7 @@ int QLinearGradientCtrl::moveSelected(qreal newpos, bool)
 			return lhs.first < rhs.first;
 		}
 			);	
-		selectedPeg = stops.indexOf(newStop);		// Make sure the selectedPeg is correct.
+		selectedPeg = static_cast<int>(stops.indexOf(newStop));		// Make sure the selectedPeg is correct.
 //		m_Gradient.setStops(stops);
 		setGradientFromStops();
 	}
@@ -1099,10 +1096,10 @@ bool QLinearGradientCtrl::isVertical() const
 
 int QLinearGradientCtrl::pointFromPos(qreal pos)
 {
-	qreal length = isVertical() ? ((qreal)clientRect.height() - 10.0)
-		: ((qreal)clientRect.width() - 10.0);
+	qreal length = isVertical() ? (static_cast<qreal>(clientRect.height()) - 10.0)
+		: (static_cast<qreal>(clientRect.width()) - 10.0);
 
-	return (int)(pos*length) + 5;
+	return static_cast<int>((pos*length) + 5);
 }
 
 qreal QLinearGradientCtrl::posFromPoint(int point)
@@ -1111,7 +1108,7 @@ qreal QLinearGradientCtrl::posFromPoint(int point)
 	int x = point - 5;
 	qreal val;
 
-	val = (qreal)x / (qreal)length;
+	val = static_cast<qreal>(x) / static_cast<qreal>(length);
 
 	if (val < 0) val = 0.0;
 	else if (val > 1) val = 1.0;
@@ -1306,10 +1303,9 @@ QRegion QLinearGradientCtrl::getPegRegion(short peg)
 QRegion QLinearGradientCtrl::getPegRegion()
 {
 	QRegion result;
-	QPoint pegpoint;
 	// int drawwidth = getDrawWidth();
 	// bool vertical = isVertical();
-	int colcount = (int)m_LeftDownSide + (int)m_RightUpSide;
+	int colcount = static_cast<int>(m_LeftDownSide) + static_cast<int>(m_RightUpSide);
 
 	if (colcount == 0)
 	{

@@ -97,7 +97,7 @@ namespace DSS
 			return *this;
 		}
 
-		IndexType index() const noexcept { return Index; };
+		IndexType index() const noexcept { return Index; }
 
 		//
 		// Will call addImage() internally

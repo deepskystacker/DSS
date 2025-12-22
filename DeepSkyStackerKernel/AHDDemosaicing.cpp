@@ -7,6 +7,18 @@
 #include "ColorHelpers.h"
 #include "DSSTools.h"
 
+//extern template class CGrayBitmapT<std::uint8_t>;
+//extern template class CGrayBitmapT<std::uint16_t>;
+//extern template class CGrayBitmapT<std::uint32_t>;
+//extern template class CGrayBitmapT<float>;
+//extern template class CGrayBitmapT<double>;
+//
+//extern template class CColorBitmapT<std::uint8_t>;
+//extern template class CColorBitmapT<std::uint16_t>;
+//extern template class CColorBitmapT<std::uint32_t>;
+//extern template class CColorBitmapT<float>;
+//extern template class CColorBitmapT<double>;
+
 using namespace DSS;
 
 static std::vector<float> g_vLUT;
@@ -27,8 +39,8 @@ CRGBToLab::CRGBToLab()
 		g_vLUT.reserve(0x10000);
 		for (int i = 0; i < 0x10000; i++)
 		{
-			constexpr float exponent = float{ 1.0 / 3.0 };
-			constexpr float addend = float{ 16.0 / 116.0 };
+			constexpr float exponent = float{ 1.0f / 3.0f };
+			constexpr float addend = float{ 16.0f / 116.0f };
 
 			const float r = static_cast<float>(i) / 65535.0f;
 			const float f = r > 0.008856f ? pow(r, exponent) : 7.787f * r + addend;
@@ -218,8 +230,8 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 				break;
 			};
 
-			*pHGreenPixel = ClampPixel(fHGreen * fMultiplier);
-			*pVGreenPixel = ClampPixel(fVGreen * fMultiplier);
+			*pHGreenPixel = static_cast<T>(ClampPixel(fHGreen * fMultiplier));
+			*pVGreenPixel = static_cast<T>(ClampPixel(fVGreen * fMultiplier));
 
 			pHGreenPixel++;
 			pVGreenPixel++;
@@ -278,9 +290,9 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 				const double valH = g + (v0 + v1 + v2 + v3 - g0 - g1 - g2 - g3) / 4.0;
 
 				if (bBlueLine)
-					*pHRedPixel = ClampPixel(valH * fMultiplier);
+					*pHRedPixel = static_cast<T>(ClampPixel(valH * fMultiplier));
 				else
-					*pHBluePixel = ClampPixel(valH * fMultiplier);
+					*pHBluePixel = static_cast<T>(ClampPixel(valH * fMultiplier));
 
 				// Vertical interpolation
 				g = (*pVGreenPixel) / fMultiplier;
@@ -292,9 +304,9 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 				const double valV = g + (v0 + v1 + v2 + v3 - g0 - g1 - g2 - g3) / 4.0;
 
 				if (bBlueLine)
-					*pVRedPixel = ClampPixel(valV * fMultiplier);
+					*pVRedPixel = static_cast<T>(ClampPixel(valV * fMultiplier));
 				else
-					*pVBluePixel = ClampPixel(valV * fMultiplier);
+					*pVBluePixel = static_cast<T>(ClampPixel(valV * fMultiplier));
 			};
 			break;
 			case BAYER_GREEN:
@@ -332,13 +344,13 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 
 				if (bBlueLine)
 				{
-					*pVBluePixel = ClampPixel(valV * fMultiplier);
-					*pHBluePixel = ClampPixel(valH * fMultiplier);
+					*pVBluePixel = static_cast<T>(ClampPixel(valV * fMultiplier));
+					*pHBluePixel = static_cast<T>(ClampPixel(valH * fMultiplier));
 				}
 				else
 				{
-					*pVRedPixel = ClampPixel(valV * fMultiplier);
-					*pHRedPixel = ClampPixel(valH * fMultiplier);
+					*pVRedPixel = static_cast<T>(ClampPixel(valV * fMultiplier));
+					*pHRedPixel = static_cast<T>(ClampPixel(valH * fMultiplier));
 				}
 
 				// interpolating vertically
@@ -367,13 +379,13 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 
 				if (bBlueLine)
 				{
-					*pVRedPixel = ClampPixel(valV * fMultiplier);
-					*pHRedPixel = ClampPixel(valH * fMultiplier);
+					*pVRedPixel = static_cast<T>(ClampPixel(valV * fMultiplier));
+					*pHRedPixel = static_cast<T>(ClampPixel(valH * fMultiplier));
 				}
 				else
 				{
-					*pVBluePixel = ClampPixel(valV * fMultiplier);
-					*pHBluePixel = ClampPixel(valH * fMultiplier);
+					*pVBluePixel = static_cast<T>(ClampPixel(valV * fMultiplier));
+					*pHBluePixel = static_cast<T>(ClampPixel(valH * fMultiplier));
 				}
 			}
 			break;
@@ -412,17 +424,17 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 			double fGreen = (*pHGreenPixel) / fMultiplier;
 			double fBlue = (*pHBluePixel) / fMultiplier;
 			rgbToLab.RGBToLab(fRed, fGreen, fBlue, L, a, b);
-			*pHLPixel = L;
-			*pHaPixel = a;
-			*pHbPixel = b;
+			*pHLPixel = static_cast<float>(L);
+			*pHaPixel = static_cast<float>(a);
+			*pHbPixel = static_cast<float>(b);
 
 			fRed = (*pVRedPixel) / fMultiplier;
 			fGreen = (*pVGreenPixel) / fMultiplier;
 			fBlue = (*pVBluePixel) / fMultiplier;
 			rgbToLab.RGBToLab(fRed, fGreen, fBlue, L, a, b);
-			*pVLPixel = L;
-			*pVaPixel = a;
-			*pVbPixel = b;
+			*pVLPixel = static_cast<float>(L);
+			*pVaPixel = static_cast<float>(a);
+			*pVbPixel = static_cast<float>(b);
 
 			pHRedPixel++; pHGreenPixel++; pHBluePixel++;;
 			pVRedPixel++; pVGreenPixel++; pVBluePixel++;;
@@ -455,8 +467,8 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 			// iterate over its neighbors
 			for (int i = 0; i < 4; i++)
 			{
-				lDiffH[i] = fabs((*pHLPixel) - (*(pHLPixel + dir[i])));
-				lDiffV[i] = fabs((*pVLPixel) - (*(pVLPixel + dir[i])));
+				lDiffH[i] = static_cast<double>(std::abs((*pHLPixel) - (*(pHLPixel + dir[i]))));
+				lDiffV[i] = static_cast<double>(std::abs((*pVLPixel) - (*(pVLPixel + dir[i]))));
 			}
 
 			lEpsilon = std::min(std::max(lDiffH[0], lDiffH[1]), std::max(lDiffV[2], lDiffV[3]));
@@ -465,8 +477,8 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 			{
 				if (lDiffH[i] <= lEpsilon || i < 2)
 				{
-					const double aDiff = ((*pHaPixel) - (*(pHaPixel + dir[i])));
-					const double bDiff = ((*pHbPixel) - (*(pHbPixel + dir[i])));
+					const double aDiff = static_cast<double>((*pHaPixel) - (*(pHaPixel + dir[i])));
+					const double bDiff = static_cast<double>((*pHbPixel) - (*(pHbPixel + dir[i])));
 					abDiffH[i] = aDiff * aDiff + bDiff * bDiff;
 				}
 				else
@@ -474,8 +486,8 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 
 				if (lDiffV[i] <= lEpsilon || i >= 2)
 				{
-					const double aDiff = ((*pVaPixel) - (*(pVaPixel + dir[i])));
-					const double bDiff = ((*pVbPixel) - (*(pVbPixel + dir[i])));
+					const double aDiff = static_cast<double>((*pVaPixel) - (*(pVaPixel + dir[i])));
+					const double bDiff = static_cast<double>((*pVbPixel) - (*(pVbPixel + dir[i])));
 					abDiffV[i] = aDiff * aDiff + bDiff * bDiff;
 				}
 				else
@@ -540,9 +552,9 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 			}
 			else
 			{
-				*pOutputRedPixel = ((*pVRedPixel) + (*pHRedPixel)) / 2.0;
-				*pOutputGreenPixel = ((*pVGreenPixel) + (*pHGreenPixel)) / 2.0;
-				*pOutputBluePixel = ((*pVBluePixel) + (*pHBluePixel)) / 2.0;
+				*pOutputRedPixel = static_cast<T>(((*pVRedPixel) + (*pHRedPixel)) / 2.0);
+				*pOutputGreenPixel = static_cast<T>(((*pVGreenPixel) + (*pHGreenPixel)) / 2.0);
+				*pOutputBluePixel = static_cast<T>(((*pVBluePixel) + (*pHBluePixel)) / 2.0);
 			}
 
 			pHHomoPixel++; pVHomoPixel++;
@@ -583,22 +595,22 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			if (bBlueLine)
 			{
 				*pOutputBluePixel1 = *(pGrayPixel1 + 1);
-				*pOutputRedPixel1 = (v1 + v2) / 2.0;
+				*pOutputRedPixel1 = static_cast<T>((v1 + v2) / 2.0);
 			}
 			else
 			{
 				*pOutputRedPixel1 = *(pGrayPixel1 + 1);
-				*pOutputBluePixel1 = (v1 + v2) / 2.0;
+				*pOutputBluePixel1 = static_cast<T>((v1 + v2) / 2.0);
 			};
 			break;
 		case BAYER_RED:
 			*pOutputRedPixel1 = *pGrayPixel1;
-			*pOutputGreenPixel1 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel1 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputBluePixel1 = *(pOutputBluePixel1 + 1);
 			break;
 		case BAYER_BLUE:
 			*pOutputBluePixel1 = *pGrayPixel1;
-			*pOutputGreenPixel1 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel1 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputRedPixel1 = *(pOutputRedPixel1 + 1);
 			break;
 		default:
@@ -615,22 +627,22 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			if (bBlueLine)
 			{
 				*pOutputBluePixel2 = *(pGrayPixel2 - 1);
-				*pOutputRedPixel2 = (v1 + v2) / 2.0;
+				*pOutputRedPixel2 = static_cast<T>((v1 + v2) / 2.0);
 			}
 			else
 			{
 				*pOutputRedPixel2 = *(pGrayPixel2 - 1);
-				*pOutputBluePixel2 = (v1 + v2) / 2.0;
+				*pOutputBluePixel2 = static_cast<T>((v1 + v2) / 2.0);
 			};
 			break;
 		case BAYER_RED:
 			*pOutputRedPixel2 = *pGrayPixel2;
-			*pOutputGreenPixel2 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel2 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputBluePixel2 = *(pOutputBluePixel2 - 1);
 			break;
 		case BAYER_BLUE:
 			*pOutputBluePixel2 = *pGrayPixel2;
-			*pOutputGreenPixel2 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel2 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputRedPixel2 = *(pOutputRedPixel2 - 1);
 			break;
 		default:
@@ -668,23 +680,23 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			*pOutputGreenPixel1 = *pGrayPixel1;
 			if (bBlueLine1)
 			{
-				*pOutputBluePixel1 = (v1 + v2) / 2.0;
+				*pOutputBluePixel1 = static_cast<T>((v1 + v2) / 2.0);
 				*pOutputRedPixel1 = *(pGrayPixel1 + width);
 			}
 			else
 			{
 				*pOutputBluePixel1 = *(pGrayPixel1 + width);
-				*pOutputRedPixel1 = (v1 + v2) / 2.0;
+				*pOutputRedPixel1 = static_cast<T>((v1 + v2) / 2.0);
 			};
 			break;
 		case BAYER_RED:
 			*pOutputRedPixel1 = *pGrayPixel1;
-			*pOutputGreenPixel1 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel1 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputBluePixel1 = *(pOutputBluePixel1 + width);
 			break;
 		case BAYER_BLUE:
 			*pOutputBluePixel1 = *pGrayPixel1;
-			*pOutputGreenPixel1 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel1 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputRedPixel1 = *(pOutputRedPixel1 + width);
 			break;
 		default:
@@ -700,23 +712,23 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 			*pOutputGreenPixel2 = *pGrayPixel2;
 			if (bBlueLine2)
 			{
-				*pOutputBluePixel2 = (v1 + v2) / 2.0;
+				*pOutputBluePixel2 = static_cast<T>((v1 + v2) / 2.0);
 				*pOutputRedPixel2 = *(pGrayPixel2 - width);
 			}
 			else
 			{
-				*pOutputRedPixel2 = (v1 + v2) / 2.0;
+				*pOutputRedPixel2 = static_cast<T>((v1 + v2) / 2.0);
 				*pOutputBluePixel2 = *(pGrayPixel2 - width);
 			};
 			break;
 		case BAYER_RED:
 			*pOutputRedPixel2 = *pGrayPixel2;
-			*pOutputGreenPixel2 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel2 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputBluePixel2 = *(pOutputBluePixel2 - width);
 			break;
 		case BAYER_BLUE:
 			*pOutputBluePixel2 = *pGrayPixel2;
-			*pOutputGreenPixel2 = (v1 + v2) / 2.0;
+			*pOutputGreenPixel2 = static_cast<T>((v1 + v2) / 2.0);
 			*pOutputRedPixel2 = *(pOutputRedPixel2 - width);
 			break;
 		default:
@@ -733,33 +745,33 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 	pOutputGreenPixel1 = pColorBitmap->GetGreenPixel(0, 0);
 	pOutputBluePixel1 = pColorBitmap->GetBluePixel(0, 0);
 
-	*pOutputRedPixel1 = ((*(pOutputRedPixel1 + 1)) + (*(pOutputRedPixel1 + width)) + (*(pOutputRedPixel1 + 1 + width))) / 3.0;
-	*pOutputGreenPixel1 = ((*(pOutputGreenPixel1 + 1)) + (*(pOutputGreenPixel1 + width)) + (*(pOutputGreenPixel1 + 1 + width))) / 3.0;
-	*pOutputBluePixel1 = ((*(pOutputBluePixel1 + 1)) + (*(pOutputBluePixel1 + width)) + (*(pOutputBluePixel1 + 1 + width))) / 3.0;
+	*pOutputRedPixel1 = static_cast<T>(((*(pOutputRedPixel1 + 1)) + (*(pOutputRedPixel1 + width)) + (*(pOutputRedPixel1 + 1 + width))) / 3.0);
+	*pOutputGreenPixel1 = static_cast<T>(((*(pOutputGreenPixel1 + 1)) + (*(pOutputGreenPixel1 + width)) + (*(pOutputGreenPixel1 + 1 + width))) / 3.0);
+	*pOutputBluePixel1 = static_cast<T>(((*(pOutputBluePixel1 + 1)) + (*(pOutputBluePixel1 + width)) + (*(pOutputBluePixel1 + 1 + width))) / 3.0);
 
 	pOutputRedPixel1 = pColorBitmap->GetRedPixel(0, height - 1);
 	pOutputGreenPixel1 = pColorBitmap->GetGreenPixel(0, height - 1);
 	pOutputBluePixel1 = pColorBitmap->GetBluePixel(0, height - 1);
 
-	*pOutputRedPixel1 = ((*(pOutputRedPixel1 + 1)) + (*(pOutputRedPixel1 - width)) + (*(pOutputRedPixel1 + 1 - width))) / 3.0;
-	*pOutputGreenPixel1 = ((*(pOutputGreenPixel1 + 1)) + (*(pOutputGreenPixel1 - width)) + (*(pOutputGreenPixel1 + 1 - width))) / 3.0;
-	*pOutputBluePixel1 = ((*(pOutputBluePixel1 + 1)) + (*(pOutputBluePixel1 - width)) + (*(pOutputBluePixel1 + 1 - width))) / 3.0;
+	*pOutputRedPixel1 = static_cast<T>(((*(pOutputRedPixel1 + 1)) + (*(pOutputRedPixel1 - width)) + (*(pOutputRedPixel1 + 1 - width))) / 3.0);
+	*pOutputGreenPixel1 = static_cast<T>(((*(pOutputGreenPixel1 + 1)) + (*(pOutputGreenPixel1 - width)) + (*(pOutputGreenPixel1 + 1 - width))) / 3.0);
+	*pOutputBluePixel1 = static_cast<T>(((*(pOutputBluePixel1 + 1)) + (*(pOutputBluePixel1 - width)) + (*(pOutputBluePixel1 + 1 - width))) / 3.0);
 
 	pOutputRedPixel1 = pColorBitmap->GetRedPixel(width - 1, height - 1);
 	pOutputGreenPixel1 = pColorBitmap->GetGreenPixel(width - 1, height - 1);
 	pOutputBluePixel1 = pColorBitmap->GetBluePixel(width - 1, height - 1);
 
-	*pOutputRedPixel1 = ((*(pOutputRedPixel1 - 1)) + (*(pOutputRedPixel1 - width)) + (*(pOutputRedPixel1 - 1 - width))) / 3.0;
-	*pOutputGreenPixel1 = ((*(pOutputGreenPixel1 - 1)) + (*(pOutputGreenPixel1 - width)) + (*(pOutputGreenPixel1 - 1 - width))) / 3.0;
-	*pOutputBluePixel1 = ((*(pOutputBluePixel1 - 1)) + (*(pOutputBluePixel1 - width)) + (*(pOutputBluePixel1 - 1 - width))) / 3.0;
+	*pOutputRedPixel1 = static_cast<T>(((*(pOutputRedPixel1 - 1)) + (*(pOutputRedPixel1 - width)) + (*(pOutputRedPixel1 - 1 - width))) / 3.0);
+	*pOutputGreenPixel1 = static_cast<T>(((*(pOutputGreenPixel1 - 1)) + (*(pOutputGreenPixel1 - width)) + (*(pOutputGreenPixel1 - 1 - width))) / 3.0);
+	*pOutputBluePixel1 = static_cast<T>(((*(pOutputBluePixel1 - 1)) + (*(pOutputBluePixel1 - width)) + (*(pOutputBluePixel1 - 1 - width))) / 3.0);
 
 	pOutputRedPixel1 = pColorBitmap->GetRedPixel(width - 1, 0);
 	pOutputGreenPixel1 = pColorBitmap->GetGreenPixel(width - 1, 0);
 	pOutputBluePixel1 = pColorBitmap->GetBluePixel(width - 1, 0);
 
-	*pOutputRedPixel1 = ((*(pOutputRedPixel1 - 1)) + (*(pOutputRedPixel1 + width)) + (*(pOutputRedPixel1 - 1 + width))) / 3.0;
-	*pOutputGreenPixel1 = ((*(pOutputGreenPixel1 - 1)) + (*(pOutputGreenPixel1 + width)) + (*(pOutputGreenPixel1 - 1 + width))) / 3.0;
-	*pOutputBluePixel1 = ((*(pOutputBluePixel1 - 1)) + (*(pOutputBluePixel1 + width)) + (*(pOutputBluePixel1 - 1 + width))) / 3.0;
+	*pOutputRedPixel1 = static_cast<T>(((*(pOutputRedPixel1 - 1)) + (*(pOutputRedPixel1 + width)) + (*(pOutputRedPixel1 - 1 + width))) / 3.0);
+	*pOutputGreenPixel1 = static_cast<T>(((*(pOutputGreenPixel1 - 1)) + (*(pOutputGreenPixel1 + width)) + (*(pOutputGreenPixel1 - 1 + width))) / 3.0);
+	*pOutputBluePixel1 = static_cast<T>(((*(pOutputBluePixel1 - 1)) + (*(pOutputBluePixel1 + width)) + (*(pOutputBluePixel1 - 1 + width))) / 3.0);
 }
 
 }

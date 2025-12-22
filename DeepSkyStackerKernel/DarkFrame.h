@@ -60,7 +60,7 @@ private :
 		m_fMultiplier	= dm.m_fMultiplier;
 		m_fMin			= dm.m_fMin;
 		m_fMax			= dm.m_fMax;
-	};
+	}
 
 public :
 	CDarkMultiplier()
@@ -68,11 +68,11 @@ public :
         m_fMax = 0;
         m_fMin = 0;
         m_fMultiplier = 0;
-    };
+    }
 
 	virtual ~CDarkMultiplier()
 	{
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -91,29 +91,29 @@ private :
 	{
 		X = ep.X;
 		Y = ep.Y;
-	};
+	}
 
 public :
 	CExcludedPixel(int lX = 0, int lY = 0)
 	{
 		X = lX;
 		Y = lY;
-	};
+	}
 
 	CExcludedPixel(const CExcludedPixel & ep)
 	{
 		CopyFrom(ep);
-	};
+	}
 
 	virtual ~CExcludedPixel()
 	{
-	};
+	}
 
 	const CExcludedPixel & operator = (const CExcludedPixel & ep)
 	{
 		CopyFrom(ep);
 		return (*this);
-	};
+	}
 
 	bool operator < (const CExcludedPixel & ep) const
 	{
@@ -123,7 +123,7 @@ public :
 			return false;
 		else
 			return (Y < ep.Y);
-	};
+	}
 };
 
 typedef std::vector<CExcludedPixel>			EXCLUDEDPIXELVECTOR;
@@ -138,8 +138,8 @@ public:
 	double m_fGrayValue;
 
 public:
-	CDarkFrameHotParameters() : m_fGrayValue{ 0 } {};
-	virtual ~CDarkFrameHotParameters() {};
+	CDarkFrameHotParameters() : m_fGrayValue{ 0 } {}
+	virtual ~CDarkFrameHotParameters() {}
 
 	void ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels);
 };
@@ -162,7 +162,7 @@ public :
 				std::min(lWidth, px.m_lX + lSize), std::min(lHeight, px.m_lY + lSize) };
 
 		return rc;
-	};
+	}
 
 	void getBorderRects(int lWidth, int lHeight, std::vector<DSSRect>& vRects)
 	{
@@ -181,7 +181,7 @@ public :
 		// Middle top/bottom
 		vRects.emplace_back(lWidth / 2 - lSize, 0, lWidth / 2 + lSize, 2 * lSize);
 		vRects.emplace_back(lWidth / 2 - lSize, lHeight - 2 * lSize, lWidth / 2 + lSize, lHeight);
-	};
+	}
 
 	double computeMedianValueInRect(CMemoryBitmap* pBitmap, const DSSRect& rc);
 
@@ -191,14 +191,14 @@ public :
 
 	CDarkAmpGlowParameters& operator = (const CDarkAmpGlowParameters&) = default;
 
-	virtual ~CDarkAmpGlowParameters() {};
+	virtual ~CDarkAmpGlowParameters() {}
 
 	void ComputeParametersFromPoints(CMemoryBitmap * pBitmap);
 	void FindPointsAndComputeParameters(CMemoryBitmap* pBitmap);
 	void ComputeParametersFromIndice(int lIndice)
 	{
 		m_fGrayValue = m_fMedianHotest - m_vMedianColdest[lIndice];
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */

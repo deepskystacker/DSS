@@ -52,7 +52,7 @@ namespace DSS
 
 	public:
 		ProgressLive(QObject* parent = nullptr);
-		~ProgressLive();
+		~ProgressLive() override;
 
 		//
 		// These eight mfs implement the public interface defined in DSS::OldProgressBase
@@ -69,7 +69,7 @@ namespace DSS
 		virtual void End2() override;
 		virtual void Close() override;
 		virtual bool IsCanceled() const override { return false; }
-		virtual bool Warning([[maybe_unused]]const QString& szText) override { return true; };
+		virtual bool Warning([[maybe_unused]]const QString& szText) override { return true; }
 
 		virtual const QString& GetStart1Text() const override { return progress1Text; }
 		virtual const QString& GetStart2Text() const override { return progress2Text; }
@@ -84,7 +84,7 @@ namespace DSS
 
 	protected:
 		// OldProgressBase
-		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
+		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {}
 
 	private:
 		QString progress1Text;

@@ -19,7 +19,7 @@ namespace DSS
 			Inherited;
 	public:
 		explicit RawDDPSettings(QWidget* parent = nullptr);
-		~RawDDPSettings();
+		~RawDDPSettings() override;
 
 	private slots:
 		void accept() override;

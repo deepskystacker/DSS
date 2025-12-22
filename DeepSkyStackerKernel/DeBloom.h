@@ -18,7 +18,7 @@ private:
 		m_fBloom	= right.m_fBloom;
 		m_fRadius	= right.m_fRadius;
 		m_fAngle	= right.m_fAngle;
-	};
+	}
 
 public:
 	CBloomInfo()
@@ -26,21 +26,21 @@ public:
         m_fRadius = 0;
         m_fBloom = 0;
         m_fAngle = 0;
-	};
+	}
 	~CBloomInfo()
 	{
-	};
+	}
 
 	CBloomInfo(const CBloomInfo & right)
 	{
 		CopyFrom(right);
-	};
+	}
 
 	CBloomInfo & operator = (const CBloomInfo & right)
 	{
 		CopyFrom(right);
 		return (*this);
-	};
+	}
 };
 
 typedef std::vector<CBloomInfo>			BLOOMINFOVECTOR;
@@ -65,28 +65,28 @@ private:
 		m_vBlooms	= right.m_vBlooms;
 		m_fRadius   = right.m_fRadius;
 		m_fBloom	= right.m_fBloom;
-	};
+	}
 
 public:
 	CBloomedStar()
 	{
         m_fRadius = 0;
         m_fBloom = 0;
-	};
+	}
 	~CBloomedStar()
 	{
-	};
+	}
 
 	CBloomedStar(const CBloomedStar & right)
 	{
 		CopyFrom(right);
-	};
+	}
 
 	CBloomedStar & operator = (const CBloomedStar & right)
 	{
 		CopyFrom(right);
 		return (*this);
-	};
+	}
 
 	bool operator<(const CBloomedStar&) const
 	{
@@ -124,7 +124,7 @@ private:
 		fSE		= right.fSE		;
 		fGradient = right.fGradient;
 		fPercentGradient = right.fPercentGradient;
-	};
+	}
 
 public:
 	CBloomedStarGradient()
@@ -137,21 +137,21 @@ public:
         fSW = 0;
         fNE = 0;
         fSE = 0;
-	};
+	}
 	~CBloomedStarGradient()
 	{
-	};
+	}
 
 	CBloomedStarGradient(const CBloomedStarGradient & right)
 	{
 		CopyFrom(right);
-	};
+	}
 
 	CBloomedStarGradient & operator = (const CBloomedStarGradient & right)
 	{
 		CopyFrom(right);
 		return (*this);
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -198,9 +198,9 @@ public:
         m_lWidth = 0;
         m_lHeight = 0;
         m_pProgress = nullptr;
-	};
+	}
 
-	virtual ~CDeBloom() {};
+	virtual ~CDeBloom() {}
 
 	void CreateBloomMask(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);
 	void DeBloomImage(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);

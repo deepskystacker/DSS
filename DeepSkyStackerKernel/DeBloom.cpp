@@ -142,7 +142,7 @@ inline double ComputeCenter(std::vector<double> & vValues)
 							lNrKeptValues;
 
 		lNrLeftKeptValues  = lStartEmpty-1;
-		lNrRightKeptValues = (int)vValues.size()-lEndEmpty;
+		lNrRightKeptValues = static_cast<int>(vValues.size()-lEndEmpty);
 		lNrKeptValues = std::min(lNrLeftKeptValues, lNrRightKeptValues);
 
 		if (lNrLeftKeptValues>lNrKeptValues)
@@ -162,12 +162,12 @@ inline double ComputeCenter(std::vector<double> & vValues)
 	{
 		if (vValues[i]>=0)
 		{
-			fSum += vValues[i] * ((double)i+0.5);
+			fSum += vValues[i] * (static_cast<double>(i)+0.5);
 			fNrValues += vValues[i];
 		};
 	};
 
-	if (fNrValues)
+	if (0. != fNrValues)
 		fResult = fSum/fNrValues;
 
 	return fResult;
@@ -183,8 +183,8 @@ inline double			distance(double x1, double y1, double x2, double y2)
 
 static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, QPointF pt, bool bNoBloom = false)
 {
-	int				x0 = floor(pt.x() - 0.5), x1 = 1 + x0,
-					y0 = floor(pt.y() - 0.5), y1 = 1 + y0;
+	int				x0 = static_cast<int>(std::floor(pt.x() - 0.5)), x1 = 1 + x0,
+					y0 = static_cast<int>(std::floor(pt.y() - 0.5)), y1 = 1 + y0;
 
 	int				width = pBitmap->Width(),
 						height = pBitmap->Height();
@@ -275,7 +275,7 @@ static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * p
 		fSum    += (1.5-fd11)*fv11;
 	};
 
-	if (!fWeight || (bBloom && !bNoBloom))
+	if (0. == fWeight || (bBloom && !bNoBloom))
 		return -1.0;
 	else
 		return fSum/fWeight;
@@ -432,11 +432,11 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 						bRightBloomed = false;
 	bool				bBloomCross = false;
 
-	for (int i = floor(fX+0.5);i>=std::max(0.0, floor(fX+0.5-bs.m_fRadius*2.0)) && !bLeftBloomed;i--)
+	for (int i = static_cast<int>(std::floor(fX+0.5)); i>=std::max(0.0, floor(fX+0.5-bs.m_fRadius*2.0)) && !bLeftBloomed;i--)
 	{
 		double			fMask;
 
-		pMask->GetPixel(i, floor(fY+0.5), fMask);
+		pMask->GetPixel(i, static_cast<int>(std::floor(fY+0.5)), fMask);
 		if (IsBloomedBorderValue(fMask))
 			bBloomCross = true;
 		else if (bBloomCross && IsBloomedValue(fMask))
@@ -444,11 +444,11 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 	};
 
 	bBloomCross = false;
-	for (int i = floor(fX+0.5);i<=std::min(static_cast<double>(m_lWidth-1), floor(fX+0.5+bs.m_fRadius*2.0)) && !bRightBloomed;i++)
+	for (int i = static_cast<int>(std::floor(fX+0.5));  i<=std::min(static_cast<double>(m_lWidth-1), floor(fX+0.5+bs.m_fRadius*2.0)) && !bRightBloomed;i++)
 	{
 		double			fMask;
 
-		pMask->GetPixel(i, floor(fY+0.5), fMask);
+		pMask->GetPixel(i, static_cast<int>(std::floor(fY+0.5)), fMask);
 		if (IsBloomedBorderValue(fMask))
 			bBloomCross = true;
 		else if (bBloomCross && IsBloomedValue(fMask))
@@ -569,12 +569,12 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 
 
 	fRadius=bs.m_fRadius;
-	vValues.reserve(fRadius*2+1);
+	vValues.reserve(static_cast<size_t>(fRadius*2+1));
 
 
 	std::vector<double>	vYCenters;
 
-	for (i = std::max(0.0, fX-fRadius-0.5);i<=std::min(static_cast<double>(m_lWidth-1), fX+fRadius+0.5);i++)
+	for (i = static_cast<int>(std::max(0.0, fX-fRadius-0.5)); i <= static_cast<int>(std::min(static_cast<double>(m_lWidth-1), fX+fRadius+0.5)); i++)
 	{
 		bool			bBloomed = false;
 		double			fLocalMaximum = -1.0;
@@ -709,10 +709,10 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 			QPointF			pt1,
 							pt2;
 
-			pt1.rx() = fX + (double)i*cos(vAngles[a]*std::numbers::pi/180.0);
-			pt1.ry() = fY + (double)i*sin(vAngles[a]*std::numbers::pi/180.0);
-			pt2.rx() = fX + (double)(i+1)*cos(vAngles[a]*std::numbers::pi/180.0);
-			pt2.ry() = fY + (double)(i+1)*sin(vAngles[a]*std::numbers::pi/180.0);
+			pt1.rx() = fX + static_cast<double>(i*cos(vAngles[a]*std::numbers::pi/180.0));
+			pt1.ry() = fY + static_cast<double>(i*sin(vAngles[a]*std::numbers::pi/180.0));
+			pt2.rx() = fX + static_cast<double>((i+1)*cos(vAngles[a]*std::numbers::pi/180.0));
+			pt2.ry() = fY + static_cast<double>((i+1)*sin(vAngles[a]*std::numbers::pi/180.0));
 
 			fValue1 = InterpolatePixelValue(pBitmap, pMask, pt1, true)-m_fBackground;
 			fValue2 = InterpolatePixelValue(pBitmap, pMask, pt2, true)-m_fBackground;
@@ -730,8 +730,8 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 				bi.m_fRadius = sqrt(-(d2*d2-d1*d1)/2.0/log(fValue2/fValue1));
 				bi.m_fBloom  = fValue1/exp(-d1*d1/2.0/(bi.m_fRadius*bi.m_fRadius));
 				
-				bi.m_ptRef.rx() = (pt1.x() + pt2.x())/2.0;
-				bi.m_ptRef.ry() = (pt1.y() + pt2.y())/2.0;
+				bi.m_ptRef.rx() = static_cast<int>((pt1.x() + pt2.x())/2.0);
+				bi.m_ptRef.ry() = static_cast<int>((pt1.y() + pt2.y())/2.0);
 
 				bs.m_vBlooms.push_back(bi);
 				bFound = true;
@@ -787,7 +787,7 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vec
 				continue;
 			double				fMask;
 
-			pMask->GetPixel(vTests[i].x(), vTests[i].y(), fMask);
+			pMask->GetPixel(static_cast<int>(vTests[i].x()), static_cast<int>(vTests[i].y()), fMask);
 			bBloomed = fMask>0;
 		};
 
@@ -977,7 +977,7 @@ void CDeBloom::ExpandBloomedArea(CMemoryBitmap const* pBitmap, C8BitGrayBitmap *
 
 		// And mark lonely borders as bloomed
 		for (int i = 0;i<vBorders.size();i++)
-			MarkBorderAsBloomed(pMask, vBorders[i].x(), vBorders[i].y(), vBloomed);
+			MarkBorderAsBloomed(pMask, static_cast<int>(vBorders[i].x()), static_cast<int>(vBorders[i].y()), vBloomed);
 
 		bs.m_fRadius = fRadius;
 		bs.m_vBloomed  = vBloomed;
@@ -1059,7 +1059,7 @@ double CDeBloom::ComputeValue(CMemoryBitmap* pBitmap, C8BitGrayBitmap* pMask, in
 			pMask->GetPixel(i, j, fMask);
 			if (!IsBloomedValue(fMask) && !IsBloomedBorderValue(fMask))
 			{
-				double			fDistance = 1.0/(1.0+(double)fabs((double)i-x)+(j-y)*(j-y));
+				double			fDistance = 1.0/(1.0+ static_cast<double>(fabs(static_cast<double>(i-x))+(j-y)*(j-y)));
 
 				pBitmap->GetPixel(i, j, fValue);
 				fSum += fValue*fDistance;
@@ -1068,7 +1068,7 @@ double CDeBloom::ComputeValue(CMemoryBitmap* pBitmap, C8BitGrayBitmap* pMask, in
 		};
 	};
 
-	if (fWeight)
+	if (0 != fWeight)
 	{
 		fResult = fSum/fWeight;
 		bDone = true;
@@ -1127,7 +1127,7 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 				fBloomValue += fValue/(fBloomDistance+1.0);
 			};
 
-			if (fBloomWeight)
+			if (0 != fBloomWeight)
 				fBloomValue /= fBloomWeight;
 
 			//fValue1 = m_fBackground + exp(-(fDistance * fDistance)/fFactor1)*bs.m_fBloom;
@@ -1139,7 +1139,7 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 			if (fAverage>0 && fBloomValue>0)
 				fBloomValue = std::min(fAverage, fBloomValue);
 
-			if (fBloomValue)
+			if (0 != fBloomValue)
 				fValue = std::max(fBaseValue, fBloomValue);
 			/*
 			if (fAverage>0)
@@ -1265,7 +1265,7 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 				pMask->SetPixel(vNewlyProcessed[i].x(), vNewlyProcessed[i].y(), 190.0);
 			vNewlyProcessed.clear();
 
-			lNrUnprocessed = (int)vUnprocessed.size();
+			lNrUnprocessed = static_cast<int>(vUnprocessed.size());
 
 			std::vector<QPoint>			vToProcess = vUnprocessed;
 

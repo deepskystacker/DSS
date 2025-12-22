@@ -558,6 +558,7 @@ namespace DSS
 			ui->registerAndStack->setStyleSheet(QString("background-color: %1").arg(windowColourName));
 			ui->processing->setStyleSheet(QString("background-color: %1").arg(activeGroupColourName));
 			break;
+		default: break;
 		}
 	}
 

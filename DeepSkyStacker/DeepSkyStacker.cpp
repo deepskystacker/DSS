@@ -82,130 +82,184 @@ namespace bip = boost::interprocess;
 
 bool	g_bShowRefStars = false;
 
+using namespace DSS;
 //
 // Set up tracing and manage trace file deletion
 //
 DSS::TraceControl traceControl{ std::source_location::current().file_name() };
 
-
-bool	hasExpired()
+namespace 
 {
-	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
-	using namespace std::chrono;
-#ifdef DSSBETA
-
-	ZTRACE_RUNTIME("Check beta expiration\n");
-
-	auto now{ system_clock::now() };
-	auto tt{ system_clock::to_time_t(now) };
-	auto local_tm{ *localtime(&tt) };
-
-	auto year{ local_tm.tm_year + 1900 };
-	auto month{ local_tm.tm_mon + 1 };
-
-	constexpr auto		lMaxYear = DSSBETAEXPIREYEAR;
-	constexpr auto		lMaxMonth = DSSBETAEXPIREMONTH;
-	if ((year > lMaxYear) || ((year == lMaxYear) && (month > lMaxMonth)))
+	bool	hasExpired()
 	{
-		QString message = QCoreApplication::translate("DeepSkyStacker",
-			"This beta version of DeepSkyStacker has expired\nYou can probably get another one or download the final release from the web site.");
-		QMessageBox::critical(nullptr, "DeepSkyStacker",
-			message, QMessageBox::Ok);
-		bResult = true;
-	};
+		ZFUNCTRACE_RUNTIME();
+		bool				bResult = false;
+		using namespace std::chrono;
+	#ifdef DSSBETA
 
-	ZTRACE_RUNTIME("Check beta expiration - ok\n");
+		ZTRACE_RUNTIME("Check beta expiration\n");
 
-#endif
-	return bResult;
-};
+		auto now{ system_clock::now() };
+		auto tt{ system_clock::to_time_t(now) };
+		auto local_tm{ *localtime(&tt) };
 
-/* ------------------------------------------------------------------- */
+		auto year{ local_tm.tm_year + 1900 };
+		auto month{ local_tm.tm_mon + 1 };
 
-void	askIfVersionCheckWanted()
-{
-	ZFUNCTRACE_RUNTIME();
-	QSettings			settings;
-
-	bool checkVersion = false;
-
-	//
-	// If we don't know whether to do a version check or not
-	// we ask
-	//
-	if (settings.value("InternetCheck").isNull())
-	{
-		QString	strMsg{ QCoreApplication::translate("DeepSkyStacker",
-			"Do you want DeepSkyStacker to check if a newer version is available at startup?\n"
-			"(You can enable or disable this option later from the About box)",
-			"IDS_CHECKVERSION") };
-
-		auto result = QMessageBox::question(nullptr, "DeepSkyStacker", strMsg);
-
-		if (QMessageBox::Yes == result)
-			checkVersion = true;
-		else
-			checkVersion = false;
-		settings.setValue("InternetCheck", checkVersion);
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	deleteRemainingTempFiles()
-{
-	ZFUNCTRACE_RUNTIME();
-	std::vector<QString>	vFiles;
-	qint64					totalSize = 0;
-
-	QString folder(CAllStackingTasks::GetTemporaryFilesFolder());
-
-	QStringList nameFilters("DSS*.tmp");
-
-	QDir dir(folder);
-	dir.setNameFilters(nameFilters);
-
-	for (QFileInfo item : dir.entryInfoList())
-	{
-		if (item.isFile())
+		constexpr auto		lMaxYear = DSSBETAEXPIREYEAR;
+		constexpr auto		lMaxMonth = DSSBETAEXPIREMONTH;
+		if ((year > lMaxYear) || ((year == lMaxYear) && (month > lMaxMonth)))
 		{
-			vFiles.emplace_back(item.absoluteFilePath());
-			totalSize += item.size();
-		}
-	}
-
-	if (!vFiles.empty())
-	{
-		QString			strMsg;
-		QString			strSize;
-
-		ZTRACE_RUNTIME("Remove remaining %d temp files", vFiles.size());
-
-		SpaceToQString(totalSize, strSize);
-
-		strMsg = QString("One or more temporary files created by DeepSkyStacker are still in the working directory."
-			"\n\nDo you want to remove them?\n\n(%1 file(s) using %2)")
-			.arg(vFiles.size()).arg(strSize);
-
-		QMessageBox msgBox(QMessageBox::Question, QString(""), strMsg, (QMessageBox::Yes | QMessageBox::No));
-
-		msgBox.setDefaultButton(QMessageBox::Yes);
-
-		if (QMessageBox::Yes == msgBox.exec())
-		{
-			QFile file;
-			for (size_t i = 0; i < vFiles.size(); i++)
-			{
-				file.setFileName(vFiles[i]);
-				file.remove();
-			}
+			QString message = QCoreApplication::translate("DeepSkyStacker",
+				"This beta version of DeepSkyStacker has expired\nYou can probably get another one or download the final release from the web site.");
+			QMessageBox::critical(nullptr, "DeepSkyStacker",
+				message, QMessageBox::Ok);
+			bResult = true;
 		};
 
+		ZTRACE_RUNTIME("Check beta expiration - ok\n");
+
+	#endif
+		return bResult;
 	};
 
+	/* ------------------------------------------------------------------- */
 
-};
+	void	askIfVersionCheckWanted()
+	{
+		ZFUNCTRACE_RUNTIME();
+		QSettings			settings;
+
+		bool checkVersion = false;
+
+		//
+		// If we don't know whether to do a version check or not
+		// we ask
+		//
+		if (settings.value("InternetCheck").isNull())
+		{
+			QString	strMsg{ QCoreApplication::translate("DeepSkyStacker",
+				"Do you want DeepSkyStacker to check if a newer version is available at startup?\n"
+				"(You can enable or disable this option later from the About box)",
+				"IDS_CHECKVERSION") };
+
+			auto result = QMessageBox::question(nullptr, "DeepSkyStacker", strMsg);
+
+			if (QMessageBox::Yes == result)
+				checkVersion = true;
+			else
+				checkVersion = false;
+			settings.setValue("InternetCheck", checkVersion);
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void	deleteRemainingTempFiles()
+	{
+		ZFUNCTRACE_RUNTIME();
+		std::vector<QString>	vFiles;
+		qint64					totalSize = 0;
+
+		QString folder(CAllStackingTasks::GetTemporaryFilesFolder());
+
+		QStringList nameFilters("DSS*.tmp");
+
+		QDir dir(folder);
+		dir.setNameFilters(nameFilters);
+
+		for (QFileInfo item : dir.entryInfoList())
+		{
+			if (item.isFile())
+			{
+				vFiles.emplace_back(item.absoluteFilePath());
+				totalSize += item.size();
+			}
+		}
+
+		if (!vFiles.empty())
+		{
+			QString			strMsg;
+			QString			strSize;
+
+			ZTRACE_RUNTIME("Remove remaining %d temp files", vFiles.size());
+
+			SpaceToQString(totalSize, strSize);
+
+			strMsg = QString("One or more temporary files created by DeepSkyStacker are still in the working directory."
+				"\n\nDo you want to remove them?\n\n(%1 file(s) using %2)")
+				.arg(vFiles.size()).arg(strSize);
+
+			QMessageBox msgBox(QMessageBox::Question, QString(""), strMsg, (QMessageBox::Yes | QMessageBox::No));
+
+			msgBox.setDefaultButton(QMessageBox::Yes);
+
+			if (QMessageBox::Yes == msgBox.exec())
+			{
+				QFile file;
+				for (size_t i = 0; i < vFiles.size(); i++)
+				{
+					file.setFileName(vFiles[i]);
+					file.remove();
+				}
+			};
+
+		};
+
+
+	};
+
+	bool loadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
+	{
+		QString translatorFileName(prefix);
+		translatorFileName += (language == "") ? QLocale::system().name() : language;
+
+		qDebug() << "Loading translator file [" << translatorFileName << "] from path: " << path;
+		if (!translator.load(translatorFileName, path))
+		{
+			qDebug() << " *** Failed to load file [" << translatorFileName << "] into translator";
+			return false;
+		}
+
+		if (!app.installTranslator(&translator))
+		{
+			qDebug() << " *** Failed to install translator for file [" << translatorFileName << "]";
+			return false;
+		}
+		return true;
+	}
+
+	void atexitHandler()
+	{
+		//
+		// Delete the back pocket storage
+		//
+		backPocket.reset();
+	}
+}
+
+bool loadTranslations()
+{
+	if (!qApp)
+		return false;
+
+	static QTranslator theQtTranslator;
+	static QTranslator theAppTranslator;
+	static QTranslator theKernelTranslator;
+
+	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
+
+	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
+	QSettings settings;
+	const QString language = settings.value("Language").toString();
+	loadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
+	loadTranslationUnit(*qApp, theAppTranslator, "DeepSkyStacker_", ":/i18n/", language);
+	loadTranslationUnit(*qApp, theKernelTranslator, "DeepSkyStackerKernel_", ":/i18n/", language);
+
+	return true;
+}
+
+
 
 DeepSkyStacker::DeepSkyStacker() :
 	QMainWindow(),
@@ -224,7 +278,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
 	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) },
-	progressDlg{ new ProgressDlg(this)}
+	progressDlg{ new DSS::ProgressDlg(this)}
 {
 	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);
@@ -621,6 +675,7 @@ void DeepSkyStacker::updatePanel()
 		stackingDlg->showImageList(false);
 		processingDlg->update();
 		break;
+	default: break;
 	};
 	explorerBar->update();
 };
@@ -746,54 +801,6 @@ constexpr size_t backPocketSize{ 1024 * 1024 };
 
 char const* global_program_name;
 
-bool LoadTranslationUnit(QApplication& app, QTranslator& translator, const char* prefix, const QString& path, const QString& language)
-{
-	QString translatorFileName(prefix);
-	translatorFileName += (language == "") ? QLocale::system().name() : language;
-
-	qDebug() << "Loading translator file [" << translatorFileName << "] from path: " << path;
-	if (!translator.load(translatorFileName, path))
-	{
-		qDebug() << " *** Failed to load file [" << translatorFileName << "] into translator";
-		return false;
-	}
-	
-	if(!app.installTranslator(&translator))
-	{
-		qDebug() << " *** Failed to install translator for file [" << translatorFileName << "]";
-		return false;
-	}
-	return true;
-}
-
-bool LoadTranslations()
-{
-	if (!qApp)
-		return false;
-
-	static QTranslator theQtTranslator;
-	static QTranslator theAppTranslator;
-	static QTranslator theKernelTranslator;
-
-	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
-
-	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
-	QSettings settings;
-	const QString language = settings.value("Language").toString();
-	LoadTranslationUnit(*qApp, theQtTranslator, "qt_", QLibraryInfo::path(QLibraryInfo::TranslationsPath), language);
-	LoadTranslationUnit(*qApp, theAppTranslator, "DeepSkyStacker_", ":/i18n/", language);
-	LoadTranslationUnit(*qApp, theKernelTranslator, "DeepSkyStackerKernel_", ":/i18n/", language);
-	
-	return true;
-}
-
-void atexitHandler()
-{
-	//
-	// Delete the back pocket storage
-	//
-	backPocket.reset();
-}
 
 int main(int argc, char* argv[])
 {
@@ -861,7 +868,7 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Initialize Application - ok");
 
 	ZTRACE_RUNTIME("Set UI Language");
-	LoadTranslations();
+	loadTranslations();
 
 	AvxSimdCheck::reportCpuType();
 

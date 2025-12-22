@@ -62,7 +62,7 @@ namespace DSS
         inline void setShowDrizzle(bool show = true)
         {
             showDrizzle_ = show;
-        };
+        }
 
 
     protected:

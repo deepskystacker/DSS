@@ -56,6 +56,7 @@ namespace DSS
             ui->text->setText("");
             ui->alignNone->setChecked(true);
             break;
+        default: break;
         }
     }
 
