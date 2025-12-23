@@ -226,6 +226,11 @@ void AvxSimdCheck::reportCpuType()
 
 	// Logical core count per CPU
 	unsigned int logicalProcessors = (cpuid[1] >> 16) & 0xff; // EBX[23:16]
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-but-set-variable"
+#endif
+
 	// Physical core count per CPU - default to logicalProcessors 
 	unsigned int physicalProcessors = logicalProcessors;	
 	if (vendorStr == "GenuineIntel")
@@ -249,6 +254,9 @@ void AvxSimdCheck::reportCpuType()
 		physicalProcessors = (static_cast<uint32_t>(cpuid[2]) & 0xff) + 1; // ECX[7:0] + 1
 
 	}
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
 
 	char processor[64] = { '\0' };
 	if (nExtIds >= 0x80000004)
