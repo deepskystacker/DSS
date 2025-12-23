@@ -571,8 +571,7 @@ double BackgroundCalibratorVariant<Cals...>::calculateModelParameters(CMemoryBit
 }
 
 // Explicit instantiation
-template
-BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel>;
+template class BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel>;
 
 
 BackgroundCalibrator makeBackgroundCalibrator(
