@@ -50,7 +50,7 @@
 int AvxAccumulation::avxAccumulate(const int nrStackedBitmaps)
 {
 	int rval = 1;
-	if (doAccumulate<std::uint16_t, float>(nrStackedBitmaps) == 0
+	if (   doAccumulate<std::uint16_t, float>(nrStackedBitmaps) == 0
 		|| doAccumulate<std::uint32_t, float>(nrStackedBitmaps) == 0
 		|| doAccumulate<float, float>(nrStackedBitmaps) == 0)
 	{
@@ -66,11 +66,18 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 	if constexpr (!std::is_same<T_OUT, float>::value)
 		return 1;
 
+	if (!pOutputBitmap)
+		return 1;
+
 	const AvxBitmapUtil avxTempBitmap{ tempBitmap };
 
-	if (!avxTempBitmap.bitmapHasCorrectType<T_IN>())
+	if (!avxTempBitmap.bitmapHasCorrectType<T_IN>() || !AvxBitmapUtil{ *pOutputBitmap }.bitmapHasCorrectType<T_OUT>())
 		return 1;
-	if (!AvxBitmapUtil{ outputBitmap }.bitmapHasCorrectType<T_OUT>())
+
+	auto* const pColorOutput = dynamic_cast<CColorBitmapT<T_OUT>*>(pOutputBitmap.get());
+	auto* const pGrayOutput = dynamic_cast<CGrayBitmapT<T_OUT>*>(pOutputBitmap.get());
+
+	if (pColorOutput == nullptr && pGrayOutput == nullptr)
 		return 1;
 
 	ZFUNCTRACE_RUNTIME();
@@ -94,11 +101,12 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 
 		if (avxTempBitmap.isColorBitmap())
 		{
-			const T_IN *pRed{ &*avxTempBitmap.redPixels<T_IN>().cbegin() }, *pGreen{ &*avxTempBitmap.greenPixels<T_IN>().cbegin() }, *pBlue{ &*avxTempBitmap.bluePixels<T_IN>().cbegin() };
-			auto *const pOutput = dynamic_cast<CColorBitmapT<T_OUT>*>(&outputBitmap);
-			if (pOutput == nullptr)
-				return 1;
-			T_OUT *pOutRed{ &*pOutput->m_Red.m_vPixels.begin() }, *pOutGreen{ &*pOutput->m_Green.m_vPixels.begin() }, *pOutBlue{ &*pOutput->m_Blue.m_vPixels.begin() };
+			const T_IN* pRed = avxTempBitmap.redPixels<T_IN>().data();
+			const T_IN* pGreen = avxTempBitmap.greenPixels<T_IN>().data();
+			const T_IN* pBlue = avxTempBitmap.bluePixels<T_IN>().data();
+			T_OUT* pOutRed = pColorOutput->m_Red.m_vPixels.data();
+			T_OUT* pOutGreen = pColorOutput->m_Green.m_vPixels.data();
+			T_OUT* pOutBlue = pColorOutput->m_Blue.m_vPixels.data();
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
@@ -129,11 +137,8 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 		}
 		if (avxTempBitmap.isMonochromeBitmap())
 		{
-			const T_IN* pGray{ &*avxTempBitmap.grayPixels<T_IN>().cbegin() };
-			auto *const pOutput = dynamic_cast<CGrayBitmapT<T_OUT>*>(&outputBitmap);
-			if (pOutput == nullptr)
-				return 1;
-			T_OUT* pOut{ &*pOutput->m_vPixels.begin() };
+			const T_IN* pGray = avxTempBitmap.grayPixels<T_IN>().data();
+			T_OUT* pOut = pGrayOutput->m_vPixels.data();
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
@@ -162,11 +167,12 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 
 		if (avxTempBitmap.isColorBitmap())
 		{
-			const T_IN *pRed{ &*avxTempBitmap.redPixels<T_IN>().cbegin() }, *pGreen{ &*avxTempBitmap.greenPixels<T_IN>().cbegin() }, *pBlue{ &*avxTempBitmap.bluePixels<T_IN>().cbegin() };
-			auto* const pOutput = dynamic_cast<CColorBitmapT<T_OUT>*>(&outputBitmap);
-			if (pOutput == nullptr)
-				return 1;
-			T_OUT *pOutRed{ &*pOutput->m_Red.m_vPixels.begin() }, *pOutGreen{ &*pOutput->m_Green.m_vPixels.begin() }, *pOutBlue{ &*pOutput->m_Blue.m_vPixels.begin() };
+			const T_IN* pRed = avxTempBitmap.redPixels<T_IN>().data();
+			const T_IN* pGreen = avxTempBitmap.greenPixels<T_IN>().data();
+			const T_IN* pBlue = avxTempBitmap.bluePixels<T_IN>().data();
+			T_OUT* pOutRed = pColorOutput->m_Red.m_vPixels.data();
+			T_OUT* pOutGreen = pColorOutput->m_Green.m_vPixels.data();
+			T_OUT* pOutBlue = pColorOutput->m_Blue.m_vPixels.data();
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
@@ -197,11 +203,8 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 		}
 		if (avxTempBitmap.isMonochromeBitmap())
 		{
-			const T_IN* pGray{ &*avxTempBitmap.grayPixels<T_IN>().cbegin() };
-			auto *const pOutput = dynamic_cast<CGrayBitmapT<T_OUT>*>(&outputBitmap);
-			if (pOutput == nullptr)
-				return 1;
-			T_OUT* pOut{ &*pOutput->m_vPixels.begin() };
+			const T_IN* pGray = avxTempBitmap.grayPixels<T_IN>().data();
+			T_OUT* pOut = pGrayOutput->m_vPixels.data();
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
@@ -241,11 +244,13 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 
 		if (avxTempBitmap.isColorBitmap())
 		{
-			const T_IN *pRed{ &*avxTempBitmap.redPixels<T_IN>().cbegin() }, *pGreen{ &*avxTempBitmap.greenPixels<T_IN>().cbegin() }, *pBlue{ &*avxTempBitmap.bluePixels<T_IN>().cbegin() };
-			auto* const pOutput = dynamic_cast<CColorBitmapT<T_OUT>*>(&outputBitmap);
-			if (pOutput == nullptr)
-				return 1;
-			T_OUT *pOutRed{ &*pOutput->m_Red.m_vPixels.begin() }, *pOutGreen{ &*pOutput->m_Green.m_vPixels.begin() }, *pOutBlue{ &*pOutput->m_Blue.m_vPixels.begin() };
+			const T_IN* pRed = avxTempBitmap.redPixels<T_IN>().data();
+			const T_IN* pGreen = avxTempBitmap.greenPixels<T_IN>().data();
+			const T_IN* pBlue = avxTempBitmap.bluePixels<T_IN>().data();
+			T_OUT* pOutRed = pColorOutput->m_Red.m_vPixels.data();
+			T_OUT* pOutGreen = pColorOutput->m_Green.m_vPixels.data();
+			T_OUT* pOutBlue = pColorOutput->m_Blue.m_vPixels.data();
+
 			// Entropy
 			const float* pEntropyRed = reinterpret_cast<const float*>(avxEntropy.redEntropyLayer.data());
 			const float* pEntropyGreen = reinterpret_cast<const float*>(avxEntropy.greenEntropyLayer.data());
@@ -289,11 +294,9 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 		}
 		if (avxTempBitmap.isMonochromeBitmap())
 		{
-			const T_IN* pGray{ &*avxTempBitmap.grayPixels<T_IN>().cbegin() };
-			auto* const pOutput = dynamic_cast<CGrayBitmapT<T_OUT>*>(&outputBitmap);
-			if (pOutput == nullptr)
-				return 1;
-			T_OUT* pOut{ &*pOutput->m_vPixels.begin() };
+			const T_IN* pGray = avxTempBitmap.grayPixels<T_IN>().data();
+			T_OUT* pOut = pGrayOutput->m_vPixels.data();
+
 			// Entropy
 			const float* pEntropy = reinterpret_cast<const float*>(avxEntropy.redEntropyLayer.data());
 			float* pEntropyCov{ avxEntropyCoverageBitmap.grayPixels<float>().data() };

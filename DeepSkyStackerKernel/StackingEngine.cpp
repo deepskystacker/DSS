@@ -1807,7 +1807,7 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 			}
 
 			// First try AVX accelerated code, if not supported -> run conventional code.
-			AvxAccumulation avxAccumulation(m_rcResult, *pTaskInfo, *StackTask.m_pTempBitmap, *m_pOutput, avxEntropy);
+			AvxAccumulation avxAccumulation(m_rcResult, *pTaskInfo, *StackTask.m_pTempBitmap, m_pOutput, avxEntropy);
 			const int avxResult = avxAccumulation.accumulate(m_lNrStacked);
 
 			if (this->pTaskInfo->m_Method == MBP_FASTAVERAGE)
