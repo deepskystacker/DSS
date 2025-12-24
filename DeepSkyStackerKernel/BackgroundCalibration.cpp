@@ -570,10 +570,6 @@ double BackgroundCalibratorVariant<Cals...>::calculateModelParameters(CMemoryBit
 	return redMedian;
 }
 
-// Explicit instantiation
-template class BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel>;
-
-
 BackgroundCalibrator makeBackgroundCalibrator(
 	const BACKGROUNDCALIBRATIONINTERPOLATION interpolation, const BACKGROUNDCALIBRATIONMODE bcmd, const RGBBACKGROUNDCALIBRATIONMETHOD rgbme, const double multr)
 {
@@ -590,9 +586,7 @@ BackgroundCalibrator makeBackgroundCalibrator(
 	case BACKGROUNDCALIBRATIONINTERPOLATION::BCI_OFFSET: return BackgroundCalibrator{ OffsetModel{}, multr, mode, rgbMethod };
 	default: return BackgroundCalibrator{ NoneModel{}, multr, mode, rgbMethod };
 	}
-	return BackgroundCalibrator{ NoneModel{}, multr, mode, rgbMethod };
 }
-
 
 // Explicit template instantiation
 template class BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel>;

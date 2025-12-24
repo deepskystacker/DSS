@@ -177,6 +177,3 @@ using BackgroundCalibrator = BackgroundCalibratorVariant<NoneModel, OffsetModel,
 
 BackgroundCalibrator makeBackgroundCalibrator(
 	const BACKGROUNDCALIBRATIONINTERPOLATION interpolation, const BACKGROUNDCALIBRATIONMODE bcmd, const RGBBACKGROUNDCALIBRATIONMETHOD rgbme, const double multr);
-
-
-extern template class BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel>;
