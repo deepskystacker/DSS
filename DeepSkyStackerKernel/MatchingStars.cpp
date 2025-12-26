@@ -1027,26 +1027,11 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 	const auto TargetStar = [&targetStarDistances, &targetStarIndices](const size_t ndx) { return targetStarDistances[targetStarIndices[ndx]]; };
 	const auto ReferenceStar = [&dist = m_vRefStarDistances, &ind = m_vRefStarIndices](const size_t ndx) { return dist[ind[ndx]]; };
 
-#if defined(Q_CC_CLANG)
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-lambda-capture"
-#endif
-
-	const auto getRefStarDistance = [this, b = m_vRefStarDistances.data(), e = m_vRefStarDistances.data() + m_vRefStarDistances.size()](
-		const int star1, const int star2) -> float
+	const auto GetRefStarDistance = [refDst = std::span(m_vRefStarDistances)](const int star1, const int star2) -> float
 	{
-#if !defined(NDEBUG) // Accelerate the search in debug mode by using raw pointers and avoiding iterators.
-		const auto it = std::lower_bound(b, e, CStarDist(star1, star2));
-		return it == e ? 0.0 : it->m_fDistance;
-#else
-		const auto it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(star1, star2));
-		return it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
-#endif
+		const auto it = std::lower_bound(std::cbegin(refDst), std::cend(refDst), CStarDist(star1, star2));
+		return it == std::cend(refDst) ? 0.0 : it->m_fDistance;
 	};
-#if defined(Q_CC_CLANG)
-#pragma clang diagnostic pop
-#endif
-
 
 	for (size_t i = 0, j = 0; i < targetStarDistances.size() && j < m_vRefStarDistances.size();)
 	{
@@ -1094,8 +1079,8 @@ bool CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters& Bil
 //								it = std::lower_bound(m_vRefStarDistances.cbegin(), m_vRefStarDistances.cend(), CStarDist(lRefStar2, lRefStar3));
 //								const double fRefDistance23 = it == m_vRefStarDistances.cend() ? 0.0 : it->m_fDistance;
 
-								const double fRefDistance13 = getRefStarDistance(lRefStar1, lRefStar3);
-								const double fRefDistance23 = getRefStarDistance(lRefStar2, lRefStar3);
+								const double fRefDistance13 = GetRefStarDistance(lRefStar1, lRefStar3);
+								const double fRefDistance23 = GetRefStarDistance(lRefStar2, lRefStar3);
 
 								if (std::abs(fRefDistance13 - fTgtDistance13) < MAXSTARDISTANCEDELTA && std::fabs(fRefDistance23 - fTgtDistance23) < MAXSTARDISTANCEDELTA)
 								{
