@@ -49,7 +49,7 @@ public:
 template <class PrimarySimdClass, class... OtherSimdClasses>
 int SimdSelector(auto* pDataClass, auto&& Caller)
 {
-	const int rv = Caller(PrimarySimdClass::makeSimdObject(pDataClass));
+	const int rv = std::invoke(std::forward<decltype(Caller)>(Caller), PrimarySimdClass::makeSimdObject(pDataClass));
 
 	if constexpr (sizeof...(OtherSimdClasses) == 0)
 		return rv;
