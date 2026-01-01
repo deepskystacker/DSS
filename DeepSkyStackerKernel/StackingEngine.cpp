@@ -27,14 +27,17 @@
 
 #if !defined(__cpp_lib_atomic_ref)
 #include <boost/atomic/atomic_ref.hpp>
-#define STD_or_BOOST boost
+	namespace STD_or_BOOST {
+		using boost::atomic_ref;
+	}
 #else
-#define STD_or_BOOST std
+	namespace STD_or_BOOST {
+		using std::atomic_ref;
+	}
 #endif
 
-/* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
+void CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Reference Frame: %s", path.generic_u8string().c_str());
@@ -135,7 +138,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 
 	file.close();
 	std::sort(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end());
-};
+}
 
 /* ------------------------------------------------------------------- */
 
