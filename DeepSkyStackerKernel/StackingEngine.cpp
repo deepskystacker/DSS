@@ -137,7 +137,7 @@ void CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 	};
 
 	file.close();
-	std::sort(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end());
+	std::ranges::sort(m_vLightFrameStackingInfo);
 }
 
 /* ------------------------------------------------------------------- */
@@ -1091,7 +1091,7 @@ void CStackingEngine::ComputeBitmap()
 		ZTRACE_RUNTIME("Compute resulting bitmap");
 		if (!m_vCometShifts.empty())
 		{
-			std::ranges::sort(m_vCometShifts, std::less{});
+			std::ranges::sort(m_vCometShifts, std::ranges::less{});
 			m_pMasterLight->SetImageOrder(ImageIndexVector(m_vCometShifts));
 
 			const double fX1 = m_vCometShifts.cbegin()->m_fXShift; // First one

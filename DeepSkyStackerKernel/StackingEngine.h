@@ -28,9 +28,14 @@ public:
 	~CImageCometShift() = default;
 	CImageCometShift& operator=(const CImageCometShift&) noexcept = default;
 
-	bool operator<(const CImageCometShift& ics) const
+	friend constexpr bool operator==(CImageCometShift const& lhs, CImageCometShift const& rhs) noexcept
 	{
-		return m_fXShift == ics.m_fXShift ? (m_fYShift < ics.m_fYShift) : (m_fXShift < ics.m_fXShift);
+		return lhs.m_fXShift == rhs.m_fXShift && lhs.m_fYShift == rhs.m_fYShift;
+	}
+	friend constexpr auto operator<=>(CImageCometShift const& lhs, CImageCometShift const& rhs) noexcept
+	{
+		const auto cmp = lhs.m_fXShift <=> rhs.m_fXShift;
+		return cmp != 0 ? cmp : lhs.m_fYShift <=> rhs.m_fYShift;
 //		if (m_fXShift < ics.m_fXShift)
 //			return true;
 //		else if (m_fXShift > ics.m_fXShift)

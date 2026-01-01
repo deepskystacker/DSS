@@ -908,9 +908,13 @@ namespace DSS
 		ScoredLightFrame& operator=(const ScoredLightFrame& rhs) = delete;
 		ScoredLightFrame& operator=(ScoredLightFrame&& rhs) = default;
 
-		bool operator>(const ScoredLightFrame& rhs) const
+		friend constexpr bool operator==(ScoredLightFrame const& lhs, ScoredLightFrame const& rhs) noexcept
 		{
-			return qualityParameter > rhs.qualityParameter;
+			return lhs.qualityParameter == rhs.qualityParameter;
+		}
+		friend constexpr auto operator<=>(ScoredLightFrame const& lhs, ScoredLightFrame const& rhs) noexcept
+		{
+			return lhs.qualityParameter <=> rhs.qualityParameter;
 		}
 	};
 
@@ -936,7 +940,7 @@ namespace DSS
 		const size_t last = static_cast<size_t>(fPercent * static_cast<double>(lightFrames.size()) / 100.0);
 		//
 		// Sort in descending order
-		std::ranges::sort(lightFrames, std::greater{});
+		std::ranges::sort(lightFrames, std::ranges::greater{});
 
 		for (size_t i = 0; i < lightFrames.size(); i++)
 		{
