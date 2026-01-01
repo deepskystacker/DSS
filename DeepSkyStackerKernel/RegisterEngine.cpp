@@ -16,6 +16,11 @@
 #include "avx_bitmap_util.h"
 #include "avx_simd_check.h"
 
+CRegisteredFrame::CRegisteredFrame()
+{
+	Reset();
+}
+
 void CRegisteredFrame::Reset()
 {
 	Workspace workspace;
@@ -314,6 +319,28 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 
 /* ------------------------------------------------------------------- */
 
+CLightFrameInfo::CLightFrameInfo() : CFrameInfo{}, CRegisteredFrame{}
+{
+	Reset();
+}
+
+CLightFrameInfo::CLightFrameInfo(const CFrameInfo& cbi) : CFrameInfo{ cbi }, CRegisteredFrame{}
+{
+	Reset();
+}
+
+CLightFrameInfo::CLightFrameInfo(DSS::OldProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
+{
+	Reset();
+	SetProgress(pPrg);
+}
+
+CLightFrameInfo& CLightFrameInfo::operator=(const CFrameInfo& cbi)
+{
+	CFrameInfo::operator=(cbi);
+	return *this;
+}
+
 void CLightFrameInfo::Reset()
 {
 //	CFrameInfo::Reset();
@@ -330,6 +357,16 @@ void CLightFrameInfo::Reset()
 	m_bTransformedCometPosition = false;
 
 	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
+}
+
+void CLightFrameInfo::SetHotPixelRemoval(const bool bHotPixels)
+{
+	m_bRemoveHotPixels = bHotPixels;
+}
+
+void CLightFrameInfo::SetProgress(DSS::OldProgressBase* pProgress)
+{
+	m_pProgress = pProgress;
 }
 
 double CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& bitmap) const

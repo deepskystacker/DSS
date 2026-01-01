@@ -47,6 +47,7 @@ public:
 	CFrameInfo() = default;
 	CFrameInfo(const CFrameInfo&) = default;
 	CFrameInfo& operator=(const CFrameInfo&) = default;
+	virtual ~CFrameInfo() = default;
 
 	bool IsLightFrame() const
 	{

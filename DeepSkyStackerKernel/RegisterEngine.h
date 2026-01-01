@@ -35,17 +35,13 @@ private:
 	void Reset();
 
 public:
-	CRegisteredFrame()
-	{
-		Reset();
-	}
-
+	CRegisteredFrame();
 	CRegisteredFrame(const CRegisteredFrame&) = default;
 	CRegisteredFrame(CRegisteredFrame&&) = default;
 	CRegisteredFrame& operator=(const CRegisteredFrame&) = default;
 	CRegisteredFrame& operator=(CRegisteredFrame&&) = default;
-
 	virtual ~CRegisteredFrame() = default;
+
 
 	static double ComputeScore(const STARVECTOR& stars);
 
@@ -113,42 +109,18 @@ private:
 	void Reset();
 
 public:
-	CLightFrameInfo() : CFrameInfo{}, CRegisteredFrame{}
-	{
-		Reset();
-	}
-
+	CLightFrameInfo();
 	CLightFrameInfo(const CLightFrameInfo&) = default;
-
-	explicit CLightFrameInfo(const CFrameInfo& cbi) : CFrameInfo{ cbi }, CRegisteredFrame{}
-	{
-        Reset();
-//		CFrameInfo::CopyFrom(cbi);
-	}
-
-	explicit CLightFrameInfo(DSS::OldProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
-	{
-		Reset();
-		this->SetProgress(pPrg);
-	}
+	explicit CLightFrameInfo(const CFrameInfo& cbi);
+	explicit CLightFrameInfo(DSS::OldProgressBase* const pPrg);
+	virtual ~CLightFrameInfo() override = default;
 
 	CLightFrameInfo& operator=(const CLightFrameInfo&) = default;
-	CLightFrameInfo& operator=(const CFrameInfo& cbi)
-	{
-		CFrameInfo::operator=(cbi);
-		return *this;
-	}
+	CLightFrameInfo& operator=(const CFrameInfo& cbi);
 
-	void SetHotPixelRemoval(const bool bHotPixels)
-	{
-		m_bRemoveHotPixels = bHotPixels;
-	}
 
-	void SetProgress(DSS::OldProgressBase* pProgress)
-	{
-		m_pProgress = pProgress;
-	}
-
+	void SetHotPixelRemoval(const bool bHotPixels);
+	void SetProgress(DSS::OldProgressBase* pProgress);
 	void SetBitmap(fs::path path);
 
 public:

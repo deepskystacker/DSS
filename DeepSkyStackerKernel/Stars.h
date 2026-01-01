@@ -3,28 +3,30 @@
 #include "DSSTools.h"
 
 
-class CStar
+class CStar final
 {
 public:
-	DSSRect			m_rcStar{};
-	double			m_fIntensity{ 0.0 };
-	double			m_fPercentage{ 0.0 };
-	double			m_fCircularity{ 0.0 };
-	double			m_fMeanRadius{ 0.0 };
-	double			m_fX{ 0.0 };
-	double			m_fY{ 0.0 };
-	bool			m_bAdded{ false };
-	bool			m_bRemoved{ false };
-	double			m_fLargeMajorAxis{ 0.0 };
-	double			m_fSmallMajorAxis{ 0.0 };
-	double			m_fLargeMinorAxis{ 0.0 };
-	double			m_fSmallMinorAxis{ 0.0 };
-	double			m_fMajorAxisAngle{ 0.0 };
-	double			eccentricity{ 1.0 };
+	DSSRect m_rcStar{};
+	double m_fIntensity{ 0.0 };
+	double m_fPercentage{ 0.0 };
+	double m_fCircularity{ 0.0 };
+	double m_fMeanRadius{ 0.0 };
+	double m_fX{ 0.0 };
+	double m_fY{ 0.0 };
+	double m_fLargeMajorAxis{ 0.0 };
+	double m_fSmallMajorAxis{ 0.0 };
+	double m_fLargeMinorAxis{ 0.0 };
+	double m_fSmallMinorAxis{ 0.0 };
+	double m_fMajorAxisAngle{ 0.0 };
+	double eccentricity{ 1.0 };
+	bool m_bAdded{ false };
+	bool m_bRemoved{ false };
 
 public:
 	CStar() = default;
 	explicit constexpr CStar(const double x, const double y) : m_fX{ x }, m_fY{ y }
+	{}
+	explicit constexpr CStar(const int x, const int y) : CStar{ static_cast<double>(x), static_cast<double>(y) }
 	{}
 	CStar(const CStar&) = default;
 	CStar& operator=(const CStar&) = default;
@@ -33,14 +35,13 @@ public:
 
 	friend constexpr auto operator<=>(const CStar& lhs, const CStar& rhs)
 	{
-		if (auto cmp = lhs.m_fX <=> rhs.m_fX; cmp != 0)
-			return cmp;
-		return lhs.m_fY <=> rhs.m_fY;
+		const auto cmp = lhs.m_fX <=> rhs.m_fX;
+		return cmp != 0 ? cmp : lhs.m_fY <=> rhs.m_fY;
 	}
 	// Two stars are equal if they are at the same position
-	friend constexpr auto operator==(const CStar& lhs, const CStar& rhs)
+	friend constexpr bool operator==(const CStar& lhs, const CStar& rhs)
 	{
-		return operator<=>(lhs, rhs) == 0;
+		return lhs.m_fX == rhs.m_fX && lhs.m_fY == rhs.m_fY;
 	}
 
 private:
@@ -72,9 +73,7 @@ public:
 };
 
 using STARVECTOR = std::vector<CStar>;
-using STARITERATOR = STARVECTOR::iterator;
 using STARSET = std::set<CStar>;
-using STARSETITERATOR = STARSET::iterator;
 
 constexpr inline const size_t MaxNumberOfConsideredStars = 100;
 
@@ -117,6 +116,7 @@ inline int FindNearestStar(const double fX, const double fY, const STARVECTOR& v
 	return lResult;
 }
 
+#if 0
 inline int FindNearestStarWithinDistance(const double fX, const double fY, const STARVECTOR& vStars, bool& bIn, double& fDistance)
 {
 	const double distanceRange = fDistance;
@@ -125,8 +125,8 @@ inline int FindNearestStarWithinDistance(const double fX, const double fY, const
 	bIn = false;
 
 	// First star right of fx - distanceRange.
-	auto it = std::ranges::lower_bound(vStars, CStar{ fX - distanceRange, 0 });
-	while (it != std::cend(vStars) && it->m_fX <= fX + distanceRange) // While star is left of fx + distanceRange
+	auto it = std::ranges::lower_bound(vStars, CStar{ fX - distanceRange, 0.0 });
+	while (it != std::ranges::end(vStars) && it->m_fX <= fX + distanceRange) // While star is left of fx + distanceRange
 	{
 		if (!it->m_bRemoved && std::abs(it->m_fY - fY) <= distanceRange) // y-distance smaller than distanceRange ?
 		{
@@ -148,3 +148,4 @@ inline int FindNearestStarWithinDistance(const double fX, const double fY, const
 
 	return lResult;
 }
+#endif
