@@ -41,45 +41,30 @@ public:
 };
 
 
-class CLightFrameStackingInfo
+struct CLightFrameStackingInfo final
 {
-public:
-	fs::path file;
-	QString m_strInfoFileName;
-	CBilinearParameters m_BilinearParameters;
+	fs::path file{};
+	QString m_strInfoFileName{};
+	CBilinearParameters m_BilinearParameters{};
 
-private:
-	void	CopyFrom(const CLightFrameStackingInfo & rhs)
-	{
-		file = rhs.file;
-		m_strInfoFileName = rhs.m_strInfoFileName;
-		m_BilinearParameters = rhs.m_BilinearParameters;
-	}
-public:
 	CLightFrameStackingInfo() = default;
-	CLightFrameStackingInfo(const fs::path& path) :
+	explicit CLightFrameStackingInfo(const fs::path& path) :
 		file { path }
+	{}
+
+	~CLightFrameStackingInfo() = default;
+	CLightFrameStackingInfo(const CLightFrameStackingInfo&) = default;
+	CLightFrameStackingInfo(CLightFrameStackingInfo&&) = default;
+	CLightFrameStackingInfo& operator=(const CLightFrameStackingInfo&) = default;
+
+	friend bool operator==(CLightFrameStackingInfo const& lhs, CLightFrameStackingInfo const& rhs) noexcept
 	{
+		return lhs.file == rhs.file;
 	}
-
-	~CLightFrameStackingInfo() {}
-
-	CLightFrameStackingInfo(const CLightFrameStackingInfo & rhs)
+	friend auto operator<=>(CLightFrameStackingInfo const& lhs, CLightFrameStackingInfo const& rhs) noexcept
 	{
-		CopyFrom(rhs);
+		return (lhs.file <=> rhs.file);
 	}
-
-	CLightFrameStackingInfo & operator = (const CLightFrameStackingInfo & lfsi)
-	{
-		CopyFrom(lfsi);
-		return (*this);
-	}
-
-	bool operator < (const CLightFrameStackingInfo & rhs) const
-	{
-		return (file < rhs.file);
-	}
-
 };
 
 
