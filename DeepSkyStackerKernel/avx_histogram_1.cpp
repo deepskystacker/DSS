@@ -231,12 +231,13 @@ int NonAvxBezierAndSaturation::avxToHsl()
 
 int NonAvxBezierAndSaturation::avxBezierAdjust(const size_t)
 {
-	for (size_t n = 0, bufferLen = this->histoData.blueBuffer.size(); n < bufferLen; ++n)
+	for (auto& blue : this->histoData.blueBuffer)
 	{
-		const auto it = std::lower_bound(this->histoData.bezierX.cbegin(), this->histoData.bezierX.cend(), this->histoData.blueBuffer[n]);
-		const std::ptrdiff_t ndx = it - this->histoData.bezierX.cbegin();
-		if (ndx < static_cast<std::ptrdiff_t>(this->histoData.bezierX.size()))
-			this->histoData.blueBuffer[n] = this->histoData.bezierY[ndx];
+		if (const auto it = std::ranges::lower_bound(std::as_const(histoData.bezierX), blue); it != std::ranges::cend(histoData.bezierX))
+		{
+			const auto ndx = it - std::ranges::cbegin(histoData.bezierX);
+			blue = histoData.bezierY[ndx];
+		}
 	}
 	return 0;
 }
