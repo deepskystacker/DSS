@@ -145,7 +145,7 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibration", QVariant(false)));
 	vSettings.push_back(WorkspaceSetting("Stacking/PerChannelBackgroundCalibration", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", QVariant(static_cast<uint>(BCI_RATIONAL))));
+	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", QVariant(static_cast<uint>(BCI_OFFSET))));
 	vSettings.push_back(WorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", QVariant(static_cast<uint>(RBCM_MAXIMUM))));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/DarkOptimization", QVariant(false)));
