@@ -322,7 +322,8 @@ namespace DSS {
 							const QPoint ptTest{ i, j };
 
 							// Check that this pixel is not already used for another star.
-							for (STARSET::const_iterator it = stars.lower_bound(CStar(ptTest.x() - STARMAXSIZE, 0)); it != stars.cend() && bNew; ++it) // Note: stars are sorted by x-coordinate.
+							// Note: stars are sorted by x-coordinate.
+							for (auto it = ranges::lower_bound(stars, CStar{ ptTest.x() - STARMAXSIZE, 0 }); it != ranges::end(stars) && bNew; ++it)
 							{
 								if (it->IsInRadius(ptTest))
 									bNew = false;
@@ -424,7 +425,7 @@ namespace DSS {
 								if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2)) // We found darker pixels, no brighter pixels, candidate is not too small.
 								{
 									int maxDeltaRadii = 0;
-									const auto CompareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](std::ranges::viewable_range auto dirs) -> bool
+									const auto CompareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](ranges::viewable_range auto dirs) -> bool
 									{
 										bool OK = true;
 										for (const Dirs k1 : dirs)
@@ -529,7 +530,8 @@ namespace DSS {
 											// Check last overlap condition
 											{
 												constexpr double RadiusFactor = CRegisteredFrame::RadiusFactor;
-												for (STARSET::const_iterator it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * RadiusFactor - STARMAXSIZE, 0)); it != stars.cend() && validCandidate; ++it)
+												for (auto it = ranges::lower_bound(stars, CStar{ ms.m_fX - ms.m_fMeanRadius * RadiusFactor - STARMAXSIZE, 0.0 });
+													it != ranges::end(stars) && validCandidate; ++it)
 												{
 													// If the candidate is closer to one of the already found stars -> NO candidate any more.
 													if (Distance(ms.m_fX, ms.m_fY, it->m_fX, it->m_fY) < (ms.m_fMeanRadius + it->m_fMeanRadius) * RadiusFactor)

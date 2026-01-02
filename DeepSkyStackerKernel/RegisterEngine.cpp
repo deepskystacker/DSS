@@ -16,6 +16,11 @@
 #include "avx_bitmap_util.h"
 #include "avx_simd_check.h"
 
+CRegisteredFrame::CRegisteredFrame()
+{
+	Reset();
+}
+
 void CRegisteredFrame::Reset()
 {
 	Workspace workspace;
@@ -83,7 +88,9 @@ double CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
 	namespace vs = std::ranges::views;
 
 	constexpr auto Filter = vs::filter([](const CStar& star) { return !star.m_bRemoved; });
-	const auto Projector = [&stars](auto&& getter, const int ndx) { return std::invoke(getter, std::cref(stars[ndx])); };
+	const auto Projector = [&stars](auto&& getter, const int ndx) {
+		return std::invoke(std::forward<decltype(getter)>(getter), std::cref(stars[ndx]));
+	};
 
 	//auto activeStars = Filter(stars);
 
@@ -91,7 +98,7 @@ double CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
 	std::iota(indexes.begin(), indexes.end(), 0);
 
 	// Sort indexes descending (due to std::greater) by CStar::circularity.
-	std::ranges::sort(indexes, std::greater{}, std::bind_front(Projector, &CStar::m_fCircularity));
+	std::ranges::sort(indexes, std::ranges::greater{}, std::bind_front(Projector, &CStar::m_fCircularity));
 	// Approximate a Gaussian weighting
 	constexpr std::array<double, 26> weights = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.5, 9.0, 8.7, 8.3, 8.0, 7.7, 7.0, 6.5, 5.7, 5.0, 4.2, 3.4, 2.8, 2.3, 2.0, 1.7, 1.5, 1.4, 1.3, 1.2 };
 	double sumWeights = 0;
@@ -314,6 +321,28 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 
 /* ------------------------------------------------------------------- */
 
+CLightFrameInfo::CLightFrameInfo() : CFrameInfo{}, CRegisteredFrame{}
+{
+	Reset();
+}
+
+CLightFrameInfo::CLightFrameInfo(const CFrameInfo& cbi) : CFrameInfo{ cbi }, CRegisteredFrame{}
+{
+	Reset();
+}
+
+CLightFrameInfo::CLightFrameInfo(DSS::OldProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
+{
+	Reset();
+	SetProgress(pPrg);
+}
+
+CLightFrameInfo& CLightFrameInfo::operator=(const CFrameInfo& cbi)
+{
+	CFrameInfo::operator=(cbi);
+	return *this;
+}
+
 void CLightFrameInfo::Reset()
 {
 //	CFrameInfo::Reset();
@@ -330,6 +359,16 @@ void CLightFrameInfo::Reset()
 	m_bTransformedCometPosition = false;
 
 	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
+}
+
+void CLightFrameInfo::SetHotPixelRemoval(const bool bHotPixels)
+{
+	m_bRemoveHotPixels = bHotPixels;
+}
+
+void CLightFrameInfo::SetProgress(DSS::OldProgressBase* pProgress)
+{
+	m_pProgress = pProgress;
 }
 
 double CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& bitmap) const

@@ -27,14 +27,17 @@
 
 #if !defined(__cpp_lib_atomic_ref)
 #include <boost/atomic/atomic_ref.hpp>
-#define STD_or_BOOST boost
+	namespace STD_or_BOOST {
+		using boost::atomic_ref;
+	}
 #else
-#define STD_or_BOOST std
+	namespace STD_or_BOOST {
+		using std::atomic_ref;
+	}
 #endif
 
-/* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
+void CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Reference Frame: %s", path.generic_u8string().c_str());
@@ -134,8 +137,8 @@ void	CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 	};
 
 	file.close();
-	std::sort(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end());
-};
+	std::ranges::sort(m_vLightFrameStackingInfo);
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -173,24 +176,23 @@ void CLightFramesStackingInfo::AddLightFrame(const fs::path& szLightFrame, const
 {
 	ZFUNCTRACE_RUNTIME();
 
-	CLightFrameStackingInfo lfsi(szLightFrame);
-	const QString strInfoFileName = GetInfoFileName(szLightFrame);
+	CLightFrameStackingInfo lfsi{ szLightFrame };
 
-	auto it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), lfsi);
-	if (it != m_vLightFrameStackingInfo.end() && it->file.compare(szLightFrame) == 0)
+	const auto it = std::ranges::lower_bound(m_vLightFrameStackingInfo, lfsi);
+	if (it != std::ranges::end(m_vLightFrameStackingInfo) && it->file.compare(szLightFrame) == 0)
 	{
 		// There is already this light frame
-		it->m_strInfoFileName = strInfoFileName;
+		it->m_strInfoFileName = GetInfoFileName(szLightFrame);
 		it->m_BilinearParameters = bp;
 	}
 	else
 	{
 		// New light frame
-		lfsi.m_strInfoFileName = strInfoFileName;
+		lfsi.m_strInfoFileName = GetInfoFileName(szLightFrame);
 		lfsi.m_BilinearParameters = bp;
 
-		m_vLightFrameStackingInfo.push_back(lfsi);
-		std::sort(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end());
+		m_vLightFrameStackingInfo.push_back(std::move(lfsi));
+		std::ranges::sort(m_vLightFrameStackingInfo);
 	}
 }
 
@@ -198,20 +200,19 @@ void CLightFramesStackingInfo::AddLightFrame(const fs::path& szLightFrame, const
 bool CLightFramesStackingInfo::GetParameters(const fs::path& szLightFrame, CBilinearParameters& bp) const
 {
 	// ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
 
-	auto it = std::lower_bound(m_vLightFrameStackingInfo.cbegin(), m_vLightFrameStackingInfo.cend(), CLightFrameStackingInfo(szLightFrame));
-	if (it != m_vLightFrameStackingInfo.cend() && it->file.compare(szLightFrame) == 0)
+	const auto it = std::ranges::lower_bound(m_vLightFrameStackingInfo, CLightFrameStackingInfo{ szLightFrame });
+	if (it != std::ranges::end(m_vLightFrameStackingInfo) && it->file.compare(szLightFrame) == 0)
 	{
 		const QString strInfoFileName = GetInfoFileName(szLightFrame);
 		if (strInfoFileName.compare(it->m_strInfoFileName, Qt::CaseInsensitive) == 0) // strings equal
 		{
 			bp = it->m_BilinearParameters;
-			bResult = true;
+			return true;
 		}
 	}
 
-	return bResult;
+	return false;
 }
 
 
@@ -1090,7 +1091,7 @@ void CStackingEngine::ComputeBitmap()
 		ZTRACE_RUNTIME("Compute resulting bitmap");
 		if (!m_vCometShifts.empty())
 		{
-			std::ranges::sort(m_vCometShifts, std::less{});
+			std::ranges::sort(m_vCometShifts, std::ranges::less{});
 			m_pMasterLight->SetImageOrder(ImageIndexVector(m_vCometShifts));
 
 			const double fX1 = m_vCometShifts.cbegin()->m_fXShift; // First one

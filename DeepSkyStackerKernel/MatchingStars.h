@@ -32,14 +32,17 @@ public:
 	{}
 
 	CStarTriangle(const CStarTriangle&) = default;
-
 	CStarTriangle& operator=(const CStarTriangle&) = default;
-
+	CStarTriangle(CStarTriangle&&) = default;
 	~CStarTriangle() = default;
 
-	constexpr friend bool operator<(CStarTriangle const& lhs, CStarTriangle const& rhs) noexcept
+	constexpr friend bool operator==(CStarTriangle const& lhs, CStarTriangle const& rhs) noexcept
 	{
-		return lhs.m_fX < rhs.m_fX;
+		return lhs.m_fX == rhs.m_fX;
+	}
+	constexpr friend auto operator<=>(CStarTriangle const& lhs, CStarTriangle const& rhs) noexcept
+	{
+		return lhs.m_fX <=> rhs.m_fX;
 	}
 };
 
@@ -89,26 +92,21 @@ public:
 	explicit constexpr CStarDist(const size_t star1, const size_t star2) noexcept : CStarDist(star1, star2, 0.0f) {}
 
 	CStarDist(const CStarDist&) = default;
-
+	CStarDist(CStarDist&&) = default;
+	CStarDist& operator=(const CStarDist&) = default;
 	~CStarDist() = default;
 
-	CStarDist& operator=(const CStarDist&) = default;
-
-	constexpr friend bool operator<(CStarDist const& lhs, CStarDist const& rhs) noexcept
+	constexpr friend bool operator==(CStarDist const& lhs, CStarDist const& rhs) noexcept
 	{
-		return lhs.m_Star1 == rhs.m_Star1 ? (lhs.m_Star2 < rhs.m_Star2) : (lhs.m_Star1 < rhs.m_Star1);
+		return lhs.m_Star1 == rhs.m_Star1 && lhs.m_Star2 == rhs.m_Star2;
 	}
 
-	//bool operator<(const CStarDist& sd) const
-	//{
-	//	return m_Star1 == sd.m_Star1 ? (m_Star2 < sd.m_Star2) : (m_Star1 < sd.m_Star1);
-	//	//if (m_Star1 < sd.m_Star1)
-	//	//	return true;
-	//	//else if (m_Star1 > sd.m_Star1)
-	//	//	return false;
-	//	//else
-	//	//	return (m_Star2 < sd.m_Star2);
-	//}
+	constexpr friend auto operator<=>(CStarDist const& lhs, CStarDist const& rhs) noexcept
+	{
+		const auto cmp = lhs.m_Star1 <=> rhs.m_Star1;
+		return cmp != 0 ? cmp : lhs.m_Star2 <=> rhs.m_Star2;
+//		return lhs.m_Star1 == rhs.m_Star1 ? (lhs.m_Star2 <=> rhs.m_Star2) : (lhs.m_Star1 <=> rhs.m_Star1);
+	}
 };
 
 using STARDISTVECTOR = std::vector<CStarDist>;
@@ -205,9 +203,14 @@ public:
 			m_Flags &= ~VPFLAG_POSSIBLE;
 	}
 
-	constexpr friend bool operator>(VotingPair const& lhs, VotingPair const& rhs) noexcept
+	constexpr friend bool operator==(VotingPair const& lhs, VotingPair const& rhs) noexcept
 	{
-		return lhs.m_lNrVotes > rhs.m_lNrVotes;
+		return lhs.m_lNrVotes == rhs.m_lNrVotes;
+	}
+
+	constexpr friend auto operator<=>(VotingPair const& lhs, VotingPair const& rhs) noexcept
+	{
+		return lhs.m_lNrVotes <=> rhs.m_lNrVotes;
 	}
 };
 
