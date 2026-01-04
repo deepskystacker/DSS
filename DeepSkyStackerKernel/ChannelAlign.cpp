@@ -167,10 +167,10 @@ bool CChannelAlign::AlignChannels(std::shared_ptr<CMemoryBitmap> pBitmap, DSS::O
 		// Compute the transformations
 		CMatchingStars MatchingStars{ pBitmap->Width(), pBitmap->Height() };
 
-		const auto addRefOrTargetStar = [&MatchingStars, MaxNrStars = MaxNumberOfConsideredStars]<bool Refstar>(std::span<CStar> stars)
+		const auto addRefOrTargetStar = [&MatchingStars]<bool Refstar>(std::span<CStar> stars)
 		{
 			std::ranges::sort(stars, CompareStarLuminancy);
-			for (const auto& star : std::views::take(stars, MaxNrStars)) // Is safe, even if 'stars' has less than 100 elements.
+			for (const auto& star : std::views::take(stars, MaxNumberOfConsideredStars)) // Is safe, even if 'stars' has less than 100 elements.
 			{
 				if constexpr (Refstar)
 					MatchingStars.AddReferenceStar(star.m_fX, star.m_fY);
