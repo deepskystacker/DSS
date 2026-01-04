@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.3 Beta 2
+Welcome to DeepSkyStacker 6.1.3
 ===============================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.3 Beta 2
+Changes for DeepSkyStacker 6.1.3
 ================================
 
 1.  Improve handling of images in the processing tab where the greatest pixel value was well below the maximum.  This
