@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.3 Beta 2
+Welcome to DeepSkyStacker 6.1.4 Beta 1
 ===============================
 
 Reporting problems:
@@ -14,7 +14,13 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.3 Beta 2
+Changes for DeepSkyStacker 6.1.4 Beta 1
+================================
+
+1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer. 
+
+
+Changes for DeepSkyStacker 6.1.3
 ================================
 
 1.  Improve handling of images in the processing tab where the greatest pixel value was well below the maximum.  This
@@ -25,6 +31,8 @@ Changes for DeepSkyStacker 6.1.3 Beta 2
 
 3.  Bug fix: Null pointer dereference causing an abend when using stacking methods other than Average, Entropy Weighted	
     Average or Maximum methods when running on Linux or macOS.
+
+4.  Change the default Background Calibration Method to be Offset instead of Rational.
 
 Changes for DeepSkyStacker 6.1.2
 ================================

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>757</height>
+    <height>773</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item row="2" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="rawFilesTab">
       <attribute name="title">
@@ -120,7 +120,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox_10">
+          <widget class="QGroupBox" name="WhiteBalance_GroupBox">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -132,14 +132,21 @@
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_10">
             <item>
-             <widget class="QCheckBox" name="noWB">
+             <widget class="QRadioButton" name="noWB">
               <property name="text">
                <string>No White Balance Processing</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="cameraWB">
+             <widget class="QRadioButton" name="daylightWB">
+              <property name="text">
+               <string>Use Daylight White Balance</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="cameraWB">
               <property name="text">
                <string>Use Camera White Balance</string>
               </property>
