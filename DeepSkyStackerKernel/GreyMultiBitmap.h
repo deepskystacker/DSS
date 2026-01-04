@@ -14,17 +14,17 @@ public:
 	CGrayMultiBitmapT()
 	{}
 
-	virtual ~CGrayMultiBitmapT()
+	virtual ~CGrayMultiBitmapT() override
 	{}
 
 	virtual int GetNrChannels() const override
 	{
 		return 1;
-	};
+	}
 
 	virtual int GetNrBytesPerChannel() const override
 	{
 		return sizeof(TType);
-	};
+	}
 };
 

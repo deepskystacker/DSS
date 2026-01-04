@@ -3,7 +3,7 @@
 class CFlatPart
 {
 public:
-	int			m_lStart,
+	std::int64_t m_lStart,
 		m_lEnd;
 	double			m_fAverage;
 	double			m_fAverageVariation;
@@ -19,24 +19,24 @@ public:
 		m_fAverage = 0;
 		m_fAverageVariation = 0;
 		m_fAbsAverageVariation = 0;
-	};
-	~CFlatPart() {};
+	}
+	~CFlatPart() {}
 	CFlatPart(const CFlatPart&) = default;
 
 	CFlatPart& operator = (const CFlatPart&) = default;
 
-	int	Length() const noexcept
+	std::int64_t Length() const noexcept
 	{
 		return m_lEnd - m_lStart + 1;
-	};
+	}
 
 	double Score() const noexcept
 	{
-		if (m_fAbsAverageVariation)
-			return (double)Length() / m_fAbsAverageVariation;//m_fAverageVariation;
+		if (0 != m_fAbsAverageVariation)
+			return static_cast<double>(Length()) / m_fAbsAverageVariation;//m_fAverageVariation;
 		else
 			return 0;
-	};
+	}
 
 	bool operator < (const CFlatPart& fp) const noexcept
 	{
@@ -48,5 +48,5 @@ public:
 			return false;
 		else
 			return m_fAverage < fp.m_fAverage;*/
-	};
+	}
 };

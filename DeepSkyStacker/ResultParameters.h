@@ -19,7 +19,7 @@ namespace DSS
 
 	public:
 		explicit ResultParameters(QWidget* parent = nullptr);
-		~ResultParameters();
+		~ResultParameters() override;
 
 		void setStackingTasks(CAllStackingTasks* pTasks);
 

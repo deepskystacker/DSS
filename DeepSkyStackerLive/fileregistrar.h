@@ -64,7 +64,7 @@ namespace DSS
 
 	public:
 		FileRegistrar(QObject* parent = nullptr, ProgressLive* progress = nullptr);
-		~FileRegistrar();
+		~FileRegistrar() override;
 
 		void addFile(fs::path file);
 		inline void enableRegistration(bool enable = true)

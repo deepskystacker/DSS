@@ -55,7 +55,7 @@ namespace DSS
 
 	public:
 		OldProgressDlg(QWidget* parent = nullptr);
-		~OldProgressDlg();
+		~OldProgressDlg() override;
 
 		//
 		// These eight mfs implement the public interface defined in DSS::OldProgressBase

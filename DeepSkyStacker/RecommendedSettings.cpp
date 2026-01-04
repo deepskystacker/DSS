@@ -14,7 +14,7 @@ namespace DSS
 		Workspace				workspace;
 
 		// Check that the current values are (or not)
-		for (const auto setting : vSettings)
+		for (const auto& setting : vSettings)
 		{
 			QString				keyName;
 			QVariant			value;
@@ -458,7 +458,7 @@ namespace DSS
 				"Use Average combination method",
 				"IDS_RECO_USEAVERAGECOMBINE"));
 
-			ri.addSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
+			ri.addSetting("Stacking/Light_Method", static_cast<uint>(MBP_AVERAGE));
 
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
@@ -476,7 +476,7 @@ namespace DSS
 					"Use Kappa-Sigma clipping combination method",
 					"IDS_RECO_USESIGMACLIPPING"));
 
-				ri.addSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
+				ri.addSetting("Stacking/Light_Method", static_cast<uint>(MBP_SIGMACLIP));
 			}
 			else
 			{
@@ -484,7 +484,7 @@ namespace DSS
 					"Use Median combination method",
 					"IDS_RECO_USEMEDIAN"));
 
-				ri.addSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
+				ri.addSetting("Stacking/Light_Method", static_cast<uint>(MBP_MEDIAN));
 			};
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
@@ -509,7 +509,7 @@ namespace DSS
 				"Use Kappa-Sigma clipping combination method",
 				"IDS_RECO_USESIGMACLIPPING"));
 
-			ri.addSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
+			ri.addSetting("Stacking/Light_Method", static_cast<uint>(MBP_SIGMACLIP));
 			rec.addItem(ri);
 
 			ri.clear();
@@ -518,7 +518,7 @@ namespace DSS
 				"Use Auto Adaptive Weighted Average combination method",
 				"IDS_RECO_USEAUTOADAPTIVEAVERAGE"));
 
-			ri.addSetting("Stacking/Light_Method", (uint)MBP_AUTOADAPTIVE);
+			ri.addSetting("Stacking/Light_Method", static_cast<uint>(MBP_AUTOADAPTIVE));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		}
@@ -527,7 +527,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Average combination method",
 				"IDS_RECO_USEAVERAGECOMBINE"));
-			ri.addSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
+			ri.addSetting("Stacking/Light_Method", static_cast<uint>(MBP_AVERAGE));
 			rec.addItem(ri);
 
 			ri.clear();
@@ -535,7 +535,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Median combination method",
 				"IDS_RECO_USEMEDIAN"));
-			ri.addSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
+			ri.addSetting("Stacking/Light_Method", static_cast<uint>(MBP_MEDIAN));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		};
@@ -558,7 +558,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Median Kappa-Sigma clipping combination method",
 				"IDS_RECO_USESIGMAMEDIAN"));
-			ri.addSetting("Stacking/Dark_Method", (uint)MBP_MEDIANSIGMACLIP);
+			ri.addSetting("Stacking/Dark_Method", static_cast<uint>(MBP_MEDIANSIGMACLIP));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		}
@@ -567,7 +567,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Median combination method",
 				"IDS_RECO_USEMEDIAN"));
-			ri.addSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN);
+			ri.addSetting("Stacking/Dark_Method", static_cast<uint>(MBP_MEDIAN));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		};
@@ -590,7 +590,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Median Kappa-Sigma clipping combination method",
 				"IDS_RECO_USESIGMAMEDIAN"));
-			ri.addSetting("Stacking/Offset_Method", (uint)MBP_MEDIANSIGMACLIP);
+			ri.addSetting("Stacking/Offset_Method", static_cast<uint>(MBP_MEDIANSIGMACLIP));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		}
@@ -599,7 +599,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Median combination method",
 				"IDS_RECO_USEMEDIAN"));
-			ri.addSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN);
+			ri.addSetting("Stacking/Offset_Method", static_cast<uint>(MBP_MEDIAN));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		};
@@ -622,7 +622,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Median Kappa-Sigma clipping combination method",
 				"IDS_RECO_USESIGMAMEDIAN"));
-			ri.addSetting("Stacking/Flat_Method", (uint)MBP_MEDIANSIGMACLIP);
+			ri.addSetting("Stacking/Flat_Method", static_cast<uint>(MBP_MEDIANSIGMACLIP));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		}
@@ -631,7 +631,7 @@ namespace DSS
 			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
 				"Use Median combination method",
 				"IDS_RECO_USEMEDIAN"));
-			ri.addSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN);
+			ri.addSetting("Stacking/Flat_Method", static_cast<uint>(MBP_MEDIAN));
 			rec.addItem(ri);
 			vRecommendations.push_back(rec);
 		};

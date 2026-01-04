@@ -67,9 +67,9 @@ void CMultiBitmap::InitParts()
 	if (lNrLines == 0)
 		lNrLines = 1;
 
-	int lNrParts = m_lNrBitmaps * m_lHeight / lNrLinesPerFile;
-	if ((m_lNrBitmaps * m_lHeight) % lNrLinesPerFile != 0)
-		lNrParts++;
+	//int lNrParts = m_lNrBitmaps * m_lHeight / lNrLinesPerFile;
+	//if ((m_lNrBitmaps * m_lHeight) % lNrLinesPerFile != 0)
+	//	lNrParts++;
 
 	m_vFiles.clear();
 
@@ -95,7 +95,7 @@ void CMultiBitmap::InitParts()
 
 
 // Save the bitmap to the temporary file
-bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
+bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress)
 {
 	static std::mutex initMutex{};
 
@@ -163,13 +163,13 @@ private:
 	int							m_lStartRow;
 	int							m_lEndRow;
 	size_t						m_lScanLineSize;
-	OldProgressBase*				m_pProgress;
+	DSS::OldProgressBase*		m_pProgress;
 	CMultiBitmap*				m_pMultiBitmap;
 	void*						m_pBuffer;
 	CMemoryBitmap* m_pBitmap;
 
 public:
-    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, OldProgressBase* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
+    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, DSS::OldProgressBase* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
 		m_lStartRow{ startRow },
 		m_lEndRow{ endRow },
 		m_lScanLineSize{ scanLineSize },
@@ -317,7 +317,7 @@ static void ComputeWeightedAverage(int x, int y, CMemoryBitmap* pBitmap, CMemory
 	};
 };
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, OldProgressBase* const pProgress) const
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap, DSS::OldProgressBase* const pProgress) const
 {
 	if (static_cast<bool>(m_pHomBitmap))
 	{
@@ -361,10 +361,9 @@ std::string CMultiBitmap::GetProcessingMethodName() const
 		case MBP_FASTAVERAGE: return "FastAvg";
 		default: return "Unknown";
 	}
-	return "Unknown";
 }
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(OldProgressBase* pProgress)
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(DSS::OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	std::shared_ptr<CMemoryBitmap> pBitmap;

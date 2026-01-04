@@ -67,13 +67,15 @@ T CGrayBitmapT<T>::GetPrimary(int x, int y, const COLORREF16& crColor) const
 	switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 	{
 	case BAYER_RED:
-		return crColor.red;
+		return static_cast<T>(crColor.red);
 		break;
 	case BAYER_GREEN:
-		return crColor.green;
+		return static_cast<T>(crColor.green);
 		break;
 	case BAYER_BLUE:
-		return crColor.blue;
+		return static_cast<T>(crColor.blue);
+		break;
+	default:
 		break;
 	}
 
@@ -93,6 +95,8 @@ double CGrayBitmapT<T>::GetPrimary(size_t x, size_t y, double fRed, double fGree
 		break;
 	case BAYER_BLUE:
 		return fBlue;
+		break;
+	default:
 		break;
 	}
 
@@ -356,6 +360,8 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 				fGreen = ((*(pValue + m_lWidth)) + (*(pValue + 1))) / 2.0 / m_fMultiplier;
 				fBlue = (*(pValue + 1 + m_lWidth)) / m_fMultiplier;
 				break;
+			default:
+				break;
 			}
 		}
 	}
@@ -374,6 +380,8 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 			break;
 		case BAYER_BLUE:
 			fBlue = (*pValue) / m_fMultiplier;
+			break;
+		default:
 			break;
 		}
 	}
@@ -411,6 +419,8 @@ void CGrayBitmapT<T>::GetPixel(size_t i, size_t j, double& fRed, double& fGreen,
 				fRed = InterpolateRed(i, j, pValue) / m_fMultiplier;
 				fGreen = InterpolateGreen(i, j, pValue) / m_fMultiplier;
 				fBlue = (*pValue) / m_fMultiplier;
+				break;
+			default:
 				break;
 			}
 		}
@@ -512,9 +522,10 @@ void CGrayBitmapT<T>::GetCharacteristics(CBitmapCharacteristics& bc) const
 	bc.m_lBitsPerPixel = BitPerSample();
 }
 
-
+#if defined(_MSC_VER)
 #pragma warning( push )
 #pragma warning( disable : 4189 ) // unreachable code from initial constexpr if statement.
+#endif
 
 template <typename T>
 void CGrayBitmapT<T>::RemoveHotPixels(OldProgressBase* pProgress)
@@ -566,12 +577,15 @@ void CGrayBitmapT<T>::RemoveHotPixels(OldProgressBase* pProgress)
 		pProgress->End2();
 }
 
+#if defined(_MSC_VER)
 #pragma warning( pop )
+#endif
 
-// Define these here so that we can simple headers. We only run with these types so this isn't too bad.
+// Explicit template instantiations.
+// Note: If additional template instantiations will be added, then you also need to add them to the extern template declaration in the header file.
+
 template class CGrayBitmapT<std::uint8_t>;
 template class CGrayBitmapT<std::uint16_t>;
 template class CGrayBitmapT<std::uint32_t>;
 template class CGrayBitmapT<float>;
 template class CGrayBitmapT<double>;
-

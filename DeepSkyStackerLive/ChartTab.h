@@ -91,7 +91,7 @@ namespace DSS
 
 	public:
 		ChartTab(QWidget* parent = nullptr);
-		~ChartTab();
+		~ChartTab() override;
 		void addQualityFWHMStars(const QString& name, double fQuality, double fFWHM, double fStars, double fSkyBackground);
 		void addOffsetAngle(const QString& name, double fdX, double fdY, double fAngle);
 		void setPoint(const QString& name, POINTTYPE ptType, CHARTTYPE ctType);

@@ -16,6 +16,11 @@
 #include "avx_bitmap_util.h"
 #include "avx_simd_check.h"
 
+CRegisteredFrame::CRegisteredFrame()
+{
+	Reset();
+}
+
 void CRegisteredFrame::Reset()
 {
 	Workspace workspace;
@@ -83,15 +88,17 @@ double CRegisteredFrame::ComputeScore(const STARVECTOR& stars)
 	namespace vs = std::ranges::views;
 
 	constexpr auto Filter = vs::filter([](const CStar& star) { return !star.m_bRemoved; });
-	const auto Projector = [&stars](auto&& getter, const int ndx) { return std::invoke(getter, std::cref(stars[ndx])); };
+	const auto Projector = [&stars](auto&& getter, const int ndx) {
+		return std::invoke(std::forward<decltype(getter)>(getter), std::cref(stars[ndx]));
+	};
 
-	auto activeStars = Filter(stars);
+	//auto activeStars = Filter(stars);
 
 	std::vector<int> indexes(stars.size());
 	std::iota(indexes.begin(), indexes.end(), 0);
 
 	// Sort indexes descending (due to std::greater) by CStar::circularity.
-	std::ranges::sort(indexes, std::greater{}, std::bind_front(Projector, &CStar::m_fCircularity));
+	std::ranges::sort(indexes, std::ranges::greater{}, std::bind_front(Projector, &CStar::m_fCircularity));
 	// Approximate a Gaussian weighting
 	constexpr std::array<double, 26> weights = { 10.0, 10.0, 10.0, 10.0, 10.0, 10.0, 9.5, 9.0, 8.7, 8.3, 8.0, 7.7, 7.0, 6.5, 5.7, 5.0, 4.2, 3.4, 2.8, 2.3, 2.0, 1.7, 1.5, 1.4, 1.3, 1.2 };
 	double sumWeights = 0;
@@ -120,7 +127,7 @@ namespace {
 		if (!fileIn->atEnd())
 		{
 			const QString strText = fileIn->readLine();
-			int nPos = strText.indexOf("="); // Search = sign
+			auto nPos = strText.indexOf("="); // Search = sign
 			if (nPos >= 0)
 			{
 				strVariable = strText.left(nPos - 1).trimmed();
@@ -314,6 +321,28 @@ bool CRegisteredFrame::LoadRegisteringInfo(const fs::path& szInfoFileName)
 
 /* ------------------------------------------------------------------- */
 
+CLightFrameInfo::CLightFrameInfo() : CFrameInfo{}, CRegisteredFrame{}
+{
+	Reset();
+}
+
+CLightFrameInfo::CLightFrameInfo(const CFrameInfo& cbi) : CFrameInfo{ cbi }, CRegisteredFrame{}
+{
+	Reset();
+}
+
+CLightFrameInfo::CLightFrameInfo(DSS::OldProgressBase* const pPrg) : CFrameInfo{}, CRegisteredFrame{}
+{
+	Reset();
+	SetProgress(pPrg);
+}
+
+CLightFrameInfo& CLightFrameInfo::operator=(const CFrameInfo& cbi)
+{
+	CFrameInfo::operator=(cbi);
+	return *this;
+}
+
 void CLightFrameInfo::Reset()
 {
 //	CFrameInfo::Reset();
@@ -332,19 +361,20 @@ void CLightFrameInfo::Reset()
 	m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
 }
 
-double	CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& Bitmap)
+void CLightFrameInfo::SetHotPixelRemoval(const bool bHotPixels)
 {
-	double					fResult = 0.0;
-	CBackgroundCalibration	BackgroundCalibration;
+	m_bRemoveHotPixels = bHotPixels;
+}
 
-	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
-	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
-	BackgroundCalibration.SetMultiplier(256.0);
-	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, nullptr, true, m_pProgress);
-	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
+void CLightFrameInfo::SetProgress(DSS::OldProgressBase* pProgress)
+{
+	m_pProgress = pProgress;
+}
 
-	return fResult;
-};
+double CLightFrameInfo::ComputeMedianValue(const CGrayBitmap& bitmap) const
+{
+	return makeBackgroundCalibrator(BCI_LINEAR, BCM_PERCHANNEL, RBCM_MIDDLE, 256.0).calculateModelParameters(bitmap, false, nullptr) / 256.0;
+}
 
 //
 // MT, August 2024
@@ -484,7 +514,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 		std::array<std::exception_ptr, 5> ePointers{ nullptr, nullptr, nullptr, nullptr, nullptr };
 
-		const auto processDisjointArea = [this, threshold, StarMaxSize, &Bitmap, StepSize, RectSize, &progress, &nStars, nrSubrectsX, &backgroundLevelCache](
+		const auto processDisjointArea = [this, threshold, &Bitmap, &progress, &nStars, nrSubrectsX, &backgroundLevelCache](
 					const int yStart, const int yEnd, const int xStart, const int xEnd, STARSET& stars, std::exception_ptr& ePointer)
 		{
 			try
@@ -498,7 +528,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 
 					for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
 					{
-						nStars += registerSubRect(Bitmap,
+						nStars += DSS::registerSubRect(Bitmap,
 							threshold,
 							DSSRect(StarMaxSize + colNdx * StepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * StepSize + RectSize), bottom),
 							stars,
@@ -772,12 +802,12 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 			fSumBlueX += fBlue * i;
 			fNrValuesBlueX += fBlue;
 		}
-		if (fNrValuesRedX)
+		if (0. != fNrValuesRedX)
 		{
 			fAverageRedX += fSumRedX / fNrValuesRedX;
 			lNrRedLines++;
 		}
-		if (fNrValuesBlueX)
+		if (0. != fNrValuesBlueX)
 		{
 			fAverageBlueX += fSumBlueX / fNrValuesBlueX;
 			lNrBlueLines++;
@@ -806,12 +836,12 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 			fSumBlueY += fBlue * i;
 			fNrValuesBlueY += fBlue;
 		}
-		if (fNrValuesRedY)
+		if (0. != fNrValuesRedY)
 		{
 			fAverageRedY += fSumRedY / fNrValuesRedY;
 			lNrRedColumns++;
 		}
-		if (fNrValuesBlueY)
+		if (0. != fNrValuesBlueY)
 		{
 			fAverageBlueY += fSumBlueY / fNrValuesBlueY;
 			lNrBlueColumns++;
@@ -1038,7 +1068,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 	//
 	// This lambda does the actual registering of the light frame.
 	//
-	auto DoRegister = [pProgress, this, nrTotalImages, successfulRegisteredPictures = 0, referenceFrame = fs::path{}](
+	auto DoRegister = [pProgress, this, nrTotalImages, successfulRegisteredPictures = 0, refFrame = fs::path{}](
 		ReadReturnType&& data, CMasterFrames& masterFrames, const CStackingInfo& stackingInfo, const int fileNumber, const bool isReferenceFrame) mutable
 	{
 		if (pProgress != nullptr)
@@ -1052,8 +1082,8 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 			return false;
 
 		if (isReferenceFrame)
-			referenceFrame = lfInfo->filePath;
-		else if (lfInfo->filePath == referenceFrame)
+			refFrame = lfInfo->filePath;
+		else if (lfInfo->filePath == refFrame)
 			return true; // Has already been registered.
 
 		ZTRACE_RUNTIME("Register %s file # %d: %s", isReferenceFrame ? "REFERENCE" : "", successfulRegisteredPictures, lfInfo->filePath.generic_u8string().c_str());

@@ -37,16 +37,16 @@ namespace DSS
 			{
 				// Change the colors of the red gradient to grey
 				controls->linkedSettings->setChecked(true);
-				controls->redGradient->setColorAt(0.5, QColor(qRgb(128, 128, 128)));
-				controls->redGradient->setColorAt(0.999, Qt::white);
-				controls->redGradient->setColorAt(1.0, Qt::white);
+				controls->redGradient->changeColorAt(0.5, QColor(qRgb(128, 128, 128)));
+				controls->redGradient->changeColorAt(0.999, Qt::white);
+				controls->redGradient->changeColorAt(1.0, Qt::white);
 			}
 			else
 			{
 				// Change the colors of the red gradient
-				controls->redGradient->setColorAt(0.5, QColor(qRgb(128, 0, 0)));
-				controls->redGradient->setColorAt(0.999, Qt::red);
-				controls->redGradient->setColorAt(1.0, Qt::red);
+				controls->redGradient->changeColorAt(0.5, QColor(qRgb(128, 0, 0)));
+				controls->redGradient->changeColorAt(0.999, Qt::red);
+				controls->redGradient->changeColorAt(1.0, Qt::red);
 			}
 			controls->redGradient->update();
 		}
@@ -157,6 +157,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{
@@ -282,6 +283,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{
@@ -405,6 +407,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{

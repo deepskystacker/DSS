@@ -72,7 +72,6 @@ set(Header_Files
     "histogram.h"
     "imageloader.h"
     "ImageListModel.h"
-    "LinearInterpolationh.h"
     "MasterFrames.h"
     "MatchingStars.h"
     "matrix.h"
@@ -82,7 +81,6 @@ set(Header_Files
     "Multitask.h"
     "PixelTransform.h"
     "QMessageLogger.h"
-    "RationalInterpolation.h"
     "RAWUtils.h"
     "RegisterEngine.h"
     "RunningStackingEngine.h"
@@ -345,11 +343,20 @@ if(MSVC)
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     if(APPLE)
         target_compile_options(DeepSkyStackerAVX PRIVATE
-            -Xclang -fopenmp
-        )
+            -Weverything -Wno-missing-include-dirs -Wno-poison-system-directories
+			-Wno-c++98-compat -Wno-reserved-macro-identifier -Wno-global-constructors
+			-Wno-c++98-compat-pedantic -Wno-padded -Wno-pre-c++20-compat-pedantic
+			-Wno-c++20-compat -Wno-float-equal -Wno-exit-time-destructors
+			-Wno-sign-conversion -Wno-sign-compare -Wno-ctad-maybe-unsupported
+			-Wno-weak-vtables -Wno-covered-switch-default -Wno-undefined-func-template
+			-Wno-double-promotion -Wno-unreachable-code-break -Wno-disabled-macro-expansion
+			-Wno-unused-macros -Wno-reserved-identifier -Wno-unused-lambda-capture
+			-Wno-missing-braces -Wno-documentation-unknown-command
+			-Werror -Xclang -fopenmp
+         )
     else()
         target_compile_options(DeepSkyStackerAVX PRIVATE
-            -fopenmp
+            -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp
         )
     endif()
 endif()
@@ -446,6 +453,7 @@ if(MSVC)
         >
         /MP;
         /W4;
+		/WX;
         ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
         -Zc:__cplusplus;
         /openmp:experimental;
@@ -459,11 +467,20 @@ if(MSVC)
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     if(APPLE)
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -Xclang -fopenmp
+            -Weverything -Wno-missing-include-dirs -Wno-poison-system-directories
+			-Wno-c++98-compat -Wno-reserved-macro-identifier -Wno-global-constructors
+			-Wno-c++98-compat-pedantic -Wno-padded -Wno-pre-c++20-compat-pedantic
+			-Wno-c++20-compat -Wno-float-equal -Wno-exit-time-destructors
+			-Wno-sign-conversion -Wno-sign-compare -Wno-ctad-maybe-unsupported
+			-Wno-weak-vtables -Wno-covered-switch-default -Wno-undefined-func-template
+			-Wno-double-promotion -Wno-unreachable-code-break -Wno-disabled-macro-expansion
+			-Wno-unused-macros -Wno-reserved-identifier -Wno-unused-lambda-capture 
+			-Wno-missing-braces -Wno-documentation-unknown-command
+			-Werror -Xclang -fopenmp
         )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -fopenmp
+            -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp
         )
     endif()
 endif()

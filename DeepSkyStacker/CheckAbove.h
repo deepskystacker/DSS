@@ -15,18 +15,18 @@ namespace DSS
 
 	public:
 		CheckAbove(QWidget* parent = nullptr);
-		virtual ~CheckAbove();
+		virtual ~CheckAbove() override;
 
 
 		double		threshold() const
 		{
 			return m_fThreshold;
-		};
+		}
 
 		bool		isPercent() const
 		{
 			return m_bPercent;
-		};
+		}
 
 	private slots:
 		void accept() override;

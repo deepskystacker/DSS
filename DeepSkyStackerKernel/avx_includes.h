@@ -49,8 +49,10 @@
 #if defined (Q_OS_MACOS) && defined(Q_PROCESSOR_ARM) // ARM -> We always have to emulate the x86-AVX instructions.
 
 #define SIMDE_ENABLE_NATIVE_ALIASES
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include "simde/x86/avx512.h"
-
+#pragma clang diagnostic pop
 #else
 
 #if __has_include(<immintrin.h>)

@@ -49,23 +49,33 @@ namespace DSS
 	void BackgroundOptions::updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation)
 	{
 		m_CalibrationInterpolation = interpolation;
-		if (m_CalibrationInterpolation == BCI_LINEAR)
+		switch (m_CalibrationInterpolation)
 		{
+		case BCI_LINEAR:
 			if (pxLinear.isNull())
 			{
 				pxLinear.load(":/calibration/linear.bmp");
 			}
 			ui->laCalibration->setPixmap(pxLinear);
 			ui->rbLinear->setChecked(true);
-		}
-		else
-		{
+			break;
+		case BCI_RATIONAL:
 			if (pxRational.isNull())
 			{
 				pxRational.load(":/calibration/rational.bmp");
 			}
 			ui->laCalibration->setPixmap(pxRational);
 			ui->rbRational->setChecked(true);
+			break;
+		case BCI_OFFSET:
+			if (pxOffset.isNull())
+			{
+				pxOffset.load(":/calibration/offset.bmp");
+			}
+			ui->laCalibration->setPixmap(pxOffset);
+			ui->rbOffset->setChecked(true);
+			break;
+		default: break;
 		}
 	}
 
@@ -77,6 +87,11 @@ namespace DSS
 	void BackgroundOptions::on_rbRational_clicked()
 	{
 		updateInterpolation(BCI_RATIONAL);
+	}
+
+	void BackgroundOptions::on_rbOffset_clicked()
+	{
+		updateInterpolation(BCI_OFFSET);
 	}
 
 	void BackgroundOptions::on_rbNone_clicked()
@@ -121,10 +136,13 @@ namespace DSS
 
 		if (ui->rbLinear->isChecked())
 			m_CalibrationInterpolation = BCI_LINEAR;
-		else
+		else if (ui->rbRational->isChecked())
 			m_CalibrationInterpolation = BCI_RATIONAL;
+		else
+			m_CalibrationInterpolation = BCI_OFFSET;
 
-		workspace.setValue("Stacking/BackgroundCalibrationInterpolation", (uint)m_CalibrationInterpolation);
+
+		workspace.setValue("Stacking/BackgroundCalibrationInterpolation", static_cast<uint>(m_CalibrationInterpolation));
 
 		if (!ui->rbNone->isChecked())
 		{
@@ -137,7 +155,7 @@ namespace DSS
 				m_RGBCalibrationMethod = RBCM_MAXIMUM;
 
 
-			workspace.setValue("Stacking/RGBBackgroundCalibrationMethod", (uint)m_RGBCalibrationMethod);
+			workspace.setValue("Stacking/RGBBackgroundCalibrationMethod", static_cast<uint>(m_RGBCalibrationMethod));
 		}
 		else if (m_CalibrationMode == BCM_RGB)
 		{

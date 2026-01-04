@@ -6,7 +6,6 @@
 class CMultiBitmap;
 class CMemoryBitmap;
 namespace DSS { class OldProgressBase; }
-using namespace DSS;
 
 class CTaskInfo final
 {
@@ -35,7 +34,7 @@ public:
 
 	void SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations);
 	void CreateEmptyMaster(const CMemoryBitmap* pBitmap);
-	void AddToMaster(CMemoryBitmap* pBitmap, OldProgressBase* pProgress);
-	std::shared_ptr<CMemoryBitmap> GetMaster(OldProgressBase* const pProgress);
+	void AddToMaster(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);
+	std::shared_ptr<CMemoryBitmap> GetMaster(DSS::OldProgressBase* const pProgress);
 	bool HasISOSpeed() const;
 };

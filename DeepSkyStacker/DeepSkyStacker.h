@@ -37,6 +37,13 @@
 #include "dssbase.h"
 #include "DeepStack.h"
 #include "ProcessingSettings.h"
+#include "tracecontrol.h"
+
+extern bool g_bShowRefStars;
+extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
+extern char const* global_program_name;
+extern bool loadTranslations();
 
 namespace DSS
 {
@@ -45,6 +52,7 @@ namespace DSS
 	class PictureList;
 	class ProcessingControls;
 	class ProcessingDlg;
+	class ProgressDlg;
 	class StackingDlg;
 }
 class QStackedWidget;
@@ -83,7 +91,6 @@ private:
 	QStringList args;
 	QString baseTitle;
 	QString currentPathName;
-	bool m_progress;
 	QLabel* sponsorText;
 	QLabel* statusBarText;
 	QErrorMessage* errorMessageDialog;
@@ -92,6 +99,7 @@ private:
 #if !defined(Q_OS_WIN)
 	QProcess* helpProcess{ nullptr };
 #endif // !defined(Q_OS_WIN)
+	DSS::ProgressDlg* progressDlg{ nullptr };
 
 	void createStatusBar();
 	void updatePanel();
@@ -110,9 +118,13 @@ public:
 	{
 		return dynamic_cast<DeepSkyStacker*>(DSSBase::instance());
 	}
+	inline DSS::ProgressDlg* progressDialog() const
+	{
+		return progressDlg;
+	}
 
 	DeepSkyStacker();
-	~DeepSkyStacker() {};
+	~DeepSkyStacker() override {}
 
 	inline qreal pixelRatio() { return devicePixelRatioF(); }
 	inline ActivePanel panel() const { return activePanel; }

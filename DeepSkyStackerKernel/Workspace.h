@@ -13,7 +13,7 @@ public :
 	WorkspaceSetting(const QString& name, const QVariant& value = QVariant())
 		: keyName(name), Value(value), dirty(true)
 	{
-	};
+	}
 
 	WorkspaceSetting & operator = (const WorkspaceSetting & rhs)
 	{
@@ -21,7 +21,9 @@ public :
 		Value = rhs.Value;
 		dirty = rhs.dirty;
 		return (*this);
-	};
+	}
+
+	WorkspaceSetting(const WorkspaceSetting&) = default;
 
 	bool operator < (const WorkspaceSetting & s) const
 	{
@@ -31,12 +33,12 @@ public :
 			return false;
 		else
 			return keyName < s.keyName;
-	};
+	}
 
 	bool operator != (const WorkspaceSetting & s) const
 	{
 		return (keyName != s.keyName);
-	};
+	}
 
 	WorkspaceSetting &	readSetting();
 	WorkspaceSetting &	saveSetting();
@@ -49,12 +51,12 @@ public :
 			dirty = false;
 
 		return result;
-	};
+	}
 
 	inline QString key() const
 	{
 		return keyName;
-	};
+	}
 
 	WorkspaceSetting &	setValue(const WorkspaceSetting & ws);
 	WorkspaceSetting &	setValue(const QVariant& value);
@@ -62,7 +64,7 @@ public :
 	inline QVariant value() const
 	{
 		return Value;
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */

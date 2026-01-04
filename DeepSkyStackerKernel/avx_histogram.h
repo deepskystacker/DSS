@@ -96,7 +96,7 @@ public:
 			grayValue >>= 16;
 		constexpr size_t Unsigned_short_max = size_t{ std::numeric_limits<std::uint16_t>::max() };
 		++histo[std::min(static_cast<size_t>(grayValue), Unsigned_short_max)];
-	};
+	}
 };
 
 

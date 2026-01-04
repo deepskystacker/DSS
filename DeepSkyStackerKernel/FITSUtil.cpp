@@ -17,8 +17,6 @@
 
 using namespace DSS;
 
-
-
 /* ------------------------------------------------------------------- */
 
 static	std::mutex mutex;
@@ -65,7 +63,7 @@ inline double AdjustColor(const double fColor)
 
 /* ------------------------------------------------------------------- */
 
-bool IsFITSRaw()
+static bool IsFITSRaw()
 {
 	return Workspace{}.value("FitsDDP/FITSisRAW", false).toBool();
 }
@@ -75,7 +73,7 @@ CFATYPE GetFITSCFATYPE()
 	Workspace workspace{};
 
 	const bool isFitsRaw = workspace.value("FitsDDP/FITSisRAW", false).toBool();
-	const CFATYPE pattern = static_cast<CFATYPE>(workspace.value("FitsDDP/BayerPattern", (uint)CFATYPE_NONE).toUInt());
+	const CFATYPE pattern = static_cast<CFATYPE>(workspace.value("FitsDDP/BayerPattern", static_cast<uint>(CFATYPE_NONE)).toUInt());
 	return isFitsRaw ? pattern : CFATYPE_NONE;
 }
 
@@ -495,8 +493,8 @@ bool CFITSReader::Open()
 			{
 				ZTRACE_RUNTIME("CFA pattern Y offset read from keyword YBAYROFF or BAYOFFY is %lf", yBayerOffset);
 			}
-			m_xBayerOffset = std::lround(xBayerOffset);
-			m_yBayerOffset = std::lround(yBayerOffset);
+			m_xBayerOffset = static_cast<int>(std::lround(xBayerOffset));
+			m_yBayerOffset = static_cast<int>(std::lround(yBayerOffset));
 
 			QString			strDateTime;
 
@@ -844,6 +842,8 @@ bool CFITSReader::Read()
 					green = normalizeFloatValue(green);
 					blue = normalizeFloatValue(blue);
 					break;
+				default:
+					break;
 				}
 
 				if (!OnRead(col, row, AdjustColor(red), AdjustColor(green), AdjustColor(blue)))
@@ -899,9 +899,9 @@ public :
 		ignoreBrightness{ ignoreBr }
 	{}
 
-	virtual ~CFITSReadInMemoryBitmap() { Close(); };
+	virtual ~CFITSReadInMemoryBitmap() override { Close(); }
 
-	virtual bool Close() override { return OnClose(); };
+	virtual bool Close() override { return OnClose(); }
 
 	virtual bool OnOpen() override;
 	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
@@ -1028,7 +1028,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 			m_fBrightnessRatio = this->ignoreBrightness ? 1.0 : GetFITSBrightnessRatio();
 
 		m_pBitmap->SetMaster(false);
-		if (m_fExposureTime)
+		if (0. != m_fExposureTime)
 			m_pBitmap->SetExposure(m_fExposureTime);
 		if (m_lISOSpeed)
 			m_pBitmap->SetISOSpeed(m_lISOSpeed);
@@ -1077,6 +1077,8 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 						break;
 					case BAYER_RED:
 						fRed = std::min(maxValue, fRed * m_fRedRatio);
+						break;
+					default:
 						break;
 					}
 				}
@@ -1235,7 +1237,7 @@ bool	CFITSWriter::WriteKey(const char * szKey, const QString& szValue, const cha
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TSTRING, szKey, (void*)szValue.toUtf8().constData(), szComment, &nStatus);
+		fits_write_key(m_fits, TSTRING, szKey, static_cast<void*>(const_cast<char*>(szValue.toUtf8().constData())), szComment, &nStatus);
 		if (!nStatus)
 			bResult = true;
 	};
@@ -1350,6 +1352,14 @@ void CFITSWriter::SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFAT
 		m_lBitsPerPixel = 32;
 		m_bFloat = true;
 		break;
+	default:
+		ZInvalidParameter invParm("Invalid format",
+			7,
+			ZException::recoverable);
+		invParm.setErrorCodeGroup(ZException::other);
+		invParm.addLocation(ZEXCEPTION_LOCATION());
+		invParm.logExceptionData();
+		throw invParm;
 	};
 };
 
@@ -1433,7 +1443,7 @@ bool CFITSWriter::Open()
 					bResult = bResult && WriteKey("GAIN", m_lGain);
 				if (m_filterName != "")
 					bResult = bResult && WriteKey("FILTER", m_filterName);
-				if (m_fExposureTime)
+				if (0 != m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
 					bResult = bResult && WriteKey("EXPOSURE", m_fExposureTime, "Exposure time (in seconds)");
@@ -1443,7 +1453,7 @@ bool CFITSWriter::Open()
 					bResult = bResult && WriteKey("NCOMBINE", m_nrframes, "Number of stacked frames");
 				}
 				if ((m_lNrChannels == 1) && (m_CFAType != CFATYPE_NONE))
-					bResult = bResult && WriteKey("DSSCFATYPE", (int)m_CFAType);
+					bResult = bResult && WriteKey("DSSCFATYPE", static_cast<int>(m_CFAType));
 
 				WriteKey("SOFTWARE", QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER).toUtf8());
 				WriteAllKeys();
@@ -1515,6 +1525,8 @@ bool CFITSWriter::Write()
 				break;
 			case 64 :
 				datatype = TFLOAT;
+				break;
+			default:
 				break;
 			};
 
@@ -1714,10 +1726,10 @@ public :
 		return OnClose();
 	}
 
-	virtual ~CFITSWriteFromMemoryBitmap()
+	virtual ~CFITSWriteFromMemoryBitmap() override
 	{
 		Close();
-	};
+	}
 
 	virtual bool OnOpen() override;
 	virtual bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
@@ -1779,7 +1791,7 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 			m_lGain = m_pMemoryBitmap->GetGain();
 		if ((m_pMemoryBitmap->filterName() != "") && (m_filterName == ""))
 			m_filterName = m_pMemoryBitmap->filterName();
-		if (!m_fExposureTime)
+		if (0 == m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
 		if (!m_nrframes)
 			m_nrframes = m_pMemoryBitmap->GetNrFrames();
@@ -1857,7 +1869,7 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 			fits.m_lISOSpeed = lISOSpeed;
 		if (lGain >= 0)
 			fits.m_lGain = lGain;
-		if (fExposure)
+		if (0. != fExposure)
 			fits.m_fExposureTime = fExposure;
 		fits.SetFormat(FITSFormat);
 		if (fits.Open())
@@ -1901,7 +1913,7 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 			fits.m_lISOSpeed = lISOSpeed;
 		if (lGain >= 0)
 			fits.m_lGain = lGain;
-		if (fExposure)
+		if (0. != fExposure)
 			fits.m_fExposureTime = fExposure;
 		if (fits.Open())
 		{

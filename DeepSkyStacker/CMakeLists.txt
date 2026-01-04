@@ -11,6 +11,10 @@ set(Dialogs
     "About.h"
     "ExplorerBar.cpp"
     "ExplorerBar.h"
+    "oldprogressdlg.cpp"
+    "oldprogressdlg.h"
+    "progressdlg.cpp"
+    "progressdlg.h"
 )
 source_group("Dialogs" FILES ${Dialogs})
 
@@ -91,17 +95,21 @@ set(Dialogs__Stacking
 source_group("Dialogs\\Stacking" FILES ${Dialogs__Stacking})
 
 set(Header_Files
-    "../DeepSkyStackerKernel/histogram.h"
+    "BaseDialog.h"
     "DeepSkyStacker.h"
     "Delaunay.h"
     "dslr.h"
     "DSS-versionhelpers.h"
     "DSS-winapifamily.h"
     "DSS-winpackagefamily.h"
+    "editstars.h"
+    "../DeepSkyStackerKernel/histogram.h"
     "lowerdockwidget.h"
     "mrulist.h"
-    "oldprogressdlg.h"
     "pch.h"
+    "selectrect.h"
+    "toolbar.h"
+
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -111,7 +119,6 @@ set(Source_Files
     "Delaunay.cpp"
     "editstars.cpp"
     "lowerdockwidget.cpp"
-    "oldprogressdlg.cpp"
     "selectrect.cpp"
     "toolbar.cpp"
 )
@@ -143,6 +150,7 @@ set(Ui_Files
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
 	"ui/ProcessingSettingsDlg.ui"
+    "ui/ProgressDlg.ui"
 	"ui/QualityChart.ui"
 	"ui/RawDDPSettings.ui"
 	"ui/RecommendedSettings.ui"
@@ -440,6 +448,7 @@ if(MSVC)
             /GS-
         >
 	    -W4 /wd4244 /wd4652 /wd4702 /wd4828 
+		/WX
 		-Zc:__cplusplus /openmp:experimental
         /MP;
         /EHsc
@@ -460,11 +469,20 @@ if(MSVC)
 elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     if(APPLE)
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -Xclang -fopenmp
+            -Weverything -Wno-missing-include-dirs -Wno-poison-system-directories
+			-Wno-c++98-compat -Wno-reserved-macro-identifier -Wno-global-constructors
+			-Wno-c++98-compat-pedantic -Wno-padded -Wno-pre-c++20-compat-pedantic
+			-Wno-c++20-compat -Wno-float-equal -Wno-exit-time-destructors
+			-Wno-sign-conversion -Wno-sign-compare -Wno-ctad-maybe-unsupported
+			-Wno-weak-vtables -Wno-covered-switch-default -Wno-undefined-func-template
+			-Wno-double-promotion -Wno-unreachable-code-break -Wno-disabled-macro-expansion
+			-Wno-unused-macros -Wno-reserved-identifier -Wno-unused-lambda-capture
+			-Wno-missing-braces -Wno-documentation-unknown-command
+			-Werror -Xclang -fopenmp
         )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE
-            -fopenmp
+            -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp
         )
     endif()
 endif()

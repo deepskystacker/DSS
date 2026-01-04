@@ -23,7 +23,7 @@ namespace DSS
 			Inherited;
 	public:
 		explicit PostCalibration(QWidget* parent = nullptr);
-		~PostCalibration();
+		~PostCalibration() override;
 
 	public slots:
 		void onSetActive();

@@ -17,7 +17,7 @@ namespace DSS
 			PersistGeometry = 0x01
 		};
 
-		Q_DECLARE_FLAGS(Behaviours, Behaviour);
+		Q_DECLARE_FLAGS(Behaviours, Behaviour)
 
 		BaseDialog(const Behaviours& behaviours = Behaviour::None, QWidget* parent = nullptr);
 

@@ -47,10 +47,15 @@ class vertex
 {
 public:
 	vertex()					: m_Pnt(0.0F, 0.0F)			{}
-	vertex(const vertex& v)		: m_Pnt(v.m_Pnt)			{}
 	vertex(const QPointF& pnt)	: m_Pnt(pnt)				{}
 	vertex(float x, float y)	: m_Pnt(x, y)				{}
-	vertex(int x, int y)		: m_Pnt((float) x, (float) y)	{}
+	vertex(int x, int y)		: m_Pnt(static_cast<float>(x), static_cast<float>(y)) {}
+
+	vertex(const vertex& rhs) = default;
+	vertex(vertex&& rhs) = default;
+
+	vertex& operator = (const vertex& rhs) = default;
+	vertex& operator = (vertex&& rhs) = default;
 
 	bool operator<(const vertex& v) const
 	{
@@ -63,8 +68,8 @@ public:
 		return m_Pnt == v.m_Pnt;
 	}
 
-	float GetX() const	{ return m_Pnt.x(); }
-	float GetY() const	{ return m_Pnt.y(); }
+	float GetX() const	{ return static_cast<float>(m_Pnt.x()); }
+	float GetY() const	{ return static_cast<float>(m_Pnt.y()); }
 
 	void SetX(float x)	{ m_Pnt.setX(x); }
 	void SetY(float y)	{ m_Pnt.setY(y); }
@@ -113,7 +118,7 @@ public:
 			m_Vertices[i] = tri.m_Vertices[i];
 
 		return (*this);
-	};
+	}
 
 	bool operator<(const triangle& tri) const
 	{
@@ -155,7 +160,7 @@ public:
 //		if (y < (m_Center.Y - m_R)) return false;
 
 		QPointF dist = itVertex->GetPoint() - m_Center;		// the distance between v and the circle center
-		float dist2 = dist.x() * dist.x() + dist.y() * dist.y();		// squared
+		double dist2 = dist.x() * dist.x() + dist.y() * dist.y();		// squared
 		return dist2 <= m_R2;								// compare with squared radius
 	}
 protected:

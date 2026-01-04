@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "catch.h"
+#include "catch_amalgamated.hpp"
 
 #include "RegisterEngine.h"
 
@@ -132,7 +132,7 @@ TEST_CASE("Register engine", "[Register][RegisterSubrect]")
 		REQUIRE(stars.cbegin()->m_fX == 93.5);
 		REQUIRE(stars.cbegin()->m_fY == 100.5);
 		REQUIRE(stars.cbegin()->m_fMeanRadius == 0.75);
-		REQUIRE(stars.cbegin()->m_fCircularity == Approx((150.0 - 60.0) / 1.1).epsilon(1e-2));
+		REQUIRE(stars.cbegin()->m_fCircularity == Catch::Approx((150.0 - 60.0) / 1.1).epsilon(1e-2));
 // ----------------------------------------------------------------------
 		for (auto& v : pGray->m_vPixels)
 			v = 0.0;
@@ -149,7 +149,7 @@ TEST_CASE("Register engine", "[Register][RegisterSubrect]")
 		REQUIRE(stars.cbegin()->m_fX == 93.5);
 		REQUIRE(stars.cbegin()->m_fY == 100.5);
 		REQUIRE(stars.cbegin()->m_fMeanRadius == 0.75);
-		REQUIRE(stars.cbegin()->m_fCircularity == Approx(150.0 / 1.1).epsilon(1e-2));
+		REQUIRE(stars.cbegin()->m_fCircularity == Catch::Approx(150.0 / 1.1).epsilon(1e-2));
 	}
 
 	SECTION("Block of 13 pixels")
@@ -324,8 +324,8 @@ TEST_CASE("Register engine", "[Register][RegisterSubrect]")
 		DSS::registerSubRect(*pGray, 0.2, DSSRect{ 70, 70, 130, 130 }, stars, nullptr, QPointF{ iv, iv });
 
 		REQUIRE(stars.size() == 1);
-		REQUIRE(stars.cbegin()->m_fX == Approx(117.7).epsilon(1e-2));
-		REQUIRE(stars.cbegin()->m_fY == Approx(94.5).epsilon(1e-2));
+		REQUIRE(stars.cbegin()->m_fX == Catch::Approx(117.7).epsilon(1e-2));
+		REQUIRE(stars.cbegin()->m_fY == Catch::Approx(94.5).epsilon(1e-2));
 	}
 
 	SECTION("Calling registerSubrect twice with cache returns identical results")

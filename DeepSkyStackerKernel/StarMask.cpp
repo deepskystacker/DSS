@@ -47,7 +47,7 @@ namespace DSS
 					//double		fFactor2 = 2*fRadius*fRadius;
 
 					fRadius *= m_fPercentIncrease;
-					if (m_fPixelIncrease)
+					if (0. != m_fPixelIncrease)
 						fRadius += m_fPixelIncrease;
 
 					pStarMaskFunction->SetRadius(fRadius);
@@ -66,9 +66,9 @@ namespace DSS
 
 							fPixelValue = pStarMaskFunction->Compute(fDistance);
 
-							pOutBitmap->GetPixel(i + 0.5, j + 0.5, fOldPixelValue);
+							pOutBitmap->GetPixel(static_cast<size_t>(i + 0.5), static_cast<size_t>(j + 0.5), fOldPixelValue);
 							fPixelValue = max(fOldPixelValue, max(0.0, min(fPixelValue * 255.0, 255.0)));
-							pOutBitmap->SetPixel(i + 0.5, j + 0.5, fPixelValue);
+							pOutBitmap->SetPixel(static_cast<size_t>(i + 0.5), static_cast<size_t>(j + 0.5), fPixelValue);
 						}
 					}
 				}

@@ -1,6 +1,11 @@
 #pragma once
 #include "dssbase.h"
 #include "DSSCommon.h"
+#include "tracecontrol.h"
+
+extern std::unique_ptr<std::uint8_t[]> backPocket;
+extern DSS::TraceControl traceControl;
+
 class CMemoryBitmap;
 
 class StackingParams
@@ -56,9 +61,9 @@ class StackingTask : public QObject
 public:
 	StackingTask(QObject* parent, std::function<void(StackingParams&, QTextStream&)> func, StackingParams& params, QTextStream& consoleOut) :
 		QObject(parent),
+		stackFunction(func),
 		m_parameters(params),
-		m_consoleOut(consoleOut),
-		stackFunction(func)
+		m_consoleOut(consoleOut)
 	{}
 
 public slots:
@@ -87,7 +92,7 @@ class DeepSkyStackerCommandLine :
 
 public:
 	DeepSkyStackerCommandLine(int& argc, char** argv);
-	~DeepSkyStackerCommandLine() = default;
+	~DeepSkyStackerCommandLine() override = default;
 
 	bool Initialise();
 	bool Run();

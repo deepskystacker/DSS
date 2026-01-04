@@ -20,7 +20,7 @@ namespace DSS
 			m_style(mode)
 		{
 		}
-		virtual ~OldProgressConsole()
+		virtual ~OldProgressConsole() override
 		{
 			if(m_style == TERMINAL_OUTPUT_MODE::COLOURED)
 				m_out << "\033[0m";
@@ -79,7 +79,7 @@ namespace DSS
 			return doWarning(szText);
 		}
 
-		void initialise(){};
+		void initialise(){}
 		void applyStart1Text(const QString& strText) { PrintText(strText, OT_TEXT1); }
 		void applyStart2Text(const QString& strText) 
 		{
@@ -99,7 +99,7 @@ namespace DSS
 		void endProgress2(){}
 		void closeProgress() { }
 		bool doWarning([[maybe_unused]] const QString& szText) { return true; }
-		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {};
+		virtual void applyProcessorsUsed([[maybe_unused]] int nCount) override {}
 
 	protected slots:
 		virtual void slotStart1(const QString& szTitle, int lTotal1, bool bEnableCancel = true);
@@ -123,6 +123,7 @@ namespace DSS
 			case TERMINAL_OUTPUT_MODE::COLOURED:
 				PrintBasic(singleLineText, type, true);
 				break;
+			default: break;
 			}
 		}
 		void PrintBasic(const QString& szText, eOutputType type, bool bColour)
@@ -158,6 +159,8 @@ namespace DSS
 			case OT_PROGRESS1:
 			case OT_PROGRESS2:
 				m_out << (bColour ? "\033[32m" : "") << szText << "\r";
+				break;
+			default:
 				break;
 			}
 			m_out.flush();

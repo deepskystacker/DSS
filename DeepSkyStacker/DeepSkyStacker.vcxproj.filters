@@ -117,9 +117,6 @@
     <ClCompile Include="..\Tools\QElidedLabel.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="oldprogressdlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ExplorerBar.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
@@ -176,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="flatchart.cpp">
       <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="progressdlg.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="oldprogressdlg.cpp">
+      <Filter>Dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -673,9 +676,6 @@
     <QtMoc Include="..\Tools\QElidedLabel.h">
       <Filter>Tools</Filter>
     </QtMoc>
-    <QtMoc Include="oldprogressdlg.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="AskRegistering.h">
       <Filter>Dialogs\Registering</Filter>
     </QtMoc>
@@ -735,6 +735,12 @@
     </QtMoc>
     <QtMoc Include="flatchart.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="progressdlg.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="oldprogressdlg.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

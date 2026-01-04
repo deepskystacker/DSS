@@ -1,6 +1,6 @@
 #include "pch.h"
-#include <QSettings>
-#include "catch.h"
+//#include <QSettings>
+#include "catch_amalgamated.hpp"
 #include "avx_histogram.h"
 #include "MedianFilterEngine.h"
 #include "avx_simd_check.h"

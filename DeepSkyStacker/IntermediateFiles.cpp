@@ -25,6 +25,8 @@ namespace DSS
 			case Qt::Checked:
 				workspace->setValue("Stacking/CompressFITS", true);
 				break;
+			default:
+				break;
 			}
 			});
 	}
@@ -45,7 +47,7 @@ namespace DSS
 		ui->saveIntermediate->setChecked(value);
 		ui->saveIntermediate->setDisabled(registerOnly);
 
-		fileFormat = workspace->value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
+		fileFormat = workspace->value("Stacking/IntermediateFileFormat", static_cast<uint>(IFF_TIFF)).toUInt();
 
 		value = workspace->value("Stacking/CompressFITS", false).toBool();
 		ui->compressFITS->setChecked(value);
@@ -60,6 +62,7 @@ namespace DSS
 			ui->formatTIFF->setChecked(false);
 			ui->formatFITS->setChecked(true);
 			break;
+		default: break;
 		}
 	}
 
@@ -70,11 +73,11 @@ namespace DSS
 
 	void IntermediateFiles::on_formatFITS_clicked()
 	{
-		workspace->setValue("Stacking/IntermediateFileFormat", (uint)IFF_FITS);
+		workspace->setValue("Stacking/IntermediateFileFormat", static_cast<uint>(IFF_FITS));
 	}
 	void IntermediateFiles::on_formatTIFF_clicked()
 	{
-		workspace->setValue("Stacking/IntermediateFileFormat", (uint)IFF_TIFF);
+		workspace->setValue("Stacking/IntermediateFileFormat", static_cast<uint>(IFF_TIFF));
 	}
 
 	void IntermediateFiles::on_saveCalibrated_stateChanged(int state)
@@ -89,6 +92,7 @@ namespace DSS
 			workspace->setValue("Stacking/SaveCalibrated", true);
 			ui->saveDebayered->setEnabled(true);
 			break;
+		default: break;
 		}
 	}
 	void IntermediateFiles::on_saveDebayered_stateChanged(int state)
@@ -101,6 +105,7 @@ namespace DSS
 		case Qt::Checked:
 			workspace->setValue("Stacking/SaveCalibratedDebayered", true);
 			break;
+		default: break;
 		}
 
 	}
@@ -114,6 +119,7 @@ namespace DSS
 		case Qt::Checked:
 			workspace->setValue("Stacking/CreateIntermediates", true);
 			break;
+		default: break;
 		}
 	}
 }

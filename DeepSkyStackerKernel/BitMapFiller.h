@@ -8,7 +8,10 @@ class BitmapFillerInterface
 {
 public:
 	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb);
+	BitmapFillerInterface() = default;
 	virtual ~BitmapFillerInterface() {}
+
+	BitmapFillerInterface(const BitmapFillerInterface&) = default; // For cloning.
 
 	virtual bool isThreadSafe() const;
 	virtual std::unique_ptr<BitmapFillerInterface> clone() = 0;
@@ -40,7 +43,9 @@ protected:
 	std::vector<float> cfaFactors;
 public:
 	BitmapFillerBase(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
-	virtual ~BitmapFillerBase() {}
+	virtual ~BitmapFillerBase() override {}
+
+	BitmapFillerBase(const BitmapFillerBase&) = default; // For cloning.
 
 	virtual void SetCFAType(CFATYPE cfaType) override;
 	virtual void setGrey(bool grey) override;
@@ -55,5 +60,5 @@ protected:
 	{
 		constexpr float Maximum = static_cast<float>(std::numeric_limits<std::uint16_t>::max() - 1);
 		return std::min(color * adjustFactor, Maximum);
-	};
+	}
 };

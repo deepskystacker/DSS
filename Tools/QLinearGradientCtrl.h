@@ -72,7 +72,7 @@ public:
 	QLinearGradientCtrl(QWidget* parent= nullptr, QColor start = Qt::black, QColor end = Qt::white) ;
 	// BOOL Create(const RECT& rect, CWnd* pParentWnd, UINT nID);
 
-	virtual ~QLinearGradientCtrl();
+	virtual ~QLinearGradientCtrl() override;
 
 	enum class Orientation
 	{
@@ -83,46 +83,46 @@ public:
 
 	// Attributes
 public:
-	inline QLinearGradient& gradient() { return m_Gradient; };
+	inline QLinearGradient& gradient() { return m_Gradient; }
 	QLinearGradientCtrl& setGradient(QLinearGradient const& src);
 
-	inline int gradientWidth() const { return m_Width; };
+	inline int gradientWidth() const { return m_Width; }
 	inline QLinearGradientCtrl& setGradientWidth(int iWidth)
 	{
 		assert(iWidth >= 1 || iWidth == -1);
 		m_Width = iWidth;
 		return *this;
-	};
+	}
 
-	inline Orientation orientation() const { return m_Orientation; };
-	inline QLinearGradientCtrl& setOrientation(Orientation orientation) { m_Orientation = orientation; return *this; };
+	inline Orientation orientation() const { return m_Orientation; }
+	inline QLinearGradientCtrl& setOrientation(Orientation orientation) { m_Orientation = orientation; return *this; }
 
-	inline int	selected() const { return selectedPeg; };
+	inline int	selected() const { return selectedPeg; }
 	int	setSelected(int iSel);
 
 	QGradientStop selectedStop() const;
 	const QGradientStops& getStops() const;
 
-	inline bool	pegsOnLeftOrBottom() const { return m_LeftDownSide; };
+	inline bool	pegsOnLeftOrBottom() const { return m_LeftDownSide; }
 	inline QLinearGradientCtrl& setPegsOnLeftOrBottom(bool value)
 	{
 		m_RightUpSide = !value;
 		m_LeftDownSide = value;
 		return *this;
-	};
+	}
 
-	inline bool	pegsOnRightOrTop() const {return m_RightUpSide; };
+	inline bool	pegsOnRightOrTop() const {return m_RightUpSide; }
 	inline QLinearGradientCtrl& setPegsOnRightOrTop(bool value)
 	{ 
 		m_RightUpSide = value;
 		m_LeftDownSide = !value;
 	  return *this;
-	};
+	}
 
-	QString toolTipFormat() const { return m_ToolTipFormat; };
-	void	setToolTipFormat(const QString format) { m_ToolTipFormat = format; };
+	QString toolTipFormat() const { return m_ToolTipFormat; }
+	void	setToolTipFormat(const QString format) { m_ToolTipFormat = format; }
 
-	bool	showToolTips() { return m_showToolTips; };
+	bool	showToolTips() { return m_showToolTips; }
 	void	setShowToolTips(bool Show = true);
 
 	// Operations
@@ -131,6 +131,7 @@ public:
 	int		moveSelected(qreal newpos, bool bUpdate);
 	QColor	setSelectedPegColour(QColor newColour, bool bUpdate);
 	void	setColorAt(double pos, QColor colour);
+	void	changeColorAt(double pos, QColor colour);
 	int		setPeg(int index, qreal position);
 
 	// Internals

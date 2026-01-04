@@ -126,17 +126,17 @@ void CDetectCosmeticTask::doProcess()
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 			m_pProgress->Progress2(progress += nrProcessors);
 
-		const auto countColdHotPixels = [&](const int col, const int row, const bool changed) -> void
+		const auto countColdHotPixels = [&](const int acol, const int arow, const bool ischanged) -> void
 		{
-			if (changed)
+			if (ischanged)
 			{
 				if (m_bHot)
 					++nrHotPixels;
 				else
 					++nrColdPixels;
 			}
-			if (static_cast<bool>(m_pDelta) && (changed || m_bInitDelta))
-				m_pDelta->SetPixel(col, row, changed ? (m_bHot ? 255 : 50) : 128);
+			if (static_cast<bool>(m_pDelta) && (ischanged || m_bInitDelta))
+				m_pDelta->SetPixel(acol, arow, ischanged ? (m_bHot ? 255 : 50) : 128);
 		};
 
 		if constexpr (Monochrome)
@@ -303,16 +303,15 @@ void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fG
 
 			if (bAdd)
 			{
-#pragma warning (suppress:4457)
-				double					fGray;
+				double					fG;
 				double					fDelta;
 
-				m_pOrgBitmap->GetPixel(i, j, fGray);
+				m_pOrgBitmap->GetPixel(i, j, fG);
 				m_pDelta->GetPixel(i, j, fDelta);
 
-				vAllGrays.push_back(fGray);
+				vAllGrays.push_back(fG);
 				if (IsOkValue(fDelta))
-					vGrays.push_back(fGray);
+					vGrays.push_back(fG);
 			};
 		};
 	};
@@ -343,21 +342,20 @@ void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fR
 	{
 		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
-#pragma warning (suppress:4457)
-			double					fRed, fGreen, fBlue;
+			double					fR, fG, fB;
 			double					fDelta;
 
-			m_pOrgBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
+			m_pOrgBitmap->GetPixel(i, j, fR, fG, fB);
 			m_pDelta->GetPixel(i, j, fDelta);
 
-			vAllReds.push_back(fRed);
-			vAllGreens.push_back(fGreen);
-			vAllBlues.push_back(fBlue);
+			vAllReds.push_back(fR);
+			vAllGreens.push_back(fG);
+			vAllBlues.push_back(fB);
 			if (IsOkValue(fDelta))
 			{
-				vReds.push_back(fRed);
-				vGreens.push_back(fGreen);
-				vBlues.push_back(fBlue);
+				vReds.push_back(fR);
+				vGreens.push_back(fG);
+				vBlues.push_back(fB);
 			};
 		};
 	};
@@ -400,21 +398,20 @@ void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& 
 
 			if (bAdd)
 			{
-#pragma warning (suppress:4457)
-				double fGray;
+				double fG;
 				double fDelta;
 				double fDistance2 = std::pow((i-x) / static_cast<double>(lFilterSize), 2) + std::pow((j-y) / static_cast<double>(lFilterSize), 2);
 				double fWeight = std::exp(-fDistance2/2);
 
-				m_pOrgBitmap->GetPixel(i, j, fGray);
+				m_pOrgBitmap->GetPixel(i, j, fG);
 				m_pDelta->GetPixel(i, j, fDelta);
 
-				fSumAllGrays += fGray*fWeight;
+				fSumAllGrays += fG*fWeight;
 				fAllTotalWeight += fWeight;
 				lNrAllGrays++;
 				if (IsOkValue(fDelta))
 				{
-					fSumGrays    += fGray*fWeight;
+					fSumGrays    += fG*fWeight;
 					fTotalWeight += fWeight;
 					lNrGrays++;
 				};
@@ -446,26 +443,25 @@ void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& 
 		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
 			// Check that this is a normal pixel
-#pragma warning (suppress:4457)
-			double fRed, fGreen, fBlue;
+			double fR, fG, fB;
 			double fDelta;
 			double fDistance2 = std::pow((i-x)/ static_cast<double>(lFilterSize), 2) + std::pow((j-y) / static_cast<double>(lFilterSize), 2);
 			double fWeight = std::exp(-fDistance2/2);
 
-			m_pOrgBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
+			m_pOrgBitmap->GetPixel(i, j, fR, fG, fB);
 			m_pDelta->GetPixel(i, j, fDelta);
 
-			fSumAllReds		+= fRed*fWeight;
-			fSumAllGreens	+= fGreen*fWeight;
-			fSumAllBlues	+= fBlue*fWeight;
+			fSumAllReds		+= fR*fWeight;
+			fSumAllGreens	+= fG*fWeight;
+			fSumAllBlues	+= fB*fWeight;
 
 			fAllTotalWeight += fWeight;
 			lNrAllGrays++;
 			if (IsOkValue(fDelta))
 			{
-				fSumReds	 += fRed*fWeight;
-				fSumGreens   += fGreen*fWeight;
-				fSumBlues    += fBlue*fWeight;
+				fSumReds	 += fR*fWeight;
+				fSumGreens   += fG*fWeight;
+				fSumBlues    += fB*fWeight;
 				fTotalWeight += fWeight;
 				lNrGrays++;
 			}

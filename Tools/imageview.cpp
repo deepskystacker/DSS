@@ -39,7 +39,7 @@
 
 namespace DSS
 {
-    constexpr int alpha = 155;
+    //constexpr int alpha = 155;
     constexpr qreal MAX_ZOOM = 7.25;
 
     ImageView::ImageView(QWidget* parent)
@@ -179,7 +179,7 @@ namespace DSS
             {
                 qreal width(m_pToolBar->width());
                 qreal height(m_pToolBar->height());
-                QPoint point(sz.width() - width, sz.height() - height);
+                QPoint point(static_cast<int>(sz.width() - width), static_cast<int>(sz.height() - height));
                 m_pToolBar->move(point);
             }
 
@@ -360,18 +360,18 @@ namespace DSS
         if (!underMouse() || !displayRect.contains(mouseLocation) || (m_pToolBar && m_pToolBar->underMouse())) return;
 
         //QPoint where{ static_cast<int>(mouseLocation.x() - diameter / 2), static_cast<int>(mouseLocation.y() - diameter / 2) };
-        QPoint where(std::max(0.0, mouseLocation.x() - diameter), 0);
-        int my = mouseLocation.y();
+        QPoint where(static_cast<int>(std::max(0.0, mouseLocation.x() - diameter)), 0);
+        int my = static_cast<int>(mouseLocation.y());
         if (my < 10 + diameter)
         {
             where.setY(my + 30);
         }
         else
         {
-            where.setY(my - (10 + diameter));
+            where.setY(my - static_cast<int>(10 + diameter));
         }
 
-        const QRect rect(where, QSize(diameter, diameter));
+        const QRect rect(where, QSize(static_cast<int>(diameter), static_cast<int>(diameter)));
         //
         // Create a circular clipping region on the rectangle
         //

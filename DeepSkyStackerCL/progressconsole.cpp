@@ -83,7 +83,7 @@ namespace DSS
 
 		if (m_total1)
 		{
-			double percentage = (double)m_lastTotal1 / (double)m_total1 * 100.0;
+			double percentage = static_cast<double>(m_lastTotal1) / static_cast<double>(m_total1) * 100.0;
 			m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
 			applyProgress1(lAchieved1);
 		}
@@ -116,10 +116,10 @@ namespace DSS
 	void OldProgressConsole::slotProgress2(const QString& szText, int lAchieved2)
 	{
 		// Always update after a min progress has occurred.
-		float fAmountSoFar = (float)m_lastTotal2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
+		float fAmountSoFar = static_cast<float>(m_lastTotal2) / (static_cast<float>(((m_total2 / 100.0) * m_minProgressStep)));
 		float fRoundedSoFar = ceil(fAmountSoFar);
 
-		float fAmountGoingTo = (float)lAchieved2 / ((float)((m_total2 / 100.0) * m_minProgressStep));
+		float fAmountGoingTo = static_cast<float>(lAchieved2) / (static_cast<float>(((m_total2 / 100.0) * m_minProgressStep)));
 		float fRoundedGoingTo = ceil(fAmountGoingTo);
 
 		if (fRoundedGoingTo <= fRoundedSoFar &&
@@ -132,7 +132,7 @@ namespace DSS
 
 		double percentage = 0.0f;
 		if (m_total2)
-			percentage = (double)m_lastTotal2 / (double)m_total2 * 100.0;
+			percentage = static_cast<double>(m_lastTotal2) / static_cast<double>(m_total2) * 100.0;
 
 		if (GetStart2Text().compare(szText, Qt::CaseInsensitive) != 0)
 		{

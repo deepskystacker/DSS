@@ -85,10 +85,10 @@ bool CGrayMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap,
 		vValues.resize(0);
 		for (size_t j = 0; j < vScanLines.size(); j++)
 		{
-			pValue = (TType*)vScanLines[j];
+			pValue = static_cast<TType*>(vScanLines[j]);
 			pValue += i;
 
-			if (*pValue || m_vImageOrder.size()) // Remove 0
+			if (0. != *pValue || m_vImageOrder.size()) // Remove 0
 				vValues.push_back(*pValue);
 		};
 
@@ -108,8 +108,14 @@ bool CGrayMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap,
 				vAuxValues = vValues;
 				vValues.resize(0);
 				for (size_t k = 0; k < m_vImageOrder.size(); k++)
-					if (const auto auxVal = vAuxValues[m_vImageOrder[k]])
+				// Changed because the old code:
+				// if (const auto auxVal = vAuxValues[m_vImageOrder[k]])
+				// was creating auxVal as a boolean
+				{
+					const auto auxVal = vAuxValues[m_vImageOrder[k]];
+					if (0 != auxVal)
 						vValues.push_back(auxVal);
+				}
 
 				Homogenize(vValues, fMaximum);
 			}
@@ -120,19 +126,19 @@ bool CGrayMultiBitmapT<TType, TTypeOutput>::SetScanLines(CMemoryBitmap* pBitmap,
 		};
 
 		if (m_Method == MBP_MEDIAN)
-			*pCurrentValue = Median(vValues);
+			*pCurrentValue = static_cast<TTypeOutput>(Median(vValues));
 		else if (m_Method == MBP_AVERAGE)
-			*pCurrentValue = Average(vValues);
+			*pCurrentValue = static_cast<TTypeOutput>(Average(vValues));
 		else if (m_Method == MBP_MAXIMUM)
-			*pCurrentValue = Maximum(vValues);
+			*pCurrentValue = static_cast<TTypeOutput>(Maximum(vValues));
 		else if (m_Method == MBP_SIGMACLIP)
 		{
-			*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+			*pCurrentValue = static_cast<TTypeOutput>(KappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1));
 		}
 		else if (m_Method == MBP_MEDIANSIGMACLIP)
-			*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
+			*pCurrentValue = static_cast<TTypeOutput>(MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2));
 		else if (m_Method == MBP_AUTOADAPTIVE)
-			*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations, vdWork1);
+			*pCurrentValue = static_cast<TTypeOutput>(AutoAdaptiveWeightedAverage(vValues, m_lNrIterations, vdWork1));
 
 		//if (m_bHomogenization)
 		//	*pCurrentValue = fHomogenization*(double)(*pCurrentValue);

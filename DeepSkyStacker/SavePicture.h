@@ -52,7 +52,7 @@ namespace DSS
 	public:
 		SavePicture(QWidget* parent = nullptr, const QString& caption = QString(), const QString& directory = QString(), const QString& filter = QString());
 
-		~SavePicture() = default;
+		~SavePicture() override = default;
 
 		SavePicture(const SavePicture&) = delete;
 		SavePicture(SavePicture&&) = delete;
@@ -76,6 +76,7 @@ namespace DSS
 			case TC_LZW:
 				compressionLZW->setChecked(true);
 				break;
+			default: break;
 			}
 		}
 

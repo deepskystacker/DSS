@@ -60,11 +60,11 @@
     <ClCompile Include="QtTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="catch_amalgamated.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="catch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -73,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="AvxEntropyTest.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="catch_amalgamated.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

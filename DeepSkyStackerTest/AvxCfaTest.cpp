@@ -1,11 +1,12 @@
 #include "pch.h"
-#include "catch.h"
+#include "catch_amalgamated.hpp"
 #include "avx_cfa.h"
 #include "GrayBitmap.h"
 #include "Multitask.h"
 #include "MultiBitmap.h"
 #include "MedianFilterEngine.h"
 #include "avx_simd_check.h"
+using namespace DSS;
 
 TEST_CASE("AVX CFA", "[AVX][CFA]")
 {

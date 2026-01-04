@@ -8,6 +8,7 @@
     <qresource prefix="/calibration">
         <file alias="rational.bmp">res/Calibration_Rational.bmp</file>
         <file alias="linear.bmp">res/Calibration_Linear.bmp</file>
+        <file alias="offset.bmp">res/Calibration_Offset.bmp</file>
     </qresource>
     <qresource prefix="/rgbcalibration">
         <file alias="none.bmp">res/RGBCalibration_None.bmp</file>

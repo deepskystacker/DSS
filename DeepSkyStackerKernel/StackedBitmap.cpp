@@ -20,6 +20,9 @@ using namespace DSS;
 // Define some convenience "functions" to either turn Visual Leak Detector on and off
 // or do nothing
 //
+void turnOffVld();
+void turnOnVld();
+
 #if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
 #include <vld.h>
 void turnOffVld() { VLDDisable(); }
@@ -116,12 +119,12 @@ void StackedBitmap::SetPixel(int X, int Y, double fRed, double fGreen, double fB
 {
 	const size_t lOffset = static_cast<size_t>(m_lWidth) * static_cast<size_t>(Y) + static_cast<size_t>(X);
 
-	m_vRedPlane[lOffset] = fRed * m_lNrBitmaps;
+	m_vRedPlane[lOffset] = static_cast<float>(fRed * m_lNrBitmaps);
 
 	if (!m_bMonochrome)
 	{
-		m_vGreenPlane[lOffset] = fGreen * m_lNrBitmaps;
-		m_vBluePlane[lOffset] = fBlue * m_lNrBitmaps;
+		m_vGreenPlane[lOffset] = static_cast<float>(fGreen * m_lNrBitmaps);
+		m_vBluePlane[lOffset] = static_cast<float>(fBlue * m_lNrBitmaps);
 	}
 }
 
@@ -268,16 +271,16 @@ int	StackedBitmap::GetNrStackedFrames() const
 
 
 /* ------------------------------------------------------------------- */
-namespace
-{
-	void limitColorValues(double& red, double& green, double& blue)
-	{
-		constexpr double UpperLimit = 255.0;
-		red = std::min(red, UpperLimit);
-		green = std::min(green, UpperLimit);
-		blue = std::min(blue, UpperLimit);
-	}
-}
+//namespace
+//{
+//	void limitColorValues(double& red, double& green, double& blue)
+//	{
+//		constexpr double UpperLimit = 255.0;
+//		red = std::min(red, UpperLimit);
+//		green = std::min(green, UpperLimit);
+//		blue = std::min(blue, UpperLimit);
+//	}
+//}
 
 //
 // MT, 11-March-2024
@@ -553,15 +556,9 @@ void StackedBitmap::updateQImage(uchar* pImageData, qsizetype bytes_per_line, DS
 		for (size_t n = 0; n < bufferLen; ++n)
 		{
 			*pOutPixel++ = qRgb(
-				std::clamp(redBuffer[n], 0.0F, 255.0F),
-				std::clamp(greenBuffer[n], 0.0F, 255.0F),
-				std::clamp(blueBuffer[n], 0.0F, 255.0F));
-			/*
-			*pOutPixel++ = qRgb(
-				std::clamp(pRedPixel[n], 0.0F, 255.0F),
-				std::clamp(pGreenPixel[n], 0.0F, 255.0F),
-				std::clamp(pBluePixel[n], 0.0F, 255.0F));
-				*/
+				static_cast<int>(std::clamp(redBuffer[n], 0.0F, 255.0F)),
+				static_cast<int>(std::clamp(greenBuffer[n], 0.0F, 255.0F)),
+				static_cast<int>(std::clamp(blueBuffer[n], 0.0F, 255.0F)));
 		}
 	}
 }
@@ -682,7 +679,7 @@ void StackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 		// Read specific fields (if present)
 		m_lISOSpeed = tiffReader->GetISOSpeed();
 		m_lGain = tiffReader->GetGain();
-		m_lTotalTime = tiffReader->GetExposureTime();
+		m_lTotalTime = static_cast<int>(tiffReader->GetExposureTime());
 
 		if (TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_NRFRAMES, &nrbitmaps))
 			m_lNrBitmaps = nrbitmaps;
@@ -730,7 +727,7 @@ void StackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 		// Read specific fields (if present)
 		m_lISOSpeed  = fitsReader->m_lISOSpeed;
 		m_lGain      = fitsReader->m_lGain;
-		m_lTotalTime = fitsReader->m_fExposureTime;
+		m_lTotalTime = static_cast<int>(fitsReader->m_fExposureTime);
 
 		//
 		// If the FITS file keyword NCOMBINE was present use the value from that for
@@ -828,28 +825,28 @@ public :
 		m_lXStart { 0 },
 		m_lYStart { 0 }
 	{
-	};
+	}
 
-	virtual ~CTIFFWriterStacker()
+	virtual ~CTIFFWriterStacker() override
 	{
 		OnClose();
-	};
+	}
 
 	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
-	};
+	}
 
 	void	SetApplySettings(bool bApplySettings)
 	{
 		m_bApplySettings = bApplySettings;
-	};
+	}
 
 	void	SetTIFFFormat(TIFFFORMAT TiffFormat, TIFFCOMPRESSION TiffComp)
 	{
 		m_TiffFormat = TiffFormat;
 		m_TiffComp   = TiffComp;
-	};
+	}
 
 	virtual bool OnOpen() override;
 	virtual bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
@@ -1036,8 +1033,8 @@ private :
 						m_lYStart;
 
 public :
-	CFITSWriterStacker(const fs::path& file, const DSSRect& rc, OldProgressBase *	pProgress) :
-		CFITSWriter(file, pProgress),
+	CFITSWriterStacker(const fs::path& path, const DSSRect& rc, OldProgressBase *	pProgress) :
+		CFITSWriter(path, pProgress),
 		rect{rc}
 	{
 		m_bApplySettings = false;
@@ -1045,26 +1042,26 @@ public :
 		m_lXStart = 0;
 		m_lYStart = 0;
         m_pStackedBitmap = NULL;
-	};
+	}
 
-	virtual ~CFITSWriterStacker()
+	virtual ~CFITSWriterStacker() override
 	{
-	};
+	}
 
 	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
-	};
+	}
 
 	void	SetApplySettings(bool bApplySettings)
 	{
 		m_bApplySettings = bApplySettings;
-	};
+	}
 
 	void	SetFITSFormat(FITSFORMAT FitsFormat)
 	{
 		m_FitsFormat = FitsFormat;
-	};
+	}
 
 	virtual bool OnOpen() override;
 	virtual bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
@@ -1253,18 +1250,18 @@ private :
 	StackedBitmap *		m_pStackedBitmap;
 
 public :
-	CTIFFReadStacker(const fs::path& file, OldProgressBase *	pProgress)
-		: CTIFFReader(file, pProgress)
+	CTIFFReadStacker(const fs::path& path, OldProgressBase *	pProgress)
+		: CTIFFReader(path, pProgress)
 	{
         m_pStackedBitmap = NULL;
-	};
+	}
 
-	virtual ~CTIFFReadStacker() {};
+	virtual ~CTIFFReadStacker() override {}
 
 	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
-	};
+	}
 
 	virtual bool	OnOpen() override;
 	bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
@@ -1368,18 +1365,18 @@ private :
 	StackedBitmap *		m_pStackedBitmap;
 
 public :
-	CFITSReadStacker(const fs::path& file, OldProgressBase *	pProgress)
-		: CFITSReader(file, pProgress)
+	CFITSReadStacker(const fs::path& path, OldProgressBase *	pProgress)
+		: CFITSReader(path, pProgress)
 	{
         m_pStackedBitmap = NULL;
-	};
+	}
 
-	virtual ~CFITSReadStacker() {};
+	virtual ~CFITSReadStacker() override {}
 
 	void	SetStackedBitmap(StackedBitmap * pStackedBitmap)
 	{
 		m_pStackedBitmap = pStackedBitmap;
-	};
+	}
 
 	virtual bool	OnOpen() override;
 	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;

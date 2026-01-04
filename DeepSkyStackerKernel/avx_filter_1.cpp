@@ -77,4 +77,4 @@ template class AvxImageFilter<float>;
 template class AvxImageFilter<double>;
 #if defined(_MSC_VER)
 #pragma warning( pop )
-#endif	
+#endif

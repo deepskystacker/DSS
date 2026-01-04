@@ -99,11 +99,14 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, OldProgressBase
 				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			break;
 		case PICTURETYPE_LIGHTFRAME:
+		case PICTURETYPE_REFLIGHTFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
 				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			else
 				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitsPerChannel).arg(strDescription).arg(fileName);
 			bOverrideRAW = false;
+			break;
+		default:
 			break;
 		};
 
@@ -147,7 +150,7 @@ public:
 		m_dwDarkFlatTaskID = 0;
 		m_dwFlatTaskID = 0;
 	}
-	~CTaskBitmapCache() {};
+	~CTaskBitmapCache() {}
 
 	void ClearCache()
 	{
@@ -207,6 +210,8 @@ public:
 			case PICTURETYPE_FLATFRAME:
 				bResult = checkFrame(this->m_dwFlatTaskID, this->m_pFlatBitmap);
 				break;
+			default:
+				break;
 			}
 		}
 
@@ -239,7 +244,7 @@ static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool
 
 	QString fileName;
 	if (bExposure)
-		fileName = QString("%1_%2%3_%4s").arg(type).arg(ISOGain).arg(lISOGain).arg((int)pTaskInfo->m_fExposure);
+		fileName = QString("%1_%2%3_%4s").arg(type).arg(ISOGain).arg(lISOGain).arg(static_cast<int>(pTaskInfo->m_fExposure));
 	else
 		fileName = QString("%1_%2%3").arg(type).arg(ISOGain).arg(lISOGain);
 	fs::path name{ fileName.toStdU16String() };
@@ -313,14 +318,14 @@ bool CStackingInfo::DoOffsetTask(OldProgressBase* const pProgress)
 			ZTRACE_RUNTIME(strText);
 
 			if (pProgress)
-				pProgress->Start1(strText, (int)m_pOffsetTask->m_vBitmaps.size(), true);
+				pProgress->Start1(strText, static_cast<int>(m_pOffsetTask->m_vBitmaps.size()), true);
 
-			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pPrgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pOffsetTask->m_vBitmaps.size())
 					return { {}, false };
 				std::shared_ptr<CMemoryBitmap> pBitmap;
-				const bool success = ::LoadFrame(m_pOffsetTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_OFFSETFRAME, pProgress, pBitmap);
+				const bool success = ::LoadFrame(m_pOffsetTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_OFFSETFRAME, pPrgress, pBitmap);
 				return { pBitmap, success };
 			};
 
@@ -477,7 +482,7 @@ bool CStackingInfo::DoDarkTask(OldProgressBase* const pProgress)
 			ZTRACE_RUNTIME(strText);
 
 			if (pProgress)
-				pProgress->Start1(strText, (int)m_pDarkTask->m_vBitmaps.size(), true);
+				pProgress->Start1(strText, static_cast<int>(m_pDarkTask->m_vBitmaps.size()), true);
 
 			// First load the master offset if available
 			std::shared_ptr<CMemoryBitmap> pMasterOffset;
@@ -488,12 +493,12 @@ bool CStackingInfo::DoDarkTask(OldProgressBase* const pProgress)
 			//	<< pMasterOffset->getValue(0, 0) << pMasterOffset->getValue(1, 0) << pMasterOffset->getValue(2, 0) << pMasterOffset->getValue(3, 0) << pMasterOffset->getValue(4, 0)
 			//	<< pMasterOffset->getValue(5, 0) << pMasterOffset->getValue(6, 0) << pMasterOffset->getValue(7, 0) << pMasterOffset->getValue(8, 0) << pMasterOffset->getValue(9, 0);
 
-			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pPrgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pDarkTask->m_vBitmaps.size())
 					return { {}, false };
 				std::shared_ptr<CMemoryBitmap> pBitmap;
-				const bool success = ::LoadFrame(m_pDarkTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_DARKFRAME, pProgress, pBitmap);
+				const bool success = ::LoadFrame(m_pDarkTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_DARKFRAME, pPrgress, pBitmap);
 				return { pBitmap, success };
 			};
 
@@ -673,7 +678,7 @@ bool	CStackingInfo::DoDarkFlatTask(OldProgressBase* const pProgress)
 			ZTRACE_RUNTIME(strText.toUtf8().constData());
 
 			if (pProgress)
-				pProgress->Start1(strText, (int)m_pDarkFlatTask->m_vBitmaps.size(), true);
+				pProgress->Start1(strText, static_cast<int>(m_pDarkFlatTask->m_vBitmaps.size()), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
@@ -810,7 +815,7 @@ private :
 		m_fMean			= s.m_fMean;
 		m_fStdDev		= s.m_fStdDev;
 		m_lNrValues		= s.m_lNrValues;
-	};
+	}
 
 	void	ComputeStatistics() const
 	{
@@ -824,7 +829,7 @@ private :
 			m_fMean		= 0;
 			m_fStdDev	= 0;
 		};
-	};
+	}
 
 public :
 	CRunningStatistics()
@@ -834,54 +839,54 @@ public :
 		m_fMean			= 0;
 		m_fStdDev		= 0;
 		m_lNrValues		= 0;
-	};
+	}
 
 	CRunningStatistics(const CRunningStatistics & rs)
 	{
 		CopyFrom(rs);
-	};
+	}
 
 	virtual ~CRunningStatistics()
 	{
-	};
+	}
 
 	CRunningStatistics & operator = (const CRunningStatistics & rs)
 	{
 		CopyFrom(rs);
 		return (*this);
-	};
+	}
 
 	void		AddValue(double fValue)
 	{
 		m_lNrValues++;
 		m_fSum += fValue;
 		m_fPowSum += fValue*fValue;
-	};
+	}
 
 	double		Normalize(double fValue) const
 	{
 		if (m_lNrValues && m_fStdDev == 0)
 			ComputeStatistics();
 
-		if (m_fStdDev)
+		if (0. != m_fStdDev)
 		{
 			fValue -= m_fMean;
 			fValue /= m_fStdDev;
 		};
 
 		return fValue;
-	};
+	}
 
 	double		NormalizeInvert(double fValue) const
 	{
-		if (m_lNrValues && m_fStdDev == 0)
+		if (m_lNrValues && m_fStdDev == 0.)
 			ComputeStatistics();
 
 		fValue *= m_fStdDev;
 		fValue += m_fMean;
 
 		return fValue;
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -896,19 +901,19 @@ private :
 	void	AdjustValue(double & fValue)
 	{
 		fValue = min(max(0.0, fValue), 255.0);
-	};
+	}
 
 public :
 	CFlatCalibrationParameters()
 	{
 		m_vStats.resize(BAYER_NRCOLORS);
 		m_bInitialized = false;
-	};
+	}
 
 	bool	IsInitialized()
 	{
 		return m_bInitialized;
-	};
+	}
 
 	void	ComputeParameters(CMemoryBitmap* pBitmap, OldProgressBase * pProgress);
 	void	ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, OldProgressBase * pProgress);
@@ -993,8 +998,8 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 				double			fGray;
 
 				pBitmap->GetPixel(i, j, fGray);
-				fGray = fcp.m_vStats[(int)pBitmap->GetBayerColor(i, j)].Normalize(fGray);
-				fGray = m_vStats[(int)pBitmap->GetBayerColor(i, j)].NormalizeInvert(fGray);
+				fGray = fcp.m_vStats[static_cast<int>(pBitmap->GetBayerColor(i, j))].Normalize(fGray);
+				fGray = m_vStats[static_cast<int>(pBitmap->GetBayerColor(i, j))].NormalizeInvert(fGray);
 				AdjustValue(fGray);
 				pBitmap->SetPixel(i, j, fGray);
 			}
@@ -1003,12 +1008,12 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 				double			fRed, fGreen, fBlue;
 
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-				fRed	= fcp.m_vStats[(int)BAYER_RED].Normalize(fRed);
-				fGreen	= fcp.m_vStats[(int)BAYER_GREEN].Normalize(fGreen);
-				fBlue	= fcp.m_vStats[(int)BAYER_BLUE].Normalize(fBlue);
-				fRed	= m_vStats[(int)BAYER_RED].NormalizeInvert(fRed);
-				fGreen	= m_vStats[(int)BAYER_GREEN].NormalizeInvert(fGreen);
-				fBlue	= m_vStats[(int)BAYER_BLUE].NormalizeInvert(fBlue);
+				fRed	= fcp.m_vStats[static_cast<int>(BAYER_RED)].Normalize(fRed);
+				fGreen	= fcp.m_vStats[static_cast<int>(BAYER_GREEN)].Normalize(fGreen);
+				fBlue	= fcp.m_vStats[static_cast<int>(BAYER_BLUE)].Normalize(fBlue);
+				fRed	= m_vStats[static_cast<int>(BAYER_RED)].NormalizeInvert(fRed);
+				fGreen	= m_vStats[static_cast<int>(BAYER_GREEN)].NormalizeInvert(fGreen);
+				fBlue	= m_vStats[static_cast<int>(BAYER_BLUE)].NormalizeInvert(fBlue);
 				AdjustValue(fRed);
 				AdjustValue(fGreen);
 				AdjustValue(fBlue);
@@ -1125,12 +1130,12 @@ bool CStackingInfo::DoFlatTask(OldProgressBase* const pProgress)
 				//}
 			}
 
-			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			const auto readTask = [this](const size_t bitmapNdx, OldProgressBase* const progress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
 			{
 				if (bitmapNdx >= m_pFlatTask->m_vBitmaps.size())
 					return { {}, false };
 				std::shared_ptr<CMemoryBitmap> pBitmap;
-				const bool success = ::LoadFrame(m_pFlatTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_FLATFRAME, pProgress, pBitmap);
+				const bool success = ::LoadFrame(m_pFlatTask->m_vBitmaps[bitmapNdx].filePath, PICTURETYPE_FLATFRAME, progress, pBitmap);
 				return { pBitmap, success };
 			};
 
@@ -1685,29 +1690,29 @@ void CAllStackingTasks::UpdateTasksMethods()
 
 	unsigned int				dwMethod;
 
-	dwMethod = workspace.value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt();
+	dwMethod = workspace.value("Stacking/Light_Method", static_cast<uint>(MBP_AVERAGE)).toUInt();
 	if (dwMethod)
-		LightMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	lLightIteration = workspace.value("Stacking/Light_Iteration", (uint)5).toUInt();
+		LightMethod = static_cast<MULTIBITMAPPROCESSMETHOD>(dwMethod);
+	lLightIteration = workspace.value("Stacking/Light_Iteration", static_cast<uint>(5)).toUInt();
 	fLightKappa = workspace.value("Stacking/Light_Kappa", 2.0).toDouble();
 
 
-	dwMethod = workspace.value("Stacking/Dark_Method", (uint)MBP_MEDIAN).toUInt();
+	dwMethod = workspace.value("Stacking/Dark_Method", static_cast<uint>(MBP_MEDIAN)).toUInt();
 	if (dwMethod)
-		DarkMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	lDarkIteration = workspace.value("Stacking/Dark_Iteration", (uint)5).toUInt();
+		DarkMethod = static_cast<MULTIBITMAPPROCESSMETHOD>(dwMethod);
+	lDarkIteration = workspace.value("Stacking/Dark_Iteration", static_cast<uint>(5)).toUInt();
 	fDarkKappa = workspace.value("Stacking/Dark_Kappa", 2.0).toDouble();
 
-	dwMethod = workspace.value("Stacking/Flat_Method", (uint)MBP_MEDIAN).toUInt();
+	dwMethod = workspace.value("Stacking/Flat_Method", static_cast<uint>(MBP_MEDIAN)).toUInt();
 	if (dwMethod)
-		FlatMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	lFlatIteration = workspace.value("Stacking/Flat_Iteration", (uint)5).toUInt();
+		FlatMethod = static_cast<MULTIBITMAPPROCESSMETHOD>(dwMethod);
+	lFlatIteration = workspace.value("Stacking/Flat_Iteration", static_cast<uint>(5)).toUInt();
 	fFlatKappa = workspace.value("Stacking/Flat_Kappa", 2.0).toDouble();
 
-	dwMethod = workspace.value("Stacking/Offset_Method", (uint)MBP_MEDIAN).toUInt();
+	dwMethod = workspace.value("Stacking/Offset_Method", static_cast<uint>(MBP_MEDIAN)).toUInt();
 	if (dwMethod)
-		OffsetMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	lOffsetIteration = workspace.value("Stacking/Offset_Iteration", (uint)5).toUInt();
+		OffsetMethod = static_cast<MULTIBITMAPPROCESSMETHOD>(dwMethod);
+	lOffsetIteration = workspace.value("Stacking/Offset_Iteration", static_cast<uint>(5)).toUInt();
 	fOffsetKappa = workspace.value("Stacking/Offset_Kappa", 2.0).toDouble();
 
 	for (auto& stack : this->m_vStacks)
@@ -2087,12 +2092,12 @@ void CAllStackingTasks::SetTemporaryFilesFolder(QString strFolder)
 
 /* ------------------------------------------------------------------- */
 
-BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
+BACKGROUNDCALIBRATIONMODE CAllStackingTasks::GetBackgroundCalibrationMode()
 {
-	Workspace			workspace;
+	Workspace workspace{};
 
-	bool backgroundCalibration = workspace.value("Stacking/BackgroundCalibration", true).toBool();
-	bool perChannelCalibration = workspace.value("Stacking/PerChannelBackgroundCalibration", false).toBool();
+	const bool backgroundCalibration = workspace.value("Stacking/BackgroundCalibration", true).toBool();
+	const bool perChannelCalibration = workspace.value("Stacking/PerChannelBackgroundCalibration", false).toBool();
 
 	if (backgroundCalibration)
 		return BCM_RGB;
@@ -2100,30 +2105,24 @@ BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
 		return BCM_PERCHANNEL;
 	else
 		return BCM_NONE;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
-BACKGROUNDCALIBRATIONINTERPOLATION	CAllStackingTasks::GetBackgroundCalibrationInterpolation()
+BACKGROUNDCALIBRATIONINTERPOLATION CAllStackingTasks::GetBackgroundCalibrationInterpolation()
 {
-	Workspace			workspace;
-	int				interpolation = (int)BCI_RATIONAL;
-
-	interpolation = workspace.value("Stacking/BackgroundCalibrationInterpolation").toUInt();
-
-	return (BACKGROUNDCALIBRATIONINTERPOLATION)interpolation;
-};
+	int interpolation = static_cast<int>(BCI_RATIONAL);
+	interpolation = Workspace{}.value("Stacking/BackgroundCalibrationInterpolation").toUInt();
+	return static_cast<BACKGROUNDCALIBRATIONINTERPOLATION>(interpolation);
+}
 
 /* ------------------------------------------------------------------- */
 
-RGBBACKGROUNDCALIBRATIONMETHOD	CAllStackingTasks::GetRGBBackgroundCalibrationMethod()
+RGBBACKGROUNDCALIBRATIONMETHOD CAllStackingTasks::GetRGBBackgroundCalibrationMethod()
 {
-	Workspace			workspace;
-
-	int method = workspace.value("Stacking/RGBBackgroundCalibrationMethod", (int)RBCM_MAXIMUM).toUInt();
-
-	return (RGBBACKGROUNDCALIBRATIONMETHOD)method;
-};
+	const int method = Workspace{}.value("Stacking/RGBBackgroundCalibrationMethod", static_cast<int>(RBCM_MAXIMUM)).toUInt();
+	return static_cast<RGBBACKGROUNDCALIBRATIONMETHOD>(method);
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -2268,7 +2267,7 @@ INTERMEDIATEFILEFORMAT CAllStackingTasks::GetIntermediateFileFormat()
 	if (value != IFF_TIFF && value != IFF_FITS)
 		value = IFF_TIFF;
 
-	return (INTERMEDIATEFILEFORMAT)value;
+	return static_cast<INTERMEDIATEFILEFORMAT>(value);
 };
 
 /* ------------------------------------------------------------------- */
@@ -2282,7 +2281,7 @@ COMETSTACKINGMODE CAllStackingTasks::GetCometStackingMode()
 	if (value != CSM_STANDARD && value != CSM_COMETONLY)
 		value = CSM_COMETSTAR;
 
-	return (COMETSTACKINGMODE)value;
+	return static_cast<COMETSTACKINGMODE>(value);
 };
 
 /* ------------------------------------------------------------------- */
@@ -2305,7 +2304,7 @@ void CAllStackingTasks::GetPostCalibrationSettings(CPostCalibrationSettings & pc
 	 
 	pcs.m_bSaveDeltaImage = workspace.value("Stacking/PCS_SaveDeltaImage", false).toBool();
 
-	pcs.m_Replace = static_cast<COSMETICREPLACE>(workspace.value("Stacking/PCS_ReplaceMethod", (int)CR_MEDIAN).toInt());
+	pcs.m_Replace = static_cast<COSMETICREPLACE>(workspace.value("Stacking/PCS_ReplaceMethod", static_cast<int>(CR_MEDIAN)).toInt());
 };
 
 /* ------------------------------------------------------------------- */
@@ -2328,7 +2327,7 @@ void CAllStackingTasks::SetPostCalibrationSettings(const CPostCalibrationSetting
 
 	workspace.setValue("Stacking/PCS_SaveDeltaImage", pcs.m_bSaveDeltaImage);
 
-	workspace.setValue("Stacking/PCS_ReplaceMethod", (int)pcs.m_Replace);
+	workspace.setValue("Stacking/PCS_ReplaceMethod", static_cast<int>(pcs.m_Replace));
 };
 
 /* ------------------------------------------------------------------- */

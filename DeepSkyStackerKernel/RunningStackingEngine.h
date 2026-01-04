@@ -2,27 +2,30 @@
 #include "BackgroundCalibration.h"
 #include "MatchingStars.h"
 
+namespace DSS { class OldProgressBase; }
+
 class CMemoryBitmap;
 class CLightFrameInfo;
+
 class CRunningStackingEngine
 {
 private:
-	std::shared_ptr<CMemoryBitmap> m_pStackedBitmap;
-	std::shared_ptr<CMemoryBitmap> m_pPublicBitmap;
-	CBackgroundCalibration m_BackgroundCalibration;
-	int m_lNrStacked;
-	double m_fTotalExposure;
-	CMatchingStars m_MatchingStars;
+	std::shared_ptr<CMemoryBitmap> m_pStackedBitmap{};
+	std::shared_ptr<CMemoryBitmap> m_pPublicBitmap{};
+	std::unique_ptr<BackgroundCalibrator> backgroundCalibration{};
+	int m_lNrStacked{ 0 };
+	double m_fTotalExposure{ 0 };
+	CMatchingStars m_MatchingStars{};
 
 private:
 	void CreatePublicBitmap();
 
 public:
-	CRunningStackingEngine();
+	CRunningStackingEngine() = default;
 	~CRunningStackingEngine() = default;
 
 	bool ComputeOffset(CLightFrameInfo& lfi);
-	bool AddImage(CLightFrameInfo& lfi, OldProgressBase* pProgress);
+	bool AddImage(CLightFrameInfo& lfi, DSS::OldProgressBase* pProgress);
 	std::shared_ptr<CMemoryBitmap> getStackedImage()
 	{
 		return m_pPublicBitmap;

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include <unordered_set>
+#include "BackgroundCalibration.h"
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
@@ -11,7 +12,6 @@
 #include <ztrace.h>
 #include <zexcbase.h>
 #include <zexcept.h>
-#include "RationalInterpolation.h"
 #include "RAWUtils.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
@@ -24,7 +24,6 @@ using namespace DSS;
 const QStringList rawFileExtensions{ "cr2", "cr3", "crw", "nef", "mrw", "orf", "raf", "pef", "x3f", "dcr",
 		"kdc", "srf", "arw", "raw", "dng", "ia", "rw2" };
 
-/* ------------------------------------------------------------------- */
 
 namespace
 {
@@ -138,9 +137,9 @@ bool	CAllDepthBitmap::initQImage()
 				double			fRed, fGreen, fBlue;
 				m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
-				*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
-					std::clamp(fGreen, 0.0, 255.0),
-					std::clamp(fBlue, 0.0, 255.0));
+				*pOutPixel++ = qRgb(static_cast<int>(std::clamp(fRed, 0.0, 255.0)),
+					static_cast<int>(std::clamp(fGreen, 0.0, 255.0)),
+					static_cast<int>(std::clamp(fBlue, 0.0, 255.0)));
 			}
 		}
 	}
@@ -170,9 +169,9 @@ bool	CAllDepthBitmap::initQImage()
 				double fRed, fGreen, fBlue;
 				threadVars.pixelIt.GetPixel(fRed, fGreen, fBlue);
 
-				*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
-					std::clamp(fGreen, 0.0, 255.0),
-					std::clamp(fBlue, 0.0, 255.0));
+				*pOutPixel = qRgb(static_cast<int>(std::clamp(fRed, 0.0, 255.0)),
+					static_cast<int>(std::clamp(fGreen, 0.0, 255.0)),
+					static_cast<int>(std::clamp(fBlue, 0.0, 255.0)));
 			}
 		}
 	}
@@ -405,6 +404,8 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 			[](const QRgba64& c) -> std::tuple<double, double, double> { return { c.red() / scaleFactorInt16, c.green() / scaleFactorInt16, c.blue() / scaleFactorInt16 }; }
 		>(pImageData);
 		break;
+	default:
+		break;
 	}
 /*
 	switch (bits)
@@ -500,7 +501,8 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 	return true;
 }
 
-/* ------------------------------------------------------------------- */
+
+#include "BackgroundCalibration.h"
 
 namespace DSS
 {
@@ -515,8 +517,6 @@ namespace DSS
 		initTransformation(fBlackPoint, fGrayPoint, fWhitePoint);
 	}
 
-	/* ------------------------------------------------------------------- */
-
 	void GammaTransformation::initTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint)
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -526,8 +526,8 @@ namespace DSS
 		u8transform.resize(transformSize);
 		u16transform.resize(transformSize);
 
-		CRationalInterpolation ri;
-		ri.Initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
+		RationalModel rationalCalib;
+		rationalCalib.redParams.initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 
 		// Perform rational interpolation for uint16_t
 		for (int i = 0; i < transformSize; i++)
@@ -538,8 +538,8 @@ namespace DSS
 				u16transform[i] = std::numeric_limits<uint16_t>::max();
 			else
 			{
-				const double fValue = ri.Interpolate(i / static_cast<double>(std::numeric_limits<uint16_t>::max()));
-				u16transform[i] = static_cast<double>(std::numeric_limits<uint16_t>::max()) * fValue;//pow(fValue, fGamma);
+				const double r = std::get<0>(rationalCalib.calibrate(i / uint16Max_asDouble, 0, 0));
+				u16transform[i] = static_cast<uint16_t>(uint16Max_asDouble * r); //pow(fValue, fGamma);
 			}
 		}
 
@@ -552,8 +552,8 @@ namespace DSS
 				u8transform[i] = std::numeric_limits<uint8_t>::max();
 			else
 			{
-				const double fValue = ri.Interpolate(i / static_cast<double>(std::numeric_limits<uint16_t>::max()));
-				u8transform[i] = static_cast<double>(std::numeric_limits<uint8_t>::max()) * fValue;//pow(fValue, fGamma);
+				const double r = std::get<0>(rationalCalib.calibrate(i / uint16Max_asDouble, 0, 0));
+				u8transform[i] = static_cast<uint8_t>(std::numeric_limits<uint8_t>::max() * r); //pow(fValue, fGamma);
 			}
 		}
 
@@ -594,7 +594,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		case QImage::Format::Format_Grayscale8:
 		{
 #pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-			for (int j = 0; j < height; j++)
+			for (int j = 0; j < static_cast<int>(height); j++)
 			{
 				T* pOutPixel = reinterpret_cast<T*>(pImageData + (j * bytes_per_line));
 				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
@@ -605,8 +605,8 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 					for (int i = 0; i < width; i++)
 					{
-						value = gammatrans.getTransformation(*pGray / fMultiplier);
-						*pOutPixel++ = value;
+						value = gammatrans.getTransformation(static_cast<int>(*pGray / fMultiplier));
+						*pOutPixel++ = static_cast<T>(value);
 						pGray++;
 					}
 				}
@@ -617,7 +617,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		case QImage::Format::Format_Grayscale16:
 			{
 	#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-				for (int j = 0; j < height; j++)
+				for (int j = 0; j < static_cast<int>(height); j++)
 				{
 					T* pOutPixel = reinterpret_cast<T*>(pImageData + (j * bytes_per_line));
 					if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
@@ -628,8 +628,8 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 						for (int i = 0; i < width; i++)
 						{
-							value = gammatrans.getTransformation16(*pGray / fMultiplier);
-							*pOutPixel++ = value;
+							value = gammatrans.getTransformation16(static_cast<int>(static_cast<double>(*pGray) / fMultiplier));
+							*pOutPixel++ = static_cast<T>(value);
 							pGray++;
 						}
 					}
@@ -640,7 +640,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		case QImage::Format::Format_RGB32:
 			{
 	#pragma omp parallel for default(shared) schedule(dynamic, 50) if(Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-				for (int j = 0; j < height; j++)
+				for (int j = 0; j < static_cast<int>(height); j++)
 				{
 					QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
 					if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
@@ -652,9 +652,10 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 						for (int i = 0; i < width; i++)
 						{
-							*pOutPixel++ = qRgb(gammatrans.getTransformation(*pRed / fMultiplier),
-								gammatrans.getTransformation(*pGreen / fMultiplier),
-								gammatrans.getTransformation(*pBlue / fMultiplier));
+							*pOutPixel++ = qRgb(
+								gammatrans.getTransformation(static_cast<int>(static_cast<double>(*pRed) / fMultiplier)),
+								gammatrans.getTransformation(static_cast<int>(static_cast<double>(*pGreen) / fMultiplier)),
+								gammatrans.getTransformation(static_cast<int>(static_cast<double>(*pBlue) / fMultiplier)));
 							pRed++;
 							pGreen++;
 							pBlue++;
@@ -668,7 +669,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 						for (int i = 0; i < width; i++)
 						{
-							value = gammatrans.getTransformation(*pGray / fMultiplier);
+							value = gammatrans.getTransformation(static_cast<int>(static_cast<double>(*pGray) / fMultiplier));
 							*pOutPixel++ = qRgb(value, value, value);
 							pGray++;
 						}
@@ -680,7 +681,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 		case QImage::Format::Format_RGBA64:
 			{
 	#pragma omp parallel for default(shared)schedule(dynamic, 50) if (Multitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-				for (int j = 0; j < height; j++)
+				for (int j = 0; j < static_cast<int>(height); j++)
 				{
 					QRgba64* pOutPixel = reinterpret_cast<QRgba64*>(pImageData + (j * bytes_per_line));
 					if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
@@ -692,9 +693,10 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 						for (int i = 0; i < width; i++)
 						{
-							*pOutPixel++ = QRgba64::fromRgba64(gammatrans.getTransformation16(*pRed / fMultiplier),
-								gammatrans.getTransformation16(*pGreen / fMultiplier),
-								gammatrans.getTransformation16(*pBlue / fMultiplier),
+							*pOutPixel++ = QRgba64::fromRgba64(
+								gammatrans.getTransformation16(static_cast<int>(static_cast<double>(*pRed) / fMultiplier)),
+								gammatrans.getTransformation16(static_cast<int>(static_cast<double>(*pGreen) / fMultiplier)),
+								gammatrans.getTransformation16(static_cast<int>(static_cast<double>(*pBlue) / fMultiplier)),
 								std::numeric_limits<uint16_t>::max());
 							pRed++;
 							pGreen++;
@@ -709,7 +711,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, DSS::Ga
 
 						for (int i = 0; i < width; i++)
 						{
-							value = gammatrans.getTransformation16(*pGray / fMultiplier);
+							value = gammatrans.getTransformation16(static_cast<int>(static_cast<double>(*pGray) / fMultiplier));
 							*pOutPixel++ = qRgba64(value, value, value, std::numeric_limits<uint16_t>::max());
 							pGray++;
 						}
@@ -976,7 +978,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 					BitmapInfo.m_lHeight = big_endian::read_dword(f);
 					BitmapInfo.m_lBitsPerChannel = f.get();
 
-					char colorType = f.get();
+					char colorType = static_cast<char>(f.get());
 					switch (colorType)
 					{
 					case 0:
@@ -1139,23 +1141,24 @@ private :
 	double m_fXShift;
 	double m_fYShift;
 	double m_fMinimum;
-	bool m_bMonochrome;
 	bool m_bAddMode;
+	bool m_bMonochrome;
+
 
 public :
     CSubtractTask() :
 		m_pTarget{},
 		m_pSource{},
-		m_fXShift{ 0 },
-        m_fYShift{ 0 },
-        m_bAddMode{ false },
-        m_fMinimum{ 0 },
-        m_fRedFactor{ 0 },
+		m_pProgress{ nullptr },
+		m_fRedFactor{ 0 },
         m_fGreenFactor{ 0 },
         m_fBlueFactor{ 0 },
         m_fGrayFactor{ 0 },
-        m_bMonochrome{ false },
-        m_pProgress{ nullptr }
+		m_fXShift{ 0 },
+		m_fYShift{ 0 },
+		m_fMinimum{ 0 },
+		m_bAddMode{ false },
+		m_bMonochrome{ false }
 	{}
 
 	~CSubtractTask() = default;
@@ -1226,22 +1229,22 @@ void CSubtractTask::process()
 		if (m_fXShift > 0)
 		{
 			// Target is moved
-			lTgtStartX += m_fXShift + 0.5;
+			lTgtStartX += static_cast<int>(m_fXShift + 0.5);
 		}
 		else if (m_fXShift < 0)
 		{
 			// Source is moved
-			lSrcStartX += std::abs(m_fXShift) + 0.5;
+			lSrcStartX += static_cast<int>(std::abs(m_fXShift) + 0.5);
 		}
 		if (m_fYShift > 0)
 		{
 			// Target is moved
-			lTgtStartY += m_fYShift + 0.5;
+			lTgtStartY += static_cast<int>(m_fYShift + 0.5);
 		}
 		else
 		{
 			// Source is moved
-			lSrcStartY += std::abs(m_fYShift) + 0.5;
+			lSrcStartY += static_cast<int>(std::abs(m_fYShift) + 0.5);
 		}
 
 		targetIt.pixelIt.Reset(lTgtStartX, lTgtStartY);
@@ -1427,6 +1430,9 @@ void FormatFromMethod(QString& strText, MULTIBITMAPPROCESSMETHOD Method, double 
 		break;
 	case MBP_MEDIANSIGMACLIP:
 		strText = QCoreApplication::translate("BitmapExt", "Median Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_MEDIANSIGMACLIP").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
+		break;
+	default:
+		break;
 	};
 }
 
@@ -1468,10 +1474,13 @@ void FormatMethod(QString& strText, MULTIBITMAPPROCESSMETHOD Method, double fKap
 			"IDS_RECAP_MEDIANSIGMACLIP")
 			.arg(fKappa, 0, 'f', 2)
 			.arg(lNrIterations);
+		break;
+	default:
+		break;
 	};
 	return;
 }
-
+#if (0)
 void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double, double& fRed, double& fGreen, double& fBlue)
 {
 	double			fR, fG, fB;
@@ -1488,6 +1497,7 @@ void CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double, double& f
 	fGreen = max(0.0, min(255.0, fGreen));
 	fBlue = max(0.0, min(255.0, fBlue));
 }
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -1600,4 +1610,4 @@ void CBitmapInfo::GetDescription(QString& strDescription)
 bool CBitmapInfo::IsInitialized()
 {
 	return m_lWidth && m_lHeight;
-};
+}

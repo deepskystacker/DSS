@@ -17,7 +17,7 @@ namespace DSS
 
 	public:
 		explicit ExplorerBar(QWidget* parent = nullptr);
-		~ExplorerBar();
+		~ExplorerBar() override;
 
 		void setHelpEnabled(bool enabled = true);
 

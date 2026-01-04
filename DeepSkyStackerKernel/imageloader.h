@@ -65,7 +65,12 @@ private:
 
 public:
 	ImageLoader() = default;
-	virtual ~ImageLoader() = default;
+	ImageLoader(const ImageLoader&) = delete;
+	ImageLoader(ImageLoader&&) = delete;
+	ImageLoader& operator=(const ImageLoader&) = delete;
+	ImageLoader& operator=(ImageLoader&&) = delete;
+
+	virtual ~ImageLoader() override = default;
 
 	void	clearCache();
 //	bool	load(const QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
@@ -88,7 +93,7 @@ public:
 		imageLoader{ loader }
 	{}
 
-	virtual ~ThreadLoader() = default;
+	virtual ~ThreadLoader() override = default;
 
 	std::filesystem::path filepath;
 	ImageLoader* imageLoader;

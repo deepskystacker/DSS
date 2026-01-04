@@ -46,13 +46,13 @@ class AvxAccumulation
 {
 	int resultWidth, resultHeight;
 	CMemoryBitmap& tempBitmap;
-	CMemoryBitmap& outputBitmap;
+	std::shared_ptr<CMemoryBitmap> pOutputBitmap;
 	const CTaskInfo& taskInfo;
 	AvxEntropy& avxEntropy;
 	bool avxEnabled;
 public:
 	AvxAccumulation() = delete;
-	AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept;
+	AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, std::shared_ptr<CMemoryBitmap> outbm, AvxEntropy& entroinfo) noexcept;
 	AvxAccumulation(const AvxAccumulation&) = delete;
 	AvxAccumulation(AvxAccumulation&&) = delete;
 	AvxAccumulation& operator=(const AvxAccumulation&) = delete;

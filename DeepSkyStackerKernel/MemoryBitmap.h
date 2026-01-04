@@ -131,10 +131,10 @@ public:
 		return { 0.0, 0.0, 0.0 };
 	}
  	
-	virtual void	SetValue(size_t, size_t, double, double, double) {};
-	virtual void	GetValue(size_t, size_t, double&, double&, double&) const {};
-	virtual void	SetValue(size_t, size_t, double) {};
-	virtual void	GetValue(size_t, size_t, double&) const {};
+	virtual void	SetValue(size_t, size_t, double, double, double) {}
+	virtual void	GetValue(size_t, size_t, double&, double&, double&) const {}
+	virtual void	SetValue(size_t, size_t, double) {}
+	virtual void	GetValue(size_t, size_t, double&) const {}
 
 	virtual bool	GetScanLine(size_t j, void* pScanLine) const = 0;
 	virtual bool	SetScanLine(size_t j, void* pScanLine) = 0;
@@ -145,6 +145,7 @@ public:
 	virtual int Height() const = 0;
 	virtual int BitPerSample() const = 0;
 	virtual bool IsFloat() const = 0;
+	virtual bool IsIntegralType() const = 0;
 
 	virtual int RealWidth() const
 	{
@@ -161,7 +162,7 @@ public:
 		m_bTopDown = bTopDown;
 	}
 
-	virtual bool	IsMonochrome() const = 0;
+	virtual bool IsMonochrome() const = 0;
 
 	void SetMaster(bool bMaster)
 	{
@@ -206,7 +207,7 @@ public:
 	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const = 0;
 
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const = 0;
-	virtual void AverageBitmap(CMemoryBitmap*, DSS::OldProgressBase*) {};
+	virtual void AverageBitmap(CMemoryBitmap*, DSS::OldProgressBase*) {}
 	virtual void RemoveHotPixels(DSS::OldProgressBase* pProgress = nullptr) = 0;
 	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const = 0;
 

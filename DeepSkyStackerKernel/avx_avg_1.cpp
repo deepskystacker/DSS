@@ -39,10 +39,11 @@
 #include "avx_avg.h"
 #include "avx_simd_check.h"
 
-AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
-	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
+AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, std::shared_ptr<CMemoryBitmap> outbm, AvxEntropy& entroinfo) noexcept :
+	resultWidth{ resultRect.width() },
+	resultHeight{ resultRect.height() },
 	tempBitmap{ tempbm },
-	outputBitmap{ outbm },
+	pOutputBitmap{ std::move(outbm) },
 	taskInfo{ tInfo },
 	avxEntropy{ entroinfo },
 	avxEnabled{ AvxSimdCheck::checkSimdAvailability() }

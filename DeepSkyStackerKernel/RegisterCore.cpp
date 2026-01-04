@@ -2,6 +2,7 @@
 #include <numbers>
 #include "RegisterEngine.h"
 #include "PixelTransform.h"
+using namespace DSS;
 
 namespace {
 
@@ -83,7 +84,7 @@ namespace {
 		double fStdDevX = 0;
 //		fSumX = 0;
 		fNrValuesX = 0;
-		const size_t yCoord = std::round(star.m_fY);
+		const size_t yCoord = static_cast<size_t>(std::round(star.m_fY));
 		for (const size_t x : GetCoords(star.m_rcStar.left, star.m_rcStar.right))
 		{
 			double fValue;
@@ -99,7 +100,7 @@ namespace {
 		double fStdDevY = 0;
 //		fSumY = 0;
 		fNrValuesY = 0;
-		const size_t xCoord = std::round(star.m_fX);
+		const size_t xCoord = static_cast<size_t>(std::round(star.m_fX));
 		for (const size_t y : GetCoords(star.m_rcStar.top, star.m_rcStar.bottom))
 		{
 			double fValue;
@@ -128,7 +129,7 @@ namespace {
 
 		constexpr PixelDirection(const std::int8_t x, const std::int8_t y) noexcept : m_lXDir{ x }, m_lYDir{ y } {}
 		constexpr PixelDirection(const PixelDirection&) noexcept = default;
-		constexpr PixelDirection(PixelDirection&&) noexcept = default;
+		constexpr PixelDirection(PixelDirection&&) = delete;
 		template <typename T> PixelDirection& operator=(T&&) = delete;
 	};
 
@@ -140,7 +141,7 @@ namespace {
 		std::array<CStarAxisInfo, 360 / AngleResolution> starAxes{};
 		std::array<int, 4> xcoords, ycoords;
 
-		const auto StarAxisRadius = [&starAxes, AngleResolution](const int angle) -> double
+		const auto StarAxisRadius = [&starAxes](const int angle) -> double
 		{
 			const int index = ((angle + 360) % 360) / AngleResolution;
 			return starAxes[index].m_fRadius;
@@ -171,7 +172,8 @@ namespace {
 				
 				for (const int n : { 0, 1, 2, 3 })
 				{
-					if (const size_t x = xcoords[n], y = ycoords[n]; x >= 0 && x < width && y >= 0 && y < height)
+					// Remove check for >= 0 for size_t
+					if (const size_t x = xcoords[n], y = ycoords[n]; x < width && y < height)
 					{
 						luminanceOfPixel += proportions[n] * std::max(bitmap.getUncheckedValue(x, y) - backgroundNoiseLevel, 0.0);
 					}
@@ -273,7 +275,7 @@ namespace DSS {
 				{
 					const double value = inputBitmap.getUncheckedValue(x, y); // Range [0, 256)
 					maxIntensity = std::max(maxIntensity, value);
-					++histo[value * 32.0]; // Implicit type cast generates the fastest code.
+					++histo[static_cast<size_t>(value * 32.0)]; 
 				}
 			if (backgroundLevelCache != nullptr)
 				backgroundLevelCache->first = maxIntensity;
@@ -320,7 +322,8 @@ namespace DSS {
 							const QPoint ptTest{ i, j };
 
 							// Check that this pixel is not already used for another star.
-							for (STARSET::const_iterator it = stars.lower_bound(CStar(ptTest.x() - STARMAXSIZE, 0)); it != stars.cend() && bNew; ++it) // Note: stars are sorted by x-coordinate.
+							// Note: stars are sorted by x-coordinate.
+							for (auto it = ranges::lower_bound(stars, CStar{ ptTest.x() - STARMAXSIZE, 0 }); it != ranges::end(stars) && bNew; ++it)
 							{
 								if (it->IsInRadius(ptTest))
 									bNew = false;
@@ -422,7 +425,7 @@ namespace DSS {
 								if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2)) // We found darker pixels, no brighter pixels, candidate is not too small.
 								{
 									int maxDeltaRadii = 0;
-									const auto CompareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](std::ranges::viewable_range auto dirs) -> bool
+									const auto CompareDeltaRadii = [deltaRadius, &directions, &maxDeltaRadii](ranges::viewable_range auto dirs) -> bool
 									{
 										bool OK = true;
 										for (const Dirs k1 : dirs)
@@ -527,7 +530,8 @@ namespace DSS {
 											// Check last overlap condition
 											{
 												constexpr double RadiusFactor = CRegisteredFrame::RadiusFactor;
-												for (STARSET::const_iterator it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * RadiusFactor - STARMAXSIZE, 0)); it != stars.cend() && validCandidate; ++it)
+												for (auto it = ranges::lower_bound(stars, CStar{ ms.m_fX - ms.m_fMeanRadius * RadiusFactor - STARMAXSIZE, 0.0 });
+													it != ranges::end(stars) && validCandidate; ++it)
 												{
 													// If the candidate is closer to one of the already found stars -> NO candidate any more.
 													if (Distance(ms.m_fX, ms.m_fY, it->m_fX, it->m_fY) < (ms.m_fMeanRadius + it->m_fMeanRadius) * RadiusFactor)

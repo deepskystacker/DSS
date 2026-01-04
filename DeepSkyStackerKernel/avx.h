@@ -38,11 +38,12 @@
 #include "avx_simd_factory.h"
 #include "avx_includes.h"
 #include <boost/align/aligned_allocator.hpp>
+#include "BackgroundCalibration.h"
 
 class AvxEntropy;
 class CPixelTransform;
 class CTaskInfo;
-class CBackgroundCalibration;
+
 class AvxStacking
 {
 private:
@@ -76,7 +77,7 @@ public:
 
 	void init(const int lStart, const int lEnd);
 
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
+	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& bgc, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
 private:
 	void resizeColorVectors(const size_t nrVectors);
 	inline float* row(VectorType& vector, const size_t rowIndex)
@@ -98,18 +99,18 @@ private:
 	AvxStacking& stackData;
 	Avx256Stacking(AvxStacking& sd) : stackData{ sd } {}
 
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier);
+	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier);
 
 	template <class T>
-	int doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier);
+	int doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, const int pixelSizeMultiplier);
 
 	int pixelTransform(const CPixelTransform& pixelTransformDef);
 
 	template <class T, class LoopFunction, class InterpolParam>
-	int backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxBitmapUtil& avxSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams);
+	int backgroundCalibLoop(LoopFunction&& loopFunc, const class AvxBitmapUtil& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams);
 
 	template <class T>
-	int backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef);
+	int backgroundCalibration(BackgroundCalibrator const& backgroundCalibration);
 
 	template <bool ISRGB, bool ENTROPY, class T>
 	int pixelPartitioning();
@@ -127,5 +128,5 @@ private:
 	AvxStacking& stackData;
 	NonAvxStacking(AvxStacking& sd) : stackData{ sd } {}
 
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
+	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, std::shared_ptr<CMemoryBitmap> outputBitmap, const int pixelSizeMultiplier);
 };

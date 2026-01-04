@@ -192,6 +192,8 @@ void CFlatFrame::ComputeFlatNormalization(OldProgressBase* pProgress)
 							fMeanGreen2 = (fMeanGreen2*lNrGreen2s+fGray)/(lNrGreen2s+1);
 							lNrGreen2s++;
 							break;
+						default:
+							break;
 						};
 					}
 					else

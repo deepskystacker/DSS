@@ -13,33 +13,32 @@ private :
 		m_lNrTotalPixels		= cs.m_lNrTotalPixels;
 		m_lNrDetectedHotPixels	= cs.m_lNrDetectedHotPixels;
 		m_lNrDetectedColdPixels = cs.m_lNrDetectedColdPixels;
-	};
+	}
 public :
 	CCosmeticStats()
 	{
 		m_lNrTotalPixels = 0;
 		m_lNrDetectedHotPixels = 0;
 		m_lNrDetectedColdPixels = 0;
-	};
+	}
 
 	CCosmeticStats(const CCosmeticStats & cs)
 	{
 		CopyFrom(cs);
-	};
+	}
 
-	~CCosmeticStats() {};
+	~CCosmeticStats() {}
 
 	CCosmeticStats & operator = (const CCosmeticStats & cs)
 	{
 		CopyFrom(cs);
 		return (*this);
-	};
+	}
 };
 
 class CPostCalibrationSettings;
 class CMemoryBitmap;
 namespace DSS { class OldProgressBase; }
-using namespace DSS;
 
-std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, OldProgressBase* const pProgress);
-void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, OldProgressBase* const pProgress);
+std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, DSS::OldProgressBase* const pProgress);
+void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, DSS::OldProgressBase* const pProgress);

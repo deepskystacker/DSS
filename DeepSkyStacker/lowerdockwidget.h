@@ -51,7 +51,7 @@ namespace DSS
 
 	public:
 		LowerDockWidget(QWidget* parent = nullptr);
-		~LowerDockWidget();
+		~LowerDockWidget() override;
 
 		inline int addWidget(QWidget* widget)
 		{

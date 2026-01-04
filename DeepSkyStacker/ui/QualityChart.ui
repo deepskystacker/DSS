@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>567</height>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,7 +81,7 @@
    <item>
     <widget class="QwtPlot" name="qualityPlot" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>

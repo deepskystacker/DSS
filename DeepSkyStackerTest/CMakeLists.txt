@@ -10,7 +10,7 @@ qt_standard_project_setup()
 # Source groups
 ################################################################################
 set(Header_Files
-    "catch.h"
+    "catch_amalgamated.hpp"
 )
 source_group("Header Files" FILES ${Header_Files})
 
@@ -23,6 +23,7 @@ set(Source_Files
     "AvxHistogramTest.cpp"
     "AvxStackingTest.cpp"
     "BitMapFillerTest.cpp"
+    "catch_amalgamated.cpp"
     "DeepSkyStackerTest.cpp"
     "DssRectTest.cpp"
     "OpenMpTest.cpp"

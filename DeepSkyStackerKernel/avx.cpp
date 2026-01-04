@@ -63,22 +63,22 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 // AVX 256 Stacking
 // ****************
 
-int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
+int Avx256Stacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, std::shared_ptr<CMemoryBitmap>, const int pixelSizeMultiplier)
 {
 	if (!this->stackData.avxEnabled)
 		return 1;
 
-	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
+	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibration, pixelSizeMultiplier) == 0)
 		return AvxSupport::zeroUpper(0);
-	if (doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
+	if (doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibration, pixelSizeMultiplier) == 0)
 		return AvxSupport::zeroUpper(0);
-	if (doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
+	if (doStack<float>(pixelTransformDef, taskInfo, backgroundCalibration, pixelSizeMultiplier) == 0)
 		return AvxSupport::zeroUpper(0);
 	return AvxSupport::zeroUpper(1);
 }
 
 template <class T>
-int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
+int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, BackgroundCalibrator const& backgroundCalibration, const int pixelSizeMultiplier)
 {
 	if (pixelSizeMultiplier != 1 || pixelTransformDef.m_lPixelSizeMultiplier != 1)
 		return 1;
@@ -97,7 +97,7 @@ int Avx256Stacking::doStack(const CPixelTransform& pixelTransformDef, const CTas
 		return 1;
 	if (pixelTransform(pixelTransformDef) != 0)
 		return 1;
-	if (backgroundCalibration<T>(backgroundCalibrationDef) != 0)
+	if (this->backgroundCalibration<T>(backgroundCalibration) != 0)
 		return 1;
 
 	// Pixel partitioning
@@ -404,25 +404,25 @@ int Avx256Stacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 };
 
 template <class T, class LoopFunction, class InterpolParam>
-int Avx256Stacking::backgroundCalibLoop(const LoopFunction& loopFunc, const AvxBitmapUtil& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
+int Avx256Stacking::backgroundCalibLoop(LoopFunction&& loopFunc, const AvxBitmapUtil& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
 {
 	if (avxInputSupport.isColorBitmapOfType<T>())
 	{
 		const size_t w = static_cast<size_t>(stackData.width);
 		const size_t startNdx = w * stackData.lineStart;
-		loopFunc(&avxInputSupport.redPixels<T>().at(startNdx), w, redParams, stackData.redPixels);
-		loopFunc(&avxInputSupport.greenPixels<T>().at(startNdx), w, greenParams, stackData.greenPixels);
-		loopFunc(&avxInputSupport.bluePixels<T>().at(startNdx), w, blueParams, stackData.bluePixels);
+		std::invoke(std::forward<LoopFunction>(loopFunc), avxInputSupport.redPixels<T>().data() + startNdx, w, redParams, stackData.redPixels);
+		std::invoke(std::forward<LoopFunction>(loopFunc), avxInputSupport.greenPixels<T>().data() + startNdx, w, greenParams, stackData.greenPixels);
+		std::invoke(std::forward<LoopFunction>(loopFunc), avxInputSupport.bluePixels<T>().data() + startNdx, w, blueParams, stackData.bluePixels);
 		return 0;
 	}
-	if constexpr (std::is_same<T, std::uint16_t>::value)
+	if constexpr (std::same_as<T, std::uint16_t>)
 	{
 		if (avxInputSupport.isMonochromeCfaBitmapOfType<T>())
 		{
 			const size_t w = stackData.avxCfa.nrVectorsPerLine();
-			loopFunc(stackData.avxCfa.redCfaBlock(), w, redParams, stackData.redPixels);
-			loopFunc(stackData.avxCfa.greenCfaBlock(), w, greenParams, stackData.greenPixels);
-			loopFunc(stackData.avxCfa.blueCfaBlock(), w, blueParams, stackData.bluePixels);
+			std::invoke(std::forward<LoopFunction>(loopFunc), stackData.avxCfa.redCfaBlock(), w, redParams, stackData.redPixels);
+			std::invoke(std::forward<LoopFunction>(loopFunc), stackData.avxCfa.greenCfaBlock(), w, greenParams, stackData.greenPixels);
+			std::invoke(std::forward<LoopFunction>(loopFunc), stackData.avxCfa.blueCfaBlock(), w, blueParams, stackData.bluePixels);
 			return 0;
 		}
 	}
@@ -430,7 +430,7 @@ int Avx256Stacking::backgroundCalibLoop(const LoopFunction& loopFunc, const AvxB
 	{
 		const size_t w = static_cast<size_t>(stackData.width);
 		const size_t startNdx = w * stackData.lineStart;
-		loopFunc(&avxInputSupport.grayPixels<T>().at(startNdx), w, redParams, stackData.redPixels);
+		std::invoke(std::forward<LoopFunction>(loopFunc), avxInputSupport.grayPixels<T>().data() + startNdx, w, redParams, stackData.redPixels);
 		return 0;
 	}
 	return 1;
@@ -441,123 +441,171 @@ inline float readColorValue(const std::uint32_t c) { return static_cast<float>(c
 inline float readColorValue(const float c) { return c; }
 
 template <class T>
-int Avx256Stacking::backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef)
+int Avx256Stacking::backgroundCalibration(BackgroundCalibrator const& backgroundCalibration)
 {
 	// We calculate vectors with 16 pixels each, so this is the number of vectors to process.
 	const int nrVectors = stackData.width / 16;
 	const AvxBitmapUtil avxInputSupport{ stackData.inputBitmap };
 
-	if (backgroundCalibrationDef.m_BackgroundCalibrationMode == BCM_NONE)
-	{
-		// Just copy color values as they are, pixel by pixel.
-		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto&, AvxStacking::VectorType& result) -> void
+	return std::visit([nrVectors, this, &avxInputSupport](auto const& calib)
 		{
-			for (int row = 0; row < stackData.height; ++row)
+			using ModelType = std::decay_t<decltype(calib)>;
+
+			// No background calibration
+			// -------------------------
+			if constexpr (std::same_as<ModelType, NoneModel>)
 			{
-				const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
-				float* pResult = stackData.row(result, row);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+				// Just copy color values as they are, pixel by pixel.
+				const auto Loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, int, AvxStacking::VectorType& result) -> void
 				{
-					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_store_ps(pResult, lo8);
-					_mm256_store_ps(pResult + 8, hi8);
-				}
-				// Remaining pixels of line
-				for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
-				{
-					*pResult = readColorValue(*pColor);
-				}
+					for (int row = 0; row < stackData.height; ++row)
+					{
+						const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
+						float* pResult = stackData.row(result, row);
+						for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+						{
+							const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+							_mm256_store_ps(pResult, lo8);
+							_mm256_store_ps(pResult + 8, hi8);
+						}
+						// Remaining pixels of line
+						for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
+						{
+							*pResult = readColorValue(*pColor);
+						}
+					}
+				};
+				return backgroundCalibLoop<T>(Loop, avxInputSupport, 0, 0, 0); // 0, 0, 0 ... because "No background calibration" doesn't need any calibraion model params.
 			}
-		};
-
-		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
-	}
-	else if (backgroundCalibrationDef.m_BackgroundInterpolation == BCI_RATIONAL)
-	{
-		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto& params, AvxStacking::VectorType& result) -> void
-		{
-			const __m256 a = _mm256_set1_ps(params.getParameterA());
-			const __m256 b = _mm256_set1_ps(params.getParameterB());
-			const __m256 c = _mm256_set1_ps(params.getParameterC());
-			const __m256 fmin = _mm256_set1_ps(params.getParameterMin());
-			const __m256 fmax = _mm256_set1_ps(params.getParameterMax());
-
-			const auto interpolate = [&a, &b, &c, &fmin, &fmax](const __m256 color) noexcept -> __m256
+			// Offset background calibration
+			// -----------------------------
+			else if constexpr (std::same_as<ModelType, OffsetModel>)
 			{
-				const __m256 denom = _mm256_fmadd_ps(b, color, c); // b * color + c
-				const __m256 mask = _mm256_cmp_ps(denom, _mm256_setzero_ps(), 0); // cmp: denom==0 ? 1 : 0
-				const __m256 xplusa = _mm256_add_ps(color, a);
-				//				const __m256 division = _mm256_div_ps(xplusa, denom);
-				const __m256 division = _mm256_mul_ps(xplusa, _mm256_rcp_ps(denom)); // RCP is accurate enough.
-				// If denominator == 0 => use (x+a) else use (x+a)/denominator, then do the max and min.
-				return _mm256_max_ps(_mm256_min_ps(_mm256_blendv_ps(division, xplusa, mask), fmax), fmin); // blend: mask==1 ? b : a;
-			};
+				const auto Loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const OffsetParams& params, AvxStacking::VectorType& result) -> void
+				{
+					const auto Interpolate = [offset = _mm256_set1_ps(static_cast<float>(params.offset)),
+						yMin = _mm256_set1_ps(static_cast<float>(params.minValue)),
+						yMax = _mm256_set1_ps(static_cast<float>(params.maxValue))
+					](const __m256 x) noexcept -> __m256
+					{
+						const __m256 y = _mm256_add_ps(x, offset);
+						return _mm256_min_ps(_mm256_max_ps(y, yMin), yMax);
+					};
 
-			for (int row = 0; row < stackData.height; ++row)
-			{
-				const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
-				float* pResult = stackData.row(result, row);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
-				{
-					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_store_ps(pResult, interpolate(lo8));
-					_mm256_store_ps(pResult + 8, interpolate(hi8));
-				}
-				// Remaining pixels of line
-				for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
-				{
-					const float fcolor = readColorValue(*pColor);
-					const float denom = accessSimdElementConst(b, 0) * fcolor + accessSimdElementConst(c, 0);
-					const float xplusa = fcolor + accessSimdElementConst(a, 0);
-					*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), accessSimdElementConst(fmax, 0)), accessSimdElementConst(fmin, 0));
-				}
+					for (int row = 0; row < stackData.height; ++row)
+					{
+						const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
+						float* pResult = stackData.row(result, row);
+						for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+						{
+							const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+							_mm256_store_ps(pResult, Interpolate(lo8));
+							_mm256_store_ps(pResult + 8, Interpolate(hi8));
+						}
+						// Remaining pixels of line
+						for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
+						{
+							const float fcolor = readColorValue(*pColor);
+							*pResult = std::clamp(fcolor + static_cast<float>(params.offset), static_cast<float>(params.minValue), static_cast<float>(params.maxValue));
+						}
+					}
+				};
+				return backgroundCalibLoop<T>(Loop, avxInputSupport, calib.redParams, calib.greenParams, calib.blueParams);
 			}
-		};
-
-		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
-	}
-	else // LINEAR
-	{
-		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto& params, AvxStacking::VectorType& result) -> void
-		{
-			const __m256 a0 = _mm256_set1_ps(params.getParameterA0());
-			const __m256 a1 = _mm256_set1_ps(params.getParameterA1());
-			const __m256 b0 = _mm256_set1_ps(params.getParameterB0());
-			const __m256 b1 = _mm256_set1_ps(params.getParameterB1());
-			const __m256 xm = _mm256_set1_ps(params.getParameterXm());
-
-			const auto interpolate = [a0, a1, b0, b1, xm](const __m256 x) noexcept -> __m256
+			// Linear background calibration
+			// -----------------------------
+			else if constexpr (std::same_as<ModelType, LinearModel>)
 			{
-				const __m256 mask = _mm256_cmp_ps(x, xm, 17); // cmp: x < xm ? 1 : 0
-				// If x < xm => use a0 and b0, else use a1 and b1.
-				const __m256 aSelected = _mm256_blendv_ps(a1, a0, mask); // blend(arg1, arg2, mask): mask==1 ? arg2 : arg1;
-				const __m256 bSelected = _mm256_blendv_ps(b1, b0, mask);
-				return _mm256_fmadd_ps(x, aSelected, bSelected); // x * a + b
-			};
+				const auto Loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const LinearParams& params, AvxStacking::VectorType& result) -> void
+				{
+					const __m256 a0 = _mm256_set1_ps(static_cast<float>(params.a0));
+					const __m256 a1 = _mm256_set1_ps(static_cast<float>(params.a1));
+					const __m256 b0 = _mm256_set1_ps(static_cast<float>(params.b0));
+					const __m256 b1 = _mm256_set1_ps(static_cast<float>(params.b1));
+					const __m256 xm = _mm256_set1_ps(static_cast<float>(params.median));
 
-			for (int row = 0; row < stackData.height; ++row)
-			{
-				const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
-				float* pResult = stackData.row(result, row);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
-				{
-					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_store_ps(pResult, interpolate(lo8));
-					_mm256_store_ps(pResult + 8, interpolate(hi8));
-				}
-				// Remaining pixels of line
-				for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
-				{
-					const float fcolor = readColorValue(*pColor);
-					*pResult = fcolor < accessSimdElementConst(xm, 0)
-						? (fcolor * accessSimdElementConst(a0, 0) + accessSimdElementConst(b0, 0))
-						: (fcolor * accessSimdElementConst(a1, 0) + accessSimdElementConst(b1, 0));
-				}
+					const auto Interpolate = [a0, a1, b0, b1, xm](const __m256 x) noexcept -> __m256
+					{
+						const __m256 mask = _mm256_cmp_ps(x, xm, 17); // cmp: x < xm ? 1 : 0
+						// If x < xm => use a0 and b0, else use a1 and b1.
+						const __m256 aSelected = _mm256_blendv_ps(a1, a0, mask); // blend(arg1, arg2, mask): mask==1 ? arg2 : arg1;
+						const __m256 bSelected = _mm256_blendv_ps(b1, b0, mask);
+						return _mm256_fmadd_ps(x, aSelected, bSelected); // x * a + b
+					};
+
+					for (int row = 0; row < stackData.height; ++row)
+					{
+						const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
+						float* pResult = stackData.row(result, row);
+						for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+						{
+							const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+							_mm256_store_ps(pResult, Interpolate(lo8));
+							_mm256_store_ps(pResult + 8, Interpolate(hi8));
+						}
+						// Remaining pixels of line
+						for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
+						{
+							const float fcolor = readColorValue(*pColor);
+							*pResult = fcolor < static_cast<float>(params.median)
+								? (fcolor * static_cast<float>(params.a0) + static_cast<float>(params.b0))
+								: (fcolor * static_cast<float>(params.a1) + static_cast<float>(params.b1));
+						}
+					}
+				};
+				return backgroundCalibLoop<T>(Loop, avxInputSupport, calib.redParams, calib.greenParams, calib.blueParams);
 			}
-		};
+			// Rational background calibration
+			// -------------------------------
+			else if constexpr (std::same_as<ModelType, RationalModel>)
+			{
+				const auto Loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const RationalParams& params, AvxStacking::VectorType& result) -> void
+				{
+					const __m256 a = _mm256_set1_ps(static_cast<float>(params.a));
+					const __m256 b = _mm256_set1_ps(static_cast<float>(params.b));
+					const __m256 c = _mm256_set1_ps(static_cast<float>(params.c));
+					const __m256 fmin = _mm256_set1_ps(static_cast<float>(params.minValue));
+					const __m256 fmax = _mm256_set1_ps(static_cast<float>(params.maxValue));
 
-		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_liRed, backgroundCalibrationDef.m_liGreen, backgroundCalibrationDef.m_liBlue);
-	}
+					const auto Interpolate = [a, b, c, fmin, fmax](const __m256 color) noexcept -> __m256
+					{
+						const __m256 denom = _mm256_fmadd_ps(b, color, c); // b * color + c
+						const __m256 mask = _mm256_cmp_ps(denom, _mm256_setzero_ps(), 0); // cmp: denom==0 ? 1 : 0
+						const __m256 xplusa = _mm256_add_ps(color, a);
+						//				const __m256 division = _mm256_div_ps(xplusa, denom);
+						const __m256 division = _mm256_mul_ps(xplusa, _mm256_rcp_ps(denom)); // RCP is accurate enough.
+						// If denominator == 0 => use (x+a) else use (x+a)/denominator, then do the max and min.
+						return _mm256_max_ps(_mm256_min_ps(_mm256_blendv_ps(division, xplusa, mask), fmax), fmin); // blend: mask==1 ? b : a;
+					};
+
+					for (int row = 0; row < stackData.height; ++row)
+					{
+						const T* pColor = reinterpret_cast<const T*>(pPixels + row * nrElementsPerLine);
+						float* pResult = stackData.row(result, row);
+						for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+						{
+							const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+							_mm256_store_ps(pResult, Interpolate(lo8));
+							_mm256_store_ps(pResult + 8, Interpolate(hi8));
+						}
+						// Remaining pixels of line
+						for (int n = nrVectors * 16; n < stackData.colEnd; ++n, ++pColor, ++pResult)
+						{
+							const float fcolor = readColorValue(*pColor);
+							const float denom = static_cast<float>(params.b) * fcolor + static_cast<float>(params.c);
+							const float xplusa = fcolor + static_cast<float>(params.a);
+							*pResult = std::clamp(denom == 0.0f ? xplusa : (xplusa / denom), static_cast<float>(params.minValue), static_cast<float>(params.maxValue));
+						}
+					}
+				};
+				return backgroundCalibLoop<T>(Loop, avxInputSupport, calib.redParams, calib.greenParams, calib.blueParams);
+			}
+			else
+				// Unknow type of model, so we either have not (yet) a SIMD implementation or there's some other problem -> fall back to scalar code.
+				return 2;
+		},
+		backgroundCalibration.getCalibratorVariant()
+	);
 }
 
 #if defined (_MSC_VER)
@@ -625,6 +673,7 @@ int Avx256Stacking::pixelPartitioning()
 	const __m256i resultHeightVec = _mm256_set1_epi32(stackData.resultHeight);
 
 	const __m256i outWidthVec = _mm256_set1_epi32(outWidth);
+	
 	const auto getColorPointer = [this](const auto& colorPixels, const size_t row) -> const float*
 	{
 		if constexpr (ISRGB)
@@ -632,6 +681,7 @@ int Avx256Stacking::pixelPartitioning()
 		else
 			return nullptr;
 	};
+
 	const auto getColorValue = [](const float* const pColor) -> __m256
 	{
 		if constexpr (ISRGB)
@@ -728,7 +778,7 @@ int Avx256Stacking::pixelPartitioning()
 	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, const __m256i outIndex,
 		__m256i mask1, const __m256i mask2, const bool twoNdxEqual, const bool allNdxValid1, const bool allNdxValid2) -> void
 	{
-		if constexpr (std::is_same<T, std::uint16_t>::value)
+		if constexpr (std::same_as<T, std::uint16_t>)
 		{
 			if (allNdxValid1 && allNdxValid2)
 			{

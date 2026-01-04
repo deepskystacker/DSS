@@ -37,80 +37,67 @@
 // ProgressDlg.h : Defines the NEW DSS Progress Dialog class
 //
 #include "DSSProgress.h"
+#include "ui_ProgressDlg.h"
 
 namespace DSS
 {
-	namespace Ui {
-		class ProgressDlg;
-	}
 
-	class ProgressDlg final : public QDialog, public ProgressBase
+	class ProgressDlg final : public QDialog, public ProgressBase, public Ui::ProgressDlg
 	{
 		Q_OBJECT
 
 	using Inherited = ProgressBase;
 
 	private:
-		Ui::ProgressDlg* ui;
-		bool m_cancelInProgress;
-		static inline const QString m_emptyString{};
+		bool cancelInProgress;
 
 	public:
-		ProgressDlg(
-			QWidget* parent = nullptr,
-			ProgressMode mode = ProgressMode::Dual,
-			bool enableCancel = true,
-			Qt::WindowFlags f = Qt::WindowFlags());
-		~ProgressDlg();
+		ProgressDlg(QWidget* parent = nullptr);
+		~ProgressDlg() override;
+
+		void enableCancel(bool value = true)
+		{
+			cancelButton->setEnabled(value);
+		}
+
+		virtual bool isCanceled() const override;
+
+		void showProgress();
+		void hideProgress();
+
+	protected:
+		void closeEvent(QCloseEvent* bar) override;
+		void retainHiddenWidgetSize(QWidget* widget);
 
 		//
-		// These eleven mfs implement the public interface defined in DSS::ProgressBase
-		// They invoke the corresponding slots using QMetaObject::invokeMethod
-		// so that they can be invoked from ANY thread in the application will run on
-		// the GUI thread.
+		// Slots
 		//
+	public slots:
+
+		//
+		// These twelve mfs implement the public interface defined in DSS::ProgressBase
+		// They are defined as slots in the base class.    Any long running operation
+		// should be invoked using QtConcurrent::run() so that the GUI remains responsive,
+		// and a QFutureWatcher should used to monitor progress and update the progress bars.
+		//
+		virtual void setMode(ProgressMode mode) override;
 		virtual void setTitleText(const QString& title) override;
-		virtual void setTopText(QStringView text) override;
+		virtual void setTopText(QString& text) override;
 		virtual void setPartialMinimum(int minimum) override;
 		virtual void setPartialMaximum(int maximum) override;
+		virtual void setPartialRange(int minimum, int maximum) override;
 		virtual void setPartialValue(int value) override;
 		virtual void setTotalMinimum(int minimum) override;
 		virtual void setTotalMaximum(int maximum) override;
+		virtual void setTotalRange(int minimum, int maximum) override;
 		virtual void setTotalValue(int value) override;
-		virtual void setBottomText(QStringView text) override;
-
-		virtual bool wasCanceled() const override;
-
-		void setTimeRemaining(QStringView text);
-
-		void enableCancelButton(bool value);
-
-
-
-		void initialise();
-		void closeProgress();
+		virtual void setBottomText(QString& text) override;
 
 		// ProgressBase
 		virtual void applyProcessorsUsed(int nCount) override;
 
-	protected slots:
-		void slotSetTitleText(QStringView title);
-		void slotSetTopText(QStringView text);
-		void slotSetPartialMinimum(int minimum);
-		void slotSetPartialMaximum(int maximum);
-		void slotSetPartialValue(int value);
-		void slotSetTotalMinimum(int minimum);
-		void slotSetTotalMaximum(int maximum);
-		void slotSetTotalValue(int value);
-		void slotSetBottomText(QStringView text);
-
-		void slotClose();
-
 	private slots:
 		void cancelPressed();
 
-	private:
-		void closeEvent(QCloseEvent* bar);
-		void retainHiddenWidgetSize(QWidget* widget);
 	};
 }

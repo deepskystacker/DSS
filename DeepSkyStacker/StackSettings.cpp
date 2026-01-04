@@ -19,7 +19,7 @@ namespace DSS
 		QDialog(parent),
 		ui(new Ui::StackSettings),
 		initialised(false),
-		pStackingTasks(nullptr),
+		startingTab(-1),
 		registeringOnly(false),
 		cometStacking(false),
 		enableDark(false),
@@ -27,7 +27,8 @@ namespace DSS
 		enableBias(false),
 		enableAll(false),
 		customRectEnabled{ false },
-		startingTab(-1)
+		pStackingTasks(nullptr)
+
 	{
 		ui->setupUi(this);
 		connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);

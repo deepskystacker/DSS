@@ -44,6 +44,7 @@ class QString;
 class DSSBase
 {
 public:
+	virtual ~DSSBase() = default;
 
 	//
 	// Enum values that match QMessageBox::Icon values

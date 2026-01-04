@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "catch.h"
+#include "catch_amalgamated.hpp"
 #include "dssrect.h"
 
 #define UNIT_TESTS
@@ -46,7 +46,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 		entropyInfo.Init(pTempBitmap, 10, nullptr);
 		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 		REQUIRE(avxAccumulation.accumulate(0) == 0);
 
 		std::vector<float> expected(W * H, 127.0f);
@@ -75,7 +75,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -105,7 +105,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -136,7 +136,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -169,7 +169,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -213,7 +213,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 		entropyInfo.Init(pTempBitmap, 10, nullptr);
 		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 		REQUIRE(avxAccumulation.accumulate(0) == 0);
 
 		std::vector<float> expected(W * H, 4938.0f);
@@ -242,7 +242,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -272,7 +272,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -303,7 +303,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -340,7 +340,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 			entropyInfo.Init(pTempBitmap, 10, nullptr);
 			AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, nullptr);
 
-			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+			AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 			REQUIRE(avxAccumulation.accumulate(i) == 0);
 		}
 
@@ -395,7 +395,7 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 		for (int i = 0; i < W * H; ++i)
 			pRedEntropy[i] = static_cast<float>(i);
 
-		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
+		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, pOutBitmap, avxEntropy);
 		REQUIRE(avxAccumulation.accumulate(0) == 0);
 
 		const auto* pEntCov = dynamic_cast<CGrayBitmapT<float>*>(pEntropyCoverage.get());

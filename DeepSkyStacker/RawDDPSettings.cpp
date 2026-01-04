@@ -519,7 +519,8 @@ namespace DSS
 		const bool isFITSRaw = ui->isFITSRaw->isChecked();
 
 		const size_t index = ui->DSLRs->currentIndex();
-		if (isFITSRaw && index >= 0 && index < vector_DSLRs.size())
+		// Don't check for >=0 for size_t
+		if (isFITSRaw && index < vector_DSLRs.size())
 		{
 			bool		bCYMG;
 

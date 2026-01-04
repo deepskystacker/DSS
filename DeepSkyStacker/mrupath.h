@@ -65,7 +65,7 @@ public:
 		// Clear all the entries first
 		settings.remove(mruType);
 
-		settings.setValue(keyName, (uint)paths.size());
+		settings.setValue(keyName, static_cast<uint>(paths.size()));
 		for (size_t i = 0; i != paths.size(); i++)
 		{
 			keyName = QString("%1/MRU%2")

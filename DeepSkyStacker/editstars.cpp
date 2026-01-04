@@ -328,6 +328,8 @@ namespace DSS
 //					qDebug() << "Processing StarAction::ResetComet";
 //					m_bComet = false;
 //					break;
+				default:
+					break;
 			}
 			if (m_Action != EditStarAction::None)
 			{
@@ -613,8 +615,8 @@ namespace DSS
 				strTip = tr("Click to set the comet here", "IDS_TIP_SETCOMET");
 			else
 				strTip = tr("Click to add this star", "IDS_TIP_ADDSTAR");
-			brushAction.setColor(qRgba(0, 255, 0, 255 * 0.5));
-			penAction.setColor(qRgba(0, 255, 0, 255 * 0.7));
+			brushAction.setColor(qRgba(0, 255, 0, static_cast<int>(255 * 0.5)));
+			penAction.setColor(qRgba(0, 255, 0, static_cast<int>(255 * 0.7)));
 			penAction.setWidthF(3.0);
 		}
 		else
@@ -623,8 +625,8 @@ namespace DSS
 				strTip = tr("Click to remove the comet", "IDS_TIP_REMOVECOMET");
 			else
 				strTip = tr("Click to remove this star", "IDS_TIP_REMOVESTAR");
-			brushAction.setColor(qRgba(255, 255, 0, 255 * 0.5));
-			penAction.setColor(qRgba(255, 255, 0, 255 * 0.7));
+			brushAction.setColor(qRgba(255, 255, 0, static_cast<int>(255 * 0.5)));
+			penAction.setColor(qRgba(255, 255, 0, static_cast<int>(255 * 0.7)));
 			penAction.setWidthF(3.0);
 		}
 		painter.save();
@@ -638,10 +640,10 @@ namespace DSS
 		constexpr double ninetyDegrees = 90.0 * 16.0;
 		constexpr double oneeightyDegrees = 180.0 * 16.0;
 
-		painter.drawArc(QRectF((fX - fRectSize), (fY - fRectSize), fDiameter, fDiameter), -oneeightyDegrees, -ninetyDegrees);
-		painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY - fRectSize), fDiameter, fDiameter), 0.0, ninetyDegrees);
-		painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY + fRectSize - fDiameter), fDiameter, fDiameter), 0.0, -ninetyDegrees);
-		painter.drawArc(QRectF((fX - fRectSize), (fY + fRectSize - fDiameter), fDiameter, fDiameter), -ninetyDegrees, -ninetyDegrees);
+		painter.drawArc(QRectF((fX - fRectSize), (fY - fRectSize), fDiameter, fDiameter), -static_cast<int>(oneeightyDegrees), -static_cast<int>(ninetyDegrees));
+		painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY - fRectSize), fDiameter, fDiameter), 0.0, static_cast<int>(ninetyDegrees));
+		painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY + fRectSize - fDiameter), fDiameter, fDiameter), 0.0, -static_cast<int>(ninetyDegrees));
+		painter.drawArc(QRectF((fX - fRectSize), (fY + fRectSize - fDiameter), fDiameter, fDiameter), -static_cast<int>(ninetyDegrees), -static_cast<int>(ninetyDegrees));
 
 		QFont font("Helvetica", 10, QFont::Normal);
 		painter.setFont(font);

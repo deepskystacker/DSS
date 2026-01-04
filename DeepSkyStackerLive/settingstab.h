@@ -50,7 +50,7 @@ namespace DSS
 
 	public:
 		SettingsTab(QWidget* parent = nullptr);
-		~SettingsTab();
+		~SettingsTab() override;
 
 	public slots:
 		void showResetEmailCount();

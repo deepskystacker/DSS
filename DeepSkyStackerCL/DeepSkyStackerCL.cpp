@@ -21,7 +21,6 @@
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "tracecontrol.h"
 #include "ztrace.h"
 #include "QMessageLogger.h"
 #include "Multitask.h"
@@ -334,6 +333,8 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 		case TF_32BITRGBFLOAT:
 			fitsformat = bMonochrome ? FF_32BITGRAYFLOAT : FF_32BITRGBFLOAT;
 			break;
+		default:
+			break;
 		}
 		WriteFITS(stackingParams.GetOutputFilename().toStdU16String(), pBitmap.get(), &progress, fitsformat, nullptr);
 	}
@@ -361,13 +362,14 @@ void DeepSkyStackerCommandLine::SaveBitmap(StackingParams& stackingParams, const
 }
 
 /* ------------------------------------------------------------------- */
-
-void atexitHandler()
-{
-	//
-	// Delete the back pocket storage
-	//
-	backPocket.reset();
+namespace {
+	void atexitHandler()
+	{
+		//
+		// Delete the back pocket storage
+		//
+		backPocket.reset();
+	}
 }
 
 int main(int argc, char* argv[])

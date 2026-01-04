@@ -11,7 +11,10 @@
 template <typename TType>
 void CColorBitmapT<TType>::CheckXY(size_t x, size_t y) const
 {
-	ZASSERTSTATE(x >= 0 && x < m_lWidth&& y >= 0 && y < m_lHeight);
+	//
+	// Remove tests for unsigned types >= 0
+	//
+	ZASSERTSTATE(x < m_lWidth && y < m_lHeight);
 }
 
 template <typename TType>
@@ -71,9 +74,9 @@ void CColorBitmapT<TType>::SetValue(size_t i, size_t j, double fRed, double fGre
 
 	const size_t lOffset = GetOffset(i, j);
 
-	m_Red.m_vPixels[lOffset] = fRed;
-	m_Green.m_vPixels[lOffset] = fGreen;
-	m_Blue.m_vPixels[lOffset] = fBlue;
+	m_Red.m_vPixels[lOffset] = static_cast<TType>(fRed);
+	m_Green.m_vPixels[lOffset] = static_cast<TType>(fGreen);
+	m_Blue.m_vPixels[lOffset] = static_cast<TType>(fBlue);
 }
 
 template <typename TType>
@@ -83,9 +86,9 @@ void CColorBitmapT<TType>::GetValue(size_t i, size_t j, double& fRed, double& fG
 
 	const size_t lOffset = GetOffset(i, j);
 
-	fRed = m_Red.m_vPixels[lOffset];
-	fGreen = m_Green.m_vPixels[lOffset];
-	fBlue = m_Blue.m_vPixels[lOffset];
+	fRed = static_cast<TType>(m_Red.m_vPixels[lOffset]);
+	fGreen = static_cast<TType>(m_Green.m_vPixels[lOffset]);
+	fBlue = static_cast<TType>(m_Blue.m_vPixels[lOffset]);
 }
 
 template <typename TType>
@@ -104,9 +107,9 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fRed, double fGre
 	CheckXY(i, j);
 
 	const size_t lOffset = GetOffset(i, j);
-	m_Red.m_vPixels[lOffset] = std::clamp(fRed * m_fMultiplier, 0.0, clampValue);
-	m_Green.m_vPixels[lOffset] = std::clamp(fGreen * m_fMultiplier, 0.0, clampValue);
-	m_Blue.m_vPixels[lOffset] = std::clamp(fBlue * m_fMultiplier, 0.0, clampValue);
+	m_Red.m_vPixels[lOffset] = static_cast<TType>(std::clamp(fRed * m_fMultiplier, 0.0, clampValue));
+	m_Green.m_vPixels[lOffset] = static_cast<TType>(std::clamp(fGreen * m_fMultiplier, 0.0, clampValue));
+	m_Blue.m_vPixels[lOffset] = static_cast<TType>(std::clamp(fBlue * m_fMultiplier, 0.0, clampValue));
 }
 
 template <typename TType>
@@ -117,9 +120,9 @@ void CColorBitmapT<TType>::SetPixel(size_t i, size_t j, double fGray)
 
 	const size_t lOffset = GetOffset(i, j);
 	const double value = std::clamp(fGray * m_fMultiplier, 0.0, clampValue);
-	m_Red.m_vPixels[lOffset] = value;
-	m_Green.m_vPixels[lOffset] = value;
-	m_Blue.m_vPixels[lOffset] = value;
+	m_Red.m_vPixels[lOffset] = static_cast<TType>(value);
+	m_Green.m_vPixels[lOffset] = static_cast<TType>(value);
+	m_Blue.m_vPixels[lOffset] = static_cast<TType>(value);
 }
 
 template <typename TType>
@@ -131,9 +134,9 @@ void CColorBitmapT<TType>::GetPixel(size_t i, size_t j, double& fRed, double& fG
 
 	const size_t lOffset = GetOffset(i, j);
 
-	fRed = m_Red.m_vPixels[lOffset] / m_fMultiplier;
-	fGreen = m_Green.m_vPixels[lOffset] / m_fMultiplier;
-	fBlue = m_Blue.m_vPixels[lOffset] / m_fMultiplier;
+	fRed = static_cast<double>(m_Red.m_vPixels[lOffset] / m_fMultiplier);
+	fGreen = static_cast<double>(m_Green.m_vPixels[lOffset] / m_fMultiplier);
+	fBlue = static_cast<double>(m_Blue.m_vPixels[lOffset] / m_fMultiplier);
 }
 
 template <typename TType>
@@ -224,7 +227,7 @@ std::shared_ptr<CMedianFilterEngine> CColorBitmapT<TType>::GetMedianFilterEngine
 }
 
 template <typename TType>
-void CColorBitmapT<TType>::RemoveHotPixels(OldProgressBase* pProgress/*=nullptr*/)
+void CColorBitmapT<TType>::RemoveHotPixels(DSS::OldProgressBase* pProgress/*=nullptr*/)
 {
 	m_Red.RemoveHotPixels(pProgress);
 	m_Green.RemoveHotPixels(pProgress);
@@ -297,7 +300,9 @@ void CColorBitmapT<TType>::ReceiveValue(void* pRed, void* pGreen, void* pBlue, c
 	*static_cast<TType*>(pBlue) = value;
 }
 
-// Define these here so that we can simple headers. We only run with these types so this isn't too bad.
+// Explicit template instantiations.
+// Note: If additional template instantiations will be added, then you also need to add them to the extern template declaration in the header file.
+
 template class CColorBitmapT<std::uint8_t>;
 template class CColorBitmapT<std::uint16_t>;
 template class CColorBitmapT<std::uint32_t>;

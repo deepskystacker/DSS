@@ -90,7 +90,7 @@
 #pragma option -w-inl -w-pch
 #endif
 
-#if ( defined(__BORLANDC__) || _MSC_VER <= 1000 ) && !defined( __GNUG__ )
+#if ( defined(__BORLANDC__) || (defined(_MSC_VER) && _MSC_VER <= 1000 ) && !defined( __GNUG__ ))
 #  include <stdio.h>
 #  include <stdlib.h>
 #  include <math.h>
@@ -178,7 +178,6 @@ inline long double abs (long double v) { return fabsl( v); }
 #if defined( _SGI_BROKEN_STL )              // For SGI C++ v.7.2.1 compiler
 namespace std { }
 #endif
-using namespace std;
 #endif
 
 #ifndef _NO_NAMESPACE
@@ -187,10 +186,10 @@ namespace math {
 
 #if !defined(_NO_EXCEPTION)
 #else
-class matrix_error : public logic_error
+class matrix_error : public std::logic_error
 {
     public:
-	matrix_error (const string& what_arg) : logic_error( what_arg) {}
+	matrix_error (const std::string& what_arg) : std::logic_error( what_arg) {}
 };
 #define REPORT_ERROR(ErrormMsg)  throw matrix_error( ErrormMsg);
 inline void _matrix_error (const char* pErrMsg)
@@ -325,7 +324,7 @@ private:
 MAT_TEMPLATE inline
 matrixT::matrix (size_t row, size_t col)
 {
-  _m = new base_mat( row, col, 0);
+  _m = new base_mat( row, col, nullptr);
 }
 
 // copy constructor
@@ -428,8 +427,8 @@ matrixT::operator () (size_t row, size_t col) const _THROW_MATRIX_ERROR
 }
 
 // input stream function
-MAT_TEMPLATE inline istream&
-operator >> (istream& istrm, matrixT& m)
+MAT_TEMPLATE inline std::istream&
+operator >> (std::istream& istrm, matrixT& m)
 {
    for (size_t i=0; i < m.RowNo(); i++)
       for (size_t j=0; j < m.ColNo(); j++)
@@ -442,8 +441,8 @@ operator >> (istream& istrm, matrixT& m)
 }
 
 // output stream function
-MAT_TEMPLATE inline ostream&
-operator << (ostream& ostrm, const matrixT& m)
+MAT_TEMPLATE inline std::ostream&
+operator << (std::ostream& ostrm, const matrixT& m)
 {
    for (size_t i=0; i < m.RowNo(); i++)
    {
@@ -452,7 +451,7 @@ operator << (ostream& ostrm, const matrixT& m)
          T x = m(i,j);
          ostrm << x << '\t';
       }
-      ostrm << endl;
+      ostrm << std::endl;
    }
    return ostrm;
 }
@@ -835,7 +834,7 @@ matrixT::pivot (size_t row)
     if ( (temp = std::abs( _m->Val[i][row])) > amax && temp != 0.0)
      {
        amax = temp;
-       k = (int)i;
+       k = static_cast<int>(i);
      }
   if (_m->Val[k][row] == T(0))
      return -1;

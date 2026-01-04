@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "catch.h"
+#include "catch_amalgamated.hpp"
 #include <qfileinfo.h>
 
 TEST_CASE("Qt")

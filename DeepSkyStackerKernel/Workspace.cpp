@@ -11,7 +11,7 @@ protected:
 	void	CopyFrom(const WorkspaceSettings & ws)
 	{
 		m_vSettings = ws.m_vSettings;
-	};
+	}
 
 	void	InitToDefault(WORKSPACESETTINGVECTOR & vSettings);
 	void	Init();
@@ -20,14 +20,14 @@ public:
 	WorkspaceSettings()
 	{
 		Init();
-	};
-	virtual ~WorkspaceSettings() {};
+	}
+	virtual ~WorkspaceSettings() {}
 
 	WorkspaceSettings & operator = (const WorkspaceSettings & ws)
 	{
 		CopyFrom(ws);
 		return (*this);
-	};
+	}
 
 	WorkspaceSettings(WorkspaceSettings const& other)
 	{
@@ -37,7 +37,7 @@ public:
 	void	InitFrom(const WorkspaceSettings & ws)
 	{
 		CopyFrom(ws);
-	};
+	}
 
 	WORKSPACESETTINGITERATOR	findSetting(const QString& key);
 	bool	isDirty();
@@ -45,7 +45,7 @@ public:
 	WORKSPACESETTINGITERATOR	end()
 	{
 		return m_vSettings.end();
-	};
+	}
 
 	void	readSettings();
 	void	saveSettings();
@@ -124,29 +124,29 @@ WorkspaceSetting & WorkspaceSetting::setValue(const QVariant& value)
 void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 {
 	vSettings.clear();
-	vSettings.push_back(WorkspaceSetting("Stacking/Light_Method", QVariant((uint)MBP_AVERAGE)));
-	vSettings.push_back(WorkspaceSetting("Stacking/Light_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Method", QVariant(static_cast<uint>(MBP_AVERAGE))));
+	vSettings.push_back(WorkspaceSetting("Stacking/Light_Iteration", QVariant(static_cast<uint>(5))));
 	vSettings.push_back(WorkspaceSetting("Stacking/Light_Kappa", QVariant(2.0)));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/Debloom", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Method", QVariant((uint)MBP_MEDIAN)));
-	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Method", QVariant(static_cast<uint>(MBP_MEDIAN))));
+	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Iteration", QVariant(static_cast<uint>(5))));
 	vSettings.push_back(WorkspaceSetting("Stacking/Dark_Kappa", QVariant(2.0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Method", QVariant((uint)MBP_MEDIAN)));
-	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Method", QVariant(static_cast<uint>(MBP_MEDIAN))));
+	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Iteration", QVariant(static_cast<uint>(5))));
 	vSettings.push_back(WorkspaceSetting("Stacking/Flat_Kappa", QVariant(2.0)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Method", QVariant((uint)MBP_MEDIAN)));
-	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Iteration", QVariant((uint)5)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Method", QVariant(static_cast<uint>(MBP_MEDIAN))));
+	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Iteration", QVariant(static_cast<uint>(5))));
 	vSettings.push_back(WorkspaceSetting("Stacking/Offset_Kappa", QVariant(2.0)));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibration", QVariant(false)));
 	vSettings.push_back(WorkspaceSetting("Stacking/PerChannelBackgroundCalibration", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", QVariant((uint)BCI_RATIONAL)));
-	vSettings.push_back(WorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", QVariant((uint)RBCM_MAXIMUM)));
+	vSettings.push_back(WorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", QVariant(static_cast<uint>(BCI_OFFSET))));
+	vSettings.push_back(WorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", QVariant(static_cast<uint>(RBCM_MAXIMUM))));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/DarkOptimization", QVariant(false)));
 
@@ -157,40 +157,40 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 
 	vSettings.push_back(WorkspaceSetting("Stacking/BadLinesDetection", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/Mosaic", QVariant((uint)0)));
+	vSettings.push_back(WorkspaceSetting("Stacking/Mosaic", QVariant(static_cast<uint>(0))));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/CreateIntermediates", QVariant(false)));
 	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibrated", QVariant(false)));
 	vSettings.push_back(WorkspaceSetting("Stacking/SaveCalibratedDebayered", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/AlignmentTransformation", QVariant((uint)0)));
+	vSettings.push_back(WorkspaceSetting("Stacking/AlignmentTransformation", QVariant(static_cast<uint>(0))));
 	vSettings.push_back(WorkspaceSetting("Stacking/LockCorners", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/PixelSizeMultiplier", QVariant((uint)1)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PixelSizeMultiplier", QVariant(static_cast<uint>(1))));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/AlignChannels", QVariant(false)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/CometStackingMode", QVariant((uint)0)));
+	vSettings.push_back(WorkspaceSetting("Stacking/CometStackingMode", QVariant(static_cast<uint>(0))));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/SaveCometImages", QVariant(false)));
 	vSettings.push_back(WorkspaceSetting("Stacking/ApplyFilterToCometImages", QVariant(true)));
 
-	vSettings.push_back(WorkspaceSetting("Stacking/IntermediateFileFormat", QVariant((uint)1)));
+	vSettings.push_back(WorkspaceSetting("Stacking/IntermediateFileFormat", QVariant(static_cast<uint>(1))));
 	vSettings.push_back(WorkspaceSetting("Stacking/CompressFITS", QVariant(false)));
 
 	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanHot", QVariant(false)));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotFilter", QVariant((uint)1)));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotDetection", QVariant((uint)500)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotFilter", QVariant(static_cast<uint>(1))));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_HotDetection", QVariant(static_cast<uint>(500))));
 	vSettings.push_back(WorkspaceSetting("Stacking/PCS_DetectCleanCold", QVariant(false)));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdFilter", QVariant((uint)1)));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdDetection", QVariant((uint)500)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdFilter", QVariant(static_cast<uint>(1))));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ColdDetection", QVariant(static_cast<uint>(500))));
 	vSettings.push_back(WorkspaceSetting("Stacking/PCS_SaveDeltaImage", QVariant(false)));
-	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ReplaceMethod", ((uint)1)));
+	vSettings.push_back(WorkspaceSetting("Stacking/PCS_ReplaceMethod", (static_cast<uint>(1))));
 
-	vSettings.push_back(WorkspaceSetting("Register/PercentStack", QVariant((uint)80)));
+	vSettings.push_back(WorkspaceSetting("Register/PercentStack", QVariant(static_cast<uint>(80))));
   	vSettings.push_back(WorkspaceSetting("Register/StackAfter", QVariant(true)));
   	vSettings.push_back(WorkspaceSetting("Register/DetectHotPixels", QVariant(false)));
-  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", QVariant((uint)0)));
+  	vSettings.push_back(WorkspaceSetting("Register/DetectionThreshold", QVariant(static_cast<uint>(0))));
 	vSettings.push_back(WorkspaceSetting("Register/UseAutoThreshold", QVariant(true)));
 	vSettings.push_back(WorkspaceSetting("Register/ApplyMedianFilter", QVariant(false)));
 
@@ -212,7 +212,7 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMin", QVariant(0.0)));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMax", QVariant(1.0)));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/DSLR", QVariant("")));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", QVariant((uint)4)));
+	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", QVariant(static_cast<uint>(4))));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/ForceUnsigned", QVariant(false)));
 
 	std::sort(vSettings.begin(), vSettings.end());

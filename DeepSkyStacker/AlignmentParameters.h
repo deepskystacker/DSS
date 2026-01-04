@@ -16,8 +16,8 @@ namespace DSS
             Inherited;
 
     public:
-        explicit AlignmentParameters(QWidget* parent = 0);
-        ~AlignmentParameters();
+        explicit AlignmentParameters(QWidget* parent = nullptr);
+        ~AlignmentParameters() override;
 
     public slots:
         void onSetActive();

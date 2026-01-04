@@ -141,6 +141,7 @@ namespace DSS
 		case 5:
 			pix.load(":/starmask/StarShape_Quadratic.bmp");
 			break;
+		default: break;
 		}
 		starShapePreview->setPixmap(pix);
 	}
@@ -196,6 +197,7 @@ namespace DSS
 		case 2:
 			file.replace_extension("fts");
 			break;
+		default: break;
 		}
 
 		QString selectedFilter;		// Will be set by QFileDialog::getSaveFileName
@@ -229,7 +231,7 @@ namespace DSS
 			// 
 			auto index{ fileFilters.indexOf(dlg.selectedNameFilter()) + 1 };
 
-			settings.setValue("StarMask/FileType", (uint)index);
+			settings.setValue("StarMask/FileType", static_cast<uint>(index));
 			switch (index)
 			{
 			case 1:
@@ -238,6 +240,7 @@ namespace DSS
 			case 2: 
 				isFits = true;
 				break;
+			default: break;
 			}
 
 			//

@@ -16,7 +16,7 @@ private:
 		red = cr.red;
 		green = cr.green;
 		blue = cr.blue;
-	};
+	}
 
 public:
 	COLORREFT(TType r = 0, TType g = 0, TType b = 0)
@@ -24,18 +24,18 @@ public:
 		red = r;
 		green = g;
 		blue = b;
-	};
+	}
 
 	COLORREFT(const COLORREFT<TType>& cr)
 	{
 		CopyFrom(cr);
-	};
+	}
 
 	COLORREFT<TType>& operator = (const COLORREFT<TType>& cr)
 	{
 		CopyFrom(cr);
 		return *this;
-	};
+	}
 
 };
 

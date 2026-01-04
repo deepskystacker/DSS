@@ -56,21 +56,21 @@ namespace DSS
             Inherited;
     public:
         ImageView(QWidget* parent = Q_NULLPTR);
-        QSize sizeHint() const noexcept override { return QSize(900, 600); };
-        inline void setToolBar(QToolBar* p) noexcept { m_pToolBar = p; };
+        QSize sizeHint() const noexcept override { return QSize(900, 600); }
+        inline void setToolBar(QToolBar* p) noexcept { m_pToolBar = p; }
         inline qreal scale() { return m_scale; }
         inline qreal zoom() { return m_zoom; }
 
         inline QPointF imageToScreen(const QPointF& pt) noexcept
         {
             return (pt * m_zoom * m_scale) + m_origin - (rectOfInterest.topLeft() * m_zoom * m_scale);
-        };
+        }
 
         inline void	imageToScreen(qreal& fX, qreal& fY) noexcept
         {
             fX = (fX * m_zoom * m_scale) + m_origin.x() - (rectOfInterest.topLeft().x() * m_zoom * m_scale);
             fY = (fY * m_zoom * m_scale) + m_origin.y() - (rectOfInterest.topLeft().y() * m_zoom * m_scale);
-        };
+        }
 
         inline QRectF imageToScreen(const QRectF& rc) noexcept
         {
@@ -78,7 +78,7 @@ namespace DSS
                 (rc.topLeft() * m_zoom * m_scale) + m_origin - (rectOfInterest.topLeft() * m_zoom * m_scale),
                 rc.size() * m_zoom * m_scale
             );
-        };
+        }
 
         inline qreal imageHeight() noexcept
         {

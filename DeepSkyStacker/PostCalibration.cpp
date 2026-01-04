@@ -32,7 +32,7 @@ namespace DSS
 
 		ui->setupUi(this);
 
-		int value = workspace->value("Stacking/PCS_ReplaceMethod", (int)CR_MEDIAN).toInt();
+		int value = workspace->value("Stacking/PCS_ReplaceMethod", static_cast<int>(CR_MEDIAN)).toInt();
 		switch (value)
 		{
 		case CR_MEDIAN:
@@ -41,6 +41,7 @@ namespace DSS
 		case CR_GAUSSIAN:
 			ui->replacementMethod->setText(gaussianString);
 			break;
+		default: break;
 		}
 
 		createActions().createMenus();
@@ -101,7 +102,7 @@ namespace DSS
 		// after the decimal point
 		//
 		ui->hotThresholdPercent->setText(QString("%L1%").arg(pcs.m_fHotDetection, 0, 'f', 1));
-		ui->hotThreshold->setSliderPosition(1000 - pcs.m_fHotDetection * 10.0);
+		ui->hotThreshold->setSliderPosition(static_cast<int>(1000 - pcs.m_fHotDetection * 10.0));
 
 		ui->cleanColdPixels->setChecked(pcs.m_bCold);
 		ui->coldFilterSize->setEnabled(pcs.m_bCold);
@@ -118,7 +119,7 @@ namespace DSS
 		// after the decimal point
 		//
 		ui->coldThresholdPercent->setText(QString("%L1%").arg(pcs.m_fColdDetection, 0, 'f', 1));
-		ui->coldThreshold->setSliderPosition(1000 - pcs.m_fColdDetection * 10.0);
+		ui->coldThreshold->setSliderPosition(static_cast<int>(1000 - pcs.m_fColdDetection * 10.0));
 
 		//
 		// Set the text colour as for a Hyper-Link
@@ -195,7 +196,7 @@ namespace DSS
 
 	void PostCalibration::on_hotThreshold_valueChanged(int value)
 	{
-		double newValue = 100.0 - (double)value / 10.0;
+		double newValue = 100.0 - static_cast<double>(value / 10.0);
 		if (pcs.m_fHotDetection != newValue)
 		{
 			//
@@ -264,7 +265,7 @@ namespace DSS
 
 	void PostCalibration::on_coldThreshold_valueChanged(int value)
 	{
-		double newValue = 100.0 - (double)value / 10.0;
+		double newValue = 100.0 - static_cast<double>(value) / 10.0;
 		if (pcs.m_fColdDetection != newValue)
 		{
 			//

@@ -22,9 +22,9 @@ constexpr int SSTAB_DARK = 3;
 constexpr int SSTAB_FLAT = 4;
 constexpr int SSTAB_OFFSET = 5;
 constexpr int SSTAB_ALIGNMENT = 6;
-constexpr int SSTAB_INTERMEDIATE = 7;
+//constexpr int SSTAB_INTERMEDIATE = 7;
 constexpr int SSTAB_POSTCALIBRATION = 9;
-constexpr int SSTAB_OUTPUT = 10;
+//constexpr int SSTAB_OUTPUT = 10;
 
 namespace DSS
 {
@@ -292,6 +292,7 @@ namespace DSS
 			case SM_INTERSECTION:
 				strText = tr("Intersection", "IDS_RECAP_STACKINGMODE_INTERSECTION");
 				break;
+			default: break;
 			};
 
 			insertHTML(strHTML, strText, blueColour, false, false, SSTAB_RESULT);
@@ -320,6 +321,7 @@ namespace DSS
 			case 5:
 				strText = tr("No Alignment", "IDS_ALIGN_NONE");
 				break;
+			default: break;
 			};
 
 			insertHTML(strHTML, strText, blueColour, false, false, SSTAB_ALIGNMENT);
@@ -376,7 +378,9 @@ namespace DSS
 				case CSM_COMETSTAR:
 					strText = tr("Align on stars and comet", "IDS_RECAP_COMETSTACKING_BOTH");
 					break;
+				default: break;
 				};
+
 				insertHTML(strHTML, strText, blueColour, false, false, SSTAB_COMET);
 				strHTML += "<br>";
 			};
@@ -418,7 +422,7 @@ namespace DSS
 					int			lTaskExposure = 0;
 
 					for (j = 0; j < si.m_pLightTask->m_vBitmaps.size(); j++)
-						lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;
+						lTaskExposure += static_cast<int>(si.m_pLightTask->m_vBitmaps[j].m_fExposure);
 
 					totalExposure += lTaskExposure;
 
@@ -764,11 +768,8 @@ namespace DSS
 
 		ZASSERT(nullptr != pStackingTasks);
 
-		STACKINGMODE stackingMode{ pStackingTasks->getStackingMode() };
-
-
 		StackSettings			dlg(this);
-		DSSRect					rcCustom;
+		//DSSRect					rcCustom;
 
 		if (pStackingTasks->IsCometAvailable())
 			dlg.enableCometStacking(true);
@@ -783,7 +784,6 @@ namespace DSS
 
 		if (dlg.exec())
 		{
-			stackingMode = pStackingTasks->getStackingMode();
 			pStackingTasks->UpdateTasksMethods();
 			fillWithAllTasks();
 		};

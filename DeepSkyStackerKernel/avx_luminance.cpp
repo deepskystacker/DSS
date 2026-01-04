@@ -91,7 +91,7 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 	constexpr size_t vectorLen = 16;
 	const size_t nrVectors = width / vectorLen;
 
-	const auto scaleAndStoreLuminance = [scalingFactor](const __m256d d0, const __m256d d1, const __m256d d2, const __m256d d3, double* const pOut) -> void
+	const auto scaleAndStoreLuminance = [](const __m256d d0, const __m256d d1, const __m256d d2, const __m256d d3, double* const pOut) -> void
 	{
 		const __m256d vScalingFactor = _mm256_set1_pd(scalingFactor);
 		_mm256_storeu_pd(pOut, _mm256_mul_pd(d0, vScalingFactor));

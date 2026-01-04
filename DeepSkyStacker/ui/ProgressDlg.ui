@@ -108,7 +108,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QProgressBar" name="totalProgess">
+      <widget class="QProgressBar" name="totalProgress">
        <property name="minimumSize">
         <size>
          <width>500</width>

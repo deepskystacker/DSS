@@ -66,7 +66,7 @@ struct
 		uint8_t cfa4[4];
 		uint8_t cfa9[9];
 		uint8_t cfa16[16];
-	} cfa { 0 };
+	} cfa{ {0} };
 } cfaDimPat;
 
 constinit TIFFExtendProc g_TIFFParentExtender = nullptr;
@@ -403,8 +403,8 @@ bool CTIFFReader::Open()
 			CBitmapInfo			BitmapInfo;
 			if (RetrieveEXIFInfo(file, BitmapInfo))
 			{
-				exposureTime = BitmapInfo.m_fExposure;
-				aperture	 = BitmapInfo.m_fAperture;
+				exposureTime = static_cast<float>(BitmapInfo.m_fExposure);
+				aperture	 = static_cast<float>(BitmapInfo.m_fAperture);
 				isospeed	 = BitmapInfo.m_lISOSpeed;
 				gain		 = BitmapInfo.m_lGain;
 				m_DateTime	 = BitmapInfo.m_DateTime;
@@ -598,141 +598,156 @@ bool CTIFFReader::Read()
 		if (spp == 1)
 			switch (bps)
 			{
-			case 8: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
+			case 8:
 				{
-					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					loopOverPixels(y, [&](const int x) -> bool
-					{
-						//
-						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
-						//
-						if (stop.load()) return false;
-
-						const double fGray = byteBuff[y * w + x];
-						if (OnRead(x, y, fGray, fGray, fGray))
-							return true;
-						stop = true;
-						return false;
-
-					});
-				}
-				} break;
-			case 16: {
 #pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
-				{
-					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					loopOverPixels(y, [&](const int x) -> bool
+					for (int y = 0; y < this->h; ++y)
 					{
-						//
-						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
-						//
-						if (stop.load()) return false;
+						if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+						loopOverPixels(y, [&](const int x) -> bool
+						{
+							//
+							// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+							//
+							if (stop.load()) return false;
 
-						const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
-						if (OnRead(x, y, fGray, fGray, fGray))
-							return true;
-						stop = true;
-						return false;
-					});
+							const double fGray = byteBuff[y * w + x];
+							if (OnRead(x, y, fGray, fGray, fGray))
+								return true;
+							stop = true;
+							return false;
+
+						});
+					}
 				}
-				} break;
-			case 32: {
+				break;
+			case 16:
+				{
 #pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
-				{
-					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					loopOverPixels(y, [&](const int x) -> bool
+					for (int y = 0; y < this->h; ++y)
 					{
-						//
-						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
-						//
-						if (stop.load()) return false;
+						if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+						loopOverPixels(y, [&](const int x) -> bool
+						{
+							//
+							// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+							//
+							if (stop.load()) return false;
 
-						const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
-						if (OnRead(x, y, fGray, fGray, fGray))
-							return true;
-						stop = true;
-						return false;
-					});
+							const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
+							if (OnRead(x, y, fGray, fGray, fGray))
+								return true;
+							stop = true;
+							return false;
+						});
+					}
 				}
+				break;
+			case 32:
+				{
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+					{
+						if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+						loopOverPixels(y, [&](const int x) -> bool
+						{
+							//
+							// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+							//
+							if (stop.load()) return false;
 
-				} break;
+							const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
+							if (OnRead(x, y, fGray, fGray, fGray))
+								return true;
+							stop = true;
+							return false;
+						});
+					}
+				}
+				break;
+			default:
+				break;
 			}
 		else
 			switch (bps)
 			{
-			case 8: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
+			case 8:
 				{
-					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					loopOverPixels(y, [&](const int x) -> bool
-					{
-						//
-						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
-						//
-						if (stop.load()) return false;
-
-						const int index = (y * w + x) * spp;
-						const double fRed = byteBuff[index];
-						const double fGreen = byteBuff[index + 1];
-						const double fBlue = byteBuff[index + 2];
-						if (OnRead(x, y, fRed, fGreen, fBlue))
-							return true;
-						stop = true;
-						return false;
-					});
-				}
-				} break;
-			case 16: {
 #pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
-				{
-					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					loopOverPixels(y, [&](const int x) -> bool
+					for (int y = 0; y < this->h; ++y)
 					{
-						//
-						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
-						//
-						if (stop.load()) return false;
+						if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+						loopOverPixels(y, [&](const int x) -> bool
+						{
+							//
+							// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+							//
+							if (stop.load()) return false;
 
-						const int index = (y * w + x) * spp;
-						const double fRed = shortBuff[index] / scaleFactorInt16;
-						const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
-						const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
-						if (OnRead(x, y, fRed, fGreen, fBlue))
-							return true;
-						stop = true;
-						return false;
-					});
-				}
-				} break;
-			case 32: {
-#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
-				for (int y = 0; y < this->h; ++y)
-				{
-					if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
-					loopOverPixels(y, [&](const int x) -> bool
-					{
-						//
-						// If another thread has set stop, return false to tell loopOverPixels to stop immediately
-						//
-						if (stop.load()) return false;
-
-						const int index = (y * w + x) * spp;
-						const double fRed = u32Buff[index] / scaleFactorInt32;
-						const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
-						const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
-						if (OnRead(x, y, fRed, fGreen, fBlue))
-							return true;
-						stop = true;
-						return false;
+							const int index = (y * w + x) * spp;
+							const double fRed = byteBuff[index];
+							const double fGreen = byteBuff[index + 1];
+							const double fBlue = byteBuff[index + 2];
+							if (OnRead(x, y, fRed, fGreen, fBlue))
+								return true;
+							stop = true;
+							return false;
 						});
+					}
 				}
-				} break;
+				break;
+			case 16:
+				{
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+					{
+						if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+						loopOverPixels(y, [&](const int x) -> bool
+						{
+							//
+							// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+							//
+							if (stop.load()) return false;
+
+							const int index = (y * w + x) * spp;
+							const double fRed = shortBuff[index] / scaleFactorInt16;
+							const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
+							const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
+							if (OnRead(x, y, fRed, fGreen, fBlue))
+								return true;
+							stop = true;
+							return false;
+						});
+					}
+				}
+				break;
+			case 32:
+				{
+#pragma omp parallel for default(shared) schedule(dynamic, 50) shared(stop) if(Multitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+					{
+						if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+						loopOverPixels(y, [&](const int x) -> bool
+						{
+							//
+							// If another thread has set stop, return false to tell loopOverPixels to stop immediately
+							//
+							if (stop.load()) return false;
+
+							const int index = (y * w + x) * spp;
+							const double fRed = u32Buff[index] / scaleFactorInt32;
+							const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
+							const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
+							if (OnRead(x, y, fRed, fGreen, fBlue))
+								return true;
+							stop = true;
+							return false;
+							});
+					}
+				}
+				break;
+			default:
+				break;
 			}
 	}
 
@@ -828,6 +843,15 @@ void CTIFFWriter::SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFAT
 		samplemin    = 0;
 		samplemax    = 1.0;
 		break;
+	default:
+		ZInvalidParameter invParm("Invalid format",
+			7,
+			ZException::recoverable);
+		invParm.setErrorCodeGroup(ZException::other);
+		invParm.addLocation(ZEXCEPTION_LOCATION());
+		invParm.logExceptionData();
+		throw invParm;
+		break;
 	}
 }
 
@@ -908,6 +932,8 @@ bool CTIFFWriter::Open()
 					case CFATYPE_RGGB:
 						memcpy(cfaDimPat.cfa.cfa4, TIFF_CFAPattern_RGGB.data(), sizeof(cfaDimPat.cfa.cfa4));
 						break;
+					default:
+						break;
 					}
 					TIFFSetField(m_tiff, TIFFTAG_CFAPATTERN, 4, cfaDimPat.cfa.cfa4);
 
@@ -969,10 +995,10 @@ bool CTIFFWriter::Open()
 			if (gain >= 0)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_GAIN, gain);
 
-			if (exposureTime)
+			if (0. != exposureTime)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSURE, exposureTime);
 
-			if (aperture)
+			if (0. != aperture)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_APERTURE, aperture);
 
 			if (nrframes)
@@ -1189,13 +1215,15 @@ bool CTIFFWriter::Write()
 						switch (spp)
 						{
 						case 1:
-							byteBuff[index] = fGrey;
+							byteBuff[index] = static_cast<std::uint8_t>(fGrey);
 							break;
 						case 3:
 						case 4:
-							byteBuff[index] = fRed;
-							byteBuff[index + 1] = fGreen;
-							byteBuff[index + 2] = fBlue;
+							byteBuff[index] = static_cast<std::uint8_t>(fRed);
+							byteBuff[index + 1] = static_cast<std::uint8_t>(fGreen);
+							byteBuff[index + 2] = static_cast<std::uint8_t>(fBlue);
+							break;
+						default:
 							break;
 						}
 						break;
@@ -1203,13 +1231,15 @@ bool CTIFFWriter::Write()
 						switch (spp)
 						{
 						case 1:
-							shortBuff[index] = fGrey * UCHAR_MAX;
+							shortBuff[index] = static_cast<std::uint16_t>(fGrey * UCHAR_MAX);
 							break;
 						case 3:
 						case 4:
-							shortBuff[index] = fRed * UCHAR_MAX;
-							shortBuff[index + 1] = fGreen * UCHAR_MAX;
-							shortBuff[index + 2] = fBlue * UCHAR_MAX;
+							shortBuff[index] = static_cast<std::uint16_t>(fRed * UCHAR_MAX);
+							shortBuff[index + 1] = static_cast<std::uint16_t>(fGreen * UCHAR_MAX);
+							shortBuff[index + 2] = static_cast<std::uint16_t>(fBlue * UCHAR_MAX);
+							break;
+						default:
 							break;
 						}
 						break;
@@ -1218,28 +1248,34 @@ bool CTIFFWriter::Write()
 							switch (spp)
 							{
 							case 1:
-								floatBuff[index] = fGrey / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
+								floatBuff[index] = static_cast<float>(fGrey / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin);
 								break;
 							case 3:
 							case 4:
-								floatBuff[index] = fRed / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
-								floatBuff[index + 1] = fGreen / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
-								floatBuff[index + 2] = fBlue / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
+								floatBuff[index] = static_cast<float>(fRed / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin);
+								floatBuff[index + 1] = static_cast<float>(fGreen / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin);
+								floatBuff[index + 2] = static_cast<float>(fBlue / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin);
+								break;
+							default:
 								break;
 							}
 						else switch (spp)
 						{
 						case 1:
-							u32Buff[index] = fGrey * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index] = static_cast<uint32_t>(fGrey * UCHAR_MAX * USHRT_MAX);
 							break;
 						case 3:
 						case 4:
-							u32Buff[index] = fRed * UCHAR_MAX * USHRT_MAX;
-							u32Buff[index + 1] = fGreen * UCHAR_MAX * USHRT_MAX;
-							u32Buff[index + 2] = fBlue * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index] = static_cast<uint32_t>(fRed * UCHAR_MAX * USHRT_MAX);
+							u32Buff[index + 1] = static_cast<uint32_t>(fGreen * UCHAR_MAX * USHRT_MAX);
+							u32Buff[index + 2] = static_cast<uint32_t>(fBlue * UCHAR_MAX * USHRT_MAX);
 							break;
-
+						default:
+							break;
 						}
+						break;
+					default:
+						break;
 					}
 
 				}
@@ -1347,7 +1383,7 @@ public :
 		m_pMemoryBitmap{ pBitmap }
 	{}
 
-	virtual ~CTIFFWriteFromMemoryBitmap()
+	virtual ~CTIFFWriteFromMemoryBitmap() override
 	{
 		Close();
 	}
@@ -1408,10 +1444,10 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
 		if (gain < 0)
 			gain = m_pMemoryBitmap->GetGain();
-		if (!exposureTime)
-			exposureTime = m_pMemoryBitmap->GetExposure();
-		if (!aperture)
-			aperture = m_pMemoryBitmap->GetAperture();
+		if (0. != exposureTime)
+			exposureTime = static_cast<float>(m_pMemoryBitmap->GetExposure());
+		if (0. != aperture)
+			aperture = static_cast<float>(m_pMemoryBitmap->GetAperture());
 		if (!nrframes)
 			nrframes = m_pMemoryBitmap->GetNrFrames();
 		m_DateTime = m_pMemoryBitmap->m_DateTime;
@@ -1493,11 +1529,11 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 			tiff.SetGain(lGain);
 		else
 			tiff.SetGain(pBitmap->GetGain());
-		if (fExposure)
+		if (0. != fExposure)
 			tiff.SetExposureTime(fExposure);
 		else
 			tiff.SetExposureTime(pBitmap->GetExposure());
-		if (fAperture)
+		if (0. != fAperture)
 			tiff.SetAperture(fAperture);
 		else
 			tiff.SetAperture(pBitmap->GetAperture());
@@ -1539,9 +1575,9 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 			tiff.SetISOSpeed(lISOSpeed);
 		if (lGain >= 0)
 			tiff.SetGain(lGain);
-		if (fExposure)
+		if (0. != fExposure)
 			tiff.SetExposureTime(fExposure);
-		if (fAperture)
+		if (0. != fAperture)
 			tiff.SetAperture(fAperture);
 		tiff.SetFormatAndCompression(TIFFFormat, TIFFCompression);
 
@@ -1579,9 +1615,9 @@ public :
 		m_outBitmap{ rpBitmap }
 	{}
 
-	virtual ~CTIFFReadInMemoryBitmap() { Close(); };
+	virtual ~CTIFFReadInMemoryBitmap() override { Close(); }
 private:
-	virtual bool Close() { return OnClose(); };
+	virtual bool Close() { return OnClose(); }
 
 	virtual bool OnOpen() override;
 	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
@@ -1815,15 +1851,6 @@ int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::sh
 }
 
 CTIFFHeader::CTIFFHeader() :
-	samplemax{ 1.0 },
-	samplemin{ 0.0 },
-	exposureTime{ 0.0f },
-	aperture{ 0.0f },
-	isospeed{ 0 },
-	gain{ -1 },
-	cfatype{ 0 },
-	cfa{ false },
-	nrframes{ 0 },
 	w{ 0 },
 	h{ 0 },
 	spp{ 0 },
@@ -1832,7 +1859,16 @@ CTIFFHeader::CTIFFHeader() :
 	compression{ 0 },
 	planarconfig{ 0 },
 	sampleformat{ 0 },
-	master{ 0 }
+	cfa{ false },
+	cfatype{ 0 },
+	master{ 0 },
+	samplemin{ 0.0 },
+	samplemax{ 1.0 },
+	exposureTime{ 0.0f },
+	aperture{ 0.0f },
+	isospeed{ 0 },
+	gain{ -1 },
+	nrframes{ 0 }
 {
 	TIFFSetWarningHandler(nullptr);
 	TIFFSetWarningHandlerExt(nullptr);

@@ -52,18 +52,22 @@
 
 namespace
 {
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunneeded-member-function"
+#endif
 	class ColorOrder
 	{
 	public:
 		QRgb		m_crColor;		// Qt 32-bit QRgb format (0xAARRGGBB)
 		int			m_lSize;
 
-		ColorOrder() :
-			m_crColor{ qRgb(0, 0, 0) },
-			m_lSize{ 0 }
-		{}
+		//ColorOrder() :
+		//	m_crColor{ qRgb(0, 0, 0) },
+		//	m_lSize{ 0 }
+		//{}
 
-		ColorOrder(QRgb crColor, int lSize) : 
+		explicit ColorOrder(QRgb crColor, int lSize) : 
 			m_crColor{ crColor },
 			m_lSize{ lSize }
 		{}
@@ -77,6 +81,10 @@ namespace
 			return m_lSize < co.m_lSize;
 		}
 	};
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
 }
 
 namespace DSS
@@ -85,11 +93,11 @@ namespace DSS
 		QWidget(parent),
 		controls{ processingControls },
 		dirty_ { false },
-		timer {this},
+		hacMenu{ this },
+		timer{ this },
 		redAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
 		greenAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
-		blueAdjustmentCurve_{ HistogramAdjustmentCurve::Linear },
-		hacMenu{ this }
+		blueAdjustmentCurve_{ HistogramAdjustmentCurve::Linear }
 	{
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);
@@ -377,9 +385,16 @@ namespace DSS
 			processingSettingsList.clear();
 			picture->clear();
 			processAndShow(true);
-			QGuiApplication::restoreOverrideCursor();
 			setDirty(false);
-		};
+		}
+		else
+		{
+			QApplication::beep();
+			QString message{ QString(tr("Failed to load image %1").arg(file.generic_u16string())) };
+			QMessageBox::warning(this, "DeepSkyStacker",
+				message);
+		}
+		QGuiApplication::restoreOverrideCursor();
 
 		timer.start();
 	}
@@ -389,7 +404,7 @@ namespace DSS
 	void ProcessingDlg::loadImage()
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << "Load image";
+		bool ok{ false };
 
 		if (askToSave())
 		{
@@ -444,54 +459,53 @@ namespace DSS
 				settings.setValue("Folders/SaveDSIFolder", directory);
 				settings.setValue("Folders/SavePictureExtension", extension);
 
-				//
-				// Finally load the file of interest
-				//
-				currentFile = file;				// Remember the current file
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				dssApp->deepStack().reset();
 				dssApp->deepStack().SetProgress(&dlg);
-				bool result = dssApp->deepStack().LoadStackedInfo(file);
-				if (!result)
+				ok = dssApp->deepStack().LoadStackedInfo(file);
+				dssApp->deepStack().SetProgress(nullptr);
+				QGuiApplication::restoreOverrideCursor();
+
+				if (ok)
+				{
+					currentFile = file;
+					modifyRGBKGradientControls();
+
+					updateInformation();
+					QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+					dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
+					dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
+					updateControlsFromSettings();
+
+					resetSliders();
+
+					//
+					// When loading a external image (not the auto-save file) the histogram adjustment curves 
+					// should be reset to linear.
+					//
+					setRedAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+					setGreenAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+					setBlueAdjustmentCurve(HistogramAdjustmentCurve::Linear);
+
+					int height = dssApp->deepStack().GetHeight();
+					rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
+
+					processingSettingsList.clear();
+					picture->clear();
+					processAndShow(true);
+					setDirty(false);
+				}
+				else
 				{
 					QApplication::beep();
 					QString message{ QString(tr("Failed to load image %1").arg(file.generic_u16string())) };
 					QMessageBox::warning(this, "DeepSkyStacker",
 						message);
 				}
-
-				dssApp->deepStack().SetProgress(nullptr);
-
-				modifyRGBKGradientControls();
-				updateInformation();
-
-				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(processingSettings.bezierAdjust_);
-				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(processingSettings.histoAdjust_);
-
-				updateControlsFromSettings();
-
-				showHistogram(false);
-				//
-				// When loading a external image (not the auto-save file) the histogram adjustment curves 
-				// should be reset to linear.
-				//
-				setRedAdjustmentCurve(HistogramAdjustmentCurve::Linear);
-				setGreenAdjustmentCurve(HistogramAdjustmentCurve::Linear);
-				setBlueAdjustmentCurve(HistogramAdjustmentCurve::Linear);
-
-				//resetSliders();
-				int height = dssApp->deepStack().GetHeight();
-				rectToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
-
-				processingSettingsList.clear();
-				picture->clear();
-				processAndShow(true);
-
-				setDirty(false);
-
-				timer.start();
-
 				QGuiApplication::restoreOverrideCursor();
 
+				timer.start();
 			}
 		}
 	}
@@ -501,7 +515,6 @@ namespace DSS
 	bool ProcessingDlg::saveImage()
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << "Save image to file";
 		bool result = false;
 
 
@@ -513,7 +526,7 @@ namespace DSS
 			auto extension{ settings.value("Folders/SavePictureExtension").toString().toLower() };
 			auto apply{ settings.value("Folders/SaveApplySetting", false).toBool() };
 			TIFFCOMPRESSION compression{ static_cast<TIFFCOMPRESSION>(
-				settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt()) };
+				settings.value("Folders/SaveCompression", static_cast<uint>(TC_NONE)).toUInt()) };
 			auto filterIndex{ settings.value("Folders/SavePictureIndex", 0).toUInt() };
 			if (filterIndex > 5) filterIndex = 0;
 
@@ -598,6 +611,7 @@ namespace DSS
 				case 5:		// FITS 32 bit rational
 					stackedBitmap.SaveFITS32Bitmap(file, rect, &progress, apply, true);
 					break;
+				default: break;
 				}
 
 				if (file.has_parent_path())
@@ -611,7 +625,7 @@ namespace DSS
 				settings.setValue("Folders/SavePictureExtension", extension);
 				settings.setValue("Folders/SavePictureIndex", index);
 				settings.setValue("Folders/SaveApplySetting", apply);
-				settings.setValue("Folders/SaveCompression", (uint)compression);
+				settings.setValue("Folders/SaveCompression", static_cast<uint>(compression));
 
 				QGuiApplication::restoreOverrideCursor();
 				currentFile = file;
@@ -672,34 +686,33 @@ namespace DSS
 		//
 		// Position the controls to match the current settings
 		//
-		controls->darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
-		controls->darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
+		controls->darkAngle->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fDarknessAngle));
+		controls->darkPower->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0));
 		updateDarkText();
 
-		controls->midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
-		controls->midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
+		controls->midAngle->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fMidtoneAngle));
+		controls->midTone->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fMidtone * 10.0));
 		updateMidText();
 
-		controls->highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
-		controls->highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
+		controls->highAngle->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fHighlightAngle));
+		controls->highPower->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0));
 		updateHighText();
 
-		controls->saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
+		controls->saturation->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fSaturationShift));
 		updateSaturationText();
 
 		// min/shift/max FOR red, green, blue
-		const RgbParams rgbParams = {
-			processingSettings.histoAdjust_.GetRedAdjust().GetMin(),
-			processingSettings.histoAdjust_.GetRedAdjust().GetShift(),
-			processingSettings.histoAdjust_.GetRedAdjust().GetMax(),
-
-			processingSettings.histoAdjust_.GetGreenAdjust().GetMin(),
-			processingSettings.histoAdjust_.GetGreenAdjust().GetShift(),
-			processingSettings.histoAdjust_.GetGreenAdjust().GetMax(),
-
-			processingSettings.histoAdjust_.GetBlueAdjust().GetMin(),
-			processingSettings.histoAdjust_.GetBlueAdjust().GetShift(),
-			processingSettings.histoAdjust_.GetBlueAdjust().GetMax()
+		const RgbParams rgbParams =
+		{
+				processingSettings.histoAdjust_.GetRedAdjust().GetMin(),
+				processingSettings.histoAdjust_.GetRedAdjust().GetShift(),
+				processingSettings.histoAdjust_.GetRedAdjust().GetMax(),
+				processingSettings.histoAdjust_.GetGreenAdjust().GetMin(),
+				processingSettings.histoAdjust_.GetGreenAdjust().GetShift(),
+				processingSettings.histoAdjust_.GetGreenAdjust().GetMax(),
+				processingSettings.histoAdjust_.GetBlueAdjust().GetMin(),
+				processingSettings.histoAdjust_.GetBlueAdjust().GetShift(),
+				processingSettings.histoAdjust_.GetBlueAdjust().GetMax()
 		};
 
 		updateGradientAdjustmentValues(rgbParams);
@@ -795,7 +808,7 @@ namespace DSS
 
 	void ProcessingDlg::drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
 	{
-		std::array<ColorOrder, 3> vColors = {{ {qRgb(255, 0, 0), lNrReds}, {qRgb(0, 255, 0), lNrGreens} , {qRgb(0, 0, 255), lNrBlues} }};
+		std::array<ColorOrder, 3> vColors = {{ ColorOrder{qRgb(255, 0, 0), lNrReds}, ColorOrder{qRgb(0, 255, 0), lNrGreens} , ColorOrder{qRgb(0, 0, 255), lNrBlues} }};
 		int lLastHeight = 0;
 
 		std::sort(vColors.begin(), vColors.end());
@@ -819,7 +832,7 @@ namespace DSS
 					lNrColors++;
 				}
 
-				QPen colorPen(QColor(fRed / lNrColors, fGreen / lNrColors, fBlue / lNrColors));
+				QPen colorPen(QColor(static_cast<int>(fRed / lNrColors), static_cast<int>(fGreen / lNrColors), static_cast<int>(fBlue / lNrColors)));
 				painter.setPen(colorPen);
 
 				painter.drawLine(X, lHeight - lLastHeight, X, lHeight - vColors[i].m_lSize);
@@ -941,7 +954,6 @@ namespace DSS
 	void ProcessingDlg::drawBezierCurve(QPainter& painter, int width, int height)
 	{
 		BezierAdjust		bezierAdjust;
-		QPointF				point;
 
 		bezierAdjust.m_fMidtone = controls->midTone->value() / 10.0;
 		bezierAdjust.m_fMidtoneAngle = controls->midAngle->value();
@@ -1009,7 +1021,7 @@ namespace DSS
 			if (useLogarithm)
 			{
 				if (lMaxValue)
-					maxLogarithm = exp(log((double)lMaxValue) / height);
+					maxLogarithm = exp(log(static_cast<double>(lMaxValue)) / height);
 				else
 					useLogarithm = false;
 			};
@@ -1025,17 +1037,17 @@ namespace DSS
 				if (useLogarithm)
 				{
 					if (lNrReds)
-						lNrReds = log((double)lNrReds) / log(maxLogarithm);
+						lNrReds = static_cast<int>(log(static_cast<double>(lNrReds)) / log(maxLogarithm));
 					if (lNrGreens)
-						lNrGreens = log((double)lNrGreens) / log(maxLogarithm);
+						lNrGreens = static_cast<int>(log(static_cast<double>(lNrGreens)) / log(maxLogarithm));
 					if (lNrBlues)
-						lNrBlues = log((double)lNrBlues) / log(maxLogarithm);
+						lNrBlues = static_cast<int>(log(static_cast<double>(lNrBlues)) / log(maxLogarithm));
 				}
 				else
 				{
-					lNrReds = (double)lNrReds / (double)lMaxValue * height;
-					lNrGreens = (double)lNrGreens / (double)lMaxValue * height;
-					lNrBlues = (double)lNrBlues / (double)lMaxValue * height;
+					lNrReds = static_cast<int>(static_cast<double>(lNrReds) / static_cast<double>(lMaxValue) * height);
+					lNrGreens = static_cast<int>(static_cast<double>(lNrGreens) / static_cast<double>(lMaxValue) * height);
+					lNrBlues = static_cast<int>(static_cast<double>(lNrBlues) / static_cast<double>(lMaxValue) * height);
 				};
 
 				drawHistoBar(painter, lNrReds, lNrGreens, lNrBlues, i, height);
@@ -1074,25 +1086,26 @@ namespace DSS
 			0.0,
 			Histogram.GetBlueHistogram().GetMax()
 		};
-
+		
+		updateGradientAdjustmentValues(rgbParams);
 		adjustRgbGradientPegs(rgbParams);
 
 		//
 		// Position the controls to match the current settings
 		//
-		controls->darkAngle->setValue(processingSettings.bezierAdjust_.m_fDarknessAngle);
-		controls->darkPower->setValue(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0);
+		controls->darkAngle->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fDarknessAngle));
+		controls->darkPower->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fDarknessPower * 10.0));
 		updateDarkText();
 
-		controls->midAngle->setValue(processingSettings.bezierAdjust_.m_fMidtoneAngle);
-		controls->midTone->setValue(processingSettings.bezierAdjust_.m_fMidtone * 10.0);
+		controls->midAngle->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fMidtoneAngle));
+		controls->midTone->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fMidtone * 10.0));
 		updateMidText();
 
-		controls->highAngle->setValue(processingSettings.bezierAdjust_.m_fHighlightAngle);
-		controls->highPower->setValue(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0);
+		controls->highAngle->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fHighlightAngle));
+		controls->highPower->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fHighlightPower * 10.0));
 		updateHighText();
 
-		controls->saturation->setValue(processingSettings.bezierAdjust_.m_fSaturationShift);
+		controls->saturation->setValue(static_cast<int>(processingSettings.bezierAdjust_.m_fSaturationShift));
 		updateSaturationText();
 
 		showHistogram(false);
@@ -1106,7 +1119,6 @@ namespace DSS
 		const RgbParams rgbParams = calcHistogramAdjustment(this->processingSettings.histoAdjust_);
 
 		updateGradientAdjustmentValues(rgbParams);
-
 		adjustRgbGradientPegs(rgbParams);
 	}
 
@@ -1277,7 +1289,8 @@ namespace DSS
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
 	{
-		selectionRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
+		selectionRect = DSSRect(static_cast<int>(rect.x()), static_cast<int>(rect.y()),
+			static_cast<int>(rect.right()), static_cast<int>(rect.bottom()));
 	}
 
 	/* ------------------------------------------------------------------- */

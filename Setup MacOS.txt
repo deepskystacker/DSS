@@ -1,5 +1,5 @@
 #
-# Install XCode 16.2 from the App-Store and also install the command
+# Install XCode 26.1.1 from the App-Store and also install the command
 # line tools by running:
 # 
 xcode-select --install

@@ -43,7 +43,7 @@ private :
 
 		m_bSaveDeltaImage = pcs.m_bSaveDeltaImage;
 		m_Replace		  = pcs.m_Replace;
-	};
+	}
 
 public :
 	CPostCalibrationSettings()
@@ -56,19 +56,19 @@ public :
 		m_fColdDetection= 50.0;
 		m_bSaveDeltaImage = false;
 		m_Replace		  = CR_MEDIAN;
-	};
-	virtual ~CPostCalibrationSettings() {};
+	}
+	virtual ~CPostCalibrationSettings() {}
 
 	CPostCalibrationSettings(const CPostCalibrationSettings & pcs)
 	{
 		CopyFrom(pcs);
-	};
+	}
 
 	CPostCalibrationSettings & operator = (const CPostCalibrationSettings & pcs)
 	{
 		CopyFrom(pcs);
 		return (*this);
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -98,7 +98,7 @@ private:
 		m_bFileListFolder	=right.m_bFileListFolder	;
 		m_bOtherFolder		=right.m_bOtherFolder		;
 		m_strFolder			=right.m_strFolder			;
-	};
+	}
 
 public:
 	COutputSettings()
@@ -111,15 +111,15 @@ public:
 		m_bRefFrameFolder = true;
 		m_bFileListFolder = false;
 		m_bOtherFolder    = false;
-	};
+	}
 	~COutputSettings()
 	{
-	};
+	}
 
 	COutputSettings(const COutputSettings & right)
 	{
 		CopyFrom(right);
-	};
+	}
 
     COutputSettings& operator=(COutputSettings const& other)
     {
@@ -155,7 +155,7 @@ private :
 		m_pFlatTask		= si.m_pFlatTask;
 		m_pLightTask	= si.m_pLightTask;
 		m_pDarkFlatTask = si.m_pDarkFlatTask;
-	};
+	}
 
 private :
 	bool	CheckForExistingOffset(fs::path& strMasterFile);
@@ -171,22 +171,22 @@ public :
 		m_pFlatTask		= nullptr;
 		m_pLightTask	= nullptr;
 		m_pDarkFlatTask	= nullptr;
-	};
+	}
 
 	CStackingInfo(const CStackingInfo & si)
 	{
 		CopyFrom(si);
-	};
+	}
 
 	virtual ~CStackingInfo()
 	{
-	};
+	}
 
 	const CStackingInfo & operator = (const CStackingInfo & si)
 	{
 		CopyFrom(si);
 		return (*this);
-	};
+	}
 
 	bool	DoOffsetTask(DSS::OldProgressBase* const pProgress);
 	bool	DoDarkTask(DSS::OldProgressBase* const pProgress);

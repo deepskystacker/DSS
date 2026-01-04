@@ -92,7 +92,7 @@ namespace DSS
 		virtual bool IsCanceled() const = 0;
 		virtual bool Warning(const QString& szText) = 0;
 
-		void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; };
+		void SetJointProgress(bool bJointProgress) { m_jointProgress = bJointProgress; }
 		virtual const QString& GetStart1Text() const { return m_strLastOut[OT_TEXT1]; }
 		virtual const QString& GetStart2Text() const { return m_strLastOut[OT_TEXT2]; }
 		const QString& GetTitleText() const { return m_strLastOut[OT_TITLE]; }
@@ -143,16 +143,16 @@ namespace DSS
 	{
 	protected:
 		bool firstProgress{ false };
-		bool cancelEnabled{ false };
+		bool cancelEnabled{ true };
 		bool canceled{ false };
 		int partialMinimum{ 0 };
 		int partialMaximum{ 100 };
 		int partialValue{ 0 };
-		int totalMininum{ 0 };
+		int totalMinimum{ 0 };
 		int totalMaximum{ 100 };
 		int totalValue{ 0 };	
 
-		QElapsedTimer m_timer;
+		QElapsedTimer timer;
 		// Properties
 		QString topText{};
 		QString bottomText{};
@@ -164,18 +164,7 @@ namespace DSS
 		virtual void applyProcessorsUsed(int nCount) = 0;
 
 	public:
-		ProgressBase() :
-			firstProgress{ false },
-			cancelEnabled{ false },
-			canceled{ false },
-			partialMinimum{ 0 },
-			partialMaximum{ 100 },
-			partialValue{ 0 },
-			totalMininum{ 0 },
-			totalMaximum{ 100 },
-			totalValue{ 0 },
-			topText{},
-			bottomText{}
+		ProgressBase() 
 			{}
 
 		// Deleted copy and move constructors and assignment operators
@@ -184,21 +173,23 @@ namespace DSS
 		ProgressBase& operator=(const ProgressBase&) = delete;
 		ProgressBase& operator=(ProgressBase&&) = delete;
 		virtual ~ProgressBase() = default;
+		virtual bool isCanceled() const = 0;
 
 		//
-		// These eleven mfs define the interface implemented in subclasses
+		// These twelve mfs define the interface implemented in subclasses
 		//
+		virtual void setMode(ProgressMode mode) = 0;
 		virtual void setTitleText(const QString& title) = 0;
-		virtual void setTopText(QStringView text) = 0;
+		virtual void setTopText(QString& text) = 0;
 		virtual void setPartialMinimum(int minimum) = 0;
 		virtual void setPartialMaximum(int maximum) = 0;
+		virtual void setPartialRange(int minimum, int maximum) = 0;
 		virtual void setPartialValue(int value) = 0;
 		virtual void setTotalMinimum(int minimum) = 0;
 		virtual void setTotalMaximum(int maximum) = 0;
+		virtual void setTotalRange(int minimum, int maximum) = 0;
 		virtual void setTotalValue(int value) = 0;
-		virtual void setBottomText(QStringView text) = 0;
-
-		virtual bool wasCanceled() const = 0;
+		virtual void setBottomText(QString& text) = 0;
 	};
 }
 

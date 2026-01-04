@@ -67,7 +67,7 @@ namespace DSS
 
 	public:
 		FileStacker(QObject* parent = nullptr, ProgressLive* progress = nullptr);
-		~FileStacker();
+		~FileStacker() override;
 		size_t registeredImageCount();
 
 		void addFile(std::shared_ptr<CLightFrameInfo>& lfi);

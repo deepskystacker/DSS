@@ -1,6 +1,7 @@
 #pragma once
 #include "GrayBitmap.h"
 
+namespace DSS { class OldProgressBase; }
 class CColorBitmap
 {
 public:
@@ -16,6 +17,7 @@ public:
 };
 
 template <typename TType>
+//requires (std::same_as<TType, std::uint8_t> || std::same_as<TType, std::uint16_t> || std::same_as<TType, std::uint32_t> || std::same_as<TType, float> || std::same_as<TType, double>)
 class CColorBitmapT : public CMemoryBitmap, public CColorBitmap
 {
 	//friend CColorMedianFilterEngineT<TType>;
@@ -25,11 +27,11 @@ public:
 	CGrayBitmapT<TType> m_Blue;
 
 	CColorBitmapT();
-	virtual ~CColorBitmapT() = default;
+	virtual ~CColorBitmapT() override = default;
 
 private:
-	int m_lHeight;
 	int m_lWidth;
+	int m_lHeight;
 	constexpr static bool m_bWord{ std::is_same_v<TType, std::uint16_t> };
 	constexpr static bool m_bFloat{ std::is_same_v<TType, float> };
 	constexpr static double m_fMultiplier{ initMultiplier<TType>() };
@@ -46,6 +48,11 @@ public:
 	virtual int BitPerSample() const override
 	{
 		return sizeof(TType) * 8;
+	}
+
+	virtual bool IsIntegralType() const override
+	{
+		return std::integral<TType>;
 	}
 
 	virtual bool IsFloat() const override
@@ -123,7 +130,7 @@ public:
 		return m_fMultiplier * 256.0;
 	}
 
-	virtual void RemoveHotPixels(OldProgressBase* pProgress = nullptr) override;
+	virtual void RemoveHotPixels(DSS::OldProgressBase* pProgress = nullptr) override;
 	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const override;
 
 	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) override;
@@ -137,7 +144,13 @@ public:
 };
 
 
-typedef CColorBitmapT<std::uint8_t> C24BitColorBitmap;
-typedef CColorBitmapT<std::uint16_t> C48BitColorBitmap;
-typedef CColorBitmapT<std::uint32_t> C96BitColorBitmap;
-typedef CColorBitmapT<float> C96BitFloatColorBitmap;
+using C24BitColorBitmap = CColorBitmapT<std::uint8_t>;
+using C48BitColorBitmap = CColorBitmapT<std::uint16_t>;
+using C96BitColorBitmap = CColorBitmapT<std::uint32_t>;
+using C96BitFloatColorBitmap = CColorBitmapT<float>;
+
+extern template class CColorBitmapT<std::uint8_t>;
+extern template class CColorBitmapT<std::uint16_t>;
+extern template class CColorBitmapT<std::uint32_t>;
+extern template class CColorBitmapT<float>;
+extern template class CColorBitmapT<double>;

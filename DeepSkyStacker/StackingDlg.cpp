@@ -190,7 +190,7 @@ namespace DSS
 			bool elideLastVisibleLine = lastVisibleLine == i;
 			if (!drawElided && i + 1 < lineCount && lastVisibleLineShouldBeElided) {
 				const QTextLine nextLine = textLayout.lineAt(i + 1);
-				const int nextHeight = height + nextLine.height() / 2;
+				const int nextHeight = static_cast<int>(height + nextLine.height() / 2);
 				// elide when less than the next half line is visible
 				if (nextHeight + layoutRect.top() > textRect.height() + textRect.top())
 					elideLastVisibleLine = true;
@@ -257,7 +257,7 @@ namespace DSS
 		// Draw the icon 2.5 times as large as the default
 		//
 		QSize iconSize = opt.decorationSize;
-		iconSize.scale(2.5 * iconSize.width(), 2.5 * iconSize.height(), Qt::KeepAspectRatio);
+		iconSize.scale(static_cast<int>(2.5 * iconSize.width()), static_cast<int>(2.5 * iconSize.height()), Qt::KeepAspectRatio);
 		iconRect.setTop(opt.rect.center().y() - (iconSize.height() / 2));
 		iconRect.setWidth(iconSize.width()); iconRect.setHeight(iconSize.height());
 		// draw the icon
@@ -354,6 +354,8 @@ namespace DSS
 				return editor;
 			}
 			break;
+		default:
+			break;
 		}
 		//
 		// Not one we want to handle so return the default
@@ -397,7 +399,7 @@ namespace DSS
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
 				ZASSERT(timeEdit);
 				QTime time{ QTime(0, 0) };
-				time = time.addMSecs(msecs);
+				time = time.addMSecs(static_cast<int>(msecs));
 				timeEdit->setTime(time);
 				//
 				// timeEdit->setSelectedSection(QDateTimeEdit::MinuteSection);
@@ -478,6 +480,8 @@ namespace DSS
 		pictureList{ pictures },
 		ui(new Ui::StackingDlg),
 		initialised(false),
+		m_tipShowCount{ 0 },
+		networkManager{ nullptr },
 		markAsReference{ nullptr },
 		check{ nullptr },
 		uncheck{ nullptr },
@@ -489,9 +493,7 @@ namespace DSS
 		remove{ nullptr },
 		properties{ nullptr },
 		copy{ nullptr },
-		erase{ nullptr },
-		networkManager{ nullptr },
-		m_tipShowCount{ 0 }
+		erase{ nullptr }
 	{
 		ui->setupUi(this);
 		isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
@@ -539,7 +541,8 @@ namespace DSS
 
 	void StackingDlg::setSelectionRect(const QRectF& rect)
 	{
-		selectionRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
+		selectionRect = DSSRect(static_cast<int>(rect.x()), static_cast<int>(rect.y()),
+			static_cast<int>(rect.right()), static_cast<int>(rect.bottom()));
 	}
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
@@ -577,7 +580,7 @@ namespace DSS
 		{
 			if (QEvent::KeyPress == event->type())
 			{
-				int i{ 0 };
+				qsizetype i{ 0 };
 				QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 				const QKeySequence received(keyEvent->key() | keyEvent->modifiers());
 				QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
@@ -590,7 +593,7 @@ namespace DSS
 				{
 					QModelIndexList selectedRows = qsm->selectedRows();
 
-					int rowCount = selectedRows.size();
+					auto rowCount = selectedRows.size();
 
 					//
 					// If the QSortFilterProxyModel is being used, need to map 
@@ -625,7 +628,7 @@ namespace DSS
 				{
 					QModelIndexList selectedRows = qsm->selectedRows();
 
-					int rowCount = selectedRows.size();
+					qsizetype rowCount = selectedRows.size();
 
 					//
 					// If the QSortFilterProxyModel is being used, need to map 
@@ -744,7 +747,7 @@ namespace DSS
 
 		for (auto it = frameList.groups_cbegin(); it != frameList.groups_cend(); ++it)
 		{
-			const int index = std::distance(frameList.groups_cbegin(), it);
+			const int index = static_cast<int>(std::distance(frameList.groups_cbegin(), it));
 			pictureList->tabBar->setTabText(index, it->name());
 			it->pictures->retranslateUi();
 		}
@@ -932,7 +935,7 @@ namespace DSS
 		{
 			QString message{ tr("Do you really want to permanently erase %n file(s)?\n"
 				"This operation cannot be reversed or cancelled.",
-				"IDS_WARNING_ERASEFILES", rowCount) };
+				"IDS_WARNING_ERASEFILES", static_cast<int>(rowCount)) };
 			auto result = QMessageBox::question(this, "DeepSkyStacker",
 				message, (QMessageBox::Yes | QMessageBox::No), QMessageBox::No );
 			if (QMessageBox::Yes == result)
@@ -1030,7 +1033,7 @@ namespace DSS
 				}
 				else
 				{
-					dlg.fileName->setText(tr("%n files selected", "IDS_MULTIPLEFILESELECTED", rowCount));
+					dlg.fileName->setText(tr("%n files selected", "IDS_MULTIPLEFILESELECTED", static_cast<int>(rowCount)));
 				}
 
 				dlg.dateStamp->setText(imageModel->data(row, Column::FileTime, Qt::DisplayRole).toString());
@@ -1059,7 +1062,7 @@ namespace DSS
 					if (secs > 86399.999) secs = 86399.999;		// 24 hours less 1 ms
 					double msecs = secs * 1000.0;
 					QTime time{ QTime(0, 0) };
-					time = time.addMSecs(msecs);
+					time = time.addMSecs(static_cast<int>(msecs));
 					dlg.timeEdit->setTime(time);
 				}
 
@@ -1194,8 +1197,8 @@ namespace DSS
 		double height = verticalHeader->defaultSectionSize();
 		height *= 0.734;		// reduce height (if the default is 30 this reduces it to 22)
 		// Need to set minimum size as well (otherwise default size may be smaller).
-		verticalHeader->setMinimumSectionSize(height);
-		verticalHeader->setDefaultSectionSize(height);
+		verticalHeader->setMinimumSectionSize(static_cast<int>(height));
+		verticalHeader->setDefaultSectionSize(static_cast<int>(height));
 
 		pictureList->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 		pictureList->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -1296,6 +1299,8 @@ namespace DSS
 						addFileIfValid(entry);
 					}
 				}
+				break;
+			default:
 				break;
 			}
 		}
@@ -1600,7 +1605,7 @@ namespace DSS
 		QSettings			settings;
 		QString				directory;
 		QString				extension;
-		uint				filterIndex = 0;
+		qsizetype			filterIndex = 0;
 		QString				strTitle;
 
 		//
@@ -1670,7 +1675,7 @@ namespace DSS
 		// This means that the index must be decremented to index into the list of name filters.
 		//
 		if (0 == filterIndex) filterIndex = 1;
-		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
+		filterIndex = std::clamp(filterIndex, 1LL, INPUTFILE_FILTERS.size());
 		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
 
 		ZTRACE_RUNTIME("About to show file open dlg");
@@ -1702,7 +1707,7 @@ namespace DSS
 			//
 			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
-				frameList.beginInsertRows(files.size());
+				frameList.beginInsertRows(static_cast<int>(files.size()));
 				for (const QString& fileName : files)
 				{
 					const fs::path file{ fileName.toStdU16String() }; // as UTF-16
@@ -1974,7 +1979,7 @@ namespace DSS
 
 		QSettings settings;
 
-		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
+		const auto filterIndex = settings.value("Folders/ListIndex", 0U).toUInt();
 		QString directory = settings.value("Folders/ListFolder").toString();
 		QString extension = settings.value("Folders/ListExtension").toString();
 
@@ -2161,7 +2166,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		::RegisterSettings dlgSettings{ this };
+		RegisterSettings dlgSettings{ this };
 		bool bContinue = true;
 
 		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) != 0)
@@ -2419,6 +2424,8 @@ namespace DSS
 						break;
 					case QMessageBox::Cancel:
 						bResult = false;
+						break;
+					default: break;
 				}
 
 			}
@@ -2524,7 +2531,7 @@ namespace DSS
 			if (bContinue)
 			{
 				Workspace workspace;
-				const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
+				const auto iff = static_cast<INTERMEDIATEFILEFORMAT>((workspace.value("Stacking/IntermediateFileFormat", static_cast<uint>(IFF_TIFF)).toUInt()));
 				fs::path strFileName;
 				if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList, iff == IFF_TIFF))
 				{
@@ -2759,6 +2766,7 @@ namespace DSS
 				adjust = true;
 			};
 			break;
+		default: break;
 		};
 		if (adjust)
 		{

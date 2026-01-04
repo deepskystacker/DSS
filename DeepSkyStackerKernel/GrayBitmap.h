@@ -3,7 +3,6 @@
 #include "CFABitmapInfo.h"
 
 namespace DSS { class OldProgressDlg; }
-using namespace DSS;
 
 namespace {
 	template <typename TType>
@@ -23,7 +22,7 @@ namespace {
 		if constexpr (std::is_same_v<TType, double>)
 			return std::numeric_limits<double>::max();
 		else if constexpr (std::is_same_v<TType, float>)
-			return std::numeric_limits<float>::max();
+			return std::numeric_limits<double>::max();
 		else if constexpr (std::is_same_v<TType, std::uint16_t>)
 			return static_cast<double>(std::numeric_limits<std::uint16_t>::max());	// Range of [0.0, 65535.0]
 		else if constexpr (std::is_same_v<TType, std::uint32_t>)
@@ -34,6 +33,7 @@ namespace {
 }
 
 template <typename TType>
+//requires (std::same_as<TType, std::uint8_t> || std::same_as<TType, std::uint16_t> || std::same_as<TType, std::uint32_t> || std::same_as<TType, float> || std::same_as<TType, double>)
 class CGrayBitmapT : public CMemoryBitmap, public CCFABitmapInfo
 {
 public:
@@ -42,11 +42,11 @@ public:
 	std::vector<TType>	m_vPixels;
 
 	CGrayBitmapT();
-	virtual ~CGrayBitmapT() = default;
+	virtual ~CGrayBitmapT() override = default;
 
 private:
-	int m_lHeight;
-	int m_lWidth;
+	int m_lWidth{ 0 };
+	int m_lHeight{ 0 };
 	constexpr static bool m_bWord{ std::is_same_v<TType, std::uint16_t> };
 	constexpr static bool m_bFloat{ std::is_same_v<TType, float> };
 	constexpr static double clampValue{ initClamp<TType>() };
@@ -60,7 +60,8 @@ private:
 
 	inline bool	IsXYOk(size_t x, size_t y) const
 	{
-		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
+		// Remove the test for >= 0 for size_t
+		return (x < m_lWidth && y < m_lHeight);
 	}
 
 	size_t GetOffset(const size_t x, const size_t y) const
@@ -118,6 +119,11 @@ public:
 		return sizeof(TType) * 8;
 	}
 
+	virtual bool IsIntegralType() const override
+	{
+		return std::integral<TType>;
+	}
+
 	virtual bool IsFloat() const override
 	{
 		return m_bFloat;
@@ -152,7 +158,7 @@ public:
 	virtual void SetValue(size_t i, size_t j, double fGray) override
 	{
 		CheckXY(i, j);
-		m_vPixels[GetOffset(i, j)] = fGray;
+		m_vPixels[GetOffset(i, j)] = static_cast<TType>(fGray);
 	}
 
 	virtual void GetValue(size_t i, size_t j, double& fGray) const override
@@ -182,7 +188,7 @@ public:
 	virtual bool SetScanLine(size_t j, void* pScanLine) override;
 	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override;
 
-	virtual void RemoveHotPixels(OldProgressBase* pProgress = nullptr) override;
+	virtual void RemoveHotPixels(DSS::OldProgressBase* pProgress = nullptr) override;
 
 	TType* GetGrayPixel(const int i, const int j)
 	{
@@ -229,8 +235,14 @@ public:
 };
 
 
-typedef CGrayBitmapT<double> CGrayBitmap;
-typedef CGrayBitmapT<std::uint8_t> C8BitGrayBitmap;
-typedef CGrayBitmapT<std::uint16_t> C16BitGrayBitmap;
-typedef CGrayBitmapT<std::uint32_t> C32BitGrayBitmap;
-typedef CGrayBitmapT<float> C32BitFloatGrayBitmap;
+using C8BitGrayBitmap = CGrayBitmapT<std::uint8_t>;
+using C16BitGrayBitmap = CGrayBitmapT<std::uint16_t>;
+using C32BitGrayBitmap = CGrayBitmapT<std::uint32_t>;
+using C32BitFloatGrayBitmap = CGrayBitmapT<float>;
+using CGrayBitmap = CGrayBitmapT<double>;
+
+extern template class CGrayBitmapT<std::uint8_t>;
+extern template class CGrayBitmapT<std::uint16_t>;
+extern template class CGrayBitmapT<std::uint32_t>;
+extern template class CGrayBitmapT<float>;
+extern template class CGrayBitmapT<double>;
