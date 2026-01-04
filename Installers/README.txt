@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.3
+Welcome to DeepSkyStacker 6.1.4 Beta 1
 ===============================
 
 Reporting problems:
@@ -13,6 +13,12 @@ Known problems:
    then the exposure is set to zero.   This would be a lot of work to fix as it would require us to implement our own
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
+
+Changes for DeepSkyStacker 6.1.4 Beta 1
+================================
+
+1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer. 
+
 
 Changes for DeepSkyStacker 6.1.3
 ================================
