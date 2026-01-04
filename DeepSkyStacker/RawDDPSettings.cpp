@@ -380,9 +380,17 @@ namespace DSS
 		value = workspace->value("RawDDP/BlueScale", scaleDefault).toDouble();
 		ui->blueScale->setText(QString("%L1").arg(value, 0, 'f', 4));
 
-		ui->noWB->setChecked(workspace->value("RawDDP/NoWB", false).toBool());
-
-		ui->cameraWB->setChecked(workspace->value("RawDDP/CameraWB", false).toBool());
+		auto noWB = workspace->value("RawDDP/NoWB", false).toBool();
+		auto cameraWB = workspace->value("RawDDP/CameraWB", false).toBool();
+		if (!noWB && !cameraWB)
+		{
+			ui->daylightWB->setChecked(true);
+		}
+		else
+		{
+			ui->noWB->setChecked(noWB);
+			ui->cameraWB->setChecked(cameraWB);
+		}
 
 		bool isSuperPixels;
 		bool isRawBayer;
@@ -618,29 +626,25 @@ namespace DSS
 		}
 	}
 
-	void RawDDPSettings::on_noWB_stateChanged()
+	void RawDDPSettings::on_noWB_clicked()
 	{
-		bool checked{ ui->noWB->isChecked() };
 
-		workspace->setValue("RawDDP/NoWB", checked);
-
-		if (checked)		// Can't have Camera WB selected if no WB selected.
-		{
-			ui->cameraWB->setChecked(false);
-			workspace->setValue("RawDDP/CameraWB", false);
-		}
+		workspace->setValue("RawDDP/NoWB", true);
+		workspace->setValue("RawDDP/CameraWB", false);
 	}
-	void RawDDPSettings::on_cameraWB_stateChanged()
+
+	void RawDDPSettings::on_daylightWB_clicked()
 	{
-		bool checked{ ui->cameraWB->isChecked() };
 
-		workspace->setValue("RawDDP/CameraWB", checked);
+		workspace->setValue("RawDDP/NoWB", false);
+		workspace->setValue("RawDDP/CameraWB", false);
+	}
 
-		if (checked)		// Can't have no WB selected if Camera WB selected.
-		{
-			ui->noWB->setChecked(false);
-			workspace->setValue("RawDDP/NoWB", false);
-		}
+	void RawDDPSettings::on_cameraWB_clicked()
+	{
+
+		workspace->setValue("RawDDP/NoWB", false);
+		workspace->setValue("RawDDP/CameraWB", true);
 	}
 
 	void RawDDPSettings::on_bilinear_clicked()

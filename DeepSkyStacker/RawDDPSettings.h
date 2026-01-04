@@ -31,8 +31,9 @@ namespace DSS
 		void brightness_editingFinished();
 		void redScale_editingFinished();
 		void blueScale_editingFinished();
-		void on_noWB_stateChanged();
-		void on_cameraWB_stateChanged();
+		void on_noWB_clicked();
+		void on_daylightWB_clicked();
+		void on_cameraWB_clicked();
 		void on_bilinear_clicked();
 		void on_AHD_clicked();
 		void on_rawBayer_clicked();
