@@ -26,6 +26,8 @@ Changes for DeepSkyStacker 6.1.3 Beta 2
 3.  Bug fix: Null pointer dereference causing an abend when using stacking methods other than Average, Entropy Weighted	
     Average or Maximum methods when running on Linux or macOS.
 
+4.  Change the default Background Calibration Method to be Offset instead of Rational.
+
 Changes for DeepSkyStacker 6.1.2
 ================================
 
