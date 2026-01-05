@@ -27,7 +27,7 @@
 <context>
     <name>DSS::ProcessingDlg</name>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="656"/>
+        <location filename="../ProcessingDlg.cpp" line="670"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -50,7 +50,7 @@
 <context>
     <name>DSS::StackingDlg</name>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="933"/>
+        <location filename="../StackingDlg.cpp" line="936"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -62,7 +62,7 @@ This operation cannot be reversed or cancelled.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="1033"/>
+        <location filename="../StackingDlg.cpp" line="1036"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -74,9 +74,9 @@ This operation cannot be reversed or cancelled.</numerusform>
 <context>
     <name>DSS::StarMaskDlg</name>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="155"/>
-        <location filename="../StarMaskDlg.cpp" line="160"/>
-        <location filename="../StarMaskDlg.cpp" line="170"/>
+        <location filename="../StarMaskDlg.cpp" line="156"/>
+        <location filename="../StarMaskDlg.cpp" line="161"/>
+        <location filename="../StarMaskDlg.cpp" line="171"/>
         <source>%n pixel(s)</source>
         <translation>
             <numerusform></numerusform>
