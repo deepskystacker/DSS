@@ -6,6 +6,53 @@
 #include "MemoryBitmap.h"
 
 
+// How does the Background Calibrator work (example: offset calibrator):
+//
+// struct OffsetParams {} has 3 parameters offset, min, max, and the initialize() function with the 6 parameters for min/median/max input and min/median/max output.
+// struct OffsetModel {} has 3 structs OffsetParams for red, green, blue, and the calibrate() function with the 3 parameters for the red-, green-, and blue color channel.
+//   The return value of the calibrate function is type BcRT which is a tuple<double, double, double> for the 3 color channels.
+//
+// All calculations are done in the template class BackgroundCalibratorVariant.
+// ----------------------------------------------------------------------------
+//
+// The interface simply is:
+//   double calculateModelParameters(CMemoryBitmap const& bitmap, const bool calcReference, const char8_t* pFileName);
+//   BcRT calibratePixel(const double r, const double g, const double b) const;
+//
+// calculateModelParameters() must be called by every light frame (parameter bitmap) to basically calculate the median values for R, G, and B of the bitmap.
+// If it's the reference frame, set bool calcReference to true, and the BackgroundCalibratorVariant will save the median values as reference (=target) values.
+//
+// calibratePixel() will be called by every pixel of the light frame to transform the input R/G/B color values to the (calibrated) output values. 
+//
+// The class BackgroundCalibratorVariant has a data member calibrator, it's type is TVariant, which is a std::variant<Cals...>.
+// Cals... is the variadic template parameter pack of the class, defining the different calibrator methods supported. 
+// At the moment, this is: 
+//   using BackgroundCalibrator = BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel>;
+//
+// So the concrete BackgroundCalibrator is the instantiation of the BackgroundCalibratorVariant with one of the 4 supported calibrator methods (none, offset, linear, rational).
+// This instantiation is done in the function:
+//   BackgroundCalibrator makeBackgroundCalibrator(
+//       const BACKGROUNDCALIBRATIONINTERPOLATION interpolation, const BACKGROUNDCALIBRATIONMODE bcmd, const RGBBACKGROUNDCALIBRATIONMETHOD rgbme, const double multr);
+//
+// BACKGROUNDCALIBRATIONINTERPOLATION, BACKGROUNDCALIBRATIONMODE, and RGBBACKGROUNDCALIBRATIONMETHOD are the enums that were used by DSS all the time for defining
+//   the background calibration details (linear/rational/offset), (rgb/per-channel), (rgb min/middle/max).
+//
+// The polymorphism is done by means of the std::variant<...> calibrator. From the 4 possible options, one is concretely selected at runtime in the function makeBackgroundCalibrator().
+// The dispatch to the concrete calibrate() function of the Model - e.g. OffsetModel::calibrate() - is done (as always with std::variant) by means of std::visit().
+//   This is done in BackgroundCalibratorVariant::calibratePixel().
+//
+// std::variant is from a performance point of view almost optimal, the compiler can inline everything, the dispatch is a single internal switch call. 
+//
+// There's a separate implementation for SIMD (in avx.cpp).
+//
+// How to add a new background calibrator:
+// ---------------------------------------
+// (1) Define the Params struct (which parameters does the calibrator need?).
+// (2) Define the Model struct (3 x params for R/G/B + function calibrate - how is the calibration done?).
+// (3) Add the new Model to BackgroundCalibratorVariant<...>.
+// (4) Add the new Model to makeBackgroundCalibrator() (when shall the new calibrator be used?).
+
+
 void OffsetParams::initialize(const double x0, const double x1, const double x2, const double, const double y1, const double)
 {
 	offset = y1 - x1;
