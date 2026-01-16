@@ -181,9 +181,14 @@ namespace DSS
 		static const QString settingKey = QStringLiteral("Folders/ListFolder");
 		const QString& baseDir = settings.value(settingKey, QString()).toString();
 		//
-		// Always use non-native dialog for consistency
+		// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
 		//
-		auto files = QFileDialog::getOpenFileNames(this, QString(), baseDir, OUTPUTLIST_FILTERS.join(QStringLiteral(";;")), nullptr, QFileDialog::DontUseNativeDialog);
+		QFileDialog::Options options;
+#ifdef Q_OS_LINUX
+		options = QFileDialog::DontUseNativeDialog;
+#endif // Q_OS_LINUX
+
+		auto files = QFileDialog::getOpenFileNames(this, QString(), baseDir, OUTPUTLIST_FILTERS.join(QStringLiteral(";;")), nullptr, options);
 
 		const auto& filePaths = getFilePaths();
 		QStringList pathsToAdd;

@@ -1609,9 +1609,11 @@ namespace DSS
 		QString				strTitle;
 
 		//
-		// Always use the Qt Widget file dialog for consistency
-		// 
+		// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+		//
+#ifdef Q_OS_LINUX
 		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+#endif // Q_OS_LINUX
 
 		bool				checked{ true };  // Automatically check all frames
 		switch (type)

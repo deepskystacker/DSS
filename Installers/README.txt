@@ -17,7 +17,11 @@ Known problems:
 Changes for DeepSkyStacker 6.1.4 Beta 1
 ================================
 
-1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer. 
+1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer.
+
+2.  Change the code so that (in most cases) the Qt Widgets based File Open Dialog is only used on Linux, so that external
+    drives are visible on macOS.    The exception is "Save picture to file..." which needs to use the Qt Widgets based
+    version.
 
 
 Changes for DeepSkyStacker 6.1.3
