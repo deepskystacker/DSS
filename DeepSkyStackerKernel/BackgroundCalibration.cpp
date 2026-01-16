@@ -51,6 +51,25 @@
 // (2) Define the Model struct (3 x params for R/G/B + function calibrate - how is the calibration done?).
 // (3) Add the new Model to BackgroundCalibratorVariant<...>.
 // (4) Add the new Model to makeBackgroundCalibrator() (when shall the new calibrator be used?).
+//
+// How the individual calibrators work:
+// ------------------------------------
+//
+// 1) OffsetModel
+//    Uses the parameters offset, minValue, maxValue. Offset = median[i] - median[reference].
+//    Returns std::clamp(x + offset, minValue, maxValue).
+//    So the function is linear around the median, but clamps above 0 or below max (depends if offset is smaller or larger than zero).
+//
+// 2) LinearModel
+//    Uses the parameters median, a0, a1, b0, b1. a0, b0 are a linear function if x < median, a1, b1 are another linear function if x >= median.
+//    Thus, if x == median[i] then median[reference] is returned, otherwise the values are linearly mapped to [0..median) and [median..max]. 
+//    So it consists of 2 (different) linear parts (below and above the median).
+//    Returns (x < median) ? (a0 * x + b0) : (a1 * x + b1)
+//
+// 3) RationalModel
+//    Uses the parameters a, b, c, minValue, maxValue.
+//    Basically (apart from special cases) returns std::clamp((x + a) / (b * x + c), minValue, maxValue).
+//    a, b, c are determined such, that median[i] maps to median[reference]. Below and above that point, the function is smooth (differentiable), but (of course) non-linear.
 
 
 void OffsetParams::initialize(const double x0, const double x1, const double x2, const double, const double y1, const double)
