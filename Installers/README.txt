@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.4 Beta 1
+Welcome to DeepSkyStacker 6.1.4 Beta 2
 ===============================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.4 Beta 1
+Changes for DeepSkyStacker 6.1.4 Beta 2
 ================================
 
 1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer.
@@ -22,6 +22,10 @@ Changes for DeepSkyStacker 6.1.4 Beta 1
 2.  Change the code so that (in most cases) the Qt Widgets based File Open Dialog is only used on Linux, so that external
     drives are visible on macOS.    The exception is "Save picture to file..." which needs to use the Qt Widgets based
     version.
+
+3.  Bug fix: When we converted to use vcpkg for building dependencies, the build of the Libraw package didn't include
+    support for X3F files which was needed for support of some Fujistu and Sigma cameras.   This has now been resolved
+    by creating an overlay port with the necessary build options.
 
 
 Changes for DeepSkyStacker 6.1.3
