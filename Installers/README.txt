@@ -24,7 +24,7 @@ Changes for DeepSkyStacker 6.1.4 Beta 2
     version.
 
 3.  Bug fix: When we converted to use vcpkg for building dependencies, the build of the Libraw package didn't include
-    support for X3F files which was needed for support of some Fujistu and Sigma cameras.   This has now been resolved
+    support for X3F files which was needed for support of some Fujitsu and Sigma cameras.   This has now been resolved
     by creating an overlay port with the necessary build options.
 
 
