@@ -40,6 +40,7 @@ vcpkg_cmake_configure(
         -DCMAKE_REQUIRE_FIND_PACKAGE_ZLIB=1
     MAYBE_UNUSED_VARIABLES
         CMAKE_REQUIRE_FIND_PACKAGE_OpenMP
+		CMAKE_REQUIRE_FIND_PACKAGE_Jasper
 )
 
 vcpkg_cmake_install()
