@@ -23,7 +23,9 @@ Changes for DeepSkyStacker 6.1.4 Beta 2
     drives are visible on macOS.    The exception is "Save picture to file..." which needs to use the Qt Widgets based
     version.
 
-3.  Bug fix: When we converted to use vcpkg for building dependencies, the build of the Libraw package didn't include
+3.  Update Libraw to 0.22
+
+4.  Bug fix: When we converted to use vcpkg for building dependencies, the build of the Libraw package didn't include
     support for X3F files which was needed for support of some Fujitsu and Sigma cameras.   This has now been resolved
     by creating an overlay port with the necessary build options.
 
