@@ -739,9 +739,9 @@ FWHM: %3</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="528"/>
-        <source>Raw/FITS DDP Settings...</source>
+        <source>Raw/FITS/TIFF DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Configuración Raw/FITS DDP...</translation>
+        <translation>Configuración Raw/FITS/TIFF DDP...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="538"/>
@@ -845,20 +845,20 @@ Marque esta casilla para conservar el archivo de seguimiento.</translation>
         <translation>Guardar como...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="584"/>
+        <location filename="../ExplorerBar.cpp" line="587"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Cargar los Ajustes del DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="588"/>
-        <location filename="../ExplorerBar.cpp" line="641"/>
+        <location filename="../ExplorerBar.cpp" line="591"/>
+        <location filename="../ExplorerBar.cpp" line="646"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Ajustes de DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="636"/>
+        <location filename="../ExplorerBar.cpp" line="641"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Guardar los Ajustes del DeepSkyStacker</translation>
@@ -1606,8 +1606,8 @@ Cambie el nombre.</translation>
     <name>DSS::RawDDPSettings</name>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
-        <source>RAW/FITS Digital Development Process Settings</source>
-        <translation>Configuración del Proceso de Desarrollo Digital RAW/FITS</translation>
+        <source>RAW/FITS/TIFF Digital Development Process Settings</source>
+        <translation>Configuración del Proceso de Desarrollo Digital RAW/FITS/TIFF</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
@@ -1617,12 +1617,14 @@ Cambie el nombre.</translation>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="394"/>
+        <location filename="../ui/RawDDPSettings.ui" line="781"/>
         <source>Colour Adjustment</source>
         <translation>Ajuste de Colores</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="469"/>
+        <location filename="../ui/RawDDPSettings.ui" line="787"/>
         <source>Brightness</source>
         <translation>Brillo</translation>
     </message>
@@ -1701,7 +1703,7 @@ Cambie el nombre.</translation>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="310"/>
         <source>FITS Files</source>
-        <translation></translation>
+        <translation>Archivos FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="331"/>
@@ -1716,11 +1718,13 @@ Cambie el nombre.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="476"/>
+        <location filename="../ui/RawDDPSettings.ui" line="797"/>
         <source>Red scale</source>
         <translation>Escala de Rojo</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="483"/>
+        <location filename="../ui/RawDDPSettings.ui" line="807"/>
         <source>Blue scale</source>
         <translation>Escala de Azul</translation>
     </message>
@@ -1753,6 +1757,11 @@ Cambie el nombre.</translation>
         <location filename="../ui/RawDDPSettings.ui" line="761"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>Forzar el uso de valores sin signo cuando se almacenan valores con signo</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="769"/>
+        <source>TIFF FIles</source>
+        <translation>Archivos TIFF</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
@@ -2647,13 +2656,13 @@ Botón derecho del ratón para mostrar el menú</translation>
         <translation>No se ha podido cargar la imagen %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1844"/>
+        <location filename="../StackingDlg.cpp" line="1846"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Imágenes: %1      -      Darks: %2      -      Flats: %3      -   Dark Flats: %4   -      Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2247"/>
+        <location filename="../StackingDlg.cpp" line="2249"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>No todos los marcos de luz que has marcado tienen una calidad calculada. Deberías volver a registrar tus marcos de luz.</translation>
     </message>
@@ -2669,25 +2678,25 @@ Botón derecho del ratón para mostrar el menú</translation>
         <translation>El archivo %1 no se cargó porque ya se cargó en el grupo %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1620"/>
+        <location filename="../StackingDlg.cpp" line="1622"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Abrir Light Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1623"/>
+        <location filename="../StackingDlg.cpp" line="1625"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Abrir Dark Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1641"/>
+        <location filename="../StackingDlg.cpp" line="1643"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Abrir Dark Flat Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1629"/>
+        <location filename="../StackingDlg.cpp" line="1631"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Abrir Flat Frames...</translation>
@@ -2721,16 +2730,16 @@ Botón derecho del ratón para mostrar el menú</translation>
         <location filename="../StackingDlg.cpp" line="1117"/>
         <source>X: %1 Y: %2
 R: %3 G: %4 B: %5</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1635"/>
+        <location filename="../StackingDlg.cpp" line="1637"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Abrir Bias Frames...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1857"/>
+        <location filename="../StackingDlg.cpp" line="1859"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2744,37 +2753,37 @@ Dark Flats: %4
 Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1940"/>
+        <location filename="../StackingDlg.cpp" line="1942"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Abrir otra Lista de Archivos...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2119"/>
+        <location filename="../StackingDlg.cpp" line="2121"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>La versión %1s de DeepSkyStacker esta disponible para descargar.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2136"/>
+        <location filename="../StackingDlg.cpp" line="2138"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Código de error de Internet de comprobación de versión %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2236"/>
+        <location filename="../StackingDlg.cpp" line="2238"/>
         <source>Total registering time: %1 %2</source>
         <translation>Tiempo total de registro: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2263"/>
+        <location filename="../StackingDlg.cpp" line="2265"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Ud. debe seleccionar light frames para registrarlos.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2320"/>
+        <location filename="../StackingDlg.cpp" line="2322"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2784,19 +2793,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker necesita crear archivos en estas carpetas durante el procesamiento.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2341"/>
+        <location filename="../StackingDlg.cpp" line="2343"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Las imágenes seleccionadas no son compatibles: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2345"/>
+        <location filename="../StackingDlg.cpp" line="2347"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Ud. debe seleccionar light frames para apilarlos.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2393"/>
+        <location filename="../StackingDlg.cpp" line="2395"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2806,18 +2815,18 @@ Do you want to save the changes?</source>
 Desea guardar los cambios?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2509"/>
+        <location filename="../StackingDlg.cpp" line="2511"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Total stacking time: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2540"/>
+        <location filename="../StackingDlg.cpp" line="2542"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Guardando imagen Final en %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2624"/>
+        <location filename="../StackingDlg.cpp" line="2626"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 

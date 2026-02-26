@@ -94,8 +94,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>308</width>
-         <height>859</height>
+         <width>298</width>
+         <height>883</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -525,7 +525,7 @@
               <string notr="true">margin-left: 30</string>
              </property>
              <property name="text">
-              <string comment="IDC_OPTIONS_RAWDDPSETTINGS">Raw/FITS DDP Settings...</string>
+              <string comment="IDC_OPTIONS_RAWDDPSETTINGS">Raw/FITS/TIFF DDP Settings...</string>
              </property>
             </widget>
            </item>

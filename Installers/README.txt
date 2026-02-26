@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.4 Beta 2
+Welcome to DeepSkyStacker 6.1.4 Beta 3
 ===============================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.4 Beta 2
+Changes for DeepSkyStacker 6.1.4 Beta 3
 ================================
 
 1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer.
@@ -29,6 +29,7 @@ Changes for DeepSkyStacker 6.1.4 Beta 2
     support for X3F files which was needed for support of some Fujitsu and Sigma cameras.   This has now been resolved
     by creating an overlay port with the necessary build options.
 
+5.  Changes to support scaling of TIFF images.
 
 Changes for DeepSkyStacker 6.1.3
 ================================

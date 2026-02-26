@@ -734,9 +734,9 @@ FWHM: %3</source>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="528"/>
-        <source>Raw/FITS DDP Settings...</source>
+        <source>Raw/FITS/TIFF DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Raw/FITS檔數位顯像設定...</translation>
+        <translation>Raw/FITS/TIFF 檔數位顯像設定...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="538"/>
@@ -840,20 +840,20 @@ Tick this box to keep the trace file.</source>
         <translation>儲存為...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="584"/>
+        <location filename="../ExplorerBar.cpp" line="587"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>載入DeepSkyStacker設定</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="588"/>
-        <location filename="../ExplorerBar.cpp" line="641"/>
+        <location filename="../ExplorerBar.cpp" line="591"/>
+        <location filename="../ExplorerBar.cpp" line="646"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker設定 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="636"/>
+        <location filename="../ExplorerBar.cpp" line="641"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>儲存DeepSkyStacker設定</translation>
@@ -1598,8 +1598,8 @@ Please change the name.</source>
     <name>DSS::RawDDPSettings</name>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
-        <source>RAW/FITS Digital Development Process Settings</source>
-        <translation>RAW/FITS 數位顯像設定</translation>
+        <source>RAW/FITS/TIFF Digital Development Process Settings</source>
+        <translation>RAW/FITS/TIFF 數位顯像設定</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
@@ -1609,12 +1609,14 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="394"/>
+        <location filename="../ui/RawDDPSettings.ui" line="781"/>
         <source>Colour Adjustment</source>
         <translation>色彩調整</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="469"/>
+        <location filename="../ui/RawDDPSettings.ui" line="787"/>
         <source>Brightness</source>
         <translation>亮度</translation>
     </message>
@@ -1641,7 +1643,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Daylight White Balance</source>
-        <translation type="unfinished">使用日光白平衡</translation>
+        <translation>使用日光白平衡</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="151"/>
@@ -1707,11 +1709,13 @@ Please change the name.</source>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="476"/>
+        <location filename="../ui/RawDDPSettings.ui" line="797"/>
         <source>Red scale</source>
         <translation>紅色比率</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="483"/>
+        <location filename="../ui/RawDDPSettings.ui" line="807"/>
         <source>Blue scale</source>
         <translation>藍色比率</translation>
     </message>
@@ -1744,6 +1748,11 @@ Please change the name.</source>
         <location filename="../ui/RawDDPSettings.ui" line="761"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>檔案中的數值有正負號時，強制忽略正負號</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="769"/>
+        <source>TIFF FIles</source>
+        <translation>TIFF 文件</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
@@ -2636,13 +2645,13 @@ Ctrl-A 或相當於選擇所有行
         <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1844"/>
+        <location filename="../StackingDlg.cpp" line="1846"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>天體影像:%1      -      暗電流影像: %2      -      平場:%3      -   平場暗電流: %4   -      偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2247"/>
+        <location filename="../StackingDlg.cpp" line="2249"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>並非所有檢查的燈框都經過品質計算。您應該重新註冊您的燈框。</translation>
     </message>
@@ -2658,25 +2667,25 @@ Ctrl-A 或相當於選擇所有行
         <translation>文件 %1 未加載，因為它已在組 %2 (%3) 中加載</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1620"/>
+        <location filename="../StackingDlg.cpp" line="1622"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>開啟天體影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1623"/>
+        <location filename="../StackingDlg.cpp" line="1625"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>開啟暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1641"/>
+        <location filename="../StackingDlg.cpp" line="1643"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>開起平場暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1629"/>
+        <location filename="../StackingDlg.cpp" line="1631"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>開啟平場影像...</translation>
@@ -2712,13 +2721,13 @@ R: %3 G: %4 B: %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1635"/>
+        <location filename="../StackingDlg.cpp" line="1637"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>開啟偏壓影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1857"/>
+        <location filename="../StackingDlg.cpp" line="1859"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2732,37 +2741,37 @@ Offset/Bias Frames: %5</source>
 偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1940"/>
+        <location filename="../StackingDlg.cpp" line="1942"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>開啟另一個檔案清單...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2119"/>
+        <location filename="../StackingDlg.cpp" line="2121"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>第%1版DeepSkyStacker已可下載。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2136"/>
+        <location filename="../StackingDlg.cpp" line="2138"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>版本檢查 Internet 錯誤代碼 %1：
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2236"/>
+        <location filename="../StackingDlg.cpp" line="2238"/>
         <source>Total registering time: %1 %2</source>
         <translation>總註冊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2263"/>
+        <location filename="../StackingDlg.cpp" line="2265"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>偵測星點前需先勾選天體影像.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2320"/>
+        <location filename="../StackingDlg.cpp" line="2322"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2772,19 +2781,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker需要在執行中存取這些檔案夾。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2341"/>
+        <location filename="../StackingDlg.cpp" line="2343"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>勾选的图片不相容: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2345"/>
+        <location filename="../StackingDlg.cpp" line="2347"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>疊合前需先勾選天體影像.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2393"/>
+        <location filename="../StackingDlg.cpp" line="2395"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2794,18 +2803,18 @@ Do you want to save the changes?</source>
 要儲存這些變定嗎？</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2509"/>
+        <location filename="../StackingDlg.cpp" line="2511"/>
         <source>Total stacking time: %1 %2</source>
         <translation>總堆疊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2540"/>
+        <location filename="../StackingDlg.cpp" line="2542"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>儲存最終影像於 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2624"/>
+        <location filename="../StackingDlg.cpp" line="2626"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 

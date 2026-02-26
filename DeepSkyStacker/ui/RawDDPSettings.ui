@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RAW/FITS Digital Development Process Settings</string>
+   <string>RAW/FITS/TIFF Digital Development Process Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="rawFilesTab">
       <attribute name="title">

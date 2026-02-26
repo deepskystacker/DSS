@@ -741,9 +741,9 @@ FWHM: %3</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="528"/>
-        <source>Raw/FITS DDP Settings...</source>
+        <source>Raw/FITS/TIFF DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Setări Raw/FITS DDP...</translation>
+        <translation>Setări Raw/FITS/TIFF DDP...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="538"/>
@@ -847,20 +847,20 @@ Bifați această casetă pentru a păstra fișierul de urmărire.</translation>
         <translation>Salvează ca...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="584"/>
+        <location filename="../ExplorerBar.cpp" line="587"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Încarcă setări pentru DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="588"/>
-        <location filename="../ExplorerBar.cpp" line="641"/>
+        <location filename="../ExplorerBar.cpp" line="591"/>
+        <location filename="../ExplorerBar.cpp" line="646"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Fișiere Setări DSS (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="636"/>
+        <location filename="../ExplorerBar.cpp" line="641"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Salvează Setări DeepSkyStacker</translation>
@@ -1611,8 +1611,8 @@ Vă rugăm să schimbați numele.</translation>
     <name>DSS::RawDDPSettings</name>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
-        <source>RAW/FITS Digital Development Process Settings</source>
-        <translation>Setări Proces Developare Digitală RAW/FITS</translation>
+        <source>RAW/FITS/TIFF Digital Development Process Settings</source>
+        <translation>Setări Proces Developare Digitală RAW/FITS/TIFF</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
@@ -1622,12 +1622,14 @@ Vă rugăm să schimbați numele.</translation>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="394"/>
+        <location filename="../ui/RawDDPSettings.ui" line="781"/>
         <source>Colour Adjustment</source>
         <translation>Ajustări culori</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="469"/>
+        <location filename="../ui/RawDDPSettings.ui" line="787"/>
         <source>Brightness</source>
         <translation>Luminozitate</translation>
     </message>
@@ -1720,11 +1722,13 @@ Vă rugăm să schimbați numele.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="476"/>
+        <location filename="../ui/RawDDPSettings.ui" line="797"/>
         <source>Red scale</source>
         <translation>Valoare roșu</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="483"/>
+        <location filename="../ui/RawDDPSettings.ui" line="807"/>
         <source>Blue scale</source>
         <translation>Valoare albastru</translation>
     </message>
@@ -1757,6 +1761,11 @@ Vă rugăm să schimbați numele.</translation>
         <location filename="../ui/RawDDPSettings.ui" line="761"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>Forțează utilizarea valorilor fără semn (pozitive) atunci când valorile cu semn sunt salvate</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="769"/>
+        <source>TIFF FIles</source>
+        <translation>Fișiere TIFF</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
@@ -2652,13 +2661,13 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         <translation>Nu s-a putut încărca imaginea %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1844"/>
+        <location filename="../StackingDlg.cpp" line="1846"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Cadre Light: %1      -      Cadre Dark: %2      -      Cadre Flat: %3      -   Cadre Dark Flat: %4   -      Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2247"/>
+        <location filename="../StackingDlg.cpp" line="2249"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Nu toate cadrele dvs. luminoase verificate au o calitate calculată. Ar trebui să vă reînregistrați cadrele luminoase.</translation>
     </message>
@@ -2674,25 +2683,25 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         <translation>Fișierul %1 nu a fost încărcat deoarece a fost deja încărcat în grupul %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1620"/>
+        <location filename="../StackingDlg.cpp" line="1622"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Încarcă Cadre Light...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1623"/>
+        <location filename="../StackingDlg.cpp" line="1625"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Încarcă Cadre Dark...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1641"/>
+        <location filename="../StackingDlg.cpp" line="1643"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Încarcă Cadre Dark Flat...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1629"/>
+        <location filename="../StackingDlg.cpp" line="1631"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Încarcă Cadre Flat...</translation>
@@ -2730,13 +2739,13 @@ R: %3 G: %4 B: %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1635"/>
+        <location filename="../StackingDlg.cpp" line="1637"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Încarcă Cadre Bias...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1857"/>
+        <location filename="../StackingDlg.cpp" line="1859"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2750,37 +2759,37 @@ Cadre Dark Flat: %4
 Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1940"/>
+        <location filename="../StackingDlg.cpp" line="1942"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Încarcă o altă Listă de Fișiere...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2119"/>
+        <location filename="../StackingDlg.cpp" line="2121"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker versiunea %1 este disponibil pentru a fi descărcat.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2136"/>
+        <location filename="../StackingDlg.cpp" line="2138"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Cod de eroare verificare version Internet %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2236"/>
+        <location filename="../StackingDlg.cpp" line="2238"/>
         <source>Total registering time: %1 %2</source>
         <translation>Timp total de înregistrare: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2263"/>
+        <location filename="../StackingDlg.cpp" line="2265"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Trebuie să bifați cadrele light pentru a le înregistra.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2320"/>
+        <location filename="../StackingDlg.cpp" line="2322"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2790,19 +2799,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker are nevoie sa creeze fișiere în aceste directoare în timpul procesării.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2341"/>
+        <location filename="../StackingDlg.cpp" line="2343"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Imaginile bifate nu sunt compatibile: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2345"/>
+        <location filename="../StackingDlg.cpp" line="2347"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Trebuie să bifați cadrele light pentru a le stivui.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2393"/>
+        <location filename="../StackingDlg.cpp" line="2395"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2812,18 +2821,18 @@ Do you want to save the changes?</source>
 Vreți să salvați modificările?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2509"/>
+        <location filename="../StackingDlg.cpp" line="2511"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Timp total de stivuire: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2540"/>
+        <location filename="../StackingDlg.cpp" line="2542"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Salvează imaginea finală în %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2624"/>
+        <location filename="../StackingDlg.cpp" line="2626"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
