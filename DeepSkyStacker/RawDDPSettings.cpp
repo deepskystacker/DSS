@@ -293,7 +293,7 @@ namespace DSS
 		//
 		// Create a validator for the scale values
 		//
-		scaleValidator = new QDoubleValidator(0.0, 5.0, 4, this);
+		scaleValidator = new QDoubleValidator(0.0, 8.0, 4, this);
 		//
 		// Create a validator for the FITS range values
 		rangeValidator = new QDoubleValidator(this);
@@ -306,6 +306,10 @@ namespace DSS
 		connect(ui->brightness_2, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_2_editingFinished);
 		connect(ui->redScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_2_editingFinished);
 		connect(ui->blueScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_2_editingFinished);
+		connect(ui->brightness_3, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_3_editingFinished);
+		connect(ui->redScale_3, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_3_editingFinished);
+		connect(ui->blueScale_3, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_3_editingFinished);
+
 
 		connect(ui->dataMin, &QLineEdit::editingFinished, this, &RawDDPSettings::dataMin_editingFinished);
 		connect(ui->dataMax, &QLineEdit::editingFinished, this, &RawDDPSettings::dataMax_editingFinished);
@@ -464,6 +468,22 @@ namespace DSS
 
 		updateBayerPattern().updateControls();
 
+		//
+		// Now populate the TIFF Files tab controls
+		// 
+		value = workspace->value("TiffDDP/Brightness", scaleDefault).toDouble();
+		ui->brightness_3->setText(QString("%L1").arg(value, 0, 'f', 4));
+
+		value = workspace->value("TiffDDP/RedScale", scaleDefault).toDouble();
+		ui->redScale_3->setText(QString("%L1").arg(value, 0, 'f', 4));
+
+		value = workspace->value("TiffDDP/BlueScale", scaleDefault).toDouble();
+		ui->blueScale_3->setText(QString("%L1").arg(value, 0, 'f', 4));
+
+
+		//
+		// Finally, make sure the first tab is selected
+		//
 		ui->tabWidget->setCurrentIndex(0);
 
 	}
@@ -820,6 +840,66 @@ namespace DSS
 			apply();
 		}
 	}
+
+	// Slots for TIFF Files tab
+	void RawDDPSettings::brightness_3_editingFinished()
+	{
+		QLocale locale;
+		QString string{ ui->brightness_3->text() };
+		int unused{ 0 };
+		bool OK = false;
+		if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+		{
+			const double value{ locale.toDouble(string, &OK) };
+			if (OK) workspace->setValue("TiffDDP/Brightness", value);
+		}
+		else
+		{
+			QApplication::beep();
+			const double value = workspace->value("TiffDDP/Brightness", scaleDefault).toDouble();
+			ui->brightness_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+		}
+	}
+
+	void RawDDPSettings::redScale_3_editingFinished()
+	{
+		QLocale locale;
+		QString string{ ui->redScale_3->text() };
+		int unused{ 0 };
+		bool OK = false;
+		if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+		{
+			const double value{ locale.toDouble(string, &OK) };
+			if (OK) workspace->setValue("TiffDDP/RedScale", value);
+		}
+		else
+		{
+			QApplication::beep();
+			const double value = workspace->value("TiffDDP/RedScale", scaleDefault).toDouble();
+			ui->redScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+		}
+	}
+
+	void RawDDPSettings::blueScale_3_editingFinished()
+	{
+		QLocale locale;
+		QString string{ ui->blueScale_3->text() };
+		int unused{ 0 };
+		bool OK = false;
+		if (QValidator::Acceptable == scaleValidator->validate(string, unused))
+		{
+			const double value{ locale.toDouble(string, &OK) };
+			if (OK) workspace->setValue("TiffDDP/BlueScale", value);
+		}
+		else
+		{
+			QApplication::beep();
+			const double value = workspace->value("TiffDDP/BlueScale", scaleDefault).toDouble();
+			ui->blueScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
+		}
+	}
+
+	// Other slots
 
 	void RawDDPSettings::accept()
 	{

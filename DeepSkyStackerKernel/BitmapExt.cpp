@@ -1096,7 +1096,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 			//
 			// If the file loaded or failed to load, leave the loop with an appropriate value of bResult set.
 
-			loadResult = LoadTIFFPicture(filePath, BitmapInfo, rpBitmap, pProgress);
+			loadResult = LoadTIFFPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;

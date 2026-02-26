@@ -53,6 +53,11 @@ namespace DSS
 		void dataMin_editingFinished();
 		void dataMax_editingFinished();
 
+		// Slots for TIFF Files tab
+		void brightness_3_editingFinished();
+		void redScale_3_editingFinished();
+		void blueScale_3_editingFinished();
+
 	private:
 		Ui::RawDDPSettings* ui;
 		std::unique_ptr<Workspace> workspace;

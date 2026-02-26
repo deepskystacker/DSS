@@ -215,6 +215,10 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", QVariant(static_cast<uint>(4))));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/ForceUnsigned", QVariant(false)));
 
+	vSettings.push_back(WorkspaceSetting("TiffDDP/Brightness", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("TiffDDP/RedScale", QVariant(1.0)));
+	vSettings.push_back(WorkspaceSetting("TiffDDP/BlueScale", QVariant(1.0)));
+
 	std::sort(vSettings.begin(), vSettings.end());
 };
 
@@ -357,9 +361,9 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 	QString keyName, value;
 
 	static std::map<QString, QString> keyMap {
-		{ "Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position", "Batch/Position/" },
-		{ "Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Recommended\\Position", "Recommended/Position/" },
-		{ "Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\StackingSteps\\Position", "StackingSteps/Position/" },
+		{ "Software\\DeepSkyStacker\\DeepSkyStacker5\\Dialogs\\Batch\\Position", "Batch/Position/" },
+		{ "Software\\DeepSkyStacker\\DeepSkyStacker5\\Dialogs\\Recommended\\Position", "Recommended/Position/" },
+		{ "Software\\DeepSkyStacker\\DeepSkyStacker5\\Dialogs\\StackingSteps\\Position", "StackingSteps/Position/" },
 		{ "Software\\DeepSkyStacker\\EditStars", "EditStars/" },
 		{ "Software\\DeepSkyStacker\\Folders", "Folders/" },
 		{ "Software\\DeepSkyStacker\\FileLists", "FileLists/" },
@@ -371,7 +375,9 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 		{ "Software\\DeepSkyStacker\\Register", "Register/" },
 		{ "Software\\DeepSkyStacker\\SettingsFiles", "SettingsFiles/" },
 		{ "Software\\DeepSkyStacker\\StarMask", "StarMask/" },
-		{ "Software\\DeepSkyStacker\\Stacking", "Stacking/" }
+		{ "Software\\DeepSkyStacker\\Stacking", "Stacking/" },
+		{ "Software\\DeepSkyStacker\\TiffDDP", "TiffDDP/" },
+
 	};
 
 	if (theString.startsWith("#WS#"))
