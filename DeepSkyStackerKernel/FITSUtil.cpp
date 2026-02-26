@@ -1085,13 +1085,16 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 				else
 				{
 					fRed = std::min(maxValue, fRed * m_fBrightnessRatio);
-					fGreen = std::min(maxValue, fGreen * m_fBrightnessRatio);
-					fBlue = std::min(maxValue, fBlue * m_fBrightnessRatio);
 				}
 				m_pBitmap->SetPixel(lX, lY, fRed);
 			}
 			else
+			{
+				fRed = std::min(maxValue, fRed * m_fBrightnessRatio);
+				fGreen = std::min(maxValue, fGreen * m_fBrightnessRatio);
+				fBlue = std::min(maxValue, fBlue * m_fBrightnessRatio);
 				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+			}
 		}
 	}
 	catch (ZException& e)
