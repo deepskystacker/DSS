@@ -91,18 +91,6 @@ void DSSTIFFDefaultDirectory(TIFF *tif)
         g_TIFFParentExtender(tif);
 }
 
-} // anonymous namespace
-
-void DSSTIFFInitialize()
-{
-    if (!g_TIFFInitialized)
-	{
-		g_TIFFInitialized = true;
-	    /* Grab the inherited method and install */
-		g_TIFFParentExtender = TIFFSetTagExtender(DSSTIFFDefaultDirectory);
-	}
-}
-
 double GetTIFFBrightnessRatio()
 {
 	return Workspace{}.value("TiffDDP/Brightness", 1.0).toDouble();
@@ -117,6 +105,17 @@ void GetTIFFRatio(double& fRed, double& fGreen, double& fBlue)
 	fBlue = fGreen * workspace.value("TiffDDP/BlueScale", 1.0).toDouble();
 }
 
+} // anonymous namespace
+
+void DSSTIFFInitialize()
+{
+    if (!g_TIFFInitialized)
+	{
+		g_TIFFInitialized = true;
+	    /* Grab the inherited method and install */
+		g_TIFFParentExtender = TIFFSetTagExtender(DSSTIFFDefaultDirectory);
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
