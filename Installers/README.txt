@@ -29,7 +29,9 @@ Changes for DeepSkyStacker 6.1.4 Beta 3
     support for X3F files which was needed for support of some Fujitsu and Sigma cameras.   This has now been resolved
     by creating an overlay port with the necessary build options.
 
-5.  Changes to support scaling of TIFF images.
+5.  Changes to support scaling of TIFF images.   This is needed when processing TIFF files from (for example) the Dwarf
+    Mini which uses 15 second exposures which are very dark, so increasing the image brightness by (say) a factor of 4.5
+    allows the images to be registered and stacked which wasn't possible previously.
 
 Changes for DeepSkyStacker 6.1.3
 ================================
