@@ -205,14 +205,19 @@ void OldProgressDlg::applyProgress1(int lAchieved)
 {
 	ui->ProgressBar1->setValue(lAchieved);
 
-	// Now do time remaining as well
-	if (m_total1 > 1 && lAchieved > 1)
+	//
+	// Code changes to avoid undefined behaviour running with -fsanitize=undefined
+	//
+	double divisor = static_cast<double>(lAchieved - 1) * static_cast<double>(m_total1 - lAchieved + 1);
+
+	// 
+	// If the divisor isn't zero, report remaining time.
+	//
+	if (0.0 != divisor)
 	{
-		std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(m_timer.elapsed()) / static_cast<double>(lAchieved - 1) * static_cast<double>(m_total1 - lAchieved + 1));
-		if (lAchieved > m_total1)	// If OpemMP tasks are not multiple of processors, this gets too large!
-			dwRemainingTime = 0;
-		else
-			dwRemainingTime /= 1000;
+		std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(m_timer.elapsed()) / divisor);
+
+		dwRemainingTime /= 1000;
 
 		const std::uint32_t dwHour = dwRemainingTime / 3600;
 		dwRemainingTime -= dwHour * 3600;
