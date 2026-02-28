@@ -2039,7 +2039,6 @@ std::uintmax_t CAllStackingTasks::AvailableDiskSpace(fs::path& strDrive)
 
 void CAllStackingTasks::GetTemporaryFilesFolder(fs::path& tempPath)
 {
-	ZFUNCTRACE_RUNTIME();
 	QSettings	settings;
 
 	tempPath = settings.value("Stacking/TemporaryFilesFolder", QString("")).toString().toStdU16String();
