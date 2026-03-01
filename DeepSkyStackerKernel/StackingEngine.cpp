@@ -2177,6 +2177,51 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						// First apply transformations
 						MasterFrames.ApplyAllMasters(pBitmap, std::addressof(lightframeInfo.m_vStars), m_pProgress);
 
+						//
+						// Apply image scaling here.
+						// 
+						ZTRACE_RUNTIME("Apply image scaling");
+						Workspace workspace{};
+
+						auto greenFactor = workspace.value("RawDDP/Brightness", 1.0).toDouble();
+						auto redFactor = greenFactor * workspace.value("RawDDP/RedScale", 1.0).toDouble();
+						auto blueFactor = greenFactor * workspace.value("RawDDP/BlueScale", 1.0).toDouble();
+						ZTRACE_RUNTIME("Image scaling factors: R=%f, G=%f, B=%f", redFactor, greenFactor, blueFactor);
+
+						if (1.0 != redFactor || 1.0 != greenFactor || 1.0 != blueFactor)
+						{
+							CMemoryBitmap* rawPtr = pBitmap.get();
+							CGrayBitmap* pGrayBitmap = dynamic_cast<CGrayBitmap*>(rawPtr);
+							C8BitGrayBitmap* p8BitGrayBitmap = dynamic_cast<C8BitGrayBitmap*>(rawPtr);
+							C16BitGrayBitmap* p16BitGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(rawPtr);
+							C32BitGrayBitmap* p32BitGrayBitmap = dynamic_cast<C32BitGrayBitmap*>(rawPtr);
+							C32BitFloatGrayBitmap* p32BitFloatGrayBitmap = dynamic_cast<C32BitFloatGrayBitmap*>(rawPtr);
+
+							C24BitColorBitmap* p24BitColorBitmap = dynamic_cast<C24BitColorBitmap*>(rawPtr);
+							C48BitColorBitmap* p48BitColorBitmap = dynamic_cast<C48BitColorBitmap*>(rawPtr);
+							C96BitColorBitmap* p96BitColorBitmap = dynamic_cast<C96BitColorBitmap*>(rawPtr);
+							C96BitFloatColorBitmap* p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap*>(rawPtr);
+
+							if (nullptr != pGrayBitmap)
+								pGrayBitmap->applyImageScaling(greenFactor);
+							else if (nullptr != p8BitGrayBitmap)
+								p8BitGrayBitmap->applyImageScaling(greenFactor);
+							else if (nullptr != p16BitGrayBitmap)
+								p16BitGrayBitmap->applyImageScaling(greenFactor);
+							else if (nullptr != p32BitGrayBitmap)
+								p32BitGrayBitmap->applyImageScaling(greenFactor);
+							else if (nullptr != p32BitFloatGrayBitmap)
+								p32BitFloatGrayBitmap->applyImageScaling(greenFactor);
+							else if (nullptr != p24BitColorBitmap)
+								p24BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+							else if (nullptr != p48BitColorBitmap)
+								p48BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+							else if (nullptr != p96BitColorBitmap)
+								p96BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+							else if (nullptr != p96BitFloatColorBitmap)
+								p96BitFloatColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+						}
+						
 						// Here save the calibrated light frame if needed
 						currentLightFrame = lightframeInfo.filePath;
 
