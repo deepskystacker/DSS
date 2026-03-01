@@ -141,7 +141,7 @@ public:
 
 	virtual void ReceiveValue(void* pRed, void* pGreen, void* pBlue, const double red, const double green, const double blue) const override;
 	virtual void ReceiveValue(void* pRed, void* pGreen, void* pBlue, const double gray) const override;
-	virtual void applyImageScaling(double redFactor, double greenFactor, double blueFactor)
+	void applyImageScaling(double redFactor, double greenFactor, double blueFactor)
 	{
 		m_Red.applyImageScaling(redFactor);
 		m_Green.applyImageScaling(greenFactor);

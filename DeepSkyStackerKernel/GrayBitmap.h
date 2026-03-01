@@ -232,7 +232,7 @@ public:
 	{
 		*static_cast<TType*>(pRed) = static_cast<TType>(gray * this->m_fMultiplier);
 	}
-	virtual void applyImageScaling(double scaleFactor)
+	void applyImageScaling(double scaleFactor)
 	{
 		for (auto& pixel : m_vPixels)
 		{
