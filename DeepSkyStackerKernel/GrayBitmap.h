@@ -11,7 +11,7 @@ namespace {
 		if constexpr (std::is_same_v<TType, std::uint16_t> || std::is_same_v<TType, double> || std::is_same_v<TType, float>)
 			return 256.0;			// Range of [0.0, 65535.0]
 		else if constexpr (std::is_same_v<TType, std::uint32_t>)
-			return 256.0 * 65536.0;	// Range of [0.0, 65535.0]
+			return 256.0 * 65536.0;	// Range of [0.0, 4,294,967,295.0]
 		else
 			return 1.0;				// Range of [0.0, 255.0]
 	}
@@ -26,7 +26,7 @@ namespace {
 		else if constexpr (std::is_same_v<TType, std::uint16_t>)
 			return static_cast<double>(std::numeric_limits<std::uint16_t>::max());	// Range of [0.0, 65535.0]
 		else if constexpr (std::is_same_v<TType, std::uint32_t>)
-			return static_cast<double>(std::numeric_limits<std::uint32_t>::max());	// Range of [0.0, 4294967295.0 ] 
+			return static_cast<double>(std::numeric_limits<std::uint32_t>::max());	// Range of [0.0, 4,294,967,295.0 ] 
 		else
 			return static_cast<double>(std::numeric_limits<std::uint8_t>::max());	// Range of [0.0, 255.0]
 	};
@@ -231,6 +231,14 @@ public:
 	virtual void ReceiveValue(void* pRed, void*, void*, const double gray) const override
 	{
 		*static_cast<TType*>(pRed) = static_cast<TType>(gray * this->m_fMultiplier);
+	}
+	virtual void applyImageScaling(double scaleFactor)
+	{
+		for (auto& pixel : m_vPixels)
+		{
+			double scaledValue = static_cast<double>(pixel) * scaleFactor;
+			pixel = static_cast<TType>(std::min(scaledValue, clampValue));
+		}
 	}
 };
 
