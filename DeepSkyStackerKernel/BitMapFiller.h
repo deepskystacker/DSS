@@ -7,7 +7,7 @@ class CMemoryBitmap;
 class BitmapFillerInterface
 {
 public:
-	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb);
+	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);
 	BitmapFillerInterface() = default;
 	virtual ~BitmapFillerInterface() {}
 
@@ -29,9 +29,6 @@ class BitmapFillerBase : public BitmapFillerInterface
 protected:
 	DSS::OldProgressBase* pProgress;
 	CMemoryBitmap* pBitmap;
-	const float redScale;
-	const float greenScale;
-	const float blueScale;
 	CFATYPE cfaType;
 	bool isGray;
 	int width;
@@ -42,7 +39,7 @@ protected:
 	std::vector<float> blueBuffer;
 	std::vector<float> cfaFactors;
 public:
-	BitmapFillerBase(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
+	BitmapFillerBase(CMemoryBitmap* pB, DSS::OldProgressBase* pP);
 	virtual ~BitmapFillerBase() override {}
 
 	BitmapFillerBase(const BitmapFillerBase&) = default; // For cloning.
@@ -53,12 +50,5 @@ public:
 	virtual void setHeight(int height) override;
 	virtual void setMaxColors(int maxcolors) override;
 protected:
-	void setCfaFactors();
 	bool isRgbBayerPattern() const;
-
-	inline static float adjustColor(const float color, const float adjustFactor)
-	{
-		constexpr float Maximum = static_cast<float>(std::numeric_limits<std::uint16_t>::max() - 1);
-		return std::min(color * adjustFactor, Maximum);
-	}
 };

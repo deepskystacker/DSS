@@ -116,7 +116,7 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, OldProgressBase
 		if (bOverrideRAW)
 			PushRAWSettings(false, true); // Allways use Raw Bayer for dark, offset, and flat frames
 		std::shared_ptr<QImage> pQImage;
-		bResult = ::FetchPicture(filePath, rpBitmap, PictureType == PICTURETYPE_FLATFRAME, pProgress, pQImage);
+		bResult = ::FetchPicture(filePath, rpBitmap, pProgress, pQImage);
 
 		if (bOverrideRAW)
 			PopRAWSettings();

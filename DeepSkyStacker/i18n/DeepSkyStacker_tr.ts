@@ -738,7 +738,7 @@ FWHM: %3</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="528"/>
-        <source>Raw/FITS/TIFF DDP Settings...</source>
+        <source>DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
         <translation>Ham/FITS/TIFF DDP ayarları...</translation>
     </message>
@@ -1602,7 +1602,7 @@ Lütfen adı değiştirin.</translation>
     <name>DSS::RawDDPSettings</name>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
-        <source>RAW/FITS/TIFF Digital Development Process Settings</source>
+        <source>Digital Development Process Settings</source>
         <translation>Ham/FITS/TIFF Sayısal Geliştirme İşlemi Ayarları</translation>
     </message>
     <message>

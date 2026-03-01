@@ -900,7 +900,7 @@ void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminan
 
 		std::shared_ptr<CMemoryBitmap> pBitmap;
 		std::shared_ptr<QImage> pQImage;
-		bLoaded = ::FetchPicture(filePath, pBitmap, this->m_PictureType == PICTURETYPE_FLATFRAME, m_pProgress, pQImage);
+		bLoaded = ::FetchPicture(filePath, pBitmap, m_pProgress, pQImage);
 
 		if (m_pProgress != nullptr)
 			m_pProgress->End2();
@@ -1045,7 +1045,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 
 		std::shared_ptr<CMemoryBitmap> outputBitmap;
 		std::shared_ptr<QImage> pQImage;
-		bool success = ::FetchPicture(lfInfo->filePath, outputBitmap, lfInfo->m_PictureType == PICTURETYPE_FLATFRAME, pTaskProgress, pQImage);
+		bool success = ::FetchPicture(lfInfo->filePath, outputBitmap, pTaskProgress, pQImage);
 		return std::make_tuple(std::move(outputBitmap), success, std::move(lfInfo), std::move(bmpInfo));
 	};
 

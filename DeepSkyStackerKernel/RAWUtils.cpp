@@ -303,7 +303,7 @@ namespace { // Only use in this .cpp file
 		}
 
 		bool IsRawFile() const;
-		bool LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, OldProgressBase* pProgress);
+		bool LoadRawFile(CMemoryBitmap* pBitmap, OldProgressBase* pProgress);
 
 		QString getModel()
 		{
@@ -450,7 +450,7 @@ namespace { // Only use in this .cpp file
 #endif
 
 
-	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, const bool ignoreBrightness, OldProgressBase* pProgress)
+	bool CRawDecod::LoadRawFile(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -480,9 +480,6 @@ namespace { // Only use in this .cpp file
 
 		// const int maxargs = 50;
 		Workspace workspace;
-		const double fGreenScale = ignoreBrightness ? 1.0 : workspace.value("RawDDP/Brightness").toDouble();
-		const double fRedScale = ignoreBrightness ? 1.0 : (fGreenScale * workspace.value("RawDDP/RedScale").toDouble());
-		const double fBlueScale = ignoreBrightness ? 1.0 : (fGreenScale * workspace.value("RawDDP/BlueScale").toDouble());
 
 		do	// Do once!
 		{
@@ -546,7 +543,7 @@ namespace { // Only use in this .cpp file
 			//
 			// Create the class that populates the bitmap
 			//
-			CopyableSmartPtr<BitmapFillerInterface> pFiller = BitmapFillerInterface::makeBitmapFiller(pBitmap, pProgress, fRedScale, fGreenScale, fBlueScale);
+			CopyableSmartPtr<BitmapFillerInterface> pFiller = BitmapFillerInterface::makeBitmapFiller(pBitmap, pProgress);
 			// Get the Colour Filter Array type and set into the bitmap filler
 			m_CFAType = GetCurrentCFAType();
 			pFiller->SetCFAType(m_CFAType);
@@ -937,7 +934,7 @@ bool IsRAWPicture(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadRAWPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase* pProgress)
+bool LoadRAWPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -959,7 +956,7 @@ bool LoadRAWPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBitm
             ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), file.generic_u8string().c_str());
         }
 
-        bResult = dcr.LoadRawFile(pBitmap.get(), ignoreBrightness, pProgress);
+        bResult = dcr.LoadRawFile(pBitmap.get(), pProgress);
 
         if (bResult)
         {

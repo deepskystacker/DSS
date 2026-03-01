@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>RAW/FITS/TIFF Digital Development Process Settings</string>
+   <string>Digital Development Process Settings</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="0">
@@ -19,6 +19,56 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
+     <widget class="QWidget" name="imageScalingTab">
+      <attribute name="title">
+       <string>Image scaling</string>
+      </attribute>
+      <widget class="QGroupBox" name="ColourAdjustment">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>194</width>
+         <height>127</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Colour Adjustment</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Brightness</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="brightness"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Red scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="redScale"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Blue scale</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="blueScale"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
      <widget class="QWidget" name="rawFilesTab">
       <attribute name="title">
        <string>Raw Files</string>
@@ -26,99 +76,6 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
-         <item>
-          <widget class="QGroupBox" name="groupBox_9">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>150</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Colour Adjustment</string>
-           </property>
-           <layout class="QFormLayout" name="formLayout_5">
-            <property name="formAlignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_21">
-              <property name="text">
-               <string>Brightness</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="brightness">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_22">
-              <property name="text">
-               <string>Red Scale</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="redScale">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_23">
-              <property name="text">
-               <string>Blue Scale</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QLineEdit" name="blueScale">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
          <item>
           <widget class="QGroupBox" name="WhiteBalance_GroupBox">
            <property name="sizePolicy">
@@ -382,111 +339,6 @@
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_16">
-         <item>
-          <widget class="QGroupBox" name="colourAdjustment">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="title">
-            <string>Colour Adjustment</string>
-           </property>
-           <layout class="QFormLayout" name="formLayout_11">
-            <property name="verticalSpacing">
-             <number>4</number>
-            </property>
-            <item row="1" column="1">
-             <widget class="QLineEdit" name="brightness_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QLineEdit" name="redScale_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="1">
-             <widget class="QLineEdit" name="blueScale_2">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_59">
-              <property name="text">
-               <string>Brightness</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="0">
-             <widget class="QLabel" name="label_60">
-              <property name="text">
-               <string>Red scale</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
-             <widget class="QLabel" name="label_61">
-              <property name="text">
-               <string>Blue scale</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
          <item>
           <widget class="QGroupBox" name="bayerGroup">
            <property name="sizePolicy">
@@ -763,56 +615,6 @@
         </widget>
        </item>
       </layout>
-     </widget>
-     <widget class="QWidget" name="tiffFilesTab">
-      <attribute name="title">
-       <string>TIFF FIles</string>
-      </attribute>
-      <widget class="QGroupBox" name="tiffColourAdjustment">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>70</y>
-         <width>194</width>
-         <height>127</height>
-        </rect>
-       </property>
-       <property name="title">
-        <string>Colour Adjustment</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Brightness</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="brightness_3"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="text">
-           <string>Red scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="redScale_3"/>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Blue scale</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="blueScale_3"/>
-        </item>
-       </layout>
-      </widget>
      </widget>
     </widget>
    </item>

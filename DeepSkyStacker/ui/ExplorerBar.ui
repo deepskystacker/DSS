@@ -525,7 +525,7 @@
               <string notr="true">margin-left: 30</string>
              </property>
              <property name="text">
-              <string comment="IDC_OPTIONS_RAWDDPSETTINGS">Raw/FITS/TIFF DDP Settings...</string>
+              <string comment="IDC_OPTIONS_RAWDDPSETTINGS">DDP Settings...</string>
              </property>
             </widget>
            </item>

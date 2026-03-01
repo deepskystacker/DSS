@@ -206,18 +206,11 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 	vSettings.push_back(WorkspaceSetting("RawDDP/AHD", QVariant(false)));
 
 	vSettings.push_back(WorkspaceSetting("FitsDDP/FITSisRAW", QVariant(false)));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/Brightness", QVariant(1.0)));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/RedScale", QVariant(1.0)));
-	vSettings.push_back(WorkspaceSetting("FitsDDP/BlueScale", QVariant(1.0)));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMin", QVariant(0.0)));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/DataMax", QVariant(1.0)));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/DSLR", QVariant("")));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/BayerPattern", QVariant(static_cast<uint>(4))));
 	vSettings.push_back(WorkspaceSetting("FitsDDP/ForceUnsigned", QVariant(false)));
-
-	vSettings.push_back(WorkspaceSetting("TiffDDP/Brightness", QVariant(1.0)));
-	vSettings.push_back(WorkspaceSetting("TiffDDP/RedScale", QVariant(1.0)));
-	vSettings.push_back(WorkspaceSetting("TiffDDP/BlueScale", QVariant(1.0)));
 
 	std::sort(vSettings.begin(), vSettings.end());
 };
@@ -376,7 +369,6 @@ bool	WorkspaceSettings::ReadFromString(const QString& theString)
 		{ "Software\\DeepSkyStacker\\SettingsFiles", "SettingsFiles/" },
 		{ "Software\\DeepSkyStacker\\StarMask", "StarMask/" },
 		{ "Software\\DeepSkyStacker\\Stacking", "Stacking/" },
-		{ "Software\\DeepSkyStacker\\TiffDDP", "TiffDDP/" },
 
 	};
 

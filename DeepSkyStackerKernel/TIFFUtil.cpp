@@ -91,20 +91,6 @@ void DSSTIFFDefaultDirectory(TIFF *tif)
         g_TIFFParentExtender(tif);
 }
 
-double GetTIFFBrightnessRatio()
-{
-	return Workspace{}.value("TiffDDP/Brightness", 1.0).toDouble();
-}
-
-void GetTIFFRatio(double& fRed, double& fGreen, double& fBlue)
-{
-	Workspace workspace{};
-
-	fGreen = workspace.value("TiffDDP/Brightness", 1.0).toDouble();
-	fRed = fGreen * workspace.value("TiffDDP/RedScale", 1.0).toDouble();
-	fBlue = fGreen * workspace.value("TiffDDP/BlueScale", 1.0).toDouble();
-}
-
 } // anonymous namespace
 
 void DSSTIFFInitialize()
@@ -1617,13 +1603,11 @@ class CTIFFReadInMemoryBitmap : public CTIFFReader
 private :
 	std::shared_ptr<CMemoryBitmap>& m_outBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
-	bool ignoreBrightness;
 
 public :
-	CTIFFReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, OldProgressBase* pProgress):
+	CTIFFReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress):
 		CTIFFReader(szFileName, pProgress),
-		m_outBitmap{ rpBitmap },
-		ignoreBrightness{ ignoreBr }
+		m_outBitmap{ rpBitmap }
 	{}
 
 	virtual ~CTIFFReadInMemoryBitmap() override { Close(); }
@@ -1703,13 +1687,8 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 			if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(m_pBitmap.get()))
 			{
 				if (0 != cfatype) pCFABitmapInfo->SetCFAType(static_cast<CFATYPE>(cfatype));
-				// Retrieve ratios
-				if (!this->ignoreBrightness)
-					GetTIFFRatio(m_fRedRatio, m_fGreenRatio, m_fBlueRatio);
 			}
 		}
-		else
-			m_fBrightnessRatio = this->ignoreBrightness ? 1.0 : GetTIFFBrightnessRatio();
 
 		m_pBitmap->SetMaster(master);
 		m_pBitmap->SetISOSpeed(isospeed);
@@ -1734,50 +1713,16 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 
 bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
-	//
-	// Define maximal scaled pixel value of 255 (will be multiplied up later)
-	//
-	constexpr double maxValue = 255.0;
 	bool result = true;
 
 	try
 	{
 		if (static_cast<bool>(m_pBitmap))
 		{
-			if (spp == 1)
-			{
-				if (cfatype != CFATYPE_NONE)
-				{
-					switch (::GetBayerColor(lX, lY, static_cast<CFATYPE>(cfatype)))
-					{
-					case BAYER_BLUE:
-						fRed = std::min(maxValue, fRed * m_fBlueRatio);
-						break;
-					case BAYER_GREEN:
-						fRed = std::min(maxValue, fRed * m_fGreenRatio);
-						break;
-					case BAYER_RED:
-						fRed = std::min(maxValue, fRed * m_fRedRatio);
-						break;
-					default:
-						break;
-					}
-				}
-				else
-				{
-					fRed = std::min(maxValue, fRed * m_fBrightnessRatio);
-				}
-				m_pBitmap->SetPixel(lX, lY, fRed);
-			}
-			else
-			{
-				fRed = std::min(maxValue, fRed * m_fBrightnessRatio);
-				fGreen = std::min(maxValue, fGreen * m_fBrightnessRatio);
-				fBlue = std::min(maxValue, fBlue * m_fBrightnessRatio);
-				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
-			}
+			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
 	}
+
 	catch (ZException& e)
 	{
 		QString errorMessage;
@@ -1820,10 +1765,10 @@ bool CTIFFReadInMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase *	pProgress)
+bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase *	pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CTIFFReadInMemoryBitmap	tiff(szFileName, rpBitmap, ignoreBrightness, pProgress);
+	CTIFFReadInMemoryBitmap	tiff(szFileName, rpBitmap, pProgress);
 	return tiff.Open() && tiff.Read();
 }
 
@@ -1873,14 +1818,14 @@ bool	IsTIFFPicture(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 }
 
 
-int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase* pProgress)
+int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1;		// -1 means not a TIFF file.
 
 	if (GetTIFFInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
-		if (ReadTIFF(szFileName, rpBitmap, ignoreBrightness, pProgress))
+		if (ReadTIFF(szFileName, rpBitmap, pProgress))
 		{
 			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()))
 			{

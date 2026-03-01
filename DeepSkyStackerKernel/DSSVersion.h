@@ -3,7 +3,7 @@
 #define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 3
+#define DSSBETARELEASE 4
 constexpr int DSSBETAEXPIREYEAR = 2026;
 constexpr int DSSBETAEXPIREMONTH = 6;
 #endif

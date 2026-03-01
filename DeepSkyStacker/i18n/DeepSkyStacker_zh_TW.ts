@@ -734,9 +734,9 @@ FWHM: %3</source>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="528"/>
-        <source>Raw/FITS/TIFF DDP Settings...</source>
+        <source>DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Raw/FITS/TIFF 檔數位顯像設定...</translation>
+        <translation>檔數位顯像設定...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="538"/>
@@ -1598,8 +1598,8 @@ Please change the name.</source>
     <name>DSS::RawDDPSettings</name>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
-        <source>RAW/FITS/TIFF Digital Development Process Settings</source>
-        <translation>RAW/FITS/TIFF 數位顯像設定</translation>
+        <source>Digital Development Process Settings</source>
+        <translation>數位顯像設定</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>

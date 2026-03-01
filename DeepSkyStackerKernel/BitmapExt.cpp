@@ -191,7 +191,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, OldProgr
 	{
 		AllDepthBitmap.Clear();
 
-		if (FetchPicture(file, AllDepthBitmap.m_pBitmap, false, pProgress, AllDepthBitmap.m_Image))
+		if (FetchPicture(file, AllDepthBitmap.m_pBitmap, pProgress, AllDepthBitmap.m_Image))
 		{
 			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
@@ -1042,7 +1042,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap,
 	OldProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1079,7 +1079,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		if (rawFileExtensions.contains(extension))			// No need to call IsRawPicture here
 		{
-			result = LoadRAWPicture(filePath, rpBitmap, ignoreBrightness, pProgress);
+			result = LoadRAWPicture(filePath, rpBitmap, pProgress);
 			break;
 		}
 
@@ -1096,7 +1096,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 			//
 			// If the file loaded or failed to load, leave the loop with an appropriate value of bResult set.
 
-			loadResult = LoadTIFFPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
+			loadResult = LoadTIFFPicture(filePath, BitmapInfo, rpBitmap, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;
@@ -1110,7 +1110,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		else if (mime.inherits("image/fits") || mime.inherits("application/fits"))
 		{
-			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
+			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;

@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.4 Beta 3
+Welcome to DeepSkyStacker 6.1.4 Beta 4
 ===============================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.4 Beta 3
+Changes for DeepSkyStacker 6.1.4 Beta 4
 ================================
 
 1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer.
@@ -32,6 +32,12 @@ Changes for DeepSkyStacker 6.1.4 Beta 3
 5.  Changes to support scaling of TIFF images.   This is needed when processing TIFF files from (for example) the Dwarf
     Mini which uses 15 second exposures which are very dark, so increasing the image brightness by (say) a factor of 4.5
     allows the images to be registered and stacked which wasn't possible previously.
+
+6.  Redesign image scaling so that it is applied after calibration frames have been applied for registration and stacking,
+    rather than while the image files are being read in the first place which caused problems with calibration.
+    These changes should solve problems with incorrect calibration when scaling is used.
+
+    Also redesign the UI for DDP (Digital Development Processing) Settings (was Raw/FITS DDP Settings).
 
 Changes for DeepSkyStacker 6.1.3
 ================================

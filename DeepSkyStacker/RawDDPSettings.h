@@ -27,10 +27,13 @@ namespace DSS
 		void reject() override;
 		void on_buttonBox_clicked(QAbstractButton* button);
 
-		// Slots for RAW Files tab
+		// Slots for Image scaling tab
 		void brightness_editingFinished();
 		void redScale_editingFinished();
 		void blueScale_editingFinished();
+
+
+		// Slots for RAW Files tab
 		void on_noWB_clicked();
 		void on_daylightWB_clicked();
 		void on_cameraWB_clicked();
@@ -42,9 +45,6 @@ namespace DSS
 		// Slots for FITS Files tab
 		void on_isFITSRaw_clicked(bool);
 		void DSLRs_currentIndexChanged(int);
-		void brightness_2_editingFinished();
-		void redScale_2_editingFinished();
-		void blueScale_2_editingFinished();
 		void on_bilinear_2_clicked();
 		void on_AHD_2_clicked();
 		void on_rawBayer_2_clicked();
@@ -52,11 +52,6 @@ namespace DSS
 
 		void dataMin_editingFinished();
 		void dataMax_editingFinished();
-
-		// Slots for TIFF Files tab
-		void brightness_3_editingFinished();
-		void redScale_3_editingFinished();
-		void blueScale_3_editingFinished();
 
 	private:
 		Ui::RawDDPSettings* ui;

@@ -43,7 +43,7 @@ class AvxBitmapFiller : public BitmapFillerBase
 private:
 	std::vector<std::uint8_t> sourceBuffer;
 public:
-	AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
+	AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP);
 	AvxBitmapFiller(const AvxBitmapFiller&) = default; // For cloning.
 	virtual ~AvxBitmapFiller() override {}
 
@@ -56,7 +56,7 @@ public:
 class NonAvxBitmapFiller : public BitmapFillerBase
 {
 public:
-	NonAvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb);
+	NonAvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP);
 	NonAvxBitmapFiller(const NonAvxBitmapFiller&) = default; // For cloning.
 	virtual ~NonAvxBitmapFiller() override {}
 
