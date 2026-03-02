@@ -211,9 +211,9 @@ void OldProgressDlg::applyProgress1(int lAchieved)
 	double divisor = static_cast<double>(lAchieved - 1) * static_cast<double>(m_total1 - lAchieved + 1);
 
 	// 
-	// If the divisor isn't zero, report remaining time.
+	// If the divisor is valid, report remaining time.
 	//
-	if (0.0 != divisor)
+	if (0.0 < divisor)	// must be positive
 	{
 		std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(m_timer.elapsed()) / divisor);
 
