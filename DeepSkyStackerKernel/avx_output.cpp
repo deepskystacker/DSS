@@ -138,7 +138,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 	// ************* Median *************
 
-	std::vector<T> medianData(nrLightframes * size_t{ 16 }); // 16 pixels x nLightframes
+	std::vector<T> medianData(nrLightframes * size_t{ 16 } + size_t{ 16 }); // 16 pixels x nLightframes + 16 pixels margin for reading 32 bits at once.
 	int sizes[16]; // Nr of lightframes != 0 for the 16 pixels
 
 	const auto initMedianData = [&lineAddresses, &medianData, &sizes, nrLightframes](const size_t offset, const int nPixels) -> void
