@@ -126,6 +126,10 @@ if (APPLE)
 endif()
 if(LINUX)
 	set(CMAKE_CXX_FLAGS "-g -Wno-ignored-attributes -msse -msse2 -mfpmath=sse -pthread")
+#	if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+#		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -D_GLIBCXX_DEBUG")
+#	endif()
+	message("Linux CMAKE_CXX_FLAGS = " ${CMAKE_CXX_FLAGS})
 endif()
 
 ################################################################################
