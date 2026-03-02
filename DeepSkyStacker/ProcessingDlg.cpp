@@ -60,14 +60,14 @@ namespace
 	{
 	public:
 		QRgb		m_crColor;		// Qt 32-bit QRgb format (0xAARRGGBB)
-		int			m_lSize;
+		size_t		m_lSize;
 
 		//ColorOrder() :
 		//	m_crColor{ qRgb(0, 0, 0) },
 		//	m_lSize{ 0 }
 		//{}
 
-		explicit ColorOrder(QRgb crColor, int lSize) : 
+		explicit ColorOrder(QRgb crColor, size_t lSize) : 
 			m_crColor{ crColor },
 			m_lSize{ lSize }
 		{}
@@ -795,7 +795,7 @@ namespace DSS
 		RGBHistogram			Histo;
 		RGBHistogramAdjust		HistoAdjust;
 
-		Histo.SetSize(65535.0, controls->histogram->width());
+		Histo.SetSize(65535.0, static_cast<size_t>(controls->histogram->width()));
 
 		calcHistogramAdjustment(HistoAdjust);
 
@@ -806,9 +806,12 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void ProcessingDlg::drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
+	void ProcessingDlg::drawHistoBar(QPainter& painter, double redCount, double greenCount, double blueCount, size_t X, int lHeight)
 	{
-		std::array<ColorOrder, 3> vColors = {{ ColorOrder{qRgb(255, 0, 0), lNrReds}, ColorOrder{qRgb(0, 255, 0), lNrGreens} , ColorOrder{qRgb(0, 0, 255), lNrBlues} }};
+		std::array<ColorOrder, 3> vColors = {{ 
+			ColorOrder{qRgb(255, 0, 0), static_cast<size_t>(redCount)},
+			ColorOrder{qRgb(0, 255, 0), static_cast<size_t>(greenCount)},
+			ColorOrder{qRgb(0, 0, 255), static_cast<size_t>(blueCount)} }};
 		int lLastHeight = 0;
 
 		std::sort(vColors.begin(), vColors.end());
@@ -834,19 +837,25 @@ namespace DSS
 
 				QPen colorPen(QColor(static_cast<int>(fRed / lNrColors), static_cast<int>(fGreen / lNrColors), static_cast<int>(fBlue / lNrColors)));
 				painter.setPen(colorPen);
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4267)
+#endif
+				painter.drawLine(static_cast<int>(X), lHeight - lLastHeight, static_cast<int>(X), lHeight - static_cast<int>(vColors[i].m_lSize));
 
-				painter.drawLine(X, lHeight - lLastHeight, X, lHeight - vColors[i].m_lSize);
+				lLastHeight = static_cast<int>(vColors[i].m_lSize);
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
-				lLastHeight = vColors[i].m_lSize;
 			}
 		}
 	}
 
 	/* ------------------------------------------------------------------- */
-
 	void ProcessingDlg::drawGaussianCurves(QPainter& painter, RGBHistogram& histo, int lWidth, int lHeight)
 	{
-		int				lNrValues;
+		size_t				binCount;
 		double				fAverage[3] = { 0, 0, 0 };
 		double				fStdDev[3] = { 0, 0, 0 };
 		double				fSum[3] = { 0, 0, 0 };
@@ -854,76 +863,83 @@ namespace DSS
 		double				fTotalPixels[3] = { 0, 0, 0 };
 		int				i;
 
-		lNrValues = histo.GetRedHistogram().GetNrValues();
+		binCount = histo.GetRedHistogram().GetNrValues();
 
-		if (lNrValues)
+		if (binCount)
 		{
-			for (i = 0; i < lNrValues; i++)
+			for (i = 0; i < binCount; i++)
 			{
 
-				int			lNrReds;
-				int			lNrGreens;
-				int			lNrBlues;
+				double	redCount;
+				double	greenCount;
+				double	blueCount;
 
-				histo.GetValues(i, lNrReds, lNrGreens, lNrBlues);
+				histo.GetValues(i, redCount, greenCount, blueCount);
 
-				fSum[0] += lNrReds * i;
-				fSum[1] += lNrGreens * i;
-				fSum[2] += lNrBlues * i;
-				fTotalPixels[0] += lNrReds;
-				fTotalPixels[1] += lNrGreens;
-				fTotalPixels[2] += lNrBlues;
+				fSum[0] += redCount * i;	
+				fSum[1] += greenCount * i;
+				fSum[2] += blueCount * i;
+				fTotalPixels[0] += redCount;
+				fTotalPixels[1] += greenCount;
+				fTotalPixels[2] += blueCount;
 			};
 
 			fAverage[0] = fSum[0] / fTotalPixels[0];
 			fAverage[1] = fSum[1] / fTotalPixels[1];
 			fAverage[2] = fSum[2] / fTotalPixels[2];
 
-			for (i = 0; i < lNrValues; i++)
+			for (i = 0; i < binCount; i++)
 			{
-				int			lNrReds;
-				int			lNrGreens;
-				int			lNrBlues;
+				double redCount;
+				double greenCount;
+				double blueCount;
 
-				histo.GetValues(i, lNrReds, lNrGreens, lNrBlues);
+				histo.GetValues(i, redCount, greenCount, blueCount);
 
-				fSquareSum[0] += pow(i - fAverage[0], 2) * lNrReds;
-				fSquareSum[1] += pow(i - fAverage[1], 2) * lNrGreens;
-				fSquareSum[2] += pow(i - fAverage[2], 2) * lNrBlues;
+				fSquareSum[0] += pow(i - fAverage[0], 2) * redCount;
+				fSquareSum[1] += pow(i - fAverage[1], 2) * greenCount;
+				fSquareSum[2] += pow(i - fAverage[2], 2) * blueCount;
 			};
 
 			fStdDev[0] = sqrt(fSquareSum[0] / fTotalPixels[0]);
 			fStdDev[1] = sqrt(fSquareSum[1] / fTotalPixels[1]);
 			fStdDev[2] = sqrt(fSquareSum[2] / fTotalPixels[2]);
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4267)
+#endif		
 			//
 			// Create the list of points with the initial size set correctly.
 			//
-			QList<QPointF>	redPoints{ lNrValues };
-			QList<QPointF>	greenPoints{ lNrValues };
-			QList<QPointF>	bluePoints{ lNrValues };
+			QList<QPointF>	redPoints{ static_cast<qsizetype>(binCount) };
+			QList<QPointF>	greenPoints{ static_cast<qsizetype>(binCount) };
+			QList<QPointF>	bluePoints{ static_cast<qsizetype>(binCount) };
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 			bool				bShow = true;
 
-			for (i = 0; i < lNrValues; i++)
+			for (i = 0; i < binCount; i++)
 			{
 				double		fX,
 					fY;
 				fX = i;
 
-				fY = exp(-(fX - fAverage[0]) * (fX - fAverage[0]) / (fStdDev[0] * fStdDev[0] * 2)) * lWidth / lNrValues;
+				fY = exp(-(fX - fAverage[0]) * (fX - fAverage[0]) / (fStdDev[0] * fStdDev[0] * 2)) * lWidth / binCount;
 				fY = lHeight - fY * lHeight;
 				redPoints.emplace_back(fX, fY);
 
 				bShow = bShow && (fX < 1000 && fY < 1000);
 
-				fY = exp(-(fX - fAverage[1]) * (fX - fAverage[1]) / (fStdDev[1] * fStdDev[1] * 2)) * lWidth / lNrValues;
+				fY = exp(-(fX - fAverage[1]) * (fX - fAverage[1]) / (fStdDev[1] * fStdDev[1] * 2)) * lWidth / binCount;
 				fY = lHeight - fY * lHeight;
 				greenPoints.emplace_back(fX, fY);
 
 				bShow = bShow && (fX < 1000 && fY < 1000);
 
-				fY = exp(-(fX - fAverage[2]) * (fX - fAverage[2]) / (fStdDev[2] * fStdDev[2] * 2)) * lWidth / lNrValues;
+				fY = exp(-(fX - fAverage[2]) * (fX - fAverage[2]) / (fStdDev[2] * fStdDev[2] * 2)) * lWidth / binCount;
 				fY = lHeight - fY * lHeight;
 				bluePoints.emplace_back(fX, fY);
 
@@ -1008,15 +1024,15 @@ namespace DSS
 
 		double	maxLogarithm = 0.0;
 
-		int				lMaxValue = 0;
+		size_t				lMaxValue = 0;
 
 		lMaxValue = std::max(lMaxValue, Histogram.GetRedHistogram().GetMaximumNrValues());
 		lMaxValue = std::max(lMaxValue, Histogram.GetGreenHistogram().GetMaximumNrValues());
 		lMaxValue = std::max(lMaxValue, Histogram.GetBlueHistogram().GetMaximumNrValues());
 
-		int lNrValues = Histogram.GetRedHistogram().GetNrValues();
+		size_t binCount = Histogram.GetRedHistogram().GetNrValues();
 
-		if (lNrValues)
+		if (binCount)
 		{
 			if (useLogarithm)
 			{
@@ -1026,31 +1042,31 @@ namespace DSS
 					useLogarithm = false;
 			};
 
-			for (int i = 0; i < lNrValues; i++)
+			for (size_t i = 0; i < binCount; i++)
 			{
-				int			lNrReds;
-				int			lNrGreens;
-				int			lNrBlues;
+				double	redCount;
+				double	greenCount;
+				double	blueCount;
 
-				Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
+				Histogram.GetValues(i, redCount, greenCount, blueCount);
 
 				if (useLogarithm)
 				{
-					if (lNrReds)
-						lNrReds = static_cast<int>(log(static_cast<double>(lNrReds)) / log(maxLogarithm));
-					if (lNrGreens)
-						lNrGreens = static_cast<int>(log(static_cast<double>(lNrGreens)) / log(maxLogarithm));
-					if (lNrBlues)
-						lNrBlues = static_cast<int>(log(static_cast<double>(lNrBlues)) / log(maxLogarithm));
+					if (redCount > 0.0)
+						redCount = log(static_cast<double>(redCount)) / log(maxLogarithm);
+					if (greenCount > 0.0)
+						greenCount = log(static_cast<double>(greenCount)) / log(maxLogarithm);
+					if (blueCount > 0.0)
+						blueCount = log(static_cast<double>(blueCount)) / log(maxLogarithm);
 				}
 				else
 				{
-					lNrReds = static_cast<int>(static_cast<double>(lNrReds) / static_cast<double>(lMaxValue) * height);
-					lNrGreens = static_cast<int>(static_cast<double>(lNrGreens) / static_cast<double>(lMaxValue) * height);
-					lNrBlues = static_cast<int>(static_cast<double>(lNrBlues) / static_cast<double>(lMaxValue) * height);
+					redCount = static_cast<double>(redCount) / static_cast<double>(lMaxValue) * height;
+					greenCount = static_cast<double>(greenCount) / static_cast<double>(lMaxValue) * height;
+					blueCount = static_cast<double>(blueCount) / static_cast<double>(lMaxValue) * height;
 				};
 
-				drawHistoBar(painter, lNrReds, lNrGreens, lNrBlues, i, height);
+				drawHistoBar(painter, redCount, greenCount, blueCount, i, height);
 			};
 
 

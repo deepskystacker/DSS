@@ -49,7 +49,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 		fMax = std::max(fMax, static_cast<double>(maxValue * scalingFactor));
 	}
 
-	Histo.SetSize(fMax, 65535);
+	Histo.SetSize(fMax, static_cast<size_t>(65535));
 
 	if (!m_StackedBitmap.IsMonochrome())
 	{
@@ -85,7 +85,7 @@ void CDeepStack::AdjustHistogram(RGBHistogram & srcHisto, RGBHistogram & tgtHist
 
 	bMonochrome = m_StackedBitmap.IsMonochrome();
 
-	for (int i = 0;i<srcHisto.GetSize();i++)
+	for (size_t i = 0;i<srcHisto.GetSize();i++)
 	{
 		double			fRed,
 						fGreen,
@@ -106,9 +106,9 @@ void CDeepStack::AdjustHistogram(RGBHistogram & srcHisto, RGBHistogram & tgtHist
 			fGreen = fBlue = fRed;
 		};
 
-		tgtHisto.GetRedHistogram().AddValue(fRed, srcHisto.GetRedHistogram().GetValue(i));
-		tgtHisto.GetGreenHistogram().AddValue(fGreen, srcHisto.GetGreenHistogram().GetValue(i));
-		tgtHisto.GetBlueHistogram().AddValue(fBlue, srcHisto.GetBlueHistogram().GetValue(i));
+		tgtHisto.GetRedHistogram().AddValue(fRed, static_cast<size_t>(srcHisto.GetRedHistogram().GetValue(i)));
+		tgtHisto.GetGreenHistogram().AddValue(fGreen, static_cast<size_t>(srcHisto.GetGreenHistogram().GetValue(i)));
+		tgtHisto.GetBlueHistogram().AddValue(fBlue, static_cast<size_t>(srcHisto.GetBlueHistogram().GetValue(i)));
 	};
 };
 

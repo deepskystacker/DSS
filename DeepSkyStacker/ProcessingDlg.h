@@ -455,7 +455,7 @@ namespace DSS
 		static constexpr int InitialSaturation { 0 };
 
 		void	drawHistogram(RGBHistogram& Histogram, bool useLogarithm);
-		void	drawHistoBar(QPainter& painter, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
+		void	drawHistoBar(QPainter& painter, double lNrReds, double lNrGreens, double lNrBlues, size_t X, int lHeight);
 		void	drawGaussianCurves(QPainter& painter, RGBHistogram& Histogram, int lWidth, int lHeight);
 		void	drawBezierCurve(QPainter& painter, int lWidth, int lHeight);
 

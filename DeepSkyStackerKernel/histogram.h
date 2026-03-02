@@ -474,15 +474,15 @@ namespace DSS
 	class Histogram
 	{
 	private:
-		std::vector<std::uint32_t>		values;
-		uint32_t	intMax;
+		std::vector<size_t>		values;
+		size_t	intMax;
 		double		absoluteMax;
 		double		maximum;
 		double		minimum;
 		double		step;
 		double		sum;
 		double		sumOfSquares;
-		int			valueCount;
+		size_t		valueCount;
 		bool		initialised;
 
 	public:
@@ -505,14 +505,12 @@ namespace DSS
 
 		void	init()
 		{
-			int		lNrValues = 0;
-
 			initialised = false;
 			clear();
 			const double numberOfSteps = absoluteMax / step;
-			lNrValues = std::isfinite(numberOfSteps) ? (static_cast<int>(numberOfSteps) + 1) : 1;
+			size_t size = std::isfinite(numberOfSteps) ? (static_cast<size_t>(numberOfSteps) + 1) : 1;
 
-			values.resize(lNrValues);
+			values.resize(size);
 
 			initialised = true;
 		}
@@ -536,10 +534,8 @@ namespace DSS
 
 			if (initialised)
 			{
-				int		lNrValues;
-
-				lNrValues = static_cast<int>(absoluteMax / step + 1);
-				values.resize(lNrValues);
+				double size = absoluteMax / step + 1;
+				values.resize(static_cast<size_t>(size));
 			};
 		}
 
@@ -551,34 +547,32 @@ namespace DSS
 			init();
 		}
 
-		void	SetSize(double fMax, int lNrValues)
+		void	SetSize(double fMax, size_t size)
 		{
 			absoluteMax = fMax;
-			step = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (lNrValues - 1));
+			step = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (size - 1));
 
-			init(lNrValues);
+			init(size);
 		}
 
-		int	GetSize()
+		size_t	GetSize()
 		{
-			return static_cast<int>(values.size());
+			return values.size();
 		}
 
-		void	AddValue(double fValue, int lNrValues = 1)
+		void	AddValue(double fValue, size_t number = 1)
 		{
-			int		lNrStep;
+			size_t stepNum = static_cast<int>((fValue / step));
 
-			lNrStep = static_cast<int>((fValue / step));
-
-			if (lNrStep < values.size())
+			if (stepNum < values.size())
 			{
-				values[lNrStep] += lNrValues;
-				valueCount += lNrValues;
-				sumOfSquares += (fValue * fValue) * lNrValues;
-				sum += fValue * lNrValues;
-				intMax = max(intMax, static_cast<uint32_t>(values[lNrStep]));
+				values[stepNum] += number;
+				valueCount += number;
+				sumOfSquares += (fValue * fValue) * number;
+				sum += fValue * number;
+				intMax = std::max(intMax, values[stepNum]);
 
-				maximum = max(maximum, fValue);
+				maximum = std::max(maximum, fValue);
 				if (minimum < 0)
 					minimum = fValue;
 				else
@@ -595,24 +589,24 @@ namespace DSS
 			};
 		}
 
-		int	GetNrValues()
+		size_t	GetNrValues()
 		{
-			return static_cast<int>(values.size());
+			return values.size();
 		}
 
-		int	GetValue(double fValue)
+		size_t	GetValue(double fValue)
 		{
 			return values[static_cast<size_t>(fValue / step)];
 		}
 
-		int	GetValue(int lValue)
+		double GetValue(size_t i)
 		{
-			return values[lValue];
+			return static_cast<double>(values[i]);
 		}
 
-		double	GetComponentValue(int lIndice)
+		double	GetComponentValue(size_t index)
 		{
-			return static_cast<double>(lIndice * step);
+			return static_cast<double>(index * step);
 		}
 
 		double	GetAverage()
@@ -651,7 +645,7 @@ namespace DSS
 
 			if (valueCount)
 			{
-				unsigned int		lCount = 0;
+				size_t lCount = 0;
 				int		i = 0;
 
 				while ((lCount + values[i]) <= static_cast<unsigned int>(valueCount / 2))
@@ -666,7 +660,7 @@ namespace DSS
 			return fResult;
 		}
 
-		int	GetMaximumNrValues()
+		size_t GetMaximumNrValues()
 		{
 			return intMax;
 		}
@@ -699,7 +693,7 @@ namespace DSS
 			return redHistogram.GetSize() && greenHistogram.GetSize() && blueHistogram.GetSize();
 		}
 
-		int	GetSize()
+		size_t GetSize()
 		{
 			return redHistogram.GetSize();
 		}
@@ -711,7 +705,7 @@ namespace DSS
 			blueHistogram.SetSize(fMax, fStep);
 		}
 
-		void	SetSize(double fMax, int lNrValues)
+		void	SetSize(double fMax, size_t lNrValues)
 		{
 			redHistogram.SetSize(fMax, lNrValues);
 			greenHistogram.SetSize(fMax, lNrValues);
@@ -732,11 +726,11 @@ namespace DSS
 			blueHistogram.AddValues(RGBHistogram.blueHistogram);
 		}
 
-		void	GetValues(int lValue, int& lNrReds, int& lNrGreens, int& lNrBlues)
+		void	GetValues(size_t index, double& lNrReds, double& lNrGreens, double& lNrBlues)
 		{
-			lNrReds = redHistogram.GetValue(lValue);
-			lNrGreens = greenHistogram.GetValue(lValue);
-			lNrBlues = blueHistogram.GetValue(lValue);
+			lNrReds = redHistogram.GetValue(index);
+			lNrGreens = greenHistogram.GetValue(index);
+			lNrBlues = blueHistogram.GetValue(index);
 		}
 
 		Histogram& GetRedHistogram()
