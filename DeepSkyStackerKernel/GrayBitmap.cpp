@@ -48,11 +48,26 @@ BAYERCOLOR CGrayBitmapT<T>::GetBayerColor(int x, int y) const
 template <typename T>
 bool CGrayBitmapT<T>::InitInternals()
 {
-	const size_t nrPixels = static_cast<size_t>(m_lWidth) * static_cast<size_t>(m_lHeight);
+	size_t nrPixels = static_cast<size_t>(m_lWidth) * static_cast<size_t>(m_lHeight);
 	m_vPixels.clear();
-	if (0 != nrPixels) m_vPixels.resize(nrPixels);
 
-	return true; // Otherwise m_vPixels.resize() would have thrown bad_alloc.
+	if (0 != nrPixels)
+	{
+		//
+		// The AVX code typically works in memory chunks of 32 bytes, so for 8-bit data it works on 32 pixels at a time,
+		// for 16-bit data, it works on 16 pixels at a time, and for 32-bit data, it works on 8 pixels at a time.
+		// 
+		// To avoid out-of-bounds access in the AVX code, we increase the number of pixels by the relevant "alignment"
+		// value, which is the number of pixels that fit in 32 bytes.
+		// 
+		constexpr size_t alignment = 32 / sizeof(T);
+		nrPixels += alignment; // Add an extra alignment block to ensure that we have enough pixels for the AVX code
+		
+		m_vPixels.reserve(nrPixels);
+		m_vPixels.resize(nrPixels);
+	}
+
+	return true; // Otherwise m_vPixels.reserve() would have thrown bad_alloc.
 }
 
 template <typename T>
