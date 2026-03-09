@@ -1568,12 +1568,21 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 		tiff.SetDescription(szDescription);
 		if (lISOSpeed)
 			tiff.SetISOSpeed(lISOSpeed);
+		else
+			tiff.SetISOSpeed(pBitmap->GetISOSpeed());
 		if (lGain >= 0)
 			tiff.SetGain(lGain);
+		else
+			tiff.SetGain(pBitmap->GetGain());
 		if (0. != fExposure)
 			tiff.SetExposureTime(fExposure);
+		else
+			tiff.SetExposureTime(pBitmap->GetExposure());
 		if (0. != fAperture)
 			tiff.SetAperture(fAperture);
+		else
+			tiff.SetAperture(pBitmap->GetAperture());
+		tiff.SetNrFrames(pBitmap->GetNrFrames());
 		tiff.SetFormatAndCompression(TIFFFormat, TIFFCompression);
 
 		if (tiff.Open())

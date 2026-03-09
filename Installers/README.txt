@@ -39,6 +39,8 @@ Changes for DeepSkyStacker 6.1.4 Beta 4
 
     Also redesign the UI for DDP (Digital Development Processing) Settings (was Raw/FITS DDP Settings).
 
+7.  Bug fix: TIFF output files didn't always report the total exposure time.
+
 Changes for DeepSkyStacker 6.1.3
 ================================
 
