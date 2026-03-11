@@ -57,11 +57,11 @@ bool CGrayBitmapT<T>::InitInternals()
 		// The AVX code typically works in memory chunks of 32 bytes, so for 8-bit data it works on 32 pixels at a time,
 		// for 16-bit data, it works on 16 pixels at a time, and for 32-bit data, it works on 8 pixels at a time.
 		// 
-		// To avoid out-of-bounds access in the AVX code, we increase the number of pixels by the relevant "alignment"
+		// To avoid out-of-bounds access in the AVX code, we increase the number of pixels by the relevant padding
 		// value, which is the number of pixels that fit in 32 bytes.
 		// 
-		constexpr size_t alignment = 32 / sizeof(T);
-		nrPixels += alignment; // Add an extra alignment block to ensure that we have enough pixels for the AVX code
+		constexpr size_t padding = 32 / sizeof(T);
+		nrPixels += padding; // Add padding to ensure that we have enough pixels for the AVX code
 		
 		m_vPixels.reserve(nrPixels);
 		m_vPixels.resize(nrPixels);
