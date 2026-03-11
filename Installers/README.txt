@@ -41,7 +41,7 @@ Changes for DeepSkyStacker 6.1.4 Beta 4
 
 7.  Bug fix: TIFF output files didn't always report the total exposure time.
 
-8.  Bug fix: Potential bug fix for crashes on Linus and macOS when using AVX (SIMD).
+8.  Bug fix: Potential bug fix for crashes in Avx256Stacking::pixelPartitioning() on Linux and macOS when using AVX (SIMD).
 
 Changes for DeepSkyStacker 6.1.3
 ================================
