@@ -34,6 +34,7 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include <algorithm>
 #include "avx_includes.h"
 #include "avx_output.h"
 #include "avx_support.h"
@@ -168,8 +169,11 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 		if (N == 0)
 			return 0.0f;
 
-		const T lowerBound = static_cast<T>(lBound);
-		const T upperBound = static_cast<T>(uBound);
+		//
+		// Clamp the bounds between 0 and the maximum valid value of the data type.
+		//
+		const T lowerBound = static_cast<T>(std::clamp(lBound, 0.0F, static_cast<float>(std::numeric_limits<T>::max())));
+		const T upperBound = static_cast<T>(std::clamp(uBound, 0.0F, static_cast<float>(std::numeric_limits<T>::max())));
 		const T currentMedian = static_cast<T>(currMedian);
 		T* const pData = medianData.data() + pixelIndex * nrLightframes;
 
