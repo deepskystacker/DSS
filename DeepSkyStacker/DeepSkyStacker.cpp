@@ -277,8 +277,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	statusBarText{ new QLabel("") },
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
-	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) },
-	progressDlg{ new DSS::ProgressDlg(this)}
+	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
+	// progressDlg{ new DSS::ProgressDlg(this)}
 {
 	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);

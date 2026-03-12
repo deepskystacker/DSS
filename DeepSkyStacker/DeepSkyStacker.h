@@ -99,7 +99,7 @@ private:
 #if !defined(Q_OS_WIN)
 	QProcess* helpProcess{ nullptr };
 #endif // !defined(Q_OS_WIN)
-	DSS::ProgressDlg* progressDlg{ nullptr };
+	// DSS::ProgressDlg* progressDlg{ nullptr };
 
 	void createStatusBar();
 	void updatePanel();
@@ -118,10 +118,10 @@ public:
 	{
 		return dynamic_cast<DeepSkyStacker*>(DSSBase::instance());
 	}
-	inline DSS::ProgressDlg* progressDialog() const
-	{
-		return progressDlg;
-	}
+	//inline DSS::ProgressDlg* progressDialog() const
+	//{
+	//	return progressDlg;
+	//}
 
 	DeepSkyStacker();
 	~DeepSkyStacker() override {}
