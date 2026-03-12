@@ -576,90 +576,87 @@ namespace DSS
 			return true;
 		}
 #endif
-		if (pictureList->tableView == watched)
+		if (QEvent::KeyPress == event->type() && pictureList->tableView == watched)
 		{
-			if (QEvent::KeyPress == event->type())
+			qsizetype i{ 0 };
+			QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+			const QKeySequence received(keyEvent->key() | keyEvent->modifiers());
+			QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
+			ImageListModel* imageModel{ frameList.currentTableModel() }; 
+
+			//
+			// Was it the Space Bar?  If so toggle the checked state of all selected items
+			//
+			if (Qt::Key_Space == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
 			{
-				qsizetype i{ 0 };
-				QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-				const QKeySequence received(keyEvent->key() | keyEvent->modifiers());
-				QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
-				ImageListModel* imageModel{ frameList.currentTableModel() }; 
+				QModelIndexList selectedRows = qsm->selectedRows();
+
+				auto rowCount = selectedRows.size();
 
 				//
-				// Was it the Space Bar?  If so toggle the checked state of all selected items
+				// If the QSortFilterProxyModel is being used, need to map 
+				// to the imageModel index in the base imageModel (our ImageListModel)
 				//
-				if (Qt::Key_Space == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+				if (pictureList->tableView->model() == proxyModel)
 				{
-					QModelIndexList selectedRows = qsm->selectedRows();
-
-					auto rowCount = selectedRows.size();
-
-					//
-					// If the QSortFilterProxyModel is being used, need to map 
-					// to the imageModel index in the base imageModel (our ImageListModel)
-					//
-					if (pictureList->tableView->model() == proxyModel)
-					{
-						for (i = 0; i < rowCount; i++)
-						{
-							selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
-						}
-					}
-
 					for (i = 0; i < rowCount; i++)
 					{
-						int row = selectedRows[i].row();
-
-						if (Qt::Checked == imageModel->mydata[row].m_bChecked)
-							imageModel->mydata[row].m_bChecked = Qt::Unchecked;
-						else
-							imageModel->mydata[row].m_bChecked = Qt::Checked;
-
-						imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
+						selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
 					}
-					return true;
+				}
+
+				for (i = 0; i < rowCount; i++)
+				{
+					int row = selectedRows[i].row();
+
+					if (Qt::Checked == imageModel->mydata[row].m_bChecked)
+						imageModel->mydata[row].m_bChecked = Qt::Unchecked;
+					else
+						imageModel->mydata[row].m_bChecked = Qt::Checked;
+
+					imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
+				}
+				return true;
+			}
+
+			//
+			// Was it the Delete key? If so, remove all selected rows
+			//
+			if (Qt::Key_Delete == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+			{
+				QModelIndexList selectedRows = qsm->selectedRows();
+
+				qsizetype rowCount = selectedRows.size();
+
+				//
+				// If the QSortFilterProxyModel is being used, need to map 
+				// to the imageModel index in the base imageModel (our ImageListModel)
+				//
+				if (pictureList->tableView->model() == proxyModel)
+				{
+					for (i = 0; i < rowCount; i++)
+					{
+						selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
+					}
 				}
 
 				//
-				// Was it the Delete key? If so, remove all selected rows
+				// Sort the list of QModelIndex in descending order so that 
+				// when we iterate over the list we will delete the rows 
+				// with higher row numbers first.
 				//
-				if (Qt::Key_Delete == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+				std::sort(selectedRows.rbegin(), selectedRows.rend());
+
+				for (i = 0; i < rowCount; i++)
 				{
-					QModelIndexList selectedRows = qsm->selectedRows();
-
-					qsizetype rowCount = selectedRows.size();
-
-					//
-					// If the QSortFilterProxyModel is being used, need to map 
-					// to the imageModel index in the base imageModel (our ImageListModel)
-					//
-					if (pictureList->tableView->model() == proxyModel)
-					{
-						for (i = 0; i < rowCount; i++)
-						{
-							selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
-						}
-					}
-
-					//
-					// Sort the list of QModelIndex in descending order so that 
-					// when we iterate over the list we will delete the rows 
-					// with higher row numbers first.
-					//
-					std::sort(selectedRows.rbegin(), selectedRows.rend());
-
-					for (i = 0; i < rowCount; i++)
-					{
-						int row = selectedRows[i].row();
-						frameList.removeFromMap(imageModel->mydata[row].filePath);
-						imageModel->beginRemoveRows(QModelIndex(), row, row);
-						imageModel->removeRows(row, 1);
-						imageModel->endRemoveRows();
-					}
-					updateListInfo();
-					return true;
+					int row = selectedRows[i].row();
+					frameList.removeFromMap(imageModel->mydata[row].filePath);
+					imageModel->beginRemoveRows(QModelIndex(), row, row);
+					imageModel->removeRows(row, 1);
+					imageModel->endRemoveRows();
 				}
+				updateListInfo();
+				return true;
 			}
 		}
 		return Inherited::eventFilter(watched, event);
