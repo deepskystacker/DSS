@@ -350,7 +350,11 @@ namespace {
 __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal)
 {
 	__m256i notYetFound = _mm256_set1_epi32(-1); // 0xffff
-	__m256i n = _mm256_set1_epi32(N);
+	//
+	// Change the following line to use N-1 as the limit rather than N
+	// to avoid running off the end of the vector by one
+	//
+	__m256i n = _mm256_set1_epi32(N-1);
 	__m256i first = _mm256_setzero_si256();
 
 	do
