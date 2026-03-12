@@ -41,7 +41,19 @@ Changes for DeepSkyStacker 6.1.4 Beta 4
 
 7.  Bug fix: TIFF output files didn't always report the total exposure time.
 
-8.  Bug fix: Potential bug fix for crashes in Avx256Stacking::pixelPartitioning() on Linux and macOS when using AVX (SIMD).
+8.  Bug fix: Resolve crashes in Avx256Stacking::pixelPartitioning() when using AVX (SIMD).  Data vector over-run when
+    reading a 32 byte block of pixel data using SIMD instructions, resolved by increasing the size of the vector used
+    for storing pixel data in the "GrayBitmap" class allocated by InitInternals() so that reading the final valid pixel
+    values from the vector would no longer result in an over-run.
+
+9.  Bug fix: Loop in AVX code over-running bounds in Avx256BezierAndSaturation::avx256LowerBoundPs().
+
+10. Bug fix: Crash in StackingDlg::eventFilter() during shutdown when run under Address Sanitizer.
+
+11. Bug fix: Undefined behaviour in the quickMedian code in avx_output.cpp when a negative lower bound, or an upper 
+    bound greater than valid for the datatype was passed to the lambda.
+
+12. Bug fix: Correct the calculation used for the estimated remaining time displayed by the progress dialogue.
 
 Changes for DeepSkyStacker 6.1.3
 ================================
