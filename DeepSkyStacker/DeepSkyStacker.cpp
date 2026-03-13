@@ -191,6 +191,7 @@ namespace
 				.arg(vFiles.size()).arg(strSize);
 
 			QMessageBox msgBox(QMessageBox::Question, QString(""), strMsg, (QMessageBox::Yes | QMessageBox::No));
+			msgBox.setWindowModality(Qt::ApplicationModal);
 
 			msgBox.setDefaultButton(QMessageBox::Yes);
 
