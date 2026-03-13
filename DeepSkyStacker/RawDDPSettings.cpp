@@ -293,7 +293,7 @@ namespace DSS
 		//
 		// Create a validator for the scale values
 		//
-		scaleValidator = new QDoubleValidator(0.0, 8.0, 4, this);
+		scaleValidator = new QDoubleValidator(0.0, 16.0, 4, this);
 		//
 		// Create a validator for the FITS range values
 		rangeValidator = new QDoubleValidator(this);
