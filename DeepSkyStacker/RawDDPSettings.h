@@ -27,7 +27,7 @@ namespace DSS
 		void reject() override;
 		void on_buttonBox_clicked(QAbstractButton* button);
 
-		// Slots for Image scaling tab
+		// Slots for Image adjustment tab
 		void brightness_editingFinished();
 		void redScale_editingFinished();
 		void blueScale_editingFinished();

@@ -21,7 +21,7 @@
      </property>
      <widget class="QWidget" name="imageScalingTab">
       <attribute name="title">
-       <string>Image scaling</string>
+       <string>Image adjustment</string>
       </attribute>
       <widget class="QGroupBox" name="ColourAdjustment">
        <property name="geometry">

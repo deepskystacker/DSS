@@ -1109,7 +1109,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 		auto greenFactor = workspace.value("RawDDP/Brightness", 1.0).toDouble();
 		auto redFactor = greenFactor * workspace.value("RawDDP/RedScale", 1.0).toDouble();
 		auto blueFactor = greenFactor * workspace.value("RawDDP/BlueScale", 1.0).toDouble();
-		ZTRACE_RUNTIME("Image scaling factors: R=%f, G=%f, B=%f", redFactor, greenFactor, blueFactor);
+		ZTRACE_RUNTIME("Image adjustment factors: R=%f, G=%f, B=%f", redFactor, greenFactor, blueFactor);
 
 
 		if (1.0 != redFactor || 1.0 != greenFactor || 1.0 != blueFactor)

@@ -558,7 +558,7 @@ namespace DSS
 
 		return *this;
 	}
-	// Slots for Image scaling tab
+	// Slots for Image adjustment tab
 	void RawDDPSettings::brightness_editingFinished()
 	{
 		QLocale locale;

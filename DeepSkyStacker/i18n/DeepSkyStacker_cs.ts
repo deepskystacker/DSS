@@ -889,31 +889,31 @@ Zaškrtnutím tohoto políčka uchováte trasovací soubor.</translation>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="715"/>
+        <location filename="../StackingDlg.cpp" line="712"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation>Temné pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="717"/>
+        <location filename="../StackingDlg.cpp" line="714"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation>Vyrov.temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="716"/>
+        <location filename="../StackingDlg.cpp" line="713"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation>Vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="718"/>
+        <location filename="../StackingDlg.cpp" line="715"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation>Vyrovnání zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="714"/>
+        <location filename="../StackingDlg.cpp" line="711"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation>Aktivní</translation>
@@ -1056,37 +1056,37 @@ Ctrl+4 přepne režim 4 rohů</translation>
         <translation>Opravdu chcete tuto operaci zrušit?</translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="225"/>
+        <location filename="../oldprogressdlg.cpp" line="230"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
         <translation>Odhadovaný zbývající čas: %1 hod  %2 min  %3 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="228"/>
+        <location filename="../oldprogressdlg.cpp" line="233"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
         <translation>Odhadovaný zbývající čas: %1 min  %2 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="231"/>
+        <location filename="../oldprogressdlg.cpp" line="236"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
         <translation>Odhadovaný zbývající čas: %1 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="234"/>
+        <location filename="../oldprogressdlg.cpp" line="239"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
         <translation>Odhadovaný zbývající čas: &lt; 1 s </translation>
     </message>
     <message>
-        <location filename="../oldprogressdlg.cpp" line="241"/>
+        <location filename="../oldprogressdlg.cpp" line="246"/>
         <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Odhadovaný zbývající čas: Neznámý</translation>
     </message>
     <message numerus="yes">
-        <location filename="../oldprogressdlg.cpp" line="254"/>
+        <location filename="../oldprogressdlg.cpp" line="259"/>
         <source>%n Processor(s) Used</source>
         <translation>
             <numerusform>Použitý %n procesor</numerusform>
@@ -1388,7 +1388,7 @@ Zjištěné studené pixely: %L3 (%L4 %)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1162"/>
+        <location filename="../ProcessingDlg.cpp" line="1178"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Chcete změny uložit?</translation>
@@ -1616,157 +1616,141 @@ Změňte prosím název.</translation>
         <translation>Nastavení digitálního zpracování</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="24"/>
+        <location filename="../ui/RawDDPSettings.ui" line="74"/>
         <source>Raw Files</source>
         <translation>RAW soubory</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="394"/>
-        <location filename="../ui/RawDDPSettings.ui" line="781"/>
+        <location filename="../ui/RawDDPSettings.ui" line="36"/>
         <source>Colour Adjustment</source>
         <translation>Úprava barev</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="469"/>
-        <location filename="../ui/RawDDPSettings.ui" line="787"/>
+        <location filename="../ui/RawDDPSettings.ui" line="42"/>
         <source>Brightness</source>
         <translation>Jas</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="76"/>
-        <source>Red Scale</source>
-        <translation>Červená stupnice</translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="99"/>
-        <source>Blue Scale</source>
-        <translation>Modrá stupnice</translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="131"/>
+        <location filename="../ui/RawDDPSettings.ui" line="88"/>
         <source>White Balance</source>
         <translation>Vyvážení bílé</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="137"/>
+        <location filename="../ui/RawDDPSettings.ui" line="94"/>
         <source>No White Balance Processing</source>
         <translation>Žádné zpracování vyvážení bílé</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="144"/>
+        <location filename="../ui/RawDDPSettings.ui" line="101"/>
         <source>Use Daylight White Balance</source>
         <translation>Použít vyvážení bílé pro denní světlo</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="151"/>
+        <location filename="../ui/RawDDPSettings.ui" line="108"/>
         <source>Use Camera White Balance</source>
         <translation>Použít vyvážení bílé z kamery</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="176"/>
-        <location filename="../ui/RawDDPSettings.ui" line="635"/>
+        <location filename="../ui/RawDDPSettings.ui" line="133"/>
+        <location filename="../ui/RawDDPSettings.ui" line="487"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Bayerova převodní matice</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="182"/>
-        <location filename="../ui/RawDDPSettings.ui" line="644"/>
+        <location filename="../ui/RawDDPSettings.ui" line="139"/>
+        <location filename="../ui/RawDDPSettings.ui" line="496"/>
         <source>Bilinear Interpolation</source>
         <translation>Bilineární interpolace</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="202"/>
-        <location filename="../ui/RawDDPSettings.ui" line="664"/>
+        <location filename="../ui/RawDDPSettings.ui" line="159"/>
+        <location filename="../ui/RawDDPSettings.ui" line="516"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>Adaptivní Homogeneity-Directed (AHD) interpolace</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="222"/>
-        <location filename="../ui/RawDDPSettings.ui" line="684"/>
+        <location filename="../ui/RawDDPSettings.ui" line="179"/>
+        <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>Použít Bayerův algoritmus (bez interpolace a odmaticování)</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="238"/>
-        <location filename="../ui/RawDDPSettings.ui" line="700"/>
+        <location filename="../ui/RawDDPSettings.ui" line="195"/>
+        <location filename="../ui/RawDDPSettings.ui" line="552"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>Tato volba používá Bayerovu matici tak jak je. Neprovádí žádnou interpolaci a každý obrazový bod je součástí matice.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="264"/>
-        <location filename="../ui/RawDDPSettings.ui" line="726"/>
+        <location filename="../ui/RawDDPSettings.ui" line="221"/>
+        <location filename="../ui/RawDDPSettings.ui" line="578"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>Vytvoří super body přímo z RAW matice (bez interpolace)</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="280"/>
-        <location filename="../ui/RawDDPSettings.ui" line="742"/>
+        <location filename="../ui/RawDDPSettings.ui" line="237"/>
+        <location filename="../ui/RawDDPSettings.ui" line="594"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>Tato volba používá Bayerovu matici pro vytvoření jednoho super bodu ze skupiny 4 obrazových bodů (RGBG). Velikost výsledného obrazu je pak poloviční.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="310"/>
+        <location filename="../ui/RawDDPSettings.ui" line="267"/>
         <source>FITS Files</source>
         <translation>FITS soubory</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="331"/>
+        <location filename="../ui/RawDDPSettings.ui" line="288"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jednoplošné 16bitové soubory FITS pocházejí z „One-Shot-Colour“; fotoaparát (DSLR, mirrorless, CCD nebo CMOS), který je třeba vyjmout.&lt;br/&gt;Chcete-li zkusit automatickou detekci na základě klíčových slov FITS, ponechte &lt;span style=&quot; font-style:italic;&quot;&gt;nezaškrtnuto&lt;/span&gt;. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="354"/>
+        <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>Camera:</source>
         <translation>Kamera:</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="476"/>
-        <location filename="../ui/RawDDPSettings.ui" line="797"/>
+        <location filename="../ui/RawDDPSettings.ui" line="52"/>
         <source>Red scale</source>
         <translation>Červená stupnice</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="483"/>
-        <location filename="../ui/RawDDPSettings.ui" line="807"/>
+        <location filename="../ui/RawDDPSettings.ui" line="24"/>
+        <source>Image adjustment</source>
+        <translation>Úprava obrazu</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="62"/>
         <source>Blue scale</source>
         <translation>Modrá stupnice</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="505"/>
+        <location filename="../ui/RawDDPSettings.ui" line="357"/>
         <source>Bayer Pattern Filter used</source>
         <translation>Použít Bayerův filtr</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="553"/>
+        <location filename="../ui/RawDDPSettings.ui" line="405"/>
         <source>FITS Data Range</source>
         <translation>FITS rozsah dat</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="559"/>
+        <location filename="../ui/RawDDPSettings.ui" line="411"/>
         <source>Default values for DATAMIN and DATAMAX FITS keywords.   These will only be used when reading floating point FITS files and only if the FITS file does not contain these keywords.</source>
         <translation>Výchozí hodnoty pro klíčová slova DATAMIN a DATAMAX FITS. Ty budou použity pouze při čtení souborů FITS s pohyblivou řádovou čárkou a pouze v případě, že soubor FITS tato klíčová slova neobsahuje.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="572"/>
+        <location filename="../ui/RawDDPSettings.ui" line="424"/>
         <source>DATAMIN</source>
         <translation>DATAMIN</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="602"/>
+        <location filename="../ui/RawDDPSettings.ui" line="454"/>
         <source>DATAMAX</source>
         <translation>DATAMAX</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="761"/>
+        <location filename="../ui/RawDDPSettings.ui" line="613"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>Nucené použití neoznačených hodnot, když označené hodnoty jsou uloženy</translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="769"/>
-        <source>TIFF FIles</source>
-        <translation>TIFF soubory</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
@@ -2586,12 +2570,12 @@ Použíte ji, pokud chcete zpracování provést v jiném programu nebo později
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="839"/>
+        <location filename="../StackingDlg.cpp" line="836"/>
         <source>Rename group</source>
         <translation>Skupinové jméno</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="936"/>
+        <location filename="../StackingDlg.cpp" line="933"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -2605,43 +2589,43 @@ Tuto činnost nelze obnovit nebo zrušit!</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="687"/>
+        <location filename="../StackingDlg.cpp" line="684"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Použít jako souřadnicový systém</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="691"/>
+        <location filename="../StackingDlg.cpp" line="688"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Zvolit</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="693"/>
+        <location filename="../StackingDlg.cpp" line="690"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Nezvolit</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="696"/>
+        <location filename="../StackingDlg.cpp" line="693"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Odstranit ze seznamu</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="706"/>
+        <location filename="../StackingDlg.cpp" line="703"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Kopie do schránky</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="709"/>
+        <location filename="../StackingDlg.cpp" line="706"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Vymazat z disku...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="732"/>
+        <location filename="../StackingDlg.cpp" line="729"/>
         <source>Space Bar to check/uncheck selected rows
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
@@ -2653,74 +2637,74 @@ Pravým tlačítkem myši zobrazíte nabídku</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="574"/>
-        <location filename="../StackingDlg.cpp" line="1534"/>
+        <location filename="../StackingDlg.cpp" line="1531"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 neexistuje nebo to není soubor</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1543"/>
+        <location filename="../StackingDlg.cpp" line="1540"/>
         <source>Failed to load image %1</source>
         <translation>Nepodařilo se načíst obrázek %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1846"/>
+        <location filename="../StackingDlg.cpp" line="1843"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Aktivní snímky: %1      -      Temné pozadí: %2      -      Vyrovnání jasu: %3      -   Vyrovnání temného pozadí: %4   -      Vyrovnání zkreslení: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1499"/>
+        <location filename="../StackingDlg.cpp" line="1496"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Načítání %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1591"/>
+        <location filename="../StackingDlg.cpp" line="1588"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Soubor %1 nebyl načten, protože již byl načten ve skupině %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1622"/>
+        <location filename="../StackingDlg.cpp" line="1619"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Otevřít aktivní snímky...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1625"/>
+        <location filename="../StackingDlg.cpp" line="1622"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Otevřít snímky temného pozadí...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1643"/>
+        <location filename="../StackingDlg.cpp" line="1640"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Otevřít snímky vyrovnání temného pozadí...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1631"/>
+        <location filename="../StackingDlg.cpp" line="1628"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Otevřít snímky vyrovnání jasu...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="699"/>
+        <location filename="../StackingDlg.cpp" line="696"/>
         <source>Properties...</source>
         <comment>IDM_PROPERTIES</comment>
         <translation>Vlastnosti...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="701"/>
+        <location filename="../StackingDlg.cpp" line="698"/>
         <source>Star Quality Chart</source>
         <translation>Graf kvality hvězd</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="703"/>
+        <location filename="../StackingDlg.cpp" line="700"/>
         <source>Flat Contour Chart</source>
         <translation>Plochý konturový graf</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="1036"/>
+        <location filename="../StackingDlg.cpp" line="1033"/>
         <source>%n files selected</source>
         <comment>IDS_MULTIPLEFILESELECTED</comment>
         <translation>
@@ -2730,19 +2714,19 @@ Pravým tlačítkem myši zobrazíte nabídku</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1117"/>
+        <location filename="../StackingDlg.cpp" line="1114"/>
         <source>X: %1 Y: %2
 R: %3 G: %4 B: %5</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1637"/>
+        <location filename="../StackingDlg.cpp" line="1634"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Otevřít snímky vyrovnání zkreslení...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1859"/>
+        <location filename="../StackingDlg.cpp" line="1856"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2756,42 +2740,42 @@ Vyrovnání temného pozadí: %4
 Vyrovnání zkreslení: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1942"/>
+        <location filename="../StackingDlg.cpp" line="1939"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Otevřít jiný seznam...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2121"/>
+        <location filename="../StackingDlg.cpp" line="2118"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>Ke stažení je dostupná verze programu DeepSkyStacker %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2138"/>
+        <location filename="../StackingDlg.cpp" line="2135"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Kontrola verze Internetový kód chyby %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2238"/>
+        <location filename="../StackingDlg.cpp" line="2235"/>
         <source>Total registering time: %1 %2</source>
         <translation>Celkový čas registrace: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2249"/>
+        <location filename="../StackingDlg.cpp" line="2246"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Ne všechny vaše kontrolované světelné rámy mají vypočtenou kvalitu. Měli byste znovu zaregistrovat své světelné rámy.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2265"/>
+        <location filename="../StackingDlg.cpp" line="2262"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Pro zarovnání musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2322"/>
+        <location filename="../StackingDlg.cpp" line="2319"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2801,19 +2785,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 Program DeepSkyStacker potřebuje při své práci v nich vytvářet soubory.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2343"/>
+        <location filename="../StackingDlg.cpp" line="2340"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Vybrané obrázky nejsou kompatibilní: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2347"/>
+        <location filename="../StackingDlg.cpp" line="2344"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Pro sloučení musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2395"/>
+        <location filename="../StackingDlg.cpp" line="2392"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2823,18 +2807,18 @@ Do you want to save the changes?</source>
 Chcete změny uložit?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2511"/>
+        <location filename="../StackingDlg.cpp" line="2508"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Celková doba skládání: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2542"/>
+        <location filename="../StackingDlg.cpp" line="2539"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Ukládání výsledného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2626"/>
+        <location filename="../StackingDlg.cpp" line="2623"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
