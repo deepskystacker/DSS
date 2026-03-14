@@ -29,22 +29,24 @@ Changes for DeepSkyStacker 6.1.4 Beta 4
     support for X3F files which was needed for support of some Fujitsu and Sigma cameras.   This has now been resolved
     by creating an overlay port with the necessary build options.
 
-5.  Changes to support scaling of TIFF images.   This is needed when processing TIFF files from (for example) the Dwarf
-    Mini which uses 15 second exposures which are very dark, so increasing the image brightness by (say) a factor of 4.5
+5.  Changes to support adjustment of TIFF images.   This is needed when processing TIFF files from (for example) the Dwarf
+    Mini which uses 15 second exposures which are very dark.   Increasing the image brightness by (say) a factor of 4.5
     allows the images to be registered and stacked which wasn't possible previously.
 
-6.  Redesign image scaling so that it is applied after calibration frames have been applied for registration and stacking,
+6.  Re-design image adjustment that it is applied after calibration frames have been applied for registration and stacking,
     rather than while the image files are being read in the first place which caused problems with calibration.
-    These changes should solve problems with incorrect calibration when scaling is used.
+    These changes should solve problems with incorrect calibration when intensity or colour channel adjustment is used.
 
     Also redesign the UI for DDP (Digital Development Processing) Settings (was Raw/FITS DDP Settings).
 
+    Image adjustment now applies to all image types, rather than just RAW and FITS images
+
 7.  Bug fix: TIFF output files didn't always report the total exposure time.
 
-8.  Bug fix: Resolve crashes in Avx256Stacking::pixelPartitioning() when using AVX (SIMD).  Data vector over-run when
-    reading a 32 byte block of pixel data using SIMD instructions, resolved by increasing the size of the vector used
-    for storing pixel data in the "GrayBitmap" class allocated by InitInternals() so that reading the final valid pixel
-    values from the vector would no longer result in an over-run.
+8.  Bug fix: Resolve crashes in Avx256Stacking::pixelPartitioning() when using AVX (SIMD) which were caused by a data
+    vector over-run when reading a 32 byte block of pixel data using SIMD instructions.  Over-allocating the vector used
+    to store pixel data in the InitInternals() function of the "GrayBitmap" class ensures that reading the final valid pixel
+    values from the vector will no longer result in an over-run.
 
 9.  Bug fix: Loop in AVX code over-running bounds in Avx256BezierAndSaturation::avx256LowerBoundPs().
 
