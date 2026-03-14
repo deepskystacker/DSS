@@ -743,7 +743,7 @@ FWHM : %3</translation>
         <location filename="../ui/ExplorerBar.ui" line="528"/>
         <source>DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Paramètres ...</translation>
+        <translation>Paramètres DDP ...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="538"/>
@@ -1608,7 +1608,7 @@ Veuillez modifier le nom.</translation>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>Digital Development Process Settings</source>
-        <translation>Paramètres des fichiers RAW,FITS et TIFF</translation>
+        <translation>Paramètres du processus de développement numérique</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="74"/>
@@ -1695,8 +1695,7 @@ Veuillez modifier le nom.</translation>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="288"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>292 / 5,000
-&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les fichiers FITS 16 bits à plan unique proviennent d&apos;un appareil photo « One-Shot-Color » (DSLR, sans miroir, CCD ou CMOS) qui doit être dé-bayélisé.&lt;br/&gt;Laissez &lt;span style=&quot; font-style:italic;&quot;&gt;décoché&lt;/span&gt; pour tenter une détection automatique basée sur des mots-clés FITS.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Les fichiers FITS 16 bits à plan unique proviennent d&apos;un appareil photo « One-Shot-Color » (DSLR, sans miroir, CCD ou CMOS) qui doit être dé-bayélisé.&lt;br/&gt;Laissez &lt;span style=&quot; font-style:italic;&quot;&gt;décoché&lt;/span&gt; pour tenter une détection automatique basée sur des mots-clés FITS.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
