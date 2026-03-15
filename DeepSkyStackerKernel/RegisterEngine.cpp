@@ -1103,7 +1103,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 		//
 		// Apply image scaling here.
 		// 
-		ZTRACE_RUNTIME("Apply image scaling");
+		ZTRACE_RUNTIME("Apply image adjustment");
 		Workspace workspace{};
 
 		auto greenFactor = workspace.value("RawDDP/Brightness", 1.0).toDouble();

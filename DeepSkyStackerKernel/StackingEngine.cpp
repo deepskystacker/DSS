@@ -2180,7 +2180,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						//
 						// Apply image scaling here.
 						// 
-						ZTRACE_RUNTIME("Apply image scaling");
+						ZTRACE_RUNTIME("Apply image adjustment");
 						Workspace workspace{};
 
 						auto greenFactor = workspace.value("RawDDP/Brightness", 1.0).toDouble();
