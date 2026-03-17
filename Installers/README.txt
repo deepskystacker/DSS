@@ -57,6 +57,11 @@ Changes for DeepSkyStacker 6.1.4 Beta 4
 
 12. Bug fix: Correct the calculation used for the estimated remaining time displayed by the progress dialogue.
 
+13. Bug fix: When using "Compute the number of detected stars" from the Register Settings dialogue, the image
+    adjustments from DDP settings were not applied.
+
+14. Bug fix: Register Settings dialogue was losing changes.
+
 Changes for DeepSkyStacker 6.1.3
 ================================
 
