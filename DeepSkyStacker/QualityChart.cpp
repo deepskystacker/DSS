@@ -158,13 +158,16 @@ namespace DSS
 		// Run through the FWHM data and replace any values that are greater than the median by three sigma with the median value.
 		// This is to prevent outliers from dominating the colour map.
 		//
-		auto medianFWHM = Median(fwhmValues);
+		const auto medianFWHM = Median(fwhmValues);
 		double averageFWHM{ 0.0 }; 
-		auto sigmaFWHM = Sigma2(fwhmValues, averageFWHM);
+		const auto sigmaFWHM = Sigma2(fwhmValues, averageFWHM);
+		const auto sigmaThreshold = medianFWHM + 3 * sigmaFWHM;
 		qDebug() << "Median FWHM: " << medianFWHM << ", Average FWHM: " << averageFWHM << ", Sigma FWHM: " << sigmaFWHM;
+		qDebug() << "FWHM values above " << sigmaThreshold << " will be replaced by the median value.";
+
 		for (double& fwhm : fwhmValues)
 		{
-			if (fwhm > medianFWHM + 3 * sigmaFWHM)
+			if (fwhm > sigmaThreshold)
 				fwhm = medianFWHM;
 		}
 
