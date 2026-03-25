@@ -154,6 +154,20 @@ namespace DSS
 			eccentricityValues.emplace_back(star.eccentricity);
 		}
 
+		//
+		// Run through the FWHM data and replace any values that are greater than the median by three sigma with the median value.
+		// This is to prevent outliers from dominating the colour map.
+		//
+		auto medianFWHM = Median(fwhmValues);
+		double averageFWHM{ 0.0 }; 
+		auto sigmaFWHM = Sigma2(fwhmValues, averageFWHM);
+		qDebug() << "Median FWHM: " << medianFWHM << ", Average FWHM: " << averageFWHM << ", Sigma FWHM: " << sigmaFWHM;
+		for (double& fwhm : fwhmValues)
+		{
+			if (fwhm > medianFWHM + 3 * sigmaFWHM)
+				fwhm = medianFWHM;
+		}
+
 		spectrogram->setRenderThreadCount(0); // use system default thread count
 		spectrogram->setCachePolicy(QwtPlotRasterItem::PaintCache);
 
