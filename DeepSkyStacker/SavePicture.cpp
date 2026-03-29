@@ -120,13 +120,16 @@ namespace DSS
 		applyAdjustments->setToolTip(tr("This option saves the image as you see it\n"
 			"Use it if you plan to do further processing in other software",
 			"IDS_TT_APPLIED"));
-		embedAdjustments->setText(tr("Embed adjustments in the saved image but do not apply them", "IDC_EMBEDDED"));
-		embedAdjustments->setToolTip(tr("This option saves the unprocessed image and embeds the processing settings\n"
+		embedText = tr("Embed adjustments in the saved image but do not apply them", "IDC_EMBEDDED");
+		embedTip = tr("This option saves the unprocessed image and embeds the processing settings\n"
 			"Use it if you plan to do all the processing in other software"
 			" or if you plan to re-open the picture with DeepSkyStacker",
-			"IDS_TT_EMBEDDED"));
-		embedText = embedAdjustments->text();
+			"IDS_TT_EMBEDDED");
+		embedAdjustments->setText(embedText);
+		embedAdjustments->setToolTip(embedTip);
 		noAdjustments = tr("Do not apply adjustments to the saved image", "IDS_SAVENOADJUSTMENT");
+		noAdjustmentsTip = tr("This option saves the unprocessed image\n"
+			"Use it if you plan to do all the processing in other software");
 		useRectangle->setText(tr("Create an image from the selected rectangle", "IDC_USERECT"));
 	}
 
@@ -185,12 +188,14 @@ namespace DSS
 			compressionZIP->setEnabled(false);
 			compressionLZW->setEnabled(false);
 			embedAdjustments->setText(noAdjustments);
+			embedAdjustments->setToolTip(noAdjustmentsTip);
 		}
 		else                // TIF files
 		{
 			compressionZIP->setEnabled(true);
 			compressionLZW->setEnabled(true);
 			embedAdjustments->setText(embedText);
+			embedAdjustments->setToolTip(embedTip);
 		}
 	}
 
