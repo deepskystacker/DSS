@@ -121,7 +121,9 @@ namespace DSS
 		QCheckBox* useRectangle;
 
 		QString embedText;
+		QString embedTip;
 		QString noAdjustments;
+		QString noAdjustmentsTip;
 
 		TIFFCOMPRESSION compression_;
 		bool apply_;
