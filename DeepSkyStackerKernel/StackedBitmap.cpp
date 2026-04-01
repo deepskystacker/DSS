@@ -623,7 +623,8 @@ std::shared_ptr<CMemoryBitmap> StackedBitmap::GetBitmap(OldProgressBase* const p
 			avxBezierAndSaturation.avxToHsl(m_BezierAdjust.curvePoints);
 			avxBezierAndSaturation.avxBezierAdjust(bufferLen);
 			avxBezierAndSaturation.avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
-			// avxBezierAndSaturation.avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
+			// Don't apply clipping when creating a star mask
+			pAvxBezierAndSaturation->avxToRgb(false);
 
 			const auto [redBuffer, greenBuffer, blueBuffer] = avxBezierAndSaturation.getBufferPtr();
 
