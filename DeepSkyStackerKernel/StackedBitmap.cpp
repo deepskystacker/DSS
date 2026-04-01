@@ -187,7 +187,7 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 			pAvxBezierAndSaturation->avxBezierAdjust(bufferLen);
 			pAvxBezierAndSaturation->avxBezierSaturation(bufferLen, static_cast<float>(m_BezierAdjust.m_fSaturationShift));
 			// Don't apply clipping when saving the image, as the user may want to do further processing in other software
-			// pAvxBezierAndSaturation->avxToRgb(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
+			pAvxBezierAndSaturation->avxToRgb(false);
 		}
 
 		turnOnVld();
