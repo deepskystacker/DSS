@@ -43,6 +43,38 @@
 namespace DSS 
 {
 	//
+	// Normalise the image data to a range of [0.0, 1.0], which is required for
+	// the ASinH stretch processing
+	//
+	void StackedBitmap::normalise()
+	{
+		const float scaleFactor{ m_lNrBitmaps * 256.0f };
+#pragma omp parallel for schedule(static) if (Multitask::GetNrProcessors() > 1)
+		for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
+		{
+			m_vRedPlane[i] /= scaleFactor;
+			m_vGreenPlane[i] /= scaleFactor;
+			m_vBluePlane[i] /= scaleFactor;
+		}
+	}
+
+	//
+	// De-normalise the image data after the ASinH stretch processing, to bring it back to the
+	// normal range of pixel values.
+	//
+	void StackedBitmap::deNormalise()
+	{
+		const float scaleFactor{ m_lNrBitmaps * 256.0f };
+		for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
+		{
+			m_vRedPlane[i] *= scaleFactor;
+			m_vGreenPlane[i] *= scaleFactor;
+			m_vBluePlane[i] *= scaleFactor;
+		}
+	}
+
+	//
+	//
 	// The asinh, or inverse hyperbolic sine, stretch is a non-linear stretch that can be used to bring out
 	// faint details in an image while preserving the overall structure and color balance.
 	// 
@@ -128,9 +160,7 @@ namespace DSS
 		}
 		else    // Monochrome image
 		{
-#ifdef _OPENMP
 #pragma omp parallel for schedule(static) if (nrProcessors > 1)
-#endif
 			for (i = 0; i < n; i++)
 			{
 				float x, k;

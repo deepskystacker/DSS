@@ -10,46 +10,72 @@ namespace fs = std::filesystem;
 #include "BitmapExt.h"
 
 namespace DSS { class OldProgressBase; }
-class CDeepStack
+class DeepStack
 {
 private :
-	DSS::StackedBitmap m_StackedBitmap;
-	DSS::RGBHistogram m_OriginalHisto;
+	DSS::StackedBitmap stackedBitmap;
+	DSS::RGBHistogram histogram;
 	QVector<uchar> imageData_;
 	std::unique_ptr<QImage> image_;
-	bool m_bNewStackedBitmap;
 	DSS::OldProgressBase* m_pProgress;
 
 public :
-	CDeepStack() : 
-		m_bNewStackedBitmap{false},
+	DeepStack() : 
 		m_pProgress{nullptr}
 	{
 	}
-	virtual ~CDeepStack() {}
+	virtual ~DeepStack() {}
+
+	DeepStack(const DeepStack& rhs)
+	{
+		stackedBitmap = rhs.stackedBitmap;
+		imageData_.clear();
+		m_pProgress = rhs.m_pProgress;
+	}
+
+	DeepStack& operator=(const DeepStack& rhs)
+	{
+		if (this != &rhs)
+		{
+			stackedBitmap = rhs.stackedBitmap;
+			imageData_.clear();
+			m_pProgress = rhs.m_pProgress;
+		}
+		return *this;
+	}
 
 	void	reset()
 	{
-		m_StackedBitmap.Clear();
+		stackedBitmap.Clear();
 		image_.reset();
 		imageData_.clear();
-		m_OriginalHisto.clear();
-		m_bNewStackedBitmap = false;
+		histogram.clear();
 	}
 
 	int	GetWidth()
 	{
-		return m_StackedBitmap.GetWidth();
+		return stackedBitmap.GetWidth();
 	}
 
 	int	GetHeight()
 	{
-		return m_StackedBitmap.GetHeight();
+		return stackedBitmap.GetHeight();
 	}
 
+	const auto& getHistogram() const
+	{
+		return histogram;
+	}
+
+	inline void	computeHistogram()
+	{
+		computeHistogram(histogram);
+	}
+
+	void computeDisplayHistogram(DSS::RGBHistogram& displayHisto);
+
 private :
-	void	ComputeOriginalHistogram(DSS::RGBHistogram & Histo);
-	void	AdjustHistogram(DSS::RGBHistogram & srcHisto, DSS::RGBHistogram & tgtHisto, const DSS::RGBHistogramAdjust & histogramAdjust);
+	void computeHistogram(DSS::RGBHistogram& Histo);
 
 public :
 	void	SetProgress(DSS::OldProgressBase *	pProgress)
@@ -57,19 +83,9 @@ public :
 		m_pProgress = pProgress;
 	}
 
-	bool	IsNewStackedBitmap(bool bReset = false)
-	{
-		bool			bResult = m_bNewStackedBitmap;
-
-		if (bReset)
-			m_bNewStackedBitmap = false;
-
-		return bResult;
-	}
-
 	bool	LoadStackedInfo(const fs::path& file);
 
-	void PartialProcess(DSSRect& rcProcess, const DSS::BezierAdjust& BezierAdjust, const DSS::RGBHistogramAdjust& histogramAdjust)
+	void PartialProcess(DSSRect& rcProcess)
 	{
 		//
 		// Initialise an empty QImage of the right size if necessary using a preallocated buffer (in imageData_)
@@ -82,36 +98,18 @@ public :
 			image_ = std::make_unique<QImage>(imageData_.data(), GetWidth(), GetHeight(), QImage::Format_RGB32);
 		}
 
-		m_StackedBitmap.SetBezierAdjust(BezierAdjust);
-		m_StackedBitmap.SetHistogramAdjust(histogramAdjust);
-		m_StackedBitmap.updateQImage(imageData_.data(), image_->bytesPerLine(), &rcProcess);
+		stackedBitmap.updateQImage(imageData_.data(), image_->bytesPerLine(), rcProcess);
 		
 	}
 
 	DSS::StackedBitmap& GetStackedBitmap()
 	{
-		return m_StackedBitmap;
+		return stackedBitmap;
 	}
 
 	const QImage& getImage() const
 	{
 		return *image_;
-	}
-
-	void AdjustOriginalHistogram(DSS::RGBHistogram & Histo, const DSS::RGBHistogramAdjust & histogramAdjust)
-	{
-		if (!m_OriginalHisto.IsInitialized())
-			ComputeOriginalHistogram(m_OriginalHisto);
-
-		AdjustHistogram(m_OriginalHisto, Histo, histogramAdjust);
-	}
-
-	DSS::RGBHistogram & GetOriginalHistogram()
-	{
-		if (!m_OriginalHisto.IsInitialized())
-			ComputeOriginalHistogram(m_OriginalHisto);
-
-		return m_OriginalHisto;
 	}
 
 	bool	IsLoaded()

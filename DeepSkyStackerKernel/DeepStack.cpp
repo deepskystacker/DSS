@@ -7,18 +7,17 @@
 
 using namespace DSS;
 
-void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
+void DeepStack::computeHistogram(RGBHistogram & Histo)
 {
-	ZFUNCTRACE_RUNTIME();
 	double fMax = 0;
 	const size_t width = GetWidth();
 	const int height = GetHeight();
 	const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 	float maxValue = 0;
-	const float scalingFactor = 255.0f / m_StackedBitmap.GetNrStackedFrames();
-	const auto& redPixels = m_StackedBitmap.getRedPixels();
-	const auto& greenPixels = m_StackedBitmap.getGreenPixels();
-	const auto& bluePixels = m_StackedBitmap.getBluePixels();
+	const float scalingFactor = 255.0f / stackedBitmap.GetNrStackedFrames();
+	const auto& redPixels = stackedBitmap.getRedPixels();
+	const auto& greenPixels = stackedBitmap.getGreenPixels();
+	const auto& bluePixels = stackedBitmap.getBluePixels();
 
 	Histo.clear();
 
@@ -28,7 +27,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 		for (int row = 0; row < height; ++row)
 		{
 			size_t ndx = row * width;
-			if (m_StackedBitmap.IsMonochrome())
+			if (stackedBitmap.IsMonochrome())
 			{
 				for (size_t col = 0; col < width; ++col, ++ndx)
 					maxValue = std::max(maxValue, redPixels[ndx]);
@@ -51,7 +50,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 
 	Histo.SetSize(fMax, static_cast<size_t>(65535));
 
-	if (!m_StackedBitmap.IsMonochrome())
+	if (!stackedBitmap.IsMonochrome())
 	{
 #pragma omp parallel sections default(shared) shared(Histo, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 		{
@@ -70,6 +69,7 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 	{
 		for (const auto& color: redPixels)
 			Histo.GetRedHistogram().AddValue(color * scalingFactor);
+
 		Histo.GetGreenHistogram() = Histo.GetRedHistogram();
 		Histo.GetBlueHistogram() = Histo.GetRedHistogram();
 	}
@@ -77,52 +77,55 @@ void CDeepStack::ComputeOriginalHistogram(RGBHistogram & Histo)
 
 /* ------------------------------------------------------------------- */
 
-void CDeepStack::AdjustHistogram(RGBHistogram & srcHisto, RGBHistogram & tgtHisto, const DSS::RGBHistogramAdjust & histogramAdjust)
+void DeepStack::computeDisplayHistogram(RGBHistogram& displayHisto)
 {
-//	ZFUNCTRACE_RUNTIME(); // Produces a lot of clutter in the log file, because it's called really often.
-	tgtHisto.clear();
-	bool				bMonochrome;
+	if (!histogram.IsInitialized())
+		computeHistogram(histogram);
 
-	bMonochrome = m_StackedBitmap.IsMonochrome();
+	const auto& redHistogram = histogram.GetRedHistogram();
+	const auto& greenHistogram = histogram.GetGreenHistogram();
+	const auto& blueHistogram = histogram.GetBlueHistogram();
 
-	for (size_t i = 0;i<srcHisto.GetSize();i++)
+	bool monochrome = stackedBitmap.IsMonochrome();
+
+	double redCount;
+	double greenCount;
+	double blueCount;
+
+	for (size_t i = 0; i < histogram.GetSize(); i++)
 	{
-		double			fRed,
-						fGreen,
-						fBlue;
 
-		fRed	= srcHisto.GetRedHistogram().GetComponentValue(i);
-
-		if (!bMonochrome)
+		redCount = redHistogram.componentValue(i);
+		if (monochrome)
 		{
-			fGreen	= srcHisto.GetGreenHistogram().GetComponentValue(i);
-			fBlue	= srcHisto.GetBlueHistogram().GetComponentValue(i);
-			histogramAdjust.Adjust(fRed, fGreen, fBlue);
+			greenCount = blueCount = redCount;
 		}
 		else
 		{
-			fGreen = fBlue = fRed;
-			histogramAdjust.Adjust(fRed, fGreen, fBlue);
-			fGreen = fBlue = fRed;
-		};
+			greenCount = greenHistogram.componentValue(i);
+			blueCount = blueHistogram.componentValue(i);
+		}
 
-		tgtHisto.GetRedHistogram().AddValue(fRed, static_cast<size_t>(srcHisto.GetRedHistogram().GetValue(i)));
-		tgtHisto.GetGreenHistogram().AddValue(fGreen, static_cast<size_t>(srcHisto.GetGreenHistogram().GetValue(i)));
-		tgtHisto.GetBlueHistogram().AddValue(fBlue, static_cast<size_t>(srcHisto.GetBlueHistogram().GetValue(i)));
-	};
-};
+		displayHisto.GetRedHistogram().AddValue(redCount, redHistogram.GetValue(i));
+		displayHisto.GetGreenHistogram().AddValue(greenCount, greenHistogram.GetValue(i));
+		displayHisto.GetBlueHistogram().AddValue(blueCount, blueHistogram.GetValue(i));
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
-bool CDeepStack::LoadStackedInfo(const fs::path& file)
+bool DeepStack::LoadStackedInfo(const fs::path& file)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult;
 
-	bResult = m_StackedBitmap.Load(file, m_pProgress);
+	bResult = stackedBitmap.Load(file, m_pProgress);
 
 	if (bResult)
-		ComputeOriginalHistogram(m_OriginalHisto);
+	{
+		computeHistogram(histogram);
+	}
+
 
 	return bResult;
 };

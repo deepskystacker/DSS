@@ -148,18 +148,18 @@ private:
 		std::transform(bezierPoints.cbegin(), bezierPoints.cend(), this->bezierY.begin(), [](const auto& bcp) { return static_cast<float>(bcp.y); });
 		return 0;
 	}
-	int toHsl();
 public:
 	void copyData(const float* const pRedPixel, const float* const pGreenPixel, const float* const pBluePixel, const size_t bufferLen, const bool monochrome);
 	std::tuple<float*, float*, float*> getBufferPtr();
-	int avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust);
-	int avxToHsl(const auto& bezierPoints)
-	{
-		const int rv = this->toHsl();
-		return rv == 0 ? this->fillBezierBuffer(bezierPoints) : rv;
-	}
+	int avxAdjustRGB(const int nBitmaps);
+	int toHsl();
+	//int avxToHsl(const auto& bezierPoints)
+	//{
+	//	const int rv = this->toHsl();
+	//	return rv == 0 ? this->fillBezierBuffer(bezierPoints) : rv;
+	//}
 	int avxToRgb(const bool markOverAndUnderExposure);
-	int avxBezierAdjust(const size_t len);
+	//int avxBezierAdjust(const size_t len);
 	int avxBezierSaturation(const size_t len, const float saturationShift);
 };
 
@@ -178,7 +178,7 @@ public:
 public: // for unit tests
 	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
 private:
-	int avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps);
 	int avxToHsl();
 	int avxToRgb(const bool markOverAndUnderExposure);
 	int avxBezierAdjust(const size_t len);
@@ -200,7 +200,7 @@ public:
 public: // for unit tests
 	static __m256i avx256LowerBoundPs(const float* const pValues, const unsigned int N, const __m256 refVal);
 private:
-	int avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust);
+	int avxAdjustRGB(const int nBitmaps);
 	int avxToHsl();
 	int avxToRgb(const bool markOverAndUnderExposure);
 	int avxBezierAdjust(const size_t len);

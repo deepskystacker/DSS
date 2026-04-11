@@ -484,9 +484,6 @@
     <ClInclude Include="avx_bitmap_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BezierAdjust.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\DSSProgress.h">
       <Filter>Header Files</Filter>
     </ClInclude>

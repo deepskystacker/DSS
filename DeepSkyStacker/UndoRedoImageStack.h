@@ -59,12 +59,18 @@ namespace DSS
 		UndoRedoImageStack(UndoRedoImageStack&&) = delete;
 		UndoRedoImageStack& operator=(const UndoRedoImageStack&) = delete;
 
-		inline std::size_t size()
+		inline bool empty() const
+		{
+			return theStack.empty();
+		}
+
+
+		inline std::size_t size() const 
 		{
 			return theStack.size();
 		}
 
-		inline std::size_t index()
+		inline std::size_t index() const
 		{
 			return currentIndex;
 		}
@@ -107,13 +113,13 @@ namespace DSS
 
 		inline bool backwardAvailable()
 		{
-			ZASSERTSTATE((currentIndex + 1) < theStack.size());
+			ZASSERTSTATE((currentIndex) < theStack.size());
 			return (currentIndex >= 1);
 		}
 
 		inline bool forwardAvailable()
 		{
-			ZASSERTSTATE((currentIndex + 1) < theStack.size());
+			ZASSERTSTATE((currentIndex) < theStack.size());
 			return (currentIndex + 1 < size());
 		}
 

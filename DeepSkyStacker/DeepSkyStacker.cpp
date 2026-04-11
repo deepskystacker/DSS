@@ -269,8 +269,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	lowerDockWidget{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
+	processingDlg{ nullptr },
 	// m_taskbarList{ nullptr },
-	m_DeepStack{ std::make_unique<CDeepStack>() },
 	activePanel{ ActivePanel::StackingPanel },
 	args{ qApp->arguments() },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -625,11 +625,6 @@ DSS::StackingDlg& DeepSkyStacker::getStackingDlg()
 DSS::ProcessingDlg& DeepSkyStacker::getProcessingDlg()
 {
 	return *processingDlg;
-}
-
-CDeepStack& DeepSkyStacker::deepStack()
-{
-	return *m_DeepStack.get();
 }
 
 QString DeepSkyStacker::statusMessage()

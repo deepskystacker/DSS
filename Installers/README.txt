@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.4 Beta 5
+Welcome to DeepSkyStacker 6.2.0 Beta 1
 ===============================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.4 Beta 5
+Changes for DeepSkyStacker 6.2.0 Beta 1
 ================================
 
 1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer.
@@ -64,6 +64,12 @@ Changes for DeepSkyStacker 6.1.4 Beta 5
 
 15. Improve the Quality Chart FWHM plot by replacing FWHM more than three standard deviations above the median
     value with the median value before processing.  This presents very bright stars from dominating the plot.
+
+16. Major re-design of the "Processing" panel.  The old controls have been removed and replaced with a control
+    to perform an inverse hyperbolic side stretch of the image with the ability to preview the changes.
+
+    This is a work in progress and most likely be enhanced later.   The most likely change would be the addition
+    a control to adjust the colour balance of the image.
 
 Changes for DeepSkyStacker 6.1.3
 ================================

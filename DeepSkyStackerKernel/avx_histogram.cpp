@@ -39,7 +39,6 @@
 #include "avx_support.h"
 #include "avx_bitmap_util.h"
 #include "histogram.h"
-#include "BezierAdjust.h"
 
 using namespace DSS;
 // *****************
@@ -264,59 +263,6 @@ template void Avx256Histogram::calcHistoOfVectorEpi32(const __m256i colorVec, st
 // *************
 namespace {
 
-	void adjust(const DSS::HistogramAdjust& hadj, float* const p, const size_t len)
-	{
-		using VecType = __m256;
-		constexpr size_t VecLen = sizeof(VecType) / sizeof(float);
-
-		const VecType mn = _mm256_set1_ps(static_cast<float>(hadj.GetMin()));
-		const VecType mx = _mm256_set1_ps(static_cast<float>(hadj.GetMax()));
-		const VecType sh = _mm256_set1_ps(static_cast<float>(hadj.GetShift()));
-		const VecType omn = _mm256_set1_ps(static_cast<float>(hadj.getOriginalMinimum()));
-		const VecType omx = _mm256_set1_ps(static_cast<float>(hadj.getOriginalMaximum()));
-		const VecType umn = _mm256_set1_ps(static_cast<float>(hadj.getUsedMinimum()));
-		const VecType umx = _mm256_set1_ps(static_cast<float>(hadj.getUsedMaximum()));
-		const VecType usedMinusOrgMin = _mm256_sub_ps(umn, omn);
-		const VecType orgMinusUsedMax = _mm256_sub_ps(omx, umx);
-		const VecType minMinusOrgMin = _mm256_sub_ps(mn, omn);
-		const VecType orgMaxMinusMax = _mm256_sub_ps(omx, mx);
-		const VecType usedMaxMinusMin = _mm256_sub_ps(umx, umn);
-
-		const auto a1 = [&](const VecType value) -> VecType
-		{
-			const VecType valMinusMax = _mm256_sub_ps(value, mx);
-
-			const VecType v1 = _mm256_fmadd_ps(_mm256_div_ps(value, _mm256_max_ps(_mm256_set1_ps(1.0f), minMinusOrgMin)), usedMinusOrgMin, omn); // m_fOrgMin + fValue / std::max(1.0, m_fMin - m_fOrgMin) * (m_fUsedMin - m_fOrgMin)
-			const VecType v2 = _mm256_fnmadd_ps(_mm256_div_ps(valMinusMax, _mm256_max_ps(_mm256_set1_ps(1.0f), orgMaxMinusMax)), orgMinusUsedMax, omx); // m_fOrgMax - (fValue - m_fMax) / std::max(1.0, m_fOrgMax - m_fMax) * (m_fOrgMax - m_fUsedMax)
-			const VecType v3 = _mm256_div_ps(_mm256_sub_ps(value, mn), _mm256_max_ps(_mm256_set1_ps(1.0f), _mm256_sub_ps(mx, mn)));
-			const VecType adjusted = avxLog(_mm256_fmadd_ps(_mm256_sqrt_ps(v3), _mm256_set1_ps(1.7f), _mm256_set1_ps(1.0f))); // log(pow(fValue, 1/2.0)*1.7+1);
-			const VecType v4 = _mm256_fmadd_ps(adjusted, usedMaxMinusMin, umn); // m_fUsedMin + AdjustValue((fValue - m_fMin) / std::max(1.0, (m_fMax - m_fMin))) * (m_fUsedMax - m_fUsedMin)
-			const VecType v5 = _mm256_fmadd_ps(usedMaxMinusMin, sh, _mm256_blendv_ps(_mm256_blendv_ps(v4, v2, _mm256_cmp_ps(value, mx, _CMP_GT_OQ)), v1, _mm256_cmp_ps(value, mn, _CMP_LT_OQ)));
-
-			return _mm256_blendv_ps(_mm256_blendv_ps(v5, v2, _mm256_cmp_ps(v5, omx, _CMP_GT_OQ)), v1, _mm256_cmp_ps(v5, omn, _CMP_LT_OQ));
-		};
-
-		for (size_t n = 0; n < len / VecLen; ++n)
-		{
-			const VecType v = a1(_mm256_loadu_ps(p + n * VecLen));
-			_mm256_storeu_ps(p + n * VecLen, v);
-		}
-
-		// mask: Set lower N epi32 to -1, remaining higher epi32 to 0. N = static_cast<int>(len % VecLen)
-		const __m256i mask = AvxSupport::shiftRightVarEpi8(_mm256_set1_epi32(-1), static_cast<int>(VecLen - len % VecLen) * 4);
-		_mm256_maskstore_ps( // store int[n] IF maskbit[31] == 1
-			p + (len / VecLen) * VecLen,
-			mask,
-			a1(_mm256_maskload_ps(p + (len / VecLen) * VecLen, mask)) // maskload: element is zeroed out when the high bit of mask[n] == 0.
-		);
-		// len   mask
-		//   8   0  0  0  0  0  0  0  0
-		//   9   0  0  0  0  0  0  0 -1
-		//  10   0  0  0  0  0  0 -1 -1
-		//  ...
-		//  15   0 -1 -1 -1 -1 -1 -1 -1
-	}
-
 	inline void finalScale(float* const p, const size_t len)
 	{
 		using VecType = __m256;
@@ -371,7 +317,7 @@ __m256i Avx256BezierAndSaturation::avx256LowerBoundPs(const float* const pValues
 	return first;
 }
 
-int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
+int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps)
 {
 	if (!this->histoData.avxEnabled)
 		return 1; // AVX not enabled, so we cannot use this class.
@@ -379,23 +325,12 @@ int Avx256BezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHi
 	const size_t len = this->histoData.redBuffer.size();
 
 	const float scale = 255.0f / static_cast<float>(nBitmaps);
-	const auto redAdjust = histoAdjust.GetRedAdjust();
-	const auto greenAdjust = histoAdjust.GetGreenAdjust();
-	const auto blueAdjust = histoAdjust.GetBlueAdjust();
-
-	if (redAdjust.getAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || greenAdjust.getAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot || blueAdjust.getAdjustMethod() != HistogramAdjustmentCurve::LogSquareRoot)
-		return 2;
-
 	for (size_t n = 0; n < len; ++n)
 	{
 		this->histoData.redBuffer[n] *= scale;
 		this->histoData.greenBuffer[n] *= scale;
 		this->histoData.blueBuffer[n] *= scale;
 	}
-
-	adjust(redAdjust, this->histoData.redBuffer.data(), len);
-	adjust(greenAdjust, this->histoData.greenBuffer.data(), len);
-	adjust(blueAdjust, this->histoData.blueBuffer.data(), len);
 
 	finalScale(this->histoData.redBuffer.data(), len);
 	finalScale(this->histoData.greenBuffer.data(), len);
