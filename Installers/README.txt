@@ -68,8 +68,10 @@ Changes for DeepSkyStacker 6.2.0 Beta 5
 16. Major re-design of the "Processing" panel.  The old controls have been removed and replaced with a control
     to perform an inverse hyperbolic side stretch of the image with the ability to preview the changes.
 
-    This is a work in progress and most likely be enhanced later.   The most likely change would be the addition
+    This is a work in progress and will most likely be enhanced later.   The most likely change would be the addition
     a control to adjust the colour balance of the image.
+
+17. Issue an error message for problems reading a broken FITS file instead of throwing an exception.
 
 Changes for DeepSkyStacker 6.1.3
 ================================
