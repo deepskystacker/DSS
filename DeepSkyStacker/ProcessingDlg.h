@@ -103,12 +103,13 @@ namespace DSS
 
 		bool askToSave();
 
+		bool imageLoaded{ false };	// Whether an image is loaded and can be processed	
+
 		double asinhBeta{ DefaultAsinhBeta };	// Asinh stretch value
 		double asinhBP{ DefaultAsinhBP };		// Asinh black point value
 		bool asinhHWLuminance{ true };	// Whether to use human weighted luminance for asinh stretch
-
-		bool imageLoaded{ false };	// Whether an image is loaded and can be processed	
 		bool preview{ true };		// Whether to show a preview of the processed image
+
 		//
 		// Flag to control which DeepStack object to use for processAndShow() and showHistogram().
 		// If true, use the preview DeepStack object, which is created by the doPreview() method
@@ -314,6 +315,11 @@ namespace DSS
 				emit onPreview();	// Apply the stretch asynchronously to the preview image.
 			}
 			else controls->applyButton->setEnabled(true);
+		}
+
+		void enableApplyButton()
+		{
+			controls->applyButton->setEnabled(true);
 		}
 
 #if (0)

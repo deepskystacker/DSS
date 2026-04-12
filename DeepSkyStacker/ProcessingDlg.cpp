@@ -285,6 +285,7 @@ namespace DSS
 		dssApp->deepStack().SetProgress(&dlg);
 		ok = dssApp->deepStack().LoadStackedInfo(file);
 		dssApp->deepStack().SetProgress(nullptr);
+		dssApp->deepStack().saveSettings(asinhBeta, asinhBP, asinhHWLuminance, preview);
 		QGuiApplication::restoreOverrideCursor();
 
 		if (ok)
@@ -389,6 +390,7 @@ namespace DSS
 				dssApp->deepStack().SetProgress(&dlg);
 				ok = dssApp->deepStack().LoadStackedInfo(file);
 				dssApp->deepStack().SetProgress(nullptr);
+				dssApp->deepStack().saveSettings(asinhBeta, asinhBP, asinhHWLuminance, preview);
 				QGuiApplication::restoreOverrideCursor();
 
 				if (ok)
@@ -941,8 +943,9 @@ namespace DSS
 
 		// enable the Apply button to allow the user to apply the stretch to the
 		// main image if they are happy with the preview.
-		controls->applyButton->setEnabled(true);
-
+		// Use QMetaObject::invokeMethod() rather then emit as we are not running
+		// in the same thread
+		QMetaObject::invokeMethod(this, "enableApplyButton", Qt::ConnectionType::AutoConnection);
 	}
 
 	//
@@ -970,6 +973,8 @@ namespace DSS
 		// Now process the image with the current settings and show the result
 		//
 		DeepStack& deepStack = undoRedoStack.current();
+		deepStack.saveSettings(asinhBeta, asinhBP, asinhHWLuminance, preview);
+
 		StackedBitmap& bitmap{ deepStack.GetStackedBitmap() };
 
 		//
@@ -987,6 +992,7 @@ namespace DSS
 		// Now de-normalise the image back to the original range
 		//
 		bitmap.deNormalise();
+		updateControls();
 
 		processAndShow();
 		showHistogram();
@@ -995,21 +1001,110 @@ namespace DSS
 	void ProcessingDlg::onUndo()
 	{
 		undoRedoStack.moveBackward();
+
+		//
+		// Restore the ASinH stretch settings for the current image from the undo-redo stack and update the controls to match
+		// Block signals from the controls to prevent them firing when we update the control values to match the current
+		// settings from the undo-redo stack
+		//
+		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
+		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
+		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
+		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
+		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
+		const QSignalBlocker previewBlocker(controls->asinhPreview);
+		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
+		asinhBeta = beta;
+		asinhBP = bp;
+		asinhHWLuminance = hwl;
+		preview = pv;
+		controls->asinhStretchSpinBox->setValue(beta);
+		controls->asinhStretchSlider->setValue(beta * 10.0);
+		controls->asinhBPSpinBox->setValue(bp);
+		controls->asinhBPSlider->setValue(bp * 1000.0);
+		controls->asinhHumanWeighted->setChecked(hwl);
+		controls->asinhPreview->setChecked(pv);
+
+		if (undoRedoStack.index() == 0 && preview)
+		{
+			emit onPreview();
+			return;
+		}
+
+		updateControls();
+
 		processAndShow();
 		showHistogram();
-		//updateControls();
 	}
 
 	void ProcessingDlg::onRedo()
 	{
 		undoRedoStack.moveForward();
+		//
+		// Restore the ASinH stretch settings for the current image from the undo-redo stack and update the controls to match
+		// Block signals from the controls to prevent them firing when we update the control values to match the current
+		// settings from the undo-redo stack
+		//
+		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
+		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
+		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
+		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
+		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
+		const QSignalBlocker previewBlocker(controls->asinhPreview);
+		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
+		asinhBeta = beta;
+		asinhBP = bp;
+		asinhHWLuminance = hwl;
+		preview = pv;
+		controls->asinhStretchSpinBox->setValue(beta);
+		controls->asinhStretchSlider->setValue(beta * 10.0);
+		controls->asinhBPSpinBox->setValue(bp);
+		controls->asinhBPSlider->setValue(bp * 1000.0);
+		controls->asinhHumanWeighted->setChecked(hwl);
+		controls->asinhPreview->setChecked(pv);
+
+		updateControls();
+
 		processAndShow();
 		showHistogram();
-		//updateControls();
 	}
 
 	void ProcessingDlg::onReset()
 	{
+		undoRedoStack.reset();	// Reset the undo-redo stack to the original image, which is the first entry in the stack
+		//
+		// Restore the ASinH stretch settings for the current image from the undo-redo stack and update the controls to match
+		// Block signals from the controls to prevent them firing when we update the control values to match the current
+		// settings from the undo-redo stack
+		//
+		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
+		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
+		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
+		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
+		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
+		const QSignalBlocker previewBlocker(controls->asinhPreview);
+		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
+		asinhBeta = beta;
+		asinhBP = bp;
+		asinhHWLuminance = hwl;
+		preview = pv;
+		controls->asinhStretchSpinBox->setValue(beta);
+		controls->asinhStretchSlider->setValue(beta * 10.0);
+		controls->asinhBPSpinBox->setValue(bp);
+		controls->asinhBPSlider->setValue(bp * 1000.0);
+		controls->asinhHumanWeighted->setChecked(hwl);
+		controls->asinhPreview->setChecked(pv);
+
+		updateControls();
+
+		if (preview)
+		{
+			emit onPreview();
+			return;
+		}
+
+		processAndShow();
+		showHistogram();
 		setDirty();
 	}
 

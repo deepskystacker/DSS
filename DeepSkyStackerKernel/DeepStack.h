@@ -19,6 +19,14 @@ private :
 	std::unique_ptr<QImage> image_;
 	DSS::OldProgressBase* m_pProgress;
 
+	//
+	// Copies of the values for the stretch parameters used to restore them on undo.
+	//
+	double asinhBeta_{ 0.0 };	// Asinh stretch value
+	double asinhBP_{ 0.0 };		// Asinh black point value
+	bool asinhHWLuminance_{ true };	// Whether to use human weighted luminance for asinh stretch
+	bool preview_{ true };		// Whether to show a preview of the processed image
+
 public :
 	DeepStack() : 
 		m_pProgress{nullptr}
@@ -115,5 +123,19 @@ public :
 	bool	IsLoaded()
 	{
 		return GetWidth() && GetHeight();
+	}
+
+	DeepStack& saveSettings(double beta, double bp, bool hwl, bool pv)
+	{
+		this->asinhBeta_ = beta;
+		this->asinhBP_ = bp;
+		this->asinhHWLuminance_ = hwl;
+		this->preview_ = pv;
+		return *this;
+	}
+
+	std::tuple<double, double, bool, bool> savedSettings() const
+	{
+		return std::make_tuple(asinhBeta_, asinhBP_, asinhHWLuminance_, preview_);
 	}
 };
