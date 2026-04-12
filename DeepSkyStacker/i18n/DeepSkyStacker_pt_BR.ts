@@ -1287,97 +1287,50 @@ Pixels frios detectados: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="69"/>
-        <source>RGB/K Levels</source>
-        <comment>IDD_RGB</comment>
-        <translation>RGB/K Niveis</translation>
+        <location filename="../ui/ProcessingControls.ui" line="41"/>
+        <source>ASinH Image stretch</source>
+        <translation>ASinH Esticar a imagem</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="101"/>
-        <source>Set Red Histogram Adjustment curve</source>
-        <comment>IDS_TT_REDADJUST</comment>
-        <translation>Ajustar Histograma no Vermelho</translation>
+        <location filename="../ui/ProcessingControls.ui" line="63"/>
+        <source>Stretch Factor</source>
+        <translation>Fator de alongamento</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="162"/>
-        <source>Set Green Histogram Adjustment curve</source>
-        <comment>IDS_TT_GREENADJUST</comment>
-        <translation>Ajustar Histograma no Verde</translation>
+        <location filename="../ui/ProcessingControls.ui" line="131"/>
+        <source>Black Point</source>
+        <translation>Ponto Negro</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="223"/>
-        <source>Set Blue Histogram Adjustment curve</source>
-        <comment>IDS_TT_BLUEADJUST</comment>
-        <translation>Ajustar Histograma no Azul</translation>
+        <location filename="../ui/ProcessingControls.ui" line="203"/>
+        <source>Human-weighted luminance</source>
+        <translation>Luminância ponderada para humanos</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="264"/>
-        <source>Linked settings</source>
-        <comment>IDC_LINK</comment>
-        <translation>Configuracoes ligadas</translation>
+        <location filename="../ui/ProcessingControls.ui" line="225"/>
+        <source>Preview</source>
+        <translation>Pré-visualização</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="272"/>
-        <source>Luminance</source>
-        <comment>IDD_LUMINANCE</comment>
-        <translation>Luminancia</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="299"/>
-        <source>Darkness</source>
-        <comment>IDC_TEXT_DARKNESS</comment>
-        <translation>Escuro</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="359"/>
-        <source>Midtone</source>
-        <comment>IDC_TEXT_MIDTONE</comment>
-        <translation>Tonalidade</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="419"/>
-        <source>Highlight</source>
-        <comment>IDC_TEXT_HIGHLIGHT</comment>
-        <translation>Luminosidade</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="465"/>
-        <source>Saturation</source>
-        <comment>IDD_SATURATION</comment>
-        <translation>Saturacao</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="492"/>
-        <source>Saturation shift</source>
-        <comment>IDC_TEXT_SATURATION</comment>
-        <translation>Mudanca de saturacao</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="586"/>
+        <location filename="../ui/ProcessingControls.ui" line="282"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="593"/>
+        <location filename="../ui/ProcessingControls.ui" line="289"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
         <translation>Anular ultima aplicacao-configuracoes</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="616"/>
-        <source>Save, Load, Manage settings ...</source>
-        <comment>IDS_MANAGESETTINGS</comment>
-        <translation>Guardar, Carregar, Configuracoes de Gerencia...</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="639"/>
+        <location filename="../ui/ProcessingControls.ui" line="306"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
         <translation>Retroceder na ultima das configuracoes</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="656"/>
+        <location filename="../ui/ProcessingControls.ui" line="323"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Anular</translation>
@@ -1386,136 +1339,101 @@ Pixels frios detectados: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1178"/>
+        <location filename="../ProcessingDlg.cpp" line="880"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Guardar as modificacoes?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="434"/>
+        <location filename="../ProcessingDlg.cpp" line="354"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Imagem TIFF ou FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="329"/>
+        <location filename="../ProcessingDlg.cpp" line="247"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Mascara d estrela criado por DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="331"/>
+        <location filename="../ProcessingDlg.cpp" line="249"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Guardando mascara estrela em %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="393"/>
-        <location filename="../ProcessingDlg.cpp" line="502"/>
+        <location filename="../ProcessingDlg.cpp" line="316"/>
+        <location filename="../ProcessingDlg.cpp" line="420"/>
         <source>Failed to load image %1</source>
         <translation>Falha ao carregar a imagem %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="534"/>
+        <location filename="../ProcessingDlg.cpp" line="450"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Imagem 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="535"/>
+        <location filename="../ProcessingDlg.cpp" line="451"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Imagem 32 bit/ch - integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="536"/>
+        <location filename="../ProcessingDlg.cpp" line="452"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Imagem 32 bit/ch - rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="537"/>
+        <location filename="../ProcessingDlg.cpp" line="453"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Imagem 16 bit/ch (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="538"/>
+        <location filename="../ProcessingDlg.cpp" line="454"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Imagem 32 bit/ch - integer (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="539"/>
+        <location filename="../ProcessingDlg.cpp" line="455"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Imagem 32 bit/ch - rational (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="548"/>
+        <location filename="../ProcessingDlg.cpp" line="464"/>
         <source>Save Image</source>
         <translation>Salvar imagem</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="641"/>
+        <location filename="../ProcessingDlg.cpp" line="567"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Nao existe foto para guardar.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="656"/>
+        <location filename="../ProcessingDlg.cpp" line="582"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Sem informacao disponivel</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="595"/>
         <source>Exposure: %1 </source>
         <translation>Exposicao: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="670"/>
+        <location filename="../ProcessingDlg.cpp" line="596"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
             <numerusform>%n fotograma</numerusform>
             <numerusform>%n fotogramas</numerusform>
         </translation>
-    </message>
-</context>
-<context>
-    <name>DSS::ProcessingSettingsDlg</name>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>Processing Settings</source>
-        <translation>Cofiguracoes Directivas</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
-        <source>Add</source>
-        <translation>Adicionar</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="47"/>
-        <source>Delete</source>
-        <translation>Apagar</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="73"/>
-        <source>Load</source>
-        <translation>Carregar</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="86"/>
-        <source>Close</source>
-        <translation>Fechar</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingSettingsDlg.cpp" line="160"/>
-        <source>The Processing Settings name may not contain either a / or \.
-Please change the name.</source>
-        <translation>O nome das Configurações de Processamento não pode conter nem / nem \.
-Por favor, altere o nome.</translation>
     </message>
 </context>
 <context>
@@ -1573,7 +1491,7 @@ Por favor, altere o nome.</translation>
     <message>
         <location filename="../ui/QualityChart.ui" line="40"/>
         <location filename="../QualityChart.cpp" line="135"/>
-        <location filename="../QualityChart.cpp" line="325"/>
+        <location filename="../QualityChart.cpp" line="342"/>
         <source>Star Eccentricity</source>
         <translation>Excentricidade Estelar</translation>
     </message>
@@ -1589,17 +1507,17 @@ Por favor, altere o nome.</translation>
         <translation>Gráfico de Qualidade Estelar</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="251"/>
+        <location filename="../QualityChart.cpp" line="268"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>Interpolando dados de FWHM. Aguarde.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="356"/>
+        <location filename="../QualityChart.cpp" line="373"/>
         <source>FWHM</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="229"/>
+        <location filename="../QualityChart.cpp" line="246"/>
         <source>Interpolating Eccentricity data.  Please be patient.</source>
         <translation>Interpolando dados de excentricidade. Por favor, seja paciente.</translation>
     </message>
@@ -1897,61 +1815,61 @@ Por favor, altere o nome.</translation>
         <translation>Reduzir ruido usando um filtro medio</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="197"/>
+        <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do dark, flat e offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="200"/>
+        <location filename="../RegisterSettings.cpp" line="192"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do dark e flat antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="203"/>
+        <location filename="../RegisterSettings.cpp" line="195"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do dark e offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="206"/>
+        <location filename="../RegisterSettings.cpp" line="198"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do flat e offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="209"/>
+        <location filename="../RegisterSettings.cpp" line="201"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do dark antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="212"/>
+        <location filename="../RegisterSettings.cpp" line="204"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do flat antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="215"/>
+        <location filename="../RegisterSettings.cpp" line="207"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Nao esqueca adicionar-verificar fotogramas do offset antes d integrar.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="240"/>
+        <location filename="../RegisterSettings.cpp" line="232"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>darks, flats and offsets/bias verificados.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="303"/>
+        <location filename="../RegisterSettings.cpp" line="297"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registando %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="310"/>
+        <location filename="../RegisterSettings.cpp" line="304"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 estrela(s)</translation>
@@ -2122,37 +2040,30 @@ Quer guardar?</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
-        <source>This option saves the image as you see it
-Use it if you plan to do further processing in other software</source>
+        <source>This option saves the image with any changes you have made.
+Use it if you plan to do further processing in other software.</source>
         <comment>IDS_TT_APPLIED</comment>
-        <translation>Nesta opcao imagem e guardada como a ve
-Use a se planear futuros processamentos com outro programa</translation>
-    </message>
-    <message>
-        <location filename="../SavePicture.cpp" line="123"/>
-        <source>Embed adjustments in the saved image but do not apply them</source>
-        <comment>IDC_EMBEDDED</comment>
-        <translation>Defina ajustes na imagem e nao os aplique</translation>
+        <translation>Esta opção salva a imagem com todas as alterações feitas.
+Use-a se você planeja processá-la posteriormente em outro software.</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="124"/>
-        <source>This option saves the unprocessed image and embeds the processing settings
-Use it if you plan to do all the processing in other software or if you plan to re-open the picture with DeepSkyStacker</source>
-        <comment>IDS_TT_EMBEDDED</comment>
-        <translation>Esta opcao guarda imagem nao processada inserida nas configuracoes-processamento
-Use a se planear futuros processamentos em outro programa ou reabri la depois com DeepSkyStacker</translation>
+        <source>This option saves the unprocessed image.
+Use it if you plan to do all the processing in other software.</source>
+        <translation>Esta opção salva a imagem não processada.
+Use-a se você planeja fazer todo o processamento em outro software.</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="129"/>
+        <location filename="../SavePicture.cpp" line="127"/>
+        <source>Create an image from the selected rectangle.</source>
+        <comment>IDC_USERECT</comment>
+        <translation>Criar uma imagem a partir do retângulo selecionado.</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="123"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
         <translation>Nao aplique ajustes na imagem guardada</translation>
-    </message>
-    <message>
-        <location filename="../SavePicture.cpp" line="130"/>
-        <source>Create an image from the selected rectangle</source>
-        <comment>IDC_USERECT</comment>
-        <translation>Criar imagem do rectangulo selecionado</translation>
     </message>
 </context>
 <context>
@@ -3190,66 +3101,21 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
 (voce pode activar-desativar esta opcao mais tarde na janela respectiva)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="521"/>
+        <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Patrocinador DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="380"/>
+        <location filename="../DeepSkyStacker.cpp" line="381"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 não existe ou não é um ficheiro</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="693"/>
-        <location filename="../DeepSkyStacker.cpp" line="695"/>
+        <location filename="../DeepSkyStacker.cpp" line="689"/>
+        <location filename="../DeepSkyStacker.cpp" line="691"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Ajuda.chm</translation>
-    </message>
-</context>
-<context>
-    <name>Histogram</name>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="86"/>
-        <source>Linear</source>
-        <comment>IDS_HAT_LINEAR</comment>
-        <translation>Linear</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="89"/>
-        <source>Cube Root</source>
-        <comment>IDS_HAT_CUBEROOT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="92"/>
-        <source>Square Root</source>
-        <comment>IDS_HAT_SQUAREROOT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="95"/>
-        <source>Logarithm</source>
-        <comment>IDS_HAT_LOG</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="98"/>
-        <source>Log(Log)</source>
-        <comment>IDS_HAT_LOGLOG</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="101"/>
-        <source>Log(Square Root)</source>
-        <comment>IDS_HAT_LOGSQUAREROOT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="104"/>
-        <source>ASinH</source>
-        <comment>IDS_HAT_ASINH</comment>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

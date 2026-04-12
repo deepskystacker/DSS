@@ -1288,97 +1288,50 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="69"/>
-        <source>RGB/K Levels</source>
-        <comment>IDD_RGB</comment>
-        <translation>RGB/K Уровни</translation>
+        <location filename="../ui/ProcessingControls.ui" line="41"/>
+        <source>ASinH Image stretch</source>
+        <translation>ASinH Растяжение изображения</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="101"/>
-        <source>Set Red Histogram Adjustment curve</source>
-        <comment>IDS_TT_REDADJUST</comment>
-        <translation>Установить метод подстройки гистограммы красного</translation>
+        <location filename="../ui/ProcessingControls.ui" line="63"/>
+        <source>Stretch Factor</source>
+        <translation>Коэффициент растяжения</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="162"/>
-        <source>Set Green Histogram Adjustment curve</source>
-        <comment>IDS_TT_GREENADJUST</comment>
-        <translation>Установить метод подстройки гистограммы зелёного</translation>
+        <location filename="../ui/ProcessingControls.ui" line="131"/>
+        <source>Black Point</source>
+        <translation>Блэк Пойнт</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="223"/>
-        <source>Set Blue Histogram Adjustment curve</source>
-        <comment>IDS_TT_BLUEADJUST</comment>
-        <translation>Установить метод подстройки гистограммы синего</translation>
+        <location filename="../ui/ProcessingControls.ui" line="203"/>
+        <source>Human-weighted luminance</source>
+        <translation>Яркость, взвешенная по человеческому признаку</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="264"/>
-        <source>Linked settings</source>
-        <comment>IDC_LINK</comment>
-        <translation>Связанные установки</translation>
+        <location filename="../ui/ProcessingControls.ui" line="225"/>
+        <source>Preview</source>
+        <translation>Предварительный просмотр</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="272"/>
-        <source>Luminance</source>
-        <comment>IDD_LUMINANCE</comment>
-        <translation>Освещённость</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="299"/>
-        <source>Darkness</source>
-        <comment>IDC_TEXT_DARKNESS</comment>
-        <translation>Тёмные тона</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="359"/>
-        <source>Midtone</source>
-        <comment>IDC_TEXT_MIDTONE</comment>
-        <translation>Средние тона</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="419"/>
-        <source>Highlight</source>
-        <comment>IDC_TEXT_HIGHLIGHT</comment>
-        <translation>Яркие тона</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="465"/>
-        <source>Saturation</source>
-        <comment>IDD_SATURATION</comment>
-        <translation>Цветность</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="492"/>
-        <source>Saturation shift</source>
-        <comment>IDC_TEXT_SATURATION</comment>
-        <translation>Сдвиг насыщенности</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="586"/>
+        <location filename="../ui/ProcessingControls.ui" line="282"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="593"/>
+        <location filename="../ui/ProcessingControls.ui" line="289"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
         <translation>Отменить последние применённые настройки</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="616"/>
-        <source>Save, Load, Manage settings ...</source>
-        <comment>IDS_MANAGESETTINGS</comment>
-        <translation>Сохранение, загрузка, управление настройками...</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="639"/>
+        <location filename="../ui/ProcessingControls.ui" line="306"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
         <translation>Повторить последние применённые настройки</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="656"/>
+        <location filename="../ui/ProcessingControls.ui" line="323"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Сбросить</translation>
@@ -1387,95 +1340,95 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1178"/>
+        <location filename="../ProcessingDlg.cpp" line="880"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="434"/>
+        <location filename="../ProcessingDlg.cpp" line="354"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Изображение TIFF или FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="329"/>
+        <location filename="../ProcessingDlg.cpp" line="247"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Маска звёзд, созданная DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="331"/>
+        <location filename="../ProcessingDlg.cpp" line="249"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Сохранить маску звёзд в %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="393"/>
-        <location filename="../ProcessingDlg.cpp" line="502"/>
+        <location filename="../ProcessingDlg.cpp" line="316"/>
+        <location filename="../ProcessingDlg.cpp" line="420"/>
         <source>Failed to load image %1</source>
         <translation>Не удалось загрузить изображение %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="534"/>
+        <location filename="../ProcessingDlg.cpp" line="450"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Изображение 16 бит/канал (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="535"/>
+        <location filename="../ProcessingDlg.cpp" line="451"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - целые (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="536"/>
+        <location filename="../ProcessingDlg.cpp" line="452"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - дробные (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="537"/>
+        <location filename="../ProcessingDlg.cpp" line="453"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 16 бит/канал (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="538"/>
+        <location filename="../ProcessingDlg.cpp" line="454"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 32 бит/канал - целые (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="539"/>
+        <location filename="../ProcessingDlg.cpp" line="455"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS изображение 32 бит/канал -дробные (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="548"/>
+        <location filename="../ProcessingDlg.cpp" line="464"/>
         <source>Save Image</source>
         <translation>Сохранить изображение</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="641"/>
+        <location filename="../ProcessingDlg.cpp" line="567"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Нечего сохранять.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="656"/>
+        <location filename="../ProcessingDlg.cpp" line="582"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Инфо не доступно</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="595"/>
         <source>Exposure: %1 </source>
         <translation>Выдержка: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="670"/>
+        <location filename="../ProcessingDlg.cpp" line="596"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1483,41 +1436,6 @@ Detected Cold Pixels: %L3 (%L4%)
             <numerusform>%n кадра</numerusform>
             <numerusform>%n кадров</numerusform>
         </translation>
-    </message>
-</context>
-<context>
-    <name>DSS::ProcessingSettingsDlg</name>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="17"/>
-        <source>Processing Settings</source>
-        <translation>Управление установками</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="34"/>
-        <source>Add</source>
-        <translation>Добавить</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="47"/>
-        <source>Delete</source>
-        <translation>Удалить</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="73"/>
-        <source>Load</source>
-        <translation>Загрузить</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingSettingsDlg.ui" line="86"/>
-        <source>Close</source>
-        <translation>Закрыть</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingSettingsDlg.cpp" line="160"/>
-        <source>The Processing Settings name may not contain either a / or \.
-Please change the name.</source>
-        <translation>Имя настроек обработки не может содержать ни /, ни \.
-Измените имя.</translation>
     </message>
 </context>
 <context>
@@ -1576,7 +1494,7 @@ Please change the name.</source>
     <message>
         <location filename="../ui/QualityChart.ui" line="40"/>
         <location filename="../QualityChart.cpp" line="135"/>
-        <location filename="../QualityChart.cpp" line="325"/>
+        <location filename="../QualityChart.cpp" line="342"/>
         <source>Star Eccentricity</source>
         <translation>Звездная эксцентричность</translation>
     </message>
@@ -1592,17 +1510,17 @@ Please change the name.</source>
         <translation>График качества звёзд</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="251"/>
+        <location filename="../QualityChart.cpp" line="268"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
         <translation>Интерполяция данных FWHM. Пожалуйста, проявите терпение.</translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="356"/>
+        <location filename="../QualityChart.cpp" line="373"/>
         <source>FWHM</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../QualityChart.cpp" line="229"/>
+        <location filename="../QualityChart.cpp" line="246"/>
         <source>Interpolating Eccentricity data.  Please be patient.</source>
         <translation>Интерполяция данных эксцентриситета. Пожалуйста, будьте терпеливы.</translation>
     </message>
@@ -1900,61 +1818,61 @@ Please change the name.</source>
         <translation>Уменьшить шум median фильтром</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="197"/>
+        <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
         <translation>Перед сложением не забудьте добавить и отметить dark, flat и offset кадры.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="200"/>
+        <location filename="../RegisterSettings.cpp" line="192"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
         <translation>Перед сложением не забудьте добавить и отметить dark и flat кадры.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="203"/>
+        <location filename="../RegisterSettings.cpp" line="195"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
         <translation>Перед сложением не забудьте добавить и отметить dark и offset кадры.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="206"/>
+        <location filename="../RegisterSettings.cpp" line="198"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
         <translation>Перед сложением не забудьте добавить и отметить flat и offset кадры.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="209"/>
+        <location filename="../RegisterSettings.cpp" line="201"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
         <translation>Перед сложением не забудьте добавить и отметить dark кадры.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="212"/>
+        <location filename="../RegisterSettings.cpp" line="204"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
         <translation>Перед сложением не забудьте добавить и отметить flat кадры.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="215"/>
+        <location filename="../RegisterSettings.cpp" line="207"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
         <translation>Перед сложением не забудьте добавить и отметить offset кадры.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="240"/>
+        <location filename="../RegisterSettings.cpp" line="232"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
         <translation>dark, flat и offset отмечены.</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="303"/>
+        <location filename="../RegisterSettings.cpp" line="297"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Регистрирую %1</translation>
     </message>
     <message>
-        <location filename="../RegisterSettings.cpp" line="310"/>
+        <location filename="../RegisterSettings.cpp" line="304"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
         <translation>%1 звёзд</translation>
@@ -2125,37 +2043,30 @@ Do you want to save them?</source>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
-        <source>This option saves the image as you see it
-Use it if you plan to do further processing in other software</source>
+        <source>This option saves the image with any changes you have made.
+Use it if you plan to do further processing in other software.</source>
         <comment>IDS_TT_APPLIED</comment>
-        <translation>Эта опция сохранит изображение как Вы его видите
-Используйте её, если планируете обрабатывать изображение в другой программе</translation>
-    </message>
-    <message>
-        <location filename="../SavePicture.cpp" line="123"/>
-        <source>Embed adjustments in the saved image but do not apply them</source>
-        <comment>IDC_EMBEDDED</comment>
-        <translation>Внедрить корректировки в сохраняемое изображение</translation>
+        <translation>Эта опция сохраняет изображение со всеми внесенными вами изменениями.
+Используйте ее, если планируете дальнейшую обработку в другом программном обеспечении.</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="124"/>
-        <source>This option saves the unprocessed image and embeds the processing settings
-Use it if you plan to do all the processing in other software or if you plan to re-open the picture with DeepSkyStacker</source>
-        <comment>IDS_TT_EMBEDDED</comment>
-        <translation>Эта опция сохранит необработанное изображение, но внедрит настройки обработки
-Используйте её для обработки изображения в другой программе или если планируете открыть изображение в DeepSkyStacker</translation>
+        <source>This option saves the unprocessed image.
+Use it if you plan to do all the processing in other software.</source>
+        <translation>Эта опция сохраняет необработанное изображение.
+Используйте её, если вы планируете выполнять всю обработку в другом программном обеспечении.</translation>
     </message>
     <message>
-        <location filename="../SavePicture.cpp" line="129"/>
+        <location filename="../SavePicture.cpp" line="127"/>
+        <source>Create an image from the selected rectangle.</source>
+        <comment>IDC_USERECT</comment>
+        <translation>Создайте изображение из выделенного прямоугольника.</translation>
+    </message>
+    <message>
+        <location filename="../SavePicture.cpp" line="123"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
         <translation>Не применять настройки к сохраняемому изображению</translation>
-    </message>
-    <message>
-        <location filename="../SavePicture.cpp" line="130"/>
-        <source>Create an image from the selected rectangle</source>
-        <comment>IDC_USERECT</comment>
-        <translation>Создать изображение из выбранного прямоугольника</translation>
     </message>
 </context>
 <context>
@@ -3202,66 +3113,21 @@ You can probably get another one or download the final release from the web site
 (Эту опцию можно выключить и включить позже в)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="521"/>
+        <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Спонсор DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="380"/>
+        <location filename="../DeepSkyStacker.cpp" line="381"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 не существует или не является файлом</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="693"/>
-        <location filename="../DeepSkyStacker.cpp" line="695"/>
+        <location filename="../DeepSkyStacker.cpp" line="689"/>
+        <location filename="../DeepSkyStacker.cpp" line="691"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>Histogram</name>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="86"/>
-        <source>Linear</source>
-        <comment>IDS_HAT_LINEAR</comment>
-        <translation>Линейный</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="89"/>
-        <source>Cube Root</source>
-        <comment>IDS_HAT_CUBEROOT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="92"/>
-        <source>Square Root</source>
-        <comment>IDS_HAT_SQUAREROOT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="95"/>
-        <source>Logarithm</source>
-        <comment>IDS_HAT_LOG</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="98"/>
-        <source>Log(Log)</source>
-        <comment>IDS_HAT_LOGLOG</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="101"/>
-        <source>Log(Square Root)</source>
-        <comment>IDS_HAT_LOGSQUAREROOT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStackerKernel/histogram.h" line="104"/>
-        <source>ASinH</source>
-        <comment>IDS_HAT_ASINH</comment>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
