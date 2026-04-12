@@ -35,7 +35,7 @@
 **
 ****************************************************************************/
 #include "dssbase.h"
-#include "UndoRedoImageStack.h"
+#include "undoredostack.h"
 #include "tracecontrol.h"
 
 extern bool g_bShowRefStars;
@@ -85,7 +85,7 @@ private:
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	DSS::ProcessingDlg*	processingDlg;
-	DSS::UndoRedoImageStack undoRedoImageStack;
+	DSS::UndoRedoStack undoRedoImageStack;
 	ActivePanel activePanel;
 	QStringList args;
 	QString baseTitle;
@@ -130,7 +130,7 @@ public:
 
 
 	QString statusMessage();
-	DSS::UndoRedoImageStack& undoRedoStack() { return undoRedoImageStack; }
+	DSS::UndoRedoStack& undoRedoStack() { return undoRedoImageStack; }
 	DeepStack& deepStack() { return undoRedoImageStack.at(0); }
 	void setPanel(ActivePanel panel);
 	void disableSubDialogs();

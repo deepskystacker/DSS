@@ -206,7 +206,7 @@
     <ClInclude Include="..\Tools\griddata.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="UndoRedoImageStack.h">
+    <ClInclude Include="undoredostack.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
   </ItemGroup>

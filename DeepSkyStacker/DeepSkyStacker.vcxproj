@@ -386,7 +386,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="toolbar.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UndoRedoImageStack.h" />
+    <ClInclude Include="undoredostack.h" />
     <QtMoc Include="progressdlg.h" />
     <QtMoc Include="QualityChart.h" />
     <QtMoc Include="..\Tools\imageview.h" />

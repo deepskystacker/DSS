@@ -40,7 +40,7 @@
 
 namespace DSS
 {
-	class UndoRedoImageStack final
+	class UndoRedoStack final
 	{
 		using StackIterator = std::deque<DeepStack>::iterator;
 	public:
@@ -48,16 +48,16 @@ namespace DSS
 		std::size_t currentIndex;
 
 	public:
-		UndoRedoImageStack()
+		UndoRedoStack()
 		{
 		}
 
-		~UndoRedoImageStack()
+		~UndoRedoStack()
 		{}
 
-		UndoRedoImageStack(const UndoRedoImageStack&) = delete;
-		UndoRedoImageStack(UndoRedoImageStack&&) = delete;
-		UndoRedoImageStack& operator=(const UndoRedoImageStack&) = delete;
+		UndoRedoStack(const UndoRedoStack&) = delete;
+		UndoRedoStack(UndoRedoStack&&) = delete;
+		UndoRedoStack& operator=(const UndoRedoStack&) = delete;
 
 		inline bool empty() const
 		{
@@ -75,14 +75,14 @@ namespace DSS
 			return currentIndex;
 		}
 
-		inline UndoRedoImageStack& clear()
+		inline UndoRedoStack& clear()
 		{
 			theStack.clear();
 			currentIndex = 0;
 			return *this;
 		}
 
-		inline UndoRedoImageStack& reset()
+		inline UndoRedoStack& reset()
 		{
 			if (theStack.size() >= 2)
 			{
@@ -97,14 +97,14 @@ namespace DSS
 			return *this;
 		}
 
-		inline UndoRedoImageStack& moveForward()
+		inline UndoRedoStack& moveForward()
 		{
 			ZASSERTSTATE((currentIndex + 1) < theStack.size());
 			++currentIndex;
 			return *this;
 		}
 
-		inline UndoRedoImageStack& moveBackward()
+		inline UndoRedoStack& moveBackward()
 		{
 			ZASSERTSTATE(currentIndex > 0);
 			--currentIndex;

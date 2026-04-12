@@ -39,7 +39,7 @@
 #include "dssrect.h"
 #include "histogram.h"
 #include "processingcontrols.h"
-#include "UndoRedoImageStack.h"
+#include "undoredostack.h"
 #include "ui_ProcessingDlg.h"
 
 namespace DSS
@@ -70,7 +70,7 @@ namespace DSS
 		ProcessingControls* controls;
 		bool dirty_;
 		fs::path currentFile;
-		DSS::UndoRedoImageStack& undoRedoStack;
+		DSS::UndoRedoStack& undoRedoStack;
 
 		SelectRect* selectRect;
 		DSSRect	selectionRect;
