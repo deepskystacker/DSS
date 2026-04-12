@@ -117,14 +117,14 @@ namespace DSS
 		compressionLZW->setText(tr("LZW (Deprecated)", "IDC_COMPRESSION_LZW"));
 		optionsGroup->setTitle(tr("Options", "IDD_SAVEPICTURE"));
 		applyAdjustments->setText(tr("Apply adjustments to the saved image", "IDC_APPLIED"));
-		applyAdjustments->setToolTip(tr("This option saves the image with any changes you have made\n"
-			"Use it if you plan to do further processing in other software",
+		applyAdjustments->setToolTip(tr("This option saves the image with any changes you have made.\n"
+			"Use it if you plan to do further processing in other software.",
 			"IDS_TT_APPLIED"));
 		noAdjustments->setText(tr("Do not apply adjustments to the saved image", "IDS_SAVENOADJUSTMENT"));
-		noAdjustments->setToolTip(tr("This option saves the unprocessed image\n"
-			"Use it if you plan to do all the processing in other software"));
+		noAdjustments->setToolTip(tr("This option saves the unprocessed image.\n"
+			"Use it if you plan to do all the processing in other software."));
 
-		useRectangle->setText(tr("Create an image from the selected rectangle", "IDC_USERECT"));
+		useRectangle->setText(tr("Create an image from the selected rectangle.", "IDC_USERECT"));
 	}
 
 	void SavePicture::connectSignalsToSlots()
