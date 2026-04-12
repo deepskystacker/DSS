@@ -298,7 +298,15 @@ namespace DSS
 			showHistogram(); 
 
 			picture->clear();
-			processAndShow();
+			updateControls();
+			if (preview)
+			{
+				emit onPreview();
+			}
+			else
+			{
+				processAndShow();
+			}
 			setDirty(false);
 		}
 		else
@@ -392,8 +400,16 @@ namespace DSS
 					QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 					picture->clear();
-					processAndShow();
-					showHistogram();
+					updateControls();
+					if (preview)
+					{
+						onPreview();
+					}
+					else
+					{
+						processAndShow();
+						showHistogram();
+					}
 					setDirty(false);
 				}
 				else
@@ -485,7 +501,17 @@ namespace DSS
 				// Save the image in the format the user has selected
 				//
 				auto index{ fileFilters.indexOf(dlg.selectedNameFilter()) };
-				StackedBitmap& stackedBitmap{ dssApp->deepStack().GetStackedBitmap() };
+				//
+				// If the user has asked to apply the editing changes, choose the
+				// current image from the undo-redo stack, otherwise use the original
+				// stacked bitmap
+				//
+				StackedBitmap& stackedBitmap{ undoRedoStack.at(0).GetStackedBitmap() };
+
+				if (apply)
+				{
+					stackedBitmap = undoRedoStack.current().GetStackedBitmap();
+				}
 
 				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -816,8 +842,6 @@ namespace DSS
 
 	void ProcessingDlg::processAndShow()
 	{
-		updateControls();
-
 		DSSRect			cell;
 		//
 		// selectionRect is set whenever signal SelectRect::selectRectChanged is emitted

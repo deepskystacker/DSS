@@ -91,7 +91,7 @@ namespace DSS
 			}
 			else
 			{
-				embedAdjustments->setChecked(true);
+				noAdjustments->setChecked(true);
 			}
 
 		}
@@ -117,13 +117,8 @@ namespace DSS
 		QGroupBox* optionsGroup;
 		QVBoxLayout* optionsLayout;
 		QRadioButton* applyAdjustments;
-		QRadioButton* embedAdjustments;
+		QRadioButton* noAdjustments;
 		QCheckBox* useRectangle;
-
-		QString embedText;
-		QString embedTip;
-		QString noAdjustments;
-		QString noAdjustmentsTip;
 
 		TIFFCOMPRESSION compression_;
 		bool apply_;

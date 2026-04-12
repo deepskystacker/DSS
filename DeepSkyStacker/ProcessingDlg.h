@@ -81,7 +81,6 @@ namespace DSS
 		void setGreenButtonIcon();
 		void setBlueButtonIcon();
 
-		void updateControls();
 		void updateInformation();
 
 		void processAndShow();		// Driven by Apply button
@@ -148,6 +147,7 @@ namespace DSS
 
 	private slots:
 
+		void updateControls();
 		void onPreview();
 		void onApply();
 		void onUndo();

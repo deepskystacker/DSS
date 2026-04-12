@@ -58,7 +58,7 @@ namespace DSS
 		optionsGroup{new QGroupBox(this)},
 		optionsLayout{new QVBoxLayout(optionsGroup)},
 		applyAdjustments{new QRadioButton(optionsGroup)},
-		embedAdjustments{new QRadioButton(optionsGroup)},
+		noAdjustments{new QRadioButton(optionsGroup)},
 		useRectangle{new QCheckBox(optionsGroup)},
 		apply_{ false },
 		useRect_{false}
@@ -77,7 +77,7 @@ namespace DSS
 		optionsGroup->setObjectName("optionsGroup");
 		optionsLayout->setObjectName("optionsLayout");
 		applyAdjustments->setObjectName("applyAdjustments");
-		embedAdjustments->setObjectName("embedAdjustments");
+		noAdjustments->setObjectName("noAdjustments");
 		useRectangle->setObjectName("useRectangle");
 
 		compressionGroup->setLayout(compressionLayout);
@@ -87,7 +87,7 @@ namespace DSS
 
 		optionsGroup->setLayout(optionsLayout);
 		optionsLayout->addWidget(applyAdjustments);
-		optionsLayout->addWidget(embedAdjustments);
+		optionsLayout->addWidget(noAdjustments);
 		optionsLayout->addWidget(useRectangle);
 
 		useRectangle->setEnabled(false);
@@ -117,19 +117,13 @@ namespace DSS
 		compressionLZW->setText(tr("LZW (Deprecated)", "IDC_COMPRESSION_LZW"));
 		optionsGroup->setTitle(tr("Options", "IDD_SAVEPICTURE"));
 		applyAdjustments->setText(tr("Apply adjustments to the saved image", "IDC_APPLIED"));
-		applyAdjustments->setToolTip(tr("This option saves the image as you see it\n"
+		applyAdjustments->setToolTip(tr("This option saves the image with any changes you have made\n"
 			"Use it if you plan to do further processing in other software",
 			"IDS_TT_APPLIED"));
-		embedText = tr("Embed adjustments in the saved image but do not apply them", "IDC_EMBEDDED");
-		embedTip = tr("This option saves the unprocessed image and embeds the processing settings\n"
-			"Use it if you plan to do all the processing in other software"
-			" or if you plan to re-open the picture with DeepSkyStacker",
-			"IDS_TT_EMBEDDED");
-		embedAdjustments->setText(embedText);
-		embedAdjustments->setToolTip(embedTip);
-		noAdjustments = tr("Do not apply adjustments to the saved image", "IDS_SAVENOADJUSTMENT");
-		noAdjustmentsTip = tr("This option saves the unprocessed image\n"
-			"Use it if you plan to do all the processing in other software");
+		noAdjustments->setText(tr("Do not apply adjustments to the saved image", "IDS_SAVENOADJUSTMENT"));
+		noAdjustments->setToolTip(tr("This option saves the unprocessed image\n"
+			"Use it if you plan to do all the processing in other software"));
+
 		useRectangle->setText(tr("Create an image from the selected rectangle", "IDC_USERECT"));
 	}
 
@@ -139,7 +133,7 @@ namespace DSS
 		connect(compressionZIP, &QRadioButton::clicked, this, &SavePicture::onCompressionZIP);
 		connect(compressionLZW, &QRadioButton::clicked, this, &SavePicture::onCompressionLZW);
 		connect(applyAdjustments, &QRadioButton::clicked, this, &SavePicture::onApply);
-		connect(embedAdjustments, &QRadioButton::clicked, this, &SavePicture::onEmbed);
+		connect(noAdjustments, &QRadioButton::clicked, this, &SavePicture::onEmbed);
 		connect(useRectangle, &QCheckBox::clicked, this, &SavePicture::onRect);
 		connect(this, &QFileDialog::filterSelected, this, &SavePicture::onFilter);
 	}
@@ -187,15 +181,11 @@ namespace DSS
 			compressionNone->setChecked(true);
 			compressionZIP->setEnabled(false);
 			compressionLZW->setEnabled(false);
-			embedAdjustments->setText(noAdjustments);
-			embedAdjustments->setToolTip(noAdjustmentsTip);
 		}
 		else                // TIF files
 		{
 			compressionZIP->setEnabled(true);
 			compressionLZW->setEnabled(true);
-			embedAdjustments->setText(embedText);
-			embedAdjustments->setToolTip(embedTip);
 		}
 	}
 
