@@ -685,9 +685,9 @@ bool CFITSReader::Read()
 					.arg(status)
 					.arg(error_text)
 					.arg(file.generic_u16string().c_str()),
-				"FITSREADPIX",
-				DSSBase::Severity::Information,
-				DSSBase::Method::QErrorMessage);
+				"",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QMessageBox);
 			return false;
 		}
 
