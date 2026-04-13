@@ -686,9 +686,11 @@ void DeepSkyStacker::help()
 	explorerBar->setHelpEnabled(false);
 	QString appPath{ QCoreApplication::applicationDirPath() };
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
-	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+//	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+	QString helpFile{ appPath + "/Help/" + "DeepSkyStacker Help.chm" };
 #elif defined(Q_OS_MACOS)
-	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+//	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+	QString helpFile{ appPath + "/../Resources/" + "DeepSkyStacker Help.chm") };
 #endif
 
 #if defined(Q_OS_LINUX)
