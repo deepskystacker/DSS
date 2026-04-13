@@ -203,7 +203,7 @@ namespace DSS
 				// value which will call the asinhBPChangedHandler slot to update the preview image with the new
 				// black point value.
 				//
-				previewTimer.callOnTimeout(this, [=]() {
+				previewTimer.callOnTimeout(this, [=, this]() {
 					asinhBPChanged(value);
 						});
 				//
@@ -260,7 +260,7 @@ namespace DSS
 				// value which will call the asinhStretchChangedHandler slot to update the preview image with the new
 				// stretch value.
 				//
-				previewTimer.callOnTimeout(this, [=]() {
+				previewTimer.callOnTimeout(this, [=, this]() {
 					asinhStretchChanged(value);
 					});
 				//
