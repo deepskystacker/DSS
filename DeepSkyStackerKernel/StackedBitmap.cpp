@@ -34,7 +34,6 @@ void turnOnVld() {}
 
 
 namespace {
-	thread_local constinit int lastY = -1;
 	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
 }
 
