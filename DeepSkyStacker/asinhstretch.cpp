@@ -92,7 +92,7 @@ namespace DSS
 	// 
 	//		0.2126 for the red value,
 	//		0.7152 for the green value,	and
-	//		0.0f722 for the blue value
+	//		0.0722 for the blue value
 	// 
 	// which gets results closer to human perceptual color balance.
 	//
