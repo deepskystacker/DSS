@@ -104,7 +104,7 @@ namespace DSS
 			m_bMonochrome ? nullptr : m_vBluePlane.data() };
 
 		const int nrProcessors{ Multitask::GetNrProcessors() };
-		const bool do_channel[3] = { TRUE, TRUE, TRUE };
+		const bool do_channel[3] = { true, true, true };
 
 		float m_CB = 1.0f;
 		float asinh_beta = std::asinh(beta);
