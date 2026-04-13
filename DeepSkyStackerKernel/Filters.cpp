@@ -210,16 +210,18 @@ void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBit
 					};
 				};
 
+				double divisor = static_cast<double>(vOkPixels.size());
+
 				if (bMonochrome)
 				{
-					double		fAverage = fSumGray/vOkPixels.size();
+					double		fAverage = fSumGray/divisor;
 					pOutBitmap->SetPixel(Pixel.X, Pixel.Y, fAverage);
 				}
 				else
 				{
-					double		fAverageRed   = fSumRed/vOkPixels.size();
-					double		fAverageGreen = fSumGreen/vOkPixels.size();
-					double		fAverageBlue  = fSumBlue/vOkPixels.size();
+					double		fAverageRed   = fSumRed/divisor;
+					double		fAverageGreen = fSumGreen/divisor;
+					double		fAverageBlue  = fSumBlue/divisor;
 
 					pOutBitmap->SetPixel(Pixel.X, Pixel.Y, fAverageRed, fAverageGreen, fAverageBlue);
 				}

@@ -142,10 +142,10 @@ namespace DSS
 		controls->asinhStretchSlider->setTracking(false);
 
 		controls->asinhStretchSpinBox->setValue(DefaultAsinhBeta);
-		controls->asinhStretchSlider->setValue(DefaultAsinhBeta * 10.0);
+		controls->asinhStretchSlider->setValue(static_cast<int>(DefaultAsinhBeta * 10.0f));
 
 		controls->asinhBPSpinBox->setValue(DefaultAsinhBP);
-		controls->asinhBPSlider->setValue(DefaultAsinhBP * 100.0);
+		controls->asinhBPSlider->setValue(static_cast<int>(DefaultAsinhBP * 1000.0f));
 
 		controls->asinhHumanWeighted->setChecked(asinhHWLuminance);
 	}
@@ -752,19 +752,19 @@ namespace DSS
 					fY;
 				fX = i;
 
-				fY = exp(-(fX - fAverage[0]) * (fX - fAverage[0]) / (fStdDev[0] * fStdDev[0] * 2)) * lWidth / binCount;
+				fY = exp(-(fX - fAverage[0]) * (fX - fAverage[0]) / (fStdDev[0] * fStdDev[0] * 2)) * lWidth / static_cast<double>(binCount);
 				fY = lHeight - fY * lHeight;
 				redPoints.emplace_back(fX, fY);
 
 				bShow = bShow && (fX < 1000 && fY < 1000);
 
-				fY = exp(-(fX - fAverage[1]) * (fX - fAverage[1]) / (fStdDev[1] * fStdDev[1] * 2)) * lWidth / binCount;
+				fY = exp(-(fX - fAverage[1]) * (fX - fAverage[1]) / (fStdDev[1] * fStdDev[1] * 2)) * lWidth / static_cast<double>(binCount);
 				fY = lHeight - fY * lHeight;
 				greenPoints.emplace_back(fX, fY);
 
 				bShow = bShow && (fX < 1000 && fY < 1000);
 
-				fY = exp(-(fX - fAverage[2]) * (fX - fAverage[2]) / (fStdDev[2] * fStdDev[2] * 2)) * lWidth / binCount;
+				fY = exp(-(fX - fAverage[2]) * (fX - fAverage[2]) / (fStdDev[2] * fStdDev[2] * 2)) * lWidth / static_cast<double>(binCount);
 				fY = lHeight - fY * lHeight;
 				bluePoints.emplace_back(fX, fY);
 
@@ -1019,9 +1019,9 @@ namespace DSS
 		asinhHWLuminance = hwl;
 		preview = pv;
 		controls->asinhStretchSpinBox->setValue(beta);
-		controls->asinhStretchSlider->setValue(beta * 10.0);
+		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
 		controls->asinhBPSpinBox->setValue(bp);
-		controls->asinhBPSlider->setValue(bp * 1000.0);
+		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
 		controls->asinhHumanWeighted->setChecked(hwl);
 		controls->asinhPreview->setChecked(pv);
 
@@ -1057,9 +1057,9 @@ namespace DSS
 		asinhHWLuminance = hwl;
 		preview = pv;
 		controls->asinhStretchSpinBox->setValue(beta);
-		controls->asinhStretchSlider->setValue(beta * 10.0);
+		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
 		controls->asinhBPSpinBox->setValue(bp);
-		controls->asinhBPSlider->setValue(bp * 1000.0);
+		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f)	);
 		controls->asinhHumanWeighted->setChecked(hwl);
 		controls->asinhPreview->setChecked(pv);
 
@@ -1089,9 +1089,9 @@ namespace DSS
 		asinhHWLuminance = hwl;
 		preview = pv;
 		controls->asinhStretchSpinBox->setValue(beta);
-		controls->asinhStretchSlider->setValue(beta * 10.0);
+		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
 		controls->asinhBPSpinBox->setValue(bp);
-		controls->asinhBPSlider->setValue(bp * 1000.0);
+		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
 		controls->asinhHumanWeighted->setChecked(hwl);
 		controls->asinhPreview->setChecked(pv);
 

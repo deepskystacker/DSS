@@ -88,8 +88,8 @@ namespace DSS
 		//
 		// initial values for the Asinh stretch and black point sliders and spin boxes
 		//
-		static constexpr double DefaultAsinhBeta{ 200.0 };
-		static constexpr double DefaultAsinhBP{ 0.001 };
+		static constexpr float DefaultAsinhBeta{ 200.0f };
+		static constexpr float DefaultAsinhBP{ 0.001f };
 
 		void	drawHistogram(RGBHistogram& Histogram);
 		void	drawHistoBar(QPainter& painter, double lNrReds, double lNrGreens, double lNrBlues, size_t X, int lHeight);
@@ -105,8 +105,8 @@ namespace DSS
 
 		bool imageLoaded{ false };	// Whether an image is loaded and can be processed	
 
-		double asinhBeta{ DefaultAsinhBeta };	// Asinh stretch value
-		double asinhBP{ DefaultAsinhBP };		// Asinh black point value
+		float asinhBeta{ DefaultAsinhBeta };	// Asinh stretch value
+		float asinhBP{ DefaultAsinhBP };		// Asinh black point value
 		bool asinhHWLuminance{ true };	// Whether to use human weighted luminance for asinh stretch
 		bool preview{ true };		// Whether to show a preview of the processed image
 
@@ -162,12 +162,12 @@ namespace DSS
 		// and the integer values used in the sliders.
 		// 
 		// The asinhBP slider and spin box are designed to allow values between 0.00000 and 0.20000 with a resolution of 0.00001
-		// hence the multiplier and divisor of 1000.0.
+		// hence the multiplier and divisor of 1000.0f.
 		//	
-		// The asinhStretch slider and spin box are designed to allow values between 0.0 and 1000.0 with a resolution of 0.1,
-		// hence the multiplier and divisor of 10.0.
+		// The asinhStretch slider and spin box are designed to allow values between 0.0 and 1000.0f with a resolution of 0.1,
+		// hence the multiplier and divisor of 10.0f.
 		//
-		void asinhBPChangedHandler(double value)
+		void asinhBPChangedHandler(float value)
 		{
 			if (value != asinhBP)
 			{
@@ -175,7 +175,7 @@ namespace DSS
 				const QSignalBlocker spinBoxBlocker(controls->asinhBPSpinBox);
 				const QSignalBlocker sliderBlocker(controls->asinhBPSlider);
 				controls->asinhBPSpinBox->setValue(value);
-				controls->asinhBPSlider->setValue(value * 1000.0);
+				controls->asinhBPSlider->setValue(static_cast<int>(value * 1000.0f));
 				//
 				// if preview is enabled, apply the stretch asynchronously to the preview image.
 				// when the preview processing is complete, the apply button will be enabled
@@ -221,10 +221,10 @@ namespace DSS
 
 		void asinhBPSliderChanged(int value)
 		{
-			setAsinhBP(value / 1000.0);
+			setAsinhBP(static_cast<float>(value) / 1000.0f);
 		}
 
-		void asinhStretchChangedHandler(double value)
+		void asinhStretchChangedHandler(float value)
 		{
 			if (value != asinhBeta)
 			{
@@ -232,7 +232,7 @@ namespace DSS
 				const QSignalBlocker spinBoxBlocker(controls->asinhStretchSpinBox);
 				const QSignalBlocker sliderBlocker(controls->asinhStretchSlider);
 				controls->asinhStretchSpinBox->setValue(value);
-				controls->asinhStretchSlider->setValue(value * 10.0);
+				controls->asinhStretchSlider->setValue(static_cast<int>(value * 10.0f));
 				//
 				// if preview is enabled, apply the stretch asynchronously to the preview image.
 				// when the preview processing is complete, the apply button will be enabled
@@ -278,7 +278,7 @@ namespace DSS
 
 		void asinhStretchSliderChanged(int value)
 		{
-			setAsinhStretch(value / 10.0);
+			setAsinhStretch(static_cast<float>(value) / 10.0f);
 		}
 
 		void asinhHumanWeightedChanged(Qt::CheckState state)

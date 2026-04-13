@@ -85,7 +85,7 @@ namespace DSS
 		void	SetSize(double fMax, size_t size)
 		{
 			absoluteMax = fMax;
-			step = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (size - 1));
+			step = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / static_cast<double>(size - 1));
 
 			init(size);
 		}
@@ -97,14 +97,14 @@ namespace DSS
 
 		void	AddValue(double fValue, size_t number = 1)
 		{
-			size_t stepNum = static_cast<int>((fValue / step));
+			size_t stepNum = static_cast<size_t>((fValue / step));
 
 			if (stepNum < values.size())
 			{
 				values[stepNum] += number;
 				valueCount += number;
-				sumOfSquares += (fValue * fValue) * number;
-				sum += fValue * number;
+				sumOfSquares += (fValue * fValue) * static_cast<double>(number);
+				sum += fValue * static_cast<double>(number);
 				intMax = std::max(intMax, values[stepNum]);
 
 				maximum = std::max(maximum, fValue);
@@ -141,7 +141,7 @@ namespace DSS
 
 		double	componentValue(size_t index) const
 		{
-			return static_cast<double>(index * step);
+			return static_cast<double>(index) * step;
 		}
 
 		double	GetAverage()
@@ -149,7 +149,7 @@ namespace DSS
 			double		fResult = 0;
 
 			if (valueCount)
-				fResult = sum / valueCount;
+				fResult = sum / static_cast<double>(valueCount);
 
 			return fResult;
 		}
@@ -169,7 +169,7 @@ namespace DSS
 			double		fResult = 0;
 
 			if (valueCount)
-				fResult = sqrt(sumOfSquares / valueCount - pow(sum / valueCount, 2));
+				fResult = sqrt(sumOfSquares / static_cast<double>(valueCount) - pow(sum / static_cast<double>(valueCount), 2));
 
 			return fResult;
 		}

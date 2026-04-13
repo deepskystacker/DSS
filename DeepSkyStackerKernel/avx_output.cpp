@@ -373,7 +373,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 					if constexpr (Method == MedianKappaSigma)
 					{
 						const T* const pColor = medianData.data() + lightFrame;
-						colorValue = *pColor;
+						colorValue = static_cast<float>(*pColor);
 					}
 					if constexpr (Method == KappaSigma)
 					{

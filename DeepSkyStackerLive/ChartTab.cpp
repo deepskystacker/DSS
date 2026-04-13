@@ -511,8 +511,8 @@ namespace DSS
 		//
 		// Add dX and dY values and update the offset chart
 		//
-		dXSeries->append(1.0 + x, fdX);
-		dYSeries->append(1.0 + x, fdY);
+		dXSeries->append(1.0 + static_cast<double>(x), fdX);
+		dYSeries->append(1.0 + static_cast<double>(x), fdY);
 		// Remember where in the series the point for this name was inserted
 		offsetMap.emplace(name, dXSeries->count() - 1);
 		yAxis->applyNiceNumbers();
@@ -534,7 +534,7 @@ namespace DSS
 		//
 		// Add angle value 
 		//
-		angleSeries->append(1.0 + x, fAngle);
+		angleSeries->append(1.0 + static_cast<double>(x), fAngle);
 		// Remember where in the series the point for this name was inserted
 		angleMap.emplace(name, angleSeries->count() - 1);
 		yAxis->applyNiceNumbers();

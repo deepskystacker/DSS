@@ -90,6 +90,11 @@ namespace DSS
 	public:
 		StackedBitmap();
 		~StackedBitmap() = default;
+		StackedBitmap(const StackedBitmap& rhs) = default;
+		StackedBitmap(StackedBitmap&& rhs) = default;
+
+		StackedBitmap& operator = (const StackedBitmap& rhs) = default;
+		StackedBitmap& operator = (StackedBitmap&& rhs) = default;
 
 	private:
 		bool LoadTIFF(const fs::path& file, DSS::OldProgressBase* pProgress = nullptr);

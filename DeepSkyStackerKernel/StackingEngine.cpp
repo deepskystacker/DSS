@@ -488,10 +488,18 @@ bool CStackingEngine::ComputeLightFrameOffset(const size_t lBitmapIndice)
 
 	CLightFrameInfo& bitmap = bitmapsToStack[lBitmapIndice];
 
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wthread-safety-negative"
+#endif
 	{
 		const std::lock_guard<std::mutex> lock(mutex);
 		bResult = m_StackingInfo.GetParameters(bitmapsToStack[lBitmapIndice].filePath, BilinearParameters);
 	}
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
 
 	if (bResult)
 	{
@@ -766,7 +774,7 @@ void CStackingEngine::ComputeOffsets()
 
 	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
 
-	const int lLast = static_cast<int>(bitmapsToStack.size() * m_fKeptPercentage / 100.0);
+	const int lLast = static_cast<int>(static_cast<double>(bitmapsToStack.size()) * m_fKeptPercentage / 100.0);
 
 	if (m_pProgress)
 		m_pProgress->Start1(strText, lLast, true);
@@ -1081,12 +1089,20 @@ void CStackingEngine::ComputeBitmap()
 			m_pProgress->SetJointProgress(true);
 		}
 
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnrvo"
+#endif
 		constexpr auto ImageIndexVector = [](const auto& cometShifts)
 		{
 			std::vector<int> vImageOrder(cometShifts.size(), 0);
 			std::ranges::transform(cometShifts, std::begin(vImageOrder), &CImageCometShift::m_lImageIndex);
 			return vImageOrder;
 		};
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
 
 		ZTRACE_RUNTIME("Compute resulting bitmap");
 		if (!m_vCometShifts.empty())

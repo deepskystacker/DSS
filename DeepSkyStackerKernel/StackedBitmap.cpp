@@ -79,33 +79,30 @@ bool StackedBitmap::Allocate(int lWidth, int lHeight, bool bMonochrome)
 
 std::tuple<double, double, double> StackedBitmap::getValues(size_t X, size_t Y) const
 {
-	const size_t lOffset{ m_lWidth * Y + X };
+	const size_t offset{ m_lWidth * Y + X };
 
-	return {
-		m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0,
-		m_vGreenPlane[lOffset] / m_lNrBitmaps * 256.0,
-		m_vBluePlane[lOffset] / m_lNrBitmaps * 256.0
-	};
+	return getValues(offset);
 }
 
 std::tuple<double, double, double> StackedBitmap::getValues(size_t offset) const
 {
+	const double divisor = static_cast<double>(m_lNrBitmaps);
 	return {
-		m_vRedPlane[offset] / m_lNrBitmaps * 256.0,
-		m_vGreenPlane[offset] / m_lNrBitmaps * 256.0,
-		m_vBluePlane[offset] / m_lNrBitmaps * 256.0
+		m_vRedPlane[offset] / divisor * 256.0,
+		m_vGreenPlane[offset] / divisor * 256.0,
+		m_vBluePlane[offset] / divisor * 256.0
 	};
 }
 
 double StackedBitmap::getValue(size_t X, size_t Y) const
 {
 	const size_t lOffset{ m_lWidth * Y + X };
-	return  m_vRedPlane[lOffset] / m_lNrBitmaps * 256.0;
+	return  m_vRedPlane[lOffset] / static_cast<double>(m_lNrBitmaps) * 256.0;
 }
 
 double StackedBitmap::getValue(size_t offset) const
 {
-	return  m_vRedPlane[offset] / m_lNrBitmaps * 256.0;
+	return  m_vRedPlane[offset] / static_cast<double>(m_lNrBitmaps) * 256.0;
 }
 
 void StackedBitmap::SetPixel(int X, int Y, double fRed, double fGreen, double fBlue)
@@ -135,11 +132,12 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 //	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
-	fRed   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0;
+	const auto divisor = static_cast<double>(m_lNrBitmaps);
+	fRed   = m_vRedPlane[lOffset]/divisor*256.0;
 	if (!m_bMonochrome)
 	{
-		fGreen = m_vGreenPlane[lOffset]/m_lNrBitmaps*256.0;
-		fBlue  = m_vBluePlane[lOffset]/m_lNrBitmaps*256.0;
+		fGreen = m_vGreenPlane[lOffset]/divisor*256.0;
+		fBlue  = m_vBluePlane[lOffset]/divisor*256.0;
 	}
 	else
 		fGreen = fBlue = fRed;
@@ -159,18 +157,18 @@ void StackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double&
 
 double StackedBitmap::GetRedValue(int X, int Y) const
 {
-	return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+	return m_vRedPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / static_cast<double>(m_lNrBitmaps) * 256.0;
 }
 
 double StackedBitmap::GetGreenValue(int X, int Y) const
 {
-	return m_bMonochrome ? GetRedValue(X, Y) : m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+	return m_bMonochrome ? GetRedValue(X, Y) : m_vGreenPlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / static_cast<double>(m_lNrBitmaps) * 256.0;
 }
 
 double StackedBitmap::GetBlueValue(int X, int Y) const
 {
 	if (!m_bMonochrome)
-		return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / m_lNrBitmaps * 256.0;
+		return m_vBluePlane[static_cast<size_t>(static_cast<size_t>(m_lWidth) * Y + X)] / static_cast<double>(m_lNrBitmaps) * 256.0;
 	else
 		return GetRedValue(X, Y);
 }

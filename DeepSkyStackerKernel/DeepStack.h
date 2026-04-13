@@ -22,8 +22,8 @@ private :
 	//
 	// Copies of the values for the stretch parameters used to restore them on undo.
 	//
-	double asinhBeta_{ 0.0 };	// Asinh stretch value
-	double asinhBP_{ 0.0 };		// Asinh black point value
+	float asinhBeta_{ 0.0f };	// Asinh stretch value
+	float asinhBP_{ 0.0f };		// Asinh black point value
 	bool asinhHWLuminance_{ true };	// Whether to use human weighted luminance for asinh stretch
 	bool preview_{ true };		// Whether to show a preview of the processed image
 
@@ -125,7 +125,7 @@ public :
 		return GetWidth() && GetHeight();
 	}
 
-	DeepStack& saveSettings(double beta, double bp, bool hwl, bool pv)
+	DeepStack& saveSettings(float beta, float bp, bool hwl, bool pv)
 	{
 		this->asinhBeta_ = beta;
 		this->asinhBP_ = bp;
@@ -134,7 +134,7 @@ public :
 		return *this;
 	}
 
-	std::tuple<double, double, bool, bool> savedSettings() const
+	std::tuple<float, float, bool, bool> savedSettings() const
 	{
 		return std::make_tuple(asinhBeta_, asinhBP_, asinhHWLuminance_, preview_);
 	}

@@ -66,7 +66,7 @@ public:
 	{
 		m_fFWHM = m_vStars.empty()
 			? 0.0
-			: std::accumulate(m_vStars.cbegin(), m_vStars.cend(), 0.0, [](const double acc, const CStar& star) { return acc + star.m_fMeanRadius * RadiusFactor; }) / m_vStars.size();
+			: std::accumulate(m_vStars.cbegin(), m_vStars.cend(), 0.0, [](const double acc, const CStar& star) { return acc + star.m_fMeanRadius * RadiusFactor; }) / static_cast<double>(m_vStars.size());
 	}
 
 	bool IsRegistered() const

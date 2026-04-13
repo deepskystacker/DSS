@@ -690,7 +690,7 @@ void DeepSkyStacker::help()
 	QString helpFile{ appPath + "/Help/" + "DeepSkyStacker Help.chm" };
 #elif defined(Q_OS_MACOS)
 //	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
-	QString helpFile{ appPath + "/../Resources/" + "DeepSkyStacker Help.chm") };
+	QString helpFile{ appPath + "/../Resources/" + "DeepSkyStacker Help.chm" };
 #endif
 
 #if defined(Q_OS_LINUX)

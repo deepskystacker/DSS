@@ -297,10 +297,10 @@ void CGrayBitmapT<T>::InterpolateAll(double* pfValues, size_t x, size_t y) const
 			lNrValues[lIndice] ++;
 		}
 
-	pfValues[0] /= std::max(static_cast<size_t>(1), lNrValues[0]);
-	pfValues[1] /= std::max(static_cast<size_t>(1), lNrValues[1]);
-	pfValues[2] /= std::max(static_cast<size_t>(1), lNrValues[2]);
-	pfValues[3] /= std::max(static_cast<size_t>(1), lNrValues[3]);
+	pfValues[0] /= static_cast<double>(std::max(static_cast<size_t>(1), lNrValues[0]));
+	pfValues[1] /= static_cast<double>(std::max(static_cast<size_t>(1), lNrValues[1]));
+	pfValues[2] /= static_cast<double>(std::max(static_cast<size_t>(1), lNrValues[2]));
+	pfValues[3] /= static_cast<double>(std::max(static_cast<size_t>(1), lNrValues[3]));
 
 	/*
 			// It's used only for CYMG - so cut it down to the basic

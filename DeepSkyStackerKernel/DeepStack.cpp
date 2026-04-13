@@ -14,7 +14,7 @@ void DeepStack::computeHistogram(RGBHistogram & Histo)
 	const int height = GetHeight();
 	const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 	float maxValue = 0;
-	const float scalingFactor = 255.0f / stackedBitmap.GetNrStackedFrames();
+	const float scalingFactor = 255.0f / static_cast<float>(stackedBitmap.GetNrStackedFrames());
 	const auto& redPixels = stackedBitmap.getRedPixels();
 	const auto& greenPixels = stackedBitmap.getGreenPixels();
 	const auto& bluePixels = stackedBitmap.getBluePixels();
@@ -106,9 +106,9 @@ void DeepStack::computeDisplayHistogram(RGBHistogram& displayHisto)
 			blueCount = blueHistogram.componentValue(i);
 		}
 
-		displayHisto.GetRedHistogram().AddValue(redCount, redHistogram.GetValue(i));
-		displayHisto.GetGreenHistogram().AddValue(greenCount, greenHistogram.GetValue(i));
-		displayHisto.GetBlueHistogram().AddValue(blueCount, blueHistogram.GetValue(i));
+		displayHisto.GetRedHistogram().AddValue(redCount, static_cast<size_t>(redHistogram.GetValue(i)));
+		displayHisto.GetGreenHistogram().AddValue(greenCount, static_cast<size_t>(greenHistogram.GetValue(i)));
+		displayHisto.GetBlueHistogram().AddValue(blueCount, static_cast<size_t>(blueHistogram.GetValue(i)));
 	}
 }
 

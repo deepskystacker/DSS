@@ -1248,7 +1248,7 @@ void DSSLibRaw::write_ppm_tiff()
 				if ((total += histogram[c][val]) > perc) break;
 			if (t_white < val) t_white = val;
 		}
-	gamma_curve(gamm[0], gamm[1], 2, static_cast<int>((t_white << 3) / bright));
+	gamma_curve(gamm[0], gamm[1], 2, static_cast<int>(static_cast<double>(t_white << 3) / bright));
 	iheight = height;
 	iwidth = width;
 	if (flip & 4) SWAP(height, width);
