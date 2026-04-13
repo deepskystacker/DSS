@@ -189,11 +189,11 @@ namespace DSS
 		// If the user changes the ASinH stretch settings, update the controls to match and process the change
 		//
 		connect(controls->asinhStretchSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::asinhStretchSpinBoxChanged);
-		connect(controls->asinhStretchSlider, &QSlider::sliderMoved, this, &ProcessingDlg::asinhStretchSliderMoved);
+		connect(controls->asinhStretchSlider, &QSlider::valueChanged, this, &ProcessingDlg::asinhStretchSliderChanged);
 		connect(this, &ProcessingDlg::asinhStretchChanged, this, &ProcessingDlg::asinhStretchChangedHandler);
 
 		connect(controls->asinhBPSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::asinhBPSpinBoxChanged);
-		connect(controls->asinhBPSlider, &QSlider::sliderMoved, this, &ProcessingDlg::asinhBPSliderMoved);
+		connect(controls->asinhBPSlider, &QSlider::valueChanged, this, &ProcessingDlg::asinhBPSliderChanged);
 		connect(this, &ProcessingDlg::asinhBPChanged, this, &ProcessingDlg::asinhBPChangedHandler);
 
 		connect(controls->asinhHumanWeighted, &QCheckBox::checkStateChanged, this, &ProcessingDlg::asinhHumanWeightedChanged);

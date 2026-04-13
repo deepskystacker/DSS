@@ -219,7 +219,7 @@ namespace DSS
 			setAsinhBP(value);
 		}
 
-		void asinhBPSliderMoved(int value)
+		void asinhBPSliderChanged(int value)
 		{
 			setAsinhBP(value / 1000.0);
 		}
@@ -276,7 +276,7 @@ namespace DSS
 			setAsinhStretch(value);
 		}
 
-		void asinhStretchSliderMoved(int value)
+		void asinhStretchSliderChanged(int value)
 		{
 			setAsinhStretch(value / 10.0);
 		}
