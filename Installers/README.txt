@@ -78,6 +78,10 @@ Changes for DeepSkyStacker 6.2.0 Beta 5
 
 19. Clean up error handling in StackingDlg when asynchronous image load fails.
 
+20. Colourise the pixel information display on the Stacking pane, and add the same to the Processing pane.
+
+21. 
+
 Changes for DeepSkyStacker 6.1.3
 ================================
 

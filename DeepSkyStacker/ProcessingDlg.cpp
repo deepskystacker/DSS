@@ -197,7 +197,11 @@ namespace DSS
 		connect(this, &ProcessingDlg::asinhBPChanged, this, &ProcessingDlg::asinhBPChangedHandler);
 
 		connect(controls->asinhHumanWeighted, &QCheckBox::checkStateChanged, this, &ProcessingDlg::asinhHumanWeightedChanged);
-		connect(controls->asinhPreview, &QCheckBox::checkStateChanged, this, &ProcessingDlg::asinhPreviewChanged);
+		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
+
+		connect(picture, &DSS::ImageView::mouseMovedOverImage,
+			this, &ProcessingDlg::updatePixelInfo);
+
 
 	}
 
@@ -1012,7 +1016,7 @@ namespace DSS
 		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
 		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
 		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
-		const QSignalBlocker previewBlocker(controls->asinhPreview);
+		const QSignalBlocker previewBlocker(controls->previewCB);
 		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
 		asinhBeta = beta;
 		asinhBP = bp;
@@ -1023,7 +1027,7 @@ namespace DSS
 		controls->asinhBPSpinBox->setValue(bp);
 		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
 		controls->asinhHumanWeighted->setChecked(hwl);
-		controls->asinhPreview->setChecked(pv);
+		controls->previewCB->setChecked(pv);
 
 		if (undoRedoStack.index() == 0 && preview)
 		{
@@ -1050,7 +1054,7 @@ namespace DSS
 		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
 		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
 		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
-		const QSignalBlocker previewBlocker(controls->asinhPreview);
+		const QSignalBlocker previewBlocker(controls->previewCB);
 		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
 		asinhBeta = beta;
 		asinhBP = bp;
@@ -1061,7 +1065,7 @@ namespace DSS
 		controls->asinhBPSpinBox->setValue(bp);
 		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f)	);
 		controls->asinhHumanWeighted->setChecked(hwl);
-		controls->asinhPreview->setChecked(pv);
+		controls->previewCB->setChecked(pv);
 
 		updateControls();
 
@@ -1082,7 +1086,7 @@ namespace DSS
 		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
 		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
 		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
-		const QSignalBlocker previewBlocker(controls->asinhPreview);
+		const QSignalBlocker previewBlocker(controls->previewCB);
 		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
 		asinhBeta = beta;
 		asinhBP = bp;
@@ -1093,7 +1097,7 @@ namespace DSS
 		controls->asinhBPSpinBox->setValue(bp);
 		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
 		controls->asinhHumanWeighted->setChecked(hwl);
-		controls->asinhPreview->setChecked(pv);
+		controls->previewCB->setChecked(pv);
 
 		updateControls();
 
@@ -1115,5 +1119,31 @@ namespace DSS
 	}
 
 	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::updatePixelInfo(QPoint pos, QRgb colour)
+	{
+		if (pos.x() >= 0 && pos.y() >= 0)
+		{
+			//
+			// Use "deepskyblue" (rbg(0, 191, 255)) for the blue text as pure blue
+			// is hard to read on a black background	
+			// 
+			pixelInfo->setText(QString("X: %1 Y: %2<br>"
+				"<font color=#ff0000>R: %3 </font>"
+				"<font color=#00ff00>G: %4 </font>"
+				"<font color=#00bfff>B: %5 </font>")
+				.arg(pos.x())
+				.arg(pos.y())
+				.arg(qRed(colour))
+				.arg(qGreen(colour))
+				.arg(qBlue(colour)));
+		}
+		else
+		{
+			pixelInfo->setText("");
+		}
+	}
+
+
 
 } // namespace DSS

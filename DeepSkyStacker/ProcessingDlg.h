@@ -299,7 +299,7 @@ namespace DSS
 			else controls->applyButton->setEnabled(true);
 		}
 
-		void asinhPreviewChanged(Qt::CheckState state)
+		void previewChanged(Qt::CheckState state)
 		{
 			switch (state)
 			{
@@ -321,6 +321,8 @@ namespace DSS
 		{
 			controls->applyButton->setEnabled(true);
 		}
+
+		void updatePixelInfo(QPoint pos, QRgb colour);
 
 #if (0)
 
