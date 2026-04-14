@@ -1185,9 +1185,9 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, OldProgressBase * pProgress)
 	tiff.SetStackedBitmap(this);
 	if (tiff.Open())
 	{
-		tiff.Read();
+		bResult = tiff.Read();
 		tiff.Close();
-		bResult = true;
+		if (!bResult) return bResult;
 	};
 
 #ifndef NDEBUG
@@ -1301,9 +1301,9 @@ bool StackedBitmap::LoadFITS(const fs::path& file, OldProgressBase * pProgress)
 	fits.SetStackedBitmap(this);
 	if (fits.Open())
 	{
-		fits.Read();
+		bResult = fits.Read();
 		fits.Close();
-		bResult = true;
+		if (!bResult) return bResult;
 	};
 
 #ifndef NDEBUG
