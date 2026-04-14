@@ -21,6 +21,7 @@ void ThreadLoader::run()
 		}
 		else
 		{
+			imageLoader->removeCacheEntry(this->filepath.generic_u8string());
 			emit(imageLoader->imageLoadFailed());
 		}
 
