@@ -73,6 +73,11 @@ Changes for DeepSkyStacker 6.2.0 Beta 5
 
 17. Issue an error message for problems reading a broken FITS file instead of throwing an exception.
 
+18. Bug fix: Crash in ProcessingDlg code if image load fails.  StackedBitmap code wasn't returning the error code
+    when the load failed.
+
+19. Clean up error handling in StackingDlg when asynchronous image load fails.
+
 Changes for DeepSkyStacker 6.1.3
 ================================
 
