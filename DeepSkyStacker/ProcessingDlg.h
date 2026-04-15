@@ -86,7 +86,7 @@ namespace DSS
 		void processAndShow();		// Driven by Apply button
 
 		//
-		// initial values for the Asinh stretch and black point sliders and spin boxes
+		// Initial values for the Image adjustment parameters
 		//
 		static constexpr float DefaultAsinhBeta{ 200.0f };
 		static constexpr float DefaultAsinhBP{ 0.001f };
@@ -105,9 +105,17 @@ namespace DSS
 
 		bool imageLoaded{ false };	// Whether an image is loaded and can be processed	
 
+		//
+		// Image adjustment parameters, which are used for the preview image and histogram when the preview
+		// checkbox is checked, and are applied to the current DeepStack object when the user clicks the
+		// Apply button.
+		//
 		float asinhBeta{ DefaultAsinhBeta };	// Asinh stretch value
 		float asinhBP{ DefaultAsinhBP };		// Asinh black point value
 		bool asinhHWLuminance{ true };	// Whether to use human weighted luminance for asinh stretch
+		float redShift{ 0.0f };		// Red channel shift value
+		float greenShift{ 0.0f };	// Green channel shift value
+		float blueShift{ 0.0f };	// Blue channel shift value
 		bool preview{ true };		// Whether to show a preview of the processed image
 
 		//
@@ -122,7 +130,7 @@ namespace DSS
 		QMutex previewMutex;	// Mutex to protect access to the preview code
 		
 		//
-		// Timer to control hhandling of valueChanged signals from the asinh stretch and black point
+		// Timer to control handling of valueChanged signals from the asinh stretch and black point
 		// sliders and spin boxes, to avoid excessive processing of the preview image when the user
 		// is adjusting the sliders or spin boxes.
 		// 
@@ -130,7 +138,15 @@ namespace DSS
 		// The timer is started or restarted in the valueChanged handlers for the sliders and spin boxes, and
 		// the onPreview() slot is called when the timer times out, which applies the stretch to the preview image.
 		//
-		QTimer previewTimer;	
+		QTimer previewTimer;
+
+		//
+		// Timers to control the handling to valueChanged signals from the red, green and blue shift sliders
+		// to avoid excessive processing of the preview image when the user is adjusting the sliders.
+		//
+		QTimer redSliderTimer;
+		QTimer greenSliderTimer;
+		QTimer blueSliderTimer;
 
 		//
 		// The DeepStack object used for the preview image and histogram, created by the doPreview() method
@@ -138,6 +154,9 @@ namespace DSS
 		DeepStack previewDeepStack;	
 
 		void doPreview();
+
+		void restoreSettings();
+		void resetColourShifts();	
 
 	signals:
 		void asinhBPChanged(double value);
@@ -310,6 +329,48 @@ namespace DSS
 				preview = true;
 				break;
 			}
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void redSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
+			//
+			redShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void greenSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
+			//
+			greenShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void blueSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
+			//
+			blueShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
 			if (preview)
 			{
 				emit onPreview();	// Apply the stretch asynchronously to the preview image.

@@ -174,9 +174,6 @@
     <ClCompile Include="oldprogressdlg.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="asinhstretch.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

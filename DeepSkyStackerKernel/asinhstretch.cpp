@@ -34,7 +34,6 @@
 **
 ****************************************************************************/
 #include "pch.h"
-#include "DeepSkyStacker.h"
 #include "DSSTools.h"
 #include "Multitask.h"
 #include "StackedBitmap.h"
@@ -110,8 +109,7 @@ namespace DSS
 		float asinh_beta = std::asinh(beta);
 		float factor_red = human_luminance ? 0.2126f : 0.3333f;
 		float factor_green = human_luminance ? 0.7152f : 0.3333f;
-		float factor_blue = human_luminance ? 0.0722f : 0.3333f
-			;
+		float factor_blue = human_luminance ? 0.0722f : 0.3333f;
 		const int RLAYER = 0, GLAYER = 1, BLAYER = 2;
 
 		std::int64_t i, n = m_lWidth * m_lHeight;

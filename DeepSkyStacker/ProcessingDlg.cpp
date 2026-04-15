@@ -94,7 +94,10 @@ namespace DSS
 		controls{ processingControls },
 		dirty_ { false },
 		undoRedoStack{ dssApp->undoRedoStack() },
-		previewTimer{ this }
+		previewTimer{ this },
+		redSliderTimer{ this },
+		greenSliderTimer{ this },
+		blueSliderTimer{ this }
 	{
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);
@@ -108,6 +111,10 @@ namespace DSS
 
 		previewTimer.setInterval(200);		// 200ms
 		previewTimer.setSingleShot(true);	// Fires only once after started
+
+		redSliderTimer.setSingleShot(true);		// Fires only once after started
+		greenSliderTimer.setSingleShot(true);	// Fires only once after started
+		blueSliderTimer.setSingleShot(true);		// Fires only once after started	
 
 		initialiseControls();
 
@@ -148,6 +155,11 @@ namespace DSS
 		controls->asinhBPSlider->setValue(static_cast<int>(DefaultAsinhBP * 1000.0f));
 
 		controls->asinhHumanWeighted->setChecked(asinhHWLuminance);
+
+		//
+		// Finally select the stretch tab
+		//
+		controls->tabWidget->setCurrentWidget(controls->asinhStretchTab);
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -197,12 +209,18 @@ namespace DSS
 		connect(this, &ProcessingDlg::asinhBPChanged, this, &ProcessingDlg::asinhBPChangedHandler);
 
 		connect(controls->asinhHumanWeighted, &QCheckBox::checkStateChanged, this, &ProcessingDlg::asinhHumanWeightedChanged);
+
+		connect(controls->redSlider, &QSlider::valueChanged, this, [this]() { redSliderTimer.start(200);  });
+		connect(&redSliderTimer, &QTimer::timeout, this, [this]() { emit redSliderChanged(controls->redSlider->value()); });
+		connect(controls->greenSlider, &QSlider::valueChanged, this, [this]() { greenSliderTimer.start(200);  });
+		connect(&greenSliderTimer, &QTimer::timeout, this, [this]() { emit greenSliderChanged(controls->greenSlider->value()); });
+		connect(controls->blueSlider, &QSlider::valueChanged, this, [this]() { blueSliderTimer.start(200);  });
+		connect(&blueSliderTimer, &QTimer::timeout, this, [this]() { emit blueSliderChanged(controls->blueSlider->value()); });
+
 		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
 
 		connect(picture, &DSS::ImageView::mouseMovedOverImage,
 			this, &ProcessingDlg::updatePixelInfo);
-
-
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -922,6 +940,11 @@ namespace DSS
 		bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
 
 		//
+		// Adjust the colour balance of the image after the stretch 
+		//
+		bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+
+		//
 		// Now de-normalise the image back to the original range
 		//
 		bitmap.deNormalise();
@@ -952,6 +975,54 @@ namespace DSS
 		QMetaObject::invokeMethod(this, "enableApplyButton", Qt::ConnectionType::AutoConnection);
 	}
 
+	void ProcessingDlg::restoreSettings()
+	{
+		//
+		// Restore the processing settings for the current image from the undo-redo stack and update the controls to match.
+		// 
+		// Block signals from the controls to prevent them firing when we update the control values to match the current
+		// settings from the undo-redo stack
+		//
+		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
+		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
+		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
+		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
+		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
+		const QSignalBlocker previewBlocker(controls->previewCB);
+		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
+		asinhBeta = beta;
+		asinhBP = bp;
+		asinhHWLuminance = hwl;
+		preview = pv;
+		controls->asinhStretchSpinBox->setValue(beta);
+		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
+		controls->asinhBPSpinBox->setValue(bp);
+		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
+		controls->asinhHumanWeighted->setChecked(hwl);
+
+		controls->previewCB->setChecked(pv);
+	}
+
+	void ProcessingDlg::resetColourShifts()
+	{
+		redShift = 0.0f;
+		greenShift = 0.0f;
+		blueShift = 0.0f;
+
+		const QSignalBlocker redSliderBlocker(controls->redSlider);
+		const QSignalBlocker greenSliderBlocker(controls->greenSlider);
+		const QSignalBlocker blueSliderBlocker(controls->blueSlider);
+
+		// Rescale the colour shift values from the range [-1.0, 1.0] to the slider range [0, 100]
+		auto redSliderValue = static_cast<int>(100.0f * ((redShift / 2.0f) + 0.5f));
+		auto greenSliderValue = static_cast<int>(100.0f * ((greenShift / 2.0f) + 0.5f));
+		auto blueSliderValue = static_cast<int>(100.0f * ((blueShift / 2.0f) + 0.5f));
+		controls->redSlider->setValue(redSliderValue);
+		controls->greenSlider->setValue(greenSliderValue);
+		controls->blueSlider->setValue(blueSliderValue);
+	}
+
+
 	//
 	// Slots
 	//
@@ -977,13 +1048,18 @@ namespace DSS
 		// Now process the image with the current settings and show the result
 		//
 		DeepStack& deepStack = undoRedoStack.current();
+
+		//
+		// Save the current settings for the ASinH stretch and colour balance to the DeepStack object in the
+		// undo-redo stack, so that they can be restored if the user clicks the undo button.
+		//
 		deepStack.saveSettings(asinhBeta, asinhBP, asinhHWLuminance, preview);
 
 		StackedBitmap& bitmap{ deepStack.GetStackedBitmap() };
 
 		//
 		// Normalise the image to a range of [0.0, 1.0], which is required for
-		// the ASinH stretch processing
+		// the ASinH stretch and colour balance processing
 		//
 		bitmap.normalise();
 
@@ -991,6 +1067,13 @@ namespace DSS
 		// Now apply the ASinH stretch to the image
 		//
 		bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
+
+		//
+		// Adjust the colour balance of the image after the stretch 
+		// and reset the colour balance shifts to zero
+		//
+		bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+		resetColourShifts();
 
 		//
 		// Now de-normalise the image back to the original range
@@ -1007,35 +1090,17 @@ namespace DSS
 		undoRedoStack.moveBackward();
 
 		//
-		// Restore the ASinH stretch settings for the current image from the undo-redo stack and update the controls to match
-		// Block signals from the controls to prevent them firing when we update the control values to match the current
-		// settings from the undo-redo stack
+		// Restore the processing settings from the undo-redo stack
 		//
-		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
-		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
-		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
-		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
-		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
-		const QSignalBlocker previewBlocker(controls->previewCB);
-		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
-		asinhBeta = beta;
-		asinhBP = bp;
-		asinhHWLuminance = hwl;
-		preview = pv;
-		controls->asinhStretchSpinBox->setValue(beta);
-		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
-		controls->asinhBPSpinBox->setValue(bp);
-		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
-		controls->asinhHumanWeighted->setChecked(hwl);
-		controls->previewCB->setChecked(pv);
+		restoreSettings();
+
+		updateControls();
 
 		if (undoRedoStack.index() == 0 && preview)
 		{
 			emit onPreview();
 			return;
 		}
-
-		updateControls();
 
 		processAndShow();
 		showHistogram();
@@ -1044,28 +1109,11 @@ namespace DSS
 	void ProcessingDlg::onRedo()
 	{
 		undoRedoStack.moveForward();
+
 		//
-		// Restore the ASinH stretch settings for the current image from the undo-redo stack and update the controls to match
-		// Block signals from the controls to prevent them firing when we update the control values to match the current
-		// settings from the undo-redo stack
+		// Restore the processing settings from the undo-redo stack
 		//
-		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
-		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
-		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
-		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
-		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
-		const QSignalBlocker previewBlocker(controls->previewCB);
-		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
-		asinhBeta = beta;
-		asinhBP = bp;
-		asinhHWLuminance = hwl;
-		preview = pv;
-		controls->asinhStretchSpinBox->setValue(beta);
-		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
-		controls->asinhBPSpinBox->setValue(bp);
-		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f)	);
-		controls->asinhHumanWeighted->setChecked(hwl);
-		controls->previewCB->setChecked(pv);
+		restoreSettings();
 
 		updateControls();
 
@@ -1075,29 +1123,15 @@ namespace DSS
 
 	void ProcessingDlg::onReset()
 	{
-		undoRedoStack.reset();	// Reset the undo-redo stack to the original image, which is the first entry in the stack
 		//
-		// Restore the ASinH stretch settings for the current image from the undo-redo stack and update the controls to match
-		// Block signals from the controls to prevent them firing when we update the control values to match the current
-		// settings from the undo-redo stack
+		// Reset the undo-redo stack to the original image, which is the first entry in the stack
 		//
-		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
-		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
-		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
-		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
-		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
-		const QSignalBlocker previewBlocker(controls->previewCB);
-		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
-		asinhBeta = beta;
-		asinhBP = bp;
-		asinhHWLuminance = hwl;
-		preview = pv;
-		controls->asinhStretchSpinBox->setValue(beta);
-		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
-		controls->asinhBPSpinBox->setValue(bp);
-		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
-		controls->asinhHumanWeighted->setChecked(hwl);
-		controls->previewCB->setChecked(pv);
+		undoRedoStack.reset();
+
+		//
+		// Restore the processing settings from the undo-redo stack
+		//
+		restoreSettings();
 
 		updateControls();
 

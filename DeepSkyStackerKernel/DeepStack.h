@@ -20,11 +20,15 @@ private :
 	DSS::OldProgressBase* m_pProgress;
 
 	//
-	// Copies of the values for the stretch parameters used to restore them on undo.
+	// Copies of the values for the processing parameters used to restore them on undo.
 	//
 	float asinhBeta_{ 0.0f };	// Asinh stretch value
 	float asinhBP_{ 0.0f };		// Asinh black point value
 	bool asinhHWLuminance_{ true };	// Whether to use human weighted luminance for asinh stretch
+	float redShift_{ 0.0f };	// Red colour shift value
+	float greenShift_{ 0.0f };	// Green colour shift value
+	float blueShift_{ 0.0f };	// Blue colour shift value
+
 	bool preview_{ true };		// Whether to show a preview of the processed image
 
 public :
@@ -130,6 +134,7 @@ public :
 		this->asinhBeta_ = beta;
 		this->asinhBP_ = bp;
 		this->asinhHWLuminance_ = hwl;
+
 		this->preview_ = pv;
 		return *this;
 	}

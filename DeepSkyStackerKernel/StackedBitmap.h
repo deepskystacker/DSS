@@ -147,7 +147,9 @@ namespace DSS
 
 		//
 		// Normalise the image data to a range of [0.0, 1.0], which is required for
-		// the ASinH stretch processing
+		// the ASinH stretch and colour balance processing 
+		//
+		// Source is in asinhstretch.cpp
 		//
 		void normalise();
 
@@ -169,8 +171,28 @@ namespace DSS
 		void asinhStretch(float beta, float offset, bool human_luminance);
 
 		//
-		// De-normalise the image data after the ASinH stretch processing, to bring it back to the
+		// Adjust the image colour balance according to the values of:
+		//   
+		//   redShift
+		//   greenShift
+		//   blueShift
+		// 
+		// Whose values have a range of [-1.0, 1.0]
+		// 
+		// The image data is expected to have been normalised to the range [0, 1.0]
+		// 
+		// The function does nothing if the image is monochrome, as colour balance
+		// adjustments are not applicable to monochrome images.
+		// 
+		// Source is in colourbalance.cpp
+		//
+		void adjustColourBalance(float redShift, float greenShift, float blueShift);
+
+		//
+		// De-normalise the image data after the ASinH stretch and colour balance processing, to bring it back to the
 		// normal range of pixel values.
+		//
+		// Source is in asinhstretch.cpp
 		//
 		void deNormalise();
 

@@ -166,6 +166,7 @@ set(AVX_non-AVX_Files
 
 set(Source_Files
     "AHDDemosaicing.cpp"
+    "asinhstretch.cpp"
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -174,6 +175,7 @@ set(Source_Files
     "BitMapFiller.cpp"
     "BitmapInfo.cpp"
     "ChannelAlign.cpp"
+    "colourbalance.cpp"
     "ColorBitmap.cpp"
     "ColorHelpers.cpp"
     "ColorMultiBitmap.cpp"

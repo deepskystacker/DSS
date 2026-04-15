@@ -19,7 +19,6 @@ set(Dialogs
 source_group("Dialogs" FILES ${Dialogs})
 
 set(Dialogs__Processing
-    "asinhstretch.cpp"
     "processingcontrols.cpp"
     "processingcontrols.h"
     "ProcessingDlg.cpp"
