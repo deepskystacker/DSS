@@ -25,9 +25,6 @@ private :
 	float asinhBeta_{ 0.0f };	// Asinh stretch value
 	float asinhBP_{ 0.0f };		// Asinh black point value
 	bool asinhHWLuminance_{ true };	// Whether to use human weighted luminance for asinh stretch
-	float redShift_{ 0.0f };	// Red colour shift value
-	float greenShift_{ 0.0f };	// Green colour shift value
-	float blueShift_{ 0.0f };	// Blue colour shift value
 
 	bool preview_{ true };		// Whether to show a preview of the processed image
 
