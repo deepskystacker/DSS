@@ -1279,50 +1279,55 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="41"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <source>Colour Balance</source>
+        <translation>色彩平衡</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="160"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH 影像拉伸</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="63"/>
+        <location filename="../ui/ProcessingControls.ui" line="168"/>
         <source>Stretch Factor</source>
         <translation>拉伸係數</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="131"/>
+        <location filename="../ui/ProcessingControls.ui" line="242"/>
         <source>Black Point</source>
         <translation>黑點</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="203"/>
+        <location filename="../ui/ProcessingControls.ui" line="320"/>
         <source>Human-weighted luminance</source>
         <translation>人為加權亮度</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="225"/>
+        <location filename="../ui/ProcessingControls.ui" line="346"/>
         <source>Preview</source>
         <translation>預覽</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="282"/>
+        <location filename="../ui/ProcessingControls.ui" line="377"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>套用</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="289"/>
+        <location filename="../ui/ProcessingControls.ui" line="384"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
         <translation>復原前一次套用的設定</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="306"/>
+        <location filename="../ui/ProcessingControls.ui" line="401"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
         <translation>重新執行前一次套用的設定</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="323"/>
+        <location filename="../ui/ProcessingControls.ui" line="418"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>重設</translation>
@@ -1331,95 +1336,95 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="880"/>
+        <location filename="../ProcessingDlg.cpp" line="902"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>要儲存這些改變嗎？</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="354"/>
+        <location filename="../ProcessingDlg.cpp" line="376"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF 或 FITS 影像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="247"/>
+        <location filename="../ProcessingDlg.cpp" line="269"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>星點遮罩由DeepSkyStacker製作</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="249"/>
+        <location filename="../ProcessingDlg.cpp" line="271"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>將星點遮罩儲存於 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="316"/>
-        <location filename="../ProcessingDlg.cpp" line="420"/>
+        <location filename="../ProcessingDlg.cpp" line="338"/>
+        <location filename="../ProcessingDlg.cpp" line="442"/>
         <source>Failed to load image %1</source>
         <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="450"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色16 bit (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="473"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色32 bit - 整數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="452"/>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔(每色32 bit - 有理數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="453"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色16 bit (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="454"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色32 bit - 整數 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="455"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 檔 每色32 bit - 有理數 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="464"/>
+        <location filename="../ProcessingDlg.cpp" line="486"/>
         <source>Save Image</source>
         <translation>儲存影像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="567"/>
+        <location filename="../ProcessingDlg.cpp" line="589"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>沒有可存的照片.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="582"/>
+        <location filename="../ProcessingDlg.cpp" line="604"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>沒有資訊</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="595"/>
+        <location filename="../ProcessingDlg.cpp" line="617"/>
         <source>Exposure: %1 </source>
         <translation>曝光: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="596"/>
+        <location filename="../ProcessingDlg.cpp" line="618"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -2530,57 +2535,57 @@ Ctrl-A 或相當於選擇所有行
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="574"/>
-        <location filename="../StackingDlg.cpp" line="1531"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1540"/>
+        <location filename="../StackingDlg.cpp" line="1547"/>
         <source>Failed to load image %1</source>
         <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1843"/>
+        <location filename="../StackingDlg.cpp" line="1866"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>天體影像:%1      -      暗電流影像: %2      -      平場:%3      -   平場暗電流: %4   -      偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2246"/>
+        <location filename="../StackingDlg.cpp" line="2269"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>並非所有檢查的燈框都經過品質計算。您應該重新註冊您的燈框。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1496"/>
+        <location filename="../StackingDlg.cpp" line="1503"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>載入 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1588"/>
+        <location filename="../StackingDlg.cpp" line="1611"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>文件 %1 未加載，因為它已在組 %2 (%3) 中加載</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1619"/>
+        <location filename="../StackingDlg.cpp" line="1642"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>開啟天體影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1622"/>
+        <location filename="../StackingDlg.cpp" line="1645"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>開啟暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1640"/>
+        <location filename="../StackingDlg.cpp" line="1663"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>開起平場暗電流影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1628"/>
+        <location filename="../StackingDlg.cpp" line="1651"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>開啟平場影像...</translation>
@@ -2610,19 +2615,13 @@ Ctrl-A 或相當於選擇所有行
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1114"/>
-        <source>X: %1 Y: %2
-R: %3 G: %4 B: %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1634"/>
+        <location filename="../StackingDlg.cpp" line="1657"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>開啟偏壓影像...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1856"/>
+        <location filename="../StackingDlg.cpp" line="1879"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2636,37 +2635,37 @@ Offset/Bias Frames: %5</source>
 偏壓: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1939"/>
+        <location filename="../StackingDlg.cpp" line="1962"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>開啟另一個檔案清單...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2118"/>
+        <location filename="../StackingDlg.cpp" line="2141"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>第%1版DeepSkyStacker已可下載。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2135"/>
+        <location filename="../StackingDlg.cpp" line="2158"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>版本檢查 Internet 錯誤代碼 %1：
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2235"/>
+        <location filename="../StackingDlg.cpp" line="2258"/>
         <source>Total registering time: %1 %2</source>
         <translation>總註冊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2262"/>
+        <location filename="../StackingDlg.cpp" line="2285"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>偵測星點前需先勾選天體影像.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2319"/>
+        <location filename="../StackingDlg.cpp" line="2342"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2676,19 +2675,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker需要在執行中存取這些檔案夾。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2340"/>
+        <location filename="../StackingDlg.cpp" line="2363"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>勾选的图片不相容: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2344"/>
+        <location filename="../StackingDlg.cpp" line="2367"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>疊合前需先勾選天體影像.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2392"/>
+        <location filename="../StackingDlg.cpp" line="2415"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2698,18 +2697,18 @@ Do you want to save the changes?</source>
 要儲存這些變定嗎？</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2508"/>
+        <location filename="../StackingDlg.cpp" line="2531"/>
         <source>Total stacking time: %1 %2</source>
         <translation>總堆疊時間：%1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2539"/>
+        <location filename="../StackingDlg.cpp" line="2562"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>儲存最終影像於 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2623"/>
+        <location filename="../StackingDlg.cpp" line="2646"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3094,13 +3093,6 @@ You can probably get another one or download the final release from the web site
         <location filename="../DeepSkyStacker.cpp" line="381"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 不存在或不是文件</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="691"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation></translation>
     </message>
 </context>
 <context>

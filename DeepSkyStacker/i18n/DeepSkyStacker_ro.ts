@@ -1288,50 +1288,55 @@ Pixeli reci detectați: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="41"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <source>Colour Balance</source>
+        <translation>Balansul culorilor</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="160"/>
         <source>ASinH Image stretch</source>
         <translation>Extinderea imaginii ASinH</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="63"/>
+        <location filename="../ui/ProcessingControls.ui" line="168"/>
         <source>Stretch Factor</source>
         <translation>Factorul de întindere</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="131"/>
+        <location filename="../ui/ProcessingControls.ui" line="242"/>
         <source>Black Point</source>
         <translation>Punct negru</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="203"/>
+        <location filename="../ui/ProcessingControls.ui" line="320"/>
         <source>Human-weighted luminance</source>
         <translation>Luminanță ponderată uman</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="225"/>
+        <location filename="../ui/ProcessingControls.ui" line="346"/>
         <source>Preview</source>
         <translation>Previzualizare</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="282"/>
+        <location filename="../ui/ProcessingControls.ui" line="377"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Aplica</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="289"/>
+        <location filename="../ui/ProcessingControls.ui" line="384"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
         <translation>Descarca ultimele setari aplicat</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="306"/>
+        <location filename="../ui/ProcessingControls.ui" line="401"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
         <translation>Reaplica ultimele setari aplicate</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="323"/>
+        <location filename="../ui/ProcessingControls.ui" line="418"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Reseteaza</translation>
@@ -1340,95 +1345,95 @@ Pixeli reci detectați: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="880"/>
+        <location filename="../ProcessingDlg.cpp" line="902"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Vreti sa salvati modificarile?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="354"/>
+        <location filename="../ProcessingDlg.cpp" line="376"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Imagine TIFF sau FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="247"/>
+        <location filename="../ProcessingDlg.cpp" line="269"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Star Mask creat de DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="249"/>
+        <location filename="../ProcessingDlg.cpp" line="271"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Salvează Mască Stea în %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="316"/>
-        <location filename="../ProcessingDlg.cpp" line="420"/>
+        <location filename="../ProcessingDlg.cpp" line="338"/>
+        <location filename="../ProcessingDlg.cpp" line="442"/>
         <source>Failed to load image %1</source>
         <translation>Nu s-a putut încărca imaginea %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="450"/>
+        <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagine TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="451"/>
+        <location filename="../ProcessingDlg.cpp" line="473"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagine TIFF 32 bit/ch - integer (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="452"/>
+        <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagine TIFF 32 bit/ch - rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="453"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagine FITS 16 bit/ch (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="454"/>
+        <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagine FITS 32 bit/ch - integer (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="455"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imagine FITS 32 bit/ch - rational (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="464"/>
+        <location filename="../ProcessingDlg.cpp" line="486"/>
         <source>Save Image</source>
         <translation>Salvați imaginea</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="567"/>
+        <location filename="../ProcessingDlg.cpp" line="589"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Nici o imagine de salvat.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="582"/>
+        <location filename="../ProcessingDlg.cpp" line="604"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Nu exista informatii disponibile</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="595"/>
+        <location filename="../ProcessingDlg.cpp" line="617"/>
         <source>Exposure: %1 </source>
         <translation>Expunere: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="596"/>
+        <location filename="../ProcessingDlg.cpp" line="618"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -2546,57 +2551,57 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="574"/>
-        <location filename="../StackingDlg.cpp" line="1531"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1540"/>
+        <location filename="../StackingDlg.cpp" line="1547"/>
         <source>Failed to load image %1</source>
         <translation>Nu s-a putut încărca imaginea %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1843"/>
+        <location filename="../StackingDlg.cpp" line="1866"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Cadre Light: %1      -      Cadre Dark: %2      -      Cadre Flat: %3      -   Cadre Dark Flat: %4   -      Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2246"/>
+        <location filename="../StackingDlg.cpp" line="2269"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Nu toate cadrele dvs. luminoase verificate au o calitate calculată. Ar trebui să vă reînregistrați cadrele luminoase.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1496"/>
+        <location filename="../StackingDlg.cpp" line="1503"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Se încarcă %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1588"/>
+        <location filename="../StackingDlg.cpp" line="1611"/>
         <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
         <translation>Fișierul %1 nu a fost încărcat deoarece a fost deja încărcat în grupul %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1619"/>
+        <location filename="../StackingDlg.cpp" line="1642"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Încarcă Cadre Light...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1622"/>
+        <location filename="../StackingDlg.cpp" line="1645"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Încarcă Cadre Dark...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1640"/>
+        <location filename="../StackingDlg.cpp" line="1663"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Încarcă Cadre Dark Flat...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1628"/>
+        <location filename="../StackingDlg.cpp" line="1651"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Încarcă Cadre Flat...</translation>
@@ -2628,19 +2633,13 @@ Butonul dreapta al mouse-ului pentru a afișa meniul</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1114"/>
-        <source>X: %1 Y: %2
-R: %3 G: %4 B: %5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1634"/>
+        <location filename="../StackingDlg.cpp" line="1657"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Încarcă Cadre Bias...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1856"/>
+        <location filename="../StackingDlg.cpp" line="1879"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2654,37 +2653,37 @@ Cadre Dark Flat: %4
 Cadre Offset/Bias: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1939"/>
+        <location filename="../StackingDlg.cpp" line="1962"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Încarcă o altă Listă de Fișiere...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2118"/>
+        <location filename="../StackingDlg.cpp" line="2141"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker versiunea %1 este disponibil pentru a fi descărcat.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2135"/>
+        <location filename="../StackingDlg.cpp" line="2158"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Cod de eroare verificare version Internet %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2235"/>
+        <location filename="../StackingDlg.cpp" line="2258"/>
         <source>Total registering time: %1 %2</source>
         <translation>Timp total de înregistrare: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2262"/>
+        <location filename="../StackingDlg.cpp" line="2285"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Trebuie să bifați cadrele light pentru a le înregistra.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2319"/>
+        <location filename="../StackingDlg.cpp" line="2342"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2694,19 +2693,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker are nevoie sa creeze fișiere în aceste directoare în timpul procesării.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2340"/>
+        <location filename="../StackingDlg.cpp" line="2363"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Imaginile bifate nu sunt compatibile: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2344"/>
+        <location filename="../StackingDlg.cpp" line="2367"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Trebuie să bifați cadrele light pentru a le stivui.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2392"/>
+        <location filename="../StackingDlg.cpp" line="2415"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2716,18 +2715,18 @@ Do you want to save the changes?</source>
 Vreți să salvați modificările?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2508"/>
+        <location filename="../StackingDlg.cpp" line="2531"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Timp total de stivuire: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2539"/>
+        <location filename="../StackingDlg.cpp" line="2562"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Salvează imaginea finală în %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2623"/>
+        <location filename="../StackingDlg.cpp" line="2646"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3121,13 +3120,6 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../DeepSkyStacker.cpp" line="381"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 nu există sau nu este un fișier</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="691"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation></translation>
     </message>
 </context>
 <context>
