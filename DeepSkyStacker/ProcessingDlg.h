@@ -88,7 +88,7 @@ namespace DSS
 		//
 		// Initial values for the Image adjustment parameters
 		//
-		static constexpr float DefaultAsinhBeta{ 200.0f };
+		static constexpr float DefaultAsinhBeta{ 100.0f };
 		static constexpr float DefaultAsinhBP{ 0.001f };
 
 		void	drawHistogram(RGBHistogram& Histogram);
