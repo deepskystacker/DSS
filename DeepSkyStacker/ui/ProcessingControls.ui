@@ -129,7 +129,7 @@
             </property>
             <property name="styleSheet">
              <string notr="true">QSlider::handle::horizontal{
-    background: blue;
+    background: deepskyblue;
     border: 1px solid black; 
 	width: 5px; 
 	height: 5px; 
