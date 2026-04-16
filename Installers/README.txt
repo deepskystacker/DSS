@@ -33,9 +33,10 @@ Changes for DeepSkyStacker 6.2.0 Beta 6
     Mini which uses 15 second exposures which are very dark.   Increasing the image brightness by (say) a factor of 4.5
     allows the images to be registered and stacked which wasn't possible previously.
 
-6.  Re-design image adjustment that it is applied after calibration frames have been applied for registration and stacking,
-    rather than while the image files are being read in the first place which caused problems with calibration.
-    These changes should solve problems with incorrect calibration when intensity or colour channel adjustment is used.
+6.  Re-design image adjustment so that adjustments are applied after calibration frames have been applied for 
+    registration and stacking, rather than while the image files are being read in the first place which caused
+    problems with calibration.   These changes should solve problems with incorrect calibration when intensity
+    or colour channel adjustment is used.
 
     Also redesign the UI for DDP (Digital Development Processing) Settings (was Raw/FITS DDP Settings).
 
