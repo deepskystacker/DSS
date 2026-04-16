@@ -95,7 +95,7 @@
             </property>
             <property name="styleSheet">
              <string notr="true">QSlider::handle::horizontal{
-    background: green;
+    background: lime	;
     border: 1px solid black; 
 	width: 5px; 
 	height: 5px; 
