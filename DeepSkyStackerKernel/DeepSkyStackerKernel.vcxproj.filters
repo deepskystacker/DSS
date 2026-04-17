@@ -506,7 +506,7 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="i18n\DeepSkyStackerKernel_translations.qrc">
+    <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
     </QtRcc>
   </ItemGroup>
