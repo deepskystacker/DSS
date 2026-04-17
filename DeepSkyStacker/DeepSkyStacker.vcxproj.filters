@@ -502,6 +502,9 @@
     <Image Include="Icon\DeepSkyStacker.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\japan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">

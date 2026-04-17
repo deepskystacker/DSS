@@ -80,6 +80,9 @@ Changes for DeepSkyStacker 6.2.0 Beta 6
 
 21. Add a tab to the processing controls to allow colour balance adjustment.
 
+22. Initial phase of Japanese translation for DeepSkyStacker.  I am most grateful to みうら しゅう (Shu Miura)
+    for this contribution.
+
 Changes for DeepSkyStacker 6.1.3
 ================================
 

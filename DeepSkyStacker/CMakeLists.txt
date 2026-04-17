@@ -254,6 +254,7 @@ set(Resources
     "res/ImageList_Mask.bmp"
     "res/intersectionmode.bmp"
     "res/Italian.png"
+    "res/japan.png"
     "res/LightColour.png"
     "res/LightColour@2x.png"
     "res/LightCYMG.png"

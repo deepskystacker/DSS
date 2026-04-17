@@ -159,6 +159,9 @@ namespace DSS
         strHTML += tr("Turkish version:", "IDS_ABOUT_LANG_TURKISH") + " ";
         strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br>").arg("Raþid Tuðral (Rasid Tugral)");
 
+        strHTML += "<img valign=center src=\":/flags/japan.png\">&nbsp;&nbsp;";
+        strHTML += tr("Japanese version: 三浦秀 (Shu Miura)<br>");
+
         ui->credits->setText(strHTML);
 
 

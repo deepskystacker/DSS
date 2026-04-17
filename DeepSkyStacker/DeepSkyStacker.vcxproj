@@ -505,6 +505,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\ImageList_Mask.bmp" />
     <Image Include="res\intersectionmode.bmp" />
     <Image Include="res\Italian.png" />
+    <Image Include="res\japan.png" />
     <Image Include="res\linear.bmp" />
     <Image Include="res\linear_en.bmp" />
     <Image Include="res\linear_fr.bmp" />
