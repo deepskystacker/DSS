@@ -7,7 +7,7 @@
         <location filename="../BatchStacking.cpp" line="105"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation type="unfinished"></translation>
+        <translation>最終画像を %1 に保存しています</translation>
     </message>
 </context>
 <context>
@@ -16,55 +16,55 @@
         <location filename="../StackingDlg.cpp" line="118"/>
         <source>File List (*.dssfilelist)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルリスト (*.dssfilelist)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="121"/>
         <source>File List (*.txt)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルリスト (*.txt)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="122"/>
         <source>All Files (*)</source>
         <comment>IDS_LISTFILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてのファイル (*)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="126"/>
         <source>Picture Files (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>画像ファイル (*.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="130"/>
         <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>JPEG または PNG ファイル (*.jpg *.jpeg *.png)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="131"/>
         <source>TIFF Files (*.tif *.tiff)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF ファイル (*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="132"/>
         <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>RAW ファイル (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="135"/>
         <source>FITS Files (*.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS ファイル (*.fits *.fit *.fts)</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="136"/>
         <source>All Files (*)</source>
         <comment>IDS_FILTER_INPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてのファイル (*)</translation>
     </message>
 </context>
 <context>
@@ -72,40 +72,41 @@
     <message>
         <location filename="../ui/About.ui" line="14"/>
         <source>About DeepSkyStacker</source>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker について</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="39"/>
         <source>Language</source>
-        <translation type="unfinished"></translation>
+        <translation>言語</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="47"/>
         <source>Select language:</source>
-        <translation type="unfinished"></translation>
+        <translation>言語を選択：</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="111"/>
         <source>Check if newer version is available at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>起動時に新しいバージョンを確認する</translation>
     </message>
     <message>
         <location filename="../ui/About.ui" line="118"/>
         <source>About &amp;Qt</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Qt について</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="35"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker バージョン %1</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="49"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2025 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LibRaw による RAW ファイルデコード（バージョン %1）
+Copyright © 1997-2025 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="59"/>
@@ -113,61 +114,66 @@ Copyright © 1997-2025 LibRaw LLC</source>
 Copyright © 1988-1997 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>LibTIFF による TIFF ファイルのエンコード／デコード（バージョン %1）
+Copyright © 1988-1997 Sam Leffler
+Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="66"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>CFitsIO による FITS デコード（バージョン %1）
+Copyright NASA</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="73"/>
         <source>Exif, IPTC, XMP and ICC image metadata by Exiv2 - Version 0.28.3
 Copyright 2004-2025 Exiv2 authors</source>
-        <translation type="unfinished"></translation>
+        <translation>Exiv2 による Exif・IPTC・XMP・ICC メタデータ処理 - バージョン 0.28.3
+Copyright 2004-2025 Exiv2 authors</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="79"/>
         <source>SMTP support by SMTP Client for Qt (C++) - Version 2.0
 Copyright Tőkés Attila</source>
-        <translation type="unfinished"></translation>
+        <translation>SMTP Client for Qt (C++) による SMTP サポート - バージョン 2.0
+Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="93"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルト</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="113"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation type="unfinished"></translation>
+        <translation>スペイン語版：Ricardo Contreras とそのチーム</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="117"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation type="unfinished"></translation>
+        <translation>チェコ語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="121"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>イタリア語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="125"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>カタルーニャ語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="129"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>ドイツ語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="131"/>
@@ -176,48 +182,48 @@ Copyright Tőkés Attila</source>
         <location filename="../About.cpp" line="151"/>
         <location filename="../About.cpp" line="152"/>
         <source>and</source>
-        <translation type="unfinished"></translation>
+        <translation>および</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="134"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation type="unfinished"></translation>
+        <translation>オランダ語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="138"/>
         <source>Simplified Chinese version: 张博 (Zhang Bo)&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>簡体字中国語版：张博 (Zhang Bo)&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="141"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation type="unfinished"></translation>
+        <translation>繁体字中国語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="145"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation type="unfinished"></translation>
+        <translation>ポルトガル語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="150"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>ルーマニア語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="155"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>ロシア語版：</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="159"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation type="unfinished"></translation>
+        <translation>トルコ語版：</translation>
     </message>
 </context>
 <context>
@@ -225,37 +231,37 @@ Copyright Tőkés Attila</source>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="14"/>
         <source>Alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>星の位置合わせ</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="20"/>
         <source>Transformation used during alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>位置合わせに使用する変換方式</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="26"/>
         <source>Bisquared</source>
-        <translation type="unfinished"></translation>
+        <translation>二乗補間（Bisquared）</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="33"/>
         <source>No alignment</source>
-        <translation type="unfinished"></translation>
+        <translation>位置合わせを行わない</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="40"/>
         <source>Bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>バイリニア（Bilinear）</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="66"/>
         <source>Bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>バイキュービック（Bicubic）</translation>
     </message>
     <message>
         <location filename="../ui/AlignmentParameters.ui" line="73"/>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>自動</translation>
     </message>
     <message>
         <location filename="../AlignmentParameters.cpp" line="33"/>
@@ -295,7 +301,7 @@ The Bicubic method is used when at least 40 stars areavailable, then the Bisquar
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>未登録のライトフレーム</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -308,17 +314,17 @@ Do you want...</source>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>このライトフレームの星を検出する</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="76"/>
         <source>to register all the light frames</source>
-        <translation type="unfinished"></translation>
+        <translation>すべてのライトフレームの星を検出する</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="83"/>
         <source>to continue without registering the light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>星の検出を行わずに続行する</translation>
     </message>
 </context>
 <context>
@@ -326,52 +332,52 @@ Do you want...</source>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation type="unfinished"></translation>
+        <translation>背景オプション</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation type="unfinished"></translation>
+        <translation>補正方法</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation type="unfinished"></translation>
+        <translation>線形</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Offset</source>
-        <translation type="unfinished"></translation>
+        <translation>オフセット</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="42"/>
         <source>Rational</source>
-        <translation type="unfinished"></translation>
+        <translation>有理補正</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="67"/>
         <source>RGB Background Calibration Method</source>
-        <translation type="unfinished"></translation>
+        <translation>RGB 背景補正方式</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>なし</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="82"/>
         <source>Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>最小値</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="89"/>
         <source>Middle</source>
-        <translation type="unfinished"></translation>
+        <translation>中央値</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="96"/>
         <source>Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>最大値</translation>
     </message>
 </context>
 <context>
@@ -379,7 +385,7 @@ Do you want...</source>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation>バッチスタッキング</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -393,13 +399,13 @@ Add the file lists you want to stack and click OK to start the stacking processe
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルリストを追加...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>リストをクリア</translation>
     </message>
 </context>
 <context>
@@ -408,13 +414,13 @@ Add the file lists you want to stack and click OK to start the stacking processe
         <location filename="../ui/CheckAbove.ui" line="14"/>
         <source>Check all pictures above...</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>上のすべての画像をチェック...</translation>
     </message>
     <message>
         <location filename="../ui/CheckAbove.ui" line="20"/>
         <source>Minimum quality:</source>
         <comment>IDD_CHECKABOVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>最低品質：</translation>
     </message>
 </context>
 <context>
@@ -422,45 +428,48 @@ Add the file lists you want to stack and click OK to start the stacking processe
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation type="unfinished"></translation>
+        <translation>彗星</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>彗星スタッキング設定</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation>標準スタッキング</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation type="unfinished"></translation>
+        <translation>彗星の位置を無視します。
+彗星はぼやけた状態になります。</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation>彗星スタッキング</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation type="unfinished"></translation>
+        <translation>彗星の位置を使用します。
+彗星はシャープになり、星は軌跡を引きます。</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation>星＋彗星スタッキング</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation type="unfinished"></translation>
+        <translation>彗星の位置を使用します。
+彗星も星もシャープになります。処理時間は通常の約2倍かかります。</translation>
     </message>
 </context>
 <context>
@@ -468,45 +477,45 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     <message>
         <location filename="../ui/DropFilesDlg.ui" line="14"/>
         <source>Add files ...</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルを追加...</translation>
     </message>
     <message numerus="yes">
         <location filename="../DropFilesDlg.cpp" line="90"/>
         <source>Add %n file(s) as</source>
         <comment>IDC_DROPFILESTEXT</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n 個のファイルを追加：</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="91"/>
         <source>Light Frames</source>
         <comment>IDC_LIGHTFRAMES</comment>
-        <translation type="unfinished"></translation>
+        <translation>ライトフレーム</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="92"/>
         <source>Dark Frames</source>
         <comment>IDC_DARKFRAMES</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダークフレーム</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="93"/>
         <source>Flat Frames</source>
         <comment>IDC_FLATFRAMES</comment>
-        <translation type="unfinished"></translation>
+        <translation>フラットフレーム</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="94"/>
         <source>Dark Flat Frames</source>
         <comment>IDC_DARKFLATFRAMES</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダークフラットフレーム</translation>
     </message>
     <message>
         <location filename="../DropFilesDlg.cpp" line="95"/>
         <source>Offset/Bias Frames</source>
         <comment>IDC_BIASFRAMES</comment>
-        <translation type="unfinished"></translation>
+        <translation>オフセット／バイアスフレーム</translation>
     </message>
 </context>
 <context>
@@ -516,51 +525,28 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../editstars.cpp" line="1123"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
-        <translation type="unfinished"></translation>
+        <translation>クリックして彗星の位置を設定</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="617"/>
         <location filename="../editstars.cpp" line="1125"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
-        <translation type="unfinished"></translation>
+        <translation>クリックしてこの星を追加</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="625"/>
         <location filename="../editstars.cpp" line="1132"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
-        <translation type="unfinished"></translation>
+        <translation>クリックして彗星を削除</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="627"/>
         <location filename="../editstars.cpp" line="1134"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="669"/>
-        <source>#Stars: %1
-Quality: %2
-FWHM: %3</source>
-        <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
-        <source>
-Comet:%1</source>
-        <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
-        <source>Yes</source>
-        <comment>IDS_YES</comment>
-        <translation type="unfinished"></translation>
+        <translation>クリックしてこの星を削除</translation>
     </message>
     <message>
         <location filename="../editstars.cpp" line="1182"/>
@@ -568,7 +554,35 @@ Comet:%1</source>
 Score: %2
 FWHM: %3</source>
         <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>星の数: %1
+スコア: %2
+FWHM: %3</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="676"/>
+        <location filename="../editstars.cpp" line="1189"/>
+        <source>
+Comet:%1</source>
+        <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
+        <translation>
+彗星:%1</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="669"/>
+        <source>#Stars: %1
+Quality: %2
+FWHM: %3</source>
+        <comment>IDS_LIGHTFRAMEINFO</comment>
+        <translation>星数：%1
+品質：%2
+FWHM：%3</translation>
+    </message>
+    <message>
+        <location filename="../editstars.cpp" line="676"/>
+        <location filename="../editstars.cpp" line="1189"/>
+        <source>Yes</source>
+        <comment>IDS_YES</comment>
+        <translation>はい</translation>
     </message>
 </context>
 <context>
@@ -577,174 +591,144 @@ FWHM: %3</source>
         <location filename="../ui/ExplorerBar.ui" line="132"/>
         <source>Registering and Stacking</source>
         <comment>IDC_STACKING_TITLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>星検出とスタッキング</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="183"/>
         <source>Open picture files...</source>
         <comment>IDC_STACKING_OPENFILES</comment>
-        <translation type="unfinished"></translation>
+        <translation>画像ファイルを開く...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="193"/>
         <source>dark files...</source>
         <comment>IDC_STACKING_OPENDARKS</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダークファイル...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="206"/>
         <source>flat files...</source>
         <comment>IDC_STACKING_OPENFLATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>フラットファイル...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="216"/>
         <source>dark flat files...</source>
         <comment>IDC_STACKING_OPENDARKFLATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダークフラットファイル...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="226"/>
         <source>offset/bias files...</source>
         <comment>IDC_STACKING_OPENOFFSETS</comment>
-        <translation type="unfinished"></translation>
+        <translation>オフセット／バイアスファイル...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="249"/>
         <source>Open a File List...</source>
         <comment>IDC_STACKING_LOADLIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルリストを開く...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="256"/>
         <source>Save the File List...</source>
         <comment>IDC_STACKING_SAVELIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルリストを保存...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="279"/>
         <source>Clear List</source>
         <comment>IDC_STACKING_CLEARLIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>リストをクリア</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="316"/>
         <source>Check all</source>
         <comment>IDC_STACKING_CHECKALL</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてチェック</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="323"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>しきい値以上をチェック...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="330"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてのチェックを外す</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="367"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation type="unfinished"></translation>
+        <translation>チェックした画像の星を検出...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="374"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation type="unfinished"></translation>
+        <translation>オフセットを計算...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="381"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation type="unfinished"></translation>
+        <translation>チェックした画像をスタック...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="388"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation type="unfinished"></translation>
+        <translation>バッチスタッキング...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="423"/>
         <source>Processing</source>
         <comment>IDC_PROCESSING_TITLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>画像処理</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="444"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>画像ファイルを開く...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="451"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished"></translation>
+        <translation>現在の画像をクリップボードにコピー</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="458"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>スター・マスクを作成...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="465"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>写真をファイルに保存...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="497"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>オプション</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="518"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>設定...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="528"/>
         <source>DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="538"/>
-        <source>Load...</source>
-        <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="548"/>
-        <source>Save...</source>
-        <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="558"/>
-        <source>Recommended...</source>
-        <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="578"/>
-        <source>About DeepSkyStacker...</source>
-        <comment>IDC_ABOUT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="598"/>
-        <source>DeepSkyStacker&apos;s Help...</source>
-        <comment>IDC_CONTEXTHELP</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -755,85 +739,115 @@ Tick this box to keep the trace file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ui/ExplorerBar.ui" line="538"/>
+        <source>Load...</source>
+        <comment>IDC_OPTIONS_LOADSETTINGS</comment>
+        <translation>読み込み...</translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="548"/>
+        <source>Save...</source>
+        <comment>IDC_OPTIONS_SAVESETTINGS</comment>
+        <translation>保存...</translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="558"/>
+        <source>Recommended...</source>
+        <comment>IDC_OPTIONS_RECOMMANDEDSETTINGS</comment>
+        <translation>推奨設定...</translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="578"/>
+        <source>About DeepSkyStacker...</source>
+        <comment>IDC_ABOUT</comment>
+        <translation>DeepSkyStacker について...</translation>
+    </message>
+    <message>
+        <location filename="../ui/ExplorerBar.ui" line="598"/>
+        <source>DeepSkyStacker&apos;s Help...</source>
+        <comment>IDC_CONTEXTHELP</comment>
+        <translation>DeepSkyStacker ヘルプ...</translation>
+    </message>
+    <message>
         <location filename="../ui/ExplorerBar.ui" line="623"/>
         <source>Retain the trace file on exit</source>
-        <translation type="unfinished"></translation>
+        <translation>終了時にトレースファイルを保持</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="643"/>
         <source>Enable progress sounds</source>
-        <translation type="unfinished"></translation>
+        <translation>進行状況のサウンドを有効にする</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="666"/>
         <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
-        <translation type="unfinished"></translation>
+        <translation>Processing パネルで、ブラックレベル未満のピクセルを青、ホワイトレベルを超えるピクセルを赤で表示します。</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="669"/>
         <source>Show clipping for Black/White Points</source>
-        <translation type="unfinished"></translation>
+        <translation>黒点／白点のクリッピングを表示</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="300"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>星検出設定...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="301"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタッキング設定...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>デフォルト設定に戻す</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="345"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker Live 設定を読み込む</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="349"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
-        <translation type="unfinished"></translation>
+        <translation>読み込み...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="410"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker Live 設定として保存</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="414"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
-        <translation type="unfinished"></translation>
+        <translation>名前を付けて保存...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="587"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker 設定を読み込む</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="591"/>
         <location filename="../ExplorerBar.cpp" line="646"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker 設定 (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="641"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker 設定を保存</translation>
     </message>
 </context>
 <context>
@@ -841,51 +855,51 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/FlatChart.ui" line="76"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../flatchart.cpp" line="88"/>
         <location filename="../flatchart.cpp" line="92"/>
         <source>Flat Contour Chart</source>
-        <translation type="unfinished"></translation>
+        <translation>フラット輪郭チャート</translation>
     </message>
     <message>
         <location filename="../flatchart.cpp" line="153"/>
         <source>Intensity</source>
-        <translation type="unfinished"></translation>
+        <translation>強度</translation>
     </message>
 </context>
 <context>
     <name>DSS::Group</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="711"/>
-        <source>Light</source>
-        <comment>IDS_TYPE_LIGHT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingDlg.cpp" line="712"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="713"/>
-        <source>Flat</source>
-        <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダーク</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="714"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダークフラット</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="713"/>
+        <source>Flat</source>
+        <comment>IDS_TYPE_FLAT</comment>
+        <translation>フラット</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="715"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイアス／オフセット</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="711"/>
+        <source>Light</source>
+        <comment>IDS_TYPE_LIGHT</comment>
+        <translation>ライト</translation>
     </message>
 </context>
 <context>
@@ -893,52 +907,52 @@ Tick this box to keep the trace file.</source>
     <message>
         <location filename="../ui/ImageProperties.ui" line="14"/>
         <source>DeepSkyStacker - Image Properties</source>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker - 画像プロパティ</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="68"/>
         <source>Date/Time</source>
-        <translation type="unfinished"></translation>
+        <translation>日時</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="92"/>
         <source>Depth</source>
-        <translation type="unfinished"></translation>
+        <translation>ビット深度</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="102"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>サイズ</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="132"/>
         <source>Exposure</source>
-        <translation type="unfinished"></translation>
+        <translation>露出</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="169"/>
         <source>Information</source>
-        <translation type="unfinished"></translation>
+        <translation>情報</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="176"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>種類</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="206"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="213"/>
         <source>ISO/Gain</source>
-        <translation type="unfinished"></translation>
+        <translation>ISO／ゲイン</translation>
     </message>
     <message>
         <location filename="../ui/ImageProperties.ui" line="220"/>
         <source>CFA</source>
-        <translation type="unfinished"></translation>
+        <translation>CFA</translation>
     </message>
 </context>
 <context>
@@ -950,7 +964,10 @@ Tick this box to keep the trace file.</source>
 Ctrl+- to zoom out
  or use the mouse wheel to zoom
 Ctrl+4 to toggle 4-Corners mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl++ または Ctrl+= で拡大
+Ctrl+- で縮小
+マウスホイールでも拡大縮小できます
+Ctrl+4 で四隅表示モードを切り替え</translation>
     </message>
 </context>
 <context>
@@ -958,52 +975,52 @@ Ctrl+4 to toggle 4-Corners mode</source>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation type="unfinished"></translation>
+        <translation>中間ファイル</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation type="unfinished"></translation>
+        <translation>中間ファイル作成設定</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>各ライトフレームの補正結果を保存</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation type="unfinished"></translation>
+        <translation>RAW 画像処理時にデベイヤー後の画像を保存</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>各ライトフレームの補正／位置合わせ結果を保存</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation type="unfinished"></translation>
+        <translation>中間／最終画像のファイル形式</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation type="unfinished"></translation>
+        <translation>TIFF 形式で保存</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation type="unfinished"></translation>
+        <translation>FITS 形式で保存</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="133"/>
         <source>Will compress FITS files.  Please be aware that floating point FITS images (which have BITPIX = -32 or -64) usually contain too much “noise” in the least significant bits of the mantissa of the pixel values to be effectively compressed with any lossless algorithm. Consequently, floating point images are first quantized into scaled integer pixel values (and thus throwing away much of the noise) before being compressed with the specified algorithm (either GZIP, Rice, or HCOMPRESS). This technique produces much higher compression factors than simply using the GZIP utility to externally compress the whole FITS file, but it also means that the original floating value pixel values are not exactly preserved.</source>
-        <translation type="unfinished"></translation>
+        <translation>FITS ファイルを圧縮します。BITPIX = -32 または -64 の浮動小数点 FITS 画像は、画素値の仮数部の下位ビットに多くの「ノイズ」を含むため、無損圧縮では効果的に圧縮できません。そのため、まず浮動小数点画像を量子化して整数画素値に変換し（ノイズを除去）、その後 GZIP、Rice、HCOMPRESS のいずれかで圧縮します。この方法は外部で GZIP を使って FITS 全体を圧縮するより高い圧縮率を得られますが、元の浮動小数点画素値は完全には保持されません。</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="136"/>
         <source>Compress FITS files</source>
-        <translation type="unfinished"></translation>
+        <translation>FITS ファイルを圧縮</translation>
     </message>
 </context>
 <context>
@@ -1011,62 +1028,62 @@ Ctrl+4 to toggle 4-Corners mode</source>
     <message>
         <location filename="../lowerdockwidget.cpp" line="46"/>
         <source>Double click here to dock/undock</source>
-        <translation type="unfinished"></translation>
+        <translation>ここをダブルクリックしてドッキング／解除</translation>
     </message>
 </context>
 <context>
     <name>DSS::OldProgressDlg</name>
     <message>
-        <location filename="../ui/OldProgressDlg.ui" line="14"/>
-        <source>Processing ...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/OldProgressDlg.ui" line="86"/>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../oldprogressdlg.cpp" line="155"/>
         <source>Are you sure you wish to cancel this operation?</source>
-        <translation type="unfinished"></translation>
+        <translation>この操作を本当に中止しますか？</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="230"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：%1 時間 %2 分 %3 秒</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="233"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：%1 分 %2 秒</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="236"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：%1 秒</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="239"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：1 秒未満</translation>
     </message>
     <message>
         <location filename="../oldprogressdlg.cpp" line="246"/>
         <source>Estimated remaining time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：不明</translation>
     </message>
     <message numerus="yes">
         <location filename="../oldprogressdlg.cpp" line="259"/>
         <source>%n Processor(s) Used</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n 個のプロセッサを使用中</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../ui/OldProgressDlg.ui" line="14"/>
+        <source>Processing ...</source>
+        <translation>処理中...</translation>
+    </message>
+    <message>
+        <location filename="../ui/OldProgressDlg.ui" line="86"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -1074,82 +1091,82 @@ Ctrl+4 to toggle 4-Corners mode</source>
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>出力</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>出力ファイル設定</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>出力ファイルを作成</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation type="unfinished"></translation>
+        <translation>HTML 説明ファイルを作成</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation type="unfinished"></translation>
+        <translation>出力ファイル名</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
         <comment>IDC_AUTOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Autosave.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
         <comment>IDC_FILELIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;ファイルリスト名&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation type="unfinished"></translation>
+        <translation>上書きを避けるため番号を付加 (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation type="unfinished"></translation>
+        <translation>出力場所</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>基準フレームのフォルダに出力ファイルを作成</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>ファイルリストのフォルダに出力ファイルを作成</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>出力ファイルの保存先：</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
         <comment>IDC_OUTPUTFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;出力フォルダ&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="135"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>出力フォルダを選択</translation>
     </message>
 </context>
 <context>
@@ -1157,80 +1174,80 @@ Ctrl+4 to toggle 4-Corners mode</source>
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation type="unfinished"></translation>
+        <translation>コスメティック補正</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation type="unfinished"></translation>
+        <translation>キャリブレーション後のコスメティック補正設定</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation type="unfinished"></translation>
+        <translation>残存ホットピクセルの検出と除去</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
         <comment>IDC_WEAK1</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;small&gt;弱い効果&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
         <comment>IDC_STRONG1</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;small&gt;強い効果&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation type="unfinished"></translation>
+        <translation>フィルターサイズ</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>検出しきい値</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation type="unfinished"></translation>
+        <translation>残存コールドピクセルの検出と除去</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation type="unfinished"></translation>
+        <translation>ピクセル値の置換方法：</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation type="unfinished"></translation>
+        <translation>最初のフレームでテスト...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>各ライトフレームで除去されたピクセルを示す画像を保存</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="24"/>
         <source>the median</source>
         <comment>ID_COSMETICMETHOD_MEDIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>中央値</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="25"/>
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>ガウシアンフィルター</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="386"/>
@@ -1239,7 +1256,10 @@ Detected Hot Pixels: %L1 (%L2%)
 Detected Cold Pixels: %L3 (%L4%)
 </source>
         <comment>IDS_COSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>コスメティック補正
+検出されたホットピクセル：%L1（%L2%）
+検出されたコールドピクセル：%L3（%L4%）
+</translation>
     </message>
 </context>
 <context>
@@ -1247,7 +1267,7 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>
@@ -1283,124 +1303,124 @@ Detected Cold Pixels: %L3 (%L4%)
         <location filename="../ui/ProcessingControls.ui" line="377"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
-        <translation type="unfinished"></translation>
+        <translation>適用</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="384"/>
         <source>Undo last applied settings</source>
         <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>直前の設定を元に戻す</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="401"/>
         <source>Redo last applied settings</source>
         <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>直前の設定をやり直す</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="418"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
-        <translation type="unfinished"></translation>
+        <translation>リセット</translation>
     </message>
 </context>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="269"/>
-        <source>Star Mask created by DeepSkyStacker</source>
-        <comment>IDS_STARMASKDESCRIPTION</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="271"/>
-        <source>Saving the Star Mask in %1</source>
-        <comment>IDS_SAVINGSTARMASK</comment>
-        <translation type="unfinished"></translation>
+        <location filename="../ProcessingDlg.cpp" line="902"/>
+        <source>Do you want to save the modifications?</source>
+        <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
+        <translation>変更を保存しますか？</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="376"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF / FITS 画像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="269"/>
+        <source>Star Mask created by DeepSkyStacker</source>
+        <comment>IDS_STARMASKDESCRIPTION</comment>
+        <translation>DeepSkyStacker により作成されたスター・マスク</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="271"/>
+        <source>Saving the Star Mask in %1</source>
+        <comment>IDS_SAVINGSTARMASK</comment>
+        <translation>スター・マスクを %1 に保存しています</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="338"/>
         <location filename="../ProcessingDlg.cpp" line="442"/>
         <source>Failed to load image %1</source>
-        <translation type="unfinished"></translation>
+        <translation>画像 %1 の読み込みに失敗しました</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="472"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF 画像 16bit/チャンネル (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="473"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF 画像 32bit/チャンネル（整数） (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="474"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF 画像 32bit/チャンネル（浮動小数） (*.tif)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS 画像 16bit/チャンネル (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="476"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS 画像 32bit/チャンネル（整数） (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS 画像 32bit/チャンネル（浮動小数） (*.fits)</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="486"/>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>画像を保存</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="589"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>保存できる画像がありません。</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="604"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>情報がありません</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="617"/>
         <source>Exposure: %1 </source>
-        <translation type="unfinished"></translation>
+        <translation>露出：%1 </translation>
     </message>
     <message numerus="yes">
         <location filename="../ProcessingDlg.cpp" line="618"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n フレーム</numerusform>
         </translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="902"/>
-        <source>Do you want to save the modifications?</source>
-        <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1408,48 +1428,48 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/ProgressDlg.ui" line="14"/>
         <source>Processing ...</source>
-        <translation type="unfinished"></translation>
+        <translation>処理中...</translation>
     </message>
     <message>
         <location filename="../ui/ProgressDlg.ui" line="86"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>キャンセル</translation>
     </message>
     <message numerus="yes">
         <location filename="../progressdlg.cpp" line="95"/>
         <source>%n Processor(s) Used</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n 個のプロセッサを使用中</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../progressdlg.cpp" line="190"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：%1 時間 %2 分 %3 秒</translation>
     </message>
     <message>
         <location filename="../progressdlg.cpp" line="193"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：%1 分 %2 秒</translation>
     </message>
     <message>
         <location filename="../progressdlg.cpp" line="196"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：%1 秒</translation>
     </message>
     <message>
         <location filename="../progressdlg.cpp" line="199"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定残り時間：1 秒未満</translation>
     </message>
     <message>
         <location filename="../progressdlg.cpp" line="232"/>
         <source>Are you sure you wish to cancel this operation?</source>
-        <translation type="unfinished"></translation>
+        <translation>この操作を本当に中止しますか？</translation>
     </message>
 </context>
 <context>
@@ -1459,137 +1479,132 @@ Detected Cold Pixels: %L3 (%L4%)
         <location filename="../QualityChart.cpp" line="135"/>
         <location filename="../QualityChart.cpp" line="342"/>
         <source>Star Eccentricity</source>
-        <translation type="unfinished"></translation>
+        <translation>星の偏心率</translation>
     </message>
     <message>
         <location filename="../ui/QualityChart.ui" line="131"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../QualityChart.cpp" line="127"/>
         <location filename="../QualityChart.cpp" line="132"/>
         <source>Star Quality Chart</source>
-        <translation type="unfinished"></translation>
+        <translation>星像品質チャート</translation>
     </message>
     <message>
         <location filename="../QualityChart.cpp" line="268"/>
         <source>Interpolating FWHM data.  Please be patient.</source>
-        <translation type="unfinished"></translation>
+        <translation>FWHM データを補間しています。しばらくお待ちください。</translation>
     </message>
     <message>
         <location filename="../QualityChart.cpp" line="373"/>
         <source>FWHM</source>
-        <translation type="unfinished"></translation>
+        <translation>FWHM</translation>
     </message>
     <message>
         <location filename="../QualityChart.cpp" line="246"/>
         <source>Interpolating Eccentricity data.  Please be patient.</source>
-        <translation type="unfinished"></translation>
+        <translation>偏心率データを補間しています。しばらくお待ちください。</translation>
     </message>
 </context>
 <context>
     <name>DSS::RawDDPSettings</name>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="14"/>
-        <source>Digital Development Process Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/RawDDPSettings.ui" line="74"/>
         <source>Raw Files</source>
-        <translation type="unfinished"></translation>
+        <translation>RAW ファイル</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="36"/>
         <source>Colour Adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>色調整</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="42"/>
         <source>Brightness</source>
-        <translation type="unfinished"></translation>
+        <translation>明るさ</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="88"/>
         <source>White Balance</source>
-        <translation type="unfinished"></translation>
+        <translation>ホワイトバランス</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="94"/>
         <source>No White Balance Processing</source>
-        <translation type="unfinished"></translation>
+        <translation>ホワイトバランス処理なし</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="101"/>
         <source>Use Daylight White Balance</source>
-        <translation type="unfinished"></translation>
+        <translation>昼光ホワイトバランスを使用</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="108"/>
         <source>Use Camera White Balance</source>
-        <translation type="unfinished"></translation>
+        <translation>カメラのホワイトバランスを使用</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="133"/>
         <location filename="../ui/RawDDPSettings.ui" line="487"/>
         <source>Bayer Matrix Transformation</source>
-        <translation type="unfinished"></translation>
+        <translation>Bayer マトリクス変換</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="139"/>
         <location filename="../ui/RawDDPSettings.ui" line="496"/>
         <source>Bilinear Interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>バイリニア補間</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="159"/>
         <location filename="../ui/RawDDPSettings.ui" line="516"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>AHD（適応同質性指向）補間</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="179"/>
         <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation type="unfinished"></translation>
+        <translation>Bayer Drizzle アルゴリズムを使用（補間なし・デベイヤーなし）</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="552"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="unfinished"></translation>
+        <translation>このオプションは Bayer マトリクスをそのまま使用し、補間を行いません。各ピクセルは元の Bayer 配列の色情報のみを使用します。</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="221"/>
         <location filename="../ui/RawDDPSettings.ui" line="578"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="unfinished"></translation>
+        <translation>生の Bayer マトリクスからスーパーピクセルを生成（補間なし）</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="237"/>
         <location filename="../ui/RawDDPSettings.ui" line="594"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="unfinished"></translation>
+        <translation>このオプションは Bayer 配列の 4 ピクセル（RGBG）を 1 つのスーパーピクセルにまとめます。結果として画像の縦横サイズは半分になります。</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="267"/>
         <source>FITS Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="288"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>FITS ファイル</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>Camera:</source>
-        <translation type="unfinished"></translation>
+        <translation>カメラ：</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="52"/>
         <source>Red scale</source>
+        <translation>赤スケール</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="14"/>
+        <source>Digital Development Process Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1600,62 +1615,67 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="62"/>
         <source>Blue scale</source>
+        <translation>青スケール</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="288"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Single plane 16 bit FITS Files are from a &amp;quot;One-Shot-Colour&amp;quot; camera (DSLR, mirrorless, CCD or CMOS) that need to be de-Bayered.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="357"/>
         <source>Bayer Pattern Filter used</source>
-        <translation type="unfinished"></translation>
+        <translation>使用されている Bayer パターン</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="405"/>
         <source>FITS Data Range</source>
-        <translation type="unfinished"></translation>
+        <translation>FITS データ範囲</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="411"/>
         <source>Default values for DATAMIN and DATAMAX FITS keywords.   These will only be used when reading floating point FITS files and only if the FITS file does not contain these keywords.</source>
-        <translation type="unfinished"></translation>
+        <translation>DATAMIN と DATAMAX のデフォルト値。これらは浮動小数点 FITS を読み込む際、ファイルに該当キーワードが存在しない場合のみ使用されます。</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="424"/>
         <source>DATAMIN</source>
-        <translation type="unfinished"></translation>
+        <translation>DATAMIN</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="454"/>
         <source>DATAMAX</source>
-        <translation type="unfinished"></translation>
+        <translation>DATAMAX</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="613"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="unfinished"></translation>
+        <translation>符号付き値が保存されていても符号なしとして扱う</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="20"/>
         <source>Generic RGGB</source>
-        <translation type="unfinished"></translation>
+        <translation>汎用 RGGB</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="21"/>
         <source>Generic BGGR</source>
-        <translation type="unfinished"></translation>
+        <translation>汎用 BGGR</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="22"/>
         <source>Generic GBRG</source>
-        <translation type="unfinished"></translation>
+        <translation>汎用 GBRG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="23"/>
         <source>Generic GRBG</source>
-        <translation type="unfinished"></translation>
+        <translation>汎用 GRBG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="25"/>
         <source>Generic</source>
-        <translation type="unfinished"></translation>
+        <translation>汎用</translation>
     </message>
 </context>
 <context>
@@ -1663,42 +1683,42 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>推奨設定</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="49"/>
         <source>Show all recommendations</source>
-        <translation type="unfinished"></translation>
+        <translation>すべての推奨項目を表示</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="190"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation type="unfinished"></translation>
+        <translation>これらは推奨設定です。&lt;br&gt;すべての状況で最適とは限りませんが、初期設定として有用です。</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="194"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>提案されたリンクをクリックすると該当設定を変更できます</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="198"/>
         <source>Settings that are already set are shown in green</source>
         <comment>IDS_RECO_ALREADYSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>すでに設定済みの項目は緑色で表示されます</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="780"/>
         <source>or</source>
         <comment>IDS_OR</comment>
-        <translation type="unfinished"></translation>
+        <translation>または</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="846"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation type="unfinished"></translation>
+        <translation>まず画像をリストに追加し、チェックを入れてください。</translation>
     </message>
 </context>
 <context>
@@ -1706,139 +1726,139 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>星検出設定</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
         <source>Stacking Settings...</source>
         <comment>IDC_STACKINGPARAMETERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタッキング設定...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="46"/>
         <source>Recommended Settings...</source>
         <comment>IDC_RECOMMANDEDSETTINGS</comment>
-        <translation type="unfinished"></translation>
+        <translation>推奨設定...</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
         <source>Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>操作</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <comment>IDC_FORCEREGISTER</comment>
-        <translation type="unfinished"></translation>
+        <translation>すでに検出済みの画像を再検出する</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>ホットピクセルを自動検出</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <comment>IDC_STACK</comment>
-        <translation type="unfinished"></translation>
+        <translation>星検出後に自動でスタック</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
-        <translation type="unfinished"></translation>
+        <translation>最良の画像を選択</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="152"/>
         <source>% of the pictures and stack them</source>
-        <translation type="unfinished"></translation>
+        <translation>% の画像を選択してスタック</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="219"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>詳細設定</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="225"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>星検出しきい値</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="268"/>
         <source>Use automatic threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>自動しきい値を使用</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="290"/>
         <source>Compute the number of detected stars</source>
         <comment>IDC_COMPUTEDETECTEDSTARS</comment>
-        <translation type="unfinished"></translation>
+        <translation>検出された星の数を計算</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="333"/>
         <source>Reduce noise by using a median filter</source>
         <comment>IDC_MEDIANFILTER</comment>
-        <translation type="unfinished"></translation>
+        <translation>メディアンフィルターでノイズを低減</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="189"/>
         <source>Don&apos;t forget to add and check dark, flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLATOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック前にダーク・フラット・オフセットフレームを追加してチェックを入れてください。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="192"/>
         <source>Don&apos;t forget to add and check dark and flat frames before stacking.</source>
         <comment>IDS_CHECK_DARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック前にダークとフラットフレームを追加してチェックを入れてください。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="195"/>
         <source>Don&apos;t forget to add and check dark and offset frames before stacking.</source>
         <comment>IDS_CHECK_DARKOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック前にダークとオフセットフレームを追加してチェックを入れてください。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="198"/>
         <source>Don&apos;t forget to add and check flat and offset frames before stacking.</source>
         <comment>IDS_CHECK_FLATOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック前にフラットとオフセットフレームを追加してチェックを入れてください。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="201"/>
         <source>Don&apos;t forget to add and check dark frames before stacking.</source>
         <comment>IDS_CHECK_DARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック前にダークフレームを追加してチェックを入れてください。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="204"/>
         <source>Don&apos;t forget to add and check flat frames before stacking.</source>
         <comment>IDS_CHECK_FLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック前にフラットフレームを追加してチェックを入れてください。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="207"/>
         <source>Don&apos;t forget to add and check offset frames before stacking.</source>
         <comment>IDS_CHECK_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック前にオフセットフレームを追加してチェックを入れてください。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="232"/>
         <source>darks, flats and offsets/bias checked.</source>
         <comment>IDS_CHECK_ALLOK</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダーク・フラット・オフセット（バイアス）がチェックされています。</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="297"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 を星検出中</translation>
     </message>
     <message>
         <location filename="../RegisterSettings.cpp" line="304"/>
         <source>%1 star(s)</source>
         <comment>IDC_NRSTARS</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 個の星</translation>
     </message>
 </context>
 <context>
@@ -1846,12 +1866,12 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/RenameGroup.ui" line="14"/>
         <source>Rename Group</source>
-        <translation type="unfinished"></translation>
+        <translation>グループ名の変更</translation>
     </message>
     <message>
         <location filename="../ui/RenameGroup.ui" line="22"/>
         <source>Group Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>グループ名：</translation>
     </message>
 </context>
 <context>
@@ -1859,63 +1879,63 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/ResultParameters.ui" line="14"/>
         <source>Result</source>
-        <translation type="unfinished"></translation>
+        <translation>結果</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="30"/>
         <source>Standard Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>標準モード</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="50"/>
         <source>&quot;Mosaic&quot; Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>モザイクモード</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="70"/>
         <source>Intersection Mode</source>
-        <translation type="unfinished"></translation>
+        <translation>交差領域モード</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="90"/>
         <source>Custom Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>カスタム矩形</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="108"/>
         <source>Enable 2x Drizzle</source>
-        <translation type="unfinished"></translation>
+        <translation>2× Drizzle を有効化</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="115"/>
         <source>Enable 3x Drizzle</source>
-        <translation type="unfinished"></translation>
+        <translation>3× Drizzle を有効化</translation>
     </message>
     <message>
         <location filename="../ui/ResultParameters.ui" line="135"/>
         <source>Align RGB Channels in final image</source>
-        <translation type="unfinished"></translation>
+        <translation>最終画像で RGB チャンネルを整列</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="70"/>
         <location filename="../ResultParameters.cpp" line="132"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
         <comment>IDS_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック結果の範囲は基準ライトフレームに合わせられます。</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="80"/>
         <location filename="../ResultParameters.cpp" line="145"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
         <comment>IDS_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック結果にはすべてのライトフレームが含まれます。</translation>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="90"/>
         <location filename="../ResultParameters.cpp" line="159"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック結果は全フレームの共通領域に限定されます。</translation>
     </message>
 </context>
 <context>
@@ -1923,7 +1943,7 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="14"/>
         <source>Save Changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>変更を保存しますか？</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="20"/>
@@ -1937,31 +1957,31 @@ Do you want to save them?</source>
         <location filename="../ui/SaveEditChanges.ui" line="32"/>
         <source>The next time...</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>次回の動作：</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="38"/>
         <source>Save changes without asking</source>
         <comment>IDC_SAVEWITHOUTASKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>確認せずに保存する</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="45"/>
         <source>Discard changes without asking</source>
         <comment>IDC_DONTSAVEWITHOUTASKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>確認せずに破棄する</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="52"/>
         <source>Always ask</source>
         <comment>IDC_ASKAGAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>毎回確認する</translation>
     </message>
     <message>
         <location filename="../ui/SaveEditChanges.ui" line="71"/>
         <source>You can access these options by right clicking on the Save button</source>
         <comment>IDD_SAVEEDITCHANGES</comment>
-        <translation type="unfinished"></translation>
+        <translation>これらの設定は「保存」ボタンを右クリックすると変更できます</translation>
     </message>
 </context>
 <context>
@@ -1970,37 +1990,37 @@ Do you want to save them?</source>
         <location filename="../SavePicture.cpp" line="114"/>
         <source>Compression</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>圧縮方式</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="115"/>
         <source>None</source>
         <comment>IDC_COMPRESSION_NONE</comment>
-        <translation type="unfinished"></translation>
+        <translation>なし</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="116"/>
         <source>ZIP (Deflate)</source>
         <comment>IDC_COMPRESSION_ZIP</comment>
-        <translation type="unfinished"></translation>
+        <translation>ZIP（Deflate）</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="117"/>
         <source>LZW (Deprecated)</source>
         <comment>IDC_COMPRESSION_LZW</comment>
-        <translation type="unfinished"></translation>
+        <translation>LZW（非推奨）</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="118"/>
         <source>Options</source>
         <comment>IDD_SAVEPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>オプション</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="119"/>
         <source>Apply adjustments to the saved image</source>
         <comment>IDC_APPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>調整内容を保存画像に適用する</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="120"/>
@@ -2025,7 +2045,7 @@ Use it if you plan to do all the processing in other software.</source>
         <location filename="../SavePicture.cpp" line="123"/>
         <source>Do not apply adjustments to the saved image</source>
         <comment>IDS_SAVENOADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>調整を保存画像に適用しない</translation>
     </message>
 </context>
 <context>
@@ -2033,222 +2053,222 @@ Use it if you plan to do all the processing in other software.</source>
     <message>
         <location filename="../ui/StackRecap.ui" line="19"/>
         <source>Stacking Steps</source>
-        <translation type="unfinished"></translation>
+        <translation>スタック手順</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="39"/>
         <source>Recommended Settings ...</source>
-        <translation type="unfinished"></translation>
+        <translation>推奨設定...</translation>
     </message>
     <message>
         <location filename="../ui/StackRecap.ui" line="46"/>
         <source>Stacking Settings ...</source>
-        <translation type="unfinished"></translation>
+        <translation>スタック設定...</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="187"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
-        <translation type="unfinished"></translation>
+        <translation>ISO</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="188"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
-        <translation type="unfinished"></translation>
+        <translation>ゲイン</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="206"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished"></translation>
+        <translation>はい</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="207"/>
         <source>No</source>
         <comment>IDS_NO</comment>
-        <translation type="unfinished"></translation>
+        <translation>いいえ</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="221"/>
         <source>RGB Channels Background Calibration : %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>RGB チャンネル背景補正：%1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="226"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネル別背景補正：%1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="231"/>
         <source>Dark optimization: %1</source>
         <comment>IDS_RECAP_DARKOPTIMIZATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダーク最適化：%1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="236"/>
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダーク乗算係数：%1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="240"/>
         <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>ホットピクセル検出と除去：%1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="249"/>
         <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished"></translation>
+        <translation>この処理には一時的に %2 ドライブ上で %1 の空き容量が必要です。&lt;br&gt;現在利用可能なのは %3 です。</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="259"/>
         <location filename="../StackRecap.cpp" line="746"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation type="unfinished"></translation>
+        <translation>注意：必要なディスク容量は基準フレームのサイズを元に計算されています。最終画像のサイズによっては、さらに多くの容量が必要になる場合があります。</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="271"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：JPEG 形式のダーク・フラット・バイアスフレームを使用しています。&lt;br&gt;JPEG は不可逆圧縮のため、キャリブレーションが正しく機能しません。</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="279"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタックモード：</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="284"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
-        <translation type="unfinished"></translation>
+        <translation>標準</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="287"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
-        <translation type="unfinished"></translation>
+        <translation>モザイク</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="290"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
-        <translation type="unfinished"></translation>
+        <translation>カスタム矩形</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="293"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
-        <translation type="unfinished"></translation>
+        <translation>交差領域</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="302"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>アライメント方法：</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="310"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
-        <translation type="unfinished"></translation>
+        <translation>自動</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="313"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイリニア</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="316"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイスクエア</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="319"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイキュービック</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="322"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
-        <translation type="unfinished"></translation>
+        <translation>アライメントなし</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="334"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 倍 Drizzle を使用</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="340"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>選択した Drizzle オプションは Bayer Drizzle モードと互換性がありません。</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="352"/>
         <source>%1 processors detected - %2 used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 個のプロセッサを検出 - %2 個を使用</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="356"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 個のプロセッサを検出 - 使用は 1 個のみ</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="368"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>彗星処理：</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="373"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
-        <translation type="unfinished"></translation>
+        <translation>星に合わせる（特別な処理なし）</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="376"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
-        <translation type="unfinished"></translation>
+        <translation>彗星に合わせる</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="379"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
-        <translation type="unfinished"></translation>
+        <translation>星と彗星の両方に合わせる</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="395"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
-        <translation type="unfinished"></translation>
+        <translation>ホットピクセルに外観修正を適用（フィルター = %1 px、検出しきい値 = %L2%）&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="403"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
-        <translation type="unfinished"></translation>
+        <translation>コールドピクセルに外観修正を適用（フィルター = %1 px、検出しきい値 = %L2%）&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="432"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタック手順 %1&lt;br&gt;  -&gt; %2 枚（%3：%4） - 総露光時間：</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="450"/>
@@ -2258,19 +2278,19 @@ Use it if you plan to do all the processing in other software.</source>
         <location filename="../StackRecap.cpp" line="680"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
-        <translation type="unfinished"></translation>
+        <translation>方法：</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="461"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：RAW DDP 設定で Bayer Drizzle を選択している場合、平均以外の方法では異常な結果になる可能性があります。</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="481"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>-&gt; オフセット：%1 枚（%2：%3） 露光：%4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="506"/>
@@ -2278,7 +2298,7 @@ Use it if you plan to do all the processing in other software.</source>
         <location filename="../StackRecap.cpp" line="692"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：ISO がライトフレームと一致しません</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="516"/>
@@ -2286,85 +2306,85 @@ Use it if you plan to do all the processing in other software.</source>
         <location filename="../StackRecap.cpp" line="702"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：ゲインがライトフレームと一致しません</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="527"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>-&gt; オフセットなし</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="536"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>-&gt; ダーク：%1 枚（%2：%3） 露光：%4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="594"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：露光時間がライトフレームと一致しません</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="603"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>-&gt; ダークなし</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="612"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>-&gt; ダークフラット：%1 枚（%2：%3） 露光：%4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="638"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：ISO がフラットフレームと一致しません</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="648"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：ダークフラットのゲインがフラットと一致しません</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="656"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>警告：露光時間がフラットフレームと一致しません</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="668"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>-&gt; フラット：%1 枚（%2：%3） 露光：%4</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="712"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>-&gt; フラットなし</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="727"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation type="unfinished"></translation>
+        <translation>推定総露光時間：%1&lt;br&gt;（チェックされたライトフレームがすべて使用される前提で計算されています）</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="737"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
-        <translation type="unfinished"></translation>
+        <translation>この処理では一時的に %2 ドライブ上の %1 を使用します（空き容量 %3）。</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="754"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">警告：登録済み・キャリブレーション済み画像の保存が有効です。これらのファイルを保存するための十分な空き容量があるか確認してください。</translation>
     </message>
 </context>
 <context>
@@ -2372,113 +2392,127 @@ Use it if you plan to do all the processing in other software.</source>
     <message>
         <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>スタック設定</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
-        <translation type="unfinished"></translation>
+        <translation>一時ファイルの保存先：</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="67"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="83"/>
         <source>Reduce worker threads priority</source>
-        <translation type="unfinished"></translation>
+        <translation>ワーカースレッドの優先度を下げる</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="98"/>
         <location filename="../ui/StackSettings.ui" line="108"/>
         <source>A maximum of 8 threads is suggested</source>
-        <translation type="unfinished"></translation>
+        <translation>最大 8 スレッドを推奨</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="101"/>
         <source>Maximum number of processing threads</source>
-        <translation type="unfinished"></translation>
+        <translation>処理スレッドの最大数</translation>
     </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="130"/>
         <source>SIMD vectorisation</source>
-        <translation type="unfinished"></translation>
+        <translation>SIMD ベクトル化</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="51"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>ライト（天体画像）</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="52"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダーク</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="53"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>フラット</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="54"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイアス／オフセット</translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="201"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
-        <translation type="unfinished"></translation>
+        <translation>一時ファイルの保存先を選択</translation>
     </message>
 </context>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
+        <location filename="../StackingDlg.cpp" line="836"/>
+        <source>Rename group</source>
+        <translation>グループ名を変更</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../StackingDlg.cpp" line="933"/>
+        <source>Do you really want to permanently erase %n file(s)?
+This operation cannot be reversed or cancelled.</source>
+        <comment>IDS_WARNING_ERASEFILES</comment>
+        <translation>
+            <numerusform>%n 個のファイルを完全に削除しますか？
+この操作は元に戻すこともキャンセルすることもできません。</numerusform>
+        </translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="684"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
-        <translation type="unfinished"></translation>
+        <translation>基準フレームとして使用</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="688"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
-        <translation type="unfinished"></translation>
+        <translation>チェック</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="690"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
-        <translation type="unfinished"></translation>
+        <translation>チェック解除</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="693"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
-        <translation type="unfinished"></translation>
+        <translation>リストから削除</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="696"/>
-        <source>Properties...</source>
-        <comment>IDM_PROPERTIES</comment>
-        <translation type="unfinished"></translation>
+        <location filename="../StackingDlg.cpp" line="698"/>
+        <source>Star Quality Chart</source>
+        <translation type="unfinished">星像品質チャート</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="703"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished"></translation>
+        <translation>クリップボードにコピー</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="706"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
-        <translation type="unfinished"></translation>
+        <translation>ディスクから削除...</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="729"/>
@@ -2486,141 +2520,10 @@ Use it if you plan to do all the processing in other software.</source>
 Ctrl-A or equivalent to select all rows
 Delete key to remove (not erase) selected rows
 Right mouse button to display the menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="836"/>
-        <source>Rename group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="933"/>
-        <source>Do you really want to permanently erase %n file(s)?
-This operation cannot be reversed or cancelled.</source>
-        <comment>IDS_WARNING_ERASEFILES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="1033"/>
-        <source>%n files selected</source>
-        <comment>IDS_MULTIPLEFILESELECTED</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1503"/>
-        <source>Loading %1</source>
-        <comment>IDS_LOADPICTURE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="574"/>
-        <location filename="../StackingDlg.cpp" line="1538"/>
-        <source>%1 does not exist or is not a file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="698"/>
-        <source>Star Quality Chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="700"/>
-        <source>Flat Contour Chart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1547"/>
-        <source>Failed to load image %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1611"/>
-        <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1642"/>
-        <source>Open Light Frames...</source>
-        <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1645"/>
-        <source>Open Dark Frames...</source>
-        <comment>IDS_TITLE_OPENDARKFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1651"/>
-        <source>Open Flat Frames...</source>
-        <comment>IDS_TITLE_OPENFLATFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1657"/>
-        <source>Open Bias Frames...</source>
-        <comment>IDS_TITLE_OPENBIASFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1663"/>
-        <source>Open Dark Flat Frames...</source>
-        <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1866"/>
-        <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
-        <comment>IDS_LISTINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1879"/>
-        <source>Light Frames: %1
-Dark Frames: %2
-Flat Frames: %3
-Dark Flat Frames: %4
-Offset/Bias Frames: %5</source>
-        <comment>IDS_LISTINFO2</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1962"/>
-        <source>Open another File List...</source>
-        <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2141"/>
-        <source>DeepSkyStacker version %1 is available for download.</source>
-        <comment>IDS_VERSIONAVAILABLE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2158"/>
-        <source>Internet version check error code %1:
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2258"/>
-        <source>Total registering time: %1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2269"/>
-        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2285"/>
-        <source>You must check light frames to register them.</source>
-        <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
-        <translation type="unfinished"></translation>
+        <translation>スペースキー：選択行のチェック／解除
+Ctrl+A：すべて選択
+Delete：選択行をリストから削除（ディスクからは削除しません）
+右クリック：メニューを表示</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2342"/>
@@ -2628,18 +2531,6 @@ Offset/Bias Frames: %5</source>
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
         <comment>IDS_WARNINGREADONLY</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2363"/>
-        <source>The checked pictures are not compatible: %1.</source>
-        <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2367"/>
-        <source>You must check light frames to stack them.</source>
-        <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2651,23 +2542,160 @@ Do you want to save the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2531"/>
-        <source>Total stacking time: %1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2562"/>
-        <source>Saving Final image in %1</source>
-        <comment>IDS_SAVINGFINAL</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingDlg.cpp" line="2646"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
 %4</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="574"/>
+        <location filename="../StackingDlg.cpp" line="1538"/>
+        <source>%1 does not exist or is not a file</source>
+        <translation>%1 は存在しないか、ファイルではありません</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1547"/>
+        <source>Failed to load image %1</source>
+        <translation>画像 %1 の読み込みに失敗しました</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1866"/>
+        <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
+        <comment>IDS_LISTINFO</comment>
+        <translation>ライト フレーム: %1      -      ダーク フレーム: %2      -      フラット フレーム: %3      -   ダークのフラット フレーム: %4   -      オフセット/バイアス フレーム: %5</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2158"/>
+        <source>Internet version check error code %1:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2269"/>
+        <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
+        <translation>チェックされたライトフレームの一部に品質値がありません。ライトフレームを再登録してください。</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1503"/>
+        <source>Loading %1</source>
+        <comment>IDS_LOADPICTURE</comment>
+        <translation>%1 を読み込み中</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1611"/>
+        <source>File %1 was not loaded because it was already loaded in group %2 (%3)</source>
+        <translation>ファイル %1 は、すでにグループ %2（%3）に読み込まれているためスキップされました</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1642"/>
+        <source>Open Light Frames...</source>
+        <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
+        <translation>ライトフレームを開く...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1645"/>
+        <source>Open Dark Frames...</source>
+        <comment>IDS_TITLE_OPENDARKFRAMES</comment>
+        <translation>ダークフレームを開く...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1663"/>
+        <source>Open Dark Flat Frames...</source>
+        <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
+        <translation>ダークフラットを開く...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1651"/>
+        <source>Open Flat Frames...</source>
+        <comment>IDS_TITLE_OPENFLATFRAMES</comment>
+        <translation>フラットフレームを開く...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="696"/>
+        <source>Properties...</source>
+        <comment>IDM_PROPERTIES</comment>
+        <translation>プロパティ...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="700"/>
+        <source>Flat Contour Chart</source>
+        <translation>フラット輪郭チャート</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../StackingDlg.cpp" line="1033"/>
+        <source>%n files selected</source>
+        <comment>IDS_MULTIPLEFILESELECTED</comment>
+        <translation>
+            <numerusform>%n 個のファイルを選択</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1657"/>
+        <source>Open Bias Frames...</source>
+        <comment>IDS_TITLE_OPENBIASFRAMES</comment>
+        <translation>バイアスフレームを開く...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1879"/>
+        <source>Light Frames: %1
+Dark Frames: %2
+Flat Frames: %3
+Dark Flat Frames: %4
+Offset/Bias Frames: %5</source>
+        <comment>IDS_LISTINFO2</comment>
+        <translation>ライト: %1
+ダーク: %2
+フラット: %3
+ダークフラット: %4
+バイアス: %5</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1962"/>
+        <source>Open another File List...</source>
+        <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
+        <translation>別のファイルリストを開く...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2141"/>
+        <source>DeepSkyStacker version %1 is available for download.</source>
+        <comment>IDS_VERSIONAVAILABLE</comment>
+        <translation>DeepSkyStacker バージョン %1 がダウンロード可能です。</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2258"/>
+        <source>Total registering time: %1 %2</source>
+        <translation>総登録時間: %1 %2</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2285"/>
+        <source>You must check light frames to register them.</source>
+        <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
+        <translation>ライトフレームを登録するには、まずチェックする必要があります。</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2363"/>
+        <source>The checked pictures are not compatible: %1.</source>
+        <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
+        <translation>チェックされた画像は互換性がありません: %1</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2367"/>
+        <source>You must check light frames to stack them.</source>
+        <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
+        <translation>スタックするにはライトフレームをチェックする必要があります。</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2531"/>
+        <source>Total stacking time: %1 %2</source>
+        <translation>総スタック時間: %1 %2</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2562"/>
+        <source>Saving Final image in %1</source>
+        <comment>IDS_SAVINGFINAL</comment>
+        <translation>最終画像を %1 に保存中</translation>
     </message>
 </context>
 <context>
@@ -2676,123 +2704,123 @@ Do you want to save the changes?</source>
         <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
         <comment>IDD_STACKINGPARAMETERS</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタッキング</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
         <comment>IDC_TITLE</comment>
-        <translation type="unfinished"></translation>
+        <translation>スタッキングモード</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="50"/>
         <source>Number of iterations:</source>
         <comment>IDC_STATICITERATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>反復回数：</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="57"/>
         <source>Median</source>
         <comment>IDC_MEDIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>中央値</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="93"/>
         <source>Kappa-Sigma clipping</source>
         <comment>IDC_SIGMACLIPPING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kappa-Sigma クリッピング</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="126"/>
         <source>Maximum</source>
         <comment>IDC_MAXIMUM</comment>
-        <translation type="unfinished"></translation>
+        <translation>最大値</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="133"/>
         <source>Median Kappa-Sigma clipping</source>
         <comment>IDC_MEDIANSIGMACLIPPING,</comment>
-        <translation type="unfinished"></translation>
+        <translation>中央値 Kappa-Sigma クリッピング</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="166"/>
         <source>Auto Adaptive Weighted Average</source>
         <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>自動適応型加重平均</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="173"/>
         <source>Average</source>
         <comment>IDC_AVERAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>平均</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="186"/>
         <source>Kappa:</source>
         <comment>IDC_STATICKAPPA</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kappa 値：</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="193"/>
         <source>Entropy Weighted Average
 (High Dynamic Range)</source>
         <comment>IDC_ENTROPYAVERAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>エントロピー加重平均（高ダイナミックレンジ）</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="271"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
-        <translation type="unfinished"></translation>
+        <translation>ブルーミング除去</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="291"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>設定</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="317"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダーク最適化</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
-        <translation type="unfinished"></translation>
+        <translation>不良カラムの検出と除去</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>ホットピクセルの検出と除去</translation>
     </message>
     <message>
         <location filename="../ui/StackingParameters.ui" line="351"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
-        <translation type="unfinished"></translation>
+        <translation>ダーク乗算係数</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="18"/>
         <source>No Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>背景補正なし</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="19"/>
         <source>Per Channel Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネル別背景補正</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="20"/>
         <source>RGB Channels Background Calibration</source>
         <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>RGB 背景補正</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="59"/>
@@ -2802,7 +2830,9 @@ are iteratively removed.
 
 The remaining pixels are averaged.</source>
         <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
-        <translation type="unfinished"></translation>
+        <translation>[平均値-%1×%2, 平均値+%1×%2] の範囲外のピクセルは反復的に除去されます。
+
+残ったピクセルは平均化されます。</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="68"/>
@@ -2812,7 +2842,9 @@ are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
         <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
-        <translation type="unfinished"></translation>
+        <translation>[平均値-%1×%2, 平均値+%1×%2] の範囲外のピクセルは反復的に中央値で置換されます。
+
+その後、すべてのピクセルが平均化されます。</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="75"/>
@@ -2821,13 +2853,13 @@ iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
         <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;加重平均&lt;/b&gt; は、各ピクセルの平均値からの偏差（標準偏差 %1 に対する相対量）に基づいて重み付けを行い、反復処理によって算出されます。</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="107"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
-        <translation type="unfinished"></translation>
+        <translation>オプション...</translation>
     </message>
 </context>
 <context>
@@ -2836,116 +2868,116 @@ compared to the standard deviation (%1).</source>
         <location filename="../ui/StarMaskDlg.ui" line="14"/>
         <source>Create a Star Mask</source>
         <comment>IDD_STARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>スター・マスクの作成</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="61"/>
         <source>Star detection</source>
-        <translation type="unfinished"></translation>
+        <translation>星の検出</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="73"/>
         <source>Star detection threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>星検出のしきい値</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="124"/>
         <source>Hot pixel detection</source>
         <comment>IDC_HOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>ホットピクセル検出</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="137"/>
         <source>Minimum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>星の最小サイズ</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="185"/>
         <source>Maximum size of a star</source>
-        <translation type="unfinished"></translation>
+        <translation>星の最大サイズ</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="245"/>
         <source>Enlarge/Shrink</source>
-        <translation type="unfinished"></translation>
+        <translation>拡大／縮小</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="257"/>
         <source>Percentage of the star size</source>
-        <translation type="unfinished"></translation>
+        <translation>星サイズに対する割合</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="314"/>
         <source>Increase size by  </source>
-        <translation type="unfinished"></translation>
+        <translation>サイズ増加量：</translation>
     </message>
     <message>
         <location filename="../ui/StarMaskDlg.ui" line="388"/>
         <source>Shape of the stars in the mask</source>
-        <translation type="unfinished"></translation>
+        <translation>マスク内の星の形状</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="60"/>
         <source>Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>ベル型</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="61"/>
         <source>Truncated Bell</source>
-        <translation type="unfinished"></translation>
+        <translation>ベル型（上部切除）</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="62"/>
         <source>Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>円錐型</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="63"/>
         <source>Truncated Cone</source>
-        <translation type="unfinished"></translation>
+        <translation>円錐型（上部切除）</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="64"/>
         <source>Cubic</source>
-        <translation type="unfinished"></translation>
+        <translation>三次関数型</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="65"/>
         <source>Quadric</source>
-        <translation type="unfinished"></translation>
+        <translation>四次関数型</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="151"/>
         <location filename="../StarMaskDlg.cpp" line="166"/>
         <source>%1%</source>
-        <translation type="unfinished"></translation>
+        <translation>%1%</translation>
     </message>
     <message numerus="yes">
         <location filename="../StarMaskDlg.cpp" line="156"/>
         <location filename="../StarMaskDlg.cpp" line="161"/>
         <location filename="../StarMaskDlg.cpp" line="171"/>
         <source>%n pixel(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ピクセル</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="205"/>
         <source>TIFF Image(*.tif *.tiff)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>TIFF 画像 (*.tif *.tiff)</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="206"/>
         <source>FITS Image(*.fits *.fts *.fit)</source>
         <comment>IDS_FILTER_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>FITS 画像 (*.fits *.fts *.fit)</translation>
     </message>
     <message>
         <location filename="../StarMaskDlg.cpp" line="212"/>
         <source>Save the StarMask as ...</source>
         <comment>IDS_TITLE_MASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>スター・マスクを保存...</translation>
     </message>
 </context>
 <context>
@@ -2956,7 +2988,8 @@ compared to the standard deviation (%1).</source>
 This mode allows you to create or modify a Custom Rectangle
 defining the part of the images you wish to stack.</source>
         <comment>IDS_TOOLTIP_SELECTRECT</comment>
-        <translation type="unfinished"></translation>
+        <translation>カスタム矩形モード
+スタック対象とする画像領域を定義するための矩形を作成・編集します。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="119"/>
@@ -2964,7 +2997,8 @@ defining the part of the images you wish to stack.</source>
 This mode shows the stars that have been detected in the image.
 You can add additional stars or remove incorrectly detected stars.</source>
         <comment>IDS_TOOLTIP_STAR</comment>
-        <translation type="unfinished"></translation>
+        <translation>星編集モード
+検出された星を表示し、追加または誤検出の星を削除できます。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="132"/>
@@ -2972,7 +3006,8 @@ You can add additional stars or remove incorrectly detected stars.</source>
 This mode allows you to select and edit the location
 of the comet&apos;s nucleus in the image.</source>
         <comment>IDS_TOOLTIP_COMET</comment>
-        <translation type="unfinished"></translation>
+        <translation>彗星編集モード
+画像内の彗星核の位置を選択・編集できます。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="141"/>
@@ -2982,25 +3017,28 @@ in Edit Stars and Edit Comet modes.
 
 Right Click to change behaviour.</source>
         <comment>IDS_TOOLTIP_SAVE</comment>
-        <translation type="unfinished"></translation>
+        <translation>変更を保存
+星編集／彗星編集モードで行った変更を保存します。
+
+右クリックで動作を変更できます。</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="170"/>
         <source>Save without asking</source>
         <comment>ID_SAVECONTEXT_SAVEWITHOUTASKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>確認せず保存</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="174"/>
         <source>Don&apos;t save</source>
         <comment>ID_SAVECONTEXT_DONTSAVEWITHOUTASKING</comment>
-        <translation type="unfinished"></translation>
+        <translation>保存しない</translation>
     </message>
     <message>
         <location filename="../toolbar.cpp" line="178"/>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
-        <translation type="unfinished"></translation>
+        <translation>毎回確認する</translation>
     </message>
 </context>
 <context>
@@ -3009,24 +3047,26 @@ Right Click to change behaviour.</source>
         <location filename="../DeepSkyStacker.cpp" line="113"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
-        <translation type="unfinished"></translation>
+        <translation>この DeepSkyStacker ベータ版は有効期限が切れています。
+新しいベータ版または正式版を Web サイトから入手できます。</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="141"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="381"/>
-        <source>%1 does not exist or is not a file</source>
-        <translation type="unfinished"></translation>
+        <translation>起動時に新しいバージョンを確認しますか？
+（この設定は後で「バージョン情報」から変更できます）</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker を支援する</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="381"/>
+        <source>%1 does not exist or is not a file</source>
+        <translation>%1 は存在しないか、ファイルではありません</translation>
     </message>
 </context>
 <context>
@@ -3035,21 +3075,23 @@ You can probably get another one or download the final release from the web site
         <location filename="../PostCalibration.cpp" line="350"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>コスメティック補正を計算中</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="366"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 bit/チャンネル %2 のライトフレームを読み込み中
+%3</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="368"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 bit グレースケール %2 のライトフレームを読み込み中
+%3</translation>
     </message>
 </context>
 <context>
@@ -3057,7 +3099,7 @@ You can probably get another one or download the final release from the web site
     <message>
         <location filename="../../Tools/QLinearGradientCtrl.cpp" line="44"/>
         <source>After selecting a slider with the mouse, you can move it using the Up Arrow, Right Arrow, Down Arrow, Left Arrow, Page Up, and Page Down keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>マウスでスライダーを選択した後、上下左右の矢印キー、PageUp、PageDown キーで移動できます。</translation>
     </message>
 </context>
 <context>
@@ -3067,13 +3109,13 @@ You can probably get another one or download the final release from the web site
         <location filename="../RecommendedSettings.cpp" line="287"/>
         <source>If you are processing narrowband images (especially H%1)</source>
         <comment>IDS_RECO_RAWNARROWBAND_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>ナローバンド画像（特に H%1）を処理している場合</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="265"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
-        <translation type="unfinished"></translation>
+        <translation>スーパーピクセルモードを使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="292"/>
@@ -3081,93 +3123,93 @@ You can probably get another one or download the final release from the web site
         <location filename="../RecommendedSettings.cpp" line="696"/>
         <source>Use Per Channel background calibration</source>
         <comment>IDS_RECO_USEPERCHANNEL</comment>
-        <translation type="unfinished"></translation>
+        <translation>チャンネル別背景補正を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="314"/>
         <source>You are processing long exposure and possibly good SNR images</source>
         <comment>IDS_RECO_RAWHIGHSNR_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>長時間露光で、S/N 比の良い画像を処理しています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="317"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
-        <translation type="unfinished"></translation>
+        <translation>AHD デベイヤー方式を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="323"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>短時間露光で、S/N 比の低い画像を処理しています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="326"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイリニアデベイヤー方式を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="359"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイアスフレームを使用しています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="362"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
-        <translation type="unfinished"></translation>
+        <translation>キャリブレーション精度向上のため黒レベルを 0 に設定</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="371"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>バイアスなしのフラットフレームを使用しています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="374"/>
         <source>Don&apos;t set the black point to 0</source>
         <comment>IDS_RECO_RAWCLEARBP_TEXT</comment>
-        <translation type="unfinished"></translation>
+        <translation>黒レベルを 0 に設定しないでください</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="414"/>
         <source>If you are using a modified DSLR</source>
         <comment>IDS_RECO_MODDEDDSLR_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>改造 DSLR を使用している場合</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="417"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
-        <translation type="unfinished"></translation>
+        <translation>すべてのホワイトバランス設定をリセット</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="454"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>恒星の軌跡を伴う彗星画像を作成しようとしています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="457"/>
         <location filename="../RecommendedSettings.cpp" line="527"/>
         <source>Use Average combination method</source>
         <comment>IDS_RECO_USEAVERAGECOMBINE</comment>
-        <translation type="unfinished"></translation>
+        <translation>平均合成を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="468"/>
         <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
         <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 枚のライトフレームから、星と彗星の両方に整列した画像を作成しようとしています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="475"/>
         <location filename="../RecommendedSettings.cpp" line="508"/>
         <source>Use Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMACLIPPING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kappa-Sigma クリッピング合成を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="483"/>
@@ -3177,25 +3219,25 @@ You can probably get another one or download the final release from the web site
         <location filename="../RecommendedSettings.cpp" line="631"/>
         <source>Use Median combination method</source>
         <comment>IDS_RECO_USEMEDIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>中央値合成を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="501"/>
         <source>You are stacking %1 light frame(s)</source>
         <comment>IDS_RECO_LIGHT_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 枚のライトフレームをスタックしています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="517"/>
         <source>Use Auto Adaptive Weighted Average combination method</source>
         <comment>IDS_RECO_USEAUTOADAPTIVEAVERAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>自動適応型加重平均合成を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="551"/>
         <source>You are creating a master dark from %1 dark frame(s)</source>
         <comment>IDS_RECO_DARK_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 枚のダークフレームからマスターダークを作成しています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="558"/>
@@ -3203,43 +3245,43 @@ You can probably get another one or download the final release from the web site
         <location filename="../RecommendedSettings.cpp" line="622"/>
         <source>Use Median Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMAMEDIAN</comment>
-        <translation type="unfinished"></translation>
+        <translation>中央値 Kappa-Sigma クリッピング合成を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="583"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 枚のバイアスフレームからマスターバイアスを作成しています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="615"/>
         <source>You are creating a master flat from %1 flat frame(s)</source>
         <comment>IDS_RECO_FLAT_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 枚のフラットフレームからマスターフラットを作成しています</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="647"/>
         <source>If the resulting images look too gray</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATION_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>仕上がり画像が灰色がかって見える場合</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="670"/>
         <source>If the color balance in the resulting images is hard to fix in post-processing</source>
         <comment>IDS_RECO_RGBCALIBRATION_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>仕上がり画像の色バランスが後処理で修正しにくい場合</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="673"/>
         <source>Use RGB background calibration</source>
         <comment>IDS_RECO_USERGBCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>RGB 背景補正を使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="693"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
-        <translation type="unfinished"></translation>
+        <translation>グレースケール画像をスタックしており、背景値がわずかに異なる可能性があります</translation>
     </message>
 </context>
 </TS>
