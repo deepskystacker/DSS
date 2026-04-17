@@ -225,6 +225,11 @@ Copyright Tőkés Attila</translation>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>トルコ語版：</translation>
     </message>
+    <message>
+        <location filename="../About.cpp" line="163"/>
+        <source>Japanese version: 三浦秀 (Shu Miura)&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DSS::AlignmentParameters</name>
