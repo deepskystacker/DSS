@@ -466,10 +466,10 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		if (n1 != 0)
 		{
 			constexpr double Offset = 1.05;
-			const double InfinityPoint = 5.0 + numberOfWantedStars;
+			const double InfinityPoint = 5.0 + static_cast<double>(numberOfWantedStars);
 			const double tau = std::log(Offset - 1.0) / (-InfinityPoint);
-			const double nAvg = (1 + n1 + n2) / 2;
-			const double nDelta = n1 - n2;
+			const double nAvg = (1.0 + static_cast<double>(n1) + static_cast<double>(n2)) / 2.0;
+			const double nDelta = static_cast<double>(n1) - static_cast<double>(n2);
 			const bool tooManyStars = n1 >= std::max(3 * numberOfWantedStars, size_t{ 150 });
 			oneMoreIteration = oneMoreIteration == 0 ? (tooManyStars ? 1 : 0) : 2; // IF number of stars too large -> add one iteration with increased threshold.
 			factor = tooManyStars

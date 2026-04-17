@@ -324,771 +324,1516 @@ is greater than or equal to the given threshold value. </font></P>
   </tr>
   <tr>
     <td width="34%" valign="top">
-    <p class="Standard"><font face="Arial" size="2"><a name="cosmetictab"></a>This 
+    <p class="Standard"><font face="Arial" size="2"><a name=cosmetictab></a>This 
     tab is to control the way the calibrated images are cleaned before stacking.</font></p>
-    <p class="Standard"><font face="Arial" size="2">The goal is to detect and 
-    clean remaining hot or cold pixels after calibration.</font></p>
-    <p class="Standard"><font face="Arial" size="2">Checking these options may 
-    seriously alter the resulting image so use them with caution.</font></p>
-    <p class="Standard"><font face="Arial" size="2">Two parameters are needed to 
-    define the behavior of the cosmetic cleaning.</font></p>
-    <p class="Standard"><font face="Arial" size="2">The first parameter is the 
-    size of the filter used to detect and fix the hot/cold pixels. The larger 
-    the filter, the longer the processing time and the smoother the resulting 
-    image.</font></p>
-    <p class="Standard"><font face="Arial" size="2">The second parameter is the 
-    threshold under which no correction is done (the pixel value remain the 
-    same).<br>
-    A lower threshold means that more correction are done.</font></p>
-    <p class="Standard"><font face="Arial" size="2">The last option may be 
-    checked to create an image showing the cleaned pixels for each light frame.<br>
-    In this image, cleaned hot pixels are white, cleaned cold pixels are dark 
-    gray and all the other pixels are light gray.<br>
-    The created files have the name and location of the matching light frame 
-    with a .cosmetic.tif or .cosmetic.fts extension as defined in the previous 
-    tab. </font>
-    <p class="Standard"><font face="Arial" size="2"> <br>
-&nbsp;</font></p></td>
-    <td width="66%" align="center" valign="top">
-    <IMG border=0 src="../images/english/CosmeticTab.jpg" width=491 height=403></td>
+      <p class=Standard><font size=2 face=Arial       >The goal is to detect and clean remaining hot or cold 
+      pixels after calibration.</font></p>
+      <p class=Standard><font size=2 face=Arial       >Checking these options may seriously alter the 
+      resulting image so use them with caution.</font></p>
+      <p class=Standard><font size=2 face=Arial       >Two parameters are needed to define the behavior of the 
+      cosmetic cleaning.</font></p>
+      <p class=Standard><font size=2 face=Arial       >The first parameter is the size of the filter used to 
+      detect and fix the hot/cold pixels. The larger the filter, the longer the 
+      processing time and the smoother the resulting image.</font></p>
+      <p class=Standard><font size=2 face=Arial       >The second parameter is the threshold under which no 
+      correction is done (the pixel value remain the same).<br 
+      >A lower threshold means that more correction are 
+      done.</font></p>
+      <p class=Standard><font size=2 face=Arial       >The last option may be checked to create an image 
+      showing the cleaned pixels for each light frame.<br>In 
+      this image, cleaned hot pixels are white, cleaned cold pixels are dark 
+      gray and all the other pixels are light gray.<br>The 
+      created files have the name and location of the matching light frame with 
+      a .cosmetic.tif or .cosmetic.fts extension as defined in the previous tab. 
+      </font>
+      <p class=Standard><font size=2 face=Arial       ><br>&nbsp;</font></p></td>
+    <td vAlign=top width="66%" align=center><IMG border=0 src="../images/english/CosmeticTab.jpg" width=491 height=403 ></td>
   </tr>
   <tr>
-    <td width="34%" valign="top">
-    <p class="Standard">
-    <font face="Arial" size="2"><a name="comettab"></a>The Comet tab is 
-    available only when at least two light frames (including the reference light 
-    frame) have a comet registered.</font></p>
-    <p class="Standard"><font face="Arial" size="2">In this 
-    case the Comet tab is used to select the comet stacking mode between the 3 
-    available modes.<br>
-    <br>
-    See the <A href="technical.htm#cometstacking">Comet Stacking</A> topic in 
-    the Technical Details for information on how to use Comet Stacking.</font></p></td>
-    <td width="66%" align="center">
-    <IMG border=0 src="../images/english/CometTab.jpg" width=491 height=403></td>
-  </tr>
+    <td vAlign=top width="34%">
+      <p class=Standard><font size=2 face=Arial       ><a name=comettab></A>The Comet tab 
+      is available only when at least two light frames (including the reference 
+      light frame) have a comet registered.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >In this case the Comet tab is used to select the comet 
+      stacking mode between the 3 available modes.<br><br 
+      >See the <A href="technical.htm#cometstacking" >Comet 
+      Stacking</A> topic in the Technical Details for information on how to use 
+      Comet Stacking.</FONT></P></TD>
+    <td width="66%" align=center><IMG border=0 src="../images/english/CometTab.jpg" width=491 height=403 ></TD></TR>
 </table>
-<p><font face="Arial" size="2"> <br>
-After the stacking process, the resulting image is saved in the AutoSave.tif file 
-which is created in the folder of the reference light frame..<br>
-If an Autosave.tif file already exists in the folder, an Autosave001.tif (002, 
-003, ...) is created.</font></p>
-<hr color="#0000ff">
-<p><b><font face="Arial" size="4" color="#ff0000"><a name="batchstacking"></a>
-Batch Stacking<br>
-</font></b><font face="Arial" size="2">The Batch Stacking dialog is used to 
-create resulting images from more than one stack.</font></p>
-<hr color="#0000ff">
-<p><font face="Arial" size="4" color="#ff0000"><a name="processingtab"></a>
-<table border="0" cellspacing="0" width="1165" id="AutoNumber23" cellpadding="0" style="HEIGHT: 381px; WIDTH: 1165px">
+<p><font size=2 face=Arial><br>After the stacking process, the resulting image is saved in 
+the AutoSave.tif file which is created in the folder of the reference light 
+frame..<br>If an Autosave.tif file already exists in the 
+folder, an Autosave001.tif (002, 003, ...) is created.</FONT></P>
+<hr color=#0000ff>
+
+<p><b><font color=#ff0000 size=4 face=Arial><a name=batchstacking></A>Batch Stacking<br></FONT></B><font size=2 face=Arial>The Batch Stacking dialog is used to 
+create resulting images from more than one stack.</FONT></P><font color=#ff0000 size=4 face=Arial>
+<p>
+<table id=AutoNumber23 style="HEIGHT: 381px; WIDTH: 1165px" cellSpacing=0 
+cellPadding=0 width=1165 border=0>
+  
   <tr>
-    <td width="34%" valign="top">
-    <p class="Standard"><font face="Arial" size="2">For example it may be used 
-    to create the resulting images from the red, green, blue and luminance 
-    images without the need to load each list then start manually the stacking 
-    process for each one.<br>
-    <br>
-    Of course it also may be used to stack any existing list.<br>
-    <br>
-    You just need to add the file lists previously created by the Save File List 
-    command to the list.<br>
-    Each File List that is checked will be processed.</font></p>
-    <p class="Standard"><font face="Arial" size="2">At the end of the stacking 
-    process, the output file name replaces the list name for each processed file 
-    list.</font></p>
-    <p class="Standard"><u><b><font face="Arial" size="2">Notes:</font></b></u></p>
-    <ul>
-      <li>
-      <p class="Standard"><font face="Arial" size="2">It is not possible to 
-      define a custom rectangle for batch stacking. </font></p></li>
-    </ul>
-    </td>
+    <td vAlign=top width="34%">
+      <p class=Standard><font size=2 face=Arial       >For example it may be used to create the resulting 
+      images from the red, green, blue and luminance images without the need to 
+      load each list then start manually the stacking process for each one.<br 
+      ><br>Of course it also may be used 
+      to stack any existing list.<br><br 
+      >You just need to add the file lists previously created 
+      by the Save File List command to the list.<br>Each 
+      File List that is checked will be processed.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >At the end of the stacking process, the output file 
+      name replaces the list name for each processed file list.</FONT></P>
+      <p class=Standard><u><b 
+      ><font size=2 face=Arial       >Notes:</FONT></B></U></P>
+      <ul>
+        <li>
+        <p class=Standard><font size=2 face=Arial         >It is not possible to define a custom rectangle for 
+        batch stacking. </FONT></P></LI></UL></TD>
     <td width="56%">
-    <p align="center"><IMG style="HEIGHT: 378px; WIDTH: 483px" border=0 src="../images/english/BatchStacking.jpg" width=396 height=323 ></p></td>
-  </tr>
-</table><STRONG>Processing Tab<br></STRONG>
-</font><font face="Arial" size="2">The processing tab contains the commands 
-and features pertaining to  post processing.</font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="85%" id="AutoNumber5">
+      <p align=center><IMG style="HEIGHT: 378px; WIDTH: 483px" border=0 src="../images/english/BatchStacking.jpg" width=396 height=323 ></P></TD></TR></TABLE></P>
+<hr color=#0000ff>
+
+<p>&nbsp;<STRONG>Processing Tab<br></STRONG></FONT><font size=2 face=Arial>The processing tab contains the commands and features 
+pertaining to post processing.</FONT></P>
+<table id=AutoNumber5 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="85%" border=0>
+  
   <tr>
     <td width="58%">
-    <p class="Standard"><font face="Arial" size="2">I would like to remind here that 
-    DeepSkyStacker only allows simple processing treatments of the resulting 
-    picture in order to quickly view the result of the stacking process.<br>
-    The heavy post processing should take place in another more specialized 
-    software.</font></p>
-    <p class="Standard"><font face="Arial" size="2">The processing tab contains a 
-    preview of the RGB histogram and three sub tabs which are used to adjust the 
-    following settings::<br>
-- RGB levels<br>
-- Luminance curve<br>
-- Saturation<br>
-<br>
-    RGB levels and luminance curve adjustments are directly visible on the RGB 
-    histogram.</font></p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p></td>
-    <td width="42%">
-    <IMG style="HEIGHT: 431px; WIDTH: 464px" border    =0 alt="Processing Tab preview, with RGB histogram" src="../images/english/ProcessingTab.jpg" width=351 height=431 ></td>
-  </tr>
-</table>
-<p><font face="Arial" size="2">
-<b>Adjusting the RGB Levels</b></font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="84%" id="AutoNumber2">
-  <tr>
-    <td width="69%">
-    <p class="Standard"><font face="Arial" size="2">The RGB levels adjustments are 
-    controlled by:<br>
-    The kind a adjustment that you can modify by clicking on the adjustment 
-    name. The available adjustments are linear, square root, cubic root, 
-    logarithm, log(log), log(square root) and asinh..<br>
-    <br>
-    The modifiable limits for each channel (left cursor for the minimum, right 
-    cursor for the maximum).<br>
-    <br>
-    The modifiable offset for each channel (middle cursor).<br>
-    <br>
-    <br>
-    <br>
-    The RGB levels adjustment may be done independently for each channel or for 
-    all the channels at the same time when the "Linked settings" option is 
-    checked..</font></p></td>
-    <td width="35%">
-    <IMG border=0 alt="RGB levels adjustement tab" src ="../images/english/RGBLevels.jpg" width=261 height=238 ></td>
-  </tr>
-</table>
-<p><font face="Arial" size="2">The simplest way to understand how the different 
-parameters are working is to change them and look at the result on the 
-histogram..<br>
-<br>
-<b>Adjusting the Luminance Curve</b></font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="84%" id="AutoNumber3">
-  <tr>
-    <td width="66%">
-    <p class="Standard"><font face="Arial" size="2">The luminance curve is 
-    controlled by 6 parameters.<br>
-- 2 for the darkness area.<br>
-- 2 for the midtone area<br>
-- 2 for the highlight area.<br>
-<br>
-    These parameters are controlling a Bezier curve used to transform the 
-    luminance.<br>
-    Simply put the parameters are the angle and power of the curve for each 
-    point.<br>
-<br>
-    The advantage of using only 6 parameters is that on one hand it is possible 
-    to quickly view the result and on the other hand that it is possible to 
-    memorize the parameters to apply them on another picture.</font></p></td>
-    <td width="34%">
-    <IMG border=0 alt="Luminance curve adjustment tab" src ="../images/english/Luminance.jpg" width=260 height=239 ></td>
-  </tr>
-</table>
-<p><font face="Arial" size="2">The simplest way to understand how the different 
-parameters are working is to change them and look at the resulting the luminance 
-adjustment curve (black curve) on the histogram.<br>
-<br>
-<b>Adjusting the Saturation</b><br>
-The saturation level adjustment is just a percentage of increasing or decreasing 
-the saturation level.<br>
-<br>
-<b>RGB Histogram</b></font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="85%" id="AutoNumber4">
-  <tr>
-    <td width="50%">
-    <p class="Standard"><font face="Arial" size="2">The RGB histogram is used to 
-    visualize for each channel (R, G and B) the red, green and blue pixels 
-    distribution in the picture.<br>
-    The black curve is the luminance adjustment curve.<br>
-    <br>
-    Moreover, to help the equalization of the channels the Gaussian curve for 
-    each channel is drawn on top of the histogram.</font></p></td>
-    <td width="50%">
-    <IMG border=0 alt="RGB Histogram" src ="../images/Histogram.jpg" width=389 height=233 ></td>
-  </tr>
-</table>
-<h4 align="justify"><FONT face=Arial>Using the Editor in 
-practice:</FONT>    </h4>
-<p align="justify" style="MARGIN-RIGHT: 0px" dir=ltr><FONT face=Arial>These are some recommendations on how to get the best results from 
-the editor: </FONT> 
-                   
-      </p>
-<OL>
-  <LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><FONT face=Calibri>Start on&nbsp;RGB/K Levels tab.</FONT></SPAN></p>
-  <LI>
-<div align="justify">
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><FONT face=Calibri>Use the "black point" slider to widen the curves as much as 
-  possible.</FONT></SPAN></P></div>
-  <LI>
-<div align="justify">
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><FONT face=Calibri></FONT><o:p><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>Use 
-  the middle slider to move them to the left and align 
-  them.</SPAN></O:P></SPAN></P></div>
-  <LI>
-<div align="justify"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><o:p><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>If 
-  necessary, make minor adjustments with the "white 
-  point"&nbsp;sliders.</SPAN></P></SPAN></O:P></SPAN></div>
-  <LI>
-<div align="justify"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><o:p><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>Switch 
-  to the Luminance Tab.</SPAN></P></SPAN></O:P></SPAN></div>
-  <LI>
-<div align="justify"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><o:p><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>Adjust 
-  the&nbsp;curve to get an "S" curve that goes up through the 
-  peaks.</SPAN></P></SPAN></O:P></SPAN></div>
-  <LI>
-<div align="justify"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><o:p><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>Switch 
-  to the Saturation tab.</SPAN></P></SPAN></O:P></SPAN></div>
-  <LI>
-<div align="justify"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><o:p><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'></SPAN></SPAN></O:P></SPAN><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><o:p><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>Adjust 
-  the Saturation level to (typically) between 20 and 25 
-  percent.</SPAN></SPAN></SPAN></P></div></LI></OL>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><FONT face=Arial><SPAN 
-style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri",sans-serif; mso-fareast-font-family: "Yu Gothic"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'><FONT size=2 face=Arial>Note: The sliders are the small triangles below the color bars. The 
-left one is for the black point and the right one for the white 
-point.</FONT></SPAN> </FONT> 
-           
-  </SPAN></SPAN></SPAN></P>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><FONT face=Arial><FONT size=3><SPAN 
-style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri",sans-serif; mso-fareast-font-family: "Yu Gothic"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'></SPAN></FONT> </FONT> 
-           
-  </SPAN></SPAN></SPAN>&nbsp;</P>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><FONT face=Arial><FONT size=3><SPAN 
-style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri",sans-serif; mso-fareast-font-family: "Yu Gothic"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'></SPAN>Here's a movie I 
-created&nbsp;showing how to do this with a real image: <SPAN 
-style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
-style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><A href="../DSS Editing.mp4" >View the movie of using the 
-editor</A></SPAN></SPAN> </FONT> </FONT> 
-           
-  </SPAN></SPAN></SPAN></P>
-  <P class=MsoNormal style="MARGIN: 0cm"><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
-  style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
-  style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>         <SPAN 
-style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
-style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'></SPAN></SPAN> 
-           
-  </SPAN></SPAN></SPAN>&nbsp;</P>
-<h4 class=MsoNormal style="MARGIN: 0cm" align=justify><FONT face=Arial>Saving/Loading adjustment parameters<br>
-Undo/Redo adjustment parameters</FONT> </h4>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify>&nbsp;</p>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT face=Arial>On the bottom of each tab a set of buttons is available:<br>
-- to apply the last modifications to the picture<br>
-- to undo the last applied modifications<br>
-- to redo the last undone modifications<br>
-- to reset all the values<br>
-- to 
-access a dialog used to save/load a named set of parameters.</FONT></p>
-<h4 class=MsoNormal style="MARGIN: 0cm" align=justify>
+      <p class=Standard><font size=2 face=Arial       >I would like to empahsise here 
+      that&nbsp;DeepSkyStacker only allows a simple stretch of the image to 
+      allow you to visualise the result of the stacking process.<BR 
+      ><br>Any complex&nbsp;post 
+      processing should take place in other software specifically designed for 
+      that task.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >The processing tab contains a preview of the RGB 
+      histogram and a panel that allows an Inverse Hyperbolic Size (ASinH) 
+      image&nbsp;stretch to be applied.</FONT></P>
+      <p class=Standard>&nbsp;</P>
+      <p>&nbsp;</P>
+      <p>&nbsp;</P>
+      <p>&nbsp;</P></TD>
+    <td width="42%"><IMG style="HEIGHT: 514px; WIDTH: 491px" border=0 alt="Processing Tab preview, with RGB histogram" src="../images/english/ProcessingTab.png" width=351 height=431 ></TD></TR></TABLE>
+<p><font size=2 face=Arial><b>The ASinH Transformation or Stretch</B></FONT></P>
+<table id=AutoNumber2 style="WIDTH: 85%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
   
-          <br><FONT face=Arial>Loading a 
-picture</FONT> </h4>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify>
-  <br><FONT face=Arial>DeepSkyStacker 
-can load DSImage images ( </FONT>     <A href="faq.htm#autosave"><FONT face=Arial>created only </FONT> 
-</A><FONT face=Arial> after the stacking process), TIFF images (8, 16 and 32 bit, gray 
-levels or RGB) or FITS images (8, 16, 32 and 64 bit, gray 
-levels or RGB).<br>
-At the end of the stacking process the AutoSave.tif picture is automatically 
-loaded.<br>
-<br></FONT>
-<br>
-Saving the resulting picture</p>
-<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber7">
+  <tr>
+    <td width="58%">
+      <p class=Standard><font size=2 face=Arial       >The ASinH&nbsp;Transformation amplifies the darker 
+      areas of the image.&nbsp;&nbsp; The&nbsp;parameters are the 
+      stretch&nbsp;factor, the black point value, and whether or not to use 
+      "Human-weighted luminance".<BR></FONT><font size=2 
+      face=Arial><BR>For monochrome 
+      images, pixel values are modified using the following function:</P>
+      <DIV class="math notranslate nohighlight" 
+      ><MJX-CONTAINER tabIndex=0 
+      class="MathJax CtxtMenu_Attached_0" style="FONT-SIZE: 114.5%" 
+       jax="CHTML" overflow="overflow" display="true" 
+      ctxtmenu_counter="0" data-semantic-locale="en" 
+      data-semantic-domain="clearspeak" data-semantic-style="default" 
+      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
+      data-semantic-collapsible="collapsible" 
+      data-semantic-expandable="expandable" data-semantic-level="Level" 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-speech-attached="true" 
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-braille-attached="true" has-speech="true"><MJX-MATH aria-hidden=true 
+      class=NCM-N display="true" 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-type="relseq" data-semantic-role="equality" 
+      data-semantic-annotation="depth:1" data-semantic-id="32" 
+      data-semantic-children="0,31" data-semantic-content="1" 
+      data-semantic-attributes="latex:\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-owns="0 1 31" data-semantic-level-number="0" 
+      data-semantic-structure="(32 0 1 (31 (20 (15 2 (14 3 4 5) 6) 7 (19 8 18 (17 9 (16 10 11 12) 13))) (30 21 22 (29 23 28 (27 24 25 26)))))" 
+      data-speech-node="true" data-semantic-summary-none="equality" 
+      data-semantic-summary='<mark name="32"/> equality'><MJX-MTEXT 
+       data-semantic-speech-none="pixel" 
+      data-semantic-speech='<mark name="0"/> pixel' 
+      data-semantic-braille="⠏⠊⠭⠑⠇" data-latex="\text{pixel}" 
+      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-annotation="factor:relation;clearspeak:unit;nemeth:number;depth:2" 
+      data-semantic-id="0" data-semantic-attributes="latex:\text{pixel}" 
+      data-semantic-level-number="1" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="0"/> text' data-semantic-font="normal" 
+      data-semantic-parent="32"><MJX-C class=mjx-c70 style="PADDING-TOP: 0.69em" 
+       noic="true"><FONT face=Courier 
+      >&nbsp;&nbsp; p</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c78 style="PADDING-TOP: 0.69em" 
+       noic="true">x</MJX-C><MJX-C class=mjx-c65 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">e</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="equals" 
+      data-semantic-speech='<mark name="1"/> equals' data-semantic-braille="⠨⠅" 
+      data-latex="=" data-semantic-type="relation" data-semantic-role="equality" 
+      data-semantic-annotation="nemeth:number;depth:2" data-semantic-id="1" 
+      data-semantic-attributes="latex:=" data-semantic-level-number="1" 
+      data-speech-node="true" data-semantic-summary-none="equals" 
+      data-semantic-summary='<mark name="1"/> equals' data-semantic-parent="32" 
+      space="4" data-semantic-operator="relseq,="><MJX-C class=mjx-c3D 
+      >=&nbsp; </MJX-C></MJX-MO><MJX-MFRAC 
+       
+      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-braille="⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-type="fraction" data-semantic-role="division" 
+      data-semantic-annotation="depth:2" data-semantic-id="31" 
+      data-semantic-children="20,30" 
+      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-owns="20 30" data-semantic-level-number="1" 
+      data-speech-node="true" data-semantic-summary-none="fraction" 
+      data-semantic-summary='<mark name="31"/> fraction' 
+      data-semantic-parent="32" space="4"><MJX-FRAC 
+      type="d"><MJX-NUM><MJX-NSTRUT 
+      type="d"></MJX-NSTRUT><MJX-MROW 
+      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
+      data-semantic-type="infixop" data-semantic-role="multiplication" 
+      data-semantic-annotation="depth:3" data-semantic-id="20" 
+      data-semantic-children="15,19" data-semantic-content="7" 
+      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
+      data-semantic-owns="15 7 19" data-semantic-level-number="2" 
+      data-speech-node="true" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-summary='<mark name="20"/> product with 2 factors' 
+      data-semantic-parent="31" data-semantic-prefix-none="Numerator" 
+      data-semantic-prefix='<mark name="20"/> Numerator'><MJX-MROW 
+       
+      data-semantic-speech-none="open paren original minus blackpoint close paren" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" data-semantic-type="fenced" 
+      data-semantic-role="leftright" 
+      data-semantic-annotation="fences:paren;depth:4" data-semantic-id="15" 
+      data-semantic-children="14" data-semantic-content="2,6" 
+      data-semantic-owns="2 14 6" data-semantic-level-number="3" 
+      data-speech-node="true" 
+      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-semantic-summary='<mark name="2"/> open paren <break time="250ms"/> <mark name="14"/> subtraction with 2 elements <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-parent="20" data-semantic-added="true"><MJX-MO 
+       data-semantic-speech-none="open paren" 
+      data-semantic-speech='<mark name="2"/> open paren' 
+      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
+      data-semantic-role="open" data-semantic-annotation="depth:5" 
+      data-semantic-id="2" data-semantic-attributes="latex:(" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="open paren" 
+      data-semantic-summary='<mark name="2"/> open paren' 
+      data-semantic-parent="15" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       data-semantic-speech-none="original minus blackpoint" 
+      data-semantic-speech='<mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-semantic-type="infixop" 
+      data-semantic-role="subtraction" data-semantic-annotation="depth:5" 
+      data-semantic-id="14" data-semantic-children="3,5" 
+      data-semantic-content="4" data-semantic-owns="3 4 5" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="subtraction with 2 elements" 
+      data-semantic-summary='<mark name="14"/> subtraction with 2 elements' 
+      data-semantic-parent="15" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="original" 
+      data-semantic-speech='<mark name="3"/> original' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
+      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:6" 
+      data-semantic-id="3" data-semantic-attributes="latex:\text{original}" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="3"/> text' data-semantic-font="normal" 
+      data-semantic-parent="14"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
+       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
+       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      style="PADDING-TOP: 0.69em">l 
+      </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="minus" 
+      data-semantic-speech='<mark name="4"/> minus' data-semantic-braille="⠤" 
+      data-latex="-" data-semantic-type="operator" 
+      data-semantic-role="subtraction" data-semantic-annotation="depth:6" 
+      data-semantic-id="4" data-semantic-attributes="latex:-" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="minus" 
+      data-semantic-summary='<mark name="4"/> minus' data-semantic-parent="14" 
+      space="3" data-semantic-operator="infixop,−"><MJX-C class=mjx-c2212 
+      >− </MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-speech-none="blackpoint" 
+      data-semantic-speech='<mark name="5"/> blackpoint' 
+      data-semantic-braille="⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-latex="\text{blackpoint}" 
+      data-semantic-type="identifier" data-semantic-role="unit" 
+      data-semantic-annotation="clearspeak:unit;depth:6" data-semantic-id="5" 
+      data-semantic-attributes="latex:\text{blackpoint}" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="identifier" 
+      data-semantic-summary='<mark name="5"/> identifier' 
+      data-semantic-font="normal" data-semantic-parent="14" space="3"><MJX-C 
+      class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      noic="true">b</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+       noic="true">l</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c63 style="PADDING-TOP: 0.69em" 
+       noic="true">c</MJX-C><MJX-C class=mjx-c6B 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">k</MJX-C><MJX-C class=mjx-c70 style="PADDING-TOP: 0.69em" 
+       noic="true">p</MJX-C><MJX-C class=mjx-c6F 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">o</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">n</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+      >t</MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
+       data-semantic-speech-none="close paren" 
+      data-semantic-speech='<mark name="6"/> close paren' 
+      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
+      data-semantic-role="close" data-semantic-annotation="depth:5" 
+      data-semantic-id="6" data-semantic-attributes="latex:)" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="close paren" 
+      data-semantic-summary='<mark name="6"/> close paren' 
+      data-semantic-parent="15" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29>)</MJX-C></MJX-MO></MJX-MROW><MJX-MO 
+       data-semantic-speech-none="times" 
+      data-semantic-speech='<mark name="7"/> times' data-semantic-braille="⠈⠡" 
+      data-latex="\times" data-semantic-type="operator" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:4" 
+      data-semantic-id="7" data-semantic-attributes="latex:\times" 
+      data-semantic-level-number="3" data-speech-node="true" 
+      data-semantic-summary-none="times" 
+      data-semantic-summary='<mark name="7"/> times' data-semantic-parent="20" 
+      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-speech-none="the asinh of open paren original times stretch close paren" 
+      data-semantic-speech='<mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-type="appl" data-semantic-role="prefix function" 
+      data-semantic-annotation="depth:4" data-semantic-id="19" 
+      data-semantic-children="8,17" data-semantic-content="18,8" 
+      data-semantic-owns="8 18 17" data-semantic-level-number="3" 
+      data-speech-node="true" 
+      data-semantic-summary-none="functional expression of open paren product with 2 factors close paren" 
+      data-semantic-summary='<mark name="8"/> functional expression <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="16"/> product with 2 factors <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-parent="20" space="3" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="the asinh" 
+      data-semantic-speech='<mark name="8"/> the asinh' 
+      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
+      data-semantic-type="function" data-semantic-role="prefix function" 
+      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="8" 
+      data-semantic-attributes="latex:\text{asinh}" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="functional expression" 
+      data-semantic-summary='<mark name="8"/> functional expression' 
+      data-semantic-font="normal" data-semantic-parent="19" 
+      data-semantic-operator="appl"><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="of" data-semantic-speech='<mark name="18"/> of' 
+      data-semantic-braille="⠀" data-semantic-type="punctuation" 
+      data-semantic-role="application" 
+      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="18" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="of" 
+      data-semantic-summary='<mark name="18"/> of' data-semantic-parent="19" 
+      data-semantic-operator="appl" data-semantic-added="true"><MJX-C 
+      class=mjx-c2061></MJX-C></MJX-MO><MJX-MROW 
+       
+      data-semantic-speech-none="open paren original times stretch close paren" 
+      data-semantic-speech='<mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="fenced" 
+      data-semantic-role="leftright" 
+      data-semantic-annotation="fences:paren;depth:5" data-semantic-id="17" 
+      data-semantic-children="16" data-semantic-content="9,13" 
+      data-semantic-owns="9 16 13" data-semantic-level-number="4" 
+      data-speech-node="true" 
+      data-semantic-summary-none="open paren product with 2 factors close paren" 
+      data-semantic-summary='<mark name="9"/> open paren <break time="250ms"/> <mark name="16"/> product with 2 factors <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-parent="19" data-semantic-added="true"><MJX-MO 
+       data-semantic-speech-none="open paren" 
+      data-semantic-speech='<mark name="9"/> open paren' 
+      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
+      data-semantic-role="open" data-semantic-annotation="depth:6" 
+      data-semantic-id="9" data-semantic-attributes="latex:(" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="open paren" 
+      data-semantic-summary='<mark name="9"/> open paren' 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       data-semantic-speech-none="original times stretch" 
+      data-semantic-speech='<mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" data-semantic-type="infixop" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:6" 
+      data-semantic-id="16" data-semantic-children="10,12" 
+      data-semantic-content="11" data-semantic-owns="10 11 12" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-summary='<mark name="16"/> product with 2 factors' 
+      data-semantic-parent="17" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="original" 
+      data-semantic-speech='<mark name="10"/> original' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
+      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:7" 
+      data-semantic-id="10" data-semantic-attributes="latex:\text{original}" 
+      data-semantic-level-number="6" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="10"/> text' data-semantic-font="normal" 
+      data-semantic-parent="16"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
+       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
+       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      style="PADDING-TOP: 0.69em">l 
+      </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="times" 
+      data-semantic-speech='<mark name="11"/> times' data-semantic-braille="⠈⠡" 
+      data-latex="\times" data-semantic-type="operator" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:7" 
+      data-semantic-id="11" data-semantic-attributes="latex:\times" 
+      data-semantic-level-number="6" data-speech-node="true" 
+      data-semantic-summary-none="times" 
+      data-semantic-summary='<mark name="11"/> times' data-semantic-parent="16" 
+      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-speech-none="stretch" 
+      data-semantic-speech='<mark name="12"/> stretch' 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
+      data-semantic-type="identifier" data-semantic-role="unit" 
+      data-semantic-annotation="clearspeak:unit;depth:7" data-semantic-id="12" 
+      data-semantic-attributes="latex:\text{stretch}" 
+      data-semantic-level-number="6" data-speech-node="true" 
+      data-semantic-summary-none="identifier" 
+      data-semantic-summary='<mark name="12"/> identifier' 
+      data-semantic-font="normal" data-semantic-parent="16" space="3"><MJX-C 
+      class=mjx-c73 style="PADDING-TOP: 0.69em" 
+      noic="true">s</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+       noic="true">t</MJX-C><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c65 style="PADDING-TOP: 0.69em" 
+       noic="true">e</MJX-C><MJX-C class=mjx-c74 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">t</MJX-C><MJX-C class=mjx-c63 style="PADDING-TOP: 0.69em" 
+       noic="true">c</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
+       data-semantic-speech-none="close paren" 
+      data-semantic-speech='<mark name="13"/> close paren' 
+      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
+      data-semantic-role="close" data-semantic-annotation="depth:6" 
+      data-semantic-id="13" data-semantic-attributes="latex:)" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="close paren" 
+      data-semantic-summary='<mark name="13"/> close paren' 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29>)</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      --------------------------------------------------</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="times" 
+      data-semantic-speech='<mark name="22"/> times' data-semantic-braille="⠈⠡" 
+      data-latex="\times" data-semantic-type="operator" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:4" 
+      data-semantic-id="22" data-semantic-attributes="latex:\times" 
+      data-semantic-level-number="3" data-speech-node="true" 
+      data-semantic-summary-none="times" 
+      data-semantic-summary='<mark name="22"/> times' data-semantic-parent="30" 
+      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-speech-none="the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="appl" 
+      data-semantic-role="prefix function" data-semantic-annotation="depth:4" 
+      data-semantic-id="29" data-semantic-children="23,27" 
+      data-semantic-content="28,23" data-semantic-owns="23 28 27" 
+      data-semantic-level-number="3" data-speech-node="true" 
+      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-semantic-summary='<mark name="23"/> functional expression <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> text <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-parent="30" space="3" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="the asinh" 
+      data-semantic-speech='<mark name="23"/> the asinh' 
+      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
+      data-semantic-type="function" data-semantic-role="prefix function" 
+      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="23" 
+      data-semantic-attributes="latex:\text{asinh}" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="functional expression" 
+      data-semantic-summary='<mark name="23"/> functional expression' 
+      data-semantic-font="normal" data-semantic-parent="29" 
+      data-semantic-operator="appl"><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="of" data-semantic-speech='<mark name="28"/> of' 
+      data-semantic-braille="⠀" data-semantic-type="punctuation" 
+      data-semantic-role="application" 
+      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="28" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="of" 
+      data-semantic-summary='<mark name="28"/> of' data-semantic-parent="29" 
+      data-semantic-operator="appl" data-semantic-added="true"><MJX-C 
+      class=mjx-c2061></MJX-C></MJX-MO><MJX-MROW 
+       
+      data-semantic-speech-none="open paren stretch close paren" 
+      data-semantic-speech='<mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-braille="⠷⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="fenced" 
+      data-semantic-role="leftright" 
+      data-semantic-annotation="fences:paren;depth:5" data-semantic-id="27" 
+      data-semantic-children="25" data-semantic-content="24,26" 
+      data-semantic-owns="24 25 26" data-semantic-level-number="4" 
+      data-speech-node="true" 
+      data-semantic-summary-none="open paren text close paren" 
+      data-semantic-summary='<mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> text <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-parent="29" data-semantic-added="true"><MJX-MO 
+       data-semantic-speech-none="open paren" 
+      data-semantic-speech='<mark name="24"/> open paren' 
+      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
+      data-semantic-role="open" data-semantic-annotation="depth:6" 
+      data-semantic-id="24" data-semantic-attributes="latex:(" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="open paren" 
+      data-semantic-summary='<mark name="24"/> open paren' 
+      data-semantic-parent="27" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MTEXT 
+       data-semantic-speech-none="stretch" 
+      data-semantic-speech='<mark name="25"/> stretch' 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
+      data-semantic-type="text" data-semantic-role="annotation" 
+      data-semantic-annotation="clearspeak:unit;depth:6" data-semantic-id="25" 
+      data-semantic-attributes="latex:\text{stretch}" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="25"/> text' data-semantic-font="normal" 
+      data-semantic-parent="27"><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c74 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">t</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c65 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">e</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+       noic="true">t</MJX-C><MJX-C class=mjx-c63 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">c</MJX-C><MJX-C class=mjx-c68 style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="close paren" 
+      data-semantic-speech='<mark name="26"/> close paren' 
+      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
+      data-semantic-role="close" data-semantic-annotation="depth:6" 
+      data-semantic-id="26" data-semantic-attributes="latex:)" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="close paren" 
+      data-semantic-summary='<mark name="26"/> close paren' 
+      data-semantic-parent="27" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29 
+      >)</MJX-C></MJX-MO></MJX-MROW></MJX-MROW></MJX-MROW></MJX-DEN></MJX-ROW></MJX-DTABLE></MJX-DBOX></MJX-FRAC></MJX-MFRAC></MJX-MATH><MJX-SPEECH 
+      role=img 
+      aria-label="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren, math" 
+       aria-roledescription="" 
+      aria-braillelabel="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      aria-brailleroledescription="⠀"></MJX-SPEECH></MJX-CONTAINER></FONT></DIV>
+      <P>For color images, the function becomes:</P>
+      <DIV class="math notranslate nohighlight" 
+      ><MJX-CONTAINER tabIndex=0 
+      class="MathJax CtxtMenu_Attached_0" style="FONT-SIZE: 114.5%" 
+       jax="CHTML" overflow="overflow" display="true" 
+      ctxtmenu_counter="1" data-semantic-locale="en" 
+      data-semantic-domain="clearspeak" data-semantic-style="default" 
+      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
+      data-semantic-collapsible="collapsible" 
+      data-semantic-expandable="expandable" data-semantic-level="Level" 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-speech-attached="true" 
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-braille-attached="true" has-speech="true"><MJX-MATH aria-hidden=true 
+      class=NCM-N display="true" 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-type="relseq" data-semantic-role="equality" 
+      data-semantic-annotation="depth:1" data-semantic-id="38" 
+      data-semantic-children="0,37" data-semantic-content="1" 
+      data-semantic-attributes="latex:\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-owns="0 1 37" data-semantic-level-number="0" 
+      data-semantic-structure="(38 0 1 (37 (23 (17 2 (16 3 4 5) 6) 7 (22 8 21 (20 9 (19 10 11 (18 12 13 14)) 15))) (36 24 25 (35 26 27 (34 28 33 (32 29 30 31))))))" 
+      data-speech-node="true" data-semantic-summary-none="equality" 
+      data-semantic-summary='<mark name="38"/> equality'><MJX-MTEXT 
+       data-semantic-speech-none="pixel" 
+      data-semantic-speech='<mark name="0"/> pixel' 
+      data-semantic-braille="⠏⠊⠭⠑⠇" data-latex="\text{pixel}" 
+      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-annotation="factor:relation;clearspeak:unit;nemeth:number;depth:2" 
+      data-semantic-id="0" data-semantic-attributes="latex:\text{pixel}" 
+      data-semantic-level-number="1" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="0"/> text' data-semantic-font="normal" 
+      data-semantic-parent="38"><MJX-C class=mjx-c70 style="PADDING-TOP: 0.69em" 
+       noic="true"><FONT face=Courier 
+      >&nbsp;&nbsp;&nbsp;p</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c78 style="PADDING-TOP: 0.69em" 
+       noic="true">x</MJX-C><MJX-C class=mjx-c65 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">e</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="equals" 
+      data-semantic-speech='<mark name="1"/> equals' data-semantic-braille="⠨⠅" 
+      data-latex="=" data-semantic-type="relation" data-semantic-role="equality" 
+      data-semantic-annotation="nemeth:number;depth:2" data-semantic-id="1" 
+      data-semantic-attributes="latex:=" data-semantic-level-number="1" 
+      data-speech-node="true" data-semantic-summary-none="equals" 
+      data-semantic-summary='<mark name="1"/> equals' data-semantic-parent="38" 
+      space="4" data-semantic-operator="relseq,="><MJX-C class=mjx-c3D 
+      >= </MJX-C></MJX-MO><MJX-MFRAC 
+      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-braille="⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-type="fraction" data-semantic-role="division" 
+      data-semantic-annotation="depth:2" data-semantic-id="37" 
+      data-semantic-children="23,36" 
+      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-owns="23 36" data-semantic-level-number="1" 
+      data-speech-node="true" data-semantic-summary-none="fraction" 
+      data-semantic-summary='<mark name="37"/> fraction' 
+      data-semantic-parent="38" space="4"><MJX-FRAC 
+      type="d"><MJX-NUM><MJX-NSTRUT 
+      type="d"></MJX-NSTRUT><MJX-MROW 
+      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
+      data-semantic-type="infixop" data-semantic-role="multiplication" 
+      data-semantic-annotation="depth:3" data-semantic-id="23" 
+      data-semantic-children="17,22" data-semantic-content="7" 
+      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
+      data-semantic-owns="17 7 22" data-semantic-level-number="2" 
+      data-speech-node="true" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-summary='<mark name="23"/> product with 2 factors' 
+      data-semantic-parent="37" data-semantic-prefix-none="Numerator" 
+      data-semantic-prefix='<mark name="23"/> Numerator'><MJX-MROW 
+       
+      data-semantic-speech-none="open paren original minus blackpoint close paren" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" data-semantic-type="fenced" 
+      data-semantic-role="leftright" 
+      data-semantic-annotation="fences:paren;depth:4" data-semantic-id="17" 
+      data-semantic-children="16" data-semantic-content="2,6" 
+      data-semantic-owns="2 16 6" data-semantic-level-number="3" 
+      data-speech-node="true" 
+      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-semantic-summary='<mark name="2"/> open paren <break time="250ms"/> <mark name="16"/> subtraction with 2 elements <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-parent="23" data-semantic-added="true"><MJX-MO 
+       data-semantic-speech-none="open paren" 
+      data-semantic-speech='<mark name="2"/> open paren' 
+      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
+      data-semantic-role="open" data-semantic-annotation="depth:5" 
+      data-semantic-id="2" data-semantic-attributes="latex:(" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="open paren" 
+      data-semantic-summary='<mark name="2"/> open paren' 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       data-semantic-speech-none="original minus blackpoint" 
+      data-semantic-speech='<mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-semantic-type="infixop" 
+      data-semantic-role="subtraction" data-semantic-annotation="depth:5" 
+      data-semantic-id="16" data-semantic-children="3,5" 
+      data-semantic-content="4" data-semantic-owns="3 4 5" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="subtraction with 2 elements" 
+      data-semantic-summary='<mark name="16"/> subtraction with 2 elements' 
+      data-semantic-parent="17" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="original" 
+      data-semantic-speech='<mark name="3"/> original' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
+      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:6" 
+      data-semantic-id="3" data-semantic-attributes="latex:\text{original}" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="3"/> text' data-semantic-font="normal" 
+      data-semantic-parent="16"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
+       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
+       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      style="PADDING-TOP: 0.69em">l 
+      </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="minus" 
+      data-semantic-speech='<mark name="4"/> minus' data-semantic-braille="⠤" 
+      data-latex="-" data-semantic-type="operator" 
+      data-semantic-role="subtraction" data-semantic-annotation="depth:6" 
+      data-semantic-id="4" data-semantic-attributes="latex:-" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="minus" 
+      data-semantic-summary='<mark name="4"/> minus' data-semantic-parent="16" 
+      space="3" data-semantic-operator="infixop,−"><MJX-C class=mjx-c2212 
+      >− </MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-speech-none="blackpoint" 
+      data-semantic-speech='<mark name="5"/> blackpoint' 
+      data-semantic-braille="⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-latex="\text{blackpoint}" 
+      data-semantic-type="identifier" data-semantic-role="unit" 
+      data-semantic-annotation="clearspeak:unit;depth:6" data-semantic-id="5" 
+      data-semantic-attributes="latex:\text{blackpoint}" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="identifier" 
+      data-semantic-summary='<mark name="5"/> identifier' 
+      data-semantic-font="normal" data-semantic-parent="16" space="3"><MJX-C 
+      class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      noic="true">b</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+       noic="true">l</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c63 style="PADDING-TOP: 0.69em" 
+       noic="true">c</MJX-C><MJX-C class=mjx-c6B 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">k</MJX-C><MJX-C class=mjx-c70 style="PADDING-TOP: 0.69em" 
+       noic="true">p</MJX-C><MJX-C class=mjx-c6F 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">o</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">n</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+      >t</MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
+       data-semantic-speech-none="close paren" 
+      data-semantic-speech='<mark name="6"/> close paren' 
+      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
+      data-semantic-role="close" data-semantic-annotation="depth:5" 
+      data-semantic-id="6" data-semantic-attributes="latex:)" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="close paren" 
+      data-semantic-summary='<mark name="6"/> close paren' 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29>) </MJX-C></MJX-MO></MJX-MROW><MJX-MO 
+       data-semantic-speech-none="times" 
+      data-semantic-speech='<mark name="7"/> times' data-semantic-braille="⠈⠡" 
+      data-latex="\times" data-semantic-type="operator" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:4" 
+      data-semantic-id="7" data-semantic-attributes="latex:\times" 
+      data-semantic-level-number="3" data-speech-node="true" 
+      data-semantic-summary-none="times" 
+      data-semantic-summary='<mark name="7"/> times' data-semantic-parent="23" 
+      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-speech-none="the asinh of open paren rgb bar original times stretch close paren" 
+      data-semantic-speech='<mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-type="appl" data-semantic-role="prefix function" 
+      data-semantic-annotation="depth:4" data-semantic-id="22" 
+      data-semantic-children="8,20" data-semantic-content="21,8" 
+      data-semantic-owns="8 21 20" data-semantic-level-number="3" 
+      data-speech-node="true" 
+      data-semantic-summary-none="functional expression of open paren bar separated list of length 2 close paren" 
+      data-semantic-summary='<mark name="8"/> functional expression <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="11"/> bar <mark name="19"/> separated list of length 2 <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-parent="23" space="3" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="the asinh" 
+      data-semantic-speech='<mark name="8"/> the asinh' 
+      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
+      data-semantic-type="function" data-semantic-role="prefix function" 
+      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="8" 
+      data-semantic-attributes="latex:\text{asinh}" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="functional expression" 
+      data-semantic-summary='<mark name="8"/> functional expression' 
+      data-semantic-font="normal" data-semantic-parent="22" 
+      data-semantic-operator="appl"><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="of" data-semantic-speech='<mark name="21"/> of' 
+      data-semantic-braille="⠀" data-semantic-type="punctuation" 
+      data-semantic-role="application" 
+      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="21" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="of" 
+      data-semantic-summary='<mark name="21"/> of' data-semantic-parent="22" 
+      data-semantic-operator="appl" data-semantic-added="true"><MJX-C 
+      class=mjx-c2061></MJX-C></MJX-MO><MJX-MROW 
+       
+      data-semantic-speech-none="open paren rgb bar original times stretch close paren" 
+      data-semantic-speech='<mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-braille="⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-type="fenced" data-semantic-role="leftright" 
+      data-semantic-annotation="fences:paren;depth:5" data-semantic-id="20" 
+      data-semantic-children="19" data-semantic-content="9,15" 
+      data-semantic-owns="9 19 15" data-semantic-level-number="4" 
+      data-speech-node="true" 
+      data-semantic-summary-none="open paren bar separated list of length 2 close paren" 
+      data-semantic-summary='<mark name="9"/> open paren <break time="250ms"/> <mark name="11"/> bar <mark name="19"/> separated list of length 2 <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-parent="22" data-semantic-added="true"><MJX-MO 
+       data-semantic-speech-none="open paren" 
+      data-semantic-speech='<mark name="9"/> open paren' 
+      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
+      data-semantic-role="open" data-semantic-annotation="depth:6" 
+      data-semantic-id="9" data-semantic-attributes="latex:(" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="open paren" 
+      data-semantic-summary='<mark name="9"/> open paren' 
+      data-semantic-parent="20" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       
+      data-semantic-speech-none="rgb bar original times stretch" 
+      data-semantic-speech='<mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch' 
+      data-semantic-braille="⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-type="punctuated" data-semantic-role="sequence" 
+      data-semantic-annotation="depth:6" data-semantic-id="19" 
+      data-semantic-children="10,11,18" data-semantic-content="11" 
+      data-semantic-owns="10 11 18" data-semantic-level-number="5" 
+      data-speech-node="true" 
+      data-semantic-summary-none="bar separated list of length 2" 
+      data-semantic-summary='<mark name="11"/> bar <mark name="19"/> separated list of length 2' 
+      data-semantic-parent="20" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="rgb" 
+      data-semantic-speech='<mark name="10"/> rgb' data-semantic-braille="⠗⠛⠃" 
+      data-latex="\text{rgb}" data-semantic-type="text" 
+      data-semantic-role="annotation" 
+      data-semantic-annotation="clearspeak:unit;depth:7" data-semantic-id="10" 
+      data-semantic-attributes="latex:\text{rgb}" data-semantic-level-number="6" 
+      data-speech-node="true" data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="10"/> text' data-semantic-font="normal" 
+      data-semantic-parent="19"><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c67 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      >b</MJX-C></MJX-MTEXT><MJX-MI 
+      data-semantic-speech-none="bar" 
+      data-semantic-speech='<mark name="11"/> bar' data-semantic-braille="⠤" 
+      data-latex="\_" data-semantic-type="punctuation" data-semantic-role="dash" 
+      data-semantic-annotation="depth:7" data-semantic-id="11" 
+      data-semantic-attributes="latex:\_" data-semantic-level-number="6" 
+      data-speech-node="true" data-semantic-summary-none="bar" 
+      data-semantic-summary='<mark name="11"/> bar' data-semantic-font="normal" 
+      data-semantic-parent="19" data-semantic-operator="punctuated"><MJX-C 
+      class=mjx-c5F>_</MJX-C></MJX-MI><MJX-MROW 
+       data-semantic-speech-none="original times stretch" 
+      data-semantic-speech='<mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" data-semantic-type="infixop" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:7" 
+      data-semantic-id="18" data-semantic-children="12,14" 
+      data-semantic-content="13" data-semantic-owns="12 13 14" 
+      data-semantic-level-number="6" data-speech-node="true" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-summary='<mark name="18"/> product with 2 factors' 
+      data-semantic-parent="19" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="original" 
+      data-semantic-speech='<mark name="12"/> original' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
+      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:8" 
+      data-semantic-id="12" data-semantic-attributes="latex:\text{original}" 
+      data-semantic-level-number="7" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="12"/> text' data-semantic-font="normal" 
+      data-semantic-parent="18"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
+       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
+       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      style="PADDING-TOP: 0.69em">l 
+      </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="times" 
+      data-semantic-speech='<mark name="13"/> times' data-semantic-braille="⠈⠡" 
+      data-latex="\times" data-semantic-type="operator" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:8" 
+      data-semantic-id="13" data-semantic-attributes="latex:\times" 
+      data-semantic-level-number="7" data-speech-node="true" 
+      data-semantic-summary-none="times" 
+      data-semantic-summary='<mark name="13"/> times' data-semantic-parent="18" 
+      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-speech-none="stretch" 
+      data-semantic-speech='<mark name="14"/> stretch' 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
+      data-semantic-type="identifier" data-semantic-role="unit" 
+      data-semantic-annotation="clearspeak:unit;depth:8" data-semantic-id="14" 
+      data-semantic-attributes="latex:\text{stretch}" 
+      data-semantic-level-number="7" data-speech-node="true" 
+      data-semantic-summary-none="identifier" 
+      data-semantic-summary='<mark name="14"/> identifier' 
+      data-semantic-font="normal" data-semantic-parent="18" space="3"><MJX-C 
+      class=mjx-c73 style="PADDING-TOP: 0.69em" 
+      noic="true">s</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+       noic="true">t</MJX-C><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c65 style="PADDING-TOP: 0.69em" 
+       noic="true">e</MJX-C><MJX-C class=mjx-c74 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">t</MJX-C><MJX-C class=mjx-c63 style="PADDING-TOP: 0.69em" 
+       noic="true">c</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT></MJX-MROW></MJX-MROW><MJX-MO 
+       data-semantic-speech-none="close paren" 
+      data-semantic-speech='<mark name="15"/> close paren' 
+      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
+      data-semantic-role="close" data-semantic-annotation="depth:6" 
+      data-semantic-id="15" data-semantic-attributes="latex:)" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="close paren" 
+      data-semantic-summary='<mark name="15"/> close paren' 
+      data-semantic-parent="20" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29>)</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------------------------</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r</MJX-C><MJX-C 
+      class=mjx-c67 style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      >b</MJX-C></MJX-MTEXT><MJX-MI 
+      data-semantic-speech-none="bar" 
+      data-semantic-speech='<mark name="25"/> bar' data-semantic-braille="⠤" 
+      data-latex="\_" data-semantic-type="punctuation" data-semantic-role="dash" 
+      data-semantic-annotation="nemeth:number;depth:4" data-semantic-id="25" 
+      data-semantic-attributes="latex:\_" data-semantic-level-number="3" 
+      data-speech-node="true" data-semantic-summary-none="bar" 
+      data-semantic-summary='<mark name="25"/> bar' data-semantic-font="normal" 
+      data-semantic-parent="36" data-semantic-operator="punctuated"><MJX-C 
+      class=mjx-c5F>_</MJX-C></MJX-MI><MJX-MROW 
+       
+      data-semantic-speech-none="original times the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-type="infixop" data-semantic-role="multiplication" 
+      data-semantic-annotation="depth:4" data-semantic-id="35" 
+      data-semantic-children="26,34" data-semantic-content="27" 
+      data-semantic-owns="26 27 34" data-semantic-level-number="3" 
+      data-speech-node="true" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-summary='<mark name="35"/> product with 2 factors' 
+      data-semantic-parent="36" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="original" 
+      data-semantic-speech='<mark name="26"/> original' 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
+      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;nemeth:number;depth:5" 
+      data-semantic-id="26" data-semantic-attributes="latex:\text{original}" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="26"/> text' data-semantic-font="normal" 
+      data-semantic-parent="35"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
+       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
+       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
+       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      style="PADDING-TOP: 0.69em">l 
+      </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="times" 
+      data-semantic-speech='<mark name="27"/> times' data-semantic-braille="⠈⠡" 
+      data-latex="\times" data-semantic-type="operator" 
+      data-semantic-role="multiplication" data-semantic-annotation="depth:5" 
+      data-semantic-id="27" data-semantic-attributes="latex:\times" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="times" 
+      data-semantic-summary='<mark name="27"/> times' data-semantic-parent="35" 
+      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-speech-none="the asinh of open paren stretch close paren" 
+      data-semantic-speech='<mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="appl" 
+      data-semantic-role="prefix function" data-semantic-annotation="depth:5" 
+      data-semantic-id="34" data-semantic-children="28,32" 
+      data-semantic-content="33,28" data-semantic-owns="28 33 32" 
+      data-semantic-level-number="4" data-speech-node="true" 
+      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-semantic-summary='<mark name="28"/> functional expression <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> text <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-parent="35" space="3" data-semantic-added="true"><MJX-MTEXT 
+       data-semantic-speech-none="the asinh" 
+      data-semantic-speech='<mark name="28"/> the asinh' 
+      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
+      data-semantic-type="function" data-semantic-role="prefix function" 
+      data-semantic-annotation="nemeth:number;depth:6" data-semantic-id="28" 
+      data-semantic-attributes="latex:\text{asinh}" 
+      data-semantic-level-number="5" data-speech-node="true" 
+      data-semantic-summary-none="functional expression" 
+      data-semantic-summary='<mark name="28"/> functional expression' 
+      data-semantic-font="normal" data-semantic-parent="34" 
+      data-semantic-operator="appl"><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h(</MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-speech-none="stretch" 
+      data-semantic-speech='<mark name="30"/> stretch' 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
+      data-semantic-type="text" data-semantic-role="annotation" 
+      data-semantic-annotation="clearspeak:unit;depth:7" data-semantic-id="30" 
+      data-semantic-attributes="latex:\text{stretch}" 
+      data-semantic-level-number="6" data-speech-node="true" 
+      data-semantic-summary-none="text" 
+      data-semantic-summary='<mark name="30"/> text' data-semantic-font="normal" 
+      data-semantic-parent="32"><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c74 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">t</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c65 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">e</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+       noic="true">t</MJX-C><MJX-C class=mjx-c63 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">c</MJX-C><MJX-C class=mjx-c68 style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-speech-none="close paren" 
+      data-semantic-speech='<mark name="31"/> close paren' 
+      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
+      data-semantic-role="close" data-semantic-annotation="depth:7" 
+      data-semantic-id="31" data-semantic-attributes="latex:)" 
+      data-semantic-level-number="6" data-speech-node="true" 
+      data-semantic-summary-none="close paren" 
+      data-semantic-summary='<mark name="31"/> close paren' 
+      data-semantic-parent="32" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29 
+      >)</MJX-C></MJX-MO></MJX-MROW></MJX-MROW></MJX-MROW></MJX-MROW></MJX-DEN></MJX-ROW></MJX-DTABLE></MJX-DBOX></MJX-FRAC></MJX-MFRAC></MJX-MATH><MJX-SPEECH 
+      role=img 
+      aria-label="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren, math" 
+       aria-roledescription="" 
+      aria-braillelabel="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      aria-brailleroledescription="⠀"></MJX-SPEECH></MJX-CONTAINER></FONT></DIV>
+      <P>The stretch factor (otherwise known as beta) can 
+      take values between 0.0 and 1000.0.&nbsp;&nbsp; Larger values result in a 
+      greater degree of image stretching being applied.<BR 
+      ><BR>The "black point" value has a 
+      range of&nbsp;[00000,&nbsp;0.20000].&nbsp;&nbsp; The value of 0.2 implies 
+      that the blackpoint is set to 20% of the possible ADU 
+      values.&nbsp;&nbsp;&nbsp; Values below the back point are treated as being 
+      black.</P>
+      <P>As rgb_original is an average of the three colour 
+      channels, one or two channel values will be greater than rgb_original and 
+      could therefore clip.&nbsp; To mitigate this problem the RGB blend 
+      algorithm (which was developed by the authors of the GHSAstro tool&nbsp;to 
+      adjust the "gain" applied to the channels) is used to ensure 
+      that&nbsp;such&nbsp;clipping does not&nbsp;occur.</P>
+      <P>When the Human-weighted luminance option is <STRONG 
+      >not</STRONG> ticked, rgb_original is the mean of the 
+      three pixel values; when it is set, weighting changes to 0.2126 for the 
+      red value, 0.7152 for the green value and 0.0722 for the blue value, which 
+      gets results closer to human perceptual color balance.</P>
+      <P>If the Preview check box is ticked (the default 
+      setting), then adjusting the parameters (by editing the spin box fields 
+      directly, or by selecting the spin box or slider and using the Page-Up 
+      and&nbsp;Page-Down keys for coarse changes, or the cursor up and down keys 
+      for finer changes), then the displayed image and histogram will change to 
+      reflect the parameter changes.&nbsp;&nbsp; However, to actually apply the 
+      changes you need to press the Apply button.</P>
+      <P>You should note that the stretch&nbsp;is 
+      "multiplicative", so if&nbsp; you&nbsp;Apply a&nbsp;stretch of 200.0, and 
+      then Apply&nbsp;a stretch of 10.0 the effective image stretch&nbsp;is 
+      2000.0.</FONT></P></TD>
+    <td width="42%"><IMG style="HEIGHT: 484px; WIDTH: 458px" border=0 alt="ASinH stretch image" src="../images/english/asinh.png" width=261 height=238 ></TD></TR></TABLE><font size=2 face=Arial>
+<p><br><b>RGB 
+Histogram</B></P>
+<p><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>&nbsp;</P>
+<p>
+<table id=AutoNumber4 style="WIDTH: 85%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
+  <TBODY>
+  <tr>
+    <td width="58%">
+      <p class=Standard><font size=2 face=Arial       >The RGB histogram allows visualisation of the 
+      distribution of pixel values for each channel (R, G, B) in the image.<br 
+      ></FONT></P>
+      <p class=Standard><font size=2 face=Arial       >In addition, a Gaussian curve for each channel is 
+      drawn on top of the histogram data.</FONT></P>
+      <p class=Standard><font size=2 face=Arial 
+      >You can use the Colour Balance tab (see below) to 
+      adjust the image colour balance, and that will result in the histogram 
+      being re-drawn.<br></P></FONT></TD>
+    <td width="42%"><IMG style="HEIGHT: 268px; WIDTH: 413px" border=0 alt="RGB Histogram" src="../images/histogram.png" width=389 height=233 ></TD></TR></TBODY></TABLE></P>
+<p><STRONG><FONT size=2 face=Arial>Colour Balance 
+Adjustment</FONT></STRONG></P></SPAN></SPAN></SPAN></SPAN></SPAN></FONT>
+<table id=AutoNumber4 
+style="HEIGHT: 392px; WIDTH: 85%; BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="85%" border=0>
+  
+  <tr>
+    <td width="50%">
+      <p class=Standard><font size=2 face=Arial       >The Colour Balance tab allows adjustment of the image 
+      colour balance.</FONT></P><font size=2 face=Arial>
+      <P>If the Preview check box is ticked (the default 
+      setting), then adjusting the parameters (by selecting the 
+      appropriate&nbsp;slider and using the Page-Up and Page-Down keys for 
+      coarse changes, or the cursor keys for finer changes), then the displayed 
+      image and histogram will change to reflect the Colour Balance 
+      changes.&nbsp;&nbsp; However, as with the image stretch,&nbsp;to actually 
+      apply the changes you need to press the Apply button.</P></FONT></TD>
+    <td width="50%"><IMG style="HEIGHT: 361px; WIDTH: 730px" alt="" src="../images/english/colourbalance.png" width=1060 height=455 ></TD></TR></TABLE><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
+<p></SPAN></SPAN></SPAN></SPAN></SPAN><FONT face=Arial>Undo/Redo adjustment parameters</FONT> </P>
+<p class=MsoNormal style="MARGIN: 0cm" align=justify>&nbsp;</P>
+<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT face=Arial>On the bottom of each tab a set of buttons is 
+available:<br>- to apply the last modifications to the 
+picture<br>- to undo the last applied modifications<br>- to redo the last undone modifications<br>- to reset all the values<br></FONT><br><FONT face=Arial>Loading a 
+picture</FONT> </P>
+<p class=MsoNormal style="MARGIN: 0cm" align=justify><br><FONT face=Arial>DeepSkyStacker can 
+load&nbsp;</FONT><FONT face=Arial> TIFF images (8, 16 and 32 
+bit; monochrome or RGB) or FITS images (8, 16, 32 and 64 bit; monochrome or 
+RGB).<br>At the end of the stacking process the image 
+created by the stacking process is&nbsp;loaded automatically .<br><br></FONT><br>Saving the resulting picture</P>
+<table id=AutoNumber7 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="87%" border=0>
+  
   <tr>
     <td width="56%">
-    <p class="Standard"><font face="Arial" size="2">DeepSkyStacker can save the 
-    resulting image as 16 or 32 bit TIFF or FITS&nbsp; files using two methods::<br>
-    - by applying the adjustments<br>
-    - by not applying the adjustments (but storing them in the case of the TIFF 
-    file in order to continue the post processing the next time the image is 
-    loaded by DeepSkyStacker).<br>
-&nbsp;</font></p></td>
-    <td width="46%"><IMG border=0 src="../images/english/SaveOptions.jpg" width=314 height=84></td>
-  </tr>
-</table>
-<p><font face="Arial" size="2">For more information about the saving methods you 
-can read the <A href="faq.htm#saveresult">faq</A>.</font></p>
-<hr color="#0000ff">
-<p align="justify"><b><font face="Arial" size="4" color="#ff0000">
-<a name="creatingstarmask"></a>Create a Star Mask<br>
-</font></b><font face="Arial" size="2">Using a Star Mask is often very useful 
-during post-processing to use different processing techniques for the stars and 
-for the rest of the image.<br>
-The Create a Star Mask feature may be used to create a variety of star masks 
-that can be used later in any software you are using to post process (Photoshop, PixInsight, ...).<br>
-<br>
-<font color="#ff0000">DeepSkyStacker is only creating star mask files. 
-It is not using them in any way.</font><br>
-You can view this feature as a tool intended to provide quickly and simply a 
-star mask file based on real star detection.</font></p>
-<table border="0" cellspacing="1" width="100%" id="AutoNumber21">
-  <tr>
-    <td width="44%" valign="top">
-    <p class="Standard"><font face="Arial" size="2"><b>What is a star mask?</b><br>
-    A star mask is a synthetic grayscale image on which each bright enough star is 
-    replaced by a round white area which is fading to black following a curve.<br>
-    <br>
-    You can see an example of a star mask on the right.<br>
-    Mouse over the text to see <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Field';" href="javascript:void(0);">
-    the image</A></b> or <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Mask';" href="javascript:void(0);">the star mask</A></b>.</font></p></td>
-    <td width="56%">
-    <p align="center">
-    <IMG id=STARMASK01 border = 0 name = STARMASK01 src="../images/StarMask_Stars.jpg" width=279 align=center height=291><br>
-    <font face="Arial" size="2"><b id = "STARMASK01TEXT" name = "STARMASK01TEXT">Star Field</b></font></p></td>
-  </tr>
-  <tr>
-    <td width="44%" valign="top">
-    <p class="Standard"><font face="Arial" size="2"><b>Star Mask Creation</b><br>
-    To create a Star Mask you must load an image in the processing tab.<br>
-&nbsp;</font><p class="Standard"><font face="Arial" size="2">Then just click on 
-    the Create Star Mask... menu on the right and the dialog on the right will 
-    open.</font><p class="Standard"><font face="Arial" size="2">From there you 
-    can change the shape of the stars in the mask, the star detection threshold 
-    and a few other parameters.</font><p class="Standard">
-    <font face="Arial" size="2">Once you are done, just click on the OK button 
-    and you will be asked to select a file (either a TIFF or a FITS file) in 
-    which the star mask will be saved.</font><p class="Standard">
-    <font face="Arial" size="2">The saved file is always a grayscale 16 bit 
-    image. It is not automatically loaded by DeepSkyStacker.</font><p class="Standard">
-    <font face="Arial" size="2">The star mask is always created from the image 
-    as you see it in DeepSkyStacker which means with the current adjustments 
-    applied.</font></p></td>
-    <td width="56%">
-    <p align="center">
-    <IMG border=0 src="../images/english/CreateStarMask.jpg" width=407 height=401></p></td>
-  </tr>
-</table>
-<hr color="#0000ff">
-<p><font face="Arial" size="4" color="#ff0000"><b><a name="imagelist"></a>The 
-Picture List<br>
-</b></font><font face="Arial" size="2">The picture list, common to Registering 
-and Stacking processes contains all the pictures used by the registering and stacking 
-processes.<br>
-- Light frames<br>
-- Dark frames<br>
-- Flat frames<br>
-- bias/offsets frames<br>
-<br>
-Only the checked pictures are used by the registering and stacking processes.<br>
-<br>
-The list contains the following columns:</font></p>
-<table border="1" cellspacing="1" width="100%" id="AutoNumber1">
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">Checkbox</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">checked if the picture should be 
-    used</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">Path</font></td>
-    <td width="83%"><font face="Arial" size="2">Path to the picture file</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">File</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Name of the picture file</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">Type</font></td>
-    <td width="83%"><font face="Arial" size="2">Picture type: <br>
-    Light<br>
-    Dark<br>
-    Flat<br>
-    Dark Flat<br>
-    Bias</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">Score</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Picture score computed by the 
-    registering process or <br>
-    N/A for dark, flat and bias/offsets frames.<br>
-    When you have selected a frame as the reference frame using the
-    <A href="#contextmenu">context menu</A>, the score is preceded by (*).</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">dX</font></td>
-    <td width="83%"><font face="Arial" size="2">X offset (in pixels) computed 
-    for the stacking process</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">dY</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Y offset (in pixels) computed 
-    for the stacking process</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">Angle</font></td>
-    <td width="83%"><font face="Arial" size="2">Rotation angle (in °) computed 
-    for the stacking process</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">Date/Time</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Date and Time of the file</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">Size</font></td>
-    <td width="83%"><font face="Arial" size="2">Size of the picture in pixel 
-    (Width x Height)</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">CFA</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Yes if the picture is resulting 
-    from a Color Filter Array (CFA) which is the case of all the RAW pictures 
-    using <A href="technical.htm#rawdecod">a Bayer matrix</A>.</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">Depth</font></td>
-    <td width="83%"><font face="Arial" size="2">Type (gray levels or RGB) and 
-    number of bits per channel of the picture.</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">Infos</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Extra information about the 
-    picture (RAW with DSLR information, TIFF or Other)</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">ISO Speed</font></td>
-    <td width="83%"><font face="Arial" size="2">ISO Speed of the picture</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">Exposure</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Exposure time of the picture</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font face="Arial" size="2">FWHM</font></td>
-    <td width="83%"><font face="Arial" size="2">FWHM: Full Width Half Maximum 
-    value. (in pixel)<br>
-    This is the average for all the detected stars</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font face="Arial" size="2">#Stars</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font face="Arial" size="2">Number of 
-    detected stars.<br>
-    When a comet position is set a +(C) is appended to the number of stars</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ffffff"><font face="Arial" size="2">Sky Background</font></td>
-    <td width="83%" bgcolor="#ffffff"><font face="Arial" size="2">Sky background 
-    value for registered image in %</font></td>
-  </tr>
-</table>
-<p><font face="Arial" size="2">You can sort the list on any column by clicking 
-on the column header (and by clicking again to reverse the sort order).<br>
-<br>
-You can change the columns order and each column width. Everything is saved after each use of DeepSkyStacker. The 
-column widths order will be 
-reloaded the next time DeepSkyStacker is used.<br>
-<br>
-You can preview a picture from the list by selecting it.<br>
-If the selected picture is a RAW file, the RAW DDP settings will be used to 
-decode the RAW file before previewing it.</font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="94%" id="AutoNumber11">
-  <tr>
-    <td width="38%" valign="top">
-    <p class="Standard"><font face="Arial" size="2">
-    <a name="contextmenu"></a>You can select multiple files in the list.<br>
-    <br>
-    A context menu is available (mouse right button) to manually select the 
-    reference frame of the stack, change the file type, check or uncheck the 
-    files, remove the files from the picture list or view, edit the properties 
-    of the files copy the list content to the clipboard or definitively erase 
-    files from the disk.<br>
-&nbsp;</font></p>
-    <div align="center">
-      <center>
-      <table border="1" cellspacing="1" width="90%" id="AutoNumber19">
-        <tr>
-          <td width="100%" bgcolor="#ebe9ed">
-          <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" align="justify" 
-           >
-          <font face="Arial" size="2">If you select a reference frame that is 
-          not checked, the offsets will be computed from this reference frame 
-          even if the reference frame will not be stacked.</font></p></td>
-        </tr>
-      </table>
-      </center>
-    </div>
-    <p>&nbsp;</p></td>
-    <td width="62%" align="center">
-    <IMG border=0 alt="DeepSkyStacker - Context menu" src ="../images/english/ContextMenu.jpg" width=182 height=247 ><br>
-&nbsp;</td>
-  </tr>
-  <tr>
-    <td width="38%" valign="top">
-    <p class="Standard">
-    <font face="Arial" size="2">The properties dialog may be used to change the 
-    picture type, and temporarily (only for the current session) the ISO speed 
-    and exposure time of one or more pictures.<br>
-    <br>
-    When changing the ISO speed and exposure time, no change is made to the real 
-    files. The values are only stored in memory for the duration of the current session.</font></p></td>
-    <td width="62%" align="center">
-    <IMG border=0 alt="DeepSkyStacker - File Properties" src ="../images/english/Properties.jpg" width=399 height=312 ></td>
-  </tr>
-</table>
-<hr color="#0000ff">
-<p><b><font face="Arial" size="4" color="#ff0000"><a name="imagepreview"></a>
-Picture Preview<br>
-</font></b><font face="Arial" size="2">The picture preview is used to quickly 
-view a picture from the picture list (Registering and Stacking Tabs) or to view 
-the picture being processed (Processing Tab).<br>
-<br>
-You can zoom in and zoom out by pointing the mouse and using the wheel. This is 
-the only way to pan and to zoom.</font></p>
-<p><font face="Arial"><b>Star and Comet editing</b></font></p>
-<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="78%" id="AutoNumber6">
-  <tr>
-    <td width="53%" valign="top">
-    <p class="Standard"><font face="Arial" size="2">When a light frame is selected in the registering and 
-      stacking tab it is possible:<BR>
-                   
-       </font></p><font face="Arial" size="2">
+      <p class=Standard><font size=2 face=Arial       >DeepSkyStacker can save the resulting image as 16 or 
+      32 bit TIFF or FITS&nbsp; files using two methods:</FONT></P>
       <UL>
         <LI>
-    <div class="Standard">To edit the star positions: 
+        <div class=Standard><font size=2 face=Arial         >Applying the adjustments:&nbsp; This saves the image 
+        with any changes you have made using the&nbsp;"Apply" 
+        button.&nbsp;&nbsp; You should use this if you plan to do further 
+        adjustments in other software.<BR></FONT></DIV>
+        <LI>
+        <div class=Standard><font size=2 face=Arial         >Not applying the adjustments:&nbsp;&nbsp; This saves 
+        the image without any changes that you have made using the&nbsp;"Apply" 
+        button.&nbsp;&nbsp; You should use this if you plan to do all post 
+        processing in other software.<br 
+        >&nbsp;</FONT></DIV></LI></UL></TD>
+    <td width="46%"><IMG style="HEIGHT: 123px; WIDTH: 415px" border=0 alt="" src="../images/english/saveoptions.png" width=314 height=84 ></TD></TR></TABLE>
+<p><font size=2 face=Arial>For more 
+information about the saving methods you can read the <A href="faq.htm#saveresult" >faq</A>.</FONT></P>
+<hr color=#0000ff>
+
+<p align=justify><b><font color=#ff0000 size=4 face=Arial><a name=creatingstarmask></A>Create a Star Mask<br></FONT></B><font size=2 face=Arial>Using 
+a Star Mask is often very useful during post-processing to use different 
+processing techniques for the stars and for the rest of the image.<br>The Create a Star Mask feature may be used to create a 
+variety of star masks that can be used later in any software you are using to 
+post process (Photoshop, PixInsight, ...).<br><br><font color=#ff0000>DeepSkyStacker is 
+only creating star mask files. It is not using them in any way.</FONT><br>You can view this feature as a tool intended to provide 
+quickly and simply a star mask file based on real star detection.</FONT></P>
+<table id=AutoNumber21 cellSpacing=1 width="100%" border=0 
+  >
+  <tr>
+    <td vAlign=top width="44%">
+      <p class=Standard><font size=2 face=Arial       ><b>What is a star mask?</B><br 
+      >A star mask is a synthetic grayscale image on which 
+      each bright enough star is replaced by a round white area which is fading 
+      to black following a curve.<br><br 
+      >You can see an example of a star mask on the right.<br 
+      >Mouse over the text to see <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Field';" href="javascript:void(0);" >the image</A></B> or <b 
+      ><A onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Mask';" href="javascript:void(0);" >the star mask</A></B>.</FONT></P></TD>
+    <td width="56%">
+      <p align=center><IMG id=STARMASK01 border=0 name=STARMASK01 src="../images/StarMask_Stars.jpg" width=279 align=center height=291 ><br><font       size=2 face=Arial><b id=STARMASK01TEXT 
+       name="STARMASK01TEXT">Star Field</B></FONT></P></TD></TR>
+  <tr>
+    <td vAlign=top width="44%">
+      <p class=Standard><font size=2 face=Arial       ><b>Star Mask Creation</B><br 
+      >To create a Star Mask you must load an image in the 
+      processing tab.<br>&nbsp;</FONT> 
+      <p class=Standard><font size=2 face=Arial       >Then just click on the Create Star Mask... menu on the 
+      right and the dialog on the right will open.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >From there you can change the shape of the stars in 
+      the mask, the star detection threshold and a few other parameters.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >Once you are done, just click on the OK button and you 
+      will be asked to select a file (either a TIFF or a FITS file) in which the 
+      star mask will be saved.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >The saved file is always a grayscale 16 bit image. It 
+      is not automatically loaded by DeepSkyStacker.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >The star mask is always created from the image as you 
+      see it in DeepSkyStacker which means with the current adjustments 
+      applied.</FONT></P></TD>
+    <td width="56%">
+      <p align=center><IMG border=0 src="../images/english/CreateStarMask.jpg" width=407 height=401 ></P></TD></TR></TABLE>
+<hr color=#0000ff>
+
+<p><font color=#ff0000 size=4 face=Arial><b><a name=imagelist></A>The Picture List<br></B></FONT><font size=2 face=Arial>The picture list, common to Registering 
+and Stacking processes contains all the pictures used by the registering and 
+stacking processes.<br>- Light frames<br>- Dark frames<br>- Flat frames<br>- bias/offsets frames<br><br>Only the checked pictures are used by the registering and 
+stacking processes.<br><br>The list 
+contains the following columns:</FONT></P>
+<table id=AutoNumber1 cellSpacing=1 width="100%" border=1>
+  
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Checkbox</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>checked if the picture should be 
+    used</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Path</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Path to the picture file</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>File</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Name of the picture file</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Type</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Picture type: <br>Light<br 
+      >Dark<br>Flat<br 
+      >Dark Flat<br>Bias</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Score</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Picture score computed by the registering 
+      process or <br>N/A for dark, flat and bias/offsets 
+      frames.<br>When you have selected a frame as the 
+      reference frame using the <A href="#contextmenu" >context menu</A>, the score is preceded by 
+      (*).</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >dX</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >X offset (in pixels) computed for the stacking 
+      process</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>dY</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Y offset (in pixels) computed for the 
+      stacking process</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Angle</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Rotation angle (in °) computed for the stacking 
+      process</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Date/Time</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Date and Time of the file</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Size</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Size of the picture in pixel (Width x 
+  Height)</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>CFA</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Yes if the picture is resulting from a 
+      Color Filter Array (CFA) which is the case of all the RAW pictures using 
+      <A href="technical.htm#rawdecod" >a Bayer matrix</A>.</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Depth</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Type (gray levels or RGB) and number of bits per 
+      channel of the picture.</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Infos</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Extra information about the picture (RAW 
+      with DSLR information, TIFF or Other)</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >ISO Speed</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >ISO Speed of the picture</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Exposure</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Exposure time of the picture</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >FWHM</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >FWHM: Full Width Half Maximum value. (in pixel)<br 
+      >This is the average for all the detected 
+    stars</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>#Stars</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Number of detected stars.<br 
+      >When a comet position is set a +(C) is appended to the 
+      number of stars</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ffffff width="17%"><font size=2       face=Arial>Sky Background</FONT></TD>
+    <td bgColor=#ffffff width="83%"><font size=2       face=Arial>Sky background value for registered image 
+      in %</FONT></TD></TR></TABLE>
+<p><font size=2 face=Arial>You can sort 
+the list on any column by clicking on the column header (and by clicking again 
+to reverse the sort order).<br><br>You 
+can change the columns order and each column width. Everything is saved after 
+each use of DeepSkyStacker. The column widths order will be reloaded the next 
+time DeepSkyStacker is used.<br><br>You 
+can preview a picture from the list by selecting it.<br>If 
+the selected picture is a RAW file, the RAW DDP settings will be used to decode 
+the RAW file before previewing it.</FONT></P>
+<table id=AutoNumber11 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="94%" border=0>
+  
+  <tr>
+    <td vAlign=top width="38%">
+      <p class=Standard><font size=2 face=Arial       ><a name=contextmenu></A>You can 
+      select multiple files in the list.<br><br 
+      >A context menu is available (mouse right button) to 
+      manually select the reference frame of the stack, change the file type, 
+      check or uncheck the files, remove the files from the picture list or 
+      view, edit the properties of the files copy the list content to the 
+      clipboard or definitively erase files from the disk.<br 
+      >&nbsp;</FONT></P>
+      <div align=center>
+      <center>
+      <table id=AutoNumber19 cellSpacing=1 width="90%" border=1 
+      >
+        
+        <tr>
+          <td bgColor=#ebe9ed width="100%">
+            <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" align=justify 
+            ><font size=2 face=Arial>If 
+            you select a reference frame that is not checked, the offsets will 
+            be computed from this reference frame even if the reference frame 
+            will not be stacked.</FONT></P></TD></TR></TABLE></CENTER></DIV>
+      <p>&nbsp;</P></TD>
+    <td width="62%" align=center><IMG border=0 alt="DeepSkyStacker - Context menu" src="../images/english/ContextMenu.jpg" width=182 height=247 ><br 
+      >&nbsp;</TD></TR>
+  <tr>
+    <td vAlign=top width="38%">
+      <p class=Standard><font size=2 face=Arial       >The properties dialog may be used to change the 
+      picture type, and temporarily (only for the current session) the ISO speed 
+      and exposure time of one or more pictures.<br><br 
+      >When changing the ISO speed and exposure time, no 
+      change is made to the real files. The values are only stored in memory for 
+      the duration of the current session.</FONT></P></TD>
+    <td width="62%" align=center><IMG border=0 alt="DeepSkyStacker - File Properties" src="../images/english/Properties.jpg" width=399 height=312 ></TD></TR></TABLE>
+<hr color=#0000ff>
+
+<p><b><font color=#ff0000 size=4 face=Arial><a name=imagepreview></A>Picture Preview<br></FONT></B><font size=2 face=Arial>The picture preview is used to quickly 
+view a picture from the picture list (Registering and Stacking Tabs) or to view 
+the picture being processed (Processing Tab).<br><br>You can zoom in and zoom out by pointing the mouse and using 
+the wheel. This is the only way to pan and to zoom.</FONT></P>
+<p><font face=Arial><b>Star and Comet editing</B></FONT></P>
+<table id=AutoNumber6 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="78%" border=0>
+  
+  <tr>
+    <td vAlign=top width="53%">
+      <p class=Standard><font size=2 face=Arial       >When a light frame is selected in the registering and 
+      stacking tab it is possible:<BR></FONT></P><font       size=2 face=Arial>
+      <UL>
+        <LI>
+        <div class=Standard>To edit the star positions: 
         Stars detected by DeepSkyStacker will be coloured green.&nbsp;&nbsp; You 
         can select extra stars or deselect the ones DeepSkyStacker detected by 
-        left clicking with the mouse.</div>
+        left clicking with the mouse.</DIV>
         <LI>
-    <div class="Standard">
-                   
-       </font><font face="Arial" size="2">
-                  To 
-    edit the comet position</font></DIV>
+        <div class=Standard></FONT><font size=2 face=Arial         >To edit the comet position</FONT></DIV>
         <LI>
-    <div class="Standard"><font face="Arial" size="2">
-     To create and edit (move/resize) a <A href="technical.htm#customrect">
-    custom rectangle</A>
-                   
-       </font></div></LI></UL>
-    <p class="Standard"><font face="Arial" size="2">
-    You can select one of the above modes using the toolbar in the bottom right 
-    corner of the image.</font></p>
-    <p class="Standard"><font face="Arial" size="2">The last item of the toolbar 
-    is used to save the changes.</font></p>
+        <div class=Standard><font size=2 face=Arial         >To create and edit (move/resize) a <A href="technical.htm#customrect" >custom rectangle</A> 
+        </FONT></DIV></LI></UL>
+      <p class=Standard><font size=2 face=Arial       >You can select one of the above modes using the 
+      toolbar in the bottom right corner of the image.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >The last item of the toolbar is used to save the 
+      changes.</FONT></P>
       <p>
-      <table border="1" cellspacing="1" width="90%" id="AutoNumber22">
+      <table id=AutoNumber22 cellSpacing=1 width="90%" border=1 
+      >
+        
         <tr>
-          <td width="100%" bgcolor="#ffff99">
-          <p class="Standard"><font face="Arial" size="2" color="#ff0000"><b>
-          Comet editing note:</b><br>
-          The comet center may not be automatically detected by DeepSkyStacker.<br>
-          To <b>force</b> the comet to a given&nbsp; position hold down the 
-          <b>Shift</b> key while positioning the comet center.</font></p></td>
-        </tr>
-      </table></p>
-    </td>
+          <td bgColor=#ffff99 width="100%">
+            <p class=Standard><font color=#ff0000 size=2             face=Arial><b>Comet editing 
+            note:</B><br>The comet center may not be 
+            automatically detected by DeepSkyStacker.<br>To 
+            <b>force</B> the comet to a given&nbsp; position 
+            hold down the <b>Shift</B> key while positioning 
+            the comet center.</FONT></P></TD></TR></TABLE></P></TD>
     <td width="47%">
-    <p align="center"><IMG border=0 src="../images/EditToolbar.jpg" width=279 height=265></p></td>
-  </tr>
+      <p align=center><IMG border=0 src="../images/EditToolbar.jpg" width=279 height=265 ></P></TD></TR>
   <tr>
     <td width="53%">
-    <p class="Standard"><font face="Arial" size="2">When used from the processing 
-    tab, the picture preview may be used to select a part of the image by 
-    drawing a rectangle directly on the picture.  </font>
-    </p>
-    <p class="Standard"><font face="Arial" size="2">This rectangle is used on one hand to apply 
-    the adjustments only to this rectangle and on the other hand, optionally, to 
-    save only a part of the image.<br>
-&nbsp;</font></p>
-    <p class="Standard"><font face="Arial" size="2">If no rectangle is defined the adjustments 
-    are applied to the full image.</font></p>
-    <p class="Standard"><font face="Arial" size="2">In all the cases, when the 
-    image is saved 
-    to disk the adjustments are applied to the full image.</font><p>&nbsp;</p></td>
+      <p class=Standard><font size=2 face=Arial       >When used from the processing tab, the picture preview 
+      may be used to select a part of the image by drawing a rectangle directly 
+      on the picture. </FONT></P>
+      <p class=Standard><font size=2 face=Arial       >This rectangle is used on one hand to apply the 
+      adjustments only to this rectangle and on the other hand, optionally, to 
+      save only a part of the image.<br>&nbsp;</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >If no rectangle is defined the adjustments are applied 
+      to the full image.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >In all the cases, when the image is saved to disk the 
+      adjustments are applied to the full image.</FONT> 
+      <p>&nbsp;</P></TD>
     <td width="47%">
-    <p align="center">
-    <IMG border=0 alt="Selection rectangle used to process only a part of the picture" src ="../images/PreviewRect.jpg" width=203 height=230 ></p></td>
-  </tr>
-</table>
-<hr color="#0000ff">
-<p><b><font face="Arial" size="4" color="#ff0000">DDP (Digital Development Process) settings<br>
-</font></b><font face="Arial" size="2"> The DDP settings dialog gives 
-access to all the parameters used while developing a&nbsp;image file to transform it into a picture.</font></p>
+      <p align=center><IMG border=0 alt="Selection rectangle used to process only a part of the picture" src="../images/PreviewRect.jpg" width=203 height=230 ></P></TD></TR></TABLE>
+<hr color=#0000ff>
+
+<p><b><font color=#ff0000 size=4 face=Arial>DDP (Digital Development Process) settings<br></FONT></B><font size=2 face=Arial>The 
+DDP settings dialog gives access to all the parameters used while developing 
+a&nbsp;image file to transform it into a picture.</FONT></P>
 <p>
-
-<table border="0" cellpadding="5" cellspacing="0" style="WIDTH: 82%; BORDER-COLLAPSE: collapse" bordercolor="#111111" width="82%" id="AutoNumber10">
+<table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
+  
   <tr>
-    <td width="50%" valign="top">
-    <p class="Standard"><font face="Arial"><b> Image&nbsp;Adjustment (or Colour 
-      Adjustment)<br>
-    </b></font><br><FONT face=Arial><FONT size=2>The 
-      parameters are: 
-      </FONT></FONT>
-           </p>
+    <td vAlign=top width="50%">
+      <p class=Standard><font face=Arial       ><b>Image&nbsp;Adjustment (or 
+      Colour Adjustment)<br></B></FONT><br 
+      ><FONT face=Arial><FONT size=2       >The parameters are: </FONT></FONT></P>
       <UL>
         <LI>
-    <div class="Standard"><FONT face=Arial size=2>The overall image brightness which applies 
-        to the green channel</FONT></div>
+        <div class=Standard><FONT size=2 face=Arial         >The overall image brightness which applies to the 
+        green channel</FONT></DIV>
         <LI>
-    <div class="Standard"><FONT face=Arial size=2>The brightness of the Red and Blue channels relative 
-        to the Green channel.<BR> 
-           </FONT></div></LI></UL>
-    <p class="Standard"><FONT face=Arial><FONT size=2>     Image&nbsp;Adjustment (or Color Adjustment) is 
-      applied after     the image has been read 
-      and scaled appropriately for the type of image (Raw, FITS or TIFF), and after 
-      all calibration frames have been applied.&nbsp;&nbsp;&nbsp;<SPAN 
-      style="mso-spacerun: yes"> </SPAN>If you use these adjustments, as you increase 
-      the values beyond the default value of 1.0, more and more pixels will 
-      become saturated.  
-                  
-              <o:p></O:P></FONT></FONT></p>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT face=Arial size=2></FONT></O:P></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>The brightness (or luminance) adjustment applies equally to all 
-      three channels.<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>The values 
-      for the <FONT color=#ff0000>Red</FONT> and <FONT color=#0000ff>Blue</FONT> 
-      scale factors are relative to the <FONT color=#008000>Green</FONT> channel 
-      whose scale factor is the brightness value.<o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT face=Arial size=2></FONT></O:P></P>
-    <p><FONT face=Arial><FONT size=2>If you wish to scale 12 bit TIFF or FITS files to 16 bits, 
-      then this can be done by setting a brightness value of 16.<BR><BR>    This can also 
-      be useful if you want to set the channel balance for FITS or CFA format 
-      TIFF files based on the documentation for your camera. </FONT></FONT>          
-               
-                 </p></td>
-    <td width="50%"><IMG alt="" 
-      src="../images/english/imageadjustment.png"></td>
-  </tr>
-</table></p>
-
-<table border="0" cellpadding="5" cellspacing="0" style="WIDTH: 82%; BORDER-COLLAPSE: collapse" bordercolor="#111111" width="82%" id="AutoNumber10">
+        <div class=Standard><FONT size=2 face=Arial         >The brightness of the Red and Blue channels relative 
+        to the Green channel.<BR></FONT></DIV></LI></UL>
+      <p class=Standard><FONT face=Arial       ><FONT size=2>Image&nbsp;Adjustment 
+      (or Color Adjustment) is applied after the image has been read and scaled 
+      appropriately for the type of image (Raw, FITS or TIFF), and after all 
+      calibration frames have been applied.&nbsp;&nbsp;&nbsp;<SPAN 
+      style="mso-spacerun: yes"> </SPAN>If you use these 
+      adjustments, as you increase the values beyond the default value of 1.0, 
+      more and more pixels will become saturated. <o:p 
+      ></O:P></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT face=Arial><FONT size=2       >The brightness (or luminance) adjustment applies 
+      equally to all three channels.<SPAN style="mso-spacerun: yes" 
+      >&nbsp; </SPAN>The values for the <FONT color=#ff0000       >Red</FONT> and <FONT color=#0000ff       >Blue</FONT> scale factors are relative to the <FONT       color=#008000>Green</FONT> channel whose scale factor 
+      is the brightness value.<o:p></O:P></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
+      <p><FONT face=Arial><FONT size=2       >If you wish to scale 12 bit TIFF or FITS files to 16 
+      bits, then this can be done by setting a brightness value of 16.<BR 
+      ><BR>This can also be useful if you 
+      want to set the channel balance for FITS or CFA format TIFF files based on 
+      the documentation for your camera. </FONT></FONT></P></TD>
+    <td width="50%"><IMG alt="" src="../images/english/imageadjustment.png" ></TD></TR></TABLE></P>
+<table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
+  
   <tr>
-    <td width="50%" valign="top">
-    <p class="Standard"><font face="Arial"><b>RAW Files<br>
-    </b></font><br><FONT face=Arial><FONT size=2>The parameters 
-      are: </FONT></FONT>
-           </p>
+    <td vAlign=top width="50%">
+      <p class=Standard><font face=Arial       ><b>RAW Files<br 
+      ></B></FONT><br><FONT face=Arial       ><FONT size=2>The parameters are: 
+      </FONT></FONT></P>
       <UL>
         <LI>
-    <div class="Standard"><FONT face=Arial size=2>White 
-        balance </FONT>    
-        </div>
+        <div class=Standard><FONT size=2 face=Arial         >White balance </FONT></DIV>
         <LI>
-    <div class="Standard"><FONT face=Arial size=2>Interpolation mode </FONT> </div></LI></UL>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial size=2>By default DeepSkyStacker will use Daylight White Balance, unless 
-      either "No White Balance Processing" or "Use Camera White Balance" is 
-      selected.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>If you select "No White Balance 
-      Processing", then no white balance scaling is performed at all, which is 
-      desirable if you are using software such as StarTools to post process your 
-      stacked images.<BR><BR>In most 
-      other cases we recommend that you use Daylight White 
-      Balance.</FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT size=2><FONT face=Arial>&nbsp;</P></FONT></FONT></FONT></FONT>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p></O:P></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>The option to choose Use Auto White Balance is no longer supported 
-      because it resulted in each frame getting its own unique white balance 
-      which messed up dark and flat frame processing.<SPAN 
+        <div class=Standard><FONT size=2 face=Arial         >Interpolation mode </FONT></DIV></LI></UL>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial>By default 
+      DeepSkyStacker will use Daylight White Balance, unless either "No White 
+      Balance Processing" or "Use Camera White Balance" is selected.<SPAN 
+      style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>If you 
+      select "No White Balance Processing", then no white balance scaling is 
+      performed at all, which is desirable if you are using software such as 
+      StarTools to post process your stacked images.<BR><BR 
+      >In most other cases we recommend that you use Daylight 
+      White Balance.</FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT face=Arial 
+      >&nbsp;</P></FONT></FONT></FONT></FONT>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ></O:P></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT face=Arial><FONT size=2       >The option to choose Use Auto White Balance is no 
+      longer supported because it resulted in each frame getting its own unique 
+      white balance which messed up dark and flat frame processing.<SPAN 
       style="mso-spacerun: yes">&nbsp; </SPAN>However, if 
       you really want to use Auto White Balance, set your camera to Auto White 
-      Balance and select "Use Camera White Balance".<BR>       
-                   
-        <o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT face=Arial size=2></FONT></O:P></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial size=2>      
-              </FONT>&nbsp;</P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial size=2>The white balance adjustment values are extracted from the RAW 
-      files by LibRaw Copyright © 2008-2019 LibRaw LLC.<SPAN 
-      style="mso-spacerun: yes">&nbsp; </SPAN>LibRaw is based upon the original 
-      DCRaw decoder for RAW files written by Dave Coffin.</FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial size=2></FONT>&nbsp;</P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt">
-            <FONT face=Arial size=2>More 
+      Balance and select "Use Camera White Balance".<BR><o:p 
+      ></O:P></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial>The white 
+      balance adjustment values are extracted from the RAW files by LibRaw 
+      Copyright © 2008-2019 LibRaw LLC.<SPAN style="mso-spacerun: yes" 
+      >&nbsp; </SPAN>LibRaw is based upon the original DCRaw 
+      decoder for RAW files written by Dave Coffin.</FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial>More 
       information about the interpolation mode and the specific behavior of the 
-      Bayer matrix optimization, is available in the </FONT>
-                
-          
-    <A href="technical.htm#rawdecod"><FONT face=Arial><FONT size=2>technical 
-      details </FONT></FONT> </A><FONT face=Arial size=2>.</FONT></P>
-    <p>&nbsp;</p></td>
-    <td width="50%"><IMG alt="" 
-      src="../images/english/rawddp.png"></td>
-  </tr>
-</table>
-
-<p>&nbsp;</p>
-
-<table border="0" cellpadding="5" cellspacing="0" style="WIDTH: 82%; BORDER-COLLAPSE: collapse" bordercolor="#111111" width="82%" id="AutoNumber13">
+      Bayer matrix optimization, is available in the </FONT><A href="technical.htm#rawdecod" ><FONT face=Arial       ><FONT size=2>technical details 
+      </FONT></FONT></A><FONT size=2 face=Arial>.</FONT></P>
+      <p>&nbsp;</P></TD>
+    <td width="50%"><IMG alt="" src="../images/english/rawddp.png" ></TD></TR></TABLE>
+<p>&nbsp;</P>
+<table id=AutoNumber13 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
+  
   <tr>
-    <td width="50%" valign="top">
-    <p class="Standard"><b><font face="Arial"><a name="fitssettings"></a>FITS</font></b><font face="Arial"><b> 
-    Files<br>
-    </b></font><font face="Arial" size="2"><br>
-                      
-       </font><font face="Arial" size="2">If the check box "Monochrome 16 bit FITS files are 
-      RAW ..." is <STRONG>not selected</STRONG>, 
-      DeepSkyStacker will attempt to 
-      use automatic detection of the&nbsp;&nbsp;CFA matrix based upon FITS 
-      keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour 
-      cameras).&nbsp;&nbsp; If the FITS file doesn't contain these keywords or 
-      the incorrect pattern is specified in the file, you may select the check 
-      box and choose the camera/pattern to be used as in earlier releases of 
-      DeepSkyStacker.
-                        
-                  
-              </font></p>
-    <p class="Standard"><font face="Arial" size="2">
-    The first step is to select the DSLR or the CCD camera used to take the images from the list. 
-    This is necessary to use the correct Bayer Filter Pattern that will be used 
-    to decode the image transforming them from B&amp;W to color images.</font></p>
-    <p class="Standard"><font face="Arial" size="2">The settings control the values used for:<br>
-    - FITS DATAMIN and DATAMAX values<br>
-    - interpolation mode<br>
-    <br>
-           </font><font face="Arial" size="2">
-    More information about the interpolation mode and the specific behavior of the 
-    Bayer matrix optimization is available in the
-    <A href="technical.htm#rawdecod">technical details</A>.</font></p>
-    <p>&nbsp;</p></td>
-    <td width="50%"><IMG alt="" 
-      src="../images/english/fitsddp.png"></td>
-  </tr>
-</table>
-
-<script type="text/javascript">
+    <td vAlign=top width="50%">
+      <p class=Standard><b><font       face=Arial><a name=fitssettings 
+      ></A>FITS</FONT></B><font face=Arial       ><b> Files<br 
+      ></B></FONT><font size=2 face=Arial       ><br></FONT><font size=2 face=Arial       >If the check box "Single plane 16 bit FITS files 
+      are&nbsp;from ..." is <STRONG>not selected</STRONG>, 
+      DeepSkyStacker will attempt to use automatic detection of 
+      the&nbsp;&nbsp;CFA matrix based upon FITS keywords such as BAYERPAT, 
+      COLORTYP, and MOSAIC (for Meade DSI colour cameras).&nbsp;&nbsp; If the 
+      FITS file doesn't contain these keywords or the incorrect pattern is 
+      specified in the file, you may select the check box and choose the 
+      camera/pattern to be used as in earlier releases of DeepSkyStacker. 
+      </FONT></P>
+      <p class=Standard><font size=2 face=Arial       >The first step is to select the DSLR or the CCD camera 
+      used to take the images from the list. This is necessary to use the 
+      correct Bayer Filter Pattern that will be used to decode the image 
+      transforming them from B&amp;W to color images.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >The settings control the values used for:<br 
+      >- FITS DATAMIN and DATAMAX values<br 
+      >- interpolation mode<br><br 
+      ></FONT><font size=2 face=Arial       >More information about the interpolation mode and the 
+      specific behavior of the Bayer matrix optimization is available in the <A href="technical.htm#rawdecod" >technical details</A>.</FONT></P>
+      <p>&nbsp;</P></TD>
+    <td width="50%"><IMG alt="" src="../images/english/fitsddp.png" ></TD></TR></TABLE>
+<script type=text/javascript>
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
+</SCRIPT>
+
+<script type=text/javascript>
 try {
 var pageTracker = _gat._getTracker("UA-7477345-1");
 pageTracker._trackPageview();
-} catch(err) {}</script>
+} catch(err) {}</SCRIPT>
 
 </body>
 

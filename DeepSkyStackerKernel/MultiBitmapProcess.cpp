@@ -414,7 +414,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(DSS::OldProgressBase* pPr
 			if (fileSize > buffer.size())
 				buffer.resize(fileSize);
 
-			nrBytesRead += fileSize;
+			nrBytesRead += static_cast<double>(fileSize);
 			const double t0 = omp_get_wtime();
 
 			if (std::FILE* hFile =
@@ -462,5 +462,13 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(DSS::OldProgressBase* pPr
 		ZTRACE_RUNTIME("%.0f MB read (%.1f MB/s). Performance in ms: File read %.2f, Combining %.2f", nrBytesRead / (1024 * 1024), nrBytesRead / (fileReadTime * 1024 * 1024), fileReadTime * 1000.0, combiningTime * 1000.0);
 	}
 	removeTempFiles();
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnrvo"
+#endif
 	return pBitmap;
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
 }

@@ -677,11 +677,18 @@ bool CFITSReader::Read()
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
-			const QString errMsg(QString("fits_read_pixll returned a status of %1, error text is \"%2\"").arg(status).arg(error_text));
-			ZException exc(errMsg.toLatin1().constData(), status, ZException::unrecoverable);
-			exc.addLocation(ZEXCEPTION_LOCATION());
-			exc.logExceptionData();
-			throw exc;
+			DSSBase::instance()->reportError(
+				QCoreApplication::translate("FITSUtil",
+					"fits_read_pixll returned a status of %1, error text is \"%2\"\n"
+					"reading file %3.\n"
+					"The file will not be processed.")
+					.arg(status)
+					.arg(error_text)
+					.arg(file.generic_u16string().c_str()),
+				"",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QMessageBox);
+			return false;
 		}
 
 		//

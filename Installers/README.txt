@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.4 Beta 5
+Welcome to DeepSkyStacker 6.2.0 Beta 6
 ===============================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.1.4 Beta 5
+Changes for DeepSkyStacker 6.2.0 Beta 6
 ================================
 
 1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer.
@@ -33,9 +33,10 @@ Changes for DeepSkyStacker 6.1.4 Beta 5
     Mini which uses 15 second exposures which are very dark.   Increasing the image brightness by (say) a factor of 4.5
     allows the images to be registered and stacked which wasn't possible previously.
 
-6.  Re-design image adjustment that it is applied after calibration frames have been applied for registration and stacking,
-    rather than while the image files are being read in the first place which caused problems with calibration.
-    These changes should solve problems with incorrect calibration when intensity or colour channel adjustment is used.
+6.  Re-design image adjustment so that adjustments are applied after calibration frames have been applied for 
+    registration and stacking, rather than while the image files are being read in the first place which caused
+    problems with calibration.   These changes should solve problems with incorrect calibration when intensity
+    or colour channel adjustment is used.
 
     Also redesign the UI for DDP (Digital Development Processing) Settings (was Raw/FITS DDP Settings).
 
@@ -64,6 +65,20 @@ Changes for DeepSkyStacker 6.1.4 Beta 5
 
 15. Improve the Quality Chart FWHM plot by replacing FWHM more than three standard deviations above the median
     value with the median value before processing.  This presents very bright stars from dominating the plot.
+
+16. Major re-design of the "Processing" panel.  The old controls have been removed and replaced with a control
+    to perform an inverse hyperbolic sine stretch of the image with the ability to preview the changes.
+
+17. Issue an error message for problems reading a broken FITS file instead of throwing an exception.
+
+18. Bug fix: Crash in ProcessingDlg code if image load fails.  StackedBitmap code wasn't returning the error code
+    when the load failed.
+
+19. Clean up error handling in StackingDlg when asynchronous image load fails.
+
+20. Colourise the pixel information display on the Stacking pane, and add the same to the Processing pane.
+
+21. Add a tab to the processing controls to allow colour balance adjustment.
 
 Changes for DeepSkyStacker 6.1.3
 ================================

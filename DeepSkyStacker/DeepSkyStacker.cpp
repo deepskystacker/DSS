@@ -269,8 +269,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	lowerDockWidget{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
+	processingDlg{ nullptr },
 	// m_taskbarList{ nullptr },
-	m_DeepStack{ std::make_unique<CDeepStack>() },
 	activePanel{ ActivePanel::StackingPanel },
 	args{ qApp->arguments() },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -627,11 +627,6 @@ DSS::ProcessingDlg& DeepSkyStacker::getProcessingDlg()
 	return *processingDlg;
 }
 
-CDeepStack& DeepSkyStacker::deepStack()
-{
-	return *m_DeepStack.get();
-}
-
 QString DeepSkyStacker::statusMessage()
 {
 	return statusBarText->text();
@@ -691,9 +686,11 @@ void DeepSkyStacker::help()
 	explorerBar->setHelpEnabled(false);
 	QString appPath{ QCoreApplication::applicationDirPath() };
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
-	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+//	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+	QString helpFile{ appPath + "/Help/" + "DeepSkyStacker Help.chm" };
 #elif defined(Q_OS_MACOS)
-	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+//	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+	QString helpFile{ appPath + "/../Resources/" + "DeepSkyStacker Help.chm" };
 #endif
 
 #if defined(Q_OS_LINUX)

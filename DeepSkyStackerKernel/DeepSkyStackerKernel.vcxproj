@@ -277,6 +277,7 @@
     <ClCompile Include=".\TaskInfo.cpp" />
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
+    <ClCompile Include="asinhstretch.cpp" />
     <ClCompile Include="avx_1.cpp" />
     <ClCompile Include="avx_avg_1.cpp" />
     <ClCompile Include="avx_bitmap_util.cpp" />
@@ -287,6 +288,7 @@
     <ClCompile Include="avx_luminance_1.cpp" />
     <ClCompile Include="avx_output_1.cpp" />
     <ClCompile Include="avx_simd_check.cpp" />
+    <ClCompile Include="colourbalance.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
     <ClCompile Include="ImageListModel.cpp" />
@@ -345,7 +347,6 @@
     <ClInclude Include="avx_includes.h" />
     <ClInclude Include="avx_simd_check.h" />
     <ClInclude Include="avx_simd_factory.h" />
-    <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="QEventLogger.h" />

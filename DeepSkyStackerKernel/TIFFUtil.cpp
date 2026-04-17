@@ -253,7 +253,7 @@ bool CTIFFReader::Open()
 		{
 			int			lExposure;
 			if (TIFFGetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSUREOLD, &lExposure))
-				exposureTime = lExposure;
+				exposureTime = static_cast<float>(lExposure);
 		}
 
 		// Check that this is a compatible TIFF format

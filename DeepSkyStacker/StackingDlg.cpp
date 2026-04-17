@@ -1111,7 +1111,14 @@ namespace DSS
 	{
 		if (pos.x() >= 0 && pos.y() >= 0)
 		{
-			ui->pixelInfo->setText(tr("X: %1 Y: %2\nR: %3 G: %4 B: %5")
+			//
+			// Use "deepskyblue" (rbg(0, 191, 255)) for the blue text as pure blue
+			// is hard to read on a black background	
+			// 
+			ui->pixelInfo->setText(QString("X: %1 Y: %2<br>"
+				"<font color=#ff0000>R: %3 </font>"
+				"<font color=#00ff00>G: %4 </font>"
+				"<font color=#00bfff>B: %5 </font>")
 				.arg(pos.x())
 				.arg(pos.y())
 				.arg(qRed(colour))
@@ -1510,8 +1517,8 @@ namespace DSS
 				// Display the blue gradient with no text
 				//
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
 				ui->information->setText("");
 				//
 				// No longer interested in signals from the imageView object
@@ -1538,6 +1545,22 @@ namespace DSS
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
 			tr("Failed to load image %1").arg(fileToShow.generic_u16string()));
+
+		//
+		// Display the blue gradient with no text
+		//
+		ui->information->setStyleSheet(
+			"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
+		ui->information->setText("");
+		//
+		// No longer interested in signals from the imageView object
+		//
+		ui->picture->disconnect(editStars, nullptr);
+		ui->picture->disconnect(selectRect, nullptr);
+
+		pToolBar->setVisible(false); pToolBar->setEnabled(false);
+		editStars->setBitmap(nullptr);
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed(bool)

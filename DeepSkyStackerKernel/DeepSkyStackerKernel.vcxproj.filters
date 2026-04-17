@@ -230,6 +230,12 @@
     <ClCompile Include="avx_output_1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="colourbalance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="asinhstretch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -482,9 +488,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="avx_bitmap_util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BezierAdjust.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\DSSProgress.h">

@@ -313,12 +313,20 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		return false;
 	}
 
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnrvo"
+#endif
 	const auto makeMap = [&file]<typename Bitmap>(const char text[])
 	{
 		std::shared_ptr<CMemoryBitmap> pMap = std::make_shared<Bitmap>();
 		ZTRACE_RUNTIME(text, pMap.get(), file.generic_u8string().c_str());
 		return pMap;
 	};
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
 	std::shared_ptr<CMemoryBitmap> pBitmap;
 	const int bits = pQImage->bitPlaneCount();
 	switch (bits)

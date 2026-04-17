@@ -38,298 +38,14 @@
 #include <QDialog>
 #include "dssrect.h"
 #include "histogram.h"
-#include "ProcessingSettings.h"
 #include "processingcontrols.h"
+#include "undoredostack.h"
 #include "ui_ProcessingDlg.h"
 
 namespace DSS
 {
 	class SelectRect;
 	class ProcessingControls;
-	class ProcessingSettingsDlg;
-
-	class ValuedRect final
-	{
-	public:
-		DSSRect					m_rc;
-		double					m_fScore;
-
-	public:
-		ValuedRect()
-		{
-			m_fScore = 0.0;
-		}
-
-		~ValuedRect() {}
-
-		ValuedRect(const ValuedRect& vr) = default;
-
-		ValuedRect& operator = (const ValuedRect& vr) = default;
-
-		bool operator < (const ValuedRect& rhs) const
-		{
-			return m_fScore < rhs.m_fScore;
-		}
-	};
-
-	class ProcessRect final
-	{
-	private:
-		int						m_lWidth;
-		int						m_lHeight;
-		int						m_lSize;
-		std::vector<ValuedRect>	m_vRects;
-		std::vector<bool>			m_vProcessed;
-		bool						m_bToProcess;
-		DSSRect						m_rcToProcess;
-
-	private:
-		bool IsProcessRectOk()
-		{
-			bool			bResult = false;
-
-			bResult = (m_rcToProcess.left >= 0) && (m_rcToProcess.left < m_lWidth) &&
-				(m_rcToProcess.right >= 0) && (m_rcToProcess.right < m_lWidth) &&
-				(m_rcToProcess.top >= 0) && (m_rcToProcess.top < m_lHeight) &&
-				(m_rcToProcess.bottom >= 0) && (m_rcToProcess.bottom < m_lHeight) &&
-				(m_rcToProcess.left < m_rcToProcess.right) &&
-				(m_rcToProcess.top < m_rcToProcess.bottom);
-
-			return bResult;
-		}
-
-	public:
-		ProcessRect()
-		{
-			m_bToProcess = false;
-			m_rcToProcess.left = 0;
-			m_rcToProcess.top = 0;
-			m_rcToProcess.right = 0;
-			m_rcToProcess.bottom = 0;
-			m_rcToProcess.setEmpty();
-			m_lWidth = 0;
-			m_lHeight = 0;
-			m_lSize = 0;
-		}
-		virtual ~ProcessRect() {}
-
-		ProcessRect(const ValuedRect& vr) = delete;
-
-		ProcessRect& operator = (const ProcessRect& vr) = delete;
-
-
-		void	Init(int lWidth, int lHeight, int lRectSize)
-		{
-			int			i, j;
-
-			m_lWidth = lWidth;
-			m_lHeight = lHeight;
-			m_lSize = lRectSize;
-
-			m_vRects.clear();
-			m_vProcessed.clear();
-			for (i = 0; i < m_lWidth; i += lRectSize)
-			{
-				for (j = 0; j < m_lHeight; j += lRectSize)
-				{
-					ValuedRect	rcCell;
-
-					rcCell.m_rc.left = i;
-					rcCell.m_rc.right = min(i + m_lSize, m_lWidth);
-					rcCell.m_rc.top = j;
-					rcCell.m_rc.bottom = min(j + m_lSize, m_lHeight);
-
-					rcCell.m_fScore = fabs(((i + m_lSize / 2.0) - m_lWidth / 2.0) / static_cast<double>(m_lWidth)) + fabs(((j + m_lSize / 2) - m_lHeight / 2.0) / static_cast<double>(m_lHeight));
-
-					m_vRects.push_back(rcCell);
-					m_vProcessed.push_back(false);
-				};
-			};
-			std::sort(m_vRects.begin(), m_vRects.end());
-		}
-
-		void	SetProcessRect(const DSSRect& rc)
-		{
-			m_rcToProcess = rc;
-		}
-
-		void	Reset()
-		{
-			for (int i = 0; i < m_vProcessed.size(); i++)
-				m_vProcessed[i] = false;
-			m_bToProcess = true;
-		}
-
-		bool	GetNextUnProcessedRect(DSSRect& rcCell)
-		{
-			bool		bResult = false;
-
-			if (m_bToProcess)
-			{
-				if (!m_rcToProcess.isEmpty() && IsProcessRectOk())
-				{
-					if (!m_vProcessed[0])
-					{
-						rcCell = m_rcToProcess;
-						m_vProcessed[0] = true;
-						bResult = true;
-					};
-				}
-				else
-				{
-					for (int i = 0; i < m_vProcessed.size() && !bResult; i++)
-					{
-						if (!m_vProcessed[i])
-						{
-							bResult = true;
-							rcCell = m_vRects[i].m_rc;
-							m_vProcessed[i] = true;
-						};
-					};
-				};
-
-				m_bToProcess = bResult;
-			};
-
-			return bResult;
-		}
-
-		float GetPercentageComplete() const
-		{
-			if (m_vProcessed.size() == 0)
-				return 100.0f;
-
-			float fPercentage = 0.0f;
-			const float fDelta = 100.0f / static_cast<float>(m_vProcessed.size());
-
-			// The iteration loop here could be corrupted by a call to Init() on a different thread.
-			// To make totally thread safe this should really have a mutex lock associated with it.
-			for (bool bState : m_vProcessed)
-				fPercentage += bState ? fDelta : 0.0f;
-
-			return fPercentage;
-		}
-	};
-
-	typedef std::list<ProcessingSettings>		PROCESSINGSETTINGSLIST;
-	typedef PROCESSINGSETTINGSLIST::iterator	PROCESSINGSETTINGSITERATOR;
-
-	class ProcessingSettingsList
-	{
-	public:
-		PROCESSINGSETTINGSLIST		m_lParams;
-		int					m_lCurrent;
-
-	public:
-		ProcessingSettingsList()
-		{
-			m_lCurrent = -1;
-		}
-		virtual ~ProcessingSettingsList()
-		{
-		}
-
-		int size()
-		{
-			return static_cast<int>(m_lParams.size());
-		}
-
-		int current()
-		{
-			return m_lCurrent;
-		}
-
-		void clear()
-		{
-			m_lParams.clear();
-			m_lCurrent = -1;
-		}
-
-		bool	MoveForward()
-		{
-			bool			bResult = false;
-
-			if (m_lCurrent + 1 < size())
-			{
-				m_lCurrent++;
-				bResult = true;
-			};
-			return bResult;
-		}
-		bool	MoveBackward()
-		{
-			bool			bResult = false;
-
-			if ((m_lCurrent - 1 >= 0) && (size() > 0))
-			{
-				m_lCurrent--;
-				bResult = true;
-			};
-			return bResult;
-		}
-
-		bool IsBackwardAvailable()
-		{
-			return (m_lCurrent - 1 >= 0);
-		}
-
-		bool IsForwardAvailable()
-		{
-			return (m_lCurrent + 1 < size());
-		}
-
-		bool	GetCurrentSettings(ProcessingSettings& pp)
-		{
-			return GetSettings(m_lCurrent, pp);
-		}
-
-		bool	GetSettings(int lIndice, ProcessingSettings& pp)
-		{
-			bool					bResult = false;
-			PROCESSINGSETTINGSITERATOR    it;
-			//bool					bFound = false;
-
-			if (!(lIndice >= 0) && (lIndice < size()))
-				return false;
-
-			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice > 0; it++, lIndice--);
-			if (it != m_lParams.end())
-			{
-				pp = (*it);
-				bResult = true;
-			};
-
-			return bResult;
-		}
-
-		bool	AddParams(const ProcessingSettings& pp)
-		{
-			bool						bResult = false;
-
-			if ((m_lCurrent >= 0) && (m_lCurrent < size() - 1))
-			{
-				PROCESSINGSETTINGSITERATOR	it;
-				int					lIndice = m_lCurrent + 1;
-
-				for (it = m_lParams.begin(); it != m_lParams.end() && lIndice > 0; it++, lIndice--);
-
-				m_lParams.erase(it, m_lParams.end());
-			}
-			else if (m_lCurrent == -1)
-				m_lParams.clear();
-
-			m_lParams.push_back(pp);
-
-			m_lCurrent = size() - 1;
-
-			bResult = true;
-
-			return bResult;
-		}
-
-	};
-
-
 
 	class ProcessingDlg : public QWidget, public Ui::ProcessingDlg
 	{
@@ -350,190 +66,324 @@ namespace DSS
 
 		bool saveOnClose();
 
-		HistogramAdjustmentCurve redAdjustmentCurve() const { return redAdjustmentCurve_; }
-		HistogramAdjustmentCurve greenAdjustmentCurve() const { return greenAdjustmentCurve_; }
-		HistogramAdjustmentCurve blueAdjustmentCurve() const { return blueAdjustmentCurve_; }
-		
 	private:
 		ProcessingControls* controls;
-		ProcessingSettings	processingSettings;
-		ProcessingSettingsList processingSettingsList;
-		ProcessRect		rectToProcess;
 		bool dirty_;
 		fs::path currentFile;
-		QString iconModifier;
-		QMenu hacMenu;		// Menu to display when the adjustment curve button is pressed
-		QAction* linearAction;
-		QAction* cubeRootAction;
-		QAction* squareRootAction;
-		QAction* logAction;
-		QAction* logLogAction;
-		QAction* logSquareRootAction;
-		QAction* asinHAction;
-		QTimer	timer;
-		inline static const QStringList iconNames{ "linear", "cuberoot", "sqrt", "log", "loglog", "logsqrt", "asinh" };
-		double gradientOffset_;
-		double gradientRange_;
+		DSS::UndoRedoStack& undoRedoStack;
 
 		SelectRect* selectRect;
 		DSSRect	selectionRect;
 
-
-		HistogramAdjustmentCurve redAdjustmentCurve_;
-		HistogramAdjustmentCurve greenAdjustmentCurve_;
-		HistogramAdjustmentCurve blueAdjustmentCurve_;
-
-		void initialiseSliders();
+		void initialiseControls();
 		void connectSignalsToSlots();
-		void setButtonIcons();
 		void setRedButtonIcon();
 		void setGreenButtonIcon();
 		void setBlueButtonIcon();
 
-		void modifyRGBKGradientControls();
-
-		void	updateControlsFromSettings();
-
-		void updateControls();
 		void updateInformation();
 
-		void processAndShow(bool bSaveUndo = true);		// Driven by Apply button
-
-		inline void updateDarkText()
-		{
-			//
-			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
-			//
-			controls->darkLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(controls->darkAngle->sliderPosition()).arg(controls->darkPower->value() / 10.0, 0, 'f', 1));
-
-		}
-
-		inline void updateMidText()
-		{
-			//
-			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
-			//
-			controls->midLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(controls->midAngle->sliderPosition()).arg(controls->midTone->value() / 10.0, 0, 'f', 1));
-
-		}
-
-		inline void updateHighText()
-		{
-			//
-			// Set the descriptive text for the two sliders (\xc2\xb0 is UTF-8 degree sign)
-			//
-			controls->highLabel->setText(QString(" %1 \xc2\xb0\n %2")
-				.arg(controls->highAngle->sliderPosition()).arg(controls->highPower->value() / 10.0, 0, 'f', 1));
-
-		}
-
-		inline void updateSaturationText()
-		{
-			controls->saturationLabel->setText(QString("%1 %").arg(controls->saturation->value()));
-		}
+		void processAndShow();		// Driven by Apply button
 
 		//
-		// Initial settings for the Luminance tab sliders
+		// Initial values for the Image adjustment parameters
 		//
-		static constexpr unsigned int maxAngle{ 45 };
-		static constexpr unsigned int maxLuminance { 1000 };
+		static constexpr float DefaultAsinhBeta{ 100.0f };
+		static constexpr float DefaultAsinhBP{ 0.001f };
 
-		static constexpr unsigned int darkAngleInitialValue{ 0 };
-		static constexpr unsigned int darkPowerInitialValue{ 500 };
-		static constexpr unsigned int midAngleInitialValue{ 20 };
-		static constexpr unsigned int midToneInitialValue{ 200 };
-		static constexpr unsigned int highAngleInitialPostion{ 0 };
-		static constexpr unsigned int highPowerInitialValue{ 500 };
-
-		//
-		// Initial values for the Saturation slider
-		//
-		static constexpr int MinSaturation { -50 };
-		static constexpr int MaxSaturation { 50 };
-		static constexpr int InitialSaturation { 0 };
-
-		void	drawHistogram(RGBHistogram& Histogram, bool useLogarithm);
+		void	drawHistogram(RGBHistogram& Histogram);
 		void	drawHistoBar(QPainter& painter, double lNrReds, double lNrGreens, double lNrBlues, size_t X, int lHeight);
 		void	drawGaussianCurves(QPainter& painter, RGBHistogram& Histogram, int lWidth, int lHeight);
-		void	drawBezierCurve(QPainter& painter, int lWidth, int lHeight);
 
 		enum RGB : size_t { Red = 0, Green, Blue, RgbCount };
 		enum Param : size_t { Min = 0, Shift, Max, ParamCount };
 		using RgbParams = std::array<std::array<double, Param::ParamCount>, RGB::RgbCount>; // E.g. rgbParam[Green][Max]
 
-		RgbParams calcHistogramAdjustment(RGBHistogramAdjust& histogramAdjustment) const;
-		void updateGradientAdjustmentValues(const RgbParams& rgbParams);
-		void adjustRgbGradientPegs(const RgbParams& rgbParams);
-
-		void showHistogram(bool useLogarithm = false);	// Calls drawHistogram 
-
-		void resetSliders();
-
-		void updateHistogramAdjust();
+		void showHistogram();	// Calls drawHistogram 
 
 		bool askToSave();
 
-		inline void setRedAdjustmentCurve(HistogramAdjustmentCurve hac)
-		{
-			redAdjustmentCurve_ = hac;
-			setRedButtonIcon();
-			updateBezierCurve();
-		}
-		inline void setGreenAdjustmentCurve(HistogramAdjustmentCurve hac)
-		{
-			greenAdjustmentCurve_ = hac;
-			setGreenButtonIcon();
-			updateBezierCurve();
-		}
-		inline void setBlueAdjustmentCurve(HistogramAdjustmentCurve hac)
-		{
-			blueAdjustmentCurve_ = hac;
-			setBlueButtonIcon();
-			updateBezierCurve();
-		}
+		bool imageLoaded{ false };	// Whether an image is loaded and can be processed	
+
+		//
+		// Image adjustment parameters, which are used for the preview image and histogram when the preview
+		// checkbox is checked, and are applied to the current DeepStack object when the user clicks the
+		// Apply button.
+		//
+		float asinhBeta{ DefaultAsinhBeta };	// Asinh stretch value
+		float asinhBP{ DefaultAsinhBP };		// Asinh black point value
+		bool asinhHWLuminance{ true };	// Whether to use human weighted luminance for asinh stretch
+		float redShift{ 0.0f };		// Red channel shift value
+		float greenShift{ 0.0f };	// Green channel shift value
+		float blueShift{ 0.0f };	// Blue channel shift value
+		bool preview{ true };		// Whether to show a preview of the processed image
+
+		//
+		// Flag to control which DeepStack object to use for processAndShow() and showHistogram().
+		// If true, use the preview DeepStack object, which is created by the doPreview() method
+		// and is processed with the current settings for the asinh stretch and black point.
+		//
+		// If false, use the current DeepStack object from the undo-redo stack, which is not modified
+		// until the user clicks the Apply button.
+		//
+		bool usePreviewDeepStack{ false };	// Whether to use the preview DeepStack object for the preview image and histogram
+		QMutex previewMutex;	// Mutex to protect access to the preview code
+		
+		//
+		// Timer to control handling of valueChanged signals from the asinh stretch and black point
+		// sliders and spin boxes, to avoid excessive processing of the preview image when the user
+		// is adjusting the sliders or spin boxes.
+		// 
+		// The timer is single shot and is restarted each time the valueChanged signal is emitted,
+		// The timer is started or restarted in the valueChanged handlers for the sliders and spin boxes, and
+		// the onPreview() slot is called when the timer times out, which applies the stretch to the preview image.
+		//
+		QTimer previewTimer;
+
+		//
+		// Timers to control the handling to valueChanged signals from the red, green and blue shift sliders
+		// to avoid excessive processing of the preview image when the user is adjusting the sliders.
+		//
+		QTimer redSliderTimer;
+		QTimer greenSliderTimer;
+		QTimer blueSliderTimer;
+
+		//
+		// The DeepStack object used for the preview image and histogram, created by the doPreview() method
+		//
+		DeepStack previewDeepStack;	
+
+		void doPreview();
+
+		void restoreSettings();
+		void resetColourShifts();	
+
+	signals:
+		void asinhBPChanged(double value);
+		void asinhStretchChanged(double value);
 
 	public slots:
 		void setSelectionRect(const QRectF& rect);
 
 	private slots:
 
+		void updateControls();
+		void onPreview();
 		void onApply();
 		void onUndo();
 		void onRedo();
 		void onReset();
-		void onSettings();
 
-		void redChanging(int peg);
-		void redChanged(int peg);
+		//
+		// Asinh stretch and black point sliders and spin boxes
+		//
+		// The multipliers and divisors in the slider handlers are to convert between the double values used in the spin boxes
+		// and the integer values used in the sliders.
+		// 
+		// The asinhBP slider and spin box are designed to allow values between 0.00000 and 0.20000 with a resolution of 0.00001
+		// hence the multiplier and divisor of 1000.0f.
+		//	
+		// The asinhStretch slider and spin box are designed to allow values between 0.0 and 1000.0f with a resolution of 0.1,
+		// hence the multiplier and divisor of 10.0f.
+		//
+		void asinhBPChangedHandler(float value)
+		{
+			if (value != asinhBP)
+			{
+				asinhBP = value;
+				const QSignalBlocker spinBoxBlocker(controls->asinhBPSpinBox);
+				const QSignalBlocker sliderBlocker(controls->asinhBPSlider);
+				controls->asinhBPSpinBox->setValue(value);
+				controls->asinhBPSlider->setValue(static_cast<int>(value * 1000.0f));
+				//
+				// if preview is enabled, apply the stretch asynchronously to the preview image.
+				// when the preview processing is complete, the apply button will be enabled
+				//
+				if (preview)
+				{
+					emit onPreview();
+				}
+				else controls->applyButton->setEnabled(true);
+			}
+		}
 
-		void greenChanging(int peg);
-		void greenChanged(int peg);
+		void setAsinhBP(double value)
+		{
+			if (value != asinhBP)
+			{
+				previewTimer.stop();	// Stop the timer
+				//
+				// Disconnect the timer so that any previous connections to the asinhBPChanged signal are removed
+				//
+				previewTimer.disconnect();
 
-		void blueChanging(int peg);
-		void blueChanged(int peg);
+				//
+				// Now set up so that when the timer expires it will emit the asinhBPChanged signal with the new
+				// value which will call the asinhBPChangedHandler slot to update the preview image with the new
+				// black point value.
+				//
+				previewTimer.callOnTimeout(this, [=, this]() {
+					asinhBPChanged(value);
+						});
+				//
+				// Stop and restart the timer to delay the preview processing until the user has finished
+				// adjusting the slider or spin box.
+				//
+				previewTimer.start();
+			}
+		}
 
-		void onColorSchemeChanged(Qt::ColorScheme colorScheme);
-		void onTimer();
+		void asinhBPSpinBoxChanged(double value)
+		{
+			setAsinhBP(value);
+		}
 
-		void redButtonPressed();
-		void greenButtonPressed();
-		void blueButtonPressed();
+		void asinhBPSliderChanged(int value)
+		{
+			setAsinhBP(static_cast<float>(value) / 1000.0f);
+		}
 
-		void darkAngleChanged();
-		void darkPowerChanged();
+		void asinhStretchChangedHandler(float value)
+		{
+			if (value != asinhBeta)
+			{
+				asinhBeta = value;
+				const QSignalBlocker spinBoxBlocker(controls->asinhStretchSpinBox);
+				const QSignalBlocker sliderBlocker(controls->asinhStretchSlider);
+				controls->asinhStretchSpinBox->setValue(value);
+				controls->asinhStretchSlider->setValue(static_cast<int>(value * 10.0f));
+				//
+				// if preview is enabled, apply the stretch asynchronously to the preview image.
+				// when the preview processing is complete, the apply button will be enabled
+				//
+				if (preview)
+				{
+					emit onPreview();
+				}
+				else controls->applyButton->setEnabled(true);
+			}
+		}
 
-		void midAngleChanged();
-		void midToneChanged();
+		void setAsinhStretch(double value)
+		{
+			if (value != asinhBeta)
+			{
+				previewTimer.stop();	// Stop the timer 
+				//
+				// Disconnect the timer so that any previous connections to the asinhStretchChanged signal are removed
+				//
+				previewTimer.disconnect();
 
-		void highAngleChanged();
-		void highPowerChanged();
+				//
+				// Now set up so that when the timer expires it will emit the asinhStretchChanged signal with the new
+				// value which will call the asinhStretchChangedHandler slot to update the preview image with the new
+				// stretch value.
+				//
+				previewTimer.callOnTimeout(this, [=, this]() {
+					asinhStretchChanged(value);
+					});
+				//
+				// Stop and restart the timer to delay the preview processing until the user has finished
+				// adjusting the slider or spin box.
+				//
+				previewTimer.start();
+			}
+		}
 
-		void updateBezierCurve();
+		void asinhStretchSpinBoxChanged(double value)
+		{
+			setAsinhStretch(value);
+		}
 
-		void saturationChanged();
+		void asinhStretchSliderChanged(int value)
+		{
+			setAsinhStretch(static_cast<float>(value) / 10.0f);
+		}
 
+		void asinhHumanWeightedChanged(Qt::CheckState state)
+		{
+			switch (state)
+			{
+			case Qt::Unchecked:
+				asinhHWLuminance = false;
+				break;
+			default:
+				asinhHWLuminance = true;
+				break;
+			}
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void previewChanged(Qt::CheckState state)
+		{
+			switch (state)
+			{
+			case Qt::Unchecked:
+				preview = false;
+				break;
+			default:
+				preview = true;
+				break;
+			}
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void redSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
+			//
+			redShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void greenSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
+			//
+			greenShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void blueSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
+			//
+			blueShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			if (preview)
+			{
+				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+			}
+			else controls->applyButton->setEnabled(true);
+		}
+
+		void enableApplyButton()
+		{
+			controls->applyButton->setEnabled(true);
+		}
+
+		void updatePixelInfo(QPoint pos, QRgb colour);
 
 #if (0)
 

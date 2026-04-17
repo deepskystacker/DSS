@@ -62,6 +62,11 @@ class ImageLoader : public QObject
 private:
 	void addOrUpdateCache(const CacheKeyType& key, LoadedImage&& loadedImage, const bool alreadyLoaded);
 	void limitCacheSize();
+	inline void removeCacheEntry(const CacheKeyType& key)
+	{
+		std::unique_lock writeLock{ rwMutex };
+		imageCache.erase(key);	
+	}
 
 public:
 	ImageLoader() = default;

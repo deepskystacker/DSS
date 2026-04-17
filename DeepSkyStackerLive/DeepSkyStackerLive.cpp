@@ -1373,7 +1373,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 		}
 
 	}
-	chartTab->addQualityFWHMStars(name, lfi->quality, lfi->m_fFWHM, lfi->m_vStars.size(), lfi->m_SkyBackground.m_fLight * 100.0);
+	chartTab->addQualityFWHMStars(name, lfi->quality, lfi->m_fFWHM, static_cast<double>(lfi->m_vStars.size()), lfi->m_SkyBackground.m_fLight * 100.0);
 }
 
 void DeepSkyStackerLive::addToStackingQueue(std::shared_ptr<CLightFrameInfo> lfi)

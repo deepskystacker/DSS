@@ -1,10 +1,10 @@
-<html>
+ï»¿<html>
 
 <head>
 <meta http-equiv="Content-Language" content="en-us">
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 <meta name="ProgId" content="FrontPage.Editor.Document">
-<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>FAQ</title>
 <style>
 <!--
@@ -127,8 +127,8 @@ combine them automatically to create and use a clean master flat frame.</font></
 <p align="justify"><span lang="en-gb"><font size="2">
 <span style="FONT-FAMILY: Arial"><b>Is it possible to use colored flat frames?</b><br>
 The short answer is yes.<br>
-The overall tint of your flat frames is not really important because 
-DeepSkyStacker is processing each channel separately and is applying the flat 
+   The overall tint of your flat frames is not 
+really important because DeepSkyStacker&nbsp;processes each channel separately and applies the flat 
 frames to each channel accordingly.<br>
 Of course if your flat frames are fully red only the red channel of your light 
 frames will be properly calibrated but otherwise as long as as the peak in each 
@@ -170,7 +170,7 @@ depth of most DSLR's RAW files).<br>
 In this case the values stored in the files are between 0 and 4095 instead of 
 between 0 and 65535 which explains why the images are very dark.<br>
 You can adjust the parameters in the <A href="userguide.htm#rawddp">FITS Files 
-tab</A> in the RAW/FITS DDP settings dialog to correctly see these files.<br>
+tab</A>  in the DDP settings dialog to correctly see these files.<br>
 Simply put you can multiply the total brightness by up to 16 without exceeding 
 the maximum threshold. If you modify the white balance by changing the red 
 and/or blue scales take care not to go over that 16 multiplier for each channel 
@@ -183,7 +183,7 @@ captures. In this case DSS can not use the standard Bayer Filter Pattern of your
 DSLR and this is probably why your images appear all wrong.<br>
 The only way is to deactivate binning.</font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font face="Arial" size="2"><b>My FITS files were create by a color CCD 
+<p align="justify"><font face="Arial" size="2"><b>My FITS files were created by a color CCD 
 camera and I see only B&amp;W images.<br>
 </b>Your FITS files are using a bayer matrix (like a DSLR). To decode the colors 
 correctly DeepSkyStacker must know which kind of Bayer matrix is used by your 
@@ -249,7 +249,7 @@ score a measure of the absolute quality of a picture?<br>
 The score is a relative measure that is only used to sort the pictures of 
 roughly the same area in order to keep only the best pictures for stacking.<br>
 If  the
-<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="technical.htm#rawdecod">raw development process settings</A> are modified you must register the pictures 
+<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="technical.htm#rawdecod"> development process settings</A> are modified you must register the pictures 
 again and a new score will be computed.</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-GB">
@@ -258,22 +258,8 @@ again and a new score will be computed.</span></p>
 <p align="justify"><b>
 <span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
 <a name="Stacking"></a>Stacking</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
-</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<a name="autosave"></a>What is 
-the AutoSave.DSImage file created after each stacking process?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-AutoSave.DSImage file is a proprietary file which is created automatically at 
-the end of each stacking process and that holds the resulting picture. It is a 
-32 bit (rational)/channel format.<br>
-Since the only way to create this file is to do a new stacking process it is not 
-possible to overwrite it by mistake.<br>
-It can be reopen in the processing tab.<br>
-Starting with the 2.5.3 release the AutoSave.DSImage file is replaced by an 
-AutoSave.tif file which is a 32 bit rational TIFF file (Deflate compressed).<br>
-Older .DSImage files can still be opened by DeepSkyStacker.</span></p>
-<hr color="#0000ff" size="1">
-<p align="justify"><b>
-<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The resulting 
+</span></b><b>
+<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>The resulting 
 image shows multiple sets of stars on all the picture<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 Multiple sets of stars is a sure sign that the alignment process is relying on 
@@ -356,41 +342,19 @@ interesting part of the image.</font></p>
 <p align="justify"><b>
 <span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
 <a name="saveresult"></a>Load/Save</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
-</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Where 
-are saved the post-processing adjustments settings in the TIFF files?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-settings are stored as private TIFF tags. It is a documented feature of the TIFF 
-file format.<br>
-On the other hand if you overwrite the file with software other than 
-DeepSkyStacker, the private tags will be removed and the settings will be lost.</span></p>
-<hr color="#0000ff" size="1">
-<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<b>What is the difference between applied adjustment settings and embedded 
-adjustments settings in the TIFF file?<br>
-</b>When the adjustment settings are embedded the picture stored in the TIFF 
-file is the picture without any modification as it results from the stacking 
-process. The settings are included so that the next times you open the TIFF file 
-in DeepSkyStacker you can continue to work from where you stopped.<br>
-This option is useful if you want to continue to post-processing later using 
-DeepSkyStacker or if you want to do all the post-processing with another 
-software.<br>
-<br>
-When the adjustment settings are applied, the picture stored in the TIFF file is 
-the one resulting from applying the settings to the picture resulting from the 
-stacking process. It is the picture as you see it in the processing tab.</span></p>
-<hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Photoshop 
+</span></b><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>Photoshop 
 can not open the 32 bit (integer) TIFF files created by DeepSkyStacker?<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Right, You must save the file in 32 bit (rational) TIFF file format to open them 
+Older versions 
+of Photoshop will indeed no open such files.&nbsp; You must save the file in 32 bit (rational) TIFF file format to open them 
 later in Photoshop. <br>
 Software like 
-Pleiades’ PixInsight can open 32 bit (integer) TIFF files created by 
+Pleiadesâ€™ PixInsight can open 32 bit (integer) TIFF files created by 
 DeepSkyStacker.</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 <b>Does DeepSkyStacker use the registry to store settings?<br>
-</b>Yes. DeepSkyStacker is storing all the settings associated with the user in 
+</b>Yes, on Windows it does do so.&nbsp;DeepSkyStacker stores all the settings associated with the user in 
 the registry database: last folders for each kind of file, last dialog 
 settings... <br>
 Everything is stored in the HKEY_CURRENT_USER\Software\DeepSkyStacker key.</span></p>
@@ -438,7 +402,7 @@ DeepSkyStacker 2.0 is the first public release.</span></p>
 <p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">How are Camara&nbsp;RAW files decoded?<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
 RAW files are decoded using <A href="https://www.libraw.org/" >LibRaw</A> 
-  &nbsp;Copyright ©&nbsp;2008-2019 LibRaw LLC, which is the successor to the superb DCRAW 
+  &nbsp;Copyright Â©&nbsp;2008-2019 LibRaw LLC, which is the successor to the superb DCRAW 
 decoder written by Dave Coffin.<br>
 Thanks
 are due to  Dave Coffin for suggesting to Luc Coiffier&nbsp;the

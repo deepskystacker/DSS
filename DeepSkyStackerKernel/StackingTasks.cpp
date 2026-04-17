@@ -38,7 +38,7 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 
 void	SpaceToQString(std::uintmax_t ulSpace, QString& strSpace)
 {
-	double fKb(ulSpace / 1024.0);
+	double fKb(static_cast<double>(ulSpace) / 1024.0);
 	double fMb(fKb / 1024.0);
 	double fGb(fMb / 1024.0);
 

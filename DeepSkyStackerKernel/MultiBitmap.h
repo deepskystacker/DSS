@@ -29,7 +29,7 @@ private:
 
 public:
 	CMultiBitmap() :
-		m_Method{ MULTIBITMAPPROCESSMETHOD{0} },
+		m_Method{ static_cast<MULTIBITMAPPROCESSMETHOD>(0) },
 		m_fKappa{ 0.0 },
 		m_lNrIterations{ 0 },
 		m_lNrBitmaps{ 0 },
