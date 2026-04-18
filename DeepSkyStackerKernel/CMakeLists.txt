@@ -372,6 +372,12 @@ qt_add_translations(${PROJECT_NAME}
     TS_FILE_DIR i18n
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
+    QM_FILES_OUTPUT_VARIABLE qm_files
+    )
+qt_add_resources(${PROJECT_NAME} "kernel_translations"
+    PREFIX "/i18n"
+    BASE "${CMAKE_CURRENT_BINARY_DIR}"
+    FILES ${qm_files}
     )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)

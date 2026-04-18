@@ -248,7 +248,7 @@ bool loadTranslations()
 	static QTranslator theAppTranslator;
 	static QTranslator theKernelTranslator;
 
-	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
+	Q_INIT_RESOURCE(kernel_translations);
 
 	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
 	QSettings settings;
