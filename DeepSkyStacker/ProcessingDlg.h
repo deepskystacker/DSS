@@ -90,9 +90,6 @@ namespace DSS
 		void zeroAdjustmentControls();
 
 		void connectSignalsToSlots();
-		void setRedButtonIcon();
-		void setGreenButtonIcon();
-		void setBlueButtonIcon();
 
 		void updateInformation();
 
