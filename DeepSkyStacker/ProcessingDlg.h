@@ -105,10 +105,6 @@ namespace DSS
 		void	drawHistoBar(QPainter& painter, double lNrReds, double lNrGreens, double lNrBlues, size_t X, int lHeight);
 		void	drawGaussianCurves(QPainter& painter, RGBHistogram& Histogram, int lWidth, int lHeight);
 
-		enum RGB : size_t { Red = 0, Green, Blue, RgbCount };
-		enum Param : size_t { Min = 0, Shift, Max, ParamCount };
-		using RgbParams = std::array<std::array<double, Param::ParamCount>, RGB::RgbCount>; // E.g. rgbParam[Green][Max]
-
 		void showHistogram();	// Calls drawHistogram 
 
 		bool askToSave();
@@ -137,7 +133,7 @@ namespace DSS
 		// If false, use the current DeepStack object from the undo-redo stack, which is not modified
 		// until the user clicks the Apply button.
 		//
-		bool usePreviewDeepStack{ false };	// Whether to use the preview DeepStack object for the preview image and histogram
+		bool usePreviewDeepStack{ false };
 		QMutex previewMutex;	// Mutex to protect access to the preview code
 		
 		//
