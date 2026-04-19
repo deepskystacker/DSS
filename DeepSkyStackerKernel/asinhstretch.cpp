@@ -97,6 +97,12 @@ namespace DSS
 	//
 	void StackedBitmap::asinhStretch(float beta, float offset, bool human_luminance)
 	{
+		//
+		// Nothing to do if beta and offset are zero, so just return without doing anything
+		//
+		if (0.0f == beta && 0.0f == offset)
+			return;
+
 		float* buf[3] = {	
 			m_vRedPlane.data(), 
 			m_bMonochrome ? nullptr : m_vGreenPlane.data(),
