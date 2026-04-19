@@ -47,13 +47,17 @@ namespace DSS
 	class SelectRect;
 	class ProcessingControls;
 
-	class ProcessingDlg : public QWidget, public Ui::ProcessingDlg
+	class ProcessingDlg final: public QWidget, public Ui::ProcessingDlg
 	{
 		Q_OBJECT
 
 	public:
 		ProcessingDlg(QWidget *parent, ProcessingControls* processingControls);
 		~ProcessingDlg() override;
+		ProcessingDlg(const ProcessingDlg&) = delete;
+		ProcessingDlg& operator=(const ProcessingDlg&) = delete;
+		ProcessingDlg(ProcessingDlg&&) = delete;
+
 
 		inline bool dirty() const { return dirty_; }
 		inline void setDirty(bool v = true) { dirty_ = v; }
