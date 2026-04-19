@@ -44,117 +44,8 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
-        <widget class="QWidget" name="colourBalanceTab">
-         <attribute name="title">
-          <string>Colour Balance</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QSlider" name="redSlider">
-            <property name="maximumSize">
-             <size>
-              <width>360</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QSlider::handle::horizontal{
-    background: red;
-    border: 1px solid black; 
-	width: 5px; 
-	height: 5px; 
-	line-height: 10px; 
-	margin-top: -5px; 
-	margin-bottom: -5px; 
-	border-radius: 4px; 
-}</string>
-            </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
-            <property name="pageStep">
-             <number>5</number>
-            </property>
-            <property name="value">
-             <number>50</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSlider" name="greenSlider">
-            <property name="maximumSize">
-             <size>
-              <width>360</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QSlider::handle::horizontal{
-    background: lime	;
-    border: 1px solid black; 
-	width: 5px; 
-	height: 5px; 
-	line-height: 10px; 
-	margin-top: -5px; 
-	margin-bottom: -5px; 
-	border-radius: 4px; 
-}</string>
-            </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
-            <property name="pageStep">
-             <number>5</number>
-            </property>
-            <property name="value">
-             <number>50</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QSlider" name="blueSlider">
-            <property name="maximumSize">
-             <size>
-              <width>360</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QSlider::handle::horizontal{
-    background: deepskyblue;
-    border: 1px solid black; 
-	width: 5px; 
-	height: 5px; 
-	line-height: 10px; 
-	margin-top: -5px; 
-	margin-bottom: -5px; 
-	border-radius: 4px; 
-}</string>
-            </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
-            <property name="pageStep">
-             <number>5</number>
-            </property>
-            <property name="value">
-             <number>50</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
         <widget class="QWidget" name="asinhStretchTab">
          <attribute name="title">
           <string>ASinH Image stretch</string>
@@ -335,6 +226,121 @@
              </size>
             </property>
            </spacer>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="colourBalanceTab">
+         <attribute name="title">
+          <string>Colour Balance</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QSlider" name="redSlider">
+            <property name="maximumSize">
+             <size>
+              <width>360</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+                     QSlider::handle::horizontal{
+                     background: red;
+                     border: 1px solid black;
+                     width: 5px;
+                     height: 5px;
+                     line-height: 10px;
+                     margin-top: -5px;
+                     margin-bottom: -5px;
+                     border-radius: 4px;
+                     }
+                   </string>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="pageStep">
+             <number>5</number>
+            </property>
+            <property name="value">
+             <number>50</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="greenSlider">
+            <property name="maximumSize">
+             <size>
+              <width>360</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+                     QSlider::handle::horizontal{
+                     background: lime	;
+                     border: 1px solid black;
+                     width: 5px;
+                     height: 5px;
+                     line-height: 10px;
+                     margin-top: -5px;
+                     margin-bottom: -5px;
+                     border-radius: 4px;
+                     }
+                   </string>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="pageStep">
+             <number>5</number>
+            </property>
+            <property name="value">
+             <number>50</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSlider" name="blueSlider">
+            <property name="maximumSize">
+             <size>
+              <width>360</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">
+                     QSlider::handle::horizontal{
+                     background: deepskyblue;
+                     border: 1px solid black;
+                     width: 5px;
+                     height: 5px;
+                     line-height: 10px;
+                     margin-top: -5px;
+                     margin-bottom: -5px;
+                     border-radius: 4px;
+                     }
+                   </string>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="pageStep">
+             <number>5</number>
+            </property>
+            <property name="value">
+             <number>50</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
