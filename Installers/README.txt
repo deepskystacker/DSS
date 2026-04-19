@@ -80,8 +80,10 @@ Changes for DeepSkyStacker 6.2.0 Beta 6
 
 21. Add a tab to the processing controls to allow colour balance adjustment.
 
-22. Initial phase of Japanese translation for DeepSkyStacker.  I am most grateful to みうら しゅう (Shu Miura)
-    for this contribution.
+22. Initial phase of Japanese translation for DeepSkyStacker.  ありがとうありがとう (Thank you very much) to
+    三浦秀 (Shu Miura) for this contribution.
+
+23. Bug fix: Crash in StackedBitmap::normalise when processing a monochrome stacked image.
 
 Changes for DeepSkyStacker 6.1.3
 ================================
