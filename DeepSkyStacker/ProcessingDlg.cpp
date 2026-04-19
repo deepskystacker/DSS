@@ -132,6 +132,32 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
+	void ProcessingDlg::zeroAdjustmentControls()
+	{
+		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
+		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
+		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
+		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
+		const QSignalBlocker redSliderBlocker(controls->redSlider);
+		const QSignalBlocker greenSliderBlocker(controls->greenSlider);
+		const QSignalBlocker blueSliderBlocker(controls->blueSlider);
+
+		asinhBeta = 0.0f;
+		asinhBP = 0.0f;
+		controls->asinhStretchSpinBox->setValue(0.0f);
+		controls->asinhStretchSlider->setValue(0);
+
+		controls->asinhBPSpinBox->setValue(0.0f);
+		controls->asinhBPSlider->setValue(0);
+
+		redShift = 0.0f;
+		greenShift = 0.0f;
+		blueShift = 0.0f;
+		controls->redSlider->setValue(50);
+		controls->greenSlider->setValue(50);
+		controls->blueSlider->setValue(50);
+	}
+
 	void ProcessingDlg::initialiseControls()
 	{
 		//
@@ -148,13 +174,30 @@ namespace DSS
 		controls->asinhBPSlider->setTracking(false);
 		controls->asinhStretchSlider->setTracking(false);
 
+		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
+		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
+		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
+		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
+		const QSignalBlocker redSliderBlocker(controls->redSlider);
+		const QSignalBlocker greenSliderBlocker(controls->greenSlider);
+		const QSignalBlocker blueSliderBlocker(controls->blueSlider);
+		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
+		const QSignalBlocker previewBlocker(controls->previewCB);
+
+		asinhBeta = DefaultAsinhBeta;
+		asinhBP = DefaultAsinhBP;
+
 		controls->asinhStretchSpinBox->setValue(DefaultAsinhBeta);
 		controls->asinhStretchSlider->setValue(static_cast<int>(DefaultAsinhBeta * 10.0f));
 
 		controls->asinhBPSpinBox->setValue(DefaultAsinhBP);
 		controls->asinhBPSlider->setValue(static_cast<int>(DefaultAsinhBP * 1000.0f));
 
-		controls->asinhHumanWeighted->setChecked(asinhHWLuminance);
+		asinhHWLuminance = true;
+		controls->asinhHumanWeighted->setChecked(true);
+
+		preview = true;
+		controls->previewCB->setChecked(true);
 
 		//
 		// Finally select the stretch tab
@@ -307,7 +350,6 @@ namespace DSS
 		dssApp->deepStack().SetProgress(&dlg);
 		ok = dssApp->deepStack().LoadStackedInfo(file);
 		dssApp->deepStack().SetProgress(nullptr);
-		dssApp->deepStack().saveSettings(asinhBeta, asinhBP, asinhHWLuminance, preview);
 		QGuiApplication::restoreOverrideCursor();
 
 		if (ok)
@@ -316,7 +358,6 @@ namespace DSS
 			currentFile = file;
 
 			updateInformation();
-			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 			showHistogram(); 
 
@@ -339,7 +380,6 @@ namespace DSS
 			QMessageBox::warning(this, "DeepSkyStacker",
 				message);
 		}
-		QGuiApplication::restoreOverrideCursor();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -380,7 +420,6 @@ namespace DSS
 
 			if (QDialog::Accepted == fileDialog.exec())
 			{
-				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				QStringList files = fileDialog.selectedFiles();
 
 				//
@@ -412,7 +451,6 @@ namespace DSS
 				dssApp->deepStack().SetProgress(&dlg);
 				ok = dssApp->deepStack().LoadStackedInfo(file);
 				dssApp->deepStack().SetProgress(nullptr);
-				dssApp->deepStack().saveSettings(asinhBeta, asinhBP, asinhHWLuminance, preview);
 				QGuiApplication::restoreOverrideCursor();
 
 				if (ok)
@@ -421,7 +459,6 @@ namespace DSS
 					currentFile = file;
 
 					updateInformation();
-					QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 					picture->clear();
 					updateControls();
@@ -443,7 +480,6 @@ namespace DSS
 					QMessageBox::warning(this, "DeepSkyStacker",
 						message);
 				}
-				QGuiApplication::restoreOverrideCursor();
 			}
 		}
 	}
@@ -975,54 +1011,6 @@ namespace DSS
 		QMetaObject::invokeMethod(this, "enableApplyButton", Qt::ConnectionType::AutoConnection);
 	}
 
-	void ProcessingDlg::restoreSettings()
-	{
-		//
-		// Restore the processing settings for the current image from the undo-redo stack and update the controls to match.
-		// 
-		// Block signals from the controls to prevent them firing when we update the control values to match the current
-		// settings from the undo-redo stack
-		//
-		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
-		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
-		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
-		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
-		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
-		const QSignalBlocker previewBlocker(controls->previewCB);
-		const auto& [beta, bp, hwl, pv] = undoRedoStack.current().savedSettings();
-		asinhBeta = beta;
-		asinhBP = bp;
-		asinhHWLuminance = hwl;
-		preview = pv;
-		controls->asinhStretchSpinBox->setValue(beta);
-		controls->asinhStretchSlider->setValue(static_cast<int>(beta * 10.0f));
-		controls->asinhBPSpinBox->setValue(bp);
-		controls->asinhBPSlider->setValue(static_cast<int>(bp * 1000.0f));
-		controls->asinhHumanWeighted->setChecked(hwl);
-
-		controls->previewCB->setChecked(pv);
-	}
-
-	void ProcessingDlg::resetColourShifts()
-	{
-		redShift = 0.0f;
-		greenShift = 0.0f;
-		blueShift = 0.0f;
-
-		const QSignalBlocker redSliderBlocker(controls->redSlider);
-		const QSignalBlocker greenSliderBlocker(controls->greenSlider);
-		const QSignalBlocker blueSliderBlocker(controls->blueSlider);
-
-		// Rescale the colour shift values from the range [-1.0, 1.0] to the slider range [0, 100]
-		auto redSliderValue = static_cast<int>(100.0f * ((redShift / 2.0f) + 0.5f));
-		auto greenSliderValue = static_cast<int>(100.0f * ((greenShift / 2.0f) + 0.5f));
-		auto blueSliderValue = static_cast<int>(100.0f * ((blueShift / 2.0f) + 0.5f));
-		controls->redSlider->setValue(redSliderValue);
-		controls->greenSlider->setValue(greenSliderValue);
-		controls->blueSlider->setValue(blueSliderValue);
-	}
-
-
 	//
 	// Slots
 	//
@@ -1049,12 +1037,6 @@ namespace DSS
 		//
 		DeepStack& deepStack = undoRedoStack.current();
 
-		//
-		// Save the current settings for the ASinH stretch and colour balance to the DeepStack object in the
-		// undo-redo stack, so that they can be restored if the user clicks the undo button.
-		//
-		deepStack.saveSettings(asinhBeta, asinhBP, asinhHWLuminance, preview);
-
 		StackedBitmap& bitmap{ deepStack.GetStackedBitmap() };
 
 		//
@@ -1064,7 +1046,7 @@ namespace DSS
 		bitmap.normalise();
 
 		//
-		// Now apply the ASinH stretch to the image
+		// Now apply the ASinH stretch to the image and set the stretch value to zero
 		//
 		bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
 
@@ -1073,26 +1055,42 @@ namespace DSS
 		// and reset the colour balance shifts to zero
 		//
 		bitmap.adjustColourBalance(redShift, greenShift, blueShift);
-		resetColourShifts();
 
 		//
 		// Now de-normalise the image back to the original range
 		//
 		bitmap.deNormalise();
+
+		//
+		// Set all the stretch and colour balance adjustments to zero and set the controls to match
+		// 
+		zeroAdjustmentControls();
+
 		updateControls();
 
 		processAndShow();
 		showHistogram();
+		setDirty(true);
 	}
 
 	void ProcessingDlg::onUndo()
 	{
 		undoRedoStack.moveBackward();
 
-		//
-		// Restore the processing settings from the undo-redo stack
-		//
-		restoreSettings();
+		if (undoRedoStack.index() == 0)
+		{
+			//
+			// If the undo-redo stack is back to the original image, reset all the controls to match the original settings
+			//
+			initialiseControls();
+		}
+		else
+		{
+			//
+			// Set all the stretch and colour balance adjustments to zero and set the controls to match
+			// 
+			zeroAdjustmentControls();
+		}
 
 		updateControls();
 
@@ -1109,11 +1107,10 @@ namespace DSS
 	void ProcessingDlg::onRedo()
 	{
 		undoRedoStack.moveForward();
-
 		//
-		// Restore the processing settings from the undo-redo stack
-		//
-		restoreSettings();
+		// Set all the stretch and colour balance adjustments to zero and set the controls to match
+		// 
+		zeroAdjustmentControls();
 
 		updateControls();
 
@@ -1129,9 +1126,9 @@ namespace DSS
 		undoRedoStack.reset();
 
 		//
-		// Restore the processing settings from the undo-redo stack
-		//
-		restoreSettings();
+		// Restore the processing settings for the image to the original values and update the controls to match.
+		// 
+		initialiseControls();
 
 		updateControls();
 
@@ -1143,7 +1140,7 @@ namespace DSS
 
 		processAndShow();
 		showHistogram();
-		setDirty();
+		setDirty(false);
 	}
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
@@ -1177,7 +1174,4 @@ namespace DSS
 			pixelInfo->setText("");
 		}
 	}
-
-
-
 } // namespace DSS

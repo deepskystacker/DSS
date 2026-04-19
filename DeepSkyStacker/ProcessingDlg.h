@@ -75,7 +75,16 @@ namespace DSS
 		SelectRect* selectRect;
 		DSSRect	selectionRect;
 
+		//
+		// Set the default image adjustment parameters and the default state of the preview checkbox
+		//
 		void initialiseControls();
+
+		//
+		// Set the image adjustment parameters to zero values
+		//
+		void zeroAdjustmentControls();
+
 		void connectSignalsToSlots();
 		void setRedButtonIcon();
 		void setGreenButtonIcon();
@@ -116,6 +125,7 @@ namespace DSS
 		float redShift{ 0.0f };		// Red channel shift value
 		float greenShift{ 0.0f };	// Green channel shift value
 		float blueShift{ 0.0f };	// Blue channel shift value
+
 		bool preview{ true };		// Whether to show a preview of the processed image
 
 		//
@@ -154,9 +164,6 @@ namespace DSS
 		DeepStack previewDeepStack;	
 
 		void doPreview();
-
-		void restoreSettings();
-		void resetColourShifts();	
 
 	signals:
 		void asinhBPChanged(double value);
