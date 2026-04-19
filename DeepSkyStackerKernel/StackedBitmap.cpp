@@ -677,13 +677,6 @@ int	StackedBitmap::GetHeight() const
 	return m_lHeight;
 }
 
-bool StackedBitmap::IsMonochrome() const
-{
-	return m_bMonochrome;
-}
-
-
-
 /* ------------------------------------------------------------------- */
 
 class CTIFFWriterStacker : public CTIFFWriter
@@ -1191,7 +1184,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, OldProgressBase * pProgress)
 	};
 
 #ifndef NDEBUG
-	if (IsMonochrome())
+	if (isMonochrome())
 	{
 		qDebug() << "Final stacked image read back in"
 			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
@@ -1307,7 +1300,7 @@ bool StackedBitmap::LoadFITS(const fs::path& file, OldProgressBase * pProgress)
 	};
 
 #ifndef NDEBUG
-	if (IsMonochrome())
+	if (isMonochrome())
 	{
 		qDebug() << "Final stacked image read back in:"
 			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)

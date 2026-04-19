@@ -27,7 +27,7 @@ void DeepStack::computeHistogram(RGBHistogram & Histo)
 		for (int row = 0; row < height; ++row)
 		{
 			size_t ndx = row * width;
-			if (stackedBitmap.IsMonochrome())
+			if (stackedBitmap.isMonochrome())
 			{
 				for (size_t col = 0; col < width; ++col, ++ndx)
 					maxValue = std::max(maxValue, redPixels[ndx]);
@@ -50,7 +50,7 @@ void DeepStack::computeHistogram(RGBHistogram & Histo)
 
 	Histo.SetSize(fMax, static_cast<size_t>(65535));
 
-	if (!stackedBitmap.IsMonochrome())
+	if (!stackedBitmap.isMonochrome())
 	{
 #pragma omp parallel sections default(shared) shared(Histo, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 		{
@@ -86,7 +86,7 @@ void DeepStack::computeDisplayHistogram(RGBHistogram& displayHisto)
 	const auto& greenHistogram = histogram.GetGreenHistogram();
 	const auto& blueHistogram = histogram.GetBlueHistogram();
 
-	bool monochrome = stackedBitmap.IsMonochrome();
+	bool monochrome = stackedBitmap.isMonochrome();
 
 	double redCount;
 	double greenCount;

@@ -52,8 +52,11 @@ namespace DSS
 		for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
 		{
 			m_vRedPlane[i] /= scaleFactor;
-			m_vGreenPlane[i] /= scaleFactor;
-			m_vBluePlane[i] /= scaleFactor;
+			if (!m_bMonochrome)
+			{
+				m_vGreenPlane[i] /= scaleFactor;
+				m_vBluePlane[i] /= scaleFactor;
+			}
 		}
 	}
 
@@ -67,8 +70,11 @@ namespace DSS
 		for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
 		{
 			m_vRedPlane[i] *= scaleFactor;
-			m_vGreenPlane[i] *= scaleFactor;
-			m_vBluePlane[i] *= scaleFactor;
+			if (!m_bMonochrome)
+			{
+				m_vGreenPlane[i] *= scaleFactor;
+				m_vBluePlane[i] *= scaleFactor;
+			}
 		}
 	}
 

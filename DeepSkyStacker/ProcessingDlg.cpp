@@ -642,6 +642,15 @@ namespace DSS
 		if (!currentFile.empty())
 		{
 			StackedBitmap& bmp{ dssApp->deepStack().GetStackedBitmap() };
+
+			//
+			// Technically this doesn't belong here, but it is a very convenient place to 
+			// enable/disable the colour balance controls based on whether the image is
+			// is monochrome or not.
+			//
+			bool colour{ !bmp.isMonochrome() };
+			controls->colourBalanceTab->setEnabled(colour);
+
 			isoSpeed = bmp.GetISOSpeed();
 			gain = bmp.GetGain();
 			totalTime = bmp.GetTotalTime();
