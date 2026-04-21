@@ -7,7 +7,7 @@
         <location filename="../DeepSkyStackerCL.cpp" line="342"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation type="unfinished"></translation>
+        <translation>最終画像を %1 に保存しています</translation>
     </message>
 </context>
 </TS>
