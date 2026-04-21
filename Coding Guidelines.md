@@ -10,9 +10,15 @@
 
 		std::unique_ptr<QImage> image_;
 
-* The name of lambdas, functions and variables should be descriptive and use "camel case" for example:
+* The names of lambdas, functions and variables should be descriptive and use "camel case".  Exceptions are allowed for short lived local variables whose usage and lifetime is clear.
 
 		void setRedoTip(QString string);
+		// Bad
+		QRegion rgn;
+		QPoint p;
+		// Good
+		QRegion clientRegion;
+		QPoint gravitySource;
 		
 * Class names should normally start with a Capital letter. You shouldn't add a C to the front of the classname to indicate that the name is that of a class (see Hungarian notation comments above). For example:
 
@@ -49,16 +55,17 @@
 		
 * Braces: Normally, I suggest that you use braces only when the body of a conditional statement contains more than one line.  Sometimes however, the compiler (particularly clang on macOS) may issue warnings such that you are almost forced to use braces.  The preferred usage is:
 
-		// Preferred
+		// Acceptable
 		if (address.empty())
 			return false;
-		// Preferred
+		// Preferred (unless the predicate is very long)
 		if (address.empty()) return false;
 		
 * Line breaks:
 	- Comment lines should normally be kept below 80 columns of text.
 	- Use blank lines to group statements together where it helps comprehension
 	- Always use only one blank line
+* Re-implemented virtual methods should not specify virtual in the header file.  Instead use the **override** keyword after the function declaration, just before the ';' or the '{'
 ## Comments
 When writing code you should always insert explanatory comments. What was obvious to you on the day that you wrote some code is very unlikely to be so for another developer, or even for you when you need to fix a bug some years later.
 
