@@ -132,31 +132,42 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void ProcessingDlg::zeroAdjustmentControls()
+	void ProcessingDlg::zeroColourBalanceControls()
+	{
+		const QSignalBlocker redSliderBlocker(controls->redSlider);
+		const QSignalBlocker greenSliderBlocker(controls->greenSlider);
+		const QSignalBlocker blueSliderBlocker(controls->blueSlider);
+
+		redShift = 0.0f;
+		greenShift = 0.0f;
+		blueShift = 0.0f;
+
+		controls->redSlider->setValue(50);
+		controls->redSlider->setSliderPosition(50);
+		controls->greenSlider->setValue(50);
+		controls->greenSlider->setSliderPosition(50);
+		controls->blueSlider->setValue(50);
+		controls->blueSlider->setSliderPosition(50);	
+	}
+
+	void ProcessingDlg::zeroAsinHControls()
 	{
 		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
 		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
 		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
 		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
-		const QSignalBlocker redSliderBlocker(controls->redSlider);
-		const QSignalBlocker greenSliderBlocker(controls->greenSlider);
-		const QSignalBlocker blueSliderBlocker(controls->blueSlider);
 
 		asinhBeta = 0.0f;
 		asinhBP = 0.0f;
 		controls->asinhStretchSpinBox->setValue(0.0f);
 		controls->asinhStretchSlider->setValue(0);
+		controls->asinhStretchSlider->setSliderPosition(0);
 
 		controls->asinhBPSpinBox->setValue(0.0f);
 		controls->asinhBPSlider->setValue(0);
-
-		redShift = 0.0f;
-		greenShift = 0.0f;
-		blueShift = 0.0f;
-		controls->redSlider->setValue(50);
-		controls->greenSlider->setValue(50);
-		controls->blueSlider->setValue(50);
+		controls->asinhBPSlider->setSliderPosition(0);
 	}
+
 
 	void ProcessingDlg::initialiseControls()
 	{
@@ -235,7 +246,6 @@ namespace DSS
 	{
 		connect(selectRect, &SelectRect::selectRectChanged, this, &ProcessingDlg::setSelectionRect);
 
-		connect(controls->applyButton, &QPushButton::pressed, this, &ProcessingDlg::onApply);
 		connect(controls->undoButton, &QPushButton::pressed, this, &ProcessingDlg::onUndo);
 		connect(controls->redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
 		connect(controls->resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
@@ -253,12 +263,16 @@ namespace DSS
 
 		connect(controls->asinhHumanWeighted, &QCheckBox::checkStateChanged, this, &ProcessingDlg::asinhHumanWeightedChanged);
 
+		connect(controls->asinhApply, &QPushButton::pressed, this, &ProcessingDlg::asinhApplyPressed);
+
 		connect(controls->redSlider, &QSlider::valueChanged, this, [this]() { redSliderTimer.start(200);  });
 		connect(&redSliderTimer, &QTimer::timeout, this, [this]() { emit redSliderChanged(controls->redSlider->value()); });
 		connect(controls->greenSlider, &QSlider::valueChanged, this, [this]() { greenSliderTimer.start(200);  });
 		connect(&greenSliderTimer, &QTimer::timeout, this, [this]() { emit greenSliderChanged(controls->greenSlider->value()); });
 		connect(controls->blueSlider, &QSlider::valueChanged, this, [this]() { blueSliderTimer.start(200);  });
 		connect(&blueSliderTimer, &QTimer::timeout, this, [this]() { emit blueSliderChanged(controls->blueSlider->value()); });
+
+		connect(controls->cbApply, &QPushButton::pressed, this, &ProcessingDlg::cbApplyPressed);
 
 		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
 
@@ -365,7 +379,7 @@ namespace DSS
 			updateControls();
 			if (preview)
 			{
-				emit onPreview();
+				emit onPreview(ProcessingFunction::AsinhStretch);
 			}
 			else
 			{
@@ -461,10 +475,12 @@ namespace DSS
 					updateInformation();
 
 					picture->clear();
+					initialiseControls();
+
 					updateControls();
 					if (preview)
 					{
-						onPreview();
+						onPreview(ProcessingFunction::AsinhStretch);
 					}
 					else
 					{
@@ -874,16 +890,23 @@ namespace DSS
 
 		painter.fillRect(histogramRect, brush);
 
-		size_t				lMaxValue = 0;
+		size_t	maxValue = 0;
 
-		lMaxValue = std::max(lMaxValue, Histogram.GetRedHistogram().GetMaximumNrValues());
-		lMaxValue = std::max(lMaxValue, Histogram.GetGreenHistogram().GetMaximumNrValues());
-		lMaxValue = std::max(lMaxValue, Histogram.GetBlueHistogram().GetMaximumNrValues());
+		maxValue = std::max(maxValue, Histogram.GetRedHistogram().GetMaximumNrValues());
+		maxValue = std::max(maxValue, Histogram.GetGreenHistogram().GetMaximumNrValues());
+		maxValue = std::max(maxValue, Histogram.GetBlueHistogram().GetMaximumNrValues());
 
+		double	maxLogarithm = 0.0;
+		bool useLogarithm = useLogarithmicHistogram && maxValue > 0;
 		size_t binCount = Histogram.GetRedHistogram().GetNrValues();
 
 		if (binCount)
 		{
+			if (useLogarithm)
+			{
+				maxLogarithm = exp(log((double)maxValue) / height);
+			}
+
 			for (size_t i = 0; i < binCount; i++)
 			{
 				double	redCount;
@@ -891,15 +914,24 @@ namespace DSS
 				double	blueCount;
 
 				Histogram.GetValues(i, redCount, greenCount, blueCount);
-
-				redCount = static_cast<double>(redCount) / static_cast<double>(lMaxValue) * height;
-				greenCount = static_cast<double>(greenCount) / static_cast<double>(lMaxValue) * height;
-				blueCount = static_cast<double>(blueCount) / static_cast<double>(lMaxValue) * height;
+				if (useLogarithm)
+				{
+					if (redCount)
+						redCount = log((double)redCount) / log(maxLogarithm);
+					if (greenCount)
+						greenCount = log((double)greenCount) / log(maxLogarithm);
+					if (blueCount)
+						blueCount = log((double)blueCount) / log(maxLogarithm);
+				}
+				else
+				{
+					redCount = static_cast<double>(redCount) / static_cast<double>(maxValue) * height;
+					greenCount = static_cast<double>(greenCount) / static_cast<double>(maxValue) * height;
+					blueCount = static_cast<double>(blueCount) / static_cast<double>(maxValue) * height;
+				}
 
 				drawHistoBar(painter, redCount, greenCount, blueCount, i, height);
 			};
-
-
 		}
 		drawGaussianCurves(painter, Histogram, width, height);
 
@@ -962,7 +994,7 @@ namespace DSS
 		else return true;
 	}
 
-	void ProcessingDlg::doPreview()
+	void ProcessingDlg::doPreview(ProcessingFunction function)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -975,19 +1007,27 @@ namespace DSS
 
 		//
 		// Normalise the image to a range of [0.0, 1.0], which is required for
-		// the ASinH stretch processing
+		// the processing
 		//
 		bitmap.normalise();
 
-		//
-		// Now apply the ASinH stretch to the image
-		//
-		bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
+		switch (function)
+		{
+		case ProcessingFunction::AsinhStretch:
+			//
+			// Apply the ASinH stretch to the image and set the stretch values to zero
+			//
+			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
+			break;
 
-		//
-		// Adjust the colour balance of the image after the stretch 
-		//
-		bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+		case ProcessingFunction::ColourBalance:
+			//
+			// Adjust the colour balance of the image and
+			// reset the colour balance shifts to zero
+			//
+			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+			break;
+		}
 
 		//
 		// Now de-normalise the image back to the original range
@@ -1013,28 +1053,45 @@ namespace DSS
 		previewMutex.unlock();
 		ZTRACE_RUNTIME("preview mutex unlocked");
 
-		// enable the Apply button to allow the user to apply the stretch to the
-		// main image if they are happy with the preview.
-		// Use QMetaObject::invokeMethod() rather then emit as we are not running
-		// in the same thread
-		QMetaObject::invokeMethod(this, "enableApplyButton", Qt::ConnectionType::AutoConnection);
+		//
+		// enable the appropriate Apply button to allow the user to apply the adjustment
+		// to the main image if they are happy with the preview.
+		// 
+		// Note that we need to use QMetaObject::invokeMethod() rather than emit as we are
+		// not running in the same thread as the main GUI thread.
+		//
+		switch (function)
+		{
+		case ProcessingFunction::AsinhStretch:
+			//
+			// Enable the Apply button for the ASinH stretch controls
+			//
+			QMetaObject::invokeMethod(controls->asinhApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
+			break;
+
+		case ProcessingFunction::ColourBalance:
+			//
+			// Enable the Apply button for the Colour Balance controls
+			//
+			QMetaObject::invokeMethod(controls->cbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
+			break;
+		}		
 	}
 
 	//
 	// Slots
 	//
-	void ProcessingDlg::onPreview()
+	void ProcessingDlg::onPreview(ProcessingFunction function)
 	{
 		if (imageLoaded)
 		{
-			std::ignore = QtConcurrent::run(&ProcessingDlg::doPreview, this);
+			std::ignore = QtConcurrent::run(&ProcessingDlg::doPreview, this, function);
 		}
 	}
 
-	void ProcessingDlg::onApply()
+	void ProcessingDlg::onApply(ProcessingFunction function)
 	{
-		controls->applyButton->setEnabled(false);
-
+		ZFUNCTRACE_RUNTIME();
 		//
 		// Get the current DeepStack object from the undo-redo stack and duplicate it at the top
 		// of the undo-redo stack
@@ -1054,26 +1111,36 @@ namespace DSS
 		//
 		bitmap.normalise();
 
-		//
-		// Now apply the ASinH stretch to the image and set the stretch value to zero
-		//
-		bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
+		switch (function)
+		{
+		case ProcessingFunction::AsinhStretch:
+			//
+			// Apply the ASinH stretch to the image and set the stretch values to zero
+			//
+			ZTRACE_RUNTIME("Applying ASinH stretch");
+			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
+			zeroAsinHControls();
+			deepStack.setDescription(tr("ASinH stretch"));
+			break;
 
-		//
-		// Adjust the colour balance of the image after the stretch 
-		// and reset the colour balance shifts to zero
-		//
-		bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+		case ProcessingFunction::ColourBalance:
+			//
+			// Adjust the colour balance of the image and
+			// reset the colour balance shifts to zero
+			//
+			ZTRACE_RUNTIME("Applying Colour Balance adjustment");
+			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+			zeroColourBalanceControls();
+			deepStack.setDescription(tr("Colour Balance"));
+			break;
+		}
 
+		controls->undoButton->setToolTip(tr("Undo %1").arg(deepStack.description()));
+		
 		//
 		// Now de-normalise the image back to the original range
 		//
 		bitmap.deNormalise();
-
-		//
-		// Set all the stretch and colour balance adjustments to zero and set the controls to match
-		// 
-		zeroAdjustmentControls();
 
 		updateControls();
 
@@ -1084,28 +1151,34 @@ namespace DSS
 
 	void ProcessingDlg::onUndo()
 	{
+		controls->redoButton->setToolTip(tr("Redo %1").arg(undoRedoStack.current().description()));
+
 		undoRedoStack.moveBackward();
 
-		if (undoRedoStack.index() == 0)
-		{
-			//
-			// If the undo-redo stack is back to the original image, reset all the controls to match the original settings
-			//
-			initialiseControls();
-		}
-		else
+		if (undoRedoStack.backwardAvailable())
 		{
 			//
 			// Set all the stretch and colour balance adjustments to zero and set the controls to match
 			// 
 			zeroAdjustmentControls();
+
+			controls->undoButton->setToolTip(tr("Undo %1").arg(undoRedoStack.current().description()));
+		}
+		else
+		{
+			//
+			// Restore the processing settings for the image to the original values and update the controls to match.
+			// 
+			initialiseControls();
+
+			controls->undoButton->setToolTip("");
 		}
 
 		updateControls();
 
 		if (undoRedoStack.index() == 0 && preview)
 		{
-			emit onPreview();
+			emit onPreview(ProcessingFunction::AsinhStretch);
 			return;
 		}
 
@@ -1116,6 +1189,16 @@ namespace DSS
 	void ProcessingDlg::onRedo()
 	{
 		undoRedoStack.moveForward();
+		if (undoRedoStack.forwardAvailable())
+		{
+			auto index = undoRedoStack.index(); index++;
+			controls->redoButton->setToolTip(tr("Redo %1").arg(undoRedoStack.at(index).description()));
+		}
+		else
+		{
+			controls->redoButton->setToolTip("");
+		}
+
 		//
 		// Set all the stretch and colour balance adjustments to zero and set the controls to match
 		// 
@@ -1143,7 +1226,7 @@ namespace DSS
 
 		if (preview)
 		{
-			emit onPreview();
+			emit onPreview(ProcessingFunction::AsinhStretch);
 			return;
 		}
 

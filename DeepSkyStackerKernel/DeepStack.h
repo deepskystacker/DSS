@@ -18,6 +18,7 @@ private :
 	QVector<uchar> imageData_;
 	std::unique_ptr<QImage> image_;
 	DSS::OldProgressBase* m_pProgress;
+	QString description_;
 
 public :
 	DeepStack() : 
@@ -116,4 +117,16 @@ public :
 	{
 		return GetWidth() && GetHeight();
 	}
+
+	inline const QString& description() const
+	{
+		return description_;
+	}
+
+	inline DeepStack& setDescription(const QString& description)
+	{
+		description_ = description;
+		return *this;
+	}
 };
+

@@ -79,6 +79,12 @@ namespace DSS
 		SelectRect* selectRect;
 		DSSRect	selectionRect;
 
+		enum class ProcessingFunction
+		{
+			AsinhStretch,
+			ColourBalance
+		};
+
 		//
 		// Set the default image adjustment parameters and the default state of the preview checkbox
 		//
@@ -87,7 +93,13 @@ namespace DSS
 		//
 		// Set the image adjustment parameters to zero values
 		//
-		void zeroAdjustmentControls();
+		void zeroAsinHControls();
+		void zeroColourBalanceControls();
+		inline void zeroAdjustmentControls()
+		{
+			zeroAsinHControls();
+			zeroColourBalanceControls();
+		}
 
 		void connectSignalsToSlots();
 
@@ -100,6 +112,8 @@ namespace DSS
 		//
 		static constexpr float DefaultAsinhBeta{ 100.0f };
 		static constexpr float DefaultAsinhBP{ 0.001f };
+
+		bool useLogarithmicHistogram{ false };	// Whether to use a logarithmic scale for the histogram display
 
 		void	drawHistogram(RGBHistogram& Histogram);
 		void	drawHistoBar(QPainter& painter, double lNrReds, double lNrGreens, double lNrBlues, size_t X, int lHeight);
@@ -160,7 +174,7 @@ namespace DSS
 		//
 		DeepStack previewDeepStack;	
 
-		void doPreview();
+		void doPreview(ProcessingFunction function);
 
 	signals:
 		void asinhBPChanged(double value);
@@ -172,8 +186,8 @@ namespace DSS
 	private slots:
 
 		void updateControls();
-		void onPreview();
-		void onApply();
+		void onPreview(ProcessingFunction function);
+		void onApply(ProcessingFunction function);
 		void onUndo();
 		void onRedo();
 		void onReset();
@@ -205,9 +219,10 @@ namespace DSS
 				//
 				if (preview)
 				{
-					emit onPreview();
+					// Apply the stretch asynchronously to the preview image.
+					emit onPreview(ProcessingFunction::AsinhStretch);
 				}
-				else controls->applyButton->setEnabled(true);
+				else controls->asinhApply->setEnabled(true);
 			}
 		}
 
@@ -262,9 +277,10 @@ namespace DSS
 				//
 				if (preview)
 				{
-					emit onPreview();
+					// Apply the stretch asynchronously to the preview image.
+					emit onPreview(ProcessingFunction::AsinhStretch);
 				}
-				else controls->applyButton->setEnabled(true);
+				else controls->asinhApply->setEnabled(true);
 			}
 		}
 
@@ -317,9 +333,10 @@ namespace DSS
 			}
 			if (preview)
 			{
-				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+				// Apply the stretch asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::AsinhStretch);
 			}
-			else controls->applyButton->setEnabled(true);
+			else controls->asinhApply->setEnabled(true);
 		}
 
 		void previewChanged(Qt::CheckState state)
@@ -335,9 +352,17 @@ namespace DSS
 			}
 			if (preview)
 			{
-				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+				if (controls->tabWidget->currentWidget() == controls->asinhStretchTab)
+				{
+					// Apply the stretch asynchronously to the preview image.
+					emit onPreview(ProcessingFunction::AsinhStretch);
+				}
+				if (controls->tabWidget->currentWidget() == controls->colourBalanceTab)
+				{
+					// Apply the adjustment asynchronously to the preview image.
+					emit onPreview(ProcessingFunction::ColourBalance);
+				}
 			}
-			else controls->applyButton->setEnabled(true);
 		}
 
 		void redSliderChanged(int value)
@@ -349,9 +374,10 @@ namespace DSS
 			redShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
 			if (preview)
 			{
-				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::ColourBalance);
 			}
-			else controls->applyButton->setEnabled(true);
+			else controls->cbApply->setEnabled(true);
 		}
 
 		void greenSliderChanged(int value)
@@ -363,9 +389,10 @@ namespace DSS
 			greenShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
 			if (preview)
 			{
-				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::ColourBalance);
 			}
-			else controls->applyButton->setEnabled(true);
+			else controls->cbApply->setEnabled(true);
 		}
 
 		void blueSliderChanged(int value)
@@ -377,14 +404,22 @@ namespace DSS
 			blueShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
 			if (preview)
 			{
-				emit onPreview();	// Apply the stretch asynchronously to the preview image.
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::ColourBalance);
 			}
-			else controls->applyButton->setEnabled(true);
+			else controls->cbApply->setEnabled(true);
 		}
 
-		void enableApplyButton()
+		void asinhApplyPressed()
 		{
-			controls->applyButton->setEnabled(true);
+			controls->asinhApply->setEnabled(false);
+			emit onApply(ProcessingFunction::AsinhStretch);
+		}
+
+		void cbApplyPressed()
+		{
+			controls->cbApply->setEnabled(false);
+			emit onApply(ProcessingFunction::ColourBalance);
 		}
 
 		void updatePixelInfo(QPoint pos, QRgb colour);
