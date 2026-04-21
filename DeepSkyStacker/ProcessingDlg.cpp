@@ -996,10 +996,7 @@ namespace DSS
 
 	void ProcessingDlg::doPreview(ProcessingFunction function)
 	{
-		ZFUNCTRACE_RUNTIME();
-
 		previewMutex.lock();
-		ZTRACE_RUNTIME("Locked preview mutex, starting concurrent processing");
 		// Copy the current DeepStack object from the undo-redo stack and process it with the current settings	
 		previewDeepStack = undoRedoStack.current();
 
@@ -1051,7 +1048,6 @@ namespace DSS
 
 		usePreviewDeepStack = false;
 		previewMutex.unlock();
-		ZTRACE_RUNTIME("preview mutex unlocked");
 
 		//
 		// enable the appropriate Apply button to allow the user to apply the adjustment
@@ -1091,7 +1087,6 @@ namespace DSS
 
 	void ProcessingDlg::onApply(ProcessingFunction function)
 	{
-		ZFUNCTRACE_RUNTIME();
 		//
 		// Get the current DeepStack object from the undo-redo stack and duplicate it at the top
 		// of the undo-redo stack
@@ -1117,7 +1112,6 @@ namespace DSS
 			//
 			// Apply the ASinH stretch to the image and set the stretch values to zero
 			//
-			ZTRACE_RUNTIME("Applying ASinH stretch");
 			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
 			zeroAsinHControls();
 			deepStack.setDescription(tr("ASinH stretch"));
@@ -1128,7 +1122,6 @@ namespace DSS
 			// Adjust the colour balance of the image and
 			// reset the colour balance shifts to zero
 			//
-			ZTRACE_RUNTIME("Applying Colour Balance adjustment");
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
 			zeroColourBalanceControls();
 			deepStack.setDescription(tr("Colour Balance"));
