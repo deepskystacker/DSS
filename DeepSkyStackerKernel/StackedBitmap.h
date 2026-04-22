@@ -204,7 +204,12 @@ namespace DSS
 		void Clear();
 		int	GetWidth() const;
 		int	GetHeight() const;
-		bool IsMonochrome() const;
+		inline bool isMonochrome() const
+		{
+			return m_bMonochrome;
+		}
+
+
 	};
 
 } // namespace DSS

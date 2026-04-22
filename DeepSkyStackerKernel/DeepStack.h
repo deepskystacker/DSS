@@ -18,15 +18,7 @@ private :
 	QVector<uchar> imageData_;
 	std::unique_ptr<QImage> image_;
 	DSS::OldProgressBase* m_pProgress;
-
-	//
-	// Copies of the values for the processing parameters used to restore them on undo.
-	//
-	float asinhBeta_{ 0.0f };	// Asinh stretch value
-	float asinhBP_{ 0.0f };		// Asinh black point value
-	bool asinhHWLuminance_{ true };	// Whether to use human weighted luminance for asinh stretch
-
-	bool preview_{ true };		// Whether to show a preview of the processed image
+	QString description_;
 
 public :
 	DeepStack() : 
@@ -126,18 +118,15 @@ public :
 		return GetWidth() && GetHeight();
 	}
 
-	DeepStack& saveSettings(float beta, float bp, bool hwl, bool pv)
+	inline const QString& description() const
 	{
-		this->asinhBeta_ = beta;
-		this->asinhBP_ = bp;
-		this->asinhHWLuminance_ = hwl;
+		return description_;
+	}
 
-		this->preview_ = pv;
+	inline DeepStack& setDescription(const QString& description)
+	{
+		description_ = description;
 		return *this;
 	}
-
-	std::tuple<float, float, bool, bool> savedSettings() const
-	{
-		return std::make_tuple(asinhBeta_, asinhBP_, asinhHWLuminance_, preview_);
-	}
 };
+

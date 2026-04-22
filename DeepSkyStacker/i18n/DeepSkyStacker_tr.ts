@@ -225,6 +225,11 @@ Telif Hakkı Tőkés Attila</translation>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Türkçe Sürümü:</translation>
     </message>
+    <message>
+        <location filename="../About.cpp" line="163"/>
+        <source>Japanese version: 三浦秀 (Shu Miura)&lt;br&gt;</source>
+        <translation>Japonca versiyon: 三浦秀 (Shu Miura)&lt;br&gt;</translation>
+    </message>
 </context>
 <context>
     <name>DSS::AlignmentParameters</name>
@@ -1283,55 +1288,44 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <location filename="../ui/ProcessingControls.ui" line="271"/>
         <source>Colour Balance</source>
         <translation>Renk Dengesi</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="160"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH Görüntü germe</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="168"/>
+        <location filename="../ui/ProcessingControls.ui" line="59"/>
         <source>Stretch Factor</source>
         <translation>Esneme Faktörü</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="242"/>
+        <location filename="../ui/ProcessingControls.ui" line="133"/>
         <source>Black Point</source>
         <translation>Siyah Nokta</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="320"/>
+        <location filename="../ui/ProcessingControls.ui" line="211"/>
         <source>Human-weighted luminance</source>
         <translation>İnsan ağırlıklı parlaklık</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="346"/>
+        <location filename="../ui/ProcessingControls.ui" line="480"/>
         <source>Preview</source>
         <translation>Önizleme</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="377"/>
+        <location filename="../ui/ProcessingControls.ui" line="248"/>
+        <location filename="../ui/ProcessingControls.ui" line="452"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Uygula</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="384"/>
-        <source>Undo last applied settings</source>
-        <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation>En son uygulanan ayarları geri-al</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="401"/>
-        <source>Redo last applied settings</source>
-        <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation>En son uygulanan ayarları tekrar uygula</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="418"/>
+        <location filename="../ui/ProcessingControls.ui" line="560"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Sıfırla</translation>
@@ -1340,100 +1334,122 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="902"/>
+        <location filename="../ProcessingDlg.cpp" line="979"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="376"/>
+        <location filename="../ProcessingDlg.cpp" line="430"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF veya FITS görüntüsü (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="269"/>
+        <location filename="../ProcessingDlg.cpp" line="326"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>DeepSkyStacker&apos;la Yıldız Maskesini oluşturuyor</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="271"/>
+        <location filename="../ProcessingDlg.cpp" line="328"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Yıldız Maskesini Kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="338"/>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="393"/>
+        <location filename="../ProcessingDlg.cpp" line="495"/>
         <source>Failed to load image %1</source>
         <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="472"/>
+        <location filename="../ProcessingDlg.cpp" line="524"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="473"/>
+        <location filename="../ProcessingDlg.cpp" line="525"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
+        <location filename="../ProcessingDlg.cpp" line="526"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
+        <location filename="../ProcessingDlg.cpp" line="527"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 16 bit/ch (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
+        <location filename="../ProcessingDlg.cpp" line="528"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
+        <location filename="../ProcessingDlg.cpp" line="529"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="486"/>
+        <location filename="../ProcessingDlg.cpp" line="538"/>
         <source>Save Image</source>
         <translation>Resmi Kaydet</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="589"/>
+        <location filename="../ProcessingDlg.cpp" line="641"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Kaydedilecek dosya yok.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="604"/>
+        <location filename="../ProcessingDlg.cpp" line="656"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Herhangi bir bilgi mevcut değil</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="617"/>
+        <location filename="../ProcessingDlg.cpp" line="678"/>
         <source>Exposure: %1 </source>
         <translation>Poz süresi: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="618"/>
+        <location filename="../ProcessingDlg.cpp" line="679"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
             <numerusform>%n kare</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1117"/>
+        <source>ASinH stretch</source>
+        <translation>ASinH germe</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1127"/>
+        <source>Colour Balance</source>
+        <translation>Renk Dengesi</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1131"/>
+        <location filename="../ProcessingDlg.cpp" line="1158"/>
+        <source>Undo %1</source>
+        <translation>Geri Al %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1147"/>
+        <location filename="../ProcessingDlg.cpp" line="1188"/>
+        <source>Redo %1</source>
+        <translation>Yeniden Yap %1</translation>
     </message>
 </context>
 <context>

@@ -506,11 +506,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="i18n\DeepSkyStackerKernel_translations.qrc">
-      <Filter>Qt\i18n</Filter>
-    </QtRcc>
-  </ItemGroup>
-  <ItemGroup>
     <QtTranslation Include="i18n\DeepSkyStackerKernel_ca.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
@@ -559,5 +554,10 @@
     <QtTranslation Include="i18n\DeepSkyStackerKernel_en_GB.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\kernel_translations.qrc">
+      <Filter>Qt\i18n</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

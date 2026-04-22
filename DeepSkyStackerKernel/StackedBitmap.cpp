@@ -677,13 +677,6 @@ int	StackedBitmap::GetHeight() const
 	return m_lHeight;
 }
 
-bool StackedBitmap::IsMonochrome() const
-{
-	return m_bMonochrome;
-}
-
-
-
 /* ------------------------------------------------------------------- */
 
 class CTIFFWriterStacker : public CTIFFWriter
@@ -1191,7 +1184,7 @@ bool StackedBitmap::LoadTIFF(const fs::path& file, OldProgressBase * pProgress)
 	};
 
 #ifndef NDEBUG
-	if (IsMonochrome())
+	if (isMonochrome())
 	{
 		qDebug() << "Final stacked image read back in"
 			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
@@ -1307,7 +1300,7 @@ bool StackedBitmap::LoadFITS(const fs::path& file, OldProgressBase * pProgress)
 	};
 
 #ifndef NDEBUG
-	if (IsMonochrome())
+	if (isMonochrome())
 	{
 		qDebug() << "Final stacked image read back in:"
 			<< getValue(0, 0) << getValue(1, 0) << getValue(2, 0) << getValue(3, 0)
@@ -1330,4 +1323,42 @@ bool StackedBitmap::LoadFITS(const fs::path& file, OldProgressBase * pProgress)
 };
 
 /* ------------------------------------------------------------------- */
+
+//
+// Normalise the image data to a range of [0.0, 1.0], which is required for
+// the processing methods
+//
+void StackedBitmap::normalise()
+{
+	const float scaleFactor{ m_lNrBitmaps * 256.0f };
+#pragma omp parallel for schedule(static) if (Multitask::GetNrProcessors() > 1)
+	for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
+	{
+		m_vRedPlane[i] /= scaleFactor;
+		if (!m_bMonochrome)
+		{
+			m_vGreenPlane[i] /= scaleFactor;
+			m_vBluePlane[i] /= scaleFactor;
+		}
+	}
+}
+
+//
+// De-normalise the image data after processing, to bring it back to the
+// normal range of pixel values.
+//
+void StackedBitmap::deNormalise()
+{
+	const float scaleFactor{ m_lNrBitmaps * 256.0f };
+#pragma omp parallel for schedule(static) if (Multitask::GetNrProcessors() > 1)
+	for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
+	{
+		m_vRedPlane[i] *= scaleFactor;
+		if (!m_bMonochrome)
+		{
+			m_vGreenPlane[i] *= scaleFactor;
+			m_vBluePlane[i] *= scaleFactor;
+		}
+	}
+}
 

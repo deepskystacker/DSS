@@ -238,11 +238,11 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 			//if ((*it).m_wLightValue >= (*it).m_wDarkValue )
 			{
 				{
-					double	fValue = static_cast<double>((*it).m_wLightValue) - static_cast<double>((*it).m_wDarkValue))*k);
+					double	fValue = static_cast<double>((*it).m_wLightValue) - static_cast<double>((*it).m_wDarkValue)*k;
 
 					//if (fValue >= 0)
 					{
-						lNrValues += (*it).m_lCount;
+						lNrValues += (*it).m_lCount;`
 						fPowSum += (fValue*fValue)*(*it).m_lCount;
 						fSum	+= fValue * (*it).m_lCount;
 						fMaxValue = std::max(fMaxValue, fValue);
