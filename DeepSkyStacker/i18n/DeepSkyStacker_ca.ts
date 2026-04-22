@@ -225,6 +225,11 @@ Copyright Tőkés Attila</translation>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Versió Turca:</translation>
     </message>
+    <message>
+        <location filename="../About.cpp" line="163"/>
+        <source>Japanese version: 三浦秀 (Shu Miura)&lt;br&gt;</source>
+        <translation>Versió japonesa: 三浦秀 (Shu Miura)&lt;br&gt;</translation>
+    </message>
 </context>
 <context>
     <name>DSS::AlignmentParameters</name>
@@ -1282,55 +1287,44 @@ Píxels freds detectats: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <location filename="../ui/ProcessingControls.ui" line="271"/>
         <source>Colour Balance</source>
         <translation>Balanç de color</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="160"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
         <source>ASinH Image stretch</source>
         <translation>Estirament d&apos;imatge ASinH</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="168"/>
+        <location filename="../ui/ProcessingControls.ui" line="59"/>
         <source>Stretch Factor</source>
         <translation>Factor d&apos;estirament</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="242"/>
+        <location filename="../ui/ProcessingControls.ui" line="133"/>
         <source>Black Point</source>
         <translation>Punt Negre</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="320"/>
+        <location filename="../ui/ProcessingControls.ui" line="211"/>
         <source>Human-weighted luminance</source>
         <translation>Luminància ponderada per humans</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="346"/>
+        <location filename="../ui/ProcessingControls.ui" line="480"/>
         <source>Preview</source>
         <translation>Preview</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="377"/>
+        <location filename="../ui/ProcessingControls.ui" line="248"/>
+        <location filename="../ui/ProcessingControls.ui" line="452"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Aplicar</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="384"/>
-        <source>Undo last applied settings</source>
-        <comment>IDS_UNDOLASTSETTINGS</comment>
-        <translation>Desfer els últims ajustaments realitzats</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="401"/>
-        <source>Redo last applied settings</source>
-        <comment>IDS_REDOLASTSETTINGS</comment>
-        <translation>Refer els últims ajustaments realitzats</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="418"/>
+        <location filename="../ui/ProcessingControls.ui" line="560"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Reiniciar</translation>
@@ -1339,101 +1333,123 @@ Píxels freds detectats: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="902"/>
+        <location filename="../ProcessingDlg.cpp" line="979"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Desitja guardar les modificacions?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="376"/>
+        <location filename="../ProcessingDlg.cpp" line="430"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Imatge TIFF o FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="269"/>
+        <location filename="../ProcessingDlg.cpp" line="326"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Màscara d&apos;Estrelles creada per DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="271"/>
+        <location filename="../ProcessingDlg.cpp" line="328"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Guardant la Màscara d&apos;Estrelles en %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="338"/>
-        <location filename="../ProcessingDlg.cpp" line="442"/>
+        <location filename="../ProcessingDlg.cpp" line="393"/>
+        <location filename="../ProcessingDlg.cpp" line="495"/>
         <source>Failed to load image %1</source>
         <translation>No s&apos;ha pogut carregar la imatge %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="472"/>
+        <location filename="../ProcessingDlg.cpp" line="524"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="473"/>
+        <location filename="../ProcessingDlg.cpp" line="525"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 32 bit/ch - integer(*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="474"/>
+        <location filename="../ProcessingDlg.cpp" line="526"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge TIFF 32 bit/ch - rational (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="475"/>
+        <location filename="../ProcessingDlg.cpp" line="527"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 16 bit/ch (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="476"/>
+        <location filename="../ProcessingDlg.cpp" line="528"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 32 bit/ch - integer (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="477"/>
+        <location filename="../ProcessingDlg.cpp" line="529"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Imatge FITS 32 bit/ch - rational (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="486"/>
+        <location filename="../ProcessingDlg.cpp" line="538"/>
         <source>Save Image</source>
         <translation>Guarda Imatge</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="589"/>
+        <location filename="../ProcessingDlg.cpp" line="641"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>No hi ha una imatge per a guardar.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="604"/>
+        <location filename="../ProcessingDlg.cpp" line="656"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Sense informació disponible</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="617"/>
+        <location filename="../ProcessingDlg.cpp" line="678"/>
         <source>Exposure: %1 </source>
         <translation>Exposició: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="618"/>
+        <location filename="../ProcessingDlg.cpp" line="679"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
             <numerusform>%n frame</numerusform>
             <numerusform>%n frames</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1117"/>
+        <source>ASinH stretch</source>
+        <translation>Estirament ASinh</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1127"/>
+        <source>Colour Balance</source>
+        <translation>Balanç de color</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1131"/>
+        <location filename="../ProcessingDlg.cpp" line="1158"/>
+        <source>Undo %1</source>
+        <translation>Desfer %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1147"/>
+        <location filename="../ProcessingDlg.cpp" line="1188"/>
+        <source>Redo %1</source>
+        <translation>Refer %1</translation>
     </message>
 </context>
 <context>
