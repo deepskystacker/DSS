@@ -380,6 +380,12 @@ namespace DSS
 
 			picture->clear();
 			updateControls();
+
+			//
+			// Do this before the preview stuff otherwise the direty flag isn't cleared if preview is active
+			// 
+			setDirty(false);
+
 			if (preview)
 			{
 				emit onPreview(ProcessingFunction::AsinhStretch);
@@ -388,7 +394,6 @@ namespace DSS
 			{
 				processAndShow();
 			}
-			setDirty(false);
 		}
 		else
 		{
@@ -481,6 +486,12 @@ namespace DSS
 					setAdjustmentControlDefaults();
 
 					updateControls();
+
+					//
+					// Do this before preview stuff otherwise the dirty flag doesn't get reset if preview is true
+					// 
+					setDirty(false);
+
 					if (preview)
 					{
 						onPreview(ProcessingFunction::AsinhStretch);
@@ -490,7 +501,6 @@ namespace DSS
 						processAndShow();
 						showHistogram();
 					}
-					setDirty(false);
 				}
 				else
 				{
@@ -1225,6 +1235,11 @@ namespace DSS
 		setAdjustmentControlDefaults();
 
 		updateControls();
+		
+		//
+		// Do this before preview stuff otherwise the dirty flag doesn't get reset if preview is true
+		// 
+		setDirty(false);
 
 		if (preview)
 		{
@@ -1234,7 +1249,6 @@ namespace DSS
 
 		processAndShow();
 		showHistogram();
-		setDirty(false);
 	}
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
