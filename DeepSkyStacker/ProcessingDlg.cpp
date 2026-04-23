@@ -116,7 +116,24 @@ namespace DSS
 		greenSliderTimer.setSingleShot(true);	// Fires only once after started
 		blueSliderTimer.setSingleShot(true);		// Fires only once after started	
 
-		initialiseControls();
+		//
+		// Disable keyboard tracking for the spin boxes so that the valueChanged
+		// signal is only emitted when the user has finished changing the value
+		//
+		controls->asinhBPSpinBox->setKeyboardTracking(false);
+		controls->asinhStretchSpinBox->setKeyboardTracking(false);
+
+		//
+		// Disable tracking for the sliders so that the valueChanged signal is 
+		// only emitted when the user has finished changing the value
+		// 
+		controls->asinhBPSlider->setTracking(false);
+		controls->asinhStretchSlider->setTracking(false);
+
+		//
+		// Set adjustment controls to their default values
+		// 
+		setAdjustmentControlDefaults();
 
 		connectSignalsToSlots();
 
@@ -169,22 +186,8 @@ namespace DSS
 	}
 
 
-	void ProcessingDlg::initialiseControls()
+	void ProcessingDlg::setAdjustmentControlDefaults()
 	{
-		//
-		// Disable keyboard tracking for the spin boxes so that the valueChanged
-		// signal is only emitted when the user has finished changing the value
-		//
-		controls->asinhBPSpinBox->setKeyboardTracking(false);
-		controls->asinhStretchSpinBox->setKeyboardTracking(false);
-
-		//
-		// Disable tracking for the sliders so that the valueChanged signal is 
-		// only emitted when the user has finished changing the value
-		// 
-		controls->asinhBPSlider->setTracking(false);
-		controls->asinhStretchSlider->setTracking(false);
-
 		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
 		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
 		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
@@ -475,7 +478,7 @@ namespace DSS
 					updateInformation();
 
 					picture->clear();
-					initialiseControls();
+					setAdjustmentControlDefaults();
 
 					updateControls();
 					if (preview)
@@ -1113,8 +1116,9 @@ namespace DSS
 			// Apply the ASinH stretch to the image and set the stretch values to zero
 			//
 			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
+			deepStack.setDescription(tr("ASinH stretch: beta %1, bp %2, hw %3").arg(asinhBeta).arg(asinhBP).arg(asinhHWLuminance));
+
 			zeroAsinHControls();
-			deepStack.setDescription(tr("ASinH stretch"));
 			break;
 
 		case ProcessingFunction::ColourBalance:
@@ -1123,8 +1127,9 @@ namespace DSS
 			// reset the colour balance shifts to zero
 			//
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+			deepStack.setDescription(tr("Colour Balance: R %1, G %2, B %3").arg(redShift).arg(greenShift).arg(blueShift));
+
 			zeroColourBalanceControls();
-			deepStack.setDescription(tr("Colour Balance"));
 			break;
 		}
 
@@ -1162,7 +1167,7 @@ namespace DSS
 			//
 			// Restore the processing settings for the image to the original values and update the controls to match.
 			// 
-			initialiseControls();
+			setAdjustmentControlDefaults();
 
 			controls->undoButton->setToolTip("");
 		}
@@ -1213,7 +1218,7 @@ namespace DSS
 		//
 		// Restore the processing settings for the image to the original values and update the controls to match.
 		// 
-		initialiseControls();
+		setAdjustmentControlDefaults();
 
 		updateControls();
 

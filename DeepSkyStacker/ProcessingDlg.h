@@ -88,7 +88,7 @@ namespace DSS
 		//
 		// Set the default image adjustment parameters and the default state of the preview checkbox
 		//
-		void initialiseControls();
+		void setAdjustmentControlDefaults();
 
 		//
 		// Set the image adjustment parameters to zero values
