@@ -64,7 +64,7 @@ Changes for DeepSkyStacker 6.2.0 Beta 7
 14. Bug fix: Register Settings dialogue was losing changes.
 
 15. Improve the Quality Chart FWHM plot by replacing FWHM more than three standard deviations above the median
-    value with the median value before processing.  This presents very bright stars from dominating the plot.
+    value with the median value before processing.  This prevents very bright stars from dominating the plot.
 
 16. Major re-design of the "Processing" panel.  The old controls have been removed and replaced with a control
     to perform an inverse hyperbolic sine stretch of the image with the ability to preview the changes.
