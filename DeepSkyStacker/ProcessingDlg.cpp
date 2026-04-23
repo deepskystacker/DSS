@@ -917,7 +917,7 @@ namespace DSS
 		{
 			if (useLogarithm)
 			{
-				maxLogarithm = exp(log((double)maxValue) / height);
+				maxLogarithm = exp(log(static_cast<double>(maxValue)) / height);
 			}
 
 			for (size_t i = 0; i < binCount; i++)
@@ -929,12 +929,12 @@ namespace DSS
 				Histogram.GetValues(i, redCount, greenCount, blueCount);
 				if (useLogarithm)
 				{
-					if (redCount)
-						redCount = log((double)redCount) / log(maxLogarithm);
-					if (greenCount)
-						greenCount = log((double)greenCount) / log(maxLogarithm);
-					if (blueCount)
-						blueCount = log((double)blueCount) / log(maxLogarithm);
+					if (0.0 != redCount)
+						redCount = log(static_cast<double>(redCount)) / log(maxLogarithm);
+					if (0.0 != greenCount)
+						greenCount = log(static_cast<double>(greenCount)) / log(maxLogarithm);
+					if (0.0 != blueCount)
+						blueCount = log(static_cast<double>(blueCount)) / log(maxLogarithm);
 				}
 				else
 				{
@@ -1037,6 +1037,10 @@ namespace DSS
 			//
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
 			break;
+
+		default:
+			ZASSERT(false);	// Invalid processing function
+			break;
 		}
 
 		//
@@ -1083,6 +1087,10 @@ namespace DSS
 			// Enable the Apply button for the Colour Balance controls
 			//
 			QMetaObject::invokeMethod(controls->cbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
+			break;
+
+		default:
+			ZASSERT(false);	// Invalid processing function
 			break;
 		}		
 	}
@@ -1142,6 +1150,10 @@ namespace DSS
 				.arg(redShift).arg(greenShift).arg(blueShift));
 
 			zeroColourBalanceControls();
+			break;
+
+		default:
+			ZASSERT(false);	// Invalid processing function
 			break;
 		}
 
