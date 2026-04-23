@@ -1116,7 +1116,8 @@ namespace DSS
 			// Apply the ASinH stretch to the image and set the stretch values to zero
 			//
 			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
-			deepStack.setDescription(tr("ASinH stretch: beta %1, bp %2, hw %3").arg(asinhBeta).arg(asinhBP).arg(asinhHWLuminance));
+			deepStack.setDescription(tr("ASinH stretch: beta %L1, bp %L2, hw %3")
+				.arg(asinhBeta).arg(asinhBP).arg(QVariant(asinhHWLuminance).toString()));
 
 			zeroAsinHControls();
 			break;
@@ -1127,7 +1128,8 @@ namespace DSS
 			// reset the colour balance shifts to zero
 			//
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
-			deepStack.setDescription(tr("Colour Balance: R %1, G %2, B %3").arg(redShift).arg(greenShift).arg(blueShift));
+			deepStack.setDescription(tr("Colour Balance: R %L1, G %L2, B %L3")
+				.arg(redShift).arg(greenShift).arg(blueShift));
 
 			zeroColourBalanceControls();
 			break;
@@ -1187,6 +1189,8 @@ namespace DSS
 	void ProcessingDlg::onRedo()
 	{
 		undoRedoStack.moveForward();
+
+		controls->undoButton->setToolTip(tr("Undo %1").arg(undoRedoStack.current().description()));
 		if (undoRedoStack.forwardAvailable())
 		{
 			auto index = undoRedoStack.index(); index++;
