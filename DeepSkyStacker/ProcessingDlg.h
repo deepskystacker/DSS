@@ -368,10 +368,10 @@ namespace DSS
 		void redSliderChanged(int value)
 		{
 			//
-			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// Convert the slider value, which is between 0 and 100, to a shift value between -0.2 and +0.2,
 			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
 			//
-			redShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			redShift = (static_cast<float>(value) / 100.0f - 0.5f) * 0.4f;
 			if (preview)
 			{
 				// Apply the adjustment asynchronously to the preview image.
@@ -383,10 +383,10 @@ namespace DSS
 		void greenSliderChanged(int value)
 		{
 			//
-			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// Convert the slider value, which is between 0 and 100, to a shift value between -0.2 and +0.2,
 			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
 			//
-			greenShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			greenShift = (static_cast<float>(value) / 100.0f - 0.5f) * 0.4f;
 			if (preview)
 			{
 				// Apply the adjustment asynchronously to the preview image.
@@ -398,10 +398,10 @@ namespace DSS
 		void blueSliderChanged(int value)
 		{
 			//
-			// Convert the slider value, which is between 0 and 100, to a shift value between -1.0 and +1.0,
+			// Convert the slider value, which is between 0 and 100, to a shift value between -0.2 and +0.2,
 			// with a default of 0.0 at the middle of the slider (i.e. when the slider value is 50).
 			//
-			blueShift = (static_cast<float>(value) / 100.0f - 0.5f) * 2.0f;
+			blueShift = (static_cast<float>(value) / 100.0f - 0.5f) * 0.4f;
 			if (preview)
 			{
 				// Apply the adjustment asynchronously to the preview image.
