@@ -85,8 +85,11 @@ Changes for DeepSkyStacker 6.2.0 Beta 7
 
 23. Bug fix: Crash in StackedBitmap::normalise when processing a monochrome stacked image.
 
-24. Change so that each tab on the Processing pane has its own apply button.  Enhance the tooltip text for
-    the Undo and Redo buttons to show what will be undone or redone.
+24. Change so that each tab on the Processing pane has its own apply button.
+
+25. Reduce sensitivity of adjustments to Colour Balance.
+
+26. Provide tooltips for the Undo and Redo buttons showing what they will do.
 
 Changes for DeepSkyStacker 6.1.3
 ================================
