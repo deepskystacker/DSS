@@ -307,13 +307,13 @@
                    </string>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>200</number>
             </property>
             <property name="pageStep">
              <number>5</number>
             </property>
             <property name="value">
-             <number>50</number>
+             <number>100</number>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -356,13 +356,13 @@
                    </string>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>200</number>
             </property>
             <property name="pageStep">
              <number>5</number>
             </property>
             <property name="value">
-             <number>50</number>
+             <number>100</number>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -405,13 +405,13 @@
                    </string>
             </property>
             <property name="maximum">
-             <number>100</number>
+             <number>200</number>
             </property>
             <property name="pageStep">
              <number>5</number>
             </property>
             <property name="value">
-             <number>50</number>
+             <number>100</number>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
