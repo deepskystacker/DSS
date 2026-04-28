@@ -227,7 +227,7 @@ Copyright Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="163"/>
-        <source>Japanese version: 三浦修 (Shu Miura)&lt;br&gt;</source>
+        <source>Japanese version: 三浦 修 (Miura Shu)&lt;br&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
