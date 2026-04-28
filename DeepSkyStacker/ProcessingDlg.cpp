@@ -295,7 +295,7 @@ namespace DSS
 	void ProcessingDlg::copyToClipboard()
 	{
 		ZFUNCTRACE_RUNTIME();
-		if (dssApp->deepStack().IsLoaded())
+		if (undoRedoStack.size() > 0 && dssApp->deepStack().IsLoaded())
 		{
 			QClipboard* clipboard = QGuiApplication::clipboard();
 
@@ -309,7 +309,7 @@ namespace DSS
 	void ProcessingDlg::createStarMask()
 	{
 		ZFUNCTRACE_RUNTIME();
-		if (dssApp->deepStack().IsLoaded())
+		if (undoRedoStack.size() > 0 && dssApp->deepStack().IsLoaded())
 		{
 			StarMaskDlg dlg{ this, currentFile };
 
@@ -521,7 +521,7 @@ namespace DSS
 		bool result = false;
 
 
-		if (dssApp->deepStack().IsLoaded())
+		if (undoRedoStack.size() > 0 && dssApp->deepStack().IsLoaded())
 		{
 			QSettings settings;
 
