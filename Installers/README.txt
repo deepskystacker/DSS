@@ -91,6 +91,9 @@ Changes for DeepSkyStacker 6.2.0 Beta 7
 
 26. Provide tooltips for the Undo and Redo buttons showing what they will do.
 
+27. Bug fix: An exception was thrown for "invalid deque<T> subscript" if an image wasn't loaded
+    in the processing pane and any of Copy to clipboard, Create a Star Mask or Save image were selected.
+
 Changes for DeepSkyStacker 6.1.3
 ================================
 
