@@ -227,8 +227,8 @@ Telif Hakkı Tőkés Attila</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="163"/>
-        <source>Japanese version: 三浦秀 (Shu Miura)&lt;br&gt;</source>
-        <translation>Japonca versiyon: 三浦秀 (Shu Miura)&lt;br&gt;</translation>
+        <source>Japanese version: 三浦修 (Shu Miura)&lt;br&gt;</source>
+        <translation>Japonca versiyon: 三浦修 (Shu Miura)&lt;br&gt;</translation>
     </message>
 </context>
 <context>

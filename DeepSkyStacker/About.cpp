@@ -160,7 +160,7 @@ namespace DSS
         strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br>").arg("Raþid Tuðral (Rasid Tugral)");
 
         strHTML += "<img valign=center src=\":/flags/japan.png\">&nbsp;&nbsp;";
-        strHTML += tr("Japanese version: 三浦秀 (Shu Miura)<br>");
+        strHTML += tr("Japanese version: 三浦修 (Shu Miura)<br>");
 
         ui->credits->setText(strHTML);
 
