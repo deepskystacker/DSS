@@ -28,6 +28,7 @@
             "exclusionList": [
               ".vs",
               ".git",
+              ".exe",
               "build",
               "vcpkg_installed",
               "x64"
