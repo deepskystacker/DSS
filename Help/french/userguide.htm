@@ -404,871 +404,2064 @@ créer les images résultantes de plusieurs piles en une seule opération.</font
 <p><b><font size="4" face="Arial" color="#ff0000"><a name="processingtab"></a>L'onglet Traitement<br>
 </font></b><font size="2" face="Arial">L'onglet Traitement donne accès aux 
 fonctionnalités du traitement.</font></p>
-<table style="HEIGHT: 594px; WIDTH: 1238px; BORDER-COLLAPSE: collapse" id="AutoNumber5" width="1238" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
-  <tbody><tr>
-    <td width="58%">
-    <p class="Standard" align="justify"><font size="2" face="Arial">Je rappelle ici que DeepSkyStacker n'a pas pour vocation de permettre des 
-traitements complexes et avancés sur l'image. Cet onglet sert juste à permettre 
-une visualisation rapide du résultat de l'empilement.</font></p>
-    <p class="Standard" align="justify"><font size="2" face="Arial">Il contient une prévisualisation de l'histogramme RGB de l'image en cours de 
-traitement et un ensemble de trois onglets donnant accès aux différents réglages 
-d'ajustements :<br>
-- ajustement des niveaux RGB<br>
-- ajustement de la courbe de luminosité<br>
-- ajustement du niveau de saturation<br>
-<br>
-Les modifications des niveaux RGB et de la courbe de luminosité sont directement 
-visible sur l'histogramme.</font></p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p></td>
-    <td width="42%">
-    <IMG style="HEIGHT: 645px;          WIDTH: 675px" border         =0 alt="Onglet Traitement avec la prévisualisation, les differents onglets et l'histogramme RGB" src="../images/french/ProcessingTab.jpg" width=326 height=368 ></td>
-  </tr>
-</tbody></table>
-<p><font size="2" face="Arial">
-<b>Ajustement des niveaux RGB</b></font></p>
-<table style="BORDER-COLLAPSE: collapse" id="AutoNumber2" width="84%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
-  <tbody><tr>
-    <td width="69%">
-    <p class="Standard" align="justify"><font size="2" face="Arial">L'ajustement des niveaux RGB est 
-    contrôlé par&nbsp; :<br>
-    Le type d'ajustement modifiable en cliquant sur le nom de l'ajustement. Les 
-    types d'ajustement possible sont ; linéaire, racine carrée, racine cubique, 
-    logarithme, log(log), log(racine carrée) et asinh.<br>
-    <br>
-    Les bornes modifiables sur la barre correspondant à chaque canal (curseur de 
-    gauche pour le minimum et curseur de droite pour le maximum)<br>
-    <br>
-    Le décalage modifiable sur la barre correspondant à chaque canal (curseur du 
-    milieu)<br>
-    <br>
-    <br>
-    <br>
-    L'ajustement des niveaux RGB peut être effectué indépendamment sur chaque 
-    canal ou sur tous les canaux en même temps lorsque la case "Ajustements 
-    liés" est cochée.</font></p></td>
-    <td width="35%">
-    <IMG style="HEIGHT: 364px;     WIDTH: 376px" border    =0 alt="Onglet de réglages des niveaux RGB" src="../images/french/RGBLevels.jpg" width=260 height=237 ></td>
-  </tr>
-</tbody></table>
-<p><font size="2" face="Arial">Le plus simple pour comprendre la signification 
-des différents paramètres est de les faire varier et de visualiser sur 
-l'histogramme les modifications apportées à chacun des canaux.<br>
-<br>
-<b>Ajustement de la courbe de luminosité</b></font></p>
-<table style="BORDER-COLLAPSE: collapse" id="AutoNumber3" width="84%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
-  <tbody><tr>
-    <td width="66%">
-    <p class="Standard" align="justify"><font size="2" face="Arial">La courbe de luminosité est contrôlée par 6 paramètres.<br>
-- 2 pour le début de la courbe (la zone sombre).<br>
-- 2 pour le milieu de la courbe (la zone moyenne)<br>
-- 2 pour la fin de la courbe (la zone claire).<br>
-<br>
-Ces paramètres contrôle la façon dont une une courbe de Bézier est construite 
-pour transformer la luminance.<br>
-Pour faire simple, les paramètres sont l'angle de la courbe et la puissance en 
-chaque point.<br>
-<br>
-L'avantage de cette approche est qu'à partir d'un petit nombre de paramètre il 
-est possible d'une part d'obtenir des résultats immédiatement visibles et 
-d'autre part qu'il est possible de mémoriser et d'appliquer aisément les mêmes 
-paramètres sur une autre image.</font></p></td>
-    <td width="34%">
-    <IMG style="HEIGHT: 315px;         WIDTH: 383px" border        =0 alt="Onglet de régale de la courbe d'ajustement de la luminance" src="../images/french/Luminance.jpg" width=260 height=237 ></td>
-  </tr>
-</tbody></table>
-<p><font size="2" face="Arial">Le plus simple pour comprendre la signification des différents paramètres est de 
-les faire varier et de visualiser sur l'histogramme les modifications apportées à 
-la courbe d'ajustement de la luminance (courbe noire).<br>
-<br>
-<b>Ajustement du niveau de saturation</b><br>
-Le niveau de saturation est juste un pourcentage d'accroissement ou de réduction 
-du niveau de la saturation.<br>
-<br>
-<b>L'histogramme RGB</b></font></p>
-<table style="BORDER-COLLAPSE: collapse" id="AutoNumber4" width="85%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
-  <tbody><tr>
-    <td width="50%">
-    <p class="Standard" align="justify"><font size="2" face="Arial">L'histogramme RGB permet de visualiser pour chaque canal (R, G et B) la 
-répartition sur l'image des différents pixels rouges, verts et bleus.<br>
-Il montre également la courbe d'ajustement de la luminance.<br>
-    <br>
-    De plus, afin d'aider à l'équilibrage des différents canaux, il montre 
-    également la courbe de Gauss pour chacun des canaux.</font></p></td>
-    <td width="50%">
-    <IMG style="HEIGHT: 335px; WIDTH: 477px" border=0 alt="Histogramme RGB" src="../images/Histogram.jpg" width=389 height=233 ></td>
-  </tr>
-</tbody></table><FONT face=Arial>
-    <h4 align=justify >
-<FONT face=Arial>
-Utilisation pratique de l'Éditeur :</FONT></h4>
-<p style="MARGIN-RIGHT: 0px" dir=ltr align=justify><FONT face="Arial" > Voici quelques recommandations sur la façon 
-d'obtenir les meilleurs résultats de l'éditeur :</FONT></p><OL><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Commencez sur 
-  l’onglet Niveaux RVB/K.</FONT>
-      </SPAN></p><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Utilisez le curseur 
-  "point noir" pour élargir les courbes au maximum.</FONT>
-      </SPAN></p><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Utilisez le curseur 
-  du milieu pour les déplacer vers la gauche et les aligner.</FONT>
-      </SPAN></p><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Si nécessaire, 
-  effectuez des ajustements mineurs avec les curseurs « point blanc 
-  ».</FONT>
-      </SPAN></p><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Passez à l'onglet 
-  Luminance.</FONT>
-      </SPAN></p><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Ajustez la courbe 
-  pour obtenir une courbe en "S" qui monte à travers les 
-  sommets.</FONT>
-      </SPAN></p><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Passez à l'onglet 
-  Saturation.</FONT>
-      </SPAN></p><LI>
-  <p class=MsoNormal style="MARGIN: 0cm" align=justify 
-  ><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"' 
- >        
-          
-   <FONT face=Calibri>
-Ajustez le niveau 
-  de saturation entre (généralement) entre 20 et 25 pour cent.Start 
-  on&nbsp;RGB/K Levels tab.</FONT>
-      </SPAN>
-    <o:p ></p></LI>
-</OL><P class=MsoNormal style="MARGIN: 0cm">
-  <SPAN 
-style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-    <SPAN style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-    <FONT face=Arial><SPAN style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri",sans-serif; mso-fareast-font-family: "Yu Gothic"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'>
-  <FONT size=2 face=Arial>
-    Remarque : Les 
-    curseurs sont 
-les petits triangles situés sous les barres de couleur. Celui de gauche est pour le 
-point noir et celui de droite pour le point blanc.
-  </FONT>      
-      </SPAN></FONT></SPAN></SPAN>
-  </SPAN>      
-      </P>
-    <P class=MsoNormal style="MARGIN: 0cm"><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-    <SPAN style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-  <FONT face=Arial>
-    <FONT size=3><SPAN style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri",sans-serif; mso-fareast-font-family: "Yu Gothic"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'></SPAN></FONT>
-  </FONT>    </SPAN></SPAN></SPAN>&nbsp;</P>
-    <P class=MsoNormal style="MARGIN: 0cm"><SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-  <SPAN 
-style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>
-    <SPAN style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><FONT face="Arial" >
-    <FONT size=3 ><SPAN style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri",sans-serif; mso-fareast-font-family: "Yu Gothic"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA; mso-ascii-theme-font: minor-latin; mso-fareast-theme-font: minor-fareast; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi'></SPAN>Voici     
-          un film que j'ai créé montrant comment procéder avec 
-    une image réelle : <SPAN style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'>
-  <SPAN 
-style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-    <A href="../DSS Editing.mp4" >Regardez le film sur l'utilisation de 
-l'éditeur</A>
-  </SPAN>  </SPAN></FONT></FONT></SPAN>
-  </SPAN>     
-      </SPAN></P>
-   
- </O:P>
-   
- </FONT>
-<h4><FONT face=Arial>Enregistrement/Chargement des 
-paramètres d'ajustement<br>
-Annuler/Ré appliquer les 
-paramètres d'ajustement</FONT></h4>
-<p><FONT face=Arial>En bas de chacun des trois onglets se trouvent les boutons permettant :<br>
-- d'appliquer les dernières modifications à l'image<br>
-- d'annuler les dernières modifications appliquées<br>
-- de ré appliquer les dernières modification annuler<br>
-- de réinitialiser complètement les valeurs<br>
-- d'accéder à un dialogue permettant d'enregistrer/charger des configurations 
-d'ajustements nommées<br></FONT></p>
-<h4>Chargement d'une image</h4>
-<p><font size="2" face="Arial">
-<b>
-  <br>
-</b>DeepSkyStacker permet de charger des images au format DSImage (<a href="http://deepskystacker.free.fr/french/faq.htm#autosave">enregistrées 
-uniquement</a> à la fin du processus d'empilement), TIFF (8, 16 et 32 bits, 
-monochrome ou couleurs RGB) ou FITS (8, 16, 32 et 64 bits, monochrome ou 
-couleurs RGB).<br>
-Par défaut, à la fin du processus d'empilement l'image AutoSave.tif est 
-chargée.<br>
-<br>
-<br>
-<b>Enregistrement du résultat</b></font></p>
-<table style="BORDER-COLLAPSE: collapse" id="AutoNumber7" width="87%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
-  <tbody><tr>
-    <td width="56%">
-    <p class="Standard" align="justify"><font size="2" face="Arial">DeepSkyStacker permet 
-    d'enregistrer le résultat dans des fichiers TIFF ou FITS 16 ou 32 bits de deux façon 
-    :<br>
-    - soit en appliquant les ajustements<br>
-    - soit sans appliquer les ajustements (mais en les stockant quand même dans 
-    le cas du fichier TIFF pour pouvoir continuer le traitement lors du prochain 
-    chargement de l'image).<br>
-&nbsp;</font></p></td>
-    <td width="46%"><IMG border=0 src="userguide_files/SaveOptions.jpg" width=355 height=78></td>
-  </tr>
-</tbody></table>
-<p><font size="2" face="Arial">Pour en savoir plus, voir la faq concernant le
-<a href="http://deepskystacker.free.fr/french/faq.htm#saveresult">mécanisme d'enregistrement</a>.</font></p>
-<hr color="#0000ff">
-<p align="justify"><b><font size="4" face="Arial" color="#ff0000">
-<a name="creatingstarmask"></a>Créer un masque d'étoile<br>
-</font></b><font size="2" face="Arial">L'utilisation d'un masque d'étoile est 
-souvent très utile lors des post-traitements pour appliquer des traitements 
-différents aux étoiles et au reste de l'image.<br>
-La fonctionnalité "Créer un masque d'étoiles" peut être utilisée pour créer 
-plusieurs type de masques qui peuvent ensuite être utilisés dans le logiciel que 
-vous utilisez pour les post-traitements (Photoshop, PixInsight, ...).<br>
-<br>
-<font color="#ff0000">DeepSkyStacker ne fait que créer des fichiers contenant 
-des masques d'étoiles. Il ne les utilisent pas lui même.</font><br>
-Vous pouvez voir cette fonctionnalité comme un outil dont l'objectif est de 
-permettre simplement et rapidement de créer des masques d'étoiles basés sur une 
-vraie détection des étoiles.</font></p>
-<table id="AutoNumber21" width="100%" cellspacing="1" border="0">
-  <tbody><tr>
-    <td width="44%" valign="top">
-    <p class="Standard"><b><font size="2" face="Arial">Qu'est ce qu'un masque 
-    d'étoiles </font></b><font size="2" face="Arial"><b>?</b><br>
-    Un masque d'étoile est une image en niveau de gris dans laquelle chaque 
-    étoile suffisamment brillante&nbsp; est remplacée par une zone ronde et 
-    blanche au centre et noire à l'extérieur et dont la variation de luminosité 
-    suit une courbe.<br>
-    <br>
-    Vous pouvez voir un exemple de masque d'étoile à droite.<br>
-    Passez la souris sur le texte pour voir <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Image';" href="javascript:void(0);">
-    l'image</A></b> ou <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Masque d\'étoile';" href="javascript:void(0);">
-    le masque d'étoile</A></b>.</font></p></td>
-    <td width="56%">
-    <p align="center">
-    <IMG id=STARMASK01 border=0 name=STARMASK01 src="userguide_files/StarMask_Stars.jpg" width=279 align=middle height=291><br>
-    <font size="2" face="Arial"><b name="STARMASK01TEXT" id="STARMASK01TEXT">Image</b></font></p></td>
-  </tr>
-  <tr>
-    <td width="44%" valign="top">
-    <p class="Standard"><font size="2" face="Arial"><b>Création d'un masque 
-    d'étoiles</b><br>
-    Pour créer un masque d'étoiles vous devez d'abord charger une image dans 
-    l'onglet traitement.<br>
-&nbsp;</font></p><p class="Standard"><font size="2" face="Arial">Ensuite il suffit 
-    de cliquer sur le menu "Créer un masque d'étoiles..." ce qui ouvre le 
-    dialogue ci-contre.</font></p><p class="Standard"><font size="2" face="Arial">
-    Celui-ci vous permet de changer la forme des étoiles dans le masque, le 
-    seuil de détection des étoiles ainsi que quelques autres paramètres.</font></p><p class="Standard">
-    <font size="2" face="Arial">Une fois les paramètres définit, après avoir 
-    cliqué sur le bouton OK DeepSkyStacker vous demandera dans quel fichier vous 
-    souhaitez enregistrer le masque d'étoile (ce peut être un fichier TIFF ou un 
-    fichier FITS).</font></p><p class="Standard">
-    <font size="2" face="Arial">L'image enregistrée est toujours une image en 
-    niveau de gris et en 16 bit. Elle n'est pas automatiquement chargée par 
-    DeepSkyStacker.</font></p><p class="Standard"><font size="2" face="Arial">Le 
-    masque d'étoile est toujours créé à partir de l'image telle que vous la 
-    voyez dans DeepSkyStacker, ce qui signifie avec les ajustements appliqués.</font></p></td>
-    <td width="56%">
-    <p align="center">
-    <IMG border=0 src="userguide_files/CreateStarMask.jpg" width=407 height=401></p></td>
-  </tr>
-</tbody></table>
-<hr color="#0000ff">
-<p><font size="4" face="Arial" color="#ff0000"><b><a name="imagelist"></a>La 
-liste des images<br>
-</b></font><font size="2" face="Arial">La liste des images commune à l'enregistrement et 
-à l'empilement contient la liste de toutes les images utilisées 
-lors des différents processus.<br>
-Elle contient :<br>
-- Les images<br>
-- Les darks<br>
-- Les flats<br>
-- Les bias/offsets<br>
-<br>
-Seules les images cochées sont utilisées lors des processus d'enregistrement et 
-d'empilement.<br>
-<br>
-Les colonnes affichées sont les suivantes :</font></p>
-<table id="AutoNumber1" width="100%" cellspacing="1" border="1">
-  <tbody><tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">Case à cocher</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Indique si l'image va être 
-    utilisée lors des différents processus</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">Chemin</font></td>
-    <td width="83%"><font size="2" face="Arial">Nom du répertoire dans lequel se 
-    trouve l'image</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">Fichier</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Nom du fichier</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">Type</font></td>
-    <td width="83%"><font size="2" face="Arial">Type de l'image : <br>
-    Image pour les images<br>
-    Dark pour les darks<br>
-    Flat pour les flats<br>
-    Bias pour les offsets/bias</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">Score</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Score des images obtenus après 
-    l'enregistrement.<br>
-    ou N/A pour les darks, flats et offsets.<br>
-    Lorsque le score est précédé de (*) cela signifie que vous avez choisi cette 
-    image comme image de départ de l'empilement à l'aide du
-    <A href="#contextmenu">menu contextuel</A>.</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">dX</font></td>
-    <td width="83%"><font size="2" face="Arial">Décalage en X (valeur en pixel) 
-    calculé pour l'empilement</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">dY</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Décalage en Y (valeur en pixel) 
-    calculé pour l'empilement</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">Angle</font></td>
-    <td width="83%"><font size="2" face="Arial">Angle de rotation (valeur en °) 
-    calculé pour l'empilement</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">Date/Heure</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Date et heure du fichier</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">Tailles</font></td>
-    <td width="83%"><font size="2" face="Arial">Tailles en pixels de l'image 
-    (largeur x hauteur)</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">CFA</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Indique si l'image résulte d'un 
-    Color Filter Array (CFA) ce qui est le cas de toutes les images issues des 
-    fichiers RAW utilisant une <a href="http://deepskystacker.free.fr/french/technical.htm#rawdecod">matrice de Bayer</a>.</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">Profondeur</font></td>
-    <td width="83%"><font size="2" face="Arial">Indique le type d'image (RGB ou 
-    monochrome) et le nombre de bits par canal.</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">Infos</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Information complémentaire sur 
-    le type d'image (RAW avec le type d'appareil photo, TIFF ou Autres)</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">ISO</font></td>
-    <td width="83%"><font size="2" face="Arial">Sensibilité ISO de l'image
-    </font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">Temps de pose</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Temps de pose de l'image</font></td>
-  </tr>
-  <tr>
-    <td width="17%"><font size="2" face="Arial">FWHM</font></td>
-    <td width="83%"><font size="2" face="Arial">FWHM : Full Width Half Maximum 
-    (largeur à la moitié du maximum). (en pixel)<br>
-    Il s'agit de la moyenne pour toutes les étoiles détectées. </font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ebe9ed"><font size="2" face="Arial">#Etoiles</font></td>
-    <td width="83%" bgcolor="#ebe9ed"><font size="2" face="Arial">Nombre 
-    d'étoiles détectées.<br>
-    Lorsque la position d'une comète a été fixée +(C) est ajouté au nombre 
-    d'étoiles</font></td>
-  </tr>
-  <tr>
-    <td width="17%" bgcolor="#ffffff"><font size="2" face="Arial">Fond du ciel</font></td>
-    <td width="83%" bgcolor="#ffffff"><font size="2" face="Arial">Valeur du fond 
-    du ciel pour les images enregistrées en %</font></td>
-  </tr>
-</tbody></table>
-<p><font size="2" face="Arial">Il est possible de trier la liste sur n'importe 
-quelle colonne en cliquant sur l'entête de la colonne (et en cliquant une 
-nouvelle fois pour inverser l'ordre de tri).<br>
-<br>
-La largeur et l'ordre des colonnes peuvent être modifiés. Ces informations sont 
-enregistrées après chaque utilisation de DeepSkyStacker et lors de la session suivante la largeur 
-et la position de chaque colonne sont restaurés.<br>
-<br>
-En sélectionnant une image dans la liste, celle-ci est visualisée dans la zone 
-de prévisualisation des images.<br>
-Si cette image correspond à un fichier RAW les paramètres de développement des 
-fichiers RAW sont utilisés dans le décodage de l'image.</font></p>
-<table style="BORDER-COLLAPSE: collapse" id="AutoNumber11" width="93%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
-  <tbody><tr>
-    <td width="38%" valign="top">
-    <p class="Standard" align="justify"><font size="2" face="Arial">
-    <a name="contextmenu"></a>Il est possible de sélectionner 
-plusieurs fichiers dans la liste.  </font>
-    </p>
-    <p class="Standard" align="justify"><font size="2" face="Arial">Un
-menu contextuel (bouton droit de la souris) permet de sélectionner une
-image comme l'image de référence de la pile, changer le type de chaque
-fichier (image, dark, flat ou offset/bias), cocher/décocher les
-fichiers, les enlever de la liste et de visualiser, éditer les
-propriétés des fichiers, copier le contenu de la liste dans le
-presse-papier ou supprimer définitivement des fichiers du disque.</font></p>
-    <div align="center">
-      <center>
-      <table id="AutoNumber19" width="90%" cellspacing="1" border="1">
-        <tbody><tr>
-          <td bordercolor="#000000" width="100%" bgcolor="#ebe9ed">
-          <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px">
-          <font size="2" face="Arial">Si vous choisissez une image de référence 
-          qui n'est pas cochée, les décalages seront calculés à partir de cette 
-          image de référence même si celle-ci n'est pas empilée.</font></p></td>
-        </tr>
-      </tbody></table>
-      <p>&nbsp;</p>
-      </center>
-    </div>
-    </td>
-    <td width="62%" align="center">
-    <IMG style="HEIGHT: 200px;   WIDTH: 285px" border  =0 alt="DeepSkyStacker - Menu contextuel" src="../images/french/ContextMenu.jpg" width=208 height=247 ><br>
-&nbsp;</td>
-  </tr>
-  <tr>
-    <td width="38%" valign="top">
-    <p class="Standard" align="justify"><font size="2" face="Arial">L'édition des propriétés permet en particulier de modifier le type de 
-    l'image et surtout de forcer temporairement (le temps de la session) la 
-    sensibilité ISO et le temps de pose d'une ou plusieurs images.<br>
-    <br>
-    Quand les sensibilités ISO et les temps de pose sont modifiés, aucune 
-    modification n'est apportée aux fichiers contenant les images. Les valeurs 
-    sont stockées en mémoire uniquement pour le temps de la session courante.</font></p></td>
-    <td width="62%" align="center">
-    <IMG border=0 alt    ="DeepSkyStacker - Propriétés des fichiers" src="../images/french/Properties.jpg" width=399 height=312 ></td>
-  </tr>
-</tbody></table>
-<hr color="#0000ff">
-<p><b><font size="4" face="Arial" color="#ff0000"><a name="imagepreview"></a>La 
-prévisualisation d'une image<br>
-</font></b><font size="2" face="Arial">La zone de prévisualisation des images 
-permet simplement et rapidement de visualiser soit une image de la liste (onglet 
-Enregistrement et Empilement), soit l'image en cours de traitement (onglet 
-Traitement).<br>
-<br>
-Elle permet de zoomer en avant et en arrière avec la molette de la souris. C'est 
-le seul moyen pour se déplacer et zoomer.</font></p>
-<p><b><font face="Arial">Edition de la position des étoiles et de la comète</font></b></p>
-<table style="BORDER-COLLAPSE: collapse" id="AutoNumber6" width="81%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
-  <tbody><tr>
-    <td width="38%" valign="top">
-      <p>
-    <font size="2" face="Arial"> Quand une image brute est sélectionnée dans 
-    la liste il est possible:<br></font></p>
-      <ul>
-        <li>
-     <FONT size=2 face=Arial>d'éditer la position des étoiles:&nbsp; Les étoiles détectées 
-        par DeepSkyStacker seront colorées en vert. Vous pouvez sélectionner des 
-        étoiles supplémentaires ou désélectionner celles détectées par 
-        DeepSkyStacker en cliquant avec le bouton gauche de la 
-        souris.</FONT>   
-                 
-                  
-               
-        <li>
-    <font size="2" face="Arial">d'éditer la position de 
-        la comète</font>
-        <li>
-    <font size="2" face="Arial">
-     créer et modifier un <a href="http://deepskystacker.free.fr/french/technical.htm#customrect">rectangle 
-    personnalisé</a></font></li></ul><p><font size="2" face="Arial">Vous pouvez 
-    sélectionner l'un des modes ci-dessus en utilisant la barre d'outils qui se 
-    trouve dans le coin en bas à droite de l'image.<br>
-    <br>
-    Le dernier bouton de la barre permet d'enregistrer les modifications 
-    apportées à la position des étoiles et de la comète.</font></p>
-    <div align="center">
-      <center>
-      <table id="AutoNumber22" width="90%" cellspacing="1" border="1">
-        <tbody><tr>
-          <td width="100%" bgcolor="#ffff00">
-          <p class="Standard"><font size="2" face="Arial" color="#ff0000"><b>
-          Note sur l'édition de la comète :</b><br>
-          Le centre de la comète peut ne pas être détecté automatiquement par DeepSkyStacker.<br>
-          Pour forcer la comète à une position donnée maintenez enfoncé la 
-          touche Majuscule pendant que vous positionnez le centre de la comète..</font></p></td>
-        </tr>
-      </tbody></table>
-      <p>&nbsp;</p>
-      </center>
-    </div>
-    </td>
-    <td width="62%">
-    <p align="center">
-    <IMG border=0 src="userguide_files/EditToolbar.jpg" width=279 height=265></p></td>
-  </tr>
-  <tr>
-    <td width="53%">
-    <p class="Standard" align="justify"><font size="2" face="Arial">De plus dans le cas de l'onglet Traitement il est possible de sélectionner une 
-portion de l'image (par un rectangle).  </font>
-    </p>
-    <p class="Standard" align="justify"><font size="2" face="Arial">Ce rectangle est utilisé d'une part pour 
-appliquer les ajustements (niveaux RGB, luminosité, saturation) et d'autre part 
-optionnellement pour l'enregistrement.<br>
-&nbsp;</font></p>
-    <p class="Standard" align="justify"><font size="2" face="Arial">Si aucun rectangle n'est défini, les ajustements sont appliqués sur la totalité 
-de l'image.</font></p>
-    <p class="Standard" align="justify"><font size="2" face="Arial">Dans tous les cas, lors de l'enregistrement 
-    de l'image sur le disque les ajustements sont appliqués sur la totalité de 
-    l'image enregistrée.</font></p></td>
-    <td width="62%">
-    <p align="center">
-    <IMG border=0 alt         ="Exemple d'utilisation du rectangle de sélection pour l'application des ajustements." src="userguide_files/PreviewRect.jpg" width=203 height=230 ></p></td>
-  </tr>
-</tbody></table>
-<hr color="#0000ff">
-<p><b><font size="4" color="#ff0000" ><a name="rawddp"></a><FONT face=Arial>
-     Paramètres de développement<br></FONT>
-</font></b><SPAN lang=fr class="HwtZe" 
-jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
-class="jCAhz ChMk0b" 
+<p><font size="2" face="Arial"><table 
+      id=AutoNumber5 
+      style="BORDER-COLLAPSE: collapse" borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0><tr><td width="58%">
+    <p class=Standard><font face=Arial      > <SPAN lang=fr class="HwtZe" 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT                         size=2><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Je tiens à préciser que DeepSkyStacker permet uniquement 
+      un étirement simple et un ajustement de la balance des couleurs de l'image 
+      afin de visualiser le résultat du processus d'empilement.</SPAN></SPAN> 
+      <SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Toutefois, en l'absence de dégradé d'arrière-plan, il est 
+      possible d'obtenir un résultat tout à fait acceptable avec les seuls 
+      outils fournis.</SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"> </SPAN></SPAN></FONT></SPAN></font></p>
+    <p class=Standard><font face=Arial      > <SPAN lang=fr class="HwtZe" 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT                         size=2><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Tout post-traitement complexe doit être effectué avec un 
+      logiciel dédié.</SPAN></SPAN></FONT></SPAN></font></p>
+    <p class=Standard><font face=Arial      > <SPAN lang=fr class="HwtZe" 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT                         size=2><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">L'onglet «&nbsp;Traitement&nbsp;» contient un aperçu de 
+      l'histogramme RVB, un onglet permettant d'appliquer un étirement d'image 
+      par la méthode ASinH (Inverse Hyperbolic Size) et un autre permettant 
+      d'ajuster la balance des couleurs.</SPAN></SPAN></FONT></SPAN></font></p>
+    <p class=Standard><font face=Arial      > <SPAN lang=fr class="HwtZe" 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT                         size=2><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Pour ajuster la balance des couleurs, commencez par 
+      modifier les paramètres d'étirement et appliquez-le, puis accédez à 
+      l'onglet «&nbsp;Balance des couleurs&nbsp;», effectuez vos ajustements et 
+      appliquez-les.</SPAN></SPAN></FONT></SPAN></font></p><p>&nbsp;</p><p>&nbsp;</p></td>  <td width="42%"><IMG style="HEIGHT: 514px; WIDTH: 491px" border=0 alt="Processing Tab preview, with RGB histogram" src="../images/french/ProcessingTab.png" width=351 height=431 ></td> </tr></table></p><p ><font size=2       face=Arial         ><SPAN 
+lang=fr class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
 jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
 jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
 jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-jsname="W297wb"><FONT face=Arial>Le&nbsp;dialogue de configuration des 
-paramètres DDP donne accès à tous les paramètres utilisés lors du développement 
-d'un fichier image pour le transformer en image 
-couleur.</FONT></SPAN></SPAN></SPAN></p>
-<p>
+jsname="W297wb"><FONT size=3><STRONG>La transformation ou l'étirement 
+ASinH</STRONG></FONT></SPAN></SPAN></SPAN>  
                  
-              
-                 
-      <table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
-borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
-    <tr>
-             <td vAlign=top width="50%">
-            <p class=Standard><font face=Arial >  <b>Réglage de l'image 
-      (ou&nbsp;Ajustement des couleurs)<br ></b>
-    </font>
-    <br 
-      >
-    
-    <FONT size=2 face=Arial >    <SPAN lang=fr class="HwtZe" 
+                  
+      </font></p>
+<p> <table id=AutoNumber2 style 
+      ="WIDTH: 
+      85%; BORDER-COLLAPSE: collapse" borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0><tr>
+      <td width="58%"><p class="Standard" ><font face=Arial             >       <SPAN lang=fr class="HwtZe" 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT                   size=2><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">La transformation ASinH amplifie les zones sombres de 
+      l'image.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Ses paramètres sont le facteur d'étirement (ou bêta), la 
+      valeur du point noir et l'utilisation ou non de la «&nbsp;luminance 
+      pondérée humaine&nbsp;».<BR></SPAN></SPAN></FONT></SPAN></font><font face=Arial        >       <SPAN lang=fr class="HwtZe" 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT                   size=2><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"><BR>Pour les images monochromes, les valeurs des pixels 
+      sont modifiées à l'aide de la fonction 
+      suivante&nbsp;:</SPAN></SPAN></FONT></SPAN></font><font face=Arial 
+     > 
+               
+      </p><DIV class="math notranslate 
+      &#13;&#10; 
+      &#13;&#10; 
+     &#13;&#10;      &#13;&#10; 
+     &#13;&#10;     &#13;&#10;      nohighlight" 
+     > <MJX-CONTAINER class="MathJax 
+      &#13;&#10; &#13;&#10;  
+      &#13;&#10;    
+      &#13;&#10;  
+      CtxtMenu_Attached_0" 
+      tabIndex=0 
+      style ="FONT-SIZE: 114.5%" display ="true" overflow ="overflow" jax="CHTML" has-speech ="true" data-braille-attached ="true" data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" data-speech-attached    ="true" data-semantic-speech ='   <  mark   name ="0"/>  pixel <mark name   ="1"/  >   equals   <break time ="250ms"/ >   <mark name  ="31"/ > the  <mark name ="20"/>   fraction with numerator <break time ="250ms"/ >    <mark name   ="2"/  > open  paren <break time ="250ms"/>   <mark name="3"/>  original <mark name ="4"/ >   minus   <mark  name  ="5"/   > blackpoint   <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/>    
+      <mark name                                   
+      ="7"/ > 
+      times 
+      <break 
+      time="250ms"/ > 
+       <mark  
+      name   ="8"/ > the asinh <mark name ="17"/> of  <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> &#13;&#10;   
+      <mark name &#13;&#10;                                  
+      ="10"/ > 
+      &#13;&#10; 
+      original 
+      &#13;&#10; <mark 
+      &#13;&#10; name="11"/       > &#13;&#10;  times        <mark  &#13;&#10; name ="12"/ > stretch <break time  ="250ms"/ > <mark name="13"/> close paren <break time="250ms"/>   
+      <mark name                                   
+      ="30"/ > 
+      and 
+      denominator 
+      <mark name="21"/ 
+      > original  &#13;&#10; &#13;&#10;      <mark name &#13;&#10;                                  &#13;&#10;      ="22"/ > &#13;&#10;      &#13;&#10; &#13;&#10;      times &#13;&#10;      &#13;&#10; <break &#13;&#10;      &#13;&#10; time="250ms"/> &#13;&#10;      <mark name="23"/ > &#13;&#10;      the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/><mark name="26"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+      data-semantic-level="Level" data-semantic-expandable="expandable" 
+      data-semantic-collapsible="collapsible" 
+      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
+      data-semantic-style="default" data-semantic-domain="clearspeak" 
+      data-semantic-locale="en" ctxtmenu_counter="0"> <MJX-MATH aria-hidden=true class 
+      ="NCM-N" 
+      display="true" data-semantic-summary='<mark name="32"/> equality'                                                                                                                
+      data-semantic-summary-none="equality" data-speech-node                                   
+      ="true" data-semantic-structure="(32 0 1 
+      &#13;&#10; &#13;&#10; 
+      (31 &#13;&#10; (20 &#13;&#10; (15 2 (14 3 4 5) 6) 7 (19 8 18 (17 9 (16 10 11 12) 13))) (30 21 22 (29 23 28 (27     
+      24 25 &#13;&#10;  
+      26)))))"     
+      data-semantic-level-number = 
+      "0" data-semantic-owns 
+       ="0  
+      1      
+      31" data-semantic-attributes="latex:\text{pixel}  = &#13;&#10; \frac{(\text{original} -  &#13;&#10; \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" data-semantic-content  ="1" data-semantic-children   ="0,31"                                                                                                  
+      data-semantic-id                                    
+     = "32" data-semantic-annotation ="depth:1"                                           
+      data-semantic-role="equality" data-semantic-type                                   
+     ="relseq" 
+      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-semantic-speech=' <mark name ="0"/> pixel  <mark name="1"/> equals <break time ="250ms"/ >  <mark name="31"/> the <mark name="20"/> fraction with numerator  <break time="250ms"/> <mark name="2"/> open paren <break time ="250ms"/>   <mark name="3"/> original <mark name="4"/> minus <mark name  ="5"/ > blackpoint <break time ="250ms"/ >  <mark name="6"/> close paren <break time ="250ms"/>   <mark name="7"/> times <break time  ="250ms"/ >  <mark name="8"/> the asinh <mark name ="17"/> of  <break time="250ms"/>  <mark name="9"/> open paren   <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name  &#13;&#10;      ="12"/                                    &#13;&#10;     > stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+     ><MJX-MTEXT 
+       data-semantic-braille="⠏⠊⠭⠑⠇" 
+      data-semantic-speech='   &#13;&#10;      <mark name ="0"/> pixel' 
+      data-semantic-speech-none="pixel" 
+      data-semantic-summary='<mark name="0"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="1" 
+      data-semantic-attributes="latex:\text{pixel}" data-semantic-id="0" 
+      data-semantic-annotation="factor:relation;clearspeak:unit;nemeth:number;depth:2" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{pixel}" data-semantic-parent="32" 
+      data-semantic-font="normal"><MJX-C class=mjx-c70 
+      style="PADDING-TOP: 0.69em" noic="true"><FONT size=2 
+      face=Courier>&nbsp;&nbsp; p</MJX-C><MJX-C 
+      class=mjx-c69 style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c78 style="PADDING-TOP: 0.69em" 
+       noic="true">x</MJX-C><MJX-C class=mjx-c65 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">el</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠨⠅" data-semantic-speech='<mark name="1"/> equals' 
+      data-semantic-speech-none="equals" 
+      data-semantic-summary='<mark name="1"/> equals' 
+      data-semantic-summary-none="equals" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-attributes="latex:=" 
+      data-semantic-id="1" data-semantic-annotation="nemeth:number;depth:2" 
+      data-semantic-role="equality" data-semantic-type="relation" data-latex="=" 
+      data-semantic-parent="32" data-semantic-operator="relseq,=" space="4"> 
+      <MJX-C class=mjx-c3D>=&nbsp;</MJX-C></MJX-MO> 
+      <MJX-MFRAC 
+      data-semantic-braille="⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-semantic-speech='<mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+      data-semantic-summary='<mark name="31"/> fraction' 
+      data-semantic-summary-none="fraction" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-owns="20 30" 
+      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-children="20,30" data-semantic-id="31" 
+      data-semantic-annotation="depth:2" data-semantic-role="division" 
+      data-semantic-type="fraction" 
+      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-parent="32" space="4"><MJX-FRAC 
+      type="d"><MJX-NUM><MJX-NSTRUT 
+      type="d"></MJX-NSTRUT><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech=' &#13;&#10;      <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren" 
+      data-semantic-summary='<mark name="20"/> product with 2 factors' 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="2" 
+      data-semantic-owns="15 7 19" 
+      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
+      data-semantic-content="7" data-semantic-children="15,19" 
+      data-semantic-id="20" data-semantic-annotation="depth:3" 
+      data-semantic-role="multiplication" data-semantic-type="infixop" 
+      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
+      data-semantic-parent="31" 
+      data-semantic-prefix='<mark name="20"/> Numerator' 
+      data-semantic-prefix-none="Numerator"><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" 
+      data-semantic-speech='   &#13;&#10;      <mark name ="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-speech-none="open paren original minus blackpoint close paren" 
+      data-semantic-summary='<mark name="2"/> open paren <break time="250ms"/> <mark name="14"/> subtraction with 2 elements <break time="250ms"/><mark name="6"/> close paren' 
+      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="2 14 6" data-semantic-content="2,6" 
+      data-semantic-children="14" data-semantic-id="15" 
+      data-semantic-annotation="fences:paren;depth:4" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
+      data-semantic-parent="20" data-semantic-added="true"><MJX-MO 
+       data-semantic-braille="⠷" 
+      data-semantic-speech='<mark name="2"/> open paren' 
+      data-semantic-speech-none="open paren" 
+      data-semantic-summary='<mark name="2"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:(" 
+      data-semantic-id="2" data-semantic-annotation="depth:5" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
+      data-semantic-parent="15" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" 
+      data-semantic-speech=' &#13;&#10;      <mark name ="3"/ > original <mark name="4"/> minus <mark name="5"/> blackpoint' 
+      data-semantic-speech-none="original minus blackpoint" 
+      data-semantic-summary='<mark name="14"/> subtraction with 2 elements' 
+      data-semantic-summary-none="subtraction with 2 elements" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="3 4 5" data-semantic-content="4" 
+      data-semantic-children="3,5" data-semantic-id="14" 
+      data-semantic-annotation="depth:5" data-semantic-role="subtraction" 
+      data-semantic-type="infixop" data-semantic-parent="15" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
+      data-semantic-speech='<mark name="3"/> original' 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="3"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="3" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:6" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="14" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" noic="true">i<MJX-C 
+      class=mjx-c6E style="PADDING-TOP: 0.69em" 
+      noic="true">n<MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
+       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      style="PADDING-TOP: 0.69em">l&nbsp;- 
+      </MJX-C></MJX-MTEXT><MJX-MO data-semantic-braille="⠤" 
+      data-semantic-speech='<mark name="4"/> minus' 
+      data-semantic-speech-none="minus" 
+      data-semantic-summary='<mark name="4"/> minus' 
+      data-semantic-summary-none="minus" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:-" 
+      data-semantic-id="4" data-semantic-annotation="depth:6" 
+      data-semantic-role="subtraction" data-semantic-type="operator" 
+      data-latex="-" data-semantic-parent="14" 
+      data-semantic-operator="infixop,−" space="3"><MJX-C class=mjx-c2212 
+      ></MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-braille="⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" 
+      data-semantic-speech='<mark name="5"/> blackpoint' 
+      data-semantic-speech-none="blackpoint" 
+      data-semantic-summary='<mark name="5"/> identifier' 
+      data-semantic-summary-none="identifier" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{blackpoint}" data-semantic-id="5" 
+      data-semantic-annotation="clearspeak:unit;depth:6" 
+      data-semantic-role="unit" data-semantic-type="identifier" 
+      data-latex="\text{blackpoint}" data-semantic-parent="14" 
+      data-semantic-font="normal" space="3"><MJX-C class=mjx-c62 
+      style="PADDING-TOP: 0.69em" noic="true">point noir) 
+      </MJX-C></MJX-MO></MJX-MROW><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="7"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="7"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\times" 
+      data-semantic-id="7" data-semantic-annotation="depth:4" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="20" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-speech-none="the asinh of open paren original times stretch close paren" 
+      data-semantic-summary='<mark name="8"/> functional expression <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="16"/> product with 2 factors <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-summary-none="functional expression of open paren product with 2 factors close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="8 18 17" data-semantic-content="18,8" 
+      data-semantic-children="8,17" data-semantic-id="19" 
+      data-semantic-annotation="depth:4" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="20" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
+      data-semantic-speech='<mark name="8"/> the asinh' 
+      data-semantic-speech-none="the asinh" 
+      data-semantic-summary='<mark name="8"/> functional expression' 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="8" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="19" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠀" data-semantic-speech='<mark name="18"/> of' 
+      data-semantic-speech-none="of" 
+      data-semantic-summary='<mark name="18"/> of' 
+      data-semantic-summary-none="of" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-id="18" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="application" data-semantic-type="punctuation" 
+      data-semantic-parent="19" data-semantic-operator="appl" 
+      data-semantic-added="true"><MJX-C class=mjx-c2061 
+      ></MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-speech-none="open paren original times stretch close paren" 
+      data-semantic-summary='<mark name="9"/> open paren <break time="250ms"/> <mark name="16"/> product with 2 factors <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-summary-none="open paren product with 2 factors close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="9 16 13" data-semantic-content="9,13" 
+      data-semantic-children="16" data-semantic-id="17" 
+      data-semantic-annotation="fences:paren;depth:5" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
+      data-semantic-parent="19" data-semantic-added="true"><MJX-MO 
+       data-semantic-braille="⠷" 
+      data-semantic-speech='<mark name="9"/> open paren' 
+      data-semantic-speech-none="open paren" 
+      data-semantic-summary='<mark name="9"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:(" 
+      data-semantic-id="9" data-semantic-annotation="depth:6" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-speech='<mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch' 
+      data-semantic-speech-none="original times stretch" 
+      data-semantic-summary='<mark name="16"/> product with 2 factors' 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="5" 
+      data-semantic-owns="10 11 12" data-semantic-content="11" 
+      data-semantic-children="10,12" data-semantic-id="16" 
+      data-semantic-annotation="depth:6" data-semantic-role="multiplication" 
+      data-semantic-type="infixop" data-semantic-parent="17" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
+      data-semantic-speech='<mark name="10"/> original' 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="10"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="6" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="10" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:7" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="16" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="11"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="11"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:\times" 
+      data-semantic-id="11" data-semantic-annotation="depth:7" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="16" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-speech='<mark name="12"/> stretch' 
+      data-semantic-speech-none="stretch" 
+      data-semantic-summary='<mark name="12"/> identifier' 
+      data-semantic-summary-none="identifier" data-speech-node="true" 
+      data-semantic-level-number="6" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="12" 
+      data-semantic-annotation="clearspeak:unit;depth:7" 
+      data-semantic-role="unit" data-semantic-type="identifier" 
+      data-latex="\text{stretch}" data-semantic-parent="16" 
+      data-semantic-font="normal" space="3"><MJX-C class=mjx-c73 
+      style="PADDING-TOP: 0.69em" noic="true"><SPAN lang=fr 
+      class=HwtZe 
       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
       class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
       jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb">Les paramètres sont les 
-      suivants&nbsp;:</SPAN></SPAN></SPAN></FONT></p>
+      jsname="W297wb">étirement</SPAN></SPAN></SPAN></MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
+       data-semantic-braille="⠾" 
+      data-semantic-speech='<mark name="13"/> close paren' 
+      data-semantic-speech-none="close paren" 
+      data-semantic-summary='<mark name="13"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:)" 
+      data-semantic-id="13" data-semantic-annotation="depth:6" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29>)</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       size=2 face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      -----------------------------------------------------</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       size=2 face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="22"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="22"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\times" 
+      data-semantic-id="22" data-semantic-annotation="depth:4" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="30" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-speech-none="the asinh of open paren stretch close paren" 
+      data-semantic-summary='<mark name="23"/> functional expression <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> text <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="23 28 27" data-semantic-content="28,23" 
+      data-semantic-children="23,27" data-semantic-id="29" 
+      data-semantic-annotation="depth:4" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="30" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
+      data-semantic-speech='<mark name="23"/> the asinh' 
+      data-semantic-speech-none="the asinh" 
+      data-semantic-summary='<mark name="23"/> functional expression' 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="23" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="29" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠀" data-semantic-speech='<mark name="28"/> of' 
+      data-semantic-speech-none="of" 
+      data-semantic-summary='<mark name="28"/> of' 
+      data-semantic-summary-none="of" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-id="28" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="application" data-semantic-type="punctuation" 
+      data-semantic-parent="29" data-semantic-operator="appl" 
+      data-semantic-added="true"><MJX-C class=mjx-c2061 
+      ></MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-speech-none="open paren stretch close paren" 
+      data-semantic-summary='<mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> text <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-summary-none="open paren text close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="24 25 26" data-semantic-content="24,26" 
+      data-semantic-children="25" data-semantic-id="27" 
+      data-semantic-annotation="fences:paren;depth:5" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
+      data-semantic-parent="29" data-semantic-added="true"><MJX-MO 
+       data-semantic-braille="⠷" 
+      data-semantic-speech='<mark name="24"/> open paren' 
+      data-semantic-speech-none="open paren" 
+      data-semantic-summary='<mark name="24"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:(" 
+      data-semantic-id="24" data-semantic-annotation="depth:6" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
+      data-semantic-parent="27" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MTEXT 
+       data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-speech='<mark name="25"/> stretch' 
+      data-semantic-speech-none="stretch" 
+      data-semantic-summary='<mark name="25"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="25" 
+      data-semantic-annotation="clearspeak:unit;depth:6" 
+      data-semantic-role="annotation" data-semantic-type="text" 
+      data-latex="\text{stretch}" data-semantic-parent="27" 
+      data-semantic-font="normal"><MJX-C class=mjx-c73 
+      style="PADDING-TOP: 0.69em" noic="true"><SPAN lang=fr 
+      class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">étirement</SPAN></SPAN></SPAN></MJX-C></MJX-MTEXT><MJX-MO 
+       data-semantic-braille="⠾" 
+      data-semantic-speech='<mark name="26"/> close paren' 
+      data-semantic-speech-none="close paren" 
+      data-semantic-summary='<mark name="26"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:)" 
+      data-semantic-id="26" data-semantic-annotation="depth:6" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
+      data-semantic-parent="27" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29>)</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       size=2></FONT>&nbsp;</DIV>
+      <DIV class="math notranslate nohighlight"><FONT       size=2><FONT face="Courier New"       >&nbsp;</FONT>For color images, the function 
+      becomes:</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       size=2></FONT>&nbsp;</DIV>
+      <DIV class="math notranslate nohighlight" 
+      ><MJX-CONTAINER tabIndex=0 
+      class="MathJax CtxtMenu_Attached_0" style="FONT-SIZE: 114.5%" 
+       has-speech="true" data-braille-attached="true" 
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-speech-attached="true" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      data-semantic-level="Level" data-semantic-expandable="expandable" 
+      data-semantic-collapsible="collapsible" 
+      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
+      data-semantic-style="default" data-semantic-domain="clearspeak" 
+      data-semantic-locale="en" ctxtmenu_counter="1" display="true" 
+      overflow="overflow" jax="CHTML"><MJX-MATH aria-hidden=true class=NCM-N 
+       
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      display="true" data-semantic-summary='<mark name="38"/> equality' 
+      data-semantic-summary-none="equality" data-speech-node="true" 
+      data-semantic-structure="(38 0 1 (37 (23 (17 2 (16 3 4 5) 6) 7 (22 8 21 (20 9 (19 10 11 (18 12 13 14)) 15))) (36 24 25 (35 26 27 (34 28 33 (32 29 30 31))))))" 
+      data-semantic-level-number="0" data-semantic-owns="0 1 37" 
+      data-semantic-attributes="latex:\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-content="1" data-semantic-children="0,37" 
+      data-semantic-id="38" data-semantic-annotation="depth:1" 
+      data-semantic-role="equality" data-semantic-type="relseq" 
+      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}"><MJX-MTEXT 
+       data-semantic-braille="⠏⠊⠭⠑⠇" 
+      data-semantic-speech='<mark name="0"/> pixel' 
+      data-semantic-speech-none="pixel" 
+      data-semantic-summary='<mark name="0"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="1" 
+      data-semantic-attributes="latex:\text{pixel}" data-semantic-id="0" 
+      data-semantic-annotation="factor:relation;clearspeak:unit;nemeth:number;depth:2" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{pixel}" data-semantic-parent="38" 
+      data-semantic-font="normal"><MJX-C class=mjx-c70 
+      style="PADDING-TOP: 0.69em" noic="true"><FONT size=2 
+      face=Courier>&nbsp;&nbsp;&nbsp;p</MJX-C><MJX-C 
+      class=mjx-c69 style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c78 style="PADDING-TOP: 0.69em" 
+       noic="true">x</MJX-C><MJX-C class=mjx-c65 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">e</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠨⠅" data-semantic-speech='<mark name="1"/> equals' 
+      data-semantic-speech-none="equals" 
+      data-semantic-summary='<mark name="1"/> equals' 
+      data-semantic-summary-none="equals" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-attributes="latex:=" 
+      data-semantic-id="1" data-semantic-annotation="nemeth:number;depth:2" 
+      data-semantic-role="equality" data-semantic-type="relation" data-latex="=" 
+      data-semantic-parent="38" data-semantic-operator="relseq,=" 
+      space="4"><MJX-C class=mjx-c3D>= 
+      </MJX-C></MJX-MO><MJX-MFRAC 
+      data-semantic-braille="⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      data-semantic-speech='<mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      data-semantic-summary='<mark name="37"/> fraction' 
+      data-semantic-summary-none="fraction" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-owns="23 36" 
+      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-children="23,36" data-semantic-id="37" 
+      data-semantic-annotation="depth:2" data-semantic-role="division" 
+      data-semantic-type="fraction" 
+      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-parent="38" space="4"><MJX-FRAC 
+      type="d"><MJX-NUM><MJX-NSTRUT 
+      type="d"></MJX-NSTRUT><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren" 
+      data-semantic-summary='<mark name="23"/> product with 2 factors' 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="2" 
+      data-semantic-owns="17 7 22" 
+      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
+      data-semantic-content="7" data-semantic-children="17,22" 
+      data-semantic-id="23" data-semantic-annotation="depth:3" 
+      data-semantic-role="multiplication" data-semantic-type="infixop" 
+      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
+      data-semantic-parent="37" 
+      data-semantic-prefix='<mark name="23"/> Numerator' 
+      data-semantic-prefix-none="Numerator"><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-speech-none="open paren original minus blackpoint close paren" 
+      data-semantic-summary='<mark name="2"/> open paren <break time="250ms"/> <mark name="16"/> subtraction with 2 elements <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="2 16 6" data-semantic-content="2,6" 
+      data-semantic-children="16" data-semantic-id="17" 
+      data-semantic-annotation="fences:paren;depth:4" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
+      data-semantic-parent="23" data-semantic-added="true"><MJX-MO 
+       data-semantic-braille="⠷" 
+      data-semantic-speech='<mark name="2"/> open paren' 
+      data-semantic-speech-none="open paren" 
+      data-semantic-summary='<mark name="2"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:(" 
+      data-semantic-id="2" data-semantic-annotation="depth:5" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" 
+      data-semantic-speech='<mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint' 
+      data-semantic-speech-none="original minus blackpoint" 
+      data-semantic-summary='<mark name="16"/> subtraction with 2 elements' 
+      data-semantic-summary-none="subtraction with 2 elements" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="3 4 5" data-semantic-content="4" 
+      data-semantic-children="3,5" data-semantic-id="16" 
+      data-semantic-annotation="depth:5" data-semantic-role="subtraction" 
+      data-semantic-type="infixop" data-semantic-parent="17" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
+      data-semantic-speech='<mark name="3"/> original' 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="3"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="3" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:6" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="16" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l&nbsp;-</MJX-C></MJX-MTEXT><MJX-MO 
+       data-semantic-braille="⠤" 
+      data-semantic-speech='<mark name="4"/> minus' 
+      data-semantic-speech-none="minus" 
+      data-semantic-summary='<mark name="4"/> minus' 
+      data-semantic-summary-none="minus" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:-" 
+      data-semantic-id="4" data-semantic-annotation="depth:6" 
+      data-semantic-role="subtraction" data-semantic-type="operator" 
+      data-latex="-" data-semantic-parent="16" 
+      data-semantic-operator="infixop,−" space="3"><MJX-C class=mjx-c2212 
+      > point noir</MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
+       data-semantic-braille="⠾" 
+      data-semantic-speech='<mark name="6"/> close paren' 
+      data-semantic-speech-none="close paren" 
+      data-semantic-summary='<mark name="6"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:)" 
+      data-semantic-id="6" data-semantic-annotation="depth:5" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
+      data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29>) </MJX-C></MJX-MO></MJX-MROW><MJX-MO 
+       data-semantic-braille="⠈⠡" 
+      data-semantic-speech='<mark name="7"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="7"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\times" 
+      data-semantic-id="7" data-semantic-annotation="depth:4" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="23" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-speech-none="the asinh of open paren rgb bar original times stretch close paren" 
+      data-semantic-summary='<mark name="8"/> functional expression <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="11"/> bar <mark name="19"/> separated list of length 2 <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-summary-none="functional expression of open paren bar separated list of length 2 close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="8 21 20" data-semantic-content="21,8" 
+      data-semantic-children="8,20" data-semantic-id="22" 
+      data-semantic-annotation="depth:4" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="23" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
+      data-semantic-speech='<mark name="8"/> the asinh' 
+      data-semantic-speech-none="the asinh" 
+      data-semantic-summary='<mark name="8"/> functional expression' 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="8" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="22" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h</MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠀" data-semantic-speech='<mark name="21"/> of' 
+      data-semantic-speech-none="of" 
+      data-semantic-summary='<mark name="21"/> of' 
+      data-semantic-summary-none="of" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-id="21" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="application" data-semantic-type="punctuation" 
+      data-semantic-parent="22" data-semantic-operator="appl" 
+      data-semantic-added="true"><MJX-C class=mjx-c2061 
+      ></MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-speech-none="open paren rgb bar original times stretch close paren" 
+      data-semantic-summary='<mark name="9"/> open paren <break time="250ms"/> <mark name="11"/> bar <mark name="19"/> separated list of length 2 <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-summary-none="open paren bar separated list of length 2 close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="9 19 15" data-semantic-content="9,15" 
+      data-semantic-children="19" data-semantic-id="20" 
+      data-semantic-annotation="fences:paren;depth:5" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
+      data-semantic-parent="22" data-semantic-added="true"><MJX-MO 
+       data-semantic-braille="⠷" 
+      data-semantic-speech='<mark name="9"/> open paren' 
+      data-semantic-speech-none="open paren" 
+      data-semantic-summary='<mark name="9"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:(" 
+      data-semantic-id="9" data-semantic-annotation="depth:6" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
+      data-semantic-parent="20" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
+       data-semantic-braille="⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-speech='<mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch' 
+      data-semantic-speech-none="rgb bar original times stretch" 
+      data-semantic-summary='<mark name="11"/> bar <mark name="19"/> separated list of length 2' 
+      data-semantic-summary-none="bar separated list of length 2" 
+      data-speech-node="true" data-semantic-level-number="5" 
+      data-semantic-owns="10 11 18" data-semantic-content="11" 
+      data-semantic-children="10,11,18" data-semantic-id="19" 
+      data-semantic-annotation="depth:6" data-semantic-role="sequence" 
+      data-semantic-type="punctuated" data-semantic-parent="20" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠗⠛⠃" data-semantic-speech='<mark name="10"/> rgb' 
+      data-semantic-speech-none="rgb" 
+      data-semantic-summary='<mark name="10"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:\text{rgb}" 
+      data-semantic-id="10" data-semantic-annotation="clearspeak:unit;depth:7" 
+      data-semantic-role="annotation" data-semantic-type="text" 
+      data-latex="\text{rgb}" data-semantic-parent="19" 
+      data-semantic-font="normal"><MJX-C class=mjx-c72 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c62 
+      style="PADDING-TOP: 0.69em" 
+      >b</MJX-C></MJX-MTEXT><MJX-MI 
+      data-semantic-braille="⠤" data-semantic-speech='<mark name="11"/> bar' 
+      data-semantic-speech-none="bar" 
+      data-semantic-summary='<mark name="11"/> bar' 
+      data-semantic-summary-none="bar" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:\_" 
+      data-semantic-id="11" data-semantic-annotation="depth:7" 
+      data-semantic-role="dash" data-semantic-type="punctuation" data-latex="\_" 
+      data-semantic-parent="19" data-semantic-font="normal" 
+      data-semantic-operator="punctuated"><MJX-C class=mjx-c5F 
+      >_</MJX-C></MJX-MI><MJX-MROW 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-speech='<mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch' 
+      data-semantic-speech-none="original times stretch" 
+      data-semantic-summary='<mark name="18"/> product with 2 factors' 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="6" 
+      data-semantic-owns="12 13 14" data-semantic-content="13" 
+      data-semantic-children="12,14" data-semantic-id="18" 
+      data-semantic-annotation="depth:7" data-semantic-role="multiplication" 
+      data-semantic-type="infixop" data-semantic-parent="19" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
+      data-semantic-speech='<mark name="12"/> original' 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="12"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="7" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="12" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;depth:8" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="18" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="13"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="13"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="7" data-semantic-attributes="latex:\times" 
+      data-semantic-id="13" data-semantic-annotation="depth:8" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="18" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-speech='<mark name="14"/> stretch' 
+      data-semantic-speech-none="stretch" 
+      data-semantic-summary='<mark name="14"/> identifier' 
+      data-semantic-summary-none="identifier" data-speech-node="true" 
+      data-semantic-level-number="7" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="14" 
+      data-semantic-annotation="clearspeak:unit;depth:8" 
+      data-semantic-role="unit" data-semantic-type="identifier" 
+      data-latex="\text{stretch}" data-semantic-parent="18" 
+      data-semantic-font="normal" space="3"><MJX-C class=mjx-c73 
+      style="PADDING-TOP: 0.69em" noic="true"><SPAN lang=fr 
+      class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">étirement</SPAN></SPAN></SPAN>)</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       size=2 face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------------------------------------</FONT></DIV>
+      <DIV class="math notranslate nohighlight"><FONT       face=Courier><FONT size=2       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r</MJX-C><MJX-C 
+      class=mjx-c67 style="PADDING-TOP: 0.69em" 
+      noic="true">g</MJX-C><MJX-C class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      >b</MJX-C></MJX-MTEXT><MJX-MI 
+      data-semantic-braille="⠤" data-semantic-speech='<mark name="25"/> bar' 
+      data-semantic-speech-none="bar" 
+      data-semantic-summary='<mark name="25"/> bar' 
+      data-semantic-summary-none="bar" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\_" 
+      data-semantic-id="25" data-semantic-annotation="nemeth:number;depth:4" 
+      data-semantic-role="dash" data-semantic-type="punctuation" data-latex="\_" 
+      data-semantic-parent="36" data-semantic-font="normal" 
+      data-semantic-operator="punctuated"><MJX-C class=mjx-c5F 
+      >_</MJX-C></MJX-MI><MJX-MROW 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="original times the asinh of open paren stretch close paren" 
+      data-semantic-summary='<mark name="35"/> product with 2 factors' 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="26 27 34" data-semantic-content="27" 
+      data-semantic-children="26,34" data-semantic-id="35" 
+      data-semantic-annotation="depth:4" data-semantic-role="multiplication" 
+      data-semantic-type="infixop" data-semantic-parent="36" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
+      data-semantic-speech='<mark name="26"/> original' 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="26"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="26" 
+      data-semantic-annotation="factor:operator;clearspeak:unit;nemeth:number;depth:5" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="35" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="27"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="27"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:\times" 
+      data-semantic-id="27" data-semantic-annotation="depth:5" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="35" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
+      >× </MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
+      data-semantic-speech='<mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="the asinh of open paren stretch close paren" 
+      data-semantic-summary='<mark name="28"/> functional expression <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> text <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="28 33 32" data-semantic-content="33,28" 
+      data-semantic-children="28,32" data-semantic-id="34" 
+      data-semantic-annotation="depth:5" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="35" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
+      data-semantic-speech='<mark name="28"/> the asinh' 
+      data-semantic-speech-none="the asinh" 
+      data-semantic-summary='<mark name="28"/> functional expression' 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="28" 
+      data-semantic-annotation="nemeth:number;depth:6" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="34" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
+       noic="true">s</MJX-C><MJX-C class=mjx-c69 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
+      >h(</MJX-C></MJX-MO><MJX-MTEXT 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
+      data-semantic-speech='<mark name="30"/> stretch' 
+      data-semantic-speech-none="stretch" 
+      data-semantic-summary='<mark name="30"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="6" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="30" 
+      data-semantic-annotation="clearspeak:unit;depth:7" 
+      data-semantic-role="annotation" data-semantic-type="text" 
+      data-latex="\text{stretch}" data-semantic-parent="32" 
+      data-semantic-font="normal"><MJX-C class=mjx-c73 
+      style="PADDING-TOP: 0.69em" noic="true"><SPAN lang=fr 
+      class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">étirement</SPAN></SPAN></SPAN></MJX-C></MJX-MTEXT><MJX-MO 
+       data-semantic-braille="⠾" 
+      data-semantic-speech='<mark name="31"/> close paren' 
+      data-semantic-speech-none="close paren" 
+      data-semantic-summary='<mark name="31"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:)" 
+      data-semantic-id="31" data-semantic-annotation="depth:7" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
+      data-semantic-parent="32" data-semantic-operator="fenced"><MJX-C 
+      class=mjx-c29 
+      >)</MJX-C></MJX-MO></MJX-MROW></MJX-MROW></MJX-MROW></MJX-MROW></MJX-DEN></MJX-ROW></MJX-DTABLE></MJX-DBOX></MJX-FRAC></MJX-MFRAC></MJX-MATH><MJX-SPEECH 
+      role=img 
+      aria-label="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren, math" 
+       aria-brailleroledescription="⠀" 
+      aria-braillelabel="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
+      aria-roledescription=""></MJX-SPEECH></MJX-CONTAINER></FONT></FONT></DIV>
+      <P><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Le facteur d'étirement (ou bêta) peut prendre des valeurs 
+      comprises entre 0,0 et 1000,0.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Plus sa valeur est élevée, plus l'étirement de l'image est 
+      important.</SPAN></SPAN></FONT></SPAN></P>
+      <P><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">La valeur du «&nbsp;point noir&nbsp;» est comprise entre 
+      00000 et 0,20000.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">La valeur 0,2 indique que le point noir est fixé à 
+      20&nbsp;% de la valeur ADU maximale possible.</SPAN></SPAN> <SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Les valeurs inférieures au point noir sont considérées 
+      comme noires.</SPAN></SPAN></FONT></SPAN></P>
+      <P><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Comme rgb_original est une moyenne des trois canaux de 
+      couleur, il est possible qu'une ou deux valeurs de canal soient 
+      supérieures à rgb_original et entraînent donc une 
+      saturation.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Pour pallier ce problème, l'algorithme de fusion RGB 
+      (développé par les auteurs de l'outil GHSAstro pour ajuster le 
+      «&nbsp;gain&nbsp;» appliqué aux canaux) est utilisé afin d'éviter cette 
+      saturation.</SPAN></SPAN></FONT></SPAN></P>
+      <P><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Lorsque l'option «&nbsp;Luminance pondérée par 
+      l'humain&nbsp;» n'est pas activée, rgb_original correspond à la moyenne 
+      des trois valeurs de pixels.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Une fois ce paramètre défini, la pondération passe à 
+      0,2126 pour le rouge, 0,7152 pour le vert et 0,0722 pour le bleu, ce qui 
+      permet d'obtenir un rendu des couleurs plus proche de la perception 
+      humaine.</SPAN></SPAN></FONT></SPAN></P>
+      <P><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Si la case «&nbsp;Aperçu&nbsp;» est cochée (paramètre par 
+      défaut), l'ajustement des paramètres (en modifiant directement les champs 
+      numériques, ou en sélectionnant le champ numérique ou le curseur et en 
+      utilisant les touches Page précédente et Page suivante pour les 
+      modifications grossières, ou les flèches haut et bas pour les 
+      modifications plus fines) mettra à jour l'image et l'histogramme 
+      affichés.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Pour appliquer les modifications, il faut cliquer sur le 
+      bouton «&nbsp;Appliquer&nbsp;».</SPAN></SPAN></FONT></SPAN></P>
+      <P><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Notez que l'étirement est multiplicatif&nbsp;: si vous 
+      appliquez un étirement de 200,0, puis un autre de 10,0, l'étirement 
+      effectif de l'image sera de 
+    2000,0.</SPAN></SPAN></FONT></SPAN></P></FONT></td>
+    <td width="42%"><IMG style="HEIGHT: 455px; WIDTH: 456px" border=0 alt="ASinH stretch image" src="../images/french/asinh.png" width=261 height=238 ></TD>            
+                  
+                  
+      </tr></table><font 
+size=2 face=Arial></p>
+<p><br><SPAN lang=fr class=HwtZe jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"><STRONG><FONT size=3>Histogramme RVB</FONT></STRONG></SPAN></SPAN></SPAN></P>
+<p><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>&nbsp;</P>
+<p>
+<table id=AutoNumber4 style="WIDTH: 85%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
+  <TBODY>
+  <tr>
+    <td width="58%">
+      <p class=Standard><font size=2 face=Arial       ><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">L'histogramme RVB permet de visualiser la distribution des 
+      valeurs de pixels pour chaque canal (R, G, B) de 
+      l'image.</SPAN></SPAN></SPAN></FONT></P>
+      <p class=Standard><font face=Arial       ><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"><FONT size=2>De plus, une courbe 
+      gaussienne est tracée en superposition sur les données de l'histogramme 
+      pour chaque canal.</FONT></SPAN></SPAN></SPAN></FONT></P>
+      <p class=Standard><font face=Arial       ><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"><FONT size=2>Vous pouvez utiliser 
+      l'onglet Balance des couleurs (voir ci-dessous) pour ajuster la balance 
+      des couleurs de l'image&nbsp;; l'histogramme sera alors 
+      redessiné.</FONT></SPAN></SPAN></SPAN></FONT><font face=Arial 
+      ></P></FONT></TD>
+    <td width="42%"><FONT size=2       ><IMG style="HEIGHT: 268px; WIDTH: 413px" border=0 alt="RGB Histogram" src="../images/histogram.png" width=389 height=233 ></FONT></TD></TR></TBODY></TABLE></P>
+<p><FONT size=3 face=Arial><SPAN 
+lang=fr class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"><STRONG>Réglage de la balance des 
+couleurs</STRONG></SPAN></SPAN></SPAN></FONT></P>
+<p></SPAN></SPAN></SPAN></SPAN></SPAN></FONT>
+<table id=AutoNumber4 
+style="HEIGHT: 392px; WIDTH: 85%; BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="85%" border=0>
+  
+  <tr>
+    <td width="50%">
+      <p class=Standard><FONT size=2       ><font face=Arial><SPAN lang=fr 
+      class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">L'onglet Balance des couleurs permet d'ajuster la balance 
+      des couleurs de l'image.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Il est conseillé d'effectuer ce réglage après tout 
+      étirement de l'image.</SPAN></SPAN></SPAN></FONT></FONT></P>
+      <p class=Standard><FONT size=2       ><font face=Arial><SPAN lang=fr 
+      class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN></SPAN></FONT></FONT><FONT size=2 
+      ><font face=Arial><SPAN lang=fr 
+      class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Si la case Aperçu est cochée (paramètre par défaut), 
+      l'image et l'histogramme affichés se modifieront en fonction des 
+      changements de balance des couleurs (en sélectionnant le curseur approprié 
+      et en utilisant les touches Page précédente et Page suivante pour les 
+      modifications grossières, ou les flèches directionnelles pour les 
+      modifications plus fines).</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Toutefois, comme pour l'étirement de l'image, vous devez 
+      cliquer sur le bouton Appliquer pour appliquer les 
+      modifications.</SPAN></SPAN></SPAN></FONT><font face=Arial 
+      ></P></FONT></FONT></TD>
+    <td width="50%"><IMG style="HEIGHT: 361px; WIDTH: 730px" alt="" src="../images/french/colourbalance.png" width=1060 height=455 ></TD></TR></TABLE><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
+style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
+style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'></P>
+<p></SPAN></SPAN></SPAN></SPAN></SPAN><FONT face=Arial><SPAN lang=fr class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"><STRONG>Paramètres de réglage 
+Annuler/Rétablir</STRONG></SPAN></SPAN></SPAN></FONT></P>
+<p><FONT face=Arial><SPAN lang=fr 
+class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb">En bas de chaque onglet, vous trouverez des 
+boutons&nbsp;:</SPAN></SPAN></SPAN></FONT></P>
+<UL>
+  <LI>
+  <div><FONT face=Arial><SPAN lang=fr 
+  class=HwtZe 
+  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+  class="jCAhz ChMk0b" 
+  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+  jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+  jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+  jsname="W297wb">Appliquer les dernières modifications à 
+  l'image</SPAN></SPAN></SPAN></FONT></DIV>
+  <LI>
+  <div><FONT face=Arial><SPAN lang=fr 
+  class=HwtZe 
+  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+  class="jCAhz ChMk0b" 
+  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+  jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+  jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+  jsname="W297wb">Annuler les dernières modifications 
+  appliquées</SPAN></SPAN></SPAN></FONT></DIV>
+  <LI>
+  <div><FONT face=Arial><SPAN lang=fr 
+  class=HwtZe 
+  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+  class="jCAhz ChMk0b" 
+  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+  jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+  jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+  jsname="W297wb">Rétablir les dernières modifications 
+  annulées</SPAN></SPAN></SPAN></FONT></DIV>
+  <LI>
+  <div><FONT face=Arial><SPAN lang=fr 
+  class=HwtZe 
+  jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+  class="jCAhz ChMk0b" 
+  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+  jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+  jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+  jsname="W297wb">Réinitialiser toutes les 
+  valeurs</SPAN></SPAN></SPAN></FONT></DIV></LI></UL>
+<p><FONT face=Arial><SPAN lang=fr 
+class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"><STRONG>Chargement d'une 
+image</STRONG></SPAN></SPAN></SPAN></FONT></P>
+<p><FONT face=Arial><SPAN lang=fr 
+class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb">&nbsp;DeepSkyStacker peut charger des images TIFF (8, 16 et 
+32&nbsp;bits&nbsp;; monochrome ou RVB) ou des images FITS (8, 16, 32 et 
+64&nbsp;bits&nbsp;; monochrome ou RVB).</SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"> À la fin du processus d'empilement, l'image résultante est 
+chargée automatiquement.</SPAN></SPAN></SPAN></FONT></P>
+<p><FONT face=Arial><SPAN lang=fr 
+class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"><STRONG>Chargement d'une 
+image</STRONG></SPAN></SPAN></SPAN></FONT></P>
+<p><FONT face=Arial><SPAN lang=fr 
+class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb">DeepSkyStacker peut charger des images TIFF (8, 16 et 32 
+​​bits&nbsp;; monochrome ou RVB) ou des images FITS (8, 16, 32 et 64 bits&nbsp;; 
+monochrome ou RVB).</SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"> À la fin du processus d'empilement, l'image résultante est 
+chargée automatiquement.</SPAN></SPAN></SPAN></FONT><FONT face=Arial><br></FONT><br><FONT color=#ff0000 face=Arial><SPAN 
+lang=fr class=HwtZe 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+jsname="W297wb">Enregistrement de l'image 
+résultante</SPAN></SPAN></SPAN></FONT></P>
+<p>
+<table id=AutoNumber7 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="87%" border=0>
+  
+  <tr>
+    <td width="56%">
+      <p class=Standard><font face=Arial       ><SPAN lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">DeepSkyStacker permet d'enregistrer l'image résultante aux 
+      formats TIFF ou FITS 16 ou 32 bits selon deux 
+      méthodes&nbsp;:</SPAN></SPAN></FONT></SPAN></FONT></P>
       <UL>
         <LI>
-            <div class=Standard>
-    
-    <FONT size=2 face=Arial >    <SPAN 
-        lang=fr class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
-        jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+        <div class=Standard><font face=Arial         ><SPAN lang=fr class=HwtZe 
+        jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT         size=2><SPAN class="jCAhz ChMk0b" 
+         
         jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-        jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
         jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-        jsname="W297wb">La luminosité globale de l’image, appliquée au canal 
-        vert.</SPAN></SPAN></SPAN></FONT></div>
+        jsname="W297wb">Appliquer les modifications&nbsp;: cette méthode 
+        enregistre l'image en tenant compte des modifications apportées à l'aide 
+        du bouton «&nbsp;Appliquer&nbsp;».</SPAN></SPAN> <SPAN 
+        class="jCAhz ChMk0b" 
+        jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
+        jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+        jsname="W297wb">Il est recommandé d'utiliser cette méthode si vous 
+        prévoyez d'effectuer des retouches ultérieures dans un autre 
+        logiciel.</SPAN></SPAN></FONT></SPAN></FONT></DIV>
         <LI>
-            <div class=Standard>
-    
-    <FONT size=2 face=Arial >    <SPAN 
-        lang=fr class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
-        jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+        <div class=Standard><font face=Arial         ><SPAN lang=fr class=HwtZe 
+        jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT         size=2><SPAN class="jCAhz ChMk0b" 
+         
         jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-        jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
         jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-        jsname="W297wb">La luminosité des canaux rouge et bleu par rapport au 
-        canal vert.</SPAN></SPAN></SPAN></FONT></div></LI></UL><p class=Standard>
-                
-     <SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT face=Arial><FONT size=2><SPAN class="jCAhz ChMk0b" 
+        jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+         
+        jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
+        jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+        jsname="W297wb">Ne pas appliquer les modifications&nbsp;: cette méthode 
+        enregistre l'image sans tenir compte des modifications apportées à 
+        l'aide du bouton «&nbsp;Appliquer&nbsp;».</SPAN></SPAN> <SPAN 
+        class="jCAhz ChMk0b" 
+        jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
+        jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+        jsname="W297wb">Il est recommandé d'utiliser cette méthode si vous 
+        prévoyez d'effectuer tout le post-traitement dans un autre 
+        logiciel.</SPAN></SPAN></FONT></SPAN></FONT><font face=Arial         ><br><FONT size=2         >&nbsp;</FONT></FONT></DIV></LI></UL></TD>
+    <td width="46%"><IMG style="HEIGHT: 123px; WIDTH: 415px" border=0 alt="" src="../images/french/saveoptions.png" width=314 height=84 ></TD></TR></TABLE></FONT></P>
+<p><font size=2 face=Arial>Pour en 
+savoir plus, voir la faq concernant le <a 
+href="http://deepskystacker.free.fr/french/faq.htm#saveresult">mécanisme d'enregistrement</A>.</FONT></P>
+<hr color=#0000ff>
+
+<p align=justify><b><font color=#ff0000 size=4 face=Arial><a name=creatingstarmask></A>Créer un masque d'étoile<br></FONT></B><font size=2 face=Arial>L'utilisation d'un masque d'étoile est souvent très utile 
+lors des post-traitements pour appliquer des traitements différents aux étoiles 
+et au reste de l'image.<br>La fonctionnalité "Créer un 
+masque d'étoiles" peut être utilisée pour créer plusieurs type de masques qui 
+peuvent ensuite être utilisés dans le logiciel que vous utilisez pour les 
+post-traitements (Photoshop, PixInsight, ...).<br><br><font color=#ff0000>DeepSkyStacker ne 
+fait que créer des fichiers contenant des masques d'étoiles. Il ne les utilisent 
+pas lui même.</FONT><br>Vous pouvez voir cette 
+fonctionnalité comme un outil dont l'objectif est de permettre simplement et 
+rapidement de créer des masques d'étoiles basés sur une vraie détection des 
+étoiles.</FONT></P>
+<table id=AutoNumber21 cellSpacing=1 width="100%" border=0 
+  ><tbody>
+  <tr>
+    <td vAlign=top width="44%">
+      <p class=Standard><b><font       size=2 face=Arial>Qu'est ce qu'un masque d'étoiles 
+      </FONT></B><font size=2 face=Arial><b 
+      >?</B><br>Un masque d'étoile est 
+      une image en niveau de gris dans laquelle chaque étoile suffisamment 
+      brillante&nbsp; est remplacée par une zone ronde et blanche au centre et 
+      noire à l'extérieur et dont la variation de luminosité suit une courbe.<br 
+      ><br>Vous pouvez voir un exemple 
+      de masque d'étoile à droite.<br>Passez la souris sur 
+      le texte pour voir <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Image';" href="javascript:void(0);" >l'image</A></B> ou <b 
+      ><A onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Masque d\'étoile';" href="javascript:void(0);" >le masque 
+    d'étoile</A></B>.</FONT></P></TD>
+    <td width="56%">
+      <p align=center><IMG id=STARMASK01 border=0 name=STARMASK01 src="../images/StarMask_Stars.jpg" width=279 align=middle height=291 ><br 
+      ><font size=2 face=Arial><b 
+      id=STARMASK01TEXT 
+      name="STARMASK01TEXT">Image</B></FONT></P></TD></TR>
+  <tr>
+    <td vAlign=top width="44%">
+      <p class=Standard><font size=2 face=Arial       ><b>Création d'un masque 
+      d'étoiles</B><br>Pour créer un masque d'étoiles vous 
+      devez d'abord charger une image dans l'onglet traitement.<br 
+      >&nbsp;</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >Ensuite il suffit de cliquer sur le menu "Créer un 
+      masque d'étoiles..." ce qui ouvre le dialogue ci-contre.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >Celui-ci vous permet de changer la forme des étoiles 
+      dans le masque, le seuil de détection des étoiles ainsi que quelques 
+      autres paramètres.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >Une fois les paramètres définit, après avoir cliqué 
+      sur le bouton OK DeepSkyStacker vous demandera dans quel fichier vous 
+      souhaitez enregistrer le masque d'étoile (ce peut être un fichier TIFF ou 
+      un fichier FITS).</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >L'image enregistrée est toujours une image en niveau 
+      de gris et en 16 bit. Elle n'est pas automatiquement chargée par 
+      DeepSkyStacker.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >Le masque d'étoile est toujours créé à partir de 
+      l'image telle que vous la voyez dans DeepSkyStacker, ce qui signifie avec 
+      les ajustements appliqués.</FONT></P></TD>
+    <td width="56%">
+      <p align=center><IMG border=0 alt="" src="../images/french/CreateStarMask.jpg" width=407 height=401 ></P></TD></TR></TBODY></TABLE>
+<hr color=#0000ff>
+
+<p><font color=#ff0000 size=4 face=Arial><b><a name=imagelist></A>La liste des images<br></B></FONT><font size=2 face=Arial>La 
+liste des images commune à l'enregistrement et à l'empilement contient la liste 
+de toutes les images utilisées lors des différents processus.<br>Elle contient :<br>- Les images<br>- Les darks<br>- Les flats<br>- Les bias/offsets<br><br>Seules les images cochées sont utilisées lors des processus 
+d'enregistrement et d'empilement.<br><br>Les colonnes affichées sont les suivantes :</FONT></P>
+<table id=AutoNumber1 cellSpacing=1 width="100%" border=1 
+  ><tbody>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Case à cocher</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Indique si l'image va être utilisée lors 
+      des différents processus</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Chemin</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Nom du répertoire dans lequel se trouve 
+    l'image</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Fichier</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Nom du fichier</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Type</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Type de l'image : <br>Image pour 
+      les images<br>Dark pour les darks<br 
+      >Flat pour les flats<br>Bias pour 
+      les offsets/bias</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Score</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Score des images obtenus après 
+      l'enregistrement.<br>ou N/A pour les darks, flats et 
+      offsets.<br>Lorsque le score est précédé de (*) cela 
+      signifie que vous avez choisi cette image comme image de départ de 
+      l'empilement à l'aide du <A href="#contextmenu" >menu contextuel</A>.</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >dX</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Décalage en X (valeur en pixel) calculé pour 
+      l'empilement</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>dY</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Décalage en Y (valeur en pixel) calculé 
+      pour l'empilement</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Angle</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Angle de rotation (valeur en °) calculé pour 
+      l'empilement</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Date/Heure</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Date et heure du fichier</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Tailles</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Tailles en pixels de l'image (largeur x 
+      hauteur)</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>CFA</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Indique si l'image résulte d'un Color 
+      Filter Array (CFA) ce qui est le cas de toutes les images issues des 
+      fichiers RAW utilisant une <a 
+      href="http://deepskystacker.free.fr/french/technical.htm#rawdecod" 
+      >matrice de Bayer</A>.</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >Profondeur</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Indique le type d'image (RGB ou monochrome) et le 
+      nombre de bits par canal.</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Infos</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Information complémentaire sur le type 
+      d'image (RAW avec le type d'appareil photo, TIFF ou Autres)</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >ISO</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >Sensibilité ISO de l'image </FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Temps de pose</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Temps de pose de l'image</FONT></TD></TR>
+  <tr>
+    <td width="17%"><font size=2 face=Arial       >FWHM</FONT></TD>
+    <td width="83%"><font size=2 face=Arial       >FWHM : Full Width Half Maximum (largeur à la moitié 
+      du maximum). (en pixel)<br>Il s'agit de la moyenne 
+      pour toutes les étoiles détectées. </FONT></TD></TR>
+  <tr>
+    <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>#Etoiles</FONT></TD>
+    <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Nombre d'étoiles détectées.<br 
+      >Lorsque la position d'une comète a été fixée +(C) est 
+      ajouté au nombre d'étoiles</FONT></TD></TR>
+  <tr>
+    <td bgColor=#ffffff width="17%"><font size=2       face=Arial>Fond du ciel</FONT></TD>
+    <td bgColor=#ffffff width="83%"><font size=2       face=Arial>Valeur du fond du ciel pour les images 
+      enregistrées en %</FONT></TD></TR></TBODY></TABLE>
+<p><font size=2 face=Arial>Il est 
+possible de trier la liste sur n'importe quelle colonne en cliquant sur l'entête 
+de la colonne (et en cliquant une nouvelle fois pour inverser l'ordre de 
+tri).<br><br>La largeur et l'ordre des 
+colonnes peuvent être modifiés. Ces informations sont enregistrées après chaque 
+utilisation de DeepSkyStacker et lors de la session suivante la largeur et la 
+position de chaque colonne sont restaurés.<br><br>En sélectionnant une image dans la liste, celle-ci est 
+visualisée dans la zone de prévisualisation des images.<br>Si cette image correspond à un fichier RAW les paramètres 
+de développement des fichiers RAW sont utilisés dans le décodage de 
+l'image.</FONT></P>
+<table id=AutoNumber11 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="93%" border=0>
+  <tbody>
+  <tr>
+    <td vAlign=top width="38%">
+      <p class=Standard align=justify><font size=2       face=Arial><a name=contextmenu 
+      ></A>Il est possible de sélectionner plusieurs 
+      fichiers dans la liste. </FONT></P>
+      <p class=Standard align=justify><font size=2       face=Arial>Un menu contextuel (bouton droit de la 
+      souris) permet de sélectionner une image comme l'image de référence de la 
+      pile, changer le type de chaque fichier (image, dark, flat ou 
+      offset/bias), cocher/décocher les fichiers, les enlever de la liste et de 
+      visualiser, éditer les propriétés des fichiers, copier le contenu de la 
+      liste dans le presse-papier ou supprimer définitivement des fichiers du 
+      disque.</FONT></P>
+      <div align=center>
+      <center>
+      <table id=AutoNumber19 cellSpacing=1 width="90%" border=1 
+      >
+        <tbody>
+        <tr>
+          <td bgColor=#ebe9ed borderColor=#000000 width="100%"           >
+            <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
+            ><font size=2 face=Arial>Si 
+            vous choisissez une image de référence qui n'est pas cochée, les 
+            décalages seront calculés à partir de cette image de référence même 
+            si celle-ci n'est pas empilée.</FONT></P></TD></TR></TBODY></TABLE>
+      <p>&nbsp;</P></CENTER></DIV></TD>
+    <td width="62%" align=center><IMG style="HEIGHT: 200px; WIDTH: 285px" border=0 alt="DeepSkyStacker - Menu contextuel" src="../images/french/ContextMenu.jpg" width=208 height=247 ><br 
+      >&nbsp;</TD></TR>
+  <tr>
+    <td vAlign=top width="38%">
+      <p class=Standard align=justify><font size=2       face=Arial>L'édition des propriétés permet en 
+      particulier de modifier le type de l'image et surtout de forcer 
+      temporairement (le temps de la session) la sensibilité ISO et le temps de 
+      pose d'une ou plusieurs images.<br><br 
+      >Quand les sensibilités ISO et les temps de pose sont 
+      modifiés, aucune modification n'est apportée aux fichiers contenant les 
+      images. Les valeurs sont stockées en mémoire uniquement pour le temps de 
+      la session courante.</FONT></P></TD>
+    <td width="62%" align=center><IMG border=0 alt="DeepSkyStacker - Propriétés des fichiers" src="../images/french/Properties.jpg" width=399 height=312 ></TD></TR></TBODY></TABLE>
+<hr color=#0000ff>
+
+<p><b><font color=#ff0000 size=4 face=Arial><a name=imagepreview></A>La 
+prévisualisation d'une image<br></FONT></B><font size=2 face=Arial>La zone de prévisualisation des images permet 
+simplement et rapidement de visualiser soit une image de la liste (onglet 
+Enregistrement et Empilement), soit l'image en cours de traitement (onglet 
+Traitement).<br><br>Elle permet de 
+zoomer en avant et en arrière avec la molette de la souris. C'est le seul moyen 
+pour se déplacer et zoomer.</FONT></P>
+<p><b><font face=Arial>Edition de la position des étoiles et de la 
+comète</FONT></B></P>
+<table id=AutoNumber6 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
+cellSpacing=0 cellPadding=0 width="81%" border=0>
+  <tbody>
+  <tr>
+    <td vAlign=top width="38%">
+      <p><font size=2 face=Arial>Quand 
+      une image brute est sélectionnée dans la liste il est possible:<br 
+      ></FONT></P>
+      <ul>
+        <li><FONT size=2 face=Arial         >d'éditer la position des étoiles:&nbsp; Les étoiles 
+        détectées par DeepSkyStacker seront colorées en vert. Vous pouvez 
+        sélectionner des étoiles supplémentaires ou désélectionner celles 
+        détectées par DeepSkyStacker en cliquant avec le bouton gauche de la 
+        souris.</FONT> 
+        <li><font size=2 face=Arial         >d'éditer la position de la comète</FONT> 
+        <li><font size=2 face=Arial         >créer et modifier un <a 
+        href="http://deepskystacker.free.fr/french/technical.htm#customrect" 
+        >rectangle personnalisé</A></FONT></LI></UL>
+      <p><font size=2 face=Arial>Vous 
+      pouvez sélectionner l'un des modes ci-dessus en utilisant la barre 
+      d'outils qui se trouve dans le coin en bas à droite de l'image.<br 
+      ><br>Le dernier bouton de la 
+      barre permet d'enregistrer les modifications apportées à la position des 
+      étoiles et de la comète.</FONT></P>
+      <div align=center>
+      <center>
+      <table id=AutoNumber22 cellSpacing=1 width="90%" border=1 
+      >
+        <tbody>
+        <tr>
+          <td bgColor=#ffff00 width="100%">
+            <p class=Standard><font color=#ff0000 size=2             face=Arial><b>Note sur 
+            l'édition de la comète :</B><br>Le centre de la 
+            comète peut ne pas être détecté automatiquement par 
+            DeepSkyStacker.<br>Pour forcer la comète à une 
+            position donnée maintenez enfoncé la touche Majuscule pendant que 
+            vous positionnez le centre de la 
+      comète..</FONT></P></TD></TR></TBODY></TABLE>
+      <p>&nbsp;</P></CENTER></DIV></TD>
+    <td width="62%">
+      <p align=center><IMG border=0 src="../images/EditToolbar.jpg" width=279 height=265 ></P></TD></TR>
+  <tr>
+    <td width="53%">
+      <p class=Standard align=justify><font size=2       face=Arial>De plus dans le cas de l'onglet Traitement 
+      il est possible de sélectionner une portion de l'image (par un rectangle). 
+      </FONT></P>
+      <p class=Standard align=justify><font size=2       face=Arial>Ce rectangle est utilisé d'une part pour 
+      appliquer les ajustements (niveaux RGB, luminosité, saturation) et d'autre 
+      part optionnellement pour l'enregistrement.<br 
+      >&nbsp;</FONT></P>
+      <p class=Standard align=justify><font size=2       face=Arial>Si aucun rectangle n'est défini, les 
+      ajustements sont appliqués sur la totalité de l'image.</FONT></P>
+      <p class=Standard align=justify><font size=2       face=Arial>Dans tous les cas, lors de 
+      l'enregistrement de l'image sur le disque les ajustements sont appliqués 
+      sur la totalité de l'image enregistrée.</FONT></P></TD>
+    <td width="62%">
+      <p align=center><IMG border=0 alt="Exemple d'utilisation du rectangle de sélection pour l'application des ajustements." src="../images/PreviewRect.jpg" width=203 height=230 ></P></TD></TR></TBODY></TABLE>
+<hr color=#0000ff>
+
+<p><b><font color=#ff0000 size=4><a name=rawddp></A><FONT face=Arial>Paramètres de développement<br></FONT></FONT></B><SPAN lang=fr class=HwtZe jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;mouseover:PDNqTc,c2aHje" 
+jsname="W297wb"><FONT face=Arial>Le&nbsp;dialogue de 
+configuration des paramètres DDP donne accès à tous les paramètres utilisés lors 
+du développement d'un fichier image pour le transformer en image 
+couleur.</FONT></SPAN></SPAN></SPAN></P>
+<p>
+<table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
+  
+  <tr>
+    <td vAlign=top width="50%">
+      <p class=Standard><font face=Arial       ><b>Réglage de l'image 
+      (ou&nbsp;Ajustement des couleurs)<br></B></FONT><br 
+      ><FONT size=2 face=Arial><SPAN 
+      lang=fr class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Les paramètres sont les 
+      suivants&nbsp;:</SPAN></SPAN></SPAN></FONT></P>
+      <UL>
+        <LI>
+        <div class=Standard><FONT size=2 face=Arial         ><SPAN lang=fr class=HwtZe 
+        jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+        class="jCAhz ChMk0b" 
+        jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
+        jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;        mouseover:PDNqTc,c2aHje" 
+        jsname="W297wb">La luminosité globale de l’image, appliquée au canal 
+        vert.</SPAN></SPAN></SPAN></FONT></DIV>
+        <LI>
+        <div class=Standard><FONT size=2 face=Arial         ><SPAN lang=fr class=HwtZe 
+        jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+        class="jCAhz ChMk0b" 
+        jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
+        jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;        mouseover:PDNqTc,c2aHje" 
+        jsname="W297wb">La luminosité des canaux rouge et bleu par rapport au 
+        canal vert.</SPAN></SPAN></SPAN></FONT></DIV></LI></UL>
+      <p class=Standard><SPAN lang=fr class=HwtZe 
+       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+      jsname="jqKxS"><FONT face=Arial><FONT size=2       ><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Le réglage de l’image (ou&nbsp;Ajustement des couleurs) 
       est appliqué après la lecture et la mise à l’échelle de l’image en 
       fonction de son type (RAW, FITS ou TIFF), et après l’application de toutes 
       les images d’étalonnage.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Si vous utilisez ces réglages, plus vous augmentez les 
       valeurs au-delà de la valeur par défaut de 1,0, plus les pixels seront 
-      saturés.</SPAN></SPAN></FONT></FONT></SPAN></p><p class=Standard>
-                
-     <SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
-      class="jCAhz ChMk0b" 
+      saturés.</SPAN></SPAN></FONT></FONT></SPAN></P>
+      <p class=Standard><SPAN lang=fr class=HwtZe 
+       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+      jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb"></SPAN></SPAN><FONT face=Arial><FONT size=2><SPAN 
-      class="jCAhz ChMk0b" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><FONT face=Arial><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Le réglage de la luminosité s’applique de manière égale 
       aux trois canaux.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb">Les valeurs des facteurs d’échelle <FONT color=#ff0000>rouge</FONT> et <FONT color=#0000ff>bleu</FONT> sont 
-      relatives au canal <FONT color=#008000>vert</FONT>, dont le facteur 
-      d’échelle correspond à la valeur de 
-      luminosité.</SPAN></SPAN></FONT></FONT></SPAN></p><p class=Standard>
-                
-     <SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb">Les valeurs des facteurs d’échelle <FONT color=#ff0000       >rouge</FONT> et <FONT color=#0000ff       >bleu</FONT> sont relatives au canal <FONT       color=#008000>vert</FONT>, dont le facteur d’échelle 
+      correspond à la valeur de 
+      luminosité.</SPAN></SPAN></FONT></FONT></SPAN></P>
+      <p class=Standard><SPAN lang=fr class=HwtZe 
+       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+      jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
+      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"><FONT size=2 face=Arial>Pour 
+      convertir des fichiers TIFF ou FITS 12&nbsp;bits en 16&nbsp;bits, 
+      définissez une valeur de luminosité de 16.</FONT></SPAN></SPAN></SPAN></P>
+      <p class=Standard><SPAN lang=fr class=HwtZe 
+       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+      jsname="jqKxS"><FONT size=2 face=Arial><SPAN 
       class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
-      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb"><FONT size=2 face=Arial>Pour convertir des fichiers TIFF 
-      ou FITS 12&nbsp;bits en 16&nbsp;bits, définissez une valeur de luminosité 
-      de 16.</FONT></SPAN></SPAN></SPAN></p><p class=Standard>
-                
-     <SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT size=2 face=Arial><SPAN class="jCAhz ChMk0b" 
-      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Cette fonction peut également être utile pour régler la 
       balance des canaux des fichiers TIFF aux formats FITS ou CFA, conformément 
       à la documentation de votre appareil 
-      photo.</SPAN></SPAN></FONT></SPAN></p></td>
-  <td width="50%">
-  <IMG alt="" src="../images/french/imageadjustment.png" ></td></tr></table></p>
-
+    photo.</SPAN></SPAN></FONT></SPAN></P></TD>
+    <td width="50%"><IMG alt="" src="../images/french/imageadjustment.png" ></TD></TR></TABLE></P>
 <p>
-  <table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
+<table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
   <TBODY>
   <tr>
-<td vAlign=top width="50%">
-<font face=Arial >
-      <p class=Standard align=justify><font face=Arial ><b>Fichiers RAW</b></font><font size=2 face=Arial><br>Les 
-      réglages disponibles concernent :</font></p><font size=2 face=Arial ></font>
+    <td vAlign=top width="50%"><font face=Arial       >
+      <p class=Standard align=justify><font face=Arial       ><b>Fichiers RAW</B></FONT><font       size=2 face=Arial><br>Les 
+      réglages disponibles concernent :</FONT></P><font size=2 face=Arial       ></FONT>
       <ul><font face=Arial>
         <li>
-        <div class=Standard align=justify><FONT size=2>La 
-        balance des blancs</FONT></div>
+        <div class=Standard align=justify><FONT size=2         >La balance des blancs</FONT></DIV>
         <li>
-        <div class=Standard align=justify><FONT size=2>Le 
-        mode d'interpolation</FONT></div></font></LI></ul><font face=Arial ></font>
-      <p class=Standard align=justify><font face=Arial ><FONT size=2><SPAN lang=fr class="HwtZe" 
+        <div class=Standard align=justify><FONT size=2         >Le mode 
+      d'interpolation</FONT></DIV></FONT></LI></UL><font face=Arial       ></FONT>
+      <p class=Standard align=justify><font face=Arial       ><FONT size=2><SPAN lang=fr 
+      class=HwtZe 
       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
-      class="jCAhz" 
+      class=jCAhz 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Par défaut, DeepSkyStacker utilise la balance des blancs 
       «&nbsp;Lumière du jour&nbsp;», sauf si l'option « Pas de&nbsp;traitement 
       de la balance des blancs&nbsp;» ou «&nbsp;Utiliser la balance des blancs 
       de l'appareil photo&nbsp;» est sélectionnée.</SPAN></SPAN> <SPAN 
-      class="jCAhz" 
+      class=jCAhz 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Si vous choisissez «&nbsp;Pas de&nbsp;traitement de la 
       balance des blancs&nbsp;», aucun ajustement de la balance des blancs n'est 
       effectué, ce qui est recommandé si vous utilisez un logiciel comme 
       StarTools pour le post-traitement de vos images 
-      empilées.</SPAN></SPAN></SPAN></FONT></font></p>
-      <p class=Standard align=justify><font face=Arial ><FONT size=2><SPAN lang=fr class="HwtZe" 
+      empilées.</SPAN></SPAN></SPAN></FONT></FONT></P>
+      <p class=Standard align=justify><font face=Arial       ><FONT size=2><SPAN lang=fr 
+      class=HwtZe 
       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
-      class="jCAhz" 
+      class=jCAhz 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Dans la plupart des autres cas, nous vous recommandons 
       d'utiliser la balance des blancs «&nbsp;Lumière du 
-      jour&nbsp;».</SPAN></SPAN></SPAN></FONT></font></p>
-      <p class=Standard align=justify><font face=Arial ><FONT size=2><SPAN lang=fr class="HwtZe" 
+      jour&nbsp;».</SPAN></SPAN></SPAN></FONT></FONT></P>
+      <p class=Standard align=justify><font face=Arial       ><FONT size=2><SPAN lang=fr 
+      class=HwtZe 
       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
       class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">L'option «&nbsp;Utiliser la balance des blancs 
       automatique&nbsp;» n'est plus prise en charge, car elle attribuait une 
       balance des blancs unique à chaque image, ce qui perturbait le traitement 
       des images sombres et des images plates.</SPAN></SPAN> <SPAN 
       class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Toutefois, si vous souhaitez absolument utiliser la 
       balance des blancs automatique, configurez votre appareil photo en mode 
       automatique et sélectionnez «&nbsp;Utiliser la balance des blancs de 
-      l'appareil photo&nbsp;».</SPAN></SPAN></SPAN></FONT></font></p>
-      <p class=Standard align=justify><font face=Arial ><FONT size=2><SPAN lang=fr class="HwtZe" 
+      l'appareil photo&nbsp;».</SPAN></SPAN></SPAN></FONT></FONT></P>
+      <p class=Standard align=justify><font face=Arial       ><FONT size=2><SPAN lang=fr 
+      class=HwtZe 
       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
       class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">L</SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">es valeurs d'ajustement de la balance des blancs sont 
       extraites des fichiers RAW par LibRaw (Copyright © 2008-2019 LibRaw 
       LLC).</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">LibRaw est basé sur le décodeur DCRaw original pour les 
       fichiers RAW, écrit par Dave 
-Coffin.</SPAN></SPAN></SPAN></FONT></font></p>
-      <p class=Standard align=justify><font face=Arial ><FONT size=2><SPAN lang=fr class="HwtZe" 
+Coffin.</SPAN></SPAN></SPAN></FONT></FONT></P>
+      <p class=Standard align=justify><font face=Arial       ><FONT size=2><SPAN lang=fr 
+      class=HwtZe 
       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN 
       class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Des informations supplémentaires concernant le mode 
       d'interpolation et le comportement spécifique de l'optimisation de la 
       matrice de Bayer sont disponibles dans 
       le</SPAN></SPAN></SPAN>&nbsp;</FONT><a 
       href="http://deepskystacker.free.fr/french/technical.htm#rawdecod" 
-      ><FONT size=2>détails techniques</FONT></a><FONT size=2>.</FONT></font></font></p></TD>
-    <td width="50%"><IMG alt="" src="../images/french/rawddp.png" ></td></TR></TBODY></TABLE></P>
-
-<p>&nbsp;</p>
+      ><FONT size=2>détails 
+      techniques</FONT></A><FONT size=2       >.</FONT></FONT></FONT></P></TD>
+    <td width="50%"><IMG alt="" src="../images/french/rawddp.png" ></TD></TR></TBODY></TABLE></P>
+<p>&nbsp;</P>
 <table id=AutoNumber13 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
   
   <tr>
     <td vAlign=top width="50%">
-      <p class=Standard><b><a name=fitssettings 
-      ></a><FONT face=Arial>Fichies FITS</FONT> </b><b><br 
-      ></b><br><SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS">  <FONT face=Arial><FONT size=2><SPAN class="jCAhz ChMk0b" 
+      <p class=Standard><b><a 
+      name=fitssettings></A><FONT face=Arial       >Fichies FITS</FONT> </B><b><br 
+      ></B><br><SPAN lang=fr 
+      class=HwtZe 
+      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT       face=Arial><FONT size=2><SPAN 
+      class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Si la case «&nbsp;Les Fichiers FITS&nbsp;16 bits&nbsp;à 
-      plan&nbsp;…&nbsp;» <STRONG>n’est pas cochée</STRONG>, DeepSkyStacker 
-      tentera de détecter automatiquement la matrice CFA à partir des mots-clés 
-      FITS tels que BAYERPAT, COLORTYP et MOSAIC (pour les caméras couleur Meade 
-      DSI).</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+      plan&nbsp;…&nbsp;» <STRONG>n’est pas cochée</STRONG>, 
+      DeepSkyStacker tentera de détecter automatiquement la matrice CFA à partir 
+      des mots-clés FITS tels que BAYERPAT, COLORTYP et MOSAIC (pour les caméras 
+      couleur Meade DSI).</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Si le fichier FITS ne contient pas ces mots-clés ou si le 
       motif spécifié est incorrect, vous pouvez cocher la case et choisir la 
       caméra et le motif à utiliser, comme dans les versions précédentes de 
-      DeepSkyStacker.</SPAN></SPAN></FONT></FONT></SPAN></p>
-      <p class=Standard><SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+      DeepSkyStacker.</SPAN></SPAN></FONT></FONT></SPAN></P>
+      <p class=Standard><SPAN lang=fr class=HwtZe 
+       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+      jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb"></SPAN></SPAN><FONT face=Arial><FONT size=2><SPAN class="jCAhz ChMk0b" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"></SPAN></SPAN><FONT face=Arial><FONT       size=2><SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">La première étape consiste à sélectionner dans la liste le 
       reflex numérique (DSLR) ou la caméra CCD utilisée pour la prise de 
       vue.</SPAN></SPAN> <SPAN class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb">Cette étape est nécessaire pour utiliser le motif de 
       filtre de Bayer approprié, qui servira à décoder l’image et à la convertir 
-      du noir et blanc à la 
-      couleur.</SPAN></SPAN></FONT></FONT></SPAN></p>
-      <p class=Standard><SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+      du noir et blanc à la couleur.</SPAN></SPAN></FONT></FONT></SPAN></P>
+      <p class=Standard><SPAN lang=fr class=HwtZe 
+       jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+      jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
       jsname="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+       
       jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb"><FONT size=2 face=Arial>Les paramètres contrôlent les 
-      valeurs utilisées 
-      pour&nbsp;:</FONT>      
-      </SPAN></SPAN></SPAN></p>
+      jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+       
+      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+      jsname="W297wb"><FONT size=2 face=Arial>Les 
+      paramètres contrôlent les valeurs utilisées pour&nbsp;:</FONT> 
+      </SPAN></SPAN></SPAN></P>
       <UL>
         <LI>
-      <div class=Standard><SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT face="Arial" size =2><SPAN class="jCAhz ChMk0b" 
-      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb">les valeurs DATAMIN et DATAMAX du fichier 
-      FITS</SPAN></SPAN></FONT></SPAN></div>
+        <div class=Standard><SPAN lang=fr class=HwtZe 
+         jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+        jsname="jqKxS"><FONT size=2 face=Arial><SPAN 
+        class="jCAhz ChMk0b" 
+        jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
+        jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+        jsname="W297wb">les valeurs DATAMIN et DATAMAX du fichier 
+        FITS</SPAN></SPAN></FONT></SPAN></DIV>
         <LI>
-      <div class=Standard><SPAN lang=fr class="HwtZe" 
-      jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname="jqKxS"><FONT face="Arial" size =2><SPAN class="jCAhz ChMk0b" 
-      jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
-      jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-      jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje" 
-      jsname="W297wb">le mode 
-      d’interpolation</SPAN></SPAN></FONT></SPAN></div></LI></UL></FONT>
-      <p class=Standard><font size=2 face=Arial><FONT size=2 face=Arial>Concernant 
-      les modes d'interpolation et le fonctionnement particulier liés à 
-      l'optimisation de la matrice de Bayer, vous aurez plus de détails en 
-      consultant les <A 
-      href="http://deepskystacker.free.fr/french/technical.htm#rawdecod">détails 
-      techniques</A>.</FONT></p></FONT></td>
-    <td width="50%"><IMG alt="" src="../images/french/fitsddp.png" ></td></tr></table></body></HTML>
+        <div class=Standard><SPAN lang=fr class=HwtZe 
+         jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" 
+        jsname="jqKxS"><FONT size=2 face=Arial><SPAN 
+        class="jCAhz ChMk0b" 
+        jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;tSpjdb:qAKMYb" 
+        jsname="txFAF" jscontroller="BiTO4b"><SPAN class=ryNqvb 
+         
+        jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  &#13;&#10;      mouseover:PDNqTc,c2aHje" 
+        jsname="W297wb">le mode 
+        d’interpolation</SPAN></SPAN></FONT></SPAN></DIV></LI></UL></FONT>
+      <p class=Standard><font size=2 face=Arial 
+      ><FONT size=2 face=Arial       >Concernant les modes d'interpolation et le 
+      fonctionnement particulier liés à l'optimisation de la matrice de Bayer, 
+      vous aurez plus de détails en consultant les <A 
+      href="http://deepskystacker.free.fr/french/technical.htm#rawdecod" 
+      >détails techniques</A>.</FONT></P></FONT></TD>
+    <td width="50%"><IMG alt="" src="../images/french/fitsddp.png" ></TD></TR></TABLE></body></HTML>

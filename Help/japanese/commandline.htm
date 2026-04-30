@@ -1,0 +1,229 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - Command Line User's Manual</title>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Command Line User's Manual<br>
+</font></b><font face="Arial">The stand alone User's Manual is available
+<a href="userguide.htm">here</a></font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Introduction</font></b><font face="Arial"><b><br>
+</b><font size="2">The command line version of DeepSkyStacker is intended to 
+simplify all the batch processing.<br>
+The command line version of DeepSkyStacker is sharing the registering and 
+stacking engine of DeepSkyStacker. In other words you will have exactly the same 
+results using either the command line or stand alone versions.</font></font></p>
+<p><font face="Arial" size="2">At this time, all the settings are shared between 
+the stand-alone DeepSkyStacker and the command-line DeepSkyStacker including RAW 
+settings, registering and stacking settings, temporary file folder...</font></p>
+<p><font face="Arial" size="2">It means that before using the command-line 
+version you must use the stand-alone version to set all the values accordingly 
+to your settings.<br>
+In future versions it will be possible to override some settings with additional 
+command-line parameters.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Command Line parameters</font></b><font face="Arial"><b><br>
+</b><font size="2">The command line version of DeepSkyStacker is invoked by 
+using DeepSkyStackerCL.exe located in the DeepSkyStacker folder at the time of 
+the installation.</font></font></p>
+<p><font face="Arial" size="2">The command line should look like:</font></p>
+<p><b><font face="Courier New" size="2">DeepSkyStackerCL.exe [/r|R] [/S] [/SC] 
+[/SR] [/O:&lt;OutputFileName&gt;] [/OFxxx] [/OCx] &lt;ListFileName&gt;</font></b></p>
+<p><font face="Arial" size="2">Where the parameters are:</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1">
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/r<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Register light frames (only if 
+    they are not already registered)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/R<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Register light frames (even if 
+    they are already registered - equivalent to the force register option)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/S<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Stack light frames<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%" valign="top"><font face="Arial" size="2">/SC</font></td>
+    <td width="73%"><font face="Arial" size="2">Stack light frames and for each 
+    light frame create a file containing the  calibrated light 
+    frame.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/SR</font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Stack light frames and for each 
+    light frame create a file containing the registered and calibrated light 
+    frame.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/O:&lt;OutputFileName&gt;</font><p>
+    <font face="Arial" size="2"><br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Optional name of the output file 
+    name (implies /S or /SC)<br>
+    By default the output file name is Autosave.tif and is located in the first 
+    light frame folder.<br>
+    Note that the output file will always be a TIFF file even if the extension 
+    is something else.<br>
+    The folder in which the file will be created must exist.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OFxxx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Output file format.<br>
+    Possible values are:<br>
+    /OF16 or /OF16i : 16 bit integer precision<br>
+    /OF32 or /OF32i : 32 bit integer precision<br>
+    /OF32r : 32 bit rational precision (this is the default value)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OCx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Output compression.<br>
+    Possible values are:<br>
+    /OC0 : no compression (this is the default value)<br>
+    /OC1 : LZW compression<br>
+    /OC2 : ZIP (deflate) compression<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%" valign="top"><font face="Arial" size="2">/FITS</font></td>
+    <td width="73%"><font face="Arial" size="2">Save the output file in FITS 
+    format (default is TIFF)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">&lt;ListFileName&gt;<br>
+    <br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Full path to a list file like 
+    one created by the stand-alone version of DeepSkyStacker<br>
+    (see format details below).<br>
+&nbsp;</font></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Examples</font></b><font face="Arial"><b><br>
+</b></font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R 
+c:\MyDSSLists\MyList.txt</b><br>
+</font><font size="2" face="Arial">Will register (even already registered) all 
+the light frames of the </font><font face="Courier New" size="2">c:\MyDSSLists\MyList.txt 
+file list</font><font size="2" face="Arial">.<br>
+If the file list contains offsets/bias, dark and flat frames they will be used 
+(and the masters will be created) by the registering process.<br>
+<br>
+</font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R /S 
+c:\MyDSSLists\MyList.txt</b><br>
+</font><font size="2" face="Arial">Will register (even already registered) then 
+stack all the light frames of the </font><font face="Courier New" size="2">
+c:\MyDSSLists\MyList.txt file list</font><font size="2" face="Arial">.<br>
+If the file list contains offsets/bias, dark and flat frames they will be used 
+(and the masters will be created) by the registering and the stacking processes.<br>
+The output file will be a 32 bit rational TIFF file named Autosave.tif located 
+in the folder of the first light frame of the list.</font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /r /SR 
+c:\MyDSSLists\MyList.txt</b><br>
+</font><font size="2" face="Arial">Will register (only not already registered) 
+then stack all the light frames of the </font><font face="Courier New" size="2">
+c:\MyDSSLists\MyList.txt file list</font><font size="2" face="Arial">.<br>
+If the file list contains offsets/bias, dark and flat frames they will be used 
+(and the masters will be created) by the registering and the stacking processes.<br>
+The output file will be a 32 bit rational TIFF file named Autosave.tif located 
+in the folder of the first light frame of the list.<br>
+Furthermore for each stackable light frame a TIFF of FITS file named from the light 
+frame name with a .reg.tif or .reg.fts extension will be created that will contain the 
+registered and calibrated light frame. </font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /S /OF16i /OC2 /O:c:\MyDSSResults\Result.tif 
+c:\MyDSSLists\MyList.txt</b><br>
+</font><font size="2" face="Arial">Will stack all the light frames of the </font>
+<font face="Courier New" size="2">c:\MyDSSLists\MyList.txt file list</font><font size="2" face="Arial">.<br>
+If the file list contains offsets/bias, dark and flat frames they will be used 
+(and the masters will be created) by the stacking processes.<br>
+The output file will be a 16 bit integer ZIP(DEFLATE) compressed TIFF file named
+</font><font face="Courier New" size="2">c:\MyDSSResults\Result.tif</font><font size="2" face="Arial">.</font></p>
+<hr color="#0000FF">
+<p><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="filelistformat"></a>File List format</font><br>
+</b><font size="2">A File List is a text file which structure is the following:</font></font></p>
+<p><font face="Arial" size="2">The first line must contain </font><b>
+<font size="2" face="Courier New" color="#0000FF">DSS file list</font></b><font face="Arial" size="2"><br>
+The second line must contain&nbsp; </font><font size="2"><b>
+<font color="#0000FF" face="Courier New">CHECKED</b>&lt;TAB&gt;<b>TYPE</b>&lt;TAB&gt;<b>FILE</b></font></font><font face="Arial" size="2"><br>
+Where &lt;TAB&gt; is the tabulation character (ASCII 09)<br>
+<br>
+The other lines must be in the following form if they are describing a file 
+entry:<br>
+</font><b><font size="2" face="Courier New" color="#0000FF">[checked]</b>&lt;TAB&gt;<b>[type]</b>&lt;TAB&gt;<b>[full 
+path name]</b></font><font face="Arial" size="2"><br>
+<br>
+Where </font><font color="#0000FF" face="Courier New" size="2"><b>[checked]</b></font><font face="Arial" size="2"> 
+is </font><font color="#0000FF" face="Courier New" size="2"><b>1</b></font><font face="Arial" size="2"> 
+if the frame is checked and </font>
+<font color="#0000FF" face="Courier New" size="2"><b>0</b></font><font face="Arial" size="2"> 
+if it's not checked.<br>
+(non checked frames are ignored by DeepSkyStackerCL)<br>
+Where </font><b><font color="#0000FF" face="Courier New" size="2">[type]</font></b><font face="Arial" size="2"> 
+is </font><b><font size="2" face="Courier New" color="#0000FF">light</font></b><font face="Arial" size="2"> 
+for a light frame (or </font><b>
+<font face="Courier New" size="2" color="#0000FF">reflight</font></b><font face="Arial" size="2"> 
+for the reference light frame), </font><b><font size="2" face="Courier New" color="#0000FF">
+dark</font></b><font face="Arial" size="2"> or </font><b>
+<font face="Courier New" size="2" color="#0000FF">darkflat</font></b><font face="Arial" size="2"> for a dark frame, </font><b>
+<font size="2" face="Courier New" color="#0000FF">flat</font></b><font face="Arial" size="2"> 
+for a flat frame and </font><b>
+<font size="2" face="Courier New" color="#0000FF">offset</font></b><font face="Arial" size="2"> 
+for an offset/bias frame.<br>
+Where </font><b><font size="2" face="Courier New" color="#0000FF">[full path 
+name]</font></b><font face="Arial" size="2"> is the full path name to the file.<br>
+<br>
+If a line is describing a group change it must have the following form:<br>
+</font><font face="Courier New" size="2" color="#0000FF"><b>#GROUPID#</b>&lt;Group 
+Number&gt;<br>
+</font><font face="Arial" size="2">All the files located after the line 
+describing the group change and until the next group change will be put in the 
+group &lt;Group Number&gt;. &lt;Group Number&gt; must be a positive integer value.<br>
+When no group is specified the files are put in the Main Group (ID 0).<br>
+<br>
+You can very easily create File Lists from DeepSkyStacker by using the Save File 
+List... command.</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

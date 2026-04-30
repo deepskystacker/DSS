@@ -55,9 +55,9 @@ and principles of DeepSkyStacker.</font></font></p>
         <tr>
           <td width="90%" bgcolor="#ebe9ed">
     <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
-           ><font face="Arial" size="2">If 
-    you are a beginner in astrophotography and you are wondering what are light, 
-    dark, flat and bias frames and how to create them you have a short 
+           ><font face="Arial" size="2"> 
+     If you are a beginner in astrophotography and you are wondering what&nbsp;light, 
+    dark, flat and bias frames are, and how to create them there is a&nbsp;short 
     explanation <A href="faq.htm#lightdarkflatoffset">here</A>.</font></p>
           </td>
         </tr>
@@ -351,20 +351,20 @@ is greater than or equal to the given threshold value. </font></P>
   </tr>
   <tr>
     <td vAlign=top width="34%">
-      <p class=Standard><font size=2 face=Arial       ><a name=comettab></A>The Comet 
-      tab is available only when at least two light frames (including the 
-      reference light frame) have a comet registered.</FONT></P>
-      <p class=Standard><font size=2 face=Arial       >In this case the Comet tab is used to select the 
-      comet stacking mode between the 3 available modes.<br 
-      ><br>See the <A href="technical.htm#cometstacking" >Comet Stacking</A> topic in 
-      the Technical Details for information on how to use Comet 
-      Stacking.</FONT></P></TD>
-    <td width="66%" align=center><IMG border=0 src="../images/english/CometTab.jpg" width=491 height=403 ></TD></TR>
+      <p class=Standard><font size=2 face=Arial       ><a name=comettab></a>The Comet tab 
+      is available only when at least two light frames (including the reference 
+      light frame) have a comet registered.</font></p>
+      <p class=Standard><font size=2 face=Arial       >In this case the Comet tab is used to select the comet 
+      stacking mode between the 3 available modes.<br><br 
+      >See the <A href="technical.htm#cometstacking" >Comet 
+      Stacking</A> topic in the Technical Details for information on how to use 
+      Comet Stacking.</font></p></td>
+    <td width="66%" align=center><IMG border=0 src="../images/english/CometTab.jpg" width=491 height=403 ></td></tr>
 </table>
 <p><font size=2 face=Arial><br>After the stacking process, the resulting image is saved in 
 the AutoSave.tif file which is created in the folder of the reference light 
 frame..<br>If an Autosave.tif file already exists in the 
-folder, an Autosave001.tif (002, 003, ...) is created.</FONT></P>
+folder, an Autosave001.tif (002, 003, ...) is created.</FONT></p>
 <hr color=#0000ff>
 
 <p><b><font color=#ff0000 size=4 face=Arial><a name=batchstacking></A>Batch Stacking<br></FONT></B><font size=2 face=Arial>The Batch Stacking dialog is used to 
@@ -378,12 +378,11 @@ cellPadding=0 width=1165 border=0>
       <p class=Standard><font size=2 face=Arial       >For example it may be used to create the resulting 
       images from the red, green, blue and luminance images without the need to 
       load each list then start manually the stacking process for each one.<br 
-      ><br>Of course it also may be 
-      used to stack any existing list.<br><br 
-      >You just need to add the file lists previously 
-      created by the Save File List command to the list.<br 
-      >Each File List that is checked will be 
-      processed.</FONT></P>
+      ><br>Of course it also may be used 
+      to stack any existing list.<br><br 
+      >You just need to add the file lists previously created 
+      by the Save File List command to the list.<br>Each 
+      File List that is checked will be processed.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >At the end of the stacking process, the output file 
       name replaces the list name for each processed file list.</FONT></P>
       <p class=Standard><u><b 
@@ -403,15 +402,23 @@ cellSpacing=0 cellPadding=0 width="85%" border=0>
   
   <tr>
     <td width="58%">
-      <p class=Standard><font size=2 face=Arial       >I would like to empahsise here 
-      that&nbsp;DeepSkyStacker only allows a simple stretch of the image to 
-      allow you to visualise the result of the stacking process.<BR 
+      <p class=Standard><font size=2 face=Arial       >I would like to emphasise that&nbsp;DeepSkyStacker 
+      only allows a simple stretch and colour balance adjustment &nbsp;of the 
+      image to allow you to visualise the result of the stacking process.&nbsp; 
+      However, if there's no background gradient, it may be possible to achieve 
+      a quite acceptable&nbsp;result using just the tools provided here.<BR 
       ><br>Any complex&nbsp;post 
       processing should take place in other software specifically designed for 
       that task.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >The processing tab contains a preview of the RGB 
-      histogram and a panel that allows an Inverse Hyperbolic Size (ASinH) 
-      image&nbsp;stretch to be applied.</FONT></P>
+      histogram,&nbsp;a tab&nbsp;that allows an Inverse Hyperbolic Size (ASinH) 
+      image&nbsp;stretch to be applied, and another tab that allows the Colour 
+      Balance to be adjusted.</FONT></P>
+      <p class=Standard><FONT size=2 face=Arial       >If you want to adjust the colour balance, you should 
+      first adjust the stretch parameters and Apply the stretch, then switch to 
+      the Colour Balance tab, make&nbsp;your adjustments and Apply 
+      them.</FONT></P>
+      <p class=Standard><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
       <p class=Standard>&nbsp;</P>
       <p>&nbsp;</P>
       <p>&nbsp;</P>
@@ -425,168 +432,174 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
     <td width="58%">
       <p class=Standard><font size=2 face=Arial       >The ASinH&nbsp;Transformation amplifies the darker 
       areas of the image.&nbsp;&nbsp; The&nbsp;parameters are the 
-      stretch&nbsp;factor, the black point value, and whether or not to use 
-      "Human-weighted luminance".<BR></FONT><font size=2 
-      face=Arial><BR>For monochrome 
-      images, pixel values are modified using the following function:</P>
+      stretch&nbsp;factor (or beta), the black point value, and whether or not 
+      to use "Human-weighted luminance".<BR></FONT><font 
+      size=2 face=Arial><BR>For 
+      monochrome images, pixel values are modified using the following 
+      function:</P>
       <DIV class="math notranslate nohighlight" 
       ><MJX-CONTAINER tabIndex=0 
       class="MathJax CtxtMenu_Attached_0" style="FONT-SIZE: 114.5%" 
-       jax="CHTML" overflow="overflow" display="true" 
-      ctxtmenu_counter="0" data-semantic-locale="en" 
-      data-semantic-domain="clearspeak" data-semantic-style="default" 
-      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
-      data-semantic-collapsible="collapsible" 
-      data-semantic-expandable="expandable" data-semantic-level="Level" 
-      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
-      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+       has-speech="true" data-braille-attached="true" 
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
       data-speech-attached="true" 
-      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
-      data-braille-attached="true" has-speech="true"><MJX-MATH aria-hidden=true 
-      class=NCM-N display="true" 
-      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
       data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+      data-semantic-level="Level" data-semantic-expandable="expandable" 
+      data-semantic-collapsible="collapsible" 
+      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
+      data-semantic-style="default" data-semantic-domain="clearspeak" 
+      data-semantic-locale="en" ctxtmenu_counter="0" display="true" 
+      overflow="overflow" jax="CHTML"><MJX-MATH aria-hidden=true class=NCM-N 
+       
       data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
-      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-type="relseq" data-semantic-role="equality" 
-      data-semantic-annotation="depth:1" data-semantic-id="32" 
-      data-semantic-children="0,31" data-semantic-content="1" 
-      data-semantic-attributes="latex:\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-owns="0 1 31" data-semantic-level-number="0" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
+      display="true" data-semantic-summary='<mark name="32"/> equality' 
+      data-semantic-summary-none="equality" data-speech-node="true" 
       data-semantic-structure="(32 0 1 (31 (20 (15 2 (14 3 4 5) 6) 7 (19 8 18 (17 9 (16 10 11 12) 13))) (30 21 22 (29 23 28 (27 24 25 26)))))" 
-      data-speech-node="true" data-semantic-summary-none="equality" 
-      data-semantic-summary='<mark name="32"/> equality'><MJX-MTEXT 
-       data-semantic-speech-none="pixel" 
+      data-semantic-level-number="0" data-semantic-owns="0 1 31" 
+      data-semantic-attributes="latex:\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-content="1" data-semantic-children="0,31" 
+      data-semantic-id="32" data-semantic-annotation="depth:1" 
+      data-semantic-role="equality" data-semantic-type="relseq" 
+      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}"><MJX-MTEXT 
+       data-semantic-braille="⠏⠊⠭⠑⠇" 
       data-semantic-speech='<mark name="0"/> pixel' 
-      data-semantic-braille="⠏⠊⠭⠑⠇" data-latex="\text{pixel}" 
-      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-speech-none="pixel" 
+      data-semantic-summary='<mark name="0"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="1" 
+      data-semantic-attributes="latex:\text{pixel}" data-semantic-id="0" 
       data-semantic-annotation="factor:relation;clearspeak:unit;nemeth:number;depth:2" 
-      data-semantic-id="0" data-semantic-attributes="latex:\text{pixel}" 
-      data-semantic-level-number="1" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="0"/> text' data-semantic-font="normal" 
-      data-semantic-parent="32"><MJX-C class=mjx-c70 style="PADDING-TOP: 0.69em" 
-       noic="true"><FONT face=Courier 
-      >&nbsp;&nbsp; p</MJX-C><MJX-C class=mjx-c69 
-      style="PADDING-TOP: 0.69em" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{pixel}" data-semantic-parent="32" 
+      data-semantic-font="normal"><MJX-C class=mjx-c70 
+      style="PADDING-TOP: 0.69em" noic="true"><FONT 
+      face=Courier>&nbsp;&nbsp; p</MJX-C><MJX-C 
+      class=mjx-c69 style="PADDING-TOP: 0.69em" 
       noic="true">i</MJX-C><MJX-C class=mjx-c78 style="PADDING-TOP: 0.69em" 
        noic="true">x</MJX-C><MJX-C class=mjx-c65 
       style="PADDING-TOP: 0.69em" 
       noic="true">e</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
       >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠨⠅" data-semantic-speech='<mark name="1"/> equals' 
       data-semantic-speech-none="equals" 
-      data-semantic-speech='<mark name="1"/> equals' data-semantic-braille="⠨⠅" 
-      data-latex="=" data-semantic-type="relation" data-semantic-role="equality" 
-      data-semantic-annotation="nemeth:number;depth:2" data-semantic-id="1" 
-      data-semantic-attributes="latex:=" data-semantic-level-number="1" 
-      data-speech-node="true" data-semantic-summary-none="equals" 
-      data-semantic-summary='<mark name="1"/> equals' data-semantic-parent="32" 
-      space="4" data-semantic-operator="relseq,="><MJX-C class=mjx-c3D 
-      >=&nbsp; </MJX-C></MJX-MO><MJX-MFRAC 
-       
-      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
-      data-semantic-speech='<mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-summary='<mark name="1"/> equals' 
+      data-semantic-summary-none="equals" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-attributes="latex:=" 
+      data-semantic-id="1" data-semantic-annotation="nemeth:number;depth:2" 
+      data-semantic-role="equality" data-semantic-type="relation" data-latex="=" 
+      data-semantic-parent="32" data-semantic-operator="relseq,=" 
+      space="4"><MJX-C class=mjx-c3D>=&nbsp; 
+      </MJX-C></MJX-MO><MJX-MFRAC 
       data-semantic-braille="⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
-      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-type="fraction" data-semantic-role="division" 
-      data-semantic-annotation="depth:2" data-semantic-id="31" 
-      data-semantic-children="20,30" 
-      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-owns="20 30" data-semantic-level-number="1" 
-      data-speech-node="true" data-semantic-summary-none="fraction" 
+      data-semantic-speech='<mark name="31"/> the <mark name="20"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren <break time="250ms"/> <mark name="30"/> and denominator <mark name="21"/> original <mark name="22"/> times <break time="250ms"/> <mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren and denominator original times the asinh of open paren stretch close paren" 
       data-semantic-summary='<mark name="31"/> fraction' 
+      data-semantic-summary-none="fraction" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-owns="20 30" 
+      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-children="20,30" data-semantic-id="31" 
+      data-semantic-annotation="depth:2" data-semantic-role="division" 
+      data-semantic-type="fraction" 
+      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})}{\text{original}\times\text{asinh}(\text{stretch})}" 
       data-semantic-parent="32" space="4"><MJX-FRAC 
       type="d"><MJX-NUM><MJX-NSTRUT 
       type="d"></MJX-NSTRUT><MJX-MROW 
-      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren" 
-      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
       data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
-      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
-      data-semantic-type="infixop" data-semantic-role="multiplication" 
-      data-semantic-annotation="depth:3" data-semantic-id="20" 
-      data-semantic-children="15,19" data-semantic-content="7" 
-      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
-      data-semantic-owns="15 7 19" data-semantic-level-number="2" 
-      data-speech-node="true" 
-      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren original times stretch close paren" 
       data-semantic-summary='<mark name="20"/> product with 2 factors' 
-      data-semantic-parent="31" data-semantic-prefix-none="Numerator" 
-      data-semantic-prefix='<mark name="20"/> Numerator'><MJX-MROW 
-       
-      data-semantic-speech-none="open paren original minus blackpoint close paren" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="2" 
+      data-semantic-owns="15 7 19" 
+      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
+      data-semantic-content="7" data-semantic-children="15,19" 
+      data-semantic-id="20" data-semantic-annotation="depth:3" 
+      data-semantic-role="multiplication" data-semantic-type="infixop" 
+      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{original}\times\text{stretch})" 
+      data-semantic-parent="31" 
+      data-semantic-prefix='<mark name="20"/> Numerator' 
+      data-semantic-prefix-none="Numerator"><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" 
       data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren' 
-      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" data-semantic-type="fenced" 
-      data-semantic-role="leftright" 
-      data-semantic-annotation="fences:paren;depth:4" data-semantic-id="15" 
-      data-semantic-children="14" data-semantic-content="2,6" 
-      data-semantic-owns="2 14 6" data-semantic-level-number="3" 
-      data-speech-node="true" 
-      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-semantic-speech-none="open paren original minus blackpoint close paren" 
       data-semantic-summary='<mark name="2"/> open paren <break time="250ms"/> <mark name="14"/> subtraction with 2 elements <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="2 14 6" data-semantic-content="2,6" 
+      data-semantic-children="14" data-semantic-id="15" 
+      data-semantic-annotation="fences:paren;depth:4" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
       data-semantic-parent="20" data-semantic-added="true"><MJX-MO 
-       data-semantic-speech-none="open paren" 
+       data-semantic-braille="⠷" 
       data-semantic-speech='<mark name="2"/> open paren' 
-      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
-      data-semantic-role="open" data-semantic-annotation="depth:5" 
-      data-semantic-id="2" data-semantic-attributes="latex:(" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="open paren" 
+      data-semantic-speech-none="open paren" 
       data-semantic-summary='<mark name="2"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:(" 
+      data-semantic-id="2" data-semantic-annotation="depth:5" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
       data-semantic-parent="15" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
-       data-semantic-speech-none="original minus blackpoint" 
+       data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" 
       data-semantic-speech='<mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-semantic-type="infixop" 
-      data-semantic-role="subtraction" data-semantic-annotation="depth:5" 
-      data-semantic-id="14" data-semantic-children="3,5" 
-      data-semantic-content="4" data-semantic-owns="3 4 5" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="subtraction with 2 elements" 
+      data-semantic-speech-none="original minus blackpoint" 
       data-semantic-summary='<mark name="14"/> subtraction with 2 elements' 
-      data-semantic-parent="15" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="original" 
+      data-semantic-summary-none="subtraction with 2 elements" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="3 4 5" data-semantic-content="4" 
+      data-semantic-children="3,5" data-semantic-id="14" 
+      data-semantic-annotation="depth:5" data-semantic-role="subtraction" 
+      data-semantic-type="infixop" data-semantic-parent="15" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
       data-semantic-speech='<mark name="3"/> original' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
-      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="3"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="3" 
       data-semantic-annotation="factor:operator;clearspeak:unit;depth:6" 
-      data-semantic-id="3" data-semantic-attributes="latex:\text{original}" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="3"/> text' data-semantic-font="normal" 
-      data-semantic-parent="14"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
-       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="14" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
       style="PADDING-TOP: 0.69em" 
-      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
-       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
       style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
       >l&nbsp;-</MJX-C></MJX-MTEXT><MJX-MO 
-       data-semantic-speech-none="minus" 
-      data-semantic-speech='<mark name="4"/> minus' data-semantic-braille="⠤" 
-      data-latex="-" data-semantic-type="operator" 
-      data-semantic-role="subtraction" data-semantic-annotation="depth:6" 
-      data-semantic-id="4" data-semantic-attributes="latex:-" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="minus" 
-      data-semantic-summary='<mark name="4"/> minus' data-semantic-parent="14" 
-      space="3" data-semantic-operator="infixop,−"><MJX-C class=mjx-c2212 
+       data-semantic-braille="⠤" 
+      data-semantic-speech='<mark name="4"/> minus' 
+      data-semantic-speech-none="minus" 
+      data-semantic-summary='<mark name="4"/> minus' 
+      data-semantic-summary-none="minus" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:-" 
+      data-semantic-id="4" data-semantic-annotation="depth:6" 
+      data-semantic-role="subtraction" data-semantic-type="operator" 
+      data-latex="-" data-semantic-parent="14" 
+      data-semantic-operator="infixop,−" space="3"><MJX-C class=mjx-c2212 
       > </MJX-C></MJX-MO><MJX-MTEXT 
-      data-semantic-speech-none="blackpoint" 
+      data-semantic-braille="⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" 
       data-semantic-speech='<mark name="5"/> blackpoint' 
-      data-semantic-braille="⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-latex="\text{blackpoint}" 
-      data-semantic-type="identifier" data-semantic-role="unit" 
-      data-semantic-annotation="clearspeak:unit;depth:6" data-semantic-id="5" 
-      data-semantic-attributes="latex:\text{blackpoint}" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="identifier" 
+      data-semantic-speech-none="blackpoint" 
       data-semantic-summary='<mark name="5"/> identifier' 
-      data-semantic-font="normal" data-semantic-parent="14" space="3"><MJX-C 
-      class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="identifier" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{blackpoint}" data-semantic-id="5" 
+      data-semantic-annotation="clearspeak:unit;depth:6" 
+      data-semantic-role="unit" data-semantic-type="identifier" 
+      data-latex="\text{blackpoint}" data-semantic-parent="14" 
+      data-semantic-font="normal" space="3"><MJX-C class=mjx-c62 
+      style="PADDING-TOP: 0.69em" 
       noic="true">b</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
        noic="true">l</MJX-C><MJX-C class=mjx-c61 
       style="PADDING-TOP: 0.69em" 
@@ -601,49 +614,50 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       style="PADDING-TOP: 0.69em" 
       noic="true">n</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
       >t</MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
-       data-semantic-speech-none="close paren" 
+       data-semantic-braille="⠾" 
       data-semantic-speech='<mark name="6"/> close paren' 
-      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
-      data-semantic-role="close" data-semantic-annotation="depth:5" 
-      data-semantic-id="6" data-semantic-attributes="latex:)" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="close paren" 
+      data-semantic-speech-none="close paren" 
       data-semantic-summary='<mark name="6"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:)" 
+      data-semantic-id="6" data-semantic-annotation="depth:5" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
       data-semantic-parent="15" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c29>) </MJX-C></MJX-MO></MJX-MROW><MJX-MO 
-       data-semantic-speech-none="times" 
-      data-semantic-speech='<mark name="7"/> times' data-semantic-braille="⠈⠡" 
-      data-latex="\times" data-semantic-type="operator" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:4" 
-      data-semantic-id="7" data-semantic-attributes="latex:\times" 
-      data-semantic-level-number="3" data-speech-node="true" 
-      data-semantic-summary-none="times" 
-      data-semantic-summary='<mark name="7"/> times' data-semantic-parent="20" 
-      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+       data-semantic-braille="⠈⠡" 
+      data-semantic-speech='<mark name="7"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="7"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\times" 
+      data-semantic-id="7" data-semantic-annotation="depth:4" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="20" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
       >× </MJX-C></MJX-MO><MJX-MROW 
-      data-semantic-speech-none="the asinh of open paren original times stretch close paren" 
-      data-semantic-speech='<mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
       data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
-      data-semantic-type="appl" data-semantic-role="prefix function" 
-      data-semantic-annotation="depth:4" data-semantic-id="19" 
-      data-semantic-children="8,17" data-semantic-content="18,8" 
-      data-semantic-owns="8 18 17" data-semantic-level-number="3" 
-      data-speech-node="true" 
-      data-semantic-summary-none="functional expression of open paren product with 2 factors close paren" 
+      data-semantic-speech='<mark name="8"/> the asinh <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-speech-none="the asinh of open paren original times stretch close paren" 
       data-semantic-summary='<mark name="8"/> functional expression <mark name="17"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="16"/> product with 2 factors <break time="250ms"/> <mark name="13"/> close paren' 
-      data-semantic-parent="20" space="3" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="the asinh" 
+      data-semantic-summary-none="functional expression of open paren product with 2 factors close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="8 18 17" data-semantic-content="18,8" 
+      data-semantic-children="8,17" data-semantic-id="19" 
+      data-semantic-annotation="depth:4" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="20" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
       data-semantic-speech='<mark name="8"/> the asinh' 
-      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
-      data-semantic-type="function" data-semantic-role="prefix function" 
-      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="8" 
-      data-semantic-attributes="latex:\text{asinh}" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="functional expression" 
+      data-semantic-speech-none="the asinh" 
       data-semantic-summary='<mark name="8"/> functional expression' 
-      data-semantic-font="normal" data-semantic-parent="19" 
-      data-semantic-operator="appl"><MJX-C class=mjx-c61 
-      style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="8" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="19" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
       noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
        noic="true">s</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
@@ -651,90 +665,93 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
        noic="true">n</MJX-C><MJX-C class=mjx-c68 
       style="PADDING-TOP: 0.69em" 
       >h</MJX-C></MJX-MTEXT><MJX-MO 
-      data-semantic-speech-none="of" data-semantic-speech='<mark name="18"/> of' 
-      data-semantic-braille="⠀" data-semantic-type="punctuation" 
-      data-semantic-role="application" 
-      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="18" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="of" 
-      data-semantic-summary='<mark name="18"/> of' data-semantic-parent="19" 
-      data-semantic-operator="appl" data-semantic-added="true"><MJX-C 
-      class=mjx-c2061></MJX-C></MJX-MO><MJX-MROW 
-       
-      data-semantic-speech-none="open paren original times stretch close paren" 
+      data-semantic-braille="⠀" data-semantic-speech='<mark name="18"/> of' 
+      data-semantic-speech-none="of" 
+      data-semantic-summary='<mark name="18"/> of' 
+      data-semantic-summary-none="of" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-id="18" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="application" data-semantic-type="punctuation" 
+      data-semantic-parent="19" data-semantic-operator="appl" 
+      data-semantic-added="true"><MJX-C class=mjx-c2061 
+      ></MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
       data-semantic-speech='<mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch <break time="250ms"/> <mark name="13"/> close paren' 
-      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="fenced" 
-      data-semantic-role="leftright" 
-      data-semantic-annotation="fences:paren;depth:5" data-semantic-id="17" 
-      data-semantic-children="16" data-semantic-content="9,13" 
-      data-semantic-owns="9 16 13" data-semantic-level-number="4" 
-      data-speech-node="true" 
-      data-semantic-summary-none="open paren product with 2 factors close paren" 
+      data-semantic-speech-none="open paren original times stretch close paren" 
       data-semantic-summary='<mark name="9"/> open paren <break time="250ms"/> <mark name="16"/> product with 2 factors <break time="250ms"/> <mark name="13"/> close paren' 
+      data-semantic-summary-none="open paren product with 2 factors close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="9 16 13" data-semantic-content="9,13" 
+      data-semantic-children="16" data-semantic-id="17" 
+      data-semantic-annotation="fences:paren;depth:5" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
       data-semantic-parent="19" data-semantic-added="true"><MJX-MO 
-       data-semantic-speech-none="open paren" 
+       data-semantic-braille="⠷" 
       data-semantic-speech='<mark name="9"/> open paren' 
-      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
-      data-semantic-role="open" data-semantic-annotation="depth:6" 
-      data-semantic-id="9" data-semantic-attributes="latex:(" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="open paren" 
+      data-semantic-speech-none="open paren" 
       data-semantic-summary='<mark name="9"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:(" 
+      data-semantic-id="9" data-semantic-annotation="depth:6" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
       data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
-       data-semantic-speech-none="original times stretch" 
+       data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
       data-semantic-speech='<mark name="10"/> original <mark name="11"/> times <mark name="12"/> stretch' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" data-semantic-type="infixop" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:6" 
-      data-semantic-id="16" data-semantic-children="10,12" 
-      data-semantic-content="11" data-semantic-owns="10 11 12" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-speech-none="original times stretch" 
       data-semantic-summary='<mark name="16"/> product with 2 factors' 
-      data-semantic-parent="17" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="original" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="5" 
+      data-semantic-owns="10 11 12" data-semantic-content="11" 
+      data-semantic-children="10,12" data-semantic-id="16" 
+      data-semantic-annotation="depth:6" data-semantic-role="multiplication" 
+      data-semantic-type="infixop" data-semantic-parent="17" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
       data-semantic-speech='<mark name="10"/> original' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
-      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="10"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="6" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="10" 
       data-semantic-annotation="factor:operator;clearspeak:unit;depth:7" 
-      data-semantic-id="10" data-semantic-attributes="latex:\text{original}" 
-      data-semantic-level-number="6" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="10"/> text' data-semantic-font="normal" 
-      data-semantic-parent="16"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
-       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="16" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
       style="PADDING-TOP: 0.69em" 
-      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
-       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
-      style="PADDING-TOP: 0.69em">l 
-      </MJX-C></MJX-MTEXT><MJX-MO 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="11"/> times' 
       data-semantic-speech-none="times" 
-      data-semantic-speech='<mark name="11"/> times' data-semantic-braille="⠈⠡" 
-      data-latex="\times" data-semantic-type="operator" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:7" 
-      data-semantic-id="11" data-semantic-attributes="latex:\times" 
-      data-semantic-level-number="6" data-speech-node="true" 
-      data-semantic-summary-none="times" 
-      data-semantic-summary='<mark name="11"/> times' data-semantic-parent="16" 
-      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      data-semantic-summary='<mark name="11"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:\times" 
+      data-semantic-id="11" data-semantic-annotation="depth:7" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="16" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
       >× </MJX-C></MJX-MO><MJX-MTEXT 
-      data-semantic-speech-none="stretch" 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
       data-semantic-speech='<mark name="12"/> stretch' 
-      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
-      data-semantic-type="identifier" data-semantic-role="unit" 
-      data-semantic-annotation="clearspeak:unit;depth:7" data-semantic-id="12" 
-      data-semantic-attributes="latex:\text{stretch}" 
-      data-semantic-level-number="6" data-speech-node="true" 
-      data-semantic-summary-none="identifier" 
+      data-semantic-speech-none="stretch" 
       data-semantic-summary='<mark name="12"/> identifier' 
-      data-semantic-font="normal" data-semantic-parent="16" space="3"><MJX-C 
-      class=mjx-c73 style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="identifier" data-speech-node="true" 
+      data-semantic-level-number="6" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="12" 
+      data-semantic-annotation="clearspeak:unit;depth:7" 
+      data-semantic-role="unit" data-semantic-type="identifier" 
+      data-latex="\text{stretch}" data-semantic-parent="16" 
+      data-semantic-font="normal" space="3"><MJX-C class=mjx-c73 
+      style="PADDING-TOP: 0.69em" 
       noic="true">s</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
        noic="true">t</MJX-C><MJX-C class=mjx-c72 
       style="PADDING-TOP: 0.69em" 
@@ -745,14 +762,14 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
        noic="true">c</MJX-C><MJX-C class=mjx-c68 
       style="PADDING-TOP: 0.69em" 
       >h</MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
-       data-semantic-speech-none="close paren" 
+       data-semantic-braille="⠾" 
       data-semantic-speech='<mark name="13"/> close paren' 
-      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
-      data-semantic-role="close" data-semantic-annotation="depth:6" 
-      data-semantic-id="13" data-semantic-attributes="latex:)" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="close paren" 
+      data-semantic-speech-none="close paren" 
       data-semantic-summary='<mark name="13"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:)" 
+      data-semantic-id="13" data-semantic-annotation="depth:6" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
       data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c29>)</FONT></DIV>
       <DIV class="math notranslate nohighlight"><FONT       face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
@@ -769,38 +786,39 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       style="PADDING-TOP: 0.69em" 
       noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
       >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="22"/> times' 
       data-semantic-speech-none="times" 
-      data-semantic-speech='<mark name="22"/> times' data-semantic-braille="⠈⠡" 
-      data-latex="\times" data-semantic-type="operator" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:4" 
-      data-semantic-id="22" data-semantic-attributes="latex:\times" 
-      data-semantic-level-number="3" data-speech-node="true" 
-      data-semantic-summary-none="times" 
-      data-semantic-summary='<mark name="22"/> times' data-semantic-parent="30" 
-      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      data-semantic-summary='<mark name="22"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\times" 
+      data-semantic-id="22" data-semantic-annotation="depth:4" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="30" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
       >× </MJX-C></MJX-MO><MJX-MROW 
-      data-semantic-speech-none="the asinh of open paren stretch close paren" 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
       data-semantic-speech='<mark name="23"/> the asinh <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
-      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="appl" 
-      data-semantic-role="prefix function" data-semantic-annotation="depth:4" 
-      data-semantic-id="29" data-semantic-children="23,27" 
-      data-semantic-content="28,23" data-semantic-owns="23 28 27" 
-      data-semantic-level-number="3" data-speech-node="true" 
-      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-semantic-speech-none="the asinh of open paren stretch close paren" 
       data-semantic-summary='<mark name="23"/> functional expression <mark name="27"/> of <break time="250ms"/> <mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> text <break time="250ms"/> <mark name="26"/> close paren' 
-      data-semantic-parent="30" space="3" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="the asinh" 
+      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="23 28 27" data-semantic-content="28,23" 
+      data-semantic-children="23,27" data-semantic-id="29" 
+      data-semantic-annotation="depth:4" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="30" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
       data-semantic-speech='<mark name="23"/> the asinh' 
-      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
-      data-semantic-type="function" data-semantic-role="prefix function" 
-      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="23" 
-      data-semantic-attributes="latex:\text{asinh}" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="functional expression" 
+      data-semantic-speech-none="the asinh" 
       data-semantic-summary='<mark name="23"/> functional expression' 
-      data-semantic-font="normal" data-semantic-parent="29" 
-      data-semantic-operator="appl"><MJX-C class=mjx-c61 
-      style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="23" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="29" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
       noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
        noic="true">s</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
@@ -808,65 +826,67 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
        noic="true">n</MJX-C><MJX-C class=mjx-c68 
       style="PADDING-TOP: 0.69em" 
       >h</MJX-C></MJX-MTEXT><MJX-MO 
-      data-semantic-speech-none="of" data-semantic-speech='<mark name="28"/> of' 
-      data-semantic-braille="⠀" data-semantic-type="punctuation" 
-      data-semantic-role="application" 
-      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="28" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="of" 
-      data-semantic-summary='<mark name="28"/> of' data-semantic-parent="29" 
-      data-semantic-operator="appl" data-semantic-added="true"><MJX-C 
-      class=mjx-c2061></MJX-C></MJX-MO><MJX-MROW 
-       
-      data-semantic-speech-none="open paren stretch close paren" 
+      data-semantic-braille="⠀" data-semantic-speech='<mark name="28"/> of' 
+      data-semantic-speech-none="of" 
+      data-semantic-summary='<mark name="28"/> of' 
+      data-semantic-summary-none="of" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-id="28" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="application" data-semantic-type="punctuation" 
+      data-semantic-parent="29" data-semantic-operator="appl" 
+      data-semantic-added="true"><MJX-C class=mjx-c2061 
+      ></MJX-C></MJX-MO><MJX-MROW 
+      data-semantic-braille="⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
       data-semantic-speech='<mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> stretch <break time="250ms"/> <mark name="26"/> close paren' 
-      data-semantic-braille="⠷⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="fenced" 
-      data-semantic-role="leftright" 
-      data-semantic-annotation="fences:paren;depth:5" data-semantic-id="27" 
-      data-semantic-children="25" data-semantic-content="24,26" 
-      data-semantic-owns="24 25 26" data-semantic-level-number="4" 
-      data-speech-node="true" 
-      data-semantic-summary-none="open paren text close paren" 
+      data-semantic-speech-none="open paren stretch close paren" 
       data-semantic-summary='<mark name="24"/> open paren <break time="250ms"/> <mark name="25"/> text <break time="250ms"/> <mark name="26"/> close paren' 
+      data-semantic-summary-none="open paren text close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="24 25 26" data-semantic-content="24,26" 
+      data-semantic-children="25" data-semantic-id="27" 
+      data-semantic-annotation="fences:paren;depth:5" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
       data-semantic-parent="29" data-semantic-added="true"><MJX-MO 
-       data-semantic-speech-none="open paren" 
+       data-semantic-braille="⠷" 
       data-semantic-speech='<mark name="24"/> open paren' 
-      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
-      data-semantic-role="open" data-semantic-annotation="depth:6" 
-      data-semantic-id="24" data-semantic-attributes="latex:(" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="open paren" 
+      data-semantic-speech-none="open paren" 
       data-semantic-summary='<mark name="24"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:(" 
+      data-semantic-id="24" data-semantic-annotation="depth:6" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
       data-semantic-parent="27" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c28>(</MJX-C></MJX-MO><MJX-MTEXT 
-       data-semantic-speech-none="stretch" 
+       data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
       data-semantic-speech='<mark name="25"/> stretch' 
-      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
-      data-semantic-type="text" data-semantic-role="annotation" 
-      data-semantic-annotation="clearspeak:unit;depth:6" data-semantic-id="25" 
-      data-semantic-attributes="latex:\text{stretch}" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="25"/> text' data-semantic-font="normal" 
-      data-semantic-parent="27"><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
-       noic="true">s</MJX-C><MJX-C class=mjx-c74 
+      data-semantic-speech-none="stretch" 
+      data-semantic-summary='<mark name="25"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="25" 
+      data-semantic-annotation="clearspeak:unit;depth:6" 
+      data-semantic-role="annotation" data-semantic-type="text" 
+      data-latex="\text{stretch}" data-semantic-parent="27" 
+      data-semantic-font="normal"><MJX-C class=mjx-c73 
       style="PADDING-TOP: 0.69em" 
-      noic="true">t</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
-       noic="true">r</MJX-C><MJX-C class=mjx-c65 
+      noic="true">s</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+       noic="true">t</MJX-C><MJX-C class=mjx-c72 
       style="PADDING-TOP: 0.69em" 
-      noic="true">e</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
-       noic="true">t</MJX-C><MJX-C class=mjx-c63 
+      noic="true">r</MJX-C><MJX-C class=mjx-c65 style="PADDING-TOP: 0.69em" 
+       noic="true">e</MJX-C><MJX-C class=mjx-c74 
       style="PADDING-TOP: 0.69em" 
-      noic="true">c</MJX-C><MJX-C class=mjx-c68 style="PADDING-TOP: 0.69em" 
+      noic="true">t</MJX-C><MJX-C class=mjx-c63 style="PADDING-TOP: 0.69em" 
+       noic="true">c</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
       >h</MJX-C></MJX-MTEXT><MJX-MO 
-      data-semantic-speech-none="close paren" 
+      data-semantic-braille="⠾" 
       data-semantic-speech='<mark name="26"/> close paren' 
-      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
-      data-semantic-role="close" data-semantic-annotation="depth:6" 
-      data-semantic-id="26" data-semantic-attributes="latex:)" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="close paren" 
+      data-semantic-speech-none="close paren" 
       data-semantic-summary='<mark name="26"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:)" 
+      data-semantic-id="26" data-semantic-annotation="depth:6" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
       data-semantic-parent="27" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c29>)</FONT></DIV>
       <DIV class="math notranslate nohighlight">&nbsp;</DIV>
@@ -876,160 +896,166 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       <DIV class="math notranslate nohighlight" 
       ><MJX-CONTAINER tabIndex=0 
       class="MathJax CtxtMenu_Attached_0" style="FONT-SIZE: 114.5%" 
-       jax="CHTML" overflow="overflow" display="true" 
-      ctxtmenu_counter="1" data-semantic-locale="en" 
-      data-semantic-domain="clearspeak" data-semantic-style="default" 
-      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
-      data-semantic-collapsible="collapsible" 
-      data-semantic-expandable="expandable" data-semantic-level="Level" 
-      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
-      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+       has-speech="true" data-braille-attached="true" 
+      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
       data-speech-attached="true" 
-      data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
-      data-braille-attached="true" has-speech="true"><MJX-MATH aria-hidden=true 
-      class=NCM-N display="true" 
-      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
       data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      data-semantic-level="Level" data-semantic-expandable="expandable" 
+      data-semantic-collapsible="collapsible" 
+      data-semantic-domain2style="mathspeak:default,clearspeak:default" 
+      data-semantic-style="default" data-semantic-domain="clearspeak" 
+      data-semantic-locale="en" ctxtmenu_counter="1" display="true" 
+      overflow="overflow" jax="CHTML"><MJX-MATH aria-hidden=true class=NCM-N 
+       
       data-semantic-braille="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
-      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-type="relseq" data-semantic-role="equality" 
-      data-semantic-annotation="depth:1" data-semantic-id="38" 
-      data-semantic-children="0,37" data-semantic-content="1" 
-      data-semantic-attributes="latex:\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-owns="0 1 37" data-semantic-level-number="0" 
+      data-semantic-speech='<mark name="0"/> pixel <mark name="1"/> equals <break time="250ms"/> <mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
+      display="true" data-semantic-summary='<mark name="38"/> equality' 
+      data-semantic-summary-none="equality" data-speech-node="true" 
       data-semantic-structure="(38 0 1 (37 (23 (17 2 (16 3 4 5) 6) 7 (22 8 21 (20 9 (19 10 11 (18 12 13 14)) 15))) (36 24 25 (35 26 27 (34 28 33 (32 29 30 31))))))" 
-      data-speech-node="true" data-semantic-summary-none="equality" 
-      data-semantic-summary='<mark name="38"/> equality'><MJX-MTEXT 
-       data-semantic-speech-none="pixel" 
+      data-semantic-level-number="0" data-semantic-owns="0 1 37" 
+      data-semantic-attributes="latex:\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-content="1" data-semantic-children="0,37" 
+      data-semantic-id="38" data-semantic-annotation="depth:1" 
+      data-semantic-role="equality" data-semantic-type="relseq" 
+      data-latex="\text{pixel} = \frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}"><MJX-MTEXT 
+       data-semantic-braille="⠏⠊⠭⠑⠇" 
       data-semantic-speech='<mark name="0"/> pixel' 
-      data-semantic-braille="⠏⠊⠭⠑⠇" data-latex="\text{pixel}" 
-      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-speech-none="pixel" 
+      data-semantic-summary='<mark name="0"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="1" 
+      data-semantic-attributes="latex:\text{pixel}" data-semantic-id="0" 
       data-semantic-annotation="factor:relation;clearspeak:unit;nemeth:number;depth:2" 
-      data-semantic-id="0" data-semantic-attributes="latex:\text{pixel}" 
-      data-semantic-level-number="1" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="0"/> text' data-semantic-font="normal" 
-      data-semantic-parent="38"><MJX-C class=mjx-c70 style="PADDING-TOP: 0.69em" 
-       noic="true"><FONT face=Courier 
-      >&nbsp;&nbsp;&nbsp;p</MJX-C><MJX-C class=mjx-c69 
-      style="PADDING-TOP: 0.69em" 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{pixel}" data-semantic-parent="38" 
+      data-semantic-font="normal"><MJX-C class=mjx-c70 
+      style="PADDING-TOP: 0.69em" noic="true"><FONT 
+      face=Courier>&nbsp;&nbsp;&nbsp;p</MJX-C><MJX-C 
+      class=mjx-c69 style="PADDING-TOP: 0.69em" 
       noic="true">i</MJX-C><MJX-C class=mjx-c78 style="PADDING-TOP: 0.69em" 
        noic="true">x</MJX-C><MJX-C class=mjx-c65 
       style="PADDING-TOP: 0.69em" 
       noic="true">e</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
       >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠨⠅" data-semantic-speech='<mark name="1"/> equals' 
       data-semantic-speech-none="equals" 
-      data-semantic-speech='<mark name="1"/> equals' data-semantic-braille="⠨⠅" 
-      data-latex="=" data-semantic-type="relation" data-semantic-role="equality" 
-      data-semantic-annotation="nemeth:number;depth:2" data-semantic-id="1" 
-      data-semantic-attributes="latex:=" data-semantic-level-number="1" 
-      data-speech-node="true" data-semantic-summary-none="equals" 
-      data-semantic-summary='<mark name="1"/> equals' data-semantic-parent="38" 
-      space="4" data-semantic-operator="relseq,="><MJX-C class=mjx-c3D 
-      >= </MJX-C></MJX-MO><MJX-MFRAC 
-      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
-      data-semantic-speech='<mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-summary='<mark name="1"/> equals' 
+      data-semantic-summary-none="equals" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-attributes="latex:=" 
+      data-semantic-id="1" data-semantic-annotation="nemeth:number;depth:2" 
+      data-semantic-role="equality" data-semantic-type="relation" data-latex="=" 
+      data-semantic-parent="38" data-semantic-operator="relseq,=" 
+      space="4"><MJX-C class=mjx-c3D>= 
+      </MJX-C></MJX-MO><MJX-MFRAC 
       data-semantic-braille="⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
-      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-type="fraction" data-semantic-role="division" 
-      data-semantic-annotation="depth:2" data-semantic-id="37" 
-      data-semantic-children="23,36" 
-      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
-      data-semantic-owns="23 36" data-semantic-level-number="1" 
-      data-speech-node="true" data-semantic-summary-none="fraction" 
+      data-semantic-speech='<mark name="37"/> the <mark name="23"/> fraction with numerator <break time="250ms"/> <mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren <break time="250ms"/> <mark name="36"/> and denominator <mark name="24"/> rgb <mark name="25"/> bar <mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren" 
       data-semantic-summary='<mark name="37"/> fraction' 
+      data-semantic-summary-none="fraction" data-speech-node="true" 
+      data-semantic-level-number="1" data-semantic-owns="23 36" 
+      data-semantic-attributes="latex:\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
+      data-semantic-children="23,36" data-semantic-id="37" 
+      data-semantic-annotation="depth:2" data-semantic-role="division" 
+      data-semantic-type="fraction" 
+      data-latex="\frac{(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})}{\text{rgb}\_\text{original}\times\text{asinh}(\text{stretch})}" 
       data-semantic-parent="38" space="4"><MJX-FRAC 
       type="d"><MJX-NUM><MJX-NSTRUT 
       type="d"></MJX-NSTRUT><MJX-MROW 
-      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren" 
-      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
       data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
-      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
-      data-semantic-type="infixop" data-semantic-role="multiplication" 
-      data-semantic-annotation="depth:3" data-semantic-id="23" 
-      data-semantic-children="17,22" data-semantic-content="7" 
-      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
-      data-semantic-owns="17 7 22" data-semantic-level-number="2" 
-      data-speech-node="true" 
-      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren <break time="250ms"/> <mark name="7"/> times <break time="250ms"/> <mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-speech-none="open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren" 
       data-semantic-summary='<mark name="23"/> product with 2 factors' 
-      data-semantic-parent="37" data-semantic-prefix-none="Numerator" 
-      data-semantic-prefix='<mark name="23"/> Numerator'><MJX-MROW 
-       
-      data-semantic-speech-none="open paren original minus blackpoint close paren" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="2" 
+      data-semantic-owns="17 7 22" 
+      data-semantic-attributes="latex:(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
+      data-semantic-content="7" data-semantic-children="17,22" 
+      data-semantic-id="23" data-semantic-annotation="depth:3" 
+      data-semantic-role="multiplication" data-semantic-type="infixop" 
+      data-latex="(\text{original} - \text{blackpoint})\times\text{asinh}(\text{rgb}\_\text{original}\times\text{stretch})" 
+      data-semantic-parent="37" 
+      data-semantic-prefix='<mark name="23"/> Numerator' 
+      data-semantic-prefix-none="Numerator"><MJX-MROW 
+      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" 
       data-semantic-speech='<mark name="2"/> open paren <break time="250ms"/> <mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint <break time="250ms"/> <mark name="6"/> close paren' 
-      data-semantic-braille="⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾" data-semantic-type="fenced" 
-      data-semantic-role="leftright" 
-      data-semantic-annotation="fences:paren;depth:4" data-semantic-id="17" 
-      data-semantic-children="16" data-semantic-content="2,6" 
-      data-semantic-owns="2 16 6" data-semantic-level-number="3" 
-      data-speech-node="true" 
-      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-semantic-speech-none="open paren original minus blackpoint close paren" 
       data-semantic-summary='<mark name="2"/> open paren <break time="250ms"/> <mark name="16"/> subtraction with 2 elements <break time="250ms"/> <mark name="6"/> close paren' 
+      data-semantic-summary-none="open paren subtraction with 2 elements close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="2 16 6" data-semantic-content="2,6" 
+      data-semantic-children="16" data-semantic-id="17" 
+      data-semantic-annotation="fences:paren;depth:4" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
       data-semantic-parent="23" data-semantic-added="true"><MJX-MO 
-       data-semantic-speech-none="open paren" 
+       data-semantic-braille="⠷" 
       data-semantic-speech='<mark name="2"/> open paren' 
-      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
-      data-semantic-role="open" data-semantic-annotation="depth:5" 
-      data-semantic-id="2" data-semantic-attributes="latex:(" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="open paren" 
+      data-semantic-speech-none="open paren" 
       data-semantic-summary='<mark name="2"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:(" 
+      data-semantic-id="2" data-semantic-annotation="depth:5" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
       data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
-       data-semantic-speech-none="original minus blackpoint" 
+       data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" 
       data-semantic-speech='<mark name="3"/> original <mark name="4"/> minus <mark name="5"/> blackpoint' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-semantic-type="infixop" 
-      data-semantic-role="subtraction" data-semantic-annotation="depth:5" 
-      data-semantic-id="16" data-semantic-children="3,5" 
-      data-semantic-content="4" data-semantic-owns="3 4 5" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="subtraction with 2 elements" 
+      data-semantic-speech-none="original minus blackpoint" 
       data-semantic-summary='<mark name="16"/> subtraction with 2 elements' 
-      data-semantic-parent="17" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="original" 
+      data-semantic-summary-none="subtraction with 2 elements" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="3 4 5" data-semantic-content="4" 
+      data-semantic-children="3,5" data-semantic-id="16" 
+      data-semantic-annotation="depth:5" data-semantic-role="subtraction" 
+      data-semantic-type="infixop" data-semantic-parent="17" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
       data-semantic-speech='<mark name="3"/> original' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
-      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="3"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="3" 
       data-semantic-annotation="factor:operator;clearspeak:unit;depth:6" 
-      data-semantic-id="3" data-semantic-attributes="latex:\text{original}" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="3"/> text' data-semantic-font="normal" 
-      data-semantic-parent="16"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
-       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="16" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
       style="PADDING-TOP: 0.69em" 
-      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
-       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
       style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
       >l&nbsp;-</MJX-C></MJX-MTEXT><MJX-MO 
-       data-semantic-speech-none="minus" 
-      data-semantic-speech='<mark name="4"/> minus' data-semantic-braille="⠤" 
-      data-latex="-" data-semantic-type="operator" 
-      data-semantic-role="subtraction" data-semantic-annotation="depth:6" 
-      data-semantic-id="4" data-semantic-attributes="latex:-" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="minus" 
-      data-semantic-summary='<mark name="4"/> minus' data-semantic-parent="16" 
-      space="3" data-semantic-operator="infixop,−"><MJX-C class=mjx-c2212 
+       data-semantic-braille="⠤" 
+      data-semantic-speech='<mark name="4"/> minus' 
+      data-semantic-speech-none="minus" 
+      data-semantic-summary='<mark name="4"/> minus' 
+      data-semantic-summary-none="minus" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:-" 
+      data-semantic-id="4" data-semantic-annotation="depth:6" 
+      data-semantic-role="subtraction" data-semantic-type="operator" 
+      data-latex="-" data-semantic-parent="16" 
+      data-semantic-operator="infixop,−" space="3"><MJX-C class=mjx-c2212 
       > </MJX-C></MJX-MO><MJX-MTEXT 
-      data-semantic-speech-none="blackpoint" 
+      data-semantic-braille="⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" 
       data-semantic-speech='<mark name="5"/> blackpoint' 
-      data-semantic-braille="⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞" data-latex="\text{blackpoint}" 
-      data-semantic-type="identifier" data-semantic-role="unit" 
-      data-semantic-annotation="clearspeak:unit;depth:6" data-semantic-id="5" 
-      data-semantic-attributes="latex:\text{blackpoint}" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="identifier" 
+      data-semantic-speech-none="blackpoint" 
       data-semantic-summary='<mark name="5"/> identifier' 
-      data-semantic-font="normal" data-semantic-parent="16" space="3"><MJX-C 
-      class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="identifier" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{blackpoint}" data-semantic-id="5" 
+      data-semantic-annotation="clearspeak:unit;depth:6" 
+      data-semantic-role="unit" data-semantic-type="identifier" 
+      data-latex="\text{blackpoint}" data-semantic-parent="16" 
+      data-semantic-font="normal" space="3"><MJX-C class=mjx-c62 
+      style="PADDING-TOP: 0.69em" 
       noic="true">b</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
        noic="true">l</MJX-C><MJX-C class=mjx-c61 
       style="PADDING-TOP: 0.69em" 
@@ -1044,49 +1070,50 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       style="PADDING-TOP: 0.69em" 
       noic="true">n</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
       >t</MJX-C></MJX-MTEXT></MJX-MROW><MJX-MO 
-       data-semantic-speech-none="close paren" 
+       data-semantic-braille="⠾" 
       data-semantic-speech='<mark name="6"/> close paren' 
-      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
-      data-semantic-role="close" data-semantic-annotation="depth:5" 
-      data-semantic-id="6" data-semantic-attributes="latex:)" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="close paren" 
+      data-semantic-speech-none="close paren" 
       data-semantic-summary='<mark name="6"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:)" 
+      data-semantic-id="6" data-semantic-annotation="depth:5" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
       data-semantic-parent="17" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c29>) </MJX-C></MJX-MO></MJX-MROW><MJX-MO 
-       data-semantic-speech-none="times" 
-      data-semantic-speech='<mark name="7"/> times' data-semantic-braille="⠈⠡" 
-      data-latex="\times" data-semantic-type="operator" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:4" 
-      data-semantic-id="7" data-semantic-attributes="latex:\times" 
-      data-semantic-level-number="3" data-speech-node="true" 
-      data-semantic-summary-none="times" 
-      data-semantic-summary='<mark name="7"/> times' data-semantic-parent="23" 
-      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+       data-semantic-braille="⠈⠡" 
+      data-semantic-speech='<mark name="7"/> times' 
+      data-semantic-speech-none="times" 
+      data-semantic-summary='<mark name="7"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\times" 
+      data-semantic-id="7" data-semantic-annotation="depth:4" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="23" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
       >× </MJX-C></MJX-MO><MJX-MROW 
-      data-semantic-speech-none="the asinh of open paren rgb bar original times stretch close paren" 
-      data-semantic-speech='<mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
       data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
-      data-semantic-type="appl" data-semantic-role="prefix function" 
-      data-semantic-annotation="depth:4" data-semantic-id="22" 
-      data-semantic-children="8,20" data-semantic-content="21,8" 
-      data-semantic-owns="8 21 20" data-semantic-level-number="3" 
-      data-speech-node="true" 
-      data-semantic-summary-none="functional expression of open paren bar separated list of length 2 close paren" 
+      data-semantic-speech='<mark name="8"/> the asinh <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-speech-none="the asinh of open paren rgb bar original times stretch close paren" 
       data-semantic-summary='<mark name="8"/> functional expression <mark name="20"/> of <break time="250ms"/> <mark name="9"/> open paren <break time="250ms"/> <mark name="11"/> bar <mark name="19"/> separated list of length 2 <break time="250ms"/> <mark name="15"/> close paren' 
-      data-semantic-parent="23" space="3" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="the asinh" 
+      data-semantic-summary-none="functional expression of open paren bar separated list of length 2 close paren" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="8 21 20" data-semantic-content="21,8" 
+      data-semantic-children="8,20" data-semantic-id="22" 
+      data-semantic-annotation="depth:4" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="23" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
       data-semantic-speech='<mark name="8"/> the asinh' 
-      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
-      data-semantic-type="function" data-semantic-role="prefix function" 
-      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="8" 
-      data-semantic-attributes="latex:\text{asinh}" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="functional expression" 
+      data-semantic-speech-none="the asinh" 
       data-semantic-summary='<mark name="8"/> functional expression' 
-      data-semantic-font="normal" data-semantic-parent="22" 
-      data-semantic-operator="appl"><MJX-C class=mjx-c61 
-      style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="8" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="22" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
       noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
        noic="true">s</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
@@ -1094,124 +1121,128 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
        noic="true">n</MJX-C><MJX-C class=mjx-c68 
       style="PADDING-TOP: 0.69em" 
       >h</MJX-C></MJX-MTEXT><MJX-MO 
-      data-semantic-speech-none="of" data-semantic-speech='<mark name="21"/> of' 
-      data-semantic-braille="⠀" data-semantic-type="punctuation" 
-      data-semantic-role="application" 
-      data-semantic-annotation="nemeth:number;depth:5" data-semantic-id="21" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="of" 
-      data-semantic-summary='<mark name="21"/> of' data-semantic-parent="22" 
-      data-semantic-operator="appl" data-semantic-added="true"><MJX-C 
-      class=mjx-c2061></MJX-C></MJX-MO><MJX-MROW 
-       
-      data-semantic-speech-none="open paren rgb bar original times stretch close paren" 
-      data-semantic-speech='<mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-braille="⠀" data-semantic-speech='<mark name="21"/> of' 
+      data-semantic-speech-none="of" 
+      data-semantic-summary='<mark name="21"/> of' 
+      data-semantic-summary-none="of" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-id="21" 
+      data-semantic-annotation="nemeth:number;depth:5" 
+      data-semantic-role="application" data-semantic-type="punctuation" 
+      data-semantic-parent="22" data-semantic-operator="appl" 
+      data-semantic-added="true"><MJX-C class=mjx-c2061 
+      ></MJX-C></MJX-MO><MJX-MROW 
       data-semantic-braille="⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾" 
-      data-semantic-type="fenced" data-semantic-role="leftright" 
-      data-semantic-annotation="fences:paren;depth:5" data-semantic-id="20" 
-      data-semantic-children="19" data-semantic-content="9,15" 
-      data-semantic-owns="9 19 15" data-semantic-level-number="4" 
-      data-speech-node="true" 
-      data-semantic-summary-none="open paren bar separated list of length 2 close paren" 
+      data-semantic-speech='<mark name="9"/> open paren <break time="250ms"/> <mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-speech-none="open paren rgb bar original times stretch close paren" 
       data-semantic-summary='<mark name="9"/> open paren <break time="250ms"/> <mark name="11"/> bar <mark name="19"/> separated list of length 2 <break time="250ms"/> <mark name="15"/> close paren' 
+      data-semantic-summary-none="open paren bar separated list of length 2 close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="9 19 15" data-semantic-content="9,15" 
+      data-semantic-children="19" data-semantic-id="20" 
+      data-semantic-annotation="fences:paren;depth:5" 
+      data-semantic-role="leftright" data-semantic-type="fenced" 
       data-semantic-parent="22" data-semantic-added="true"><MJX-MO 
-       data-semantic-speech-none="open paren" 
+       data-semantic-braille="⠷" 
       data-semantic-speech='<mark name="9"/> open paren' 
-      data-semantic-braille="⠷" data-latex="(" data-semantic-type="fence" 
-      data-semantic-role="open" data-semantic-annotation="depth:6" 
-      data-semantic-id="9" data-semantic-attributes="latex:(" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="open paren" 
+      data-semantic-speech-none="open paren" 
       data-semantic-summary='<mark name="9"/> open paren' 
+      data-semantic-summary-none="open paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:(" 
+      data-semantic-id="9" data-semantic-annotation="depth:6" 
+      data-semantic-role="open" data-semantic-type="fence" data-latex="(" 
       data-semantic-parent="20" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c28>(</MJX-C></MJX-MO><MJX-MROW 
-       
-      data-semantic-speech-none="rgb bar original times stretch" 
+       data-semantic-braille="⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
       data-semantic-speech='<mark name="10"/> rgb <mark name="11"/> bar <mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch' 
-      data-semantic-braille="⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
-      data-semantic-type="punctuated" data-semantic-role="sequence" 
-      data-semantic-annotation="depth:6" data-semantic-id="19" 
-      data-semantic-children="10,11,18" data-semantic-content="11" 
-      data-semantic-owns="10 11 18" data-semantic-level-number="5" 
-      data-speech-node="true" 
-      data-semantic-summary-none="bar separated list of length 2" 
+      data-semantic-speech-none="rgb bar original times stretch" 
       data-semantic-summary='<mark name="11"/> bar <mark name="19"/> separated list of length 2' 
-      data-semantic-parent="20" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="rgb" 
-      data-semantic-speech='<mark name="10"/> rgb' data-semantic-braille="⠗⠛⠃" 
-      data-latex="\text{rgb}" data-semantic-type="text" 
-      data-semantic-role="annotation" 
-      data-semantic-annotation="clearspeak:unit;depth:7" data-semantic-id="10" 
-      data-semantic-attributes="latex:\text{rgb}" data-semantic-level-number="6" 
-      data-speech-node="true" data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="10"/> text' data-semantic-font="normal" 
-      data-semantic-parent="19"><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
-       noic="true">r</MJX-C><MJX-C class=mjx-c67 
+      data-semantic-summary-none="bar separated list of length 2" 
+      data-speech-node="true" data-semantic-level-number="5" 
+      data-semantic-owns="10 11 18" data-semantic-content="11" 
+      data-semantic-children="10,11,18" data-semantic-id="19" 
+      data-semantic-annotation="depth:6" data-semantic-role="sequence" 
+      data-semantic-type="punctuated" data-semantic-parent="20" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠗⠛⠃" data-semantic-speech='<mark name="10"/> rgb' 
+      data-semantic-speech-none="rgb" 
+      data-semantic-summary='<mark name="10"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:\text{rgb}" 
+      data-semantic-id="10" data-semantic-annotation="clearspeak:unit;depth:7" 
+      data-semantic-role="annotation" data-semantic-type="text" 
+      data-latex="\text{rgb}" data-semantic-parent="19" 
+      data-semantic-font="normal"><MJX-C class=mjx-c72 
       style="PADDING-TOP: 0.69em" 
-      noic="true">g</MJX-C><MJX-C class=mjx-c62 style="PADDING-TOP: 0.69em" 
+      noic="true">r</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c62 
+      style="PADDING-TOP: 0.69em" 
       >b</MJX-C></MJX-MTEXT><MJX-MI 
+      data-semantic-braille="⠤" data-semantic-speech='<mark name="11"/> bar' 
       data-semantic-speech-none="bar" 
-      data-semantic-speech='<mark name="11"/> bar' data-semantic-braille="⠤" 
-      data-latex="\_" data-semantic-type="punctuation" data-semantic-role="dash" 
-      data-semantic-annotation="depth:7" data-semantic-id="11" 
-      data-semantic-attributes="latex:\_" data-semantic-level-number="6" 
-      data-speech-node="true" data-semantic-summary-none="bar" 
-      data-semantic-summary='<mark name="11"/> bar' data-semantic-font="normal" 
-      data-semantic-parent="19" data-semantic-operator="punctuated"><MJX-C 
-      class=mjx-c5F>_</MJX-C></MJX-MI><MJX-MROW 
-       data-semantic-speech-none="original times stretch" 
+      data-semantic-summary='<mark name="11"/> bar' 
+      data-semantic-summary-none="bar" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:\_" 
+      data-semantic-id="11" data-semantic-annotation="depth:7" 
+      data-semantic-role="dash" data-semantic-type="punctuation" data-latex="\_" 
+      data-semantic-parent="19" data-semantic-font="normal" 
+      data-semantic-operator="punctuated"><MJX-C class=mjx-c5F 
+      >_</MJX-C></MJX-MI><MJX-MROW 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" 
       data-semantic-speech='<mark name="12"/> original <mark name="13"/> times <mark name="14"/> stretch' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓" data-semantic-type="infixop" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:7" 
-      data-semantic-id="18" data-semantic-children="12,14" 
-      data-semantic-content="13" data-semantic-owns="12 13 14" 
-      data-semantic-level-number="6" data-speech-node="true" 
-      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-speech-none="original times stretch" 
       data-semantic-summary='<mark name="18"/> product with 2 factors' 
-      data-semantic-parent="19" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="original" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="6" 
+      data-semantic-owns="12 13 14" data-semantic-content="13" 
+      data-semantic-children="12,14" data-semantic-id="18" 
+      data-semantic-annotation="depth:7" data-semantic-role="multiplication" 
+      data-semantic-type="infixop" data-semantic-parent="19" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
       data-semantic-speech='<mark name="12"/> original' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
-      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="12"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="7" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="12" 
       data-semantic-annotation="factor:operator;clearspeak:unit;depth:8" 
-      data-semantic-id="12" data-semantic-attributes="latex:\text{original}" 
-      data-semantic-level-number="7" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="12"/> text' data-semantic-font="normal" 
-      data-semantic-parent="18"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
-       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="18" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
       style="PADDING-TOP: 0.69em" 
-      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
-       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
-      style="PADDING-TOP: 0.69em">l 
-      </MJX-C></MJX-MTEXT><MJX-MO 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="13"/> times' 
       data-semantic-speech-none="times" 
-      data-semantic-speech='<mark name="13"/> times' data-semantic-braille="⠈⠡" 
-      data-latex="\times" data-semantic-type="operator" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:8" 
-      data-semantic-id="13" data-semantic-attributes="latex:\times" 
-      data-semantic-level-number="7" data-speech-node="true" 
-      data-semantic-summary-none="times" 
-      data-semantic-summary='<mark name="13"/> times' data-semantic-parent="18" 
-      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      data-semantic-summary='<mark name="13"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="7" data-semantic-attributes="latex:\times" 
+      data-semantic-id="13" data-semantic-annotation="depth:8" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="18" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
       >× </MJX-C></MJX-MO><MJX-MTEXT 
-      data-semantic-speech-none="stretch" 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
       data-semantic-speech='<mark name="14"/> stretch' 
-      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
-      data-semantic-type="identifier" data-semantic-role="unit" 
-      data-semantic-annotation="clearspeak:unit;depth:8" data-semantic-id="14" 
-      data-semantic-attributes="latex:\text{stretch}" 
-      data-semantic-level-number="7" data-speech-node="true" 
-      data-semantic-summary-none="identifier" 
+      data-semantic-speech-none="stretch" 
       data-semantic-summary='<mark name="14"/> identifier' 
-      data-semantic-font="normal" data-semantic-parent="18" space="3"><MJX-C 
-      class=mjx-c73 style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="identifier" data-speech-node="true" 
+      data-semantic-level-number="7" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="14" 
+      data-semantic-annotation="clearspeak:unit;depth:8" 
+      data-semantic-role="unit" data-semantic-type="identifier" 
+      data-latex="\text{stretch}" data-semantic-parent="18" 
+      data-semantic-font="normal" space="3"><MJX-C class=mjx-c73 
+      style="PADDING-TOP: 0.69em" 
       noic="true">s</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
        noic="true">t</MJX-C><MJX-C class=mjx-c72 
       style="PADDING-TOP: 0.69em" 
@@ -1222,14 +1253,14 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
        noic="true">c</MJX-C><MJX-C class=mjx-c68 
       style="PADDING-TOP: 0.69em" 
       >h</MJX-C></MJX-MTEXT></MJX-MROW></MJX-MROW><MJX-MO 
-       data-semantic-speech-none="close paren" 
+       data-semantic-braille="⠾" 
       data-semantic-speech='<mark name="15"/> close paren' 
-      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
-      data-semantic-role="close" data-semantic-annotation="depth:6" 
-      data-semantic-id="15" data-semantic-attributes="latex:)" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="close paren" 
+      data-semantic-speech-none="close paren" 
       data-semantic-summary='<mark name="15"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="5" data-semantic-attributes="latex:)" 
+      data-semantic-id="15" data-semantic-annotation="depth:6" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
       data-semantic-parent="20" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c29>)</FONT></DIV>
       <DIV class="math notranslate nohighlight"><FONT       face=Courier       >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------------------------</FONT></DIV>
@@ -1237,81 +1268,83 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       class=mjx-c67 style="PADDING-TOP: 0.69em" 
       noic="true">g</MJX-C><MJX-C class=mjx-c62 style="PADDING-TOP: 0.69em" 
       >b</MJX-C></MJX-MTEXT><MJX-MI 
+      data-semantic-braille="⠤" data-semantic-speech='<mark name="25"/> bar' 
       data-semantic-speech-none="bar" 
-      data-semantic-speech='<mark name="25"/> bar' data-semantic-braille="⠤" 
-      data-latex="\_" data-semantic-type="punctuation" data-semantic-role="dash" 
-      data-semantic-annotation="nemeth:number;depth:4" data-semantic-id="25" 
-      data-semantic-attributes="latex:\_" data-semantic-level-number="3" 
-      data-speech-node="true" data-semantic-summary-none="bar" 
-      data-semantic-summary='<mark name="25"/> bar' data-semantic-font="normal" 
-      data-semantic-parent="36" data-semantic-operator="punctuated"><MJX-C 
-      class=mjx-c5F>_</MJX-C></MJX-MI><MJX-MROW 
-       
-      data-semantic-speech-none="original times the asinh of open paren stretch close paren" 
-      data-semantic-speech='<mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-summary='<mark name="25"/> bar' 
+      data-semantic-summary-none="bar" data-speech-node="true" 
+      data-semantic-level-number="3" data-semantic-attributes="latex:\_" 
+      data-semantic-id="25" data-semantic-annotation="nemeth:number;depth:4" 
+      data-semantic-role="dash" data-semantic-type="punctuation" data-latex="\_" 
+      data-semantic-parent="36" data-semantic-font="normal" 
+      data-semantic-operator="punctuated"><MJX-C class=mjx-c5F 
+      >_</MJX-C></MJX-MI><MJX-MROW 
       data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
-      data-semantic-type="infixop" data-semantic-role="multiplication" 
-      data-semantic-annotation="depth:4" data-semantic-id="35" 
-      data-semantic-children="26,34" data-semantic-content="27" 
-      data-semantic-owns="26 27 34" data-semantic-level-number="3" 
-      data-speech-node="true" 
-      data-semantic-summary-none="product with 2 factors" 
+      data-semantic-speech='<mark name="26"/> original <mark name="27"/> times <break time="250ms"/> <mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
+      data-semantic-speech-none="original times the asinh of open paren stretch close paren" 
       data-semantic-summary='<mark name="35"/> product with 2 factors' 
-      data-semantic-parent="36" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="original" 
+      data-semantic-summary-none="product with 2 factors" 
+      data-speech-node="true" data-semantic-level-number="3" 
+      data-semantic-owns="26 27 34" data-semantic-content="27" 
+      data-semantic-children="26,34" data-semantic-id="35" 
+      data-semantic-annotation="depth:4" data-semantic-role="multiplication" 
+      data-semantic-type="infixop" data-semantic-parent="36" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" 
       data-semantic-speech='<mark name="26"/> original' 
-      data-semantic-braille="⠕⠗⠊⠛⠊⠝⠁⠇" data-latex="\text{original}" 
-      data-semantic-type="text" data-semantic-role="text" 
+      data-semantic-speech-none="original" 
+      data-semantic-summary='<mark name="26"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="4" 
+      data-semantic-attributes="latex:\text{original}" data-semantic-id="26" 
       data-semantic-annotation="factor:operator;clearspeak:unit;nemeth:number;depth:5" 
-      data-semantic-id="26" data-semantic-attributes="latex:\text{original}" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="26"/> text' data-semantic-font="normal" 
-      data-semantic-parent="35"><MJX-C class=mjx-c6F style="PADDING-TOP: 0.69em" 
-       noic="true">o</MJX-C><MJX-C class=mjx-c72 
+      data-semantic-role="text" data-semantic-type="text" 
+      data-latex="\text{original}" data-semantic-parent="35" 
+      data-semantic-font="normal"><MJX-C class=mjx-c6F 
       style="PADDING-TOP: 0.69em" 
-      noic="true">r</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c67 
+      noic="true">o</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
+       noic="true">r</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">g</MJX-C><MJX-C class=mjx-c69 style="PADDING-TOP: 0.69em" 
-       noic="true">i</MJX-C><MJX-C class=mjx-c6E 
+      noic="true">i</MJX-C><MJX-C class=mjx-c67 style="PADDING-TOP: 0.69em" 
+       noic="true">g</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
-      noic="true">n</MJX-C><MJX-C class=mjx-c61 style="PADDING-TOP: 0.69em" 
-       noic="true">a</MJX-C><MJX-C class=mjx-c6C 
-      style="PADDING-TOP: 0.69em">l 
-      </MJX-C></MJX-MTEXT><MJX-MO 
+      noic="true">i</MJX-C><MJX-C class=mjx-c6E style="PADDING-TOP: 0.69em" 
+       noic="true">n</MJX-C><MJX-C class=mjx-c61 
+      style="PADDING-TOP: 0.69em" 
+      noic="true">a</MJX-C><MJX-C class=mjx-c6C style="PADDING-TOP: 0.69em" 
+      >l </MJX-C></MJX-MTEXT><MJX-MO 
+      data-semantic-braille="⠈⠡" data-semantic-speech='<mark name="27"/> times' 
       data-semantic-speech-none="times" 
-      data-semantic-speech='<mark name="27"/> times' data-semantic-braille="⠈⠡" 
-      data-latex="\times" data-semantic-type="operator" 
-      data-semantic-role="multiplication" data-semantic-annotation="depth:5" 
-      data-semantic-id="27" data-semantic-attributes="latex:\times" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="times" 
-      data-semantic-summary='<mark name="27"/> times' data-semantic-parent="35" 
-      space="3" data-semantic-operator="infixop,×"><MJX-C class=mjx-cD7 
+      data-semantic-summary='<mark name="27"/> times' 
+      data-semantic-summary-none="times" data-speech-node="true" 
+      data-semantic-level-number="4" data-semantic-attributes="latex:\times" 
+      data-semantic-id="27" data-semantic-annotation="depth:5" 
+      data-semantic-role="multiplication" data-semantic-type="operator" 
+      data-latex="\times" data-semantic-parent="35" 
+      data-semantic-operator="infixop,×" space="3"><MJX-C class=mjx-cD7 
       >× </MJX-C></MJX-MO><MJX-MROW 
-      data-semantic-speech-none="the asinh of open paren stretch close paren" 
+      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" 
       data-semantic-speech='<mark name="28"/> the asinh <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> stretch <break time="250ms"/> <mark name="31"/> close paren' 
-      data-semantic-braille="⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾" data-semantic-type="appl" 
-      data-semantic-role="prefix function" data-semantic-annotation="depth:5" 
-      data-semantic-id="34" data-semantic-children="28,32" 
-      data-semantic-content="33,28" data-semantic-owns="28 33 32" 
-      data-semantic-level-number="4" data-speech-node="true" 
-      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-semantic-speech-none="the asinh of open paren stretch close paren" 
       data-semantic-summary='<mark name="28"/> functional expression <mark name="32"/> of <break time="250ms"/> <mark name="29"/> open paren <break time="250ms"/> <mark name="30"/> text <break time="250ms"/> <mark name="31"/> close paren' 
-      data-semantic-parent="35" space="3" data-semantic-added="true"><MJX-MTEXT 
-       data-semantic-speech-none="the asinh" 
+      data-semantic-summary-none="functional expression of open paren text close paren" 
+      data-speech-node="true" data-semantic-level-number="4" 
+      data-semantic-owns="28 33 32" data-semantic-content="33,28" 
+      data-semantic-children="28,32" data-semantic-id="34" 
+      data-semantic-annotation="depth:5" data-semantic-role="prefix function" 
+      data-semantic-type="appl" data-semantic-parent="35" space="3" 
+      data-semantic-added="true"><MJX-MTEXT 
+      data-semantic-braille="⠁⠎⠊⠝⠓" 
       data-semantic-speech='<mark name="28"/> the asinh' 
-      data-semantic-braille="⠁⠎⠊⠝⠓" data-latex="\text{asinh}" 
-      data-semantic-type="function" data-semantic-role="prefix function" 
-      data-semantic-annotation="nemeth:number;depth:6" data-semantic-id="28" 
-      data-semantic-attributes="latex:\text{asinh}" 
-      data-semantic-level-number="5" data-speech-node="true" 
-      data-semantic-summary-none="functional expression" 
+      data-semantic-speech-none="the asinh" 
       data-semantic-summary='<mark name="28"/> functional expression' 
-      data-semantic-font="normal" data-semantic-parent="34" 
-      data-semantic-operator="appl"><MJX-C class=mjx-c61 
-      style="PADDING-TOP: 0.69em" 
+      data-semantic-summary-none="functional expression" data-speech-node="true" 
+      data-semantic-level-number="5" 
+      data-semantic-attributes="latex:\text{asinh}" data-semantic-id="28" 
+      data-semantic-annotation="nemeth:number;depth:6" 
+      data-semantic-role="prefix function" data-semantic-type="function" 
+      data-latex="\text{asinh}" data-semantic-parent="34" 
+      data-semantic-font="normal" data-semantic-operator="appl"><MJX-C 
+      class=mjx-c61 style="PADDING-TOP: 0.69em" 
       noic="true">a</MJX-C><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
        noic="true">s</MJX-C><MJX-C class=mjx-c69 
       style="PADDING-TOP: 0.69em" 
@@ -1319,48 +1352,50 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
        noic="true">n</MJX-C><MJX-C class=mjx-c68 
       style="PADDING-TOP: 0.69em" 
       >h(</MJX-C></MJX-MO><MJX-MTEXT 
-      data-semantic-speech-none="stretch" 
+      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" 
       data-semantic-speech='<mark name="30"/> stretch' 
-      data-semantic-braille="⠎⠞⠗⠑⠞⠉⠓" data-latex="\text{stretch}" 
-      data-semantic-type="text" data-semantic-role="annotation" 
-      data-semantic-annotation="clearspeak:unit;depth:7" data-semantic-id="30" 
-      data-semantic-attributes="latex:\text{stretch}" 
-      data-semantic-level-number="6" data-speech-node="true" 
-      data-semantic-summary-none="text" 
-      data-semantic-summary='<mark name="30"/> text' data-semantic-font="normal" 
-      data-semantic-parent="32"><MJX-C class=mjx-c73 style="PADDING-TOP: 0.69em" 
-       noic="true">s</MJX-C><MJX-C class=mjx-c74 
+      data-semantic-speech-none="stretch" 
+      data-semantic-summary='<mark name="30"/> text' 
+      data-semantic-summary-none="text" data-speech-node="true" 
+      data-semantic-level-number="6" 
+      data-semantic-attributes="latex:\text{stretch}" data-semantic-id="30" 
+      data-semantic-annotation="clearspeak:unit;depth:7" 
+      data-semantic-role="annotation" data-semantic-type="text" 
+      data-latex="\text{stretch}" data-semantic-parent="32" 
+      data-semantic-font="normal"><MJX-C class=mjx-c73 
       style="PADDING-TOP: 0.69em" 
-      noic="true">t</MJX-C><MJX-C class=mjx-c72 style="PADDING-TOP: 0.69em" 
-       noic="true">r</MJX-C><MJX-C class=mjx-c65 
+      noic="true">s</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
+       noic="true">t</MJX-C><MJX-C class=mjx-c72 
       style="PADDING-TOP: 0.69em" 
-      noic="true">e</MJX-C><MJX-C class=mjx-c74 style="PADDING-TOP: 0.69em" 
-       noic="true">t</MJX-C><MJX-C class=mjx-c63 
+      noic="true">r</MJX-C><MJX-C class=mjx-c65 style="PADDING-TOP: 0.69em" 
+       noic="true">e</MJX-C><MJX-C class=mjx-c74 
       style="PADDING-TOP: 0.69em" 
-      noic="true">c</MJX-C><MJX-C class=mjx-c68 style="PADDING-TOP: 0.69em" 
+      noic="true">t</MJX-C><MJX-C class=mjx-c63 style="PADDING-TOP: 0.69em" 
+       noic="true">c</MJX-C><MJX-C class=mjx-c68 
+      style="PADDING-TOP: 0.69em" 
       >h</MJX-C></MJX-MTEXT><MJX-MO 
-      data-semantic-speech-none="close paren" 
+      data-semantic-braille="⠾" 
       data-semantic-speech='<mark name="31"/> close paren' 
-      data-semantic-braille="⠾" data-latex=")" data-semantic-type="fence" 
-      data-semantic-role="close" data-semantic-annotation="depth:7" 
-      data-semantic-id="31" data-semantic-attributes="latex:)" 
-      data-semantic-level-number="6" data-speech-node="true" 
-      data-semantic-summary-none="close paren" 
+      data-semantic-speech-none="close paren" 
       data-semantic-summary='<mark name="31"/> close paren' 
+      data-semantic-summary-none="close paren" data-speech-node="true" 
+      data-semantic-level-number="6" data-semantic-attributes="latex:)" 
+      data-semantic-id="31" data-semantic-annotation="depth:7" 
+      data-semantic-role="close" data-semantic-type="fence" data-latex=")" 
       data-semantic-parent="32" data-semantic-operator="fenced"><MJX-C 
       class=mjx-c29 
       >)</MJX-C></MJX-MO></MJX-MROW></MJX-MROW></MJX-MROW></MJX-MROW></MJX-DEN></MJX-ROW></MJX-DTABLE></MJX-DBOX></MJX-FRAC></MJX-MFRAC></MJX-MATH><MJX-SPEECH 
       role=img 
       aria-label="pixel equals the fraction with numerator open paren original minus blackpoint close paren times the asinh of open paren rgb bar original times stretch close paren and denominator rgb bar original times the asinh of open paren stretch close paren, math" 
-       aria-roledescription="" 
+       aria-brailleroledescription="⠀" 
       aria-braillelabel="⠏⠊⠭⠑⠇⠀⠨⠅⠀⠹⠷⠕⠗⠊⠛⠊⠝⠁⠇⠤⠃⠇⠁⠉⠅⠏⠕⠊⠝⠞⠾⠈⠡⠁⠎⠊⠝⠓⠀⠷⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠎⠞⠗⠑⠞⠉⠓⠾⠌⠗⠛⠃⠤⠕⠗⠊⠛⠊⠝⠁⠇⠈⠡⠁⠎⠊⠝⠓⠀⠷⠎⠞⠗⠑⠞⠉⠓⠾⠼" 
-      aria-brailleroledescription="⠀"></MJX-SPEECH></MJX-CONTAINER></FONT></DIV>
+      aria-roledescription=""></MJX-SPEECH></MJX-CONTAINER></FONT></DIV>
       <P>The stretch factor (otherwise known as beta) can 
       take values between 0.0 and 1000.0.&nbsp;&nbsp; Larger values result in a 
       greater degree of image stretching being applied.<BR 
-      ><BR>The "black point" value has 
-      a range of&nbsp;[00000,&nbsp;0.20000].&nbsp;&nbsp; The value of 0.2 
-      implies that the blackpoint is set to 20% of the maximum possible ADU 
+      ><BR>The "black point" value has a 
+      range of&nbsp;[00000,&nbsp;0.20000].&nbsp;&nbsp; The value of 0.2 implies 
+      that the blackpoint is set to 20% of the maximum possible ADU 
       value.&nbsp;&nbsp;&nbsp; Values below the back point are treated as being 
       black.</P>
       <P>As rgb_original is an average of the three colour 
@@ -1369,11 +1404,12 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       algorithm (which was developed by the authors of the GHSAstro tool&nbsp;to 
       adjust the "gain" applied to the channels) is used to ensure 
       that&nbsp;such&nbsp;clipping does not&nbsp;occur.</P>
-      <P>When the Human-weighted luminance option is 
-      <STRONG>not</STRONG> ticked, rgb_original is the mean 
-      of the three pixel values; when it is set, weighting changes to 0.2126 for 
-      the red value, 0.7152 for the green value and 0.0722 for the blue value, 
-      which gets results closer to human perceptual color balance.</P>
+      <P>When the Human-weighted luminance option is <EM 
+      ><STRONG>not ticked</STRONG></EM>, 
+      rgb_original is the mean of the three pixel values; when it is set, the 
+      weighting changes to 0.2126 for the red value, 0.7152 for the green value 
+      and 0.0722 for the blue value, which gets results closer to human 
+      perceptual color balance.</P>
       <P>If the Preview check box is ticked (the default 
       setting), then adjusting the parameters (by editing the spin box fields 
       directly, or by selecting the spin box or slider and using the Page-Up 
@@ -1419,8 +1455,10 @@ cellSpacing=0 cellPadding=0 width="85%" border=0>
   <tr>
     <td width="50%">
       <p class=Standard><font size=2 face=Arial       >The Colour Balance tab allows adjustment of the image 
-      colour balance.</FONT></P><font size=2 face=Arial>
-      <P>If the Preview check box is ticked (the default 
+      colour balance.&nbsp;&nbsp; You should make this adjustment after Applying 
+      any image stretch.</FONT></P>
+      <p class=Standard><font size=2 face=Arial 
+      >If the Preview check box is ticked (the default 
       setting), then adjusting the parameters (by selecting the 
       appropriate&nbsp;slider and using the Page-Up and Page-Down keys for 
       coarse changes, or the cursor keys for finer changes), then the displayed 
@@ -1433,16 +1471,19 @@ style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-far
 style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
 style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
 style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-<p></SPAN></SPAN></SPAN></SPAN></SPAN><FONT face=Arial>Undo/Redo adjustment parameters</FONT> </P>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify>&nbsp;</P>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT face=Arial>On the bottom of each tab a set of buttons is 
-available:<br>- to apply the last modifications to the 
-picture<br>- to undo the last applied modifications<br>- to redo the last undone modifications<br>- to reset all the values<br></FONT><br><FONT face=Arial>Loading a picture</FONT> </P>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify><br><FONT face=Arial>DeepSkyStacker can 
-load&nbsp;</FONT><FONT face=Arial> TIFF images (8, 16 and 
-32 bit; monochrome or RGB) or FITS images (8, 16, 32 and 64 bit; monochrome or 
-RGB).<br>At the end of the stacking process the image 
-created by the stacking process is&nbsp;loaded automatically .<br><br></FONT><br>Saving the resulting picture</P>
+<p></SPAN></SPAN></SPAN></SPAN></SPAN><FONT size=2><FONT face=Arial>Undo/Redo adjustment 
+parameters</FONT> </FONT></P>
+<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT size=2></FONT>&nbsp;</P>
+<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT size=2><FONT face=Arial>On the bottom of 
+each tab a set of buttons is available:<br>- to apply the 
+last modifications to the picture<br>- to undo the last 
+applied modifications<br>- to redo the last undone 
+modifications<br>- to reset all the values<br></FONT><br><FONT face=Arial>Loading a picture</FONT> </FONT></P>
+<p class=MsoNormal style="MARGIN: 0cm" align=justify><br><FONT size=2 face=Arial>DeepSkyStacker 
+can load&nbsp;</FONT><FONT face=Arial><FONT size=2> TIFF images (8, 16 and 32 bit; monochrome or RGB) or FITS 
+images (8, 16, 32 and 64 bit; monochrome or RGB).<br>At the 
+end of the stacking process the image created by the stacking process 
+is&nbsp;loaded automatically .<br></FONT><br></FONT><br><FONT color=#ff0000 face=Arial>Saving the resulting picture</FONT></P>
 <table id=AutoNumber7 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
 cellSpacing=0 cellPadding=0 width="87%" border=0>
   
@@ -1452,29 +1493,30 @@ cellSpacing=0 cellPadding=0 width="87%" border=0>
       32 bit TIFF or FITS&nbsp; files using two methods:</FONT></P>
       <UL>
         <LI>
-        <div class=Standard><font size=2 face=Arial         >Applying the adjustments:&nbsp; This saves the 
-        image with any changes you have made using the&nbsp;"Apply" 
+        <div class=Standard><font size=2 face=Arial         >Applying the adjustments:&nbsp; This saves the image 
+        with any changes you have made using the&nbsp;"Apply" 
         button.&nbsp;&nbsp; You should use this if you plan to do further 
         adjustments in other software.<BR></FONT></DIV>
         <LI>
-        <div class=Standard><font size=2 face=Arial         >Not applying the adjustments:&nbsp;&nbsp; This 
-        saves the image without any changes that you have made using 
-        the&nbsp;"Apply" button.&nbsp;&nbsp; You should use this if you plan to 
-        do all post processing in other software.<br 
+        <div class=Standard><font size=2 face=Arial         >Not applying the adjustments:&nbsp;&nbsp; This saves 
+        the image without any changes that you have made using the&nbsp;"Apply" 
+        button.&nbsp;&nbsp; You should use this if you plan to do all post 
+        processing in other software.<br 
         >&nbsp;</FONT></DIV></LI></UL></TD>
     <td width="46%"><IMG style="HEIGHT: 123px; WIDTH: 415px" border=0 alt="" src="../images/english/saveoptions.png" width=314 height=84 ></TD></TR></TABLE>
 <p><font size=2 face=Arial>For more 
 information about the saving methods you can read the <A href="faq.htm#saveresult" >faq</A>.</FONT></P>
 <hr color=#0000ff>
 
-<p align=justify><b><font color=#ff0000 size=4 face=Arial><a name=creatingstarmask></A>Create a Star Mask<br></FONT></B><font size=2 face=Arial>Using a Star Mask is often very useful during 
-post-processing to use different processing techniques for the stars and for the 
-rest of the image.<br>The Create a Star Mask feature may be 
-used to create a variety of star masks that can be used later in any software 
-you are using to post process (Photoshop, PixInsight, ...).<br><br><font color=#ff0000>DeepSkyStacker is only creating star mask files. It is not 
-using them in any way.</FONT><br>You can view this feature 
-as a tool intended to provide quickly and simply a star mask file based on real 
-star detection.</FONT></P>
+<p align=justify><b><font color=#ff0000 size=4 face=Arial><a name=creatingstarmask></A>Create a Star Mask<br></FONT></B><font size=2 face=Arial>Using 
+a Star Mask is often very useful during post-processing to use different 
+processing techniques for the stars and for the rest of the image.<br>The Create a Star Mask feature may be used to create a 
+variety of star masks that can be used later in any software you are using to 
+post process (Photoshop, PixInsight, ...).<br><br><font color=#ff0000>DeepSkyStacker 
+will&nbsp;only creating star mask files. It&nbsp;does not use them in any 
+way.</FONT><br>You can view this feature as a tool intended 
+to provide quickly and simply a star mask file based on real star 
+detection.</FONT></P>
 <table id=AutoNumber21 cellSpacing=1 width="100%" border=0 
   >
   <tr>
@@ -1483,27 +1525,24 @@ star detection.</FONT></P>
       >A star mask is a synthetic grayscale image on which 
       each bright enough star is replaced by a round white area which is fading 
       to black following a curve.<br><br 
-      >You can see an example of a star mask on the 
-      right.<br>Mouse over the text to see <b 
-      ><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Field';" href="javascript:void(0);" >the image</A></B> or <b 
+      >You can see an example of a star mask on the right.<br 
+      >Mouse over the text to see <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Field';" href="javascript:void(0);" >the image</A></B> or <b 
       ><A onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Mask';" href="javascript:void(0);" >the star mask</A></B>.</FONT></P></TD>
     <td width="56%">
-      <p align=center><IMG id=STARMASK01 border=0 name=STARMASK01 src="../images/StarMask_Stars.jpg" width=279 align=center height=291 ><br 
-      ><font size=2 face=Arial><b 
-      id=STARMASK01TEXT name="STARMASK01TEXT">Star 
-      Field</B></FONT></P></TD></TR>
+      <p align=center><IMG id=STARMASK01 border=0 name=STARMASK01 src="../images/StarMask_Stars.jpg" width=279 align=center height=291 ><br><font       size=2 face=Arial><b id=STARMASK01TEXT 
+       name="STARMASK01TEXT">Star Field</B></FONT></P></TD></TR>
   <tr>
     <td vAlign=top width="44%">
       <p class=Standard><font size=2 face=Arial       ><b>Star Mask Creation</B><br 
       >To create a Star Mask you must load an image in the 
       processing tab.<br>&nbsp;</FONT> 
-      <p class=Standard><font size=2 face=Arial       >Then just click on the Create Star Mask... menu on 
-      the right and the dialog on the right will open.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >Then just click on the Create Star Mask... menu on the 
+      right and the dialog on the right will open.</FONT> 
       <p class=Standard><font size=2 face=Arial       >From there you can change the shape of the stars in 
       the mask, the star detection threshold and a few other parameters.</FONT> 
-      <p class=Standard><font size=2 face=Arial       >Once you are done, just click on the OK button and 
-      you will be asked to select a file (either a TIFF or a FITS file) in which 
-      the star mask will be saved.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >Once you are done, just click on the OK button and you 
+      will be asked to select a file (either a TIFF or a FITS file) in which the 
+      star mask will be saved.</FONT> 
       <p class=Standard><font size=2 face=Arial       >The saved file is always a grayscale 16 bit image. It 
       is not automatically loaded by DeepSkyStacker.</FONT> 
       <p class=Standard><font size=2 face=Arial       >The star mask is always created from the image as you 
@@ -1513,18 +1552,17 @@ star detection.</FONT></P>
       <p align=center><IMG border=0 src="../images/english/CreateStarMask.jpg" width=407 height=401 ></P></TD></TR></TABLE>
 <hr color=#0000ff>
 
-<p><font color=#ff0000 size=4 face=Arial><b><a name=imagelist></A>The Picture List<br></B></FONT><font size=2 face=Arial>The 
-picture list, common to Registering and Stacking processes contains all the 
-pictures used by the registering and stacking processes.<br>- Light frames<br>- Dark frames<br>- Flat frames<br>- bias/offsets 
-frames<br><br>Only the checked 
-pictures are used by the registering and stacking processes.<br><br>The list contains the following 
-columns:</FONT></P>
-<table id=AutoNumber1 cellSpacing=1 width="100%" border=1 
-  >
+<p><font color=#ff0000 size=4 face=Arial><b><a name=imagelist></A>The Picture List<br></B></FONT><font size=2 face=Arial>The picture list, common to Registering 
+and Stacking processes contains all the pictures used by the registering and 
+stacking processes.<br>- Light frames<br>- Dark frames<br>- Flat frames<br>- bias/offsets frames<br><br>Only the checked pictures are used by the registering and 
+stacking processes.<br><br>The list 
+contains the following columns:</FONT></P>
+<table id=AutoNumber1 cellSpacing=1 width="100%" border=1>
+  
   <tr>
     <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Checkbox</FONT></TD>
     <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>checked if the picture should be 
-      used</FONT></TD></TR>
+    used</FONT></TD></TR>
   <tr>
     <td width="17%"><font size=2 face=Arial       >Path</FONT></TD>
     <td width="83%"><font size=2 face=Arial       >Path to the picture file</FONT></TD></TR>
@@ -1561,7 +1599,7 @@ columns:</FONT></P>
   <tr>
     <td width="17%"><font size=2 face=Arial       >Size</FONT></TD>
     <td width="83%"><font size=2 face=Arial       >Size of the picture in pixel (Width x 
-    Height)</FONT></TD></TR>
+  Height)</FONT></TD></TR>
   <tr>
     <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>CFA</FONT></TD>
     <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Yes if the picture is resulting from a 
@@ -1589,20 +1627,21 @@ columns:</FONT></P>
   <tr>
     <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>#Stars</FONT></TD>
     <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Number of detected stars.<br 
-      >When a comet position is set a +(C) is appended to 
-      the number of stars</FONT></TD></TR>
+      >When a comet position is set a +(C) is appended to the 
+      number of stars</FONT></TD></TR>
   <tr>
     <td bgColor=#ffffff width="17%"><font size=2       face=Arial>Sky Background</FONT></TD>
     <td bgColor=#ffffff width="83%"><font size=2       face=Arial>Sky background value for registered image 
       in %</FONT></TD></TR></TABLE>
-<p><font size=2 face=Arial>You can 
-sort the list on any column by clicking on the column header (and by clicking 
-again to reverse the sort order).<br><br>You can change the columns order and each column width. 
-Everything is saved after each use of DeepSkyStacker. The column widths order 
-will be reloaded the next time DeepSkyStacker is used.<br><br>You can preview a picture from the 
-list by selecting it.<br>If the selected picture is a RAW 
-file, the RAW DDP settings will be used to decode the RAW file before previewing 
-it.</FONT></P>
+<p><font size=2 face=Arial>You can sort 
+the list on any column by clicking on the column header (and by clicking again 
+to reverse the sort order).<br><br>You 
+can change the columns order and each column width. Everything is saved after 
+each use of DeepSkyStacker. The column widths order will be reloaded the next 
+time DeepSkyStacker is used.<br><br>You 
+can preview a picture from the list by selecting it.<br>If 
+the selected picture is a RAW file, the RAW DDP settings will be used to decode 
+the RAW file before previewing it.</FONT></P>
 <table id=AutoNumber11 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
 cellSpacing=0 cellPadding=0 width="94%" border=0>
   
@@ -1642,12 +1681,10 @@ cellSpacing=0 cellPadding=0 width="94%" border=0>
     <td width="62%" align=center><IMG border=0 alt="DeepSkyStacker - File Properties" src="../images/english/Properties.jpg" width=399 height=312 ></TD></TR></TABLE>
 <hr color=#0000ff>
 
-<p><b><font color=#ff0000 size=4 face=Arial><a name=imagepreview></A>Picture Preview<br></FONT></B><font size=2 face=Arial>The 
-picture preview is used to quickly view a picture from the picture list 
-(Registering and Stacking Tabs) or to view the picture being processed 
-(Processing Tab).<br><br>You can zoom 
-in and zoom out by pointing the mouse and using the wheel. This is the only way 
-to pan and to zoom.</FONT></P>
+<p><b><font color=#ff0000 size=4 face=Arial><a name=imagepreview></A>Picture Preview<br></FONT></B><font size=2 face=Arial>The picture preview is used to quickly 
+view a picture from the picture list (Registering and Stacking Tabs) or to view 
+the picture being processed (Processing Tab).<br><br>You can zoom in and zoom out by pointing the mouse and using 
+the wheel. This is the only way to pan and to zoom.</FONT></P>
 <p><font face=Arial><b>Star and Comet editing</B></FONT></P>
 <table id=AutoNumber6 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
 cellSpacing=0 cellPadding=0 width="78%" border=0>
@@ -1677,25 +1714,24 @@ cellSpacing=0 cellPadding=0 width="78%" border=0>
         
         <tr>
           <td bgColor=#ffff99 width="100%">
-            <p class=Standard><font color=#ff0000 size=2             face=Arial><b>Comet 
-            editing note:</B><br>The comet center may not 
-            be automatically detected by DeepSkyStacker.<br 
-            >To <b>force</B> the comet 
-            to a given&nbsp; position hold down the <b 
-            >Shift</B> key while positioning the comet 
-            center.</FONT></P></TD></TR></TABLE></P></TD>
+            <p class=Standard><font color=#ff0000 size=2             face=Arial><b>Comet editing 
+            note:</B><br>The comet center may not be 
+            automatically detected by DeepSkyStacker.<br>To 
+            <b>force</B> the comet to a given&nbsp; position 
+            hold down the <b>Shift</B> key while positioning 
+            the comet center.</FONT></P></TD></TR></TABLE></P></TD>
     <td width="47%">
       <p align=center><IMG border=0 src="../images/EditToolbar.jpg" width=279 height=265 ></P></TD></TR>
   <tr>
     <td width="53%">
-      <p class=Standard><font size=2 face=Arial       >When used from the processing tab, the picture 
-      preview may be used to select a part of the image by drawing a rectangle 
-      directly on the picture. </FONT></P>
+      <p class=Standard><font size=2 face=Arial       >When used from the processing tab, the picture preview 
+      may be used to select a part of the image by drawing a rectangle directly 
+      on the picture. </FONT></P>
       <p class=Standard><font size=2 face=Arial       >This rectangle is used on one hand to apply the 
       adjustments only to this rectangle and on the other hand, optionally, to 
       save only a part of the image.<br>&nbsp;</FONT></P>
-      <p class=Standard><font size=2 face=Arial       >If no rectangle is defined the adjustments are 
-      applied to the full image.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >If no rectangle is defined the adjustments are applied 
+      to the full image.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >In all the cases, when the image is saved to disk the 
       adjustments are applied to the full image.</FONT> 
       <p>&nbsp;</P></TD>
@@ -1720,30 +1756,30 @@ borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
         <div class=Standard><FONT size=2 face=Arial         >The overall image brightness which applies to the 
         green channel</FONT></DIV>
         <LI>
-        <div class=Standard><FONT size=2 face=Arial         >The brightness of the Red and Blue channels 
-        relative to the Green channel.<BR 
-      ></FONT></DIV></LI></UL>
-      <p class=Standard><FONT face=Arial       ><FONT size=2       >Image&nbsp;Adjustment (or Color Adjustment) is 
-      applied after the image has been read and scaled appropriately for the 
-      type of image (Raw, FITS or TIFF), and after all calibration frames have 
-      been applied.&nbsp;&nbsp;&nbsp;<SPAN style="mso-spacerun: yes" 
-      > </SPAN>If you use these adjustments, as you increase 
-      the values beyond the default value of 1.0, more and more pixels will 
-      become saturated. <o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p><FONT size=2 face=Arial       ></FONT></O:P></P>
+        <div class=Standard><FONT size=2 face=Arial         >The brightness of the Red and Blue channels relative 
+        to the Green channel.<BR></FONT></DIV></LI></UL>
+      <p class=Standard><FONT face=Arial       ><FONT size=2>Image&nbsp;Adjustment 
+      (or Color Adjustment) is applied after the image has been read and scaled 
+      appropriately for the type of image (Raw, FITS or TIFF), and after all 
+      calibration frames have been applied.&nbsp;&nbsp;&nbsp;<SPAN 
+      style="mso-spacerun: yes"> </SPAN>If you use these 
+      adjustments, as you increase the values beyond the default value of 1.0, 
+      more and more pixels will become saturated. <o:p 
+      ></O:P></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT face=Arial><FONT size=2       >The brightness (or luminance) adjustment applies 
       equally to all three channels.<SPAN style="mso-spacerun: yes" 
       >&nbsp; </SPAN>The values for the <FONT color=#ff0000       >Red</FONT> and <FONT color=#0000ff       >Blue</FONT> scale factors are relative to the <FONT       color=#008000>Green</FONT> channel whose scale factor 
       is the brightness value.<o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p><FONT size=2 face=Arial       ></FONT></O:P></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
       <p><FONT face=Arial><FONT size=2       >If you wish to scale 12 bit TIFF or FITS files to 16 
       bits, then this can be done by setting a brightness value of 16.<BR 
-      ><BR>This can also be useful if 
-      you want to set the channel balance for FITS or CFA format TIFF files 
-      based on the documentation for your camera. </FONT></FONT></P></TD>
+      ><BR>This can also be useful if you 
+      want to set the channel balance for FITS or CFA format TIFF files based on 
+      the documentation for your camera. </FONT></FONT></P></TD>
     <td width="50%"><IMG alt="" src="../images/english/imageadjustment.png" ></TD></TR></TABLE></P>
 <table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
@@ -1759,35 +1795,35 @@ borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
         <LI>
         <div class=Standard><FONT size=2 face=Arial         >Interpolation mode </FONT></DIV></LI></UL>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><FONT size=2 face=Arial>By 
-      default DeepSkyStacker will use Daylight White Balance, unless either "No 
-      White Balance Processing" or "Use Camera White Balance" is selected.<SPAN 
+      ><FONT size=2 face=Arial>By default 
+      DeepSkyStacker will use Daylight White Balance, unless either "No White 
+      Balance Processing" or "Use Camera White Balance" is selected.<SPAN 
       style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>If you 
       select "No White Balance Processing", then no white balance scaling is 
       performed at all, which is desirable if you are using software such as 
       StarTools to post process your stacked images.<BR><BR 
-      >In most other cases we recommend that you use 
-      Daylight White Balance.</FONT></P>
+      >In most other cases we recommend that you use Daylight 
+      White Balance.</FONT></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT size=2><FONT face=Arial 
       >&nbsp;</P></FONT></FONT></FONT></FONT>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p></O:P></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ></O:P></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT face=Arial><FONT size=2       >The option to choose Use Auto White Balance is no 
       longer supported because it resulted in each frame getting its own unique 
       white balance which messed up dark and flat frame processing.<SPAN 
       style="mso-spacerun: yes">&nbsp; </SPAN>However, if 
       you really want to use Auto White Balance, set your camera to Auto White 
-      Balance and select "Use Camera White Balance".<BR 
-      ><o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p><FONT size=2 face=Arial       ></FONT></O:P></P>
+      Balance and select "Use Camera White Balance".<BR><o:p 
+      ></O:P></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><FONT size=2 face=Arial>The 
-      white balance adjustment values are extracted from the RAW files by LibRaw 
+      ><FONT size=2 face=Arial>The white 
+      balance adjustment values are extracted from the RAW files by LibRaw 
       Copyright © 2008-2019 LibRaw LLC.<SPAN style="mso-spacerun: yes" 
       >&nbsp; </SPAN>LibRaw is based upon the original DCRaw 
       decoder for RAW files written by Dave Coffin.</FONT></P>
@@ -1808,17 +1844,17 @@ borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
     <td vAlign=top width="50%">
       <p class=Standard><b><font       face=Arial><a name=fitssettings 
       ></A>FITS</FONT></B><font face=Arial       ><b> Files<br 
-      ></B></FONT><font size=2 face=Arial       ><br></FONT><font size=2       face=Arial>If the check box "Single plane 16 bit FITS 
-      files are&nbsp;from ..." is <STRONG>not 
-      selected</STRONG>, DeepSkyStacker will attempt to use automatic detection 
-      of the&nbsp;&nbsp;CFA matrix based upon FITS keywords such as BAYERPAT, 
+      ></B></FONT><font size=2 face=Arial       ><br></FONT><font size=2 face=Arial       >If the check box "Single plane 16 bit FITS files 
+      are&nbsp;from ..." is <STRONG>not selected</STRONG>, 
+      DeepSkyStacker will attempt to use automatic detection of 
+      the&nbsp;&nbsp;CFA matrix based upon FITS keywords such as BAYERPAT, 
       COLORTYP, and MOSAIC (for Meade DSI colour cameras).&nbsp;&nbsp; If the 
       FITS file doesn't contain these keywords or the incorrect pattern is 
       specified in the file, you may select the check box and choose the 
       camera/pattern to be used as in earlier releases of DeepSkyStacker. 
       </FONT></P>
-      <p class=Standard><font size=2 face=Arial       >The first step is to select the DSLR or the CCD 
-      camera used to take the images from the list. This is necessary to use the 
+      <p class=Standard><font size=2 face=Arial       >The first step is to select the DSLR or the CCD camera 
+      used to take the images from the list. This is necessary to use the 
       correct Bayer Filter Pattern that will be used to decode the image 
       transforming them from B&amp;W to color images.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >The settings control the values used for:<br 
