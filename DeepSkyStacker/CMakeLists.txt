@@ -341,6 +341,7 @@ set(Help_Files
     "${CMAKE_SOURCE_DIR}/Help/Ayuda DeepSkyStacker.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Ajuda.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Herupu.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Hilfe.chm"
 	)
 source_group("Help" FILES ${Help_Files})
