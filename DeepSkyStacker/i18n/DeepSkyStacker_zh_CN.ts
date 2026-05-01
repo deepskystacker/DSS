@@ -227,8 +227,8 @@ Copyright Tőkés Attila</source>
     </message>
     <message>
         <location filename="../About.cpp" line="163"/>
-        <source>Japanese version: 三浦秀 (Miura Shu)&lt;br&gt;</source>
-        <translation>日文版： 三浦秀 (Miura Shu)&lt;br&gt;</translation>
+        <source>Japanese version: 三浦 修 (Miura Shu)&lt;br&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1330,95 +1330,95 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="979"/>
+        <location filename="../ProcessingDlg.cpp" line="992"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>要保存这些修改吗？</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="430"/>
+        <location filename="../ProcessingDlg.cpp" line="438"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF 或 FITS 图像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="326"/>
+        <location filename="../ProcessingDlg.cpp" line="329"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>星点蒙版由 DeepSkyStacker 制作</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="328"/>
+        <location filename="../ProcessingDlg.cpp" line="331"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>保存星点蒙版到 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="393"/>
-        <location filename="../ProcessingDlg.cpp" line="495"/>
+        <location filename="../ProcessingDlg.cpp" line="401"/>
+        <location filename="../ProcessingDlg.cpp" line="508"/>
         <source>Failed to load image %1</source>
         <translation>加载图像 %1 失败</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="524"/>
+        <location filename="../ProcessingDlg.cpp" line="537"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 16 位每通道 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="525"/>
+        <location filename="../ProcessingDlg.cpp" line="538"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 32 位每通道整数 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="526"/>
+        <location filename="../ProcessingDlg.cpp" line="539"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 32 位每通道浮点数 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="527"/>
+        <location filename="../ProcessingDlg.cpp" line="540"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 16 位每通道 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="528"/>
+        <location filename="../ProcessingDlg.cpp" line="541"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 32 位每通道整数 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="529"/>
+        <location filename="../ProcessingDlg.cpp" line="542"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 32 位每通道浮点数 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="538"/>
+        <location filename="../ProcessingDlg.cpp" line="551"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="641"/>
+        <location filename="../ProcessingDlg.cpp" line="654"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>没有可保存的图像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="656"/>
+        <location filename="../ProcessingDlg.cpp" line="669"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>没有可用的信息</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="678"/>
+        <location filename="../ProcessingDlg.cpp" line="691"/>
         <source>Exposure: %1 </source>
         <translation>曝光: %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="679"/>
+        <location filename="../ProcessingDlg.cpp" line="692"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1426,24 +1426,25 @@ Detected Cold Pixels: %L3 (%L4%)
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1117"/>
-        <source>ASinH stretch</source>
-        <translation>ASinH 拉伸</translation>
+        <location filename="../ProcessingDlg.cpp" line="1137"/>
+        <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1127"/>
-        <source>Colour Balance</source>
-        <translation>色彩平衡</translation>
+        <location filename="../ProcessingDlg.cpp" line="1149"/>
+        <source>Colour Balance: R %L1, G %L2, B %L3</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1131"/>
-        <location filename="../ProcessingDlg.cpp" line="1158"/>
+        <location filename="../ProcessingDlg.cpp" line="1160"/>
+        <location filename="../ProcessingDlg.cpp" line="1187"/>
+        <location filename="../ProcessingDlg.cpp" line="1215"/>
         <source>Undo %1</source>
         <translation>撤销 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1147"/>
-        <location filename="../ProcessingDlg.cpp" line="1188"/>
+        <location filename="../ProcessingDlg.cpp" line="1176"/>
+        <location filename="../ProcessingDlg.cpp" line="1219"/>
         <source>Redo %1</source>
         <translation>重做 %1</translation>
     </message>
@@ -3103,6 +3104,13 @@ You can probably get another one or download the final release from the web site
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>捐助 DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="703"/>
+        <location filename="../DeepSkyStacker.cpp" line="706"/>
+        <source>DeepSkyStacker Help.chm</source>
+        <comment>IDS_HELPFILE</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

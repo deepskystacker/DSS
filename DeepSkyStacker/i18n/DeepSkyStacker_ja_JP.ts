@@ -3090,6 +3090,13 @@ You can probably get another one or download the final release from the web site
         <translation>DeepSkyStacker を支援する</translation>
     </message>
     <message>
+        <location filename="../DeepSkyStacker.cpp" line="703"/>
+        <location filename="../DeepSkyStacker.cpp" line="706"/>
+        <source>DeepSkyStacker Help.chm</source>
+        <comment>IDS_HELPFILE</comment>
+        <translation>DeepSkyStacker Herupu.chm</translation>
+    </message>
+    <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 は存在しないか、ファイルではありません</translation>
