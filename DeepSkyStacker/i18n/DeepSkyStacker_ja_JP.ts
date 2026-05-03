@@ -3094,7 +3094,7 @@ You can probably get another one or download the final release from the web site
         <location filename="../DeepSkyStacker.cpp" line="706"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation>DeepSkyStacker Herupu.chm</translation>
+        <translation>DeepSkyStacker Help_JP.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>
