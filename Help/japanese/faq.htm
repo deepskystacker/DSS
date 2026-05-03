@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 
 <head>
 <meta http-equiv="Content-Language" content="en-us">
@@ -7,458 +7,286 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>FAQ</title>
 <style>
-<!--
- div.MsoNormal
-	{mso-style-parent:"";
-	margin-bottom:.0001pt;
-	font-size:12.0pt;
-	font-family:"Times New Roman";
-	margin-left:0cm; margin-right:0cm; margin-top:0cm}
--->
 </style>
 </head>
 
 <body>
 
 <p><b><span lang="EN-GB" style="FONT-SIZE: 18pt; FONT-FAMILY: Arial">
-Frequently Asked Questions</span></b></p>
+よくある質問</span></b></p>
 <blockquote>
 
 <p><span lang="en-gb"><b><span style="FONT-FAMILY: Arial"><A href="#Install">
-Install</A><br>
-<A href="#lightdarkflatoffset">Light, Dark, Flat, Bias... What are they and how 
-to create them?</A><br>
-<A href="#FileAndList">Files and File Lists</A><br>
-<A href="#Registering">Registering</A><br>
-<A href="#Stacking">Stacking</A><br>
-<A href="#Processing">Processing</A><br>
-<A href="#Performances">Performances</A><br>
-<A href="#saveresult">Load/Save</A><br>
+インストール</A><br>
+<A href="#lightdarkflatoffset">ライト、ダーク、フラット、バイアス... これらは何で、どのように作成するのですか？</A><br>
+<A href="#FileAndList">ファイルとファイルリスト</A><br>
+<A href="#Registering">位置合わせ（レジストレーション）</A><br>
+<A href="#Stacking">スタッキング</A><br>
+<A href="#Processing">処理</A><br>
+<A href="#Performances">パフォーマンス</A><br>
+<A href="#saveresult">読み込み/保存</A><br>
 </span></b></span><b>
 <span lang="EN-GB" style="FONT-FAMILY: Arial" >
-<A href="#Misc">Miscellaneous</A></span></b></p>
+<A href="#Misc">その他</A></span></b></p>
 </blockquote>
 <hr color="#0000ff">
 <p align="justify"><font face="Arial"><b><font size="4" color="#ff0000">
-<a name="Install"></a>Install</font><br>
-<font size="2">The downloaded setup files&nbsp;are corrupt.<br>
-</font></b><font size="2">       The executable files on github are 
-definitely OK.&nbsp; It's possible that&nbsp;you are using a download accelerator.<br>
-If so, I suggest you deactivate it, and&nbsp;download the file again and all should be ok.<br>
+<a name="Install"></a>インストール</font><br>
+<font size="2">ダウンロードしたセットアップファイルが破損しています。<br>
+</font></b><font size="2">        GitHub上の実行ファイルは間違いなく正常です。ダウンロードアクセラレータを使用している可能性があります。<br>
+その場合、アクセラレータを無効にしてから再度ファイルをダウンロードすることをおすすめします。これで問題は解決するはずです。<br>
 </font><b>
 <font size="2"><br>
-When I try to run&nbsp;DeepSkyStacker after I have 
-installed it I get a message: "This program can't start because api-ms-win-crt-runtime-l1-1-0.dll is missing".<br>
-</font></b><font size="2">Your need to 
-install that DLL file which you can download from: <A 
-href="https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows">https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows</A>&nbsp;<BR>you 
-will need to download the version specific to your version 
-of&nbsp;</font></font><font face="Arial"><font size="2">Windows.</font></font>
+インストール後にDeepSkyStackerを実行しようとすると、「api-ms-win-crt-runtime-l1-1-0.dllが見つからないため、プログラムを開始できません」というメッセージが表示されます。<br>
+</font></b><font size="2">このDLLファイルをインストールする必要があります。これは次の場所からダウンロードできます: <A 
+href="https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows">https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows</A>&nbsp;<BR>お使いのバージョンの</font></font><font face="Arial"><font size="2">Windows</font></font><font face="Arial"><font size="2">に固有のバージョンをダウンロードする必要があります。</font></font>
   <span lang="EN-GB"></p>
 <p align="justify">
   <hr size="2" width="100%" noshade color="blue" align="center">
 
 <P></P></SPAN>
 <p align="justify"><span lang="en-gb"><font size="4" color="#ff0000"><b>
-<span style="FONT-FAMILY: Arial"><a name="lightdarkflatoffset"></a>Light, Dark, 
-Flat, Bias... What are they and how to create them?</span></b></font></span><span lang="EN-GB" style="FONT-FAMILY: Arial"><b><br>
-</b><font size="2">(if you are wondering how all the files are used during the 
-calibration process you can have a look
-<A href="theory.htm#CalibrationProcess" target=_self>here</A>)<br>
+<span style="FONT-FAMILY: Arial"><a name="lightdarkflatoffset"></a>ライト、ダーク、フラット、バイアス... これらは何で、どのように作成するのですか？</span></b></font></span><span lang="EN-GB" style="FONT-FAMILY: Arial"><b><br>
+</b><font size="2">(キャリブレーションプロセス中にすべてのファイルがどのように使用されるかについては、<A href="theory.htm#CalibrationProcess" target=_self>こちら</A>をご覧ください)<br>
 </font><b>
 <br>
-Light Frames<br>
-</b><font size="2">The Light Frames are the images that contains the real 
-information: images of galaxies, nebula...<br>
-This is what you want to stack.<br>
+ライトフレーム<br>
+</b><font size="2">ライトフレームは、実際の情報（銀河や星雲の画像など）を含む画像です。<br>
+これはスタックしたい画像です。<br>
 <br>
-</font><b>Dark Frames and Dark Flat Frames<br>
-</b><font size="2">The Dark Frames are used to remove the dark signal from the 
-light frames (or the flat frames for the Dark Flat frames).<br>
-With DSLRs and CCD Camera, the CMOS or CCD is generating a dark signal depending 
-of the exposure time, temperature and ISO speed (DSLR only).<br>
-To remove the dark signal from the light frames you use a dark frame that 
-contains only the dark signal.<br>
+</font><b>ダークフレームおよびダークフラットフレーム<br>
+</b><font size="2">ダークフレームは、ライトフレーム（またはダークフラットフレームのフラットフレーム）からダーク信号を除去するために使用されます。<br>
+デジタル一眼レフやCCDカメラでは、露出時間、温度、およびISO感度（デジタル一眼レフのみ）に応じてCMOSまたはCCDからダーク信号が生成されます。<br>
+ライトフレームからダーク信号を除去するには、ダーク信号のみが含まれるダークフレームを使用します。<br>
 <br>
-The best way to create the dark frames is to shoot pictures in the dark (hence 
-the name) by covering the lens.<br>
-The dark frames must be created with the exposure time, temperature and ISO 
-speed of the light frames (resp. flat frames).<br>
-Since the temperature is important try to shoot dark frames at the end or during 
-your imaging session.<br>
+ダークフレームを作成する最良の方法は、レンズを覆って暗闇の中で撮影することです（名前の由来です）。<br>
+ダークフレームは、ライトフレーム（またはフラットフレーム）と同じ露出時間、温度、およびISO感度で作成する必要があります。<br>
+温度は重要であるため、イメージングセッションの終了時またはセッション中にダークフレームを撮影するようにしてください。<br>
 <br>
-Take a few of them (between 10 and 20 is usually enough). DeepSkyStacker will 
-combine them automatically to create and use a clean master dark or master dark 
-flat.<br>
+数枚（通常は10〜20枚で十分です）撮影してください。DeepSkyStackerがそれらを自動的に結合し、きれいなマスターダークまたはマスターダークフラットを作成して使用します。<br>
 <br>
-</font><b>Bias Frames (aka Offset Frames)<br>
-</b><font size="2">The Bias/Offset Frames are used to remove the CCD or CMOS 
-chip readout signal from the light frames.<br>
-Each CCD or CMOS chip is generating a readout signal which is a signal created 
-by the electronic just by reading the content of the chip.<br>
+</font><b>バイアスフレーム（別名：オフセットフレーム）<br>
+</b><font size="2">バイアスフレーム/オフセットフレームは、ライトフレームからCCDまたはCMOSチップの読み出し信号を除去するために使用されます。<br>
+各CCDまたはCMOSチップは、チップの内容を読み取ることによって電子回路で作成される読み出し信号を生成します。<br>
 <br>
-It's very easy to create bias/offset frames: just take the shortest possible 
-exposure (it may be 1/4000s or 1/8000s depending on your camera) in the dark by 
-covering the lens.<br>
-The bias frames must be create with the ISO speed of the light frames. The 
-temperature is not important.<br>
+バイアス/オフセットフレームの作成は非常に簡単です。レンズを覆い、暗闇の中で可能な限り短い露出（カメラによっては1/4000秒または1/8000秒など）で撮影するだけです。<br>
+バイアスフレームは、ライトフレームと同じISO感度で作成する必要があります。温度は重要ではありません。<br>
 <br>
-Take a few of them (between 10 and 20 is usually enough). DeepSkyStacker will 
-combine them automatically to create and use a clean master bias/offset frame<br>
+数枚（通常は10〜20枚で十分です）撮影してください。DeepSkyStackerがそれらを自動的に結合し、きれいなマスターバイアス/オフセットフレームを作成して使用します。<br>
 <br>
-</font><b>Flat Frames<br>
-</b><font size="2">The Flat Frames are used to correct the vignetting and uneven 
-field illumination created by dust or smudges in your optical train.<br>
+</font><b>フラットフレーム<br>
+</b><font size="2">フラットフレームは、光学系内のゴミや汚れによって引き起こされる周辺減光や、不均一な視野の照明を補正するために使用されます。<br>
 <br>
-To create good flat frames it is very important to <u><b>not</b></u> remove your 
-camera from your telescope before taking them (including not changing the 
-focus).<br>
-You can use a lot of different methods (including using a flatbox) but I found 
-that the simplest way is to put a white T shirt in front of your telescope and&nbsp; 
-smooth out the folds. Then shoot something luminous (a flash, a bright white 
-light, the sky at dawn...) and let the camera decide of the exposure time (Av 
-mode), <br>
+良好なフラットフレームを作成するには、撮影前に望遠鏡からカメラを取り外さないこと（ピントの変更もしないこと）が非常に重要です。<br>
+さまざまな方法（フラットボックスの使用など）を使用できますが、最も簡単な方法は、望遠鏡の前に白いTシャツを置き、しわを伸ばすことです。次に、明るいもの（フラッシュ、明るい白色光、夜明けの空など）に向けて撮影し、カメラに露出時間を決定させます（Avモード）。<br>
 <br>
-The flat frames should be created with the ISO speed of the light frames. The 
-temperature is not important.<br>
+フラットフレームは、ライトフレームと同じISO感度で作成する必要があります。温度は重要ではありません。<br>
 <br>
-Take a few of them (between 10 and 20 is usually enough). DeepSkyStacker will 
-combine them automatically to create and use a clean master flat frame.</font></span></p>
+数枚（通常は10〜20枚で十分です）撮影してください。DeepSkyStackerがそれらを自動的に結合し、きれいなマスターフラットフレームを作成して使用します。</font></span></p>
 <p align="justify"><span lang="en-gb"><font size="2">
-<span style="FONT-FAMILY: Arial"><b>Is it possible to use colored flat frames?</b><br>
-The short answer is yes.<br>
-   The overall tint of your flat frames is not 
-really important because DeepSkyStacker&nbsp;processes each channel separately and applies the flat 
-frames to each channel accordingly.<br>
-Of course if your flat frames are fully red only the red channel of your light 
-frames will be properly calibrated but otherwise as long as as the peak in each 
-channel is between 1/3 and 2/3 of the maximum you should have no problem using 
-slightly colored flat frames.</span></font></span></p>
+<span style="FONT-FAMILY: Arial"><b>カラーのフラットフレームを使用することは可能ですか？</b><br>
+簡単な答えは「はい」です。<br>
+    フラットフレーム全体の色合いは、DeepSkyStackerが各チャンネルを個別に処理し、それに応じてフラットフレームを各チャンネルに適用するため、それほど重要ではありません。<br>
+もちろん、フラットフレームが真っ赤な場合、ライトフレームの赤チャンネルのみが適切に調整されますが、それ以外の場合は、各チャンネルのピークが最大値の1/3から2/3の間であれば、わずかに色がついたフラットフレームを使用しても問題はありません。</span></font></span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-GB">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><span lang="en-gb"><font size="4" color="#ff0000"><b>
-<span style="FONT-FAMILY: Arial"><a name="FileAndList"></a>Files and File Lists</span></b></font></span><br>
+<span style="FONT-FAMILY: Arial"><a name="FileAndList"></a>ファイルとファイルリスト</span></b></font></span><br>
 <b><span lang="EN-GB" style="FONT-FAMILY: Arial">
-<font size="2"><a name="TIFFIssue"></a>DSS can't read my TIFF files and/or crash 
-when trying to read TIFF files</font></span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
+<font size="2"><a name="TIFFIssue"></a>DSSでTIFFファイルが読み込めない、またはTIFFファイルの読み込み時にクラッシュする</font></span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-DeepSkyStacker is only supporting uncompressed TIFF files or LZW and ZIP 
-(Deflate) compressed files.<br>
-However, TIFF files come in many flavours and sometimes the decoding may go 
-wrong especially while decoding EXIF information.<br>
-It is possible to disable EXIF decoding when reading TIFF files by adding the 
-following registry key under <b>HKEY_CURRENT_USER\Software\DeepSkyStacker</b>: 
-SkipTIFFExifInfo (DWORD) with a value of 1.<br>
+DeepSkyStackerは、非圧縮のTIFFファイル、またはLZWおよびZIP（Deflate）圧縮されたファイルのみをサポートしています。<br>
+ただし、TIFFファイルにはさまざまな種類があり、特にEXIF情報をデコードする際にデコードが失敗することがあります。<br>
+TIFFファイルの読み込み時にEXIFのデコードを無効にするには、<b>HKEY_CURRENT_USER\Software\DeepSkyStacker</b> の下に SkipTIFFExifInfo (DWORD) というキーを追加し、値を1に設定します。<br>
 <br>
-If you don't know how to add the registry key, you can download this
-<A href="../download/DSS_SkipTIFFExifInfo.reg">small file</A> and double-click 
-on it. It will add the registry key for you.</span></p>
+レジストリキーの追加方法がわからない場合は、こちらの<A href="../download/DSS_SkipTIFFExifInfo.reg">小さなファイル</A>をダウンロードしてダブルクリックしてください。自動的にレジストリキーが追加されます。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify">
-<font size="2" face="Arial"><b>My FITS files are not correctly decoded.<br>
-</b>There is a lot a FITS file format out there..<br>
-If your FITS file is not correctly decoded please send me an email with the FITS 
-file attached.</font></p>
+<font size="2" face="Arial"><b>FITSファイルが正しくデコードされません。<br>
+</b>世の中には多くのFITSファイル形式が存在します。<br>
+FITSファイルが正しくデコードされない場合は、FITSファイルを添付してメールでお送りください。</font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font face="Arial" size="2"><b>My FITS Files were created from 
-a DSLR and are very dark and without any contrast.<br>
-</b>Software capturing DSLR output and storing them as FITS files sometimes use 
-the 16 bit file format to store only 12 bit depth images (which is the original 
-depth of most DSLR's RAW files).<br>
-In this case the values stored in the files are between 0 and 4095 instead of 
-between 0 and 65535 which explains why the images are very dark.<br>
-You can adjust the parameters in the <A href="userguide.htm#rawddp">FITS Files 
-tab</A>  in the DDP settings dialog to correctly see these files.<br>
-Simply put you can multiply the total brightness by up to 16 without exceeding 
-the maximum threshold. If you modify the white balance by changing the red 
-and/or blue scales take care not to go over that 16 multiplier for each channel 
-(brightness * channel scale).</font></p>
+<p align="justify"><font face="Arial" size="2"><b>デジタル一眼レフで作成されたFITSファイルが非常に暗く、コントラストが全くありません。<br>
+</b>デジタル一眼レフの出力をキャプチャしてFITSファイルとして保存するソフトウェアは、16ビットファイル形式を使用して12ビット深度の画像のみを保存することがあります（これはほとんどのデジタル一眼レフのRAWファイルの元の深度です）。<br>
+この場合、ファイルに保存される値は0〜65535ではなく0〜4095になるため、画像が非常に暗くなる理由となります。<br>
+これらのファイルを正しく表示するには、DDP設定ダイアログの<A href="userguide.htm#rawddp">FITSファイルタブ</A>でパラメータを調整できます。<br>
+簡単に言えば、最大しきい値を超えない範囲で、全体の明るさを最大16倍にすることができます。赤および/または青のスケールを変更してホワイトバランスを調整する場合、各チャンネルでその16倍の乗数（明るさ * チャンネルスケール）を超えないように注意してください。</font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font face="Arial" size="2"><b>My FITS Files were created from a DSLR and 
-appear all wrong while I have selected the correct DSLR in the FITS File tab<br>
-</b>You should check that no binning was used by the software making the 
-captures. In this case DSS can not use the standard Bayer Filter Pattern of your 
-DSLR and this is probably why your images appear all wrong.<br>
-The only way is to deactivate binning.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>デジタル一眼レフで作成されたFITSファイルが、FITSファイルタブで正しいカメラを選択しているにもかかわらず、全くおかしな表示になります。<br>
+</b>撮影を行うソフトウェアでビニングが使用されていないか確認してください。ビニングが使用されている場合、DSSはお使いのデジタル一眼レフの標準的なベイヤーフィルターパターンを使用できず、これが画像がおかしくなる主な原因と考えられます。<br>
+ビニングを無効にするしかありません。</font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font face="Arial" size="2"><b>My FITS files were created by a color CCD 
-camera and I see only B&amp;W images.<br>
-</b>Your FITS files are using a bayer matrix (like a DSLR). To decode the colors 
-correctly DeepSkyStacker must know which kind of Bayer matrix is used by your 
-camera..<br>
-You can use the FITS tab of the <A href="userguide.htm#rawddp">RAW/FITS DDP 
-settings</A> dialog to tell DeepSkyStacker which Bayer matrix must be used. Most 
-of the time you will just have to select your CCD camera from the list.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>カラーCCDカメラで作成されたFITSファイルで、白黒の画像しか見えません。<br>
+</b>FITSファイルは（デジタル一眼レフのように）ベイヤーマトリクスを使用しています。色を正しくデコードするには、カメラがどの種類のベイヤーマトリクスを使用しているかをDeepSkyStackerが認識している必要があります。<br>
+<A href="userguide.htm#rawddp">RAW/FITS DDP設定</A>ダイアログのFITSタブを使用して、使用するベイヤーマトリクスをDeepSkyStackerに指定できます。ほとんどの場合、リストからご自身のCCDカメラを選択するだけで済みます。</font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font face="Arial"><font size="2"><b>What is a File List?</b></font><b><font size="2"><br>
-</font></b><font size="2">A File List is just a plain text file containing file 
-names with, for each file, its type (light, dark, flat, offset) and its status 
-(checked or unchecked).<br>
-You should note that when a File List is loaded the list containing all the 
-files is not cleared.<br>
-Thus it is possible to have a File List with all the dark frames, another with 
-the flat frames, a third with the master offset and to load all the File Lists 
-in one operation.<br>
-The File List format is fully explained <A href="commandline.htm#filelistformat">
-here</A>.</font></font></p>
+<p align="justify"><font face="Arial"><font size="2"><b>ファイルリストとは何ですか？</b></font><b><font size="2"><br>
+</font></b><font size="2">ファイルリストとは、ファイル名、ファイルの種類（ライト、ダーク、フラット、オフセット）、およびステータス（チェック済みか未チェックか）が各ファイルごとに記述された、単純なテキストファイルのことです。<br>
+ファイルリストを読み込む際、すでに読み込まれているすべてのファイルを含むリストはクリアされないことに注意してください。<br>
+したがって、すべてのダークフレームを持つファイルリスト、フラットフレームを持つ別のリスト、マスターオフセットを持つ3つ目のリストを用意し、すべてのファイルリストを一度の操作で読み込むことが可能です。<br>
+ファイルリストの形式については、<A href="commandline.htm#filelistformat">こちら</A>で詳しく説明されています。</font></font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><font face="Arial" size="2">I have files of the same object taken in 
-multiple imaging sessions. How do I tell DSS to associate correctly the dark 
-with the light frames of the same night for each night?</font></b><font size="2" face="Arial"><b><br>
-</b>The answer to this question is to use <A href="technical.htm#filegroup">File 
-Groups</A>.</font></p>
+<p align="justify"><b><font face="Arial" size="2">複数の撮影セッションで撮影した同じ対象のファイルがあります。各夜のライトフレームとダークフレームを正しく関連付けるようにDSSに指示するにはどうすればよいですか？</font></b><font size="2" face="Arial"><b><br>
+</b>この質問に対する答えは、<A href="technical.htm#filegroup">ファイルグループ</A>を使用することです。</font></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-GB">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
 <span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="Registering"></a>Registering</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
-</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why 
-create a registering file for each picture?<br>
+<a name="Registering"></a>位置合わせ（レジストレーション）</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">なぜ画像ごとにレジストレーションファイルを作成するのですか？<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Because it is simpler and it avoids re-registering.<br>
-This is also a way to avoid loading all the pictures during the registering and 
-stacking processes.</span></p>
+その方がシンプルであり、再レジストレーションを防ぐことができるからです。<br>
+これは、レジストレーションおよびスタッキングプロセス中にすべての画像を読み込むのを避ける方法でもあります。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Can I 
-delete the registering file?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Yes. 
-It will be recreated if necessary.</span></p>
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">レジストレーションファイルを削除してもよいですか？<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">はい。必要に応じて再作成されます。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Can I 
-modify the content of the registering file?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Yes, 
-even if it is neither advised nor necessary. <br>
-I cannot guarantee that the content will not evolve, but I guarantee that the 
-current content will always be decoded.</span></p>
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">レジストレーションファイルの内容を変更してもよいですか？<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">はい、推奨も必要もされませんが変更は可能です。<br>
+内容が今後変更されないとは保証できませんが、現在の内容は常にデコードされることを保証します。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<a name="score"></a>What is 
-the score, and what is its meaning?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-score is a measure of the picture quality.<br>
-To put it simply, the higher the score, the more round and not too big stars 
-were found.</span></p>
+<a name="score"></a>スコアとは何ですか？また、どのような意味がありますか？<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">スコアは画像の品質の尺度です。<br>
+簡単に言うと、スコアが高いほど、より丸く、大きすぎない星が検出されたことを意味します。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Is the 
-score a measure of the absolute quality of a picture?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">No. 
-The score is a relative measure that is only used to sort the pictures of 
-roughly the same area in order to keep only the best pictures for stacking.<br>
-If  the
-<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="technical.htm#rawdecod"> development process settings</A> are modified you must register the pictures 
-again and a new score will be computed.</span></p>
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">スコアは画像の絶対的な品質の尺度ですか？<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">いいえ。スコアは、スタッキングのために最良の画像のみを残す目的で、ほぼ同じ領域の画像をソートするためだけに使用される相対的な尺度です。<br>
+<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="technical.htm#rawdecod">現像（デベロップ）プロセスの設定</A>が変更された場合は、画像を再度レジストレーションする必要があり、新しいスコアが計算されます。</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-GB">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
 <span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="Stacking"></a>Stacking</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
+<a name="Stacking"></a>スタッキング</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
 </span></b><b>
-<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>The resulting 
-image shows multiple sets of stars on all the picture<br>
+<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>結果の画像に、星のセットが複数重なって表示される。<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Multiple sets of stars is a sure sign that the alignment process is relying on 
-"false" stars.<br>
-The main reason is that hot pixels are perturbing the registering process and 
-thus are creating false stars.<br>
-You can try to automatically detect hot pixels (see Registering Options) or, 
-much better, load and check your dark frames before starting the registering 
-process.<br>
-All checked dark, flat and offsets frames will be applied to each light frame 
-before the registering process guaranteeing that no hot pixels or artefact will 
-perturb the star detection which will be much better and accurate. </span></p>
+星のセットが複数表示されるのは、位置合わせプロセスが「偽の」星に依存している明確な兆候です。<br>
+主な理由は、ホットピクセルがレジストレーションプロセスを妨害し、偽の星を作成していることです。<br>
+自動的にホットピクセルを検出するように試すか（レジストレーションオプションを参照）、またはレジストレーションプロセスを開始する前にダークフレームを読み込んでチェックしておくことをおすすめします（こちらの方がはるかに良い方法です）。<br>
+チェック済みのダーク、フラット、オフセットの各フレームは、レジストレーションプロセスの前に各ライトフレームに適用されます。これにより、ホットピクセルやアーティファクトが星の検出を妨害することがなくなり、はるかに正確で良好な結果が得られます。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b>
-<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The resulting 
-image shows a heavily cropped image in the upper left corner<br>
+<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">結果の画像が左上隅にひどくトリミングされて表示される。<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-This is the result of registering the light frames using the super pixel mode 
-and stacking them in another mode.<br>
-When changing from or to the super pixel mode it is necessary to register the 
-light frames again.</span></p>
+これは、スーパーピクセルモードでライトフレームをレジストレーションし、別のモードでスタックした結果です。<br>
+スーパーピクセルモードへ変更、またはスーパーピクセルモードから変更する場合は、ライトフレームを再度レジストレーションする必要があります。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font size="2"><b><span style="FONT-FAMILY: Arial">My dark frames have not 
-all the same exposure time and DeepSkyStacker does not group them together.</span></b></font><b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
-</span></b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">If you don't use 
-an automatic way to take each frame it is often possible that the exposure times 
-are different by a few seconds and in this case DeepSkyStacker does not group 
-them together to create master dark.<br>
-You can force the exposure time for each frame to the same value by selecting 
-the frames in the list an by using the context menu to edit the
-<A href="userguide.htm#contextmenu">properties of the frames</A>.</span></p>
+<p align="justify"><font size="2"><b><span style="FONT-FAMILY: Arial">すべてのダークフレームが同じ露出時間ではなく、DeepSkyStackerがグループ化してくれません。</span></b></font><b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
+</span></b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">各フレームを自動的に撮影しない場合、露出時間が数秒異なっていることがよくあります。このような場合、DeepSkyStackerはマスターダークを作成するためにこれらをグループ化しません。<br>
+リストからフレームを選択し、コンテキストメニューを使用して<A href="userguide.htm#contextmenu">フレームのプロパティ</A>を編集することで、各フレームの露出時間を同じ値に強制的に設定できます。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font size="2"><b><span style="FONT-FAMILY: Arial">My resulting image is very 
-dark. Is it normal?<br>
-</span></b></font><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAW images 
-are very dark and stacking them create a very dark resulting image.<br>
-To view the details in the image the histogram must be stretched by adjusting 
-the RGB levels and the luminance in the <A href="userguide.htm#processingtab">
-Processing Tab</A>.</span></p>
+<p align="justify"><font size="2"><b><span style="FONT-FAMILY: Arial">結果の画像が非常に暗いです。これは正常ですか？<br>
+</span></b></font><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAW画像は非常に暗く、それらをスタッキングすると非常に暗い画像になります。<br>
+画像の詳細を表示するには、<A href="userguide.htm#processingtab">処理タブ</A>でRGBレベルと輝度を調整してヒストグラムをストレッチする必要があります。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font size="2"><span style="FONT-FAMILY: Arial"><b>How do I 
-align the resulting images of 4 stacks (red, green, blue and luminance)?<br>
-</b>To align the resulting images on the same reference frame just add the 
-reference frame to the list even if it is not from the same stack, force 
-DeepSkyStacker to use it as the reference frame (using the
-<A href="userguide.htm#contextmenu">context menu</A>) but left it unchecked. <br>
-This tells DeepSkyStacker to use it as the reference frame but to not add it to 
-the stack.</span></font></p>
+<p align="justify"><font size="2"><span style="FONT-FAMILY: Arial"><b>4つのスタック（赤、緑、青、および輝度）の結果画像を位置合わせするにはどうすればよいですか？<br>
+</b>同じ基準フレームに結果画像を位置合わせするには、同じスタックからのものでなくてもよいので、その基準フレームをリストに追加し、DeepSkyStackerにそれを基準フレームとして使用するよう強制します（<A href="userguide.htm#contextmenu">コンテキストメニュー</A>を使用）。ただし、そのフレームのチェックは外しておきます。<br>
+これにより、DeepSkyStackerにそれを基準フレームとして使用させますが、スタックには追加させないようにすることができます。</span></font></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-GB">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
 <span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="Processing"></a>Processing<br>
-</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">What is 
-the DSSSettings.DSSSettings file created in the DeepSkyStacker.exe folder?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-DSSSettings.DSSSettings file contains all the adjustment settings that can be 
-saved and loaded from the processing tab.</span></p>
+<a name="Processing"></a>処理<br>
+</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DeepSkyStacker.exeフォルダに作成されるDSSSettings.DSSSettingsファイルは何ですか？<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DSSSettings.DSSSettingsファイルには、処理タブから保存および読み込み可能なすべての調整設定が含まれています。</span></p>
 <hr color="#0000ff">
 <p align="justify"><b><font face="Arial" size="4" color="#ff0000">
-<a name="Performances"></a>Performance<br>
-</font><font face="Arial" size="2">How to speed up stacking</font></b><font size="2" face="Arial"><b>?<br>
-</b>Besides the obvious answers (faster processor, more memory), the best way to 
-speed up processing is to use the non interpolation modes (<A href="technical.htm#bayerdrizzle">Bayer 
-Drizzle and Super Pixel</A>) or the bilinear and AHD interpolations which are all working only on the raw files with only 
-one monochrome 16 bits channel instead of 3 RGB channels.<br>
-The picture decoding is faster (fast or no interpolation), the required memory is 
-divided by 3 and flat, dark and offset frames are computed and internally stored with only 
-one plane instead of 3.<br>
+<a name="Performances"></a>パフォーマンス<br>
+</font><font face="Arial" size="2">スタッキングを高速化する方法</font></b><font size="2" face="Arial"><b>?<br>
+</b>明白な答え（より高速なプロセッサ、より多くのメモリ）以外で、処理を高速化する最善の方法は、非補間モード（<A href="technical.htm#bayerdrizzle">ベイヤー・ドリズルおよびスーパーピクセル</A>）を使用するか、バイリニアおよびAHD補間を使用することです。これらはすべて、3つのRGBチャンネルではなく1つのモノクロ16ビットチャンネルのみを持つRAWファイルに対してのみ機能します。<br>
+画像のデコードがより高速になり（補間なしまたは高速）、必要なメモリは1/3に削減され、フラット、ダーク、オフセットフレームは3つのプレーンではなく1つのプレーンのみで計算および内部保存されます。<br>
 <br>
-Another way to get the resulting image faster is to use a
-<A href="technical.htm#customrect">Custom Rectangle</A> which contains only the 
-interesting part of the image.</font></p>
+結果画像をより速く取得するもう1つの方法は、画像の関心のある部分のみを含む<A href="technical.htm#customrect">カスタム矩形</A>を使用することです。</font></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-GB">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
 <span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="saveresult"></a>Load/Save</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
-</span></b><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>Photoshop 
-can not open the 32 bit (integer) TIFF files created by DeepSkyStacker?<br>
+<a name="saveresult"></a>読み込み/保存</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
+</span></b><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><BR>PhotoshopでDeepSkyStackerが作成した32ビット（整数）のTIFFファイルを開くことができません。<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Older versions 
-of Photoshop will indeed no open such files.&nbsp; You must save the file in 32 bit (rational) TIFF file format to open them 
-later in Photoshop. <br>
-Software like 
-Pleiades’ PixInsight can open 32 bit (integer) TIFF files created by 
-DeepSkyStacker.</span></p>
+古いバージョンのPhotoshopでは、このようなファイルを開くことはできません。後でPhotoshopで開くには、32ビット（有理数/Rational）TIFFファイル形式でファイルを保存する必要があります。<br>
+PleiadesのPixInsightなどのソフトウェアであれば、DeepSkyStackerが作成した32ビット（整数）のTIFFファイルを開くことができます。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<b>Does DeepSkyStacker use the registry to store settings?<br>
-</b>Yes, on Windows it does do so.&nbsp;DeepSkyStacker stores all the settings associated with the user in 
-the registry database: last folders for each kind of file, last dialog 
-settings... <br>
-Everything is stored in the HKEY_CURRENT_USER\Software\DeepSkyStacker key.</span></p>
+<b>DeepSkyStackerは設定の保存にレジストリを使用しますか？<br>
+</b>はい、Windowsでは使用します。DeepSkyStackerは、ユーザーに関連するすべての設定（各種類のファイルの最後のフォルダ、最後のダイアログ設定など）をレジストリデータベースに保存します。<br>
+すべてHKEY_CURRENT_USER\Software\DeepSkyStackerキーに保存されます。</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-GB">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
 <span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="Misc"></a>Miscellaneous</span></b><span lang="EN-GB"><br>
-</span><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why 
-DeepSkyStacker?<br>
+<a name="Misc"></a>その他</span></b><span lang="EN-GB"><br>
+</span><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">なぜDeepSkyStackerなのですか？<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Simply because spending countless hours repeating the same tasks other and other 
-for each new set of pictures has stopped appealing to me.<br>
-Every owner of a DSLR will understand what I am talking about: TIFF transform 
-(or CFA for the bravest), registering, stacking...<br>
+新しい画像のセットごとに同じタスクを何度も繰り返す作業に、うんざりしたからです。<br>
+デジタル一眼レフのすべての所有者なら、私の言っていることがわかるはずです: TIFF変換（あるいは、より勇敢な人ならCFA）、レジストレーション、スタッキング...<br>
 <br>
-After testing a lot of memory hungry software I decided to write the software 
-that will solve my problem: getting a whole set of pictures (sometimes several 
-hundreds) and doing all the process automatically so that I can go to sleep 
-knowing that the following morning I can start the post-processing which is the 
-fun part.</span></p>
+メモリを大量に消費する多くのソフトウェアをテストした後、自分の問題を解決するソフトウェアを書くことにしました。それは、一連の画像全体（数百枚になることもある）を取得し、すべてのプロセスを自動的に実行することです。そうすれば、翌朝には一番楽しい作業である画像処理を開始できることを知って、安心して眠ることができます。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why not 
-planetary pictures?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why? 
-Because I don't do planetary so I have no experience and I wouldn't know where 
-to begin.<br>
-Maybe one day I will find an interest in it and I will write a PlanetaryStacker 
-... but don't count on it anytime soon.</span></p>
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">なぜ惑星の画像を対象としないのですか？<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">なぜかって？惑星撮影はやらないので経験がなく、どこから手をつければいいのかわからないからです。<br>
+いつか興味を持つようになり、PlanetaryStackerを書くかもしれませんが……すぐには期待しないでください。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">And 
-DeepSkyStacker 1.0?<br>
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DeepSkyStacker 1.0はどうなりましたか？<br>
 </span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-DeepSkyStacker 1.0 was only used by me and some close friends. It was not 
-intended to go public and even if the engine was already there a lot a features 
-were missing.<br>
-DeepSkyStacker 2.0 is the first public release.</span></p>
+DeepSkyStacker 1.0は私と親しい友人しか使用していませんでした。一般公開する予定はなく、エンジンはすでに存在していましたが、多くの機能が欠けていました。<br>
+DeepSkyStacker 2.0が初のパブリックリリースです。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<b>In what language  DeepSkyStacker is coded?<br>
-</b>DeepSkyStacker is coded in C++.</span></p>
+<b>DeepSkyStackerはどの言語で記述されていますか? <br>
+</b>DeepSkyStackerはC++で記述されています。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">How are Camara&nbsp;RAW files decoded?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-RAW files are decoded using <A href="https://www.libraw.org/" >LibRaw</A> 
-  &nbsp;Copyright ©&nbsp;2008-2019 LibRaw LLC, which is the successor to the superb DCRAW 
-decoder written by Dave Coffin.<br>
-Thanks
-are due to  Dave Coffin for suggesting to Luc Coiffier&nbsp;the
-<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="technical.htm#bayerdrizzle">Bayer Drizzle</A> algorithm.</span></p>
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">カメラのRAWファイルはどのようにデコードされますか? <br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAWファイルは、Dave Coffinが書いた素晴らしいDCRAWデコーダーの後継である LibRaw Copyright © 2008-2019 LibRaw LLC を使用してデコードされます。<br>
+Luc Coiffierに<A href="technical.htm#bayerdrizzle">ベイヤードリズル（Bayer Drizzle）</A>アルゴリズムを提案してくれたDave Coffinに感謝します。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Is my 
-DSLR file format supported?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The list of all 
-the DSLRs supported (presently more than 300) is increasing all the time. Go to 
-the <A href="https://www.libraw.org/" >LibRaw</A> website to know if your DSLR 
-is supported.<BR>        <br>
-               
-  </span>
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">私のデジタル一眼レフのファイル形式はサポートされていますか？<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">サポートされているすべてのデジタル一眼レフのリスト（現在は300以上）は常に増加しています。お使いのデジタル一眼レフがサポートされているかどうかは、<A href="https://www.libraw.org/" >LibRaw</A>のウェブサイトを確認してください。<BR>        <br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp; </span>
 <hr color="#0000ff" size="1">
 
 <P></P>
 <p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<b>How are read and written the TIFF pictures?<br>
-</b>The TIFF files are read and written using the most excellent libtiff library</span></p>
+<b>TIFF画像はどのように読み書きされますか？<br>
+</b>TIFFファイルは、非常に優れたlibtiffライブラリを使用して読み書きされます。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<b>How are read  and written the FITS files?<br>
-</b>The FITS files are read  using the most excellent CFitsIO library</span></p>
+<b>FITSファイルはどのように読み書きされますか？<br>
+</b>FITSファイルは、非常に優れたCFitsIOライブラリを使用して読み込まれます。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><font face="Arial" size="2">Is it possible to change the 
-language used by DeepSkyStacker?</font></b><font size="2" face="Arial"><b><br>
-</b>The language used by DeepSkyStacker (French, English, Spanish, Czech, Italian, Catalan, 
-German or Dutch) is 
-automatically set from the language used in the Operating System.<br>
-If you want to force another language you can change it from the About box.<br>
-DeepSkyStacker must be started again for the new language setting to be 
-effective.</font></p>
+<p align="justify"><b><font face="Arial" size="2">DeepSkyStackerで使用される言語を変更することは可能ですか？</font></b><font size="2" face="Arial"><b><br>
+</b>DeepSkyStackerで使用される言語（フランス語、英語、スペイン語、チェコ語、イタリア語、カタルーニャ語、ドイツ語、またはオランダ語）は、オペレーティングシステムで使用されている言語から自動的に設定されます。<br>
+別の言語を使用したい場合は、バージョン情報（About）ボックスから変更できます。<br>
+新しい言語設定を有効にするには、DeepSkyStackerを再起動する必要があります。</font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><font size="2" face="Arial"><b>How DeepSkyStacker checks that a new version 
-is available?<br>
-</b>To check that a new version is available DeepSkyStacker connects to the 
-website at startup and compare the currently used version with the downloadable 
-version.<br>
-DeepSkyStacker does not send any personal information to the website or 
-anywhere else during this process. It just downloads a very small file 
-containing the necessary information.</font></p>
+<p align="justify"><font size="2" face="Arial"><b>DeepSkyStackerは新しいバージョンが利用可能かどうかをどのようにチェックしますか？<br>
+</b>新しいバージョンが利用可能かどうかをチェックするために、DeepSkyStackerは起動時にウェブサイトに接続し、現在使用されているバージョンとダウンロード可能なバージョンを比較します。<br>
+DeepSkyStackerは、このプロセスの間に個人情報をウェブサイトやその他の場所に送信することはありません。必要な情報を含む非常に小さなファイルをダウンロードするだけです。</font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Is 
-DeepSkyStacker Open Source? Is the source code available?<br>
-</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Yes, 
-DeepSkyStacker has been Open Source since 2018.&nbsp; The&nbsp;<A 
-href="https://github.com/deepskystacker/DSS">DeepSkyStacker Project</A> 
-is stored on github.</span>
+<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<b>DeepSkyStackerはオープンソースですか？ソースコードは利用可能ですか？<br>
+</b>はい、DeepSkyStackerは2018年以来オープンソースになっています。<A href="https://github.com/deepskystacker/DSS">DeepSkyStacker Project</A>はGitHubに保存されています。</span>
 
 <hr color="#0000ff" size="1">
 
 <P></P>
 <p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-<b>How do I uninstall DeepSkyStacker?<br>
-</b>Simply use the uninstaller from the Add/Remove programs in the control 
-panel.</span></p>
+<b>DeepSkyStackerをアンインストールするにはどうすればよいですか？<br>
+</b>コントロールパネルの「プログラムの追加と削除」からアンインストーラーを使用するだけです。</span></p>
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

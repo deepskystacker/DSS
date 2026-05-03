@@ -4,73 +4,56 @@
 <meta http-equiv="Content-Language" content="en-us">
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 <meta name="ProgId" content="FrontPage.Editor.Document">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>DeepSkyStacker - Command Line User's Manual</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DeepSkyStacker - コマンドライン ユーザーマニュアル</title>
 </head>
 
 <body>
 
-<p><b><font face="Arial" size="5">Command Line User's Manual<br>
-</font></b><font face="Arial">The stand alone User's Manual is available
-<a href="userguide.htm">here</a></font></p>
+<p><b><font face="Arial" size="5">コマンドライン ユーザーマニュアル<br>
+</font></b><font face="Arial">単体版のユーザーマニュアルは<a href="userguide.htm">こちら</a>からご利用いただけます</font></p>
 <hr color="#0000FF">
-<p><b><font face="Arial" size="4" color="#FF0000">Introduction</font></b><font face="Arial"><b><br>
-</b><font size="2">The command line version of DeepSkyStacker is intended to 
-simplify all the batch processing.<br>
-The command line version of DeepSkyStacker is sharing the registering and 
-stacking engine of DeepSkyStacker. In other words you will have exactly the same 
-results using either the command line or stand alone versions.</font></font></p>
-<p><font face="Arial" size="2">At this time, all the settings are shared between 
-the stand-alone DeepSkyStacker and the command-line DeepSkyStacker including RAW 
-settings, registering and stacking settings, temporary file folder...</font></p>
-<p><font face="Arial" size="2">It means that before using the command-line 
-version you must use the stand-alone version to set all the values accordingly 
-to your settings.<br>
-In future versions it will be possible to override some settings with additional 
-command-line parameters.</font></p>
+<p><b><font face="Arial" size="4" color="#FF0000">はじめに</font></b><font face="Arial"><b><br>
+</b><font size="2">DeepSkyStackerのコマンドライン版は、すべてのバッチ処理を簡素化することを目的としています。<br>
+DeepSkyStackerのコマンドライン版は、DeepSkyStackerの登録（位置合わせ）およびスタッキングエンジンを共有しています。言い換えれば、コマンドライン版と単体版のどちらを使用しても、まったく同じ結果が得られます。</font></font></p>
+<p><font face="Arial" size="2">現在、すべての設定は、単体版のDeepSkyStackerとコマンドライン版のDeepSkyStackerの間で共有されています。これには、RAW設定、登録およびスタッキング設定、一時ファイルフォルダなどが含まれます。</font></p>
+<p><font face="Arial" size="2">つまり、コマンドライン版を使用する前に、単体版を使用して設定に合わせてすべての値を設定しておく必要があります。<br>
+今後のバージョンでは、追加のコマンドラインパラメータを使用して、一部の設定を上書きできるようになる予定です。</font></p>
 <hr color="#0000FF">
-<p><b><font face="Arial" size="4" color="#FF0000">Command Line parameters</font></b><font face="Arial"><b><br>
-</b><font size="2">The command line version of DeepSkyStacker is invoked by 
-using DeepSkyStackerCL.exe located in the DeepSkyStacker folder at the time of 
-the installation.</font></font></p>
-<p><font face="Arial" size="2">The command line should look like:</font></p>
+<p><b><font face="Arial" size="4" color="#FF0000">コマンドラインパラメータ</font></b><font face="Arial"><b><br>
+</b><font size="2">DeepSkyStackerのコマンドライン版は、インストール時にDeepSkyStackerフォルダに配置されるDeepSkyStackerCL.exeを使用して呼び出されます。</font></font></p>
+<p><font face="Arial" size="2">コマンドラインは以下のようになります。</font></p>
 <p><b><font face="Courier New" size="2">DeepSkyStackerCL.exe [/r|R] [/S] [/SC] 
 [/SR] [/O:&lt;OutputFileName&gt;] [/OFxxx] [/OCx] &lt;ListFileName&gt;</font></b></p>
-<p><font face="Arial" size="2">Where the parameters are:</font></p>
+<p><font face="Arial" size="2">パラメータは以下の通りです。</font></p>
 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1">
   <tr>
     <td width="27%"><font face="Arial" size="2">/r<br>
 &nbsp;</font></td>
-    <td width="73%"><font face="Arial" size="2">Register light frames (only if 
-    they are not already registered)<br>
+    <td width="73%"><font face="Arial" size="2">ライトフレームを登録（すでに登録されていない場合のみ）<br>
 &nbsp;</font></td>
   </tr>
   <tr>
     <td width="27%"><font face="Arial" size="2">/R<br>
 &nbsp;</font></td>
-    <td width="73%"><font face="Arial" size="2">Register light frames (even if 
-    they are already registered - equivalent to the force register option)<br>
+    <td width="73%"><font face="Arial" size="2">ライトフレームを登録（すでに登録されている場合でも - 強制登録オプションと同等）<br>
 &nbsp;</font></td>
   </tr>
   <tr>
     <td width="27%"><font face="Arial" size="2">/S<br>
 &nbsp;</font></td>
-    <td width="73%"><font face="Arial" size="2">Stack light frames<br>
+    <td width="73%"><font face="Arial" size="2">ライトフレームをスタック<br>
 &nbsp;</font></td>
   </tr>
   <tr>
     <td width="27%" valign="top"><font face="Arial" size="2">/SC</font></td>
-    <td width="73%"><font face="Arial" size="2">Stack light frames and for each 
-    light frame create a file containing the  calibrated light 
-    frame.<br>
+    <td width="73%"><font face="Arial" size="2">ライトフレームをスタックし、ライトフレームごとにキャリブレーション済みのライトフレームを含むファイルを作成します。<br>
 &nbsp;</font></td>
   </tr>
   <tr>
     <td width="27%"><font face="Arial" size="2">/SR</font><br>
 &nbsp;</td>
-    <td width="73%"><font face="Arial" size="2">Stack light frames and for each 
-    light frame create a file containing the registered and calibrated light 
-    frame.<br>
+    <td width="73%"><font face="Arial" size="2">ライトフレームをスタックし、ライトフレームごとに登録およびキャリブレーション済みのライトフレームを含むファイルを作成します。<br>
 &nbsp;</font></td>
   </tr>
   <tr>
@@ -78,13 +61,10 @@ the installation.</font></font></p>
     <font face="Arial" size="2"><br>
     </font><br>
 &nbsp;</td>
-    <td width="73%"><font face="Arial" size="2">Optional name of the output file 
-    name (implies /S or /SC)<br>
-    By default the output file name is Autosave.tif and is located in the first 
-    light frame folder.<br>
-    Note that the output file will always be a TIFF file even if the extension 
-    is something else.<br>
-    The folder in which the file will be created must exist.<br>
+    <td width="73%"><font face="Arial" size="2">出力ファイル名のオプション指定（/S または /SC を意味します）<br>
+    デフォルトでは、出力ファイル名は Autosave.tif であり、最初のライトフレームフォルダに保存されます。<br>
+    拡張子が別のものであっても、出力ファイルは常にTIFFファイルになります。<br>
+    ファイルが作成されるフォルダが存在している必要があります。<br>
 &nbsp;</font></td>
   </tr>
   <tr>
@@ -93,12 +73,12 @@ the installation.</font></font></p>
     <br>
     </font><br>
 &nbsp;</td>
-    <td width="73%"><font face="Arial" size="2">Output file format.<br>
-    Possible values are:<br>
-    /OF16 or /OF16i : 16 bit integer precision<br>
-    /OF32 or /OF32i : 32 bit integer precision<br>
-    /OF32r : 32 bit rational precision (this is the default value)<br>
-&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">出力ファイル形式。<br>
+    指定可能な値:<br>
+    /OF16 または /OF16i : 16ビット整数精度<br>
+    /OF32 または /OF32i : 32ビット整数精度<br>
+    /OF32r : 32ビット有理数精度（これがデフォルト値です）<br>
+    </font></td>
   </tr>
   <tr>
     <td width="27%"><font face="Arial" size="2">/OCx<br>
@@ -106,113 +86,86 @@ the installation.</font></font></p>
     <br>
     </font><br>
 &nbsp;</td>
-    <td width="73%"><font face="Arial" size="2">Output compression.<br>
-    Possible values are:<br>
-    /OC0 : no compression (this is the default value)<br>
-    /OC1 : LZW compression<br>
-    /OC2 : ZIP (deflate) compression<br>
-&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">出力圧縮。<br>
+    指定可能な値:<br>
+    /OC0 : 圧縮なし（これがデフォルト値です）<br>
+    /OC1 : LZW圧縮<br>
+    /OC2 : ZIP (deflate) 圧縮<br>
+    </font></td>
   </tr>
   <tr>
     <td width="27%" valign="top"><font face="Arial" size="2">/FITS</font></td>
-    <td width="73%"><font face="Arial" size="2">Save the output file in FITS 
-    format (default is TIFF)<br>
+    <td width="73%"><font face="Arial" size="2">出力ファイルをFITS形式で保存します（デフォルトはTIFF）<br>
 &nbsp;</font></td>
   </tr>
   <tr>
     <td width="27%"><font face="Arial" size="2">&lt;ListFileName&gt;<br>
     <br>
-&nbsp;</font></td>
-    <td width="73%"><font face="Arial" size="2">Full path to a list file like 
-    one created by the stand-alone version of DeepSkyStacker<br>
-    (see format details below).<br>
-&nbsp;</font></td>
+    </font></td>
+    <td width="73%"><font face="Arial" size="2">単体版のDeepSkyStackerで作成されるような、リストファイルへのフルパス<br>
+    （詳細なフォーマットは下記参照）<br>
+    </font></td>
   </tr>
 </table>
 <hr color="#0000FF">
-<p><b><font face="Arial" size="4" color="#FF0000">Examples</font></b><font face="Arial"><b><br>
+<p><b><font face="Arial" size="4" color="#FF0000">使用例</font></b><font face="Arial"><b><br>
 </b></font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R 
 c:\MyDSSLists\MyList.txt</b><br>
-</font><font size="2" face="Arial">Will register (even already registered) all 
-the light frames of the </font><font face="Courier New" size="2">c:\MyDSSLists\MyList.txt 
-file list</font><font size="2" face="Arial">.<br>
-If the file list contains offsets/bias, dark and flat frames they will be used 
-(and the masters will be created) by the registering process.<br>
+</font><font size="2" face="Arial">ファイルリスト </font><font face="Courier New" size="2">c:\MyDSSLists\MyList.txt </font><font size="2" face="Arial">内のすべてのライトフレームを（すでに登録済みであっても）登録します。<br>
+ファイルリストにオフセット/バイアス、ダーク、フラットフレームが含まれている場合、それらは登録処理で使用され（マスターが作成され）ます。<br>
 <br>
 </font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R /S 
 c:\MyDSSLists\MyList.txt</b><br>
-</font><font size="2" face="Arial">Will register (even already registered) then 
-stack all the light frames of the </font><font face="Courier New" size="2">
-c:\MyDSSLists\MyList.txt file list</font><font size="2" face="Arial">.<br>
-If the file list contains offsets/bias, dark and flat frames they will be used 
-(and the masters will be created) by the registering and the stacking processes.<br>
-The output file will be a 32 bit rational TIFF file named Autosave.tif located 
-in the folder of the first light frame of the list.</font></p>
+</font><font size="2" face="Arial">ファイルリスト </font><font face="Courier New" size="2">
+c:\MyDSSLists\MyList.txt </font><font size="2" face="Arial">内のすべてのライトフレームを（すでに登録済みであっても）登録し、その後スタックします。<br>
+ファイルリストにオフセット/バイアス、ダーク、フラットフレームが含まれている場合、それらは登録およびスタッキング処理で使用され（マスターが作成され）ます。<br>
+出力ファイルは、リストの最初のライトフレームのフォルダにある Autosave.tif という名前の32ビット有理数TIFFファイルになります。</font></p>
 <p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /r /SR 
 c:\MyDSSLists\MyList.txt</b><br>
-</font><font size="2" face="Arial">Will register (only not already registered) 
-then stack all the light frames of the </font><font face="Courier New" size="2">
-c:\MyDSSLists\MyList.txt file list</font><font size="2" face="Arial">.<br>
-If the file list contains offsets/bias, dark and flat frames they will be used 
-(and the masters will be created) by the registering and the stacking processes.<br>
-The output file will be a 32 bit rational TIFF file named Autosave.tif located 
-in the folder of the first light frame of the list.<br>
-Furthermore for each stackable light frame a TIFF of FITS file named from the light 
-frame name with a .reg.tif or .reg.fts extension will be created that will contain the 
-registered and calibrated light frame. </font></p>
+</font><font size="2" face="Arial">ファイルリスト </font><font face="Courier New" size="2">
+c:\MyDSSLists\MyList.txt </font><font size="2" face="Arial">内のすべてのライトフレームを（まだ登録されていない場合のみ）登録し、その後スタックします。<br>
+ファイルリストにオフセット/バイアス、ダーク、フラットフレームが含まれている場合、それらは登録およびスタッキング処理で使用され（マスターが作成され）ます。<br>
+出力ファイルは、リストの最初のライトフレームのフォルダにある Autosave.tif という名前の32ビット有理数TIFFファイルになります。<br>
+さらに、スタック可能な各ライトフレームに対して、ライトフレーム名に .reg.tif または .reg.fts の拡張子が付いたTIFFまたはFITSファイルが作成され、登録およびキャリブレーションされたライトフレームが格納されます。 </font></p>
 <p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /S /OF16i /OC2 /O:c:\MyDSSResults\Result.tif 
 c:\MyDSSLists\MyList.txt</b><br>
-</font><font size="2" face="Arial">Will stack all the light frames of the </font>
-<font face="Courier New" size="2">c:\MyDSSLists\MyList.txt file list</font><font size="2" face="Arial">.<br>
-If the file list contains offsets/bias, dark and flat frames they will be used 
-(and the masters will be created) by the stacking processes.<br>
-The output file will be a 16 bit integer ZIP(DEFLATE) compressed TIFF file named
-</font><font face="Courier New" size="2">c:\MyDSSResults\Result.tif</font><font size="2" face="Arial">.</font></p>
+</font><font size="2" face="Arial">ファイルリスト </font>
+<font face="Courier New" size="2">c:\MyDSSLists\MyList.txt </font><font size="2" face="Arial">内のすべてのライトフレームをスタックします。<br>
+ファイルリストにオフセット/バイアス、ダーク、フラットフレームが含まれている場合、それらはスタッキング処理で使用され（マスターが作成され）ます。<br>
+出力ファイルは、</font><font face="Courier New" size="2">c:\MyDSSResults\Result.tif</font><font size="2" face="Arial"> という名前の16ビット整数ZIP（DEFLATE）圧縮TIFFファイルになります。</font></p>
 <hr color="#0000FF">
 <p><font face="Arial"><b><font size="4" color="#FF0000">
-<a name="filelistformat"></a>File List format</font><br>
-</b><font size="2">A File List is a text file which structure is the following:</font></font></p>
-<p><font face="Arial" size="2">The first line must contain </font><b>
-<font size="2" face="Courier New" color="#0000FF">DSS file list</font></b><font face="Arial" size="2"><br>
-The second line must contain&nbsp; </font><font size="2"><b>
-<font color="#0000FF" face="Courier New">CHECKED</b>&lt;TAB&gt;<b>TYPE</b>&lt;TAB&gt;<b>FILE</b></font></font><font face="Arial" size="2"><br>
-Where &lt;TAB&gt; is the tabulation character (ASCII 09)<br>
+<a name="filelistformat"></a>ファイルリストフォーマット</font><br>
+</b><font size="2">ファイルリストは、次のような構造を持つテキストファイルです。</font></font></p>
+<p><font face="Arial" size="2">1行目には </font><b>
+<font size="2" face="Courier New" color="#0000FF">DSS file list</font></b><font face="Arial" size="2"> が含まれている必要があります。<br>
+2行目には&nbsp; </font><font size="2"><b>
+<font color="#0000FF" face="Courier New">CHECKED</b>&lt;TAB&gt;<b>TYPE</b>&lt;TAB&gt;<b>FILE</b></font></font><font face="Arial" size="2"> が含まれている必要があります。<br>
+ここで、&lt;TAB&gt;はタブ文字（ASCII 09）です。<br>
 <br>
-The other lines must be in the following form if they are describing a file 
-entry:<br>
+他の行は、ファイルエントリを説明する場合、次の形式にする必要があります。<br>
 </font><b><font size="2" face="Courier New" color="#0000FF">[checked]</b>&lt;TAB&gt;<b>[type]</b>&lt;TAB&gt;<b>[full 
 path name]</b></font><font face="Arial" size="2"><br>
 <br>
-Where </font><font color="#0000FF" face="Courier New" size="2"><b>[checked]</b></font><font face="Arial" size="2"> 
-is </font><font color="#0000FF" face="Courier New" size="2"><b>1</b></font><font face="Arial" size="2"> 
-if the frame is checked and </font>
-<font color="#0000FF" face="Courier New" size="2"><b>0</b></font><font face="Arial" size="2"> 
-if it's not checked.<br>
-(non checked frames are ignored by DeepSkyStackerCL)<br>
-Where </font><b><font color="#0000FF" face="Courier New" size="2">[type]</font></b><font face="Arial" size="2"> 
-is </font><b><font size="2" face="Courier New" color="#0000FF">light</font></b><font face="Arial" size="2"> 
-for a light frame (or </font><b>
-<font face="Courier New" size="2" color="#0000FF">reflight</font></b><font face="Arial" size="2"> 
-for the reference light frame), </font><b><font size="2" face="Courier New" color="#0000FF">
-dark</font></b><font face="Arial" size="2"> or </font><b>
-<font face="Courier New" size="2" color="#0000FF">darkflat</font></b><font face="Arial" size="2"> for a dark frame, </font><b>
-<font size="2" face="Courier New" color="#0000FF">flat</font></b><font face="Arial" size="2"> 
-for a flat frame and </font><b>
-<font size="2" face="Courier New" color="#0000FF">offset</font></b><font face="Arial" size="2"> 
-for an offset/bias frame.<br>
-Where </font><b><font size="2" face="Courier New" color="#0000FF">[full path 
-name]</font></b><font face="Arial" size="2"> is the full path name to the file.<br>
+ここで、</font><font color="#0000FF" face="Courier New" size="2"><b>[checked]</b></font><font face="Arial" size="2"> は、フレームがチェックされている場合は </font><font color="#0000FF" face="Courier New" size="2"><b>1</b></font><font face="Arial" size="2">、チェックされていない場合は </font>
+<font color="#0000FF" face="Courier New" size="2"><b>0</b></font><font face="Arial" size="2"> です。<br>
+（チェックされていないフレームはDeepSkyStackerCLによって無視されます）<br>
+ここで、</font><b><font color="#0000FF" face="Courier New" size="2">[type]</font></b><font face="Arial" size="2"> は、ライトフレームの場合は </font><b><font size="2" face="Courier New" color="#0000FF">light</font></b><font face="Arial" size="2">（またはリファレンスライトフレームの場合は </font><b>
+<font face="Courier New" size="2" color="#0000FF">reflight</font></b><font face="Arial" size="2">）、ダークフレームの場合は </font><b>
+<font size="2" face="Courier New" color="#0000FF">dark</font></b><font face="Arial" size="2"> または </font><b>
+<font size="2" face="Courier New" size="2" color="#0000FF">darkflat</font></b><font face="Arial" size="2">、フラットフレームの場合は </font><b>
+<font size="2" face="Courier New" color="#0000FF">flat</font></b><font face="Arial" size="2">、オフセット/バイアスフレームの場合は </font><b>
+<font size="2" face="Courier New" color="#0000FF">offset</font></b><font face="Arial" size="2"> です。<br>
+ここで、</font><b><font size="2" color="#0000FF" face="Courier New">[full path 
+name]</font></b><font face="Arial" size="2"> はファイルへのフルパス名です。<br>
 <br>
-If a line is describing a group change it must have the following form:<br>
+行がグループ変更を説明している場合は、次の形式にする必要があります。<br>
 </font><font face="Courier New" size="2" color="#0000FF"><b>#GROUPID#</b>&lt;Group 
 Number&gt;<br>
-</font><font face="Arial" size="2">All the files located after the line 
-describing the group change and until the next group change will be put in the 
-group &lt;Group Number&gt;. &lt;Group Number&gt; must be a positive integer value.<br>
-When no group is specified the files are put in the Main Group (ID 0).<br>
+</font><font face="Arial" size="2">グループ変更を記述する行の後のファイルから、次のグループ変更までのすべてのファイルは、グループ &lt;Group Number&gt; に配置されます。&lt;Group Number&gt; は正の整数値である必要があります。<br>
+グループが指定されていない場合、ファイルはメイングループ（ID 0）に配置されます。<br>
 <br>
-You can very easily create File Lists from DeepSkyStacker by using the Save File 
-List... command.</font></p>
+[Save File List...] コマンドを使用すると、DeepSkyStacker から非常に簡単にファイルリストを作成できます。</font></p>
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

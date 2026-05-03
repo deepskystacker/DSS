@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 
 <head>
 <meta http-equiv="Content-Language" content="en-us">
@@ -7,223 +7,152 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>How to create better images</title>
 <style>
-<!--
-.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
--->
 </style>
 </head>
 
 <body>
 
-<p><b><font face="Arial" size="5">The Theory<br>
-</font><font face="Arial" size="4">or How to create better images</font></b></p>
+<p><b><font face="Arial" size="5">理論<br>
+</font><font face="Arial" size="4">または、より良い画像を作成する方法</font></b></p>
 <blockquote>
   <p>
   <b>
-  <font face="Arial"><A href="#WhyCombine">Why combine?</A><br>
-  <A href="#CombineHowMany">How many frames?</A><br>
-  <A href="#Calibration">Calibration: how to use dark, flat and bias frames</A></font></b><br>
-  <b><font face="Arial"><A href="#ISOSpeed">Which ISO speed?</A></font></b><br>
-  <b><font face="Arial"><A href="#CalibrationProcess">The Calibration Process</A></font></b></p>
+  <font face="Arial"><A href="#WhyCombine">なぜ合成するのか？</A><br>
+  <A href="#CombineHowMany">フレームはいくつ必要か？</A><br>
+  <A href="#Calibration">キャリブレーション：ダーク、フラット、バイアスフレームの使い方</A></font></b><br>
+  <b><font face="Arial"><A href="#ISOSpeed">どのISO感度を選ぶべきか？</A></font></b><br>
+  <b><font face="Arial"><A href="#CalibrationProcess">キャリブレーションプロセス</A></font></b></p>
 </blockquote>
 <hr color="#0000ff">
 <p align="justify"><font face="Arial"><b><font size="4" color="#ff0000"><a name="WhyCombine">
-</a></font><font color="#ff0000" size="4">Why combine?</font><font size="2"><br>
-The answer is simple: only to increase the Signal to Noise Ratio (SNR).</font><br>
-</b><font size="2">Is the resulting image more luminous? No.<br>
-Is the resulting image more colorful? No.<br>
+</a></font><font color="#ff0000" size="4">なぜ合成するのか？</font><font size="2"><br>
+答えは単純です：信号対雑音比（SNR）を向上させるためだけです。</font><br>
+</b><font size="2">合成された画像は、より明るくなりますか？いいえ。<br>
+合成された画像は、より色鮮やかになりますか？いいえ。<br>
 <br>
-The goal of combing many images into one is only to increase the SNR. The 
-resulting images are neither more luminous or more colorful but they contain 
-much less noise which will let you stretch the histogram a lot more which will 
-give you more freedom to bring back colors and details.</font></font></p>
+多くの画像を1つに合成する目的は、SNRを向上させることだけです。合成された画像が明るくなったり、色鮮やかになったりするわけではありませんが、ノイズが大幅に減少するため、ヒストグラムを大幅に引き伸ばすことができ、色やディテールを復元するための自由度が高まります。</font></font></p>
 <table id="AutoNumber1" cellSpacing="1" width="100%" border="0">
   <tr>
     <td vAlign="top" width="38%">
-    <p style="MARGIN-RIGHT: 10px" class="Standard"><font face="Arial" size="2">The example on the 
-    right shows the resulting image from a stack of 1, 2, 4, 16 and 32 images.<br>
+    <p style="MARGIN-RIGHT: 10px" class="Standard"><font face="Arial" size="2">右側の例は、1、2、4、16、および32枚の画像をスタックした結果を示しています。<br>
     <br>
-    No calibration was done and some hot pixels are visible in some cases (no 
-    dark and bias subtraction, no flat division).<br>
+    キャリブレーションは行われておらず、場合によってはホットピクセルが目立つことがあります（ダークやバイアスの減算、フラットの除算は行われていません）。<br>
     <br>
-    Mouse over the text to see the result of the stack for&nbsp; <br>
+    結果を確認するには、テキストの上にマウスを置きます：<br>
+    &nbsp;&nbsp;
     <b>&nbsp;&nbsp;
-    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_1.jpg';;document.getElementById('LEGEND01').innerHTML='One Light Frame';" href="javascript:void(0);">
-    1 image</A></b><br>
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_1.jpg';;document.getElementById('LEGEND01').innerHTML='ライトフレーム1枚';" href="javascript:void(0);">
+    1枚の画像</A></b><br>
     <b>&nbsp;&nbsp;
-    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_2.jpg';document.getElementById('LEGEND01').innerHTML='Stack of 2 light frames';" href="javascript:void(0);">
-    2 images</A></b><br>
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_2.jpg';document.getElementById('LEGEND01').innerHTML='2枚のライトフレームのスタック';" href="javascript:void(0);">
+    2枚の画像</A></b><br>
     <b>&nbsp;&nbsp;
-    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_4.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 4 light frames';" href="javascript:void(0);">
-    4 images</A></b><br>
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_4.jpg';;document.getElementById('LEGEND01').innerHTML='4枚のライトフレームのスタック';" href="javascript:void(0);">
+    4枚の画像</A></b><br>
     <b>&nbsp;&nbsp;
-    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_16.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 16 light frames';" href="javascript:void(0);">
-    16 images</A></b><br>
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_16.jpg';;document.getElementById('LEGEND01').innerHTML='16枚のライトフレームのスタック';" href="javascript:void(0);">
+    16枚の画像</A></b><br>
     <b>&nbsp;&nbsp;
-    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_32.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 32 light frames';" href="javascript:void(0);">
-    32 images</A></b></font></p>
-    <p class="Standard"><font face="Arial" size="2">You can see that the resulting image is not 
-    lighter or more colorful when the number of stacked light frames is 
-    increasing but is much smoother.</font></p>
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_32.jpg';;document.getElementById('LEGEND01').innerHTML='32枚のライトフレームのスタック';" href="javascript:void(0);">
+    32枚の画像</A></b></font></p>
+    <p class="Standard"><font face="Arial" size="2">スタックされるライトフレームの枚数が増加しても、画像が明るくなったり色鮮やかになったりするわけではありませんが、はるかに滑らかになっていることがわかります。</font></p>
     <p>&nbsp;</p></td>
     <td width="62%">
     <p align="center">
     <IMG id=STACKRESULT01 border=0 name=STACKRESULT01 src="../images/Theory/Stack_2.jpg" width=591 height=591><br>
     <font face="Arial" size="2"><b id="LEGEND01" name="LEGEND01">
-    One Light Frame</b></font></p></td>
+    ライトフレーム1枚</b></font></p></td>
   </tr>
 </table>
 <hr color="#0000ff">
 <p align="justify"><b><font face="Arial" size="4" color="#ff0000"><a name="CombineHowMany"></a>
-How many frames</font></b><font face="Arial"><b><font color="#ff0000" size="4">?</font><font size="2"><br>
-The more, the better but above some threshold it is less efficient.</font><br>
-</b><font size="2">The signal to noise ration in increasing with the square root 
-of the number of combined frames regardless of the exposure time of each frame.<br>
-This is true with all the combining methods (average, median, kappa-sigma 
-clipping, auto-adaptive weighted average, ...) except entropy weighted average 
-since this one in using the entropy to weight each pixel and thus is increasing 
-the noise that is a big entropy contributor.</font></font><font face="Arial" size="2">.</font></p>
-<p align="justify"><font face="Arial" size="2">This means that if your base SNR is 1, when you 
-combine 10 images the SNR increases by 3.16 (square root of 10). For 30 images 
-it is 5.47, for 50 images it is 7.07, for 100 images it is 10, for 300 images it 
-is 17.32.</font></p>
-<p align="justify"><font face="Arial" size="2">As you can see to gain a 7 ratio 50 frames are 
-needed between 1 and 50, but 200 frames are needed above 100.</font></p>
-<p align="justify"><font face="Arial" size="2"><b>Are 100 x 1 minute and 
-10x10 minutes giving the same result?</b><br>
-Yes when considering the SNR but definitely No when considering the final result.<br>
-the difference between a 10 minutes exposure and a 1 minute exposure is that the 
-SNR in the 10 minutes exposure is 3.16 higher than in 1 minute exposure.</font></p>
-<p align="justify"><font face="Arial" size="2">Thus you will get the same SNR if you combine 10 
-light frames of 10 minutes or 100 light frames of 1 minute. However you will 
-probably not have the same signal (the interesting part). Simply put you will 
-only get a signal if your exposure is long enough to catch some photons on most 
-of the light frames so that the signal is not considered as noise.</font></p>
-<p align="justify"><font face="Arial" size="2">For example for a very faint nebula you might get 
-a few photons every 10 minutes. If you are using 10 minutes exposures, you will 
-have captured photons on each of your light frames and when combined the signal 
-will be strong. <br>
-If you are using 1 minute exposures you will capture photons only for some of 
-your light frames and when combined the photons will be considered as noise 
-since they are not in most of the light frames.</font></p>
-<p align="justify"><font face="Arial" size="2"><b>Can I combine two (or more) resulting images?<br>
-</b>Absolutely, the square root rule applies with a small twist.<br>
+フレームはいくつ必要か</font></b><font face="Arial"><b><font color="#ff0000" size="4">？</font><font size="2"><br>
+多ければ多いほど良いですが、あるしきい値を超えると効率が低下します。</font><br>
+</b><font size="2">各フレームの露光時間に関係なく、信号対雑音比（SNR）は合成フレーム数の平方根に比例して増加します。<br>
+このルールは、エントロピー加重平均を除くすべての合成手法（平均、メディアン、カッパ-シグマクリッピング、自動適応型加重平均など）に当てはまります。エントロピー加重平均はエントロピーを使用して各ピクセルの重みを付けるため、エントロピーの寄与が大きいノイズが増加してしまいます。</font></font><font face="Arial" size="2">.</font></p>
+<p align="justify"><font face="Arial" size="2">これは、ベースのSNRが1である場合、10枚の画像を合成するとSNRが3.16（10の平方根）増加することを意味します。30枚では5.47、50枚では7.07、100枚では10、300枚では17.32になります。</font></p>
+<p align="justify"><font face="Arial" size="2">ご覧のように、比率を7倍向上させるには1〜50枚の間で50フレームが必要ですが、100枚以降ではさらに200枚が必要になります。</font></p>
+<p align="justify"><font face="Arial" size="2"><b>1分×100枚と10分×10枚は同じ結果になるか？</b><br>
+はい、SNRを考慮した場合は同じですが、最終的な結果を考慮した場合は確実に異なります。<br>
+10分間の露光と1分間の露光の違いは、10分間露光のSNRが1分間露光の3.16倍高いという点です。</font></p>
+<p align="justify"><font face="Arial" size="2">したがって、10分のライトフレームを10枚合成しても、1分のライトフレームを100枚合成しても同じSNRが得られます。ただし、シグナル（興味深い部分）は同じにはならないでしょう。簡単に言えば、シグナルがノイズと見なされないように、ほとんどのライトフレームで光子を捉えるのに十分な露光時間が必要です。</font></p>
+<p align="justify"><font face="Arial" size="2">例えば、非常に微かな星雲の場合、10分ごとに数個の光子が得られるとします。10分の露光時間を使用した場合、各ライトフレームで光子が捕捉されており、合成すると信号が強くなります。<br>
+一方、1分の露光時間を使用した場合、一部のライトフレームでしか光子を捕捉できず、ほとんどのライトフレームに存在しないため、合成時にその光子はノイズとみなされてしまいます。</font></p>
+<p align="justify"><font face="Arial" size="2"><b>2つ（またはそれ以上）の結果画像を合成できるか？<br>
+</b>もちろん可能です。平方根の法則が適用されますが、少し条件が異なります。<br>
 <br>
-When combining two images the SNR increases by 1.414 (square root of 2).<br>
-If both images have the same SNR then this is the same as doing a single stack. 
-That does not mean that the combination is giving the same image, just that the 
-SNR will be the same.<br>
+2つの画像を合成すると、SNRは1.414（2の平方根）増加します。<br>
+もし両方の画像が同じSNRを持っている場合、これは単一のスタックを行うのと同じことです。これは、合成によって同じ画像が得られるという意味ではなく、単にSNRが同じになるということです。<br>
 <br>
-However if one stack contains more light frames than the other, the SNR of the 
-two stacks will be different and the SNR of the combination will be lower than 
-the SNR of a single stack containing all the light frames.<br>
+ただし、一方のスタックが他方よりも多くのライトフレームを含んでいる場合、2つのスタックのSNRは異なり、合成結果のSNRはすべてのライトフレームを含む単一スタックのSNRよりも低くなります。<br>
 <br>
-Thus by combining the result of a 10x1 minute stack with a single 1 minute frame 
-the SNR is roughly the same as the one obtained by combining 2 light frames. 
-This is due to the fact that when combining two images the noise is additive and 
-the best image is damaged by the worse image in the process.</font></p>
+したがって、1分×10枚のスタックの結果を1分フレーム1枚と合成すると、SNRは2つのライトフレームを合成した場合とほぼ同じになります。これは、2つの画像を合成する際にノイズが加算され、プロセスにおいて品質の高い画像が品質の低い画像によって損なわれるためです。</font></p>
 <hr color="#0000ff" SIZE="1">
-<p align="justify"><b><font face="Arial" size="4" color="#ff0000"><a name="Calibration"></a>C</font><font face="Arial" color="#ff0000" size="4">alibration: 
-how to use dark, flat and bias frames<br>
-</font></b><font face="Arial" size="2">The calibration is the process consisting 
-in subtracting the bias and dark signals and dividing by the flat signal.<br>
-The goal here is not to explain how to take dark, bias and flat frames (see
-<A href="faq.htm#lightdarkflatoffset">here</A>) but to better understand how to 
-use them to get the best possible images.</font></p>
-<p align="justify"><font face="Arial" size="2"><b>A good idea</b><br>
-Everybody is saying that you must take dark, bias and flat frames to create 
-great images, but if you are doing it the wrong way you can easily damage your 
-nice light frames ending up with very disappointing results.</font></p>
-<p align="justify"><font face="Arial" size="2">The good news is that it is really easy to get 
-nice results. Here is why and how.<br>
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000"><a name="Calibration"></a>キ</font><font face="Arial" color="#ff0000" size="4">ャリブレーション： 
+ダーク、フラット、バイアスフレームの使い方<br>
+</font></b><font face="Arial" size="2">キャリブレーションは、バイアスとダークの信号を減算し、フラット信号で除算するプロセスです。<br>
+ここでの目的は、ダーク、バイアス、フラットフレームの撮影方法を説明することではなく（<A href="faq.htm#lightdarkflatoffset">こちら</A>を参照）、可能な限り最高の画像を得るためにそれらをどのように使用するかを理解することです。</font></p>
+<p align="justify"><font face="Arial" size="2"><b>良いアイデア</b><br>
+素晴らしい画像を作成するためには、ダーク、バイアス、フラットフレームを使用しなければならないと誰もが言いますが、間違った方法で行うと、せっかくのライトフレームを簡単に損ない、非常に残念な結果に終わることがあります。</font></p>
+<p align="justify"><font face="Arial" size="2">良いニュースは、素晴らしい結果を出すのは本当に簡単だということです。その理由と方法は以下の通りです。<br>
 <br>
-<b>A common misconception</b><br>
-It is a common misconception to think that the number of dark, bias and flat 
-frames is related to the number of light frames.<br>
-A lot of people are using very few (sometimes even only one) dark, bias and flat 
-frames while they could get much better results by using a large number of dark, 
-bias and flat frames with the same set of light frames.<br>
+<b>一般的な誤解</b><br>
+ダーク、バイアス、フラットフレームの数がライトフレームの数に関連していると考えるのは一般的な誤解です。<br>
+多くの人が、同じライトフレームのセットに対して多数のダーク、バイアス、フラットフレームを使用すればはるかに良い結果が得られるにもかかわらず、ごく少数（時には1つだけ）のダーク、バイアス、フラットフレームしか使用していません。<br>
 <br>
-Following the square root rule you will have much cleaner masters if you use a 
-lot of frames to create them. Remember that you are trying to remove the dark 
-and bias signals, not the noise that is coming with it. <br>
+平方根の法則に従えば、作成するために多数のフレームを使用するほど、マスターフレームははるかにクリーンになります。削除しようとしているのはダークとバイアスの信号であり、それに伴うノイズではないということを覚えておいてください。<br>
 <br>
-For example when you subtract the master dark from each light frame you are 
-adding the noise of the master dark to the noise of the light frame. The smaller 
-the noise of the master dark, the less noise you will add to the light frame. 
-This is also true for the master bias and the master flat.<br>
+たとえば、各ライトフレームからマスターダークを減算すると、マスターダークのノイズがライトフレームのノイズに追加されます。マスターダークのノイズが小さければ小さいほど、ライトフレームに追加されるノイズは少なくなります。これはマスターバイアスやマスターフラットにも当てはまります。<br>
 <br>
-In fact by using only a very small number of frames for the creation of the 
-masters you can easily triple the noise of the calibrated light frame (bias and 
-dark subtracted and flat divided) compared to the noise of the light frame 
-before calibration. </font></p>
-<p align="justify"><font face="Arial" size="2">You will then need 9 times (3 squared) more light 
-frames to bring back the noise to the level you could have had by using noise 
-free masters.</font></p>
+実際、マスターの作成に使用するフレーム数を極めて少なくすると、キャリブレーション済みのライトフレーム（バイアスとダークを減算し、フラットで除算したもの）のノイズが、キャリブレーション前のライトフレームのノイズと比較して、簡単に3倍になってしまう可能性があります。<br>
+<br>
+その場合、ノイズをノイズのないマスターを使用した場合と同じレベルに戻すには、9倍（3の2乗）のライトフレームが必要になります。</font></p>
 <table id="AutoNumber2" cellSpacing="1" width="100%" border="0">
   <tr>
     <td vAlign="top" width="38%">
-    <p class="Standard"><font face="Arial" size="2">The example on the 
-    right shows the result of a stack of (mouse over the text to see the image)<br>
+    <p class="Standard"><font face="Arial" size="2">右の例は、以下のスタック結果を示しています（画像を見るにはテキストにマウスを合わせます）<br>
     <br>
-    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/NoCalibration.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (no calibration)';" href="javascript:void(0);">
-    32 light frames (no calibration)</A><br>
+    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/NoCalibration.jpg';;document.getElementById('LEGEND02').innerHTML='ライトフレーム32枚（キャリブレーションなし）';" href="javascript:void(0);">
+    ライトフレーム32枚（キャリブレーションなし）</A><br>
     <br>
-    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration2.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (2 darks, 2 flats and 2 biases calibration)';" href="javascript:void(0);">
-    32 light frames (2 darks, 2 flats and 2 biases calibration)</A><br>
+    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration2.jpg';;document.getElementById('LEGEND02').innerHTML='ライトフレーム32枚（ダーク2枚、フラット2枚、バイアス2枚でキャリブレーション）';" href="javascript:void(0);">
+    ライトフレーム32枚（ダーク2枚、フラット2枚、バイアス2枚でキャリブレーション）</A><br>
     <br>
-    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration20.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (20 darks, 20 flats and 20 biases calibration)';" href="javascript:void(0);">
-    32 light frames (20 darks, 20 flats and 20 biases calibration)</A><br>
+    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration20.jpg';;document.getElementById('LEGEND02').innerHTML='ライトフレーム32枚（ダーク20枚、フラット20枚、バイアス20枚でキャリブレーション）';" href="javascript:void(0);">
+    ライトフレーム32枚（ダーク20枚、フラット20枚、バイアス20枚でキャリブレーション）</A><br>
     <br>
-    As you can see increasing the number of dark, flat and bias frames is 
-    enhancing the resulting image making details more visible.</font></p></td>
+    ご覧のとおり、ダーク、フラット、バイアスフレームの数を増やすと、結果として得られる画像が向上し、詳細がより見えやすくなります。</font></p></td>
     <td width="50%">
     <p align="center">
     <IMG id=STACKRESULT02 border=0 name=STACKRESULT02 src="../images/Theory/Calibration20.jpg" width=591 height=591><br>
-    <font face="Arial" size="2"><b id="LEGEND02" name="LEGEND02">Stack of 32 light frames (no calibration)</b></font></p></td>
+    <font face="Arial" size="2"><b id="LEGEND02" name="LEGEND02">ライトフレーム32枚（キャリブレーションなし）</b></font></p></td>
   </tr>
 </table>
-<p align="justify"><font face="Arial" size="2">This is the reason why you should use as many 
-dark/bias/flat frames as possible. On the practical side, 20 frames is a minimum 
-if you want to not add too much noise, and 50 to 100 will give you really nice 
-and (almost) noise free masters..<br>
+<p align="justify"><font face="Arial" size="2">これが、できるだけ多くのダーク、バイアス、フラットフレームを使用すべき理由です。実用的な観点から言えば、ノイズを追加しすぎないようにするには20枚が最小限であり、50〜100枚を使用すると、非常に美しく、ノイズのない（に近い）マスターフレームが得られます。<br>
 <br>
-<b>A side note about hot pixels</b><br>
-Hot pixels are pixels that are not behaving normally. They are a very strong 
-signal that is visible in each dark and each light frame. <br>
+<b>ホットピクセルに関する補足事項</b><br>
+ホットピクセルとは、正常に動作していないピクセルのことです。それらは、各ダークフレームおよび各ライトフレームで非常に強い信号として可視化されます。<br>
 <br>
-Of course when you subtract one dark frame to one light frame you will remove 
-the hot pixels which may give the false impression that the dark subtraction did 
-its job. <br>
-However, at the same time the subtraction doubled the noise of the calibrated 
-light frame and ruined it thoroughly.</font></p>
+もちろん、1つのダークフレームを1つのライトフレームから減算すると、ホットピクセルが除去され、ダーク減算がうまく機能したという誤った印象を与える可能性があります。<br>
+しかし同時に、この減算はキャリブレーションされたライトフレームのノイズを倍増させ、完全に台無しにしてしまいます。</font></p>
 
 <hr color="#0000ff" SIZE="1">
 
 <p align="justify"><font face="Arial" size="2"><a name="ISOSpeed"></a></font>
-<font face="Arial" color="#ff0000" size="4"><b>Which ISO speed?<br>
-</b></font><font face="Arial" size="2">The question is common enough and the 
-answer is simple: it doesn't matter...sort of.<br>
+<font face="Arial" color="#ff0000" size="4"><b>どのISO感度を選ぶべきか？<br>
+</b></font><font face="Arial" size="2">この質問はよくあることですが、答えは単純で「関係ない...ある程度は」です。<br>
 <br>
-In fact the ISO speed is just a setting of any DSLR, but since the CMOS or CCD 
-chip is the same (you don't change it when changing the ISO speed, do you?) then 
-the results are really the same.<br>
-This is not because you are using a higher ISO speed that you get more photons, 
-it's just that the signal is more amplified (noise and all).</font></p>
-<p align="justify"><font face="Arial" size="2">The good news is that you don't 
-need to change the ISO speed to try to capture a fainter target. You just need 
-to take longer exposures.<br>
-<br>
-Of course it's a little more complicated than that since there is a good ISO 
-speed for each DSLR.<br>
-However it depends on the characteristics of each sensor chip (readout noise and 
-electronic noise) and is not simple to compute.<br>
-Christian Buil has computed the values for a few Canon DSLRs</font></p>
+実際、ISO感度は単なるDSLRの設定ですが、CMOSまたはCCDチップは同じ（ISO感度を変更してもチップ自体は変更しませんよね？）であるため、結果は本当に同じになります。<br>
+ISO感度を高くしたからといってより多くの光子が得られるわけではなく、単に信号が（ノイズも含めて）より増幅されるだけです。<br>
+</font></p>
+<p align="justify"><font face="Arial" size="2">良いニュースは、より暗い対象を捉えようとしてISO感度を変える必要はないということです。単により長い露光時間で撮影すればよいのです。</font></p>
+<p align="justify"><font face="Arial" size="2">もちろん、各DSLRには最適なISO感度が存在するため、話はもう少し複雑です。<br>
+ただし、これは各センサーチップの特性（読み出しノイズと電子ノイズ）に依存し、計算するのは容易ではありません。<br>
+Christian Builは、一部のCanon DSLRの値を次のように計算しています。</font></p>
 <table border="1" cellspacing="1" width="43%" id="AutoNumber3">
   <tr>
     <td width="35%"><b><font face="Arial" size="2">DSLR</font></b></td>
-    <td width="65%"><b><font face="Arial" size="2">Recommended (Optimal) ISO 
-    Speed</font></b></td>
+    <td width="65%"><b><font face="Arial" size="2">推奨（最適）ISO感度</font></b></td>
   </tr>
   <tr>
     <td width="35%"><font face="Arial" size="2">Canon EOS 10D&nbsp;&nbsp;&nbsp;
@@ -250,38 +179,29 @@ Christian Buil has computed the values for a few Canon DSLRs</font></p>
 <hr color="#0000ff" SIZE="1">
 
 <p align="justify"><b><font face="Arial" size="4" color="#ff0000">
-<a name="CalibrationProcess"></a>The Calibration Process</font></b><font face="Arial" color="#ff0000" size="4"><b><br>
-</b></font><font face="Arial" size="2">The calibration process and how each set 
-of files (lights, darks, flats,...)&nbsp; is used is often perceived as a 
-mystery but is in fact quite simple.<br>
+<a name="CalibrationProcess"></a>キャリブレーションプロセス</font></b><font face="Arial" color="#ff0000" size="4"><b><br>
+</b></font><font face="Arial" size="2">キャリブレーションのプロセスや、各セットのファイル（ライト、ダーク、フラットなど）がどのように使用されるかは謎のように思われがちですが、実際には非常にシンプルです。<br>
 <br>
-Below is the full calibration process when all the files are available:</font></p>
+すべてのファイルが揃っている場合の完全なキャリブレーションプロセスは以下のとおりです：</font></p>
 
-<p align="left"><font face="Arial" size="4"><b>Full Calibration Process (all 
-files available)</b></font><font face="Arial" size="2"><br>
+<p align="left"><font face="Arial" size="4"><b>完全なキャリブレーションプロセス（全ファイル利用可能）</b></font><font face="Arial" size="2"><br>
 <br>
-<IMG border=0 src="../images/japanese/Calibration_Full.jpg" width=918 height=456></font></p>
+<IMG border=0 src="../images/english/Calibration_Full.jpg" width=918 height=456></font></p>
 
 <p align="justify"><font face="Arial" size="2"><br>
-However it is common and perfectly possible to properly calibrate without using 
-dark flat frames. The calibration process in this case is described below:</font></p>
+しかし、ダークフラットフレームを使用せずに適切にキャリブレーションを行うことは一般的であり、完全に可能です。その場合のキャリブレーションプロセスは以下のとおりです：</font></p>
 
-<p align="justify"><font face="Arial" size="4"><b>Alternate Calibration Process 
-I (no dark flat frames)</b></font><font face="Arial" size="2"><br>
+<p align="justify"><font face="Arial" size="4"><b>代替キャリブレーションプロセスI（ダークフラットフレームなし）</b></font><font face="Arial" size="2"><br>
 <br>
-<IMG border=0 src="../images/japanese/Calibration_Alternate1.jpg" width=918 height=454></font></p>
+<IMG border=0 src="../images/english/Calibration_Alternate1.jpg" width=918 height=454></font></p>
 
-<p align="justify"><font face="Arial" size="2">On the other hand if you are 
-using dark flat frames you can also perfectly calibrate without using bias 
-frames. Here's the process in that case:</font></p>
+<p align="justify"><font face="Arial" size="2">一方、ダークフラットフレームを使用する場合、バイアスフレームを使用しなくても完全にキャリブレーションを行うことができます。その場合のプロセスは以下のとおりです：</font></p>
 
-<p align="justify"><font face="Arial" size="4"><b>Alternate Calibration Process 
-II (no bias frames)</b></font><font face="Arial" size="2"><br>
+<p align="justify"><font face="Arial" size="4"><b>代替キャリブレーションプロセスII（バイアスフレームなし）</b></font><font face="Arial" size="2"><br>
 <br>
-<IMG border=0 src="../images/japanese/Calibration_Alternate2.jpg" width=918 height=454></font></p>
+<IMG border=0 src="../images/english/Calibration_Alternate2.jpg" width=918 height=454></font></p>
 
-<p align="justify"><font face="Arial" size="2">Any other combination leads to 
-improper calibration so you should stick with one of these 3 possibilities.</font></p>
+<p align="justify"><font face="Arial" size="2">これら以外の組み合わせでは不適切なキャリブレーションとなるため、この3つの方法のいずれかに従う必要があります。</font></p>
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

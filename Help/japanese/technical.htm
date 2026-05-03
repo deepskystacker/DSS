@@ -1,5 +1,3 @@
-﻿<html>
-
 <head>
 <meta http-equiv="Content-Language" content="en-us">
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
@@ -8,32 +6,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Technical Info</title>
 <style>
-<!--
- div.MsoNormal
-	{mso-style-parent:"";
-	margin-bottom:.0001pt;
-	font-size:12.0pt;
-	font-family:"Times New Roman";
-	margin-left:0cm; margin-right:0cm; margin-top:0cm}
-.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
--->
 </style>
 </head>
 
 <body>
 
-<p><b><span lang="EN-US" style="FONT-SIZE: 18pt; FONT-FAMILY: Arial">Technical 
-details</span></b></p>
+<p><b><span lang="EN-US" style="FONT-SIZE: 18pt; FONT-FAMILY: Arial">技術的な詳細</span></b></p>
 <blockquote>
 
-<p><b><span style="FONT-FAMILY: Arial"><A href="#Registering">Registering</A><br>
-<A href="#Alignment">Alignment</A><br>
-<A href="#FileGroups">File Groups</A><br>
-<A href="#Stacking">Stacking</A><br>
-<A href="#stackingmethods">Stacking Methods</A><br>
+<p><b><span style="FONT-FAMILY: Arial"><A href="#Registering">登録</A><br>
+<A href="#Alignment">位置合わせ</A><br>
+<A href="#FileGroups">ファイルグループ</A><br>
+<A href="#Stacking">スタッキング</A><br>
+<A href="#stackingmethods">スタッキング手法</A><br>
 <A href="#Drizzle">Drizzle</A><br>
-<A href="#cometstacking">Comet Stacking</A><br>
-<A href="#rawdecod">RAW images development process</A></span></b></p>
+<A href="#cometstacking">彗星スタッキング</A><br>
+<A href="#rawdecod">RAW画像の現像プロセス</A></span></b></p>
 </blockquote>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
@@ -41,514 +29,307 @@ details</span></b></p>
 </div>
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="Registering"></a>Registering</span></b></p>
-<p align="justify"><SPAN><br></SPAN><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><STRONG>Star 
-detection<BR></STRONG><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">For each 
-picture DeepSkyStacker will attempt to automatically detect&nbsp;the 
-stars.&nbsp; In simple terms, DeepSkyStacker 
-      considers that a star is a round 
-      object whose luminance&nbsp;decreases regularly is every direction, and whose&nbsp;radius 
-      is&nbsp;no more than 50 pixels.&nbsp;&nbsp; Note 
-      that DeepSkyStacker will reject elongated star images which might occur if 
-      your mount isn't tracking correctly.&nbsp;&nbsp; Once the star is detected its exact center is computed&nbsp;by fitting a&nbsp;Gaussian curve&nbsp;to 
-the luminance.</span><FONT size=3> </FONT></p>
-<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DeepSkyStacker will only stack images that contain at 
-      <STRONG>least</STRONG> eight stars that are common between 
-      <STRONG>all</STRONG> light frames.&nbsp;&nbsp; In practice this 
- means 
-      that you should set the Star Detection Threshold in the Settings.../Register 
-      Settings or Register checked pictures/Register Settings/Advanced dialogue so that 
-      DeepSkyStacker detects 20 or more stars to stand a good
-      chance of finding eight stars in common between all 
-light frames.</span></p>
+<a name="Registering"></a>登録</span></b></p>
+<p align="justify"><SPAN><br></SPAN><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><STRONG>星の検出<BR></STRONG><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DeepSkyStackerは、各画像から星を自動的に検出しようとします。簡単に言うと、DeepSkyStackerは、すべての方向に向かって輝度が規則的に減少し、半径が50ピクセル以下の丸いオブジェクトを星とみなします。赤道儀の追尾が正しく行われていない場合に発生する可能性のある、細長くなった星の画像は除外されることに注意してください。星が検出されると、輝度にガウス曲線を当てはめることによって、星の正確な中心が計算されます。</span><FONT size=3> </FONT></p>
+<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">DeepSkyStackerは、すべてのライトフレーム間で共通する星を少なくとも8個含んでいる画像のみをスタッキングします。実際の運用においては、すべてのライトフレーム間で8個の共通する星を見つけられる可能性を高めるために、DeepSkyStackerが20個以上の星を検出するように、[Settings...]（設定...）/ [Register Settings]（登録設定）または [Register checked pictures]（チェックした画像の登録）/ [Register Settings]（登録設定）/ [Advanced]（詳細）ダイアログで星検出のしきい値（Star Detection Threshold）を設定する必要があります。</span></p>
 <p align="justify"></SPAN>
 <hr color="#0000ff" size="1">
 
 <P></P>
 
 <P></P>
-<p align="justify"><font face="Arial"><b><font size="2">Application of darks, flats and offsets 
-before registering</font><br>
-</b><font size="2">If dark, flat and/or offset frames are checked they are 
-automatically applied before the registering process.<br>
-With light frames containing a lot of hot pixels it is highly recommended to 
-check dark frames in order to avoid false stars detections which may highly 
-perturb the alignment.</font></font></p>
+<p align="justify"><font face="Arial"><b><font size="2">登録前のダーク、フラット、オフセットの適用</font><br>
+</b><font size="2">ダーク、フラット、および/またはオフセットフレームにチェックが入っている場合、それらは登録処理の前に自動的に適用されます。<br>
+多くのホットピクセルを含むライトフレームがある場合、位置合わせを大きく乱す可能性のある誤った星の検出を避けるために、ダークフレームにチェックを入れることを強くお勧めします。</font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><b>
-<font size="2"><a name="hotpixels"></a>Automatic detection of hot pixels</font><br>
-</b><font size="2">Optionally DeepSkyStacker tries to detect hot pixels during 
-the registering process to avoid identifying false stars.<br>
-  You should note that this option only works for&nbsp;monochrome images and RAW 
-images in the <A href="#superpixel">Super-pixels</A>, <A href="#bayerdrizzle">
-Bayer.Drizzle</A>, bilinear and AHD interpolation modes.</font></font></p>
+<font size="2"><a name="hotpixels"></a>ホットピクセルの自動検出</font><br>
+</b><font size="2">オプションで、DeepSkyStackerは誤った星の識別を避けるために、登録処理中にホットピクセルの検出を試みます。<br>
+このオプションは、モノクロ画像、および<A href="#superpixel">スーパーピクセル</A>、<A href="#bayerdrizzle">Bayer.Drizzle</A>、バイリニア（双線形）、AHD補間モードのRAW画像でのみ機能することに注意してください。</font></font></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><font face="Arial" size="2"><a name="detectionthreshold"></a>Adjusting the 
-star detection threshold</font></b><font size="2" face="Arial"><b><br>
-</b>The star detection threshold is 10% by default (10% of 
-the maximum luminance).
+<p align="justify"><b><font face="Arial" size="2"><a name="detectionthreshold"></a>星検出のしきい値の調整</font></b><font size="2" face="Arial"><b><br>
+</b>星検出のしきい値はデフォルトで10%（最大輝度の10%）です。
+                 
+                   
+                
                
-              
-           </font></p><font size="2" face="Arial">
+               </font></p><font size="2" face="Arial">
 <p align="justify">
 <TABLE style="BORDER-COLLAPSE: collapse" borderColor=#c0c0c0 cellSpacing=0 
 cellPadding=5 width="100%" border=1>
   <TBODY>
   <TR>
-    <TD width="63%"><FONT size=2>You 
-      can modify this threshold in the Advanced tab of the "Register checked pictures/Register 
-      Settings" dialog, or by selecting Settings.../Register Settings (if Automatic threshold 
-      is not selected).</FONT><font size="2" face="Arial">
-<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><EM><STRONG>Reducing</STRONG></EM> the Star Detection 
-      Threshold will result in DeepSkyStacker finding 
-      <EM><STRONG>more</STRONG></EM> (fainter) 
-stars, on the other hand if you&nbsp;<EM><STRONG>increase</STRONG></EM>&nbsp;the 
-threshold, then only brighter stars will be detected&nbsp;and so this&nbsp;will 
-<EM><STRONG>reduce</STRONG></EM>       the 
-      number found.<BR><BR>  Setting the threshold so low that many 
-      hundreds of star are found will be counter-productive as there will be much 
-      more data to process for star registration and if&nbsp;too many stars are 
-      detected there is a greater chance of mis-registration.&nbsp;&nbsp; You should 
-      probably&nbsp;aim for over 20-25
-      stars and no more than a couple of hundred 
-or so.</span></p>
-<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">If you 
-      have set the detection threshold low and DeepSkyStacker is still not 
-      finding enough stars because the image is underexposed, you can increase 
-      the image
-      brightness by using the "Brightness" adjustment in the Raw/FITS 
-DDP Settings.</span></p>
-<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">If your images 
-are noisy (as a 
-      result (e.g.) of Light Pollution) you may need
-      to&nbsp;enable the "Reduce the noise by using a Median 
-Filter" option.</span></p>
+    <TD width="63%"><FONT size=2>このしきい値は、「チェックした画像の登録/登録設定」ダイアログの「詳細」タブ、または Settings.../登録設定 を選択して（自動しきい値が選択されていない場合）変更できます。</FONT><font size="2" face="Arial">
+<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><EM><STRONG>星検出のしきい値を小さくすると</STRONG></EM>, DeepSkyStackerはより多くの（より暗い）星を見つけるようになります. 逆に, <EM><STRONG>しきい値を大きくすると</STRONG></EM>, より明るい星だけが検出されるようになり, 検出される星の数は<EM><STRONG>減ります</STRONG></EM>.<BR><BR>しきい値を非常に低くして何百もの星が検出されるように設定すると, 星の登録のために処理するデータ量がはるかに多くなり, 検出される星が多すぎると誤登録の可能性が高まるため, 逆効果になる可能性があります. 目標としては, 20〜25個以上の星を目指し, 多くても200個程度にするのが適切です.</span></p>
+<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">検出のしきい値を低く設定しても、画像が露出不足のためにDeepSkyStackerが十分な数の星を見つけられない場合は、RAW/FITS DDP設定の「明るさ（Brightness）」調整を使用して画像の明るさを上げることができます。</span></p>
+<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">画像にノイズが多い（例：光害の結果）場合、「メディアンフィルターを使用してノイズを低減する（Reduce the noise by using a Median Filter）」オプションを有効にする必要がある場合があります。</span></p>
 <p align="justify">
-     To help you finding the best threshold for your light 
-frames you can compute the number of stars that will be detected. To do 
-this, DeepSkyStacker&nbsp;uses the first checked light frame and&nbsp;temporarily activates hot pixel detection.</font></p>
-<p align="justify"><font size="2" face="Arial"> You should note that this number is only a&nbsp;guide 
-and that the real number of detected stars may vary if you have checked dark, 
-offset and flat frames.</font></p>
-<p align="justify"><FONT size=2>If you select "Use automatic threshold", 
-&nbsp;DeepSkyStacker will try to determine a good detection threshold using an 
-optimisation algorithm.<BR>           
-             
-This means there is no longer any need for a manual 
-      adjustment of the "Star Detection Threshold".</FONT>           
-             
-              
-  </p>
-<P class=MsoNormal><FONT size=2>This is especially useful for images where the minimum 
-threshold of 1% is still not low enough to find a reasonable number of stars 
-(the automatic threshold can go as low as 0.05%). <BR>The threshold will be set 
-      such that the detected number of stars is at least 50 (if possible, 
-      otherwise a lower number is accepted).</FONT>     
-               
-   </P>
-<P class=MsoNormal><FONT size=2>The calculated 
-      threshold of the first image will be used as starting point for finding 
-      the optimum threshold for the following images. If a reference frame has 
-      already been chosen, then this image will be used as the first one to 
-      register.<font face="Arial" ></P></font></FONT></TD>
+   ライトフレームに最適な見つけ方をするため、検出される星の数を計算できます。これを行うために、DeepSkyStackerは最初のチェック済みライトフレームを使用し、一時的にホットピクセル検出を有効にします。</font></p>
+<p align="justify"><font size="2" face="Arial">この数はあくまで目安であり、ダーク、オフセット、フラットフレームにチェックを入れている場合、検出される実際の数は異なる可能性があることに注意してください。</font></p>
+<p align="justify"><FONT size=2>「自動しきい値を使用する（Use automatic threshold）」を選択すると、DeepSkyStackerは最適化アルゴリズムを使用して適切な検出を決定しようとします。<BR>          
+                  
+                   
+                  </FONT> 
+                  
+                   
+                  </p>
+<P class=MsoNormal><FONT size=2>これにより、「星検出のしきい値」を手動で調整する必要がなくなります。<br>この機能は、最小しきい値の1%でも十分な数の星を見つけるのに十分な低さではない画像に特に役立ちます（自動しきい値は0.05%まで低くすることができます）。<BR>検出される星の数が少なくとも50個になるようにしきい値が設定されます（可能な場合。それ以外の場合は低い数が許容されます）。</FONT>       
+                 
+       </P>
+<P class=MsoNormal><FONT size=2>最初の画像で計算されたしきい値は、後続の画像の最適なしきい値を見つけるための開始点として使用されます。すでにリファレンスフレームが選択されている場合は、この画像が最初に登録する画像として使用されます。<font face="Arial" ></P></font></FONT></TD>
     <TD>&nbsp;<IMG style="HEIGHT: 
-  441px; WIDTH: 519px" alt="" src="../images/japanese/Register_Settings.jpg" width=520 height=447 ></TD></TR></TBODY></TABLE></p></FONT>
+  441px; WIDTH: 519px" alt="" src="../images/english/Register_Settings.jpg" width=520 height=447 ></TD></TR></TBODY></TABLE></p></FONT>
   <span lang="EN-US">
 <p align="justify">
   <hr size="1" noshade color="blue">
 
 <P></P></span>
 <p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Registering results<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-registering results (number of detected stars, position, luminance of each star) 
-are saved in a text file which name is the name of the picture file with an .Info.txt 
-extension.<br>
-Thus it is not necessary to register the picture again for a future stacking 
-process.</span></p>
+登録結果<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">登録結果（検出された星の数、各星の位置、輝度）は、画像ファイル名に拡張子 `.Info.txt` を付けたテキストファイルに保存されます。<br>
+したがって、将来のスタッキングプロセスで画像を再登録する必要はありません。</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
 </div>
 <p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-Registering results and parameters<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-registering results are highly dependant of the selected parameters (especially 
- 
-the <A href="userguide.htm#rawddp">raw development parameters</A>).<br>
-If these parameters are modified it is necessary to register the pictures again.
+登録結果とパラメータ<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">登録結果は、選択したパラメータ（特にRAW現像パラメータ）に大きく依存します。<br>
+これらのパラメータが変更された場合は、画像を再登録する必要があります。
 </span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
 </div>
-<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Stacking 
-after registering<br>
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">登録後のスタッキング<br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-DeepSkyStacker can chain registering and stacking processes. You just have to 
-give the percentage of the pictures that you wish to keep at the end of the 
-registering process to start the stacking process. Only the best pictures will 
-be used in the stacking process.<br>
-Thus it is possible to launch the full process then to go to bed knowing that 
-after a good night sleep it will be possible to view the first results.</span></p>
+DeepSkyStackerは、登録プロセスとスタッキングプロセスを連鎖させることができます。スタッキングプロセスを開始するには、登録プロセスの終了時に維持したい画像の割合（パーセンテージ）を指定するだけです。スタッキングプロセスでは、最も優れた画像のみが使用されます。<br>
+これにより、全プロセスを開始したまま就寝し, 翌朝に最初の結果を確認することができます.</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="Alignment"></a>Alignment</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
-</span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Offsets 
-and angle computing</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-During the alignment process the best picture (the picture with the best score) 
-will be used as the reference frame unless you choose another reference frame 
-using the <A href="userguide.htm#contextmenu">context menu</A>.<br>
-All the offsets and rotation angles are computed relative to this reference 
-frame.<br>
+<a name="Alignment"></a>位置合わせ</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">オフセットと角度の計算</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+位置合わせプロセス中、コンテキストメニューを使用して別のリファレンスフレームを選択しない限り、最も優れた画像（スコアが最も高い画像）がリファレンスフレームとして使用されます。<br>
+すべてのオフセットと回転角度は、このリファレンスフレームを基準にして計算されます。<br>
 <br>
-The offsets are rotation angles are computed by identifying patterns of stars in 
-the frames.<br>
-To put it simply the algorithm is looking for the largest triangles of which the 
-side distances (and so the angles between the sides) are the closest.<br>
-When a sufficient number of such triangles is detected between the reference 
-frame and the frame to be aligned the offsets and rotation are computed and 
-validated using the least square method.<br>
-Depending of the number of stars a bisquared of bilinear transformation is used.<br>
+オフセットと回転角度は、フレーム内の星のパターンを識別することによって計算されます。<br>
+簡単に言うと、このアルゴリズムは、辺の距離（したがって辺の間の角度）が最も近い最大の三角形を探します。<br>
+そのような三角形がリファレンスフレームと位置合わせされるフレーム間で十分な数検出されると、オフセットと回転が計算され、最小二乗法を使用して検証されます。<br>
+星の数に応じて、バイサクエアード（bisquared）またはバイリニア（bilinear）変換が使用されます。<br>
 <br>
-For more information about the algorithms which inspired the one used by 
-DeepSkyStacker you can consult the following 
-sites:</span><font size="2" face="Arial"><br>
+DeepSkyStackerで使用されているアルゴリズムの基になったアルゴリズムの詳細については、次のサイトを参照してください：</span><font size="2" face="Arial"><br>
 <a target="_blank" href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=1995PASP..107.1119V&amp;db_key=AST&amp;high=39463d35aa24090">
-FOCAS Automatic Catalog Matching Algorithms</a><br>
-<a target="_blank" href="http://lear.inrialpes.fr/pubs/2004/MR04/">Pattern 
-Matching with Differential Voting and Median Transformation Derivation</a></font></p>
+FOCAS 自動カタログ照合アルゴリズム</a><br>
+<a target="_blank" href="http://lear.inrialpes.fr/pubs/2004/MR04/">差分投票およびメディアン変換の導出によるパターンマッチング</a></font></p>
 <p align="justify"><font face="Arial" size="2"><b><a name="stackinfofile"></a>
-Automatic use of previously computed offsets and angles<br>
-</b>DeepSkyStacker is saving all the transformations between a reference light 
-frame and all the other light frames so that it is not necessary to compute them 
-again if the registering info have not changed.<br>
-The info is saved in a file named after the reference frame (and in the same 
-folder) with an <i>.stackinfo.txt</i> extension.</font></p>
+以前に計算されたオフセットと角度の自動使用<br>
+</b>DeepSkyStackerは、リファレンスライトフレームと他のすべてのライトフレーム間のすべての変換を保存しているため、登録情報が変更されていない場合は、再度計算する必要はありません。<br>
+この情報は、リファレンスフレームと同じ名前（および同じフォルダ内）の拡張子 `.stackinfo.txt` のファイルに保存されます。</font></p>
 <hr color="#0000ff">
 <p align="justify"><b><font face="Arial" size="4" color="#ff0000">
-<a name="FileGroups"></a>File Groups<br>
-</font></b><font size="2" face="Arial"><a name="filegroup"></a>File Groups may 
-be used to simplify multiple nights on the same object file management by logically grouping files for 
-each imaging session.<br>
-<b>If you use only the <i>Main Group</i> DeepSkyStacker is working exactly like 
-before the introduction of File Groups.</b><br>
+<a name="FileGroups"></a>ファイルグループ<br>
+</font></b><font size="2" face="Arial"><a name="filegroup"></a>ファイルグループは、同じ対象物に対する複数夜にわたる撮影セッションのファイルを論理的にグループ化することで、ファイル管理を簡素化するために使用できます。<br>
+<b>「メイングループ（Main Group）」のみを使用する場合、DeepSkyStackerはファイルグループが導入される前とまったく同じように動作します。</b><br>
 <br>
-There are two kinds of File Groups: the Main Group and all the others groups.</font></p>
+ファイルグループには、メイングループと他のすべてのグループの2種類があります。</font></p>
 <ul>
   <li>
-  <p align="justify"><font size="2" face="Arial">Light Frames from the <i>Main Group</i> may 
-  only be associated with Dark, Flat and Offset/Bias Frames from the <i>Main 
-  Group</i>. <br>
-  This is the behavior of DeepSkyStacker before the introduction of the File 
-  Groups.</font></p>
+  <p align="justify"><font size="2" face="Arial">メイングループのライトフレームは、メイングループのダーク、フラット、およびオフセット/バイアスフレームとのみ関連付けることができます。 <br>
+  这是、ファイルグループ導入前のDeepSkyStackerの動作と同じです。</font></p>
   <li>
-  <p align="justify"><font size="2" face="Arial">Dark, Flat and Offset/Bias Frames from the 
-  Main Group may be associated to Light Frames of any group.</font></p>
+  <p align="justify"><font size="2" face="Arial">メイングループのダーク、フラット、およびオフセット/バイアスフレームは、任意のグループのライトフレームに関連付けることができます。</font></p>
   <li>
-  <p align="justify"><font size="2" face="Arial">Dark, Flat and Offset/Bias Frames from others 
-  groups may be associated only with Light Frames of the same group.</font></p></li>
+  <p align="justify"><font size="2" face="Arial">他のグループのダーク、フラット、およびオフセット/バイアスフレームは、同じグループのライトフレームとのみ関連付けることができます。</font></p></li>
 </ul>
-<p align="justify"><font size="2" face="Arial">You can create as many File Groups as you want 
-knowing that a file may belong to only one File Group.<br>
-When you start DeepSkyStacker only the Main Group is available. As soon as you 
-add a file to the last available group a new empty group tab is created.<br>
+<p align="justify"><font size="2" face="Arial">ファイルは1つのファイルグループにのみ属することができるという点に注意して、必要なだけファイルグループを作成できます。<br>
+DeepSkyStackerを起動したときは、メイングループのみが利用可能です。最後の利用可能なグループにファイルを追加するとすぐに、新しい空のグループタブが作成されます。<br>
 <br>
-<b>Example:<br>
-</b>You shot the same subject two nights in a row. <br>
-For each night you have a set of Light, Dark and Flat Frames but the temperature 
-was not the same each night and the Dark Frames are not compatible and the 
-orientation was slightly different so your Flat Frames are also different 
-between the two nights.<br>
+<b>例:<br>
+</b>2夜連続で同じ対象を撮影しました。 <br>
+各夜にライト、ダーク、フラットフレームのセットがありますが、毎晩温度が同じではなく、ダークフレームの互換性がなく、また向きもわずかに異なるため、2晩でフラットフレームも異なります。<br>
 <br>
-To associate each Light Frame with the good Dark and Flat Frames you just need 
-to put all the Light+Dark+Flat Frames from the first night in one File Group and 
-all the Light+Dark+Flat Frames of the second night in another File Group.<br>
-Since Offset/Bias Frames are common to all the nights they must be put in the <i>
-Main Group</i>.<br>
+各ライトフレームを正しいダークおよびフラットフレームに関連付けるには、最初の夜のすべてのライト+ダーク+フラットフレームを1つのファイルグループに配置し、2番目の夜のすべてのライト+ダーク+フラットフレームを別のファイルグループに配置するだけです。<br>
+オフセット/バイアスフレームは全日程に共通するため、メイングループに配置する必要があります。<br>
 <br>
-DeepSkyStacker will automatically associate the Light Frames of the first night 
-with the Dark and Flat Frames of the first night and the Light Frames of the 
-second night with the Dark and Flat Frames of the second night. <br>
-The Offset/Bias Frames from the Main Group will be associated with the Light 
-Frames of the first <b>and</b> second night.</font></p>
+DeepSkyStackerは、初日のライトフレームを初日のダークおよびフラットフレームに、2日目のライトフレームを2日目のダークおよびフラットフレームに自動的に関連付けます。 <br>
+メイングループのオフセット/バイアスフレームは、1晩目と2晩目の両方のライトフレームに関連付けられます。</font></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="Stacking"></a>Stacking</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
-<font size="2"><a name="backgroundcalibration"></a>Background </font>
-</span></b><font face="Arial"><b><font size="2">Calibration</font><br>
-</b><font size="2">The Background Calibration consists in normalizing the 
-background value of each picture before stacking it.<br>
-The background value is defined as the median value of all the pixels of the 
-picture.</font></font></p>
-<p align="justify"><font face="Arial" size="2">Two options are available.</font></p>
+<a name="Stacking"></a>スタッキング</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+<font size="2"><a name="backgroundcalibration"></a>背景 </font>
+</span></b><font face="Arial"><b><font size="2">キャリブレーション</font><br>
+</b><font size="2">背景キャリブレーションは、スタッキングする前に各画像の背景値を正規化する処理です。<br>
+背景値は、画像のすべてのピクセルのメディアン値として定義されます。</font></font></p>
+<p align="justify"><font face="Arial" size="2">2つのオプションが用意されています。</font></p>
 <ul>
   <li>
-<p align="justify"><font face="Arial" size="2">With the <b>Per Channel 
-Background Calibration</b> option the background for each channel is adjusted 
-separately to match the background of the reference frame.</font></p>
+<p align="justify"><font face="Arial" size="2">「チャンネルごとの背景キャリブレーション（Per Channel Background Calibration）」オプションを使用すると、各チャンネルの背景がリファレンスフレームの背景に合わせて個別に調整されます。</font></p>
   <li>
-<p align="justify"><font face="Arial" size="2">With the <b>RGB Channels 
-Calibration</b> the three <font color="#ff0000">red</font>,
-<font color="#008000">green</font> and <font color="#0000ff">blue</font> 
-channels of each light frame are normalized to the same background value which is 
-the minimum of the three medians values (one for each channel) computed from the 
-reference frame. On top on creating compatible images (stacking wise) this 
-option is also creating a neutral gray background. A side effect is that the 
-overall saturation of the stacked image is quite low (grayscale look).</font></p>
+<p align="justify"><font face="Arial" size="2">「RGBチャンネルキャリブレーション（RGB Channels Calibration）」オプションを使用すると、各ライトフレームの赤、緑、青の3つのチャンネルが同じ背景値に正規化されます。この背景値は、リファレンスフレームから計算された3つのメディアン値（各チャンネルに1つ）のうちの最小値です。このオプションは、スタッキングの観点から互換性のある画像を作成するだけでなく、ニュートラルな灰色の背景を作成します。副作用として、スタッキングされた画像の全体的な彩度がかなり低くなります（グレースケールのような見た目になります）。</font></p>
   </li>
 </ul>
-<p align="justify"><font face="Arial" size="2">It is important to check one of 
-these options when using Kappa-Sigma Clipping or 
-Kappa-Sigma Clipping Median methods to ensure that the pictures being stacked 
-have all the same background value.</font></p>
+<p align="justify"><font face="Arial" size="2">Kappa-Sigma Clipping（カッパシグマクリッピング）または Kappa-Sigma Clipping Median（カッパシグマクリッピングメディアン）メソッドを使用する場合は、スタッキングする画像の背景値がすべて同じであることを確認するために、これらのオプションのいずれかにチェックを入れることが重要です。</font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
-<b><a name="flatcalibration"></a>Automatic calibration of flat frames</b></font><b><br>
-</b><font size="2">The goal of the automatic calibration of flat frames is to 
-equalize the luminosity differences between the flat frames before combining 
-them into a master flat.<br>
+<b><a name="flatcalibration"></a>フラットフレームの自動キャリブレーション</b></font><b><br>
+</b><font size="2">フラットフレームの自動キャリブレーションの目的は、フラットフレームをマスターフラットに結合する前に、フラットフレーム間の光量の違いを均一化することです。<br>
 <br>
-The first flat frame is used as a reference. The other flat frames are 
-normalized to match the average luminosity and dynamic range of the first flat 
-frame.</font></font></p>
+<br>
+最初のフラットフレームがリファレンスとして使用されます。他のフラットフレームは、最初のフラットフレームの平均輝度とダイナミックレンジに合わせて正規化されます。</font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
-<b><a name="hotpixelsremoval"></a>Automatic Detection and Removal of hot pixels</b></font><b><br>
-</b><font size="2">The goal of the automatic detection and removal of hot pixels 
-is to replace hot pixels with a value computed from neighbor pixels.<br>
+<b><a name="hotpixelsremoval"></a>ホットピクセルの自動検出と除去</b></font><b><br>
+</b><font size="2">ホットピクセルの自動検出と除去の目的は、ホットピクセルを隣接するピクセルから計算された値で置き換えることです。<br>
 <br>
-First the very hot pixels are identified by an analysis of the dark frames (or 
-the master dark frame if available). Every pixel which value is greater than 
-[median] + 16 x [standard deviation] (sigma) is marked as a hot pixel.<br>
+まず、非常に明るいホットピクセルは、ダークフレーム（または利用可能な場合はマスターダークフレーム）の分析によって識別されます。値が[メディアン] + 16 x [標準偏差]（シグマ）より大きいすべてのピクセルは、ホットピクセルとしてマークされます。<br>
 <br>
-For all those pixels the value in the calibrated image (after offset/bias 
-subtraction, dark subtraction and flat division) is interpolated from the 
-neighbor pixels.</font></font></p>
+これらすべてのピクセルについて、キャリブレーションされた画像（オフセット/バイアス減算、ダーク減算、およびフラット除算の後）の値は、隣接するピクセルから補間されます。</font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
-<b><a name="badlinesdetection"></a>Automatic Detection and Removal of </b></font><b>
-<font size="2">bad columns</font><br>
-</b><font size="2">On some monochrome CCD chip some columns are either dead or 
-completely saturated because of blooming created by hot pixels.<br>
+<b><a name="badlinesdetection"></a>不良列（バッドカラム）の自動検出と除去</b></font><b><br>
+</b><font size="2">一部のモノクロCCDチップでは、ホットピクセルによって発生したブルーミングのため、特定の列が完全に死んでいるか、完全に飽和している場合があります。<br>
 <br>
-The detection and removal of bad columns may be used in these cases.<br>
-It automatically detects 1 pixel wide vertical lines that are either saturated 
-or completely dead and deal with these lines as if they were hot pixels by 
-interpolation their values from neighboring pixels.</font></font></p>
+このような場合、不良列の検出と除去を使用できます。<br>
+これは、飽和しているか完全に死んでいる1ピクセル幅の垂直線を自動的に検出し、隣接するピクセルから値を補間することによって、これらの線をホットピクセルであるかのように処理します。</font></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
-<b><a name="darkentropy"></a>Entropy-based Dark Frame Subtraction</b></font><b><br>
-</b><font size="2">Dark subtraction can be optionally optimized so that the 
-entropy of the resulting picture (light frame minus dark frame) is minimized by 
-applying a coefficient between 0 and 1 to the dark frame.<br>
-The main goal of this optimization is the possibility to use dark frames not 
-taken in optimal conditions (especially concerning temperature).<br>
+<b><a name="darkentropy"></a>エントロピーベースのダークフレーム減算</b></font><b><br>
+</b><font size="2">ダーク減算は、ダークフレームに0から1の係数を適用することによって、結果として得られる画像（ライトフレームからダークフレームを引いたもの）のエントロピーが最小化されるように、オプションで最適化できます。<br>
+この最適化の主な目的は、最適な条件（特に温度に関して）で撮影されていないダークフレームを使用できるようにすることです。<br>
 </font></font><font size="2" face="Arial"><br>
-For more information about this method you can consult the following document:<br>
+この方法の詳細については、次のドキュメントを参照してください：<br>
 <A href="https://www.cs.ubc.ca/labs/imager/tr/2001/goesele2001a/goesele.2001a.pdf" target=_blank>
-Entropy-Based Dark Frame Subtraction</A></font></p>
+エントロピーベースのダークフレーム減算</A></font></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b>
-<span lang="EN-US" style="FONT-FAMILY: Arial">Stacking 
-process<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-stacking process of DeepSkyStacker is very classical.<br>
-<b>Step 1<br>
-</b>Creation of the master offset from all the offset frames (with the selected 
-method).<br>
-If more than one offset frame is checked, a master offset is created as 
-MasterOffset_ISOxxx.tif (TIFF 8, 16 or 32 bit) in the folder of the first offset frame.<br>
-This file may be used as the only offset frame the next time.<br>
+<span lang="EN-US" style="FONT-FAMILY: Arial">スタッキングプロセス<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+DeepSkyStackerのスタッキングプロセスは非常に標準的なものです。<br>
+<b>ステップ 1<br>
+</b>すべてのオフセットフレームからのマスターオフセットの作成（選択したメソッドを使用）。<br>
+複数のオフセットフレームにチェックが入っている場合、マスターオフセットは MasterOffset_ISOxxx.tif（TIFF 8、16、または32ビット）として、最初のオフセットフレームのフォルダ内に作成されます。<br>
+このファイルは、次回以降の単一のオフセットフレームとして使用できます。<br>
 <br>
-<b>Step 2<br>
-</b>Creation of the master dark from all the dark frames (with the selected 
-method). The master offset is 
-subtracted from each dark frame.<br>
-If more than one dark frame is checked, a master dark is created as 
-MasterDark_ISOxxx_yyys.tif (TIFF 8, 16 or 32 bit) in the folder of the first dark frame.<br>
-This file may be used as the only dark frame the next time.<br>
+<b>ステップ 2<br>
+</b>すべてのダークフレームからのマスターダークの作成（選択したメソッドを使用）。マスターオフセットが各ダークフレームから減算されます。<br>
+複数のダークフレームにチェックが入っている場合、マスターダークは MasterDark_ISOxxx_yyys.tif（TIFF 8、16、または32ビット）として、最初のダークフレームのフォルダ内に作成されます。<br>
+このファイルは、次回以降の単一のダークフレームとして使用できます。<br>
 <br>
-Creation of the master dark flat from all the dark flat frames (with the selected 
-method). The master offset is 
-subtracted from each dark flat frame.<br>
-If more than one dark flat frame is checked, a master dark flat is created as MasterDarkFlat_ISOxxx_yyys.tif (TIFF 8, 16 or 32 bit) in the folder of the first dark 
-flat frame.<br>
-This file may be used as the only dark flat frame the next time.<br>
+すべてのダークフラットフレームからのマスターダークフラットの作成（選択したメソッドを使用）。マスターオフセットが各ダークフラットフレームから減算されます。<br>
+複数のダークフラットフレームにチェックが入っている場合、マスターダークフラットは MasterDarkFlat_ISOxxx_yyys.tif（TIFF 8、16、または32ビット）として、最初のダークフラットフレームのフォルダ内に作成されます。<br>
+このファイルは、次回以降の単一のダークフラットフレームとして使用できます。<br>
 <br>
-<b>Step 3<br>
-</b>Creation of the master flat from all the flat frames (with the selected 
-method). The master offset and dark flat are 
-subtracted from each flat frame. The master flat is automatically calibrated.<br>
-If more than one flat frame is checked, a master flat is created as 
-MasterFlat_ISOxxx.tif (TIFF 8, 16 or 32 bit) in the folder of the first flat frame.<br>
-This file may be used as the only flat frame the next time.<br>
+<b>ステップ 3<br>
+</b>すべてのフラットフレームからのマスターフラットの作成（選択したメソッドを使用）。マスターオフセットおよびダークフラットが各フラットフレームから減算されます。マスターフラットは自動的にキャリブレーションされます。<br>
+複数のフラットフレームにチェックが入っている場合、マスターフラットは MasterFlat_ISOxxx.tif（TIFF 8、16、または32ビット）として、最初のフラットフレームのフォルダ内に作成されます。<br>
+このファイルは、次回以降の単一のフラットフレームとして使用できます。<br>
 <br>
-<b>Step 4<br>
-</b>Computing of all offsets and rotations for all the light frames that will be 
-stacked.<br>
+<b>ステップ 4<br>
+</b>スタッキングされるすべてのライトフレームのすべてのオフセットと回転角度の計算。<br>
 <br>
-<b>Step 5<br>
-</b>Creation of the final picture by adding all the light frames with the 
-selected method. <br>
-The master 
-offset and the master dark are automatically subtracted from each light frame and the result 
-is divided by the calibrated master flat, then if the option is enabled the hot 
-pixels detected in the dark frame are removed and the value is interpolated from 
-neighbors..<br>
+<b>ステップ 5<br>
+</b>選択したメソッドを使用してすべてのライトフレームを加算し、最終的な画像を作成します。<br>
+マスターオフセットとマスターダークは各ライトフレームから自動的に減算され、結果はキャリブレーションされたマスターフラットで除算されます。その後、オプションが有効になっている場合は、ダークフレームで検出されたホットピクセルが除去され、隣接するピクセルからの値で補間されます。<br>
 <br>
-<b>Step 6<br>
-</b>When the
-<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="#bayerdrizzle">Bayer drizzle</A> is enabled, the three RGB components are normalized to avoid 
-the information's holes.<br>
+<b>ステップ 6<br>
+</b>Bayer drizzle（ベイヤードリズル）が有効になっている場合、情報の欠落を防ぐために3つのRGBコンポーネントが正規化されます。<br>
 <br>
-<b>Step 7<br>
-</b>By default the resulting picture is automatically saved in an AutoSave.tif file 
-which is created in the folder of the first light frame.</span></p>
+<b>ステップ 7<br>
+</b>デフォルトでは、結果の画像は自動的に AutoSave.tif ファイルとして保存され、最初のライトフレームのフォルダに作成されます。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-FAMILY: Arial"><a name="ChannelsAlignment"></a>
-RGB Channels Alignment<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">When 
-this option is enabled DeepSkyStacker attempts to align the three channels to 
-reduce the color shift between the channels on the resulting image.<br>
-The main visible effect is that the stars are not anymore red on one side and 
-blue on the other side.<br>
+RGBチャンネルの調整<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+このオプションが有効になっている場合、DeepSkyStackerは3つのチャンネルを位置合わせして、結果の画像のチャンネル間の色ずれを低減しようとします。<br>
+目に見える主な効果は、星が片側で赤く、もう一方で青く見えなくなることです。<br>
 <br>
-Each channel is registered (the stars are detected) and a transformation is 
-computed between the best channel and the two others.<br>
-The transformation is then applied to the two channels which is aligning them on 
-the best channel.</span></p>
+各チャンネルが登録（星が検出）され、最適なチャンネルと他の2つのチャンネルとの間で変換が計算されます。<br>
+その後、この変換が2つのチャンネルに適用され、最適なチャンネルに位置合わせされます。</span></p>
 <hr color="#0000ff" size="1">
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-FAMILY: Arial"><a name="reusemasters"></a>
-Automatic use of previously created master files<br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
-existing master files (dark, bias, flat and dark flat) created from a list of files are 
-automatically used whenever possible as long as:<br>
-- The list of the files used to create them has not changed.<br>
-- The settings used to create them are not modified. This includes the combining 
-method and parameters and the RAW or FITS DDP settings when RAW or FITS files 
-are used.<br>
+以前に作成されたマスターファイルの自動使用<br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+ファイルのリストから作成された既存のマスターファイル（ダーク、バイアス、フラット、ダークフラット）は、以下の条件が満たされている限り、可能な限り自動的に使用されます。<br>
+- 作成に使用されたファイルのリストが変更されていないこと。<br>
+- 作成に使用された設定が変更されていないこと。これには、結合方法やパラメータ、およびRAWまたはFITSファイルを使用する場合のRAWまたはFITS DDP設定が含まれます。<br>
 <br>
-A text file containing the parameters and the list of the files used to create 
-the master image is saved in the folder of the master file.<br>
-The file is named after the master file name with a .Description.txt extension.<br>
+パラメータとマスター画像の作成に使用されたファイルのリストを含むテキストファイルが、マスターファイルのフォルダに保存されます。<br>
+ファイル名は、マスターファイル名に拡張子 `.Description.txt` を付けたものです。<br>
 <br>
-When the description is not matching the new settings the master files are 
-automatically created again.<br>
+説明が新しい設定と一致しない場合、マスターファイルは自動的に再作成されます。<br>
 <br>
-This feature is transparent for the user who only sees a faster processing 
-because it is not necessary to create the master files again.</span></p>
+この機能はユーザーにとって透過的であり、マスターファイルを再度作成する必要がないため、より高速な処理が可能になります。</span></p>
 <hr color="#0000ff" size="1">
-<p align="justify"><b><font face="Arial"><a name="customrect"></a>Using a Custom 
-Rectangle</font></b><font face="Arial"><b><br>
-</b><font size="2">You can tell DeepSkyStacker to use a Custom Rectangle which 
-will define the position and the size of the resulting image.<br>
+<p align="justify"><b><font face="Arial"><a name="customrect"></a>カスタム長方形の使用</font></b><font face="Arial"><b><br>
+</b><font size="2">DeepSkyStackerにカスタム長方形を使用するように指示することができ、これにより結果画像のサイズと位置を定義できます。<br>
 <br>
-First, you need to preview an image by clicking on it in the list. You can 
-select any image, but since you are defining the rectangle of what will be 
-visible in the final image you should select the reference light frame (the one 
-with the highest score or the one you decided to use as the reference light 
-frame by using the <A href="userguide.htm#contextmenu">context menu</A>).<br>
+まず、リスト内の画像をクリックしてプレビューする必要があります。どの画像でも選択できますが、最終的な画像で表示される範囲を定義するため、リファレンスライトフレーム（スコアが最も高い画像、またはコンテキストメニューを使用してリファレンスライトフレームとして使用することを決定した画像）を選択する必要があります。<br>
 <br>
-Then you just select on the image the rectangle that you wish to use as a Custom 
-Rectangle.<br>
-When you will start the stacking process, the rectangle you just created will be 
-selected by default as the stacking mode.<br>
+次に、画像上でカスタム長方形として使用したい長方形を選択します。<br>
+スタッキングプロセスを開始すると、作成した長方形がデフォルトでスタッキングモードとして選択されます。<br>
 <br>
-This option may be really helpful when used along with the <A href="#Drizzle">
-Drizzle option</A> that double or triple the size of the resulting image and 
-thus is using much more memory and disk space during the stacking process.<br>
+このオプションは、スタッキングプロセス中にさらに多くのメモリとディスクスペースを使用し、結果画像のサイズを2倍または3倍にする<A href="#Drizzle">Drizzleオプション</A>と併用する場合に非常に役立ちます。<br>
 <br>
-Indeed, when a Custom Rectangle is used, DeepSkyStacker is only using the memory 
-and disk space needed to create an image the size of the Custom Rectangle.</font></font></p>
+実際、カスタム長方形を使用すると、DeepSkyStackerはカスタム長方形サイズの画像を作成するために必要なメモリとディスクスペースのみを使用します。</font></font></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
-<p align="justify"><b><font face="Arial" color="#ff0000"><a name="stackingmethods"></a>Stacking Methods</font><font face="Arial" size="2"><br>
-<font color="#800000">Average</font><br>
-</font>
-</b><font face="Arial" size="2">This is the simplest method. The mean of all the pixels in the stack is 
-computed for each pixel.<br>
+<p align="justify"><b><font face="Arial" color="#ff0000"><a name="stackingmethods"></a>スタッキング手法</font><font face="Arial" size="2"><br>
+<font color="#800000">平均（Average）</font><br>
+</b><font face="Arial" size="2">これは最も単純なメソッドです。スタック内のすべてのピクセルの平均値が、各ピクセルごとに計算されます。<br>
 <br>
-<b><font color="#800000">Median</font><br>
-</b>This is the default method used when creating the masters dark, flat and 
-offset/bias. The median value of the pixels in the stack is computed for each 
-pixel.<br>
+<b><font color="#800000">メディアン（Median）</font><br>
+</b>これは、マスターダーク、フラット、およびオフセット/バイアスを作成する際に使用されるデフォルトのメソッドです。スタック内のピクセルのメディアン値が、各ピクセルごとに計算されます。<br>
 <br>
-<b><font color="#800000">Maximum</font><br>
-</b>This is and ultra simple method which should be use with a lot of care. The 
-maximum value of all the pixels in the stack is computed for each pixel.<br>
-It may be useful to find what is wrong in a stack by exhibiting all the defects 
-of all the calibrated images.<br>
+<b><font color="#800000">最大値（Maximum）</font><br>
+</b>これは非常に単純なメソッドですが、細心の注意を払って使用する必要があります。スタック内のすべてのピクセルの最大値が、各ピクセルごとに計算されます。<br>
+キャリブレーションされたすべての画像の欠陥を表示して、スタックのどこに問題があるかを見つけるのに役立つ場合があります。<br>
 <br>
-<b><font color="#800000">Kappa-Sigma Clipping</font><br>
-</b>This method is used to reject deviant pixels iteratively.<br>
-Two parameters are used: the number of iterations and the standard deviation 
-multiplier used (Kappa).<br>
-For each iteration, the mean and standard deviation (Sigma) of the pixels in the 
-stack are computed.<br>
-Each pixel which value is farthest from the mean than more than Kappa * 
-Sigma is rejected.<br>
-The mean of the remaining pixels in the stack is computed for each pixel.</font></p>
+<b><font color="#800000">カッパ・シグマクリッピング（Kappa-Sigma Clipping）</font><br>
+</b>このメソッドは、異常なピクセルを反復的に除去するために使用されます。<br>
+反復回数と使用する標準偏差乗数（カッパ）の2つのパラメータが使用されます。<br>
+各反復において、スタック内のピクセルの平均と標準偏差（シグマ）が計算されます。<br>
+平均からの距離が平均 + カッパ * シグマを超えている各ピクセルが除外されます。<br>
+スタック内の残りのピクセルの平均値が各ピクセルごとに計算されます。</font></p>
 <p align="justify"><font face="Arial" size="2">
-<b><font color="#800000">Median Kappa-Sigma Clipping</font><br>
-</b>This method is similar to the Kappa-Sigma Clipping method but instead of 
-rejected the pixel values, they are replaced by the median value.</font></p>
-<p align="justify"><font face="Arial" size="2"><font color="#800000"><b>Auto Adaptive Weighted 
-Average</b></font><br>
-This weighted average is adapted from the work of Dr. Peter 
-B. Stetson (see&nbsp;<A 
-href="https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html">The 
-Techniques of Least Squares and Stellar Photometry with CCDs</A>&nbsp;- Peter B. 
-Stetson 1989).<br>
-This method computes a robust average obtained by iteratively weighting each 
-pixel from the deviation from the mean comparatively to the standard deviation.<br>
+<b><font color="#800000">メディアン・カッパ・シグマクリッピング（Median Kappa-Sigma Clipping）</font><br>
+</b>このメソッドはカッパ・シグマクリッピングメソッドに似ていますが、ピクセル値を除外する代わりに、メディアン値に置き換えられます。</font></p>
+<p align="justify"><font face="Arial" size="2"><font color="#800000"><b>自動適応加重平均（Auto Adaptive Weighted Average）</b></font><br>
+この加重平均は、Dr. Peter B. Stetsonの研究から適応されたものです（<A href="https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html">The Techniques of Least Squares and Stellar Photometry with CCDs</A> - Peter B. Stetson 1989を参照）。<br>
+このメソッドは、標準偏差に対する平均からの偏差に基づいて各ピクセルの重みを反復的に計算することによって、堅牢な平均値を計算します。<br>
 <br>
-<font color="#800000"><b>Entropy Weighted Average (High Dynamic Range)</b></font><br>
-This method is based on the work of German, Jenkin and Lesperance (<a target="_blank" href="http://doi.ieeecomputersociety.org/10.1109/CRV.2005.38">see 
-Entropy-Based image merging - 2005</a>) and is used to stack the picture while 
-keeping for each pixel the best dynamic.<br>
-It is particularly useful when stacking pictures taken with different exposure 
-times and ISO speeds, and it creates an averaged picture with the best possible 
-dynamic. To put it simply it avoids burning galaxies and nebula centers.<br>
-Note: this method is very CPU and memory intensive.</font></p>
+<font color="#800000"><b>エントロピー加重平均（ハイダイナミックレンジ）（Entropy Weighted Average (High Dynamic Range)）</b></font><br>
+このメソッドは、German, Jenkin, Lesperanceの研究（<A target="_blank" href="http://doi.ieeecomputersociety.org/10.1109/CRV.2005.38">Entropy-Based image merging - 2005</A>を参照）に基づいており、各ピクセルで最高のダイナミックレンジを維持しながら画像をスタッキングするために使用されます。<br>
+異なる露出時間やISO感度で撮影された画像をスタッキングする場合に特に役立ち、可能な限り最高のダイナミックレンジを持つ平均画像を作成します。簡単に言うと、銀河や星雲の中心部が白飛びするのを防ぎます。<br>
+注：このメソッドは非常に多くのCPUとメモリを消費します。</font></p>
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center">
 <p align="justify"><b><font face="Arial" size="4" color="#ff0000">
-<a name="Drizzle"></a>Drizzle</font></b><br>
-<font face="Arial" size="2">Drizzle is a method developed by the NASA for the 
-Hubble Deep Field observations made by the Hubble Space Telescope.<br>
-The algorithm is also known as Variable Pixel Linear Reconstruction.<br>
+<a name="Drizzle"></a>Drizzle（ドリズル）</font></b><br>
+<font face="Arial" size="2">Drizzleは、ハッブル宇宙望遠鏡によるハッブル・ディープ・フィールド観測のためにNASAによって開発されたメソッドです。<br>
+このアルゴリズムは、可変ピクセル線形再構成（Variable Pixel Linear Reconstruction）としても知られています。<br>
 <br>
-It has a wide range of usages among which it can be used to enhance de resolution 
-of a stack of images compared to the resolution of a single image while 
-preserving the characteristics of the image (color, brightness).</font></p>
+用途は幅広く、画像の特性（色、明るさ）を維持しながら、単一の画像の解像度と比較してスタック画像の解像度を向上させるために使用できます。</font></p>
 <table border="0" cellspacing="1" width="100%" id="AutoNumber4">
   <tr>
     <td width="40%" valign="top">
     <p class="Standard">
   <span lang="EN-US">
-    <font face="Arial" size="2">Basically each image is super sampled just 
-    before being stacked, like twice or thrice enlarged (it can be any value 
-    greater than 1 but DeepSkyStacker is only proposing 2 or 3 which are common 
-    values), then projected on a finer grid of pixels.<br>
+    <font face="Arial" size="2">基本的に、各画像はスタッキングされる直前にスーパーサンプリング（2倍または3倍など、任意の拡大率）され、より細かいピクセルグリッド上に投影されます（DeepSkyStackerは一般的な値である2または3のみを提案しています）。<br>
     <br>
-    The result is that the size of the final image is doubled (or tripled) and 
-    that a small object that was occupying only a few dozens pixels, will be 
-    using twice or thrice the number of pixels and will be easier to post 
-    process.</font></span></p></td>
+    その結果、最終的な画像のサイズは2倍または3倍になり、わずか数十ピクセルを占めていた小さなオブジェクトは、2倍または3倍のピクセルを使用するようになり、後処理が容易になります。</font></span></p></td>
     <td width="60%">
     <p align="center">
     <IMG border=0 src="../images/Drizzle.jpg" width=250 align=center height=250></p></td>
@@ -557,318 +338,221 @@ preserving the characteristics of the image (color, brightness).</font></p>
     <td width="40%" valign="top">
     <p class="Standard"><font face="Arial" size="2">
   <span lang="EN-US">
-    <b>What and when you need to use the drizzle option</b><br>
-    Basically you need only to have a lot of images which must not be perfectly 
-    aligned (a few pixels drift is enough). <br>
-    It makes no sense to 
-    drizzle if you have only a few light frames.<br>
+    <b>Drizzleオプションを使用する必要があるものとタイミング</b><br>
+    基本的に、完全に位置合わせされていない画像を多数用意する必要があるだけです（数ピクセルのドリフトがあれば十分です）。<br>
+    ライトフレームが少ない場合にDrizzleを使用しても意味がありません。<br>
     <br>
-    Drizzling is particularly good at enhancing the resolution so it is very 
-    useful when shooting small objects with a short focal length.<br>
+    Drizzleは解像度を向上させるのに特に優れているため、焦点距離が短い小さなオブジェクトを撮影する際に非常に役立ちます。<br>
     <br>
-    On the right is a example of an almost unprocessed M57 (shot using a 10", F/D  
-    4.72 OTA with a Canon DSLR).<br>
+    右側は、ほぼ未処理のM57の例です（10インチ、F/D 4.72 OTAとCanon DSLRを使用して撮影）。<br>
     <br>
-    Usually M57 is very small, but by using a 2x drizzle and around 100 light 
-    frames the resulting image is twice bigger and the resolution is much 
-    better.<br>
+    通常M57は非常に小さいですが、2x Drizzleと約100枚のライトフレームを使用することで、結果画像は2倍大きくなり、解像度もはるかに良くなります。<br>
     <br>
-    Mouse over to see the<br>
-&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - No Drizzle - Enlarged 4 times';" href="javascript:void(0);">
-unprocessed M57 - No Drizzle (enlarged 4 times)</A><br>
-&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - 2x Drizzle - Enlarged 2 times';" href="javascript:void(0);">
-unprocessed M57 - 2x Drizzle (enlarged 2 times)</A></span></font></p></td>
+    マウスオーバーしてご覧ください：<br>
+  &nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - No Drizzle - Enlarged 4 times';" href="javascript:void(0);">
+    未処理のM57 - Drizzleなし（4倍に拡大）</A><br>
+  &nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - 2x Drizzle - Enlarged 2 times';" href="javascript:void(0);">
+    未処理のM57 - 2x Drizzle（2倍に拡大）</A></span></font></p></td>
     <td width="60%">
     <p align="center">
     <IMG id=DRIZZLE01 border=0 name=DRIZZLE01 src="../images/M57_NoDrizzle.jpg" width=411 height=353><br>
     <font face="Arial" size="2"><b id="DRIZZLELEGEND01" name="DRIZZLELEGEND01">M57 - No Drizzle</b></font></p></td>
   </tr>
 </table>
-<p align="justify"><font face="Arial" size="2"><b>Side effects of drizzling</b><br>
-The main side effect is that the amount of memory and disk space necessary to 
-create and process drizzled images is multiplied by the square of the Drizzle 
-factor. Of course the time needed to create such images is also much longer.<br>
+<p align="justify"><font face="Arial" size="2"><b>Drizzleの副作用</b><br>
+主な副作用は、Drizzle処理された画像を作成および処理するために必要なメモリとディスク容量が、Drizzle係数の2乗に比例して乗算されることです。もちろん、このような画像の作成に必要な時間もはるかに長くなります。<br>
 <br>
-For example, using a 2x Drizzle with 3000x2000 pixel images will create a 
-6000x4000 pixel image, which will need 4 times the memory and disk space size, 
-and will be much longer to create.<br>
+たとえば、3000x2000ピクセルの画像で2x Drizzleを使用すると、6000x4000ピクセルの画像が作成され、4倍のメモリとディスクサイズが必要となり、作成にかなり時間がかかります。<br>
 <br>
-When using the 3x Drizzle option, everything is multiplied by 9 (3 squared) and 
-unless you have a very powerful machine and a lot of memory and disk space 
-available you don't want to use this on classic DSLR images.<br>
+3x Drizzleオプションを使用すると、すべてが9倍（3の2乗）になります。非常に強力なマシンと大量のメモリ、ディスク容量がない限り、標準的なDSLR画像にはこれを使用しないことをお勧めします。</p>
 <br>
-However, on some small images (like the one created by the first DSI and LPI 
-cameras), it could make  sense to use the 3x Drizzle option to enhance the 
-resolution.<br>
+ただし、DSIやLPIの初期のカメラで作成されたような小さな画像の場合、3x Drizzleオプションを使用して解像度を向上させることは理にかなっている可能性があります。<br>
 <br>
-A good way to limit the increase of memory and disk space necessary to use the 
-Drizzle option is to use a <A href="#customrect">Custom Rectangle</A>.<br>
+Drizzleオプションを使用する際に必要なメモリやディスク容量の増加を抑える良い方法は、カスタム長方形を使用することです。<br>
 <br>
-<b>Drizzle and Bayer Drizzle</b><br>
-Although they are using  two flavors of the Drizzle method, it is not 
-recommended to use the Drizzle and Bayer Drizzle option together.<br>
-DeepSkyStacker is issuing a warning when you try to do so.</font></p>
+<b>DrizzleとBayer Drizzle</b><br>
+これらはDrizzleメソッドの2つのバリエーションを使用していますが、DrizzleオプションとBayer Drizzleオプションを同時に使用することは推奨されていません。<br>
+DeepSkyStackerは、この操作を行おうとすると警告を発します。</font></p>
   <hr size="2" width="100%" noshade color="blue" align="center">
 <p align="justify"><b><font face="Arial" size="4" color="#ff0000">
-<a name="cometstacking"></a>Comet Stacking</font></b><br>
-<font face="Arial" size="2">Comets are fast moving objects and when comet images 
-are stacked together two things may happen:<br>
-- if the alignment between the images is made using the stars, the comet is 
-fuzzy<br>
-- if the alignment between the images is made using the comet, the stars are 
-showing trails.<br>
+<a name="cometstacking"></a>コメットスタッキング（Comet Stacking）</font></b><br>
+<font face="Arial" size="2">彗星は動きの速い天体であり、彗星の画像を一緒にスタッキングすると、次の2つのことが起こる可能性があります。<br>
+- 画像間の位置合わせに星を使用した場合、彗星がぼやける<br>
+- 画像間の位置合わせに彗星を使用した場合、星が軌跡を描く<br>
 <br>
-Starting with version 3.0, DeepSkyStacker is adding two comet stacking options:<br>
-- Create an image aligned on the comet that will have star trails<br>
-- Create an image aligned on the comet and on the stars that will not have star 
-trails.<br>
+バージョン3.0以降、DeepSkyStackerには2つのコメットスタッキングオプションが追加されています。<br>
+- 彗星に合わせて位置合わせされた画像を作成する（星に軌跡が残ります）<br>
+- 彗星と星の両方に合わせて位置合わせされた画像を作成する（星に軌跡は残りません）。<br>
 <br>
-Here is an example of the different stacking modes (mouse over the text to see 
-the result)</font></p>
+さまざまなスタッキングモードの例を以下に示します（結果を確認するにはテキストの上にマウスを置きます）</font></p>
 <table border="0" cellspacing="1" width="100%" id="AutoNumber2">
   <tr>
     <td width="41%">
-<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
-     ><font face="Arial" size="2"><br>
+<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px"
+    ><font face="Arial" size="2"><br>
 <b><A onmouseover="document['COMETSTACK'].src='../images/FuzzyComet.jpg';" href="javascript:void(0);">
-Standard stacking</A></b><br>
-The comet position is ignored.<br>
-The comet is fuzzy and the stars have no trail.</font></p>
-<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
-     ><font face="Arial" size="2">
+標準スタッキング</A></b><br>
+彗星の位置は無視されます。<br>
+彗星はぼやけ、星には軌跡が残りません。</font></p>
+<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px"
+    ><font face="Arial" size="2">
 <b><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);">
-Comet stacking : star trails</A></b><br>
-The comet position is used,  the image is aligned on the comet.<br>
-Star positions are used to compensate any field rotation.<br>
+コメットスタッキング：星の軌跡</A></b><br>
+彗星の位置が使用され、画像は彗星に合わせて位置合わせされます。<br>
+星の位置を使用して、視野の回転を補正します。<br>
 <br>
 <b><A onmouseover="document['COMETSTACK'].src='../images/StarFreeze.jpg';" href="javascript:void(0);">
-Comet and stars stacking : "star freeze effect"</A></b><br>
-The comet position is used.<br>
-A first stack is created to extract the comet from the background.<br>
-Then a second stack is created to freeze the star (the comet is subtracted from 
-each calibrated and registered light frame before stacking it).<br>
-Last, the final image is obtained by inserting the comet back in the image.</font></p>
-<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
-     >&nbsp;</p>
+コメット＆スター・スタッキング：「星を止める効果」</A></b><br>
+彗星の位置が使用されます。<br>
+まず、背景から彗星を抽出するために最初のスタックが作成されます。<br>
+次に、星を固定するために2つ目のスタックが作成されます（スタッキングする前に、各キャリブレーション・位置合わせ済みのライトフレームから彗星が差し引かれます）。<br>
+最後に、画像に彗星を再度挿入することで最終的な画像が得られます。</font></p>
+<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px"
+    >&nbsp;</p>
     </td>
     <td width="59%" align="center">
     <IMG id = COMETSTACK border = 0 name=COMETSTACK src="../images/FuzzyComet.jpg" width=472 height=366></td>
   </tr>
 </table><font face="Arial" size="2">
 <p align="justify"><br>
-If you plan to align the image on the stars, you don't need to do what is 
-described in the following paragraphs since it's the default behavior.<br>
+星に画像を位置合わせする予定の場合、以下の段落で説明されている操作はデフォルトの動作であるため、行う必要はありません。<br>
 <br>
-</font><font face="Arial"><b><font size="2">What you need to do <br>
-Step 1: Register the comet center</font><br>
-</b></font><font face="Arial" size="2">DeepSkyStacker can not automatically detect the comet center 
-in the light frames. So, you need to:<br>   
+</font><font face="Arial"><b><font size="2">必要な操作<br>
+ステップ1：彗星の中心を登録する</font><br>
+</b></font><font face="Arial" size="2">DeepSkyStackerはライトフレーム内の彗星の中心を自動的に検出できません。そのため、以下の操作が必要です。<br>
   </font></P><font face="Arial" size="2">
 <UL>
   <LI>
-  <p style="LIST-STYLE-TYPE: none; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 28px" 
-  align="justify" data-stringify-indent="0" 
-  data-stringify-border="0">Mark the position of the centre of the comet in 2 
-  lightframes with a large temporal distance (ideally the first and the last 
-  lightframe in chronological order).</p>
+  <p style="LIST-STYLE-TYPE: none; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 28px"
+  align="justify" data-stringify-indent="0"
+  data-stringify-border="0">時間的に大きく離れた2つのライトフレーム（理想的には時系列で最初のライトフレームと最後のライトフレーム）で彗星の中心位置をマークします。</p>
   <LI>
-  <p style="LIST-STYLE-TYPE: none; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 28px" 
-  align="justify" data-stringify-indent="0" 
-  data-stringify-border="0">Marking the comet centre in additional light frames 
-  can potentially improve the results.</p></LI></UL>
-<p align="justify"></font><font face="Arial" size="2">To do this, just select a light frame in the list and using the
-<A href="userguide.htm#imagepreview">Edit Comet Mode</A> set the comet center.<br>
-If the comet center is too faint or too bright you can force DeepSkyStacker to 
-accept any position by holding down the Shift key while positioning the comet 
-center.<br>
+  <p style="LIST-STYLE-TYPE: none; MARGIN-BOTTOM: 0px; MARGIN-LEFT: 28px"
+  align="justify" data-stringify-indent="0"
+  data-stringify-border="0">追加のライトフレームで彗星の中心をマークすることで、結果が向上する可能性があります。</p></LI></UL>
+<p align="justify"></font><font face="Arial" size="2">これを行うには、リストからライトフレームを選択し、<A href="userguide.htm#imagepreview">コメット編集モード（Edit Comet Mode）</A>を使用して彗星の中心を設定します。<br>
+彗星の中心が暗すぎたり明るすぎたりする場合は、Shiftキーを押しながら彗星の中心を配置することで、DeepSkyStackerに任意の位置を強制的に受け入れさせることができます。<br>
 <br>
-Then save the result by clicking on the Save Changes button in the toolbar.<br>
-If you don't DeepSkyStacker will ask you and you will have an option to save the 
-changes automatically.<br>
+次に、ツールバーの[Save Changes（変更を保存）]ボタンをクリックして結果を保存します。<br>
+保存しない場合、DeepSkyStackerは保存するかどうかを尋ね、変更を自動的に保存するオプションが表示されます。<br>
 <br>
-Once the comet position is set and saved you will see a +(C) added to the star 
-count in the #Stars column of the list.<br>
+彗星の位置が設定および保存されると、リストの「#Stars」列の星の数に「+(C)」が追加されます。<br>
 <br>
-You must repeat the operation for each light frame. </font></P>
+この操作は各ライトフレームに対して繰り返す必要があります。</font></P>
 <table border="1" cellspacing="1" width="100%" id="AutoNumber6" cellpadding="10">
   <tr>
   <span>
     <td width="100%" bgcolor="#ffff99"><font face="Arial" size="2">
   <span lang="EN-US">
-    <b>Hint<br>
-    </b> If the date/time of the images is accurate (like when using 
-    DSLRs and some CCD camera) you can sort the images by date/time and set the 
-    position of the comet only to the first and last light frames and reference 
-    frame (the one with the highest score if you have not used the context menu 
-    to force another frame). <br>
-    DeepSkyStacker will then compute automatically (just before stacking) the 
-    position of the comet center in all the light frames in the time span from 
-    which the comet center is not set. <br>
-    To do this it will use the elapsed time between the first image and each 
-    image to interpolate the position of the comet.</span></font></td>
+    <b>ヒント<br>
+    </b> （DSLRや一部のCCDカメラを使用する場合のように）画像の撮影日時が正確な場合は、日時で画像を並べ替え、最初のライトフレーム、最後のライトフレーム、およびリファレンスフレーム（コンテキストメニューを使用して他のフレームを指定していない場合は、スコアが最も高いフレーム）にのみ彗星の位置を設定することができます。<br>
+    DeepSkyStackerは、（スタッキングの直前に）彗星の中心が設定されていない時間枠のすべてのライトフレームにおいて、彗星の中心位置を自動的に計算します。<br>
+    これを行うには、最初の画像と各画像の間で経過した時間を使用して彗星の位置を補間します。</span></font></td>
   </span>
   </tr>
 </table>
-<p align="justify"><font face="Arial" size="2">&nbsp;</font><font face="Arial"><b><font size="2">Step 2: Select the stacking mode</font><br>
-</b></font><font face="Arial" size="2">This is done in the
-<A href="userguide.htm#comettab">Comet tab</A> available in the stacking 
-parameters dialog.<br>
-The Comet tab is available only if at least two light frames (including the 
-reference light frame) have a registered comet.<br>
-From this tab you can select one of the three available Comet Stacking options.<br>
+<p align="justify"><font face="Arial" size="2">&nbsp;</font><font face="Arial"><b><font size="2">ステップ2：スタッキングモードを選択する</font><br>
+</b></font><font face="Arial" size="2">これは、スタッキングパラメータダイアログで利用可能な<A href="userguide.htm#comettab">Comet（コメット）</A>タブで行います。<br>
+Cometタブは、少なくとも2つのライトフレーム（リファレンスライトフレームを含む）に登録された彗星がある場合にのみ使用できます。<br>
+このタブから、利用可能な3つのコメットスタッキングオプションのいずれかを選択できます。<br>
 &nbsp;<br>
-<b>Mixing Comet and non Comet images</b><br>
-DeepSkyStacker can use images with a registered comet and images without a 
-registered comet in the same stack.<br>
-This may be very useful to get a better signal to noise ratio on the resulting 
-image especially in faint background details (a comet passing near a galaxy or a 
-nebula for example).</font></p>
-<p align="justify"><font face="Arial" size="2"><b>Which stacking methods<br>
-</b>If you are looking to create images with star trails, average is the best 
-method.<br>
-In all others cases you should use Median stacking with small stacks and 
-kappa-sigma with large stacks.</font></p>
-<p align="justify"><font face="Arial" size="2"><b>What results you can expect</b><br>
-Obviously the most demanding algorithm is the Comet and Stars stacking leading 
-to the star freeze effect.<br>
-Slow moving comets are leading to hard to detect large objects or big stars and 
-in this case the comet extraction process may be less than perfect.<br>
-In all cases, if you take a set of images from the same area without the comet 
-(the day after or before) it will improve a lot the look of the final image.</font></p>
+<b>コメット画像と非コメット画像の混在</b><br>
+DeepSkyStackerは、彗星が登録された画像と彗星が登録されていない画像を同じスタックで使用できます。<br>
+これは、特に微かな背景の細部（例えば、銀河や星雲の近くを通過する彗星など）において、結果画像の信号対雑音比（S/N比）を向上させるために非常に役立ちます。</font></p>
+<p align="justify"><font face="Arial" size="2"><b>使用すべきスタッキングメソッド<br>
+</b>星の軌跡がある画像を作成したい場合は、平均（Average）が最適なメソッドです。<br>
+それ以外の場合は、スタック数が少ない場合はメディアン（Median）スタッキングを、スタック数が多い場合はカッパ・シグマクリッピング（kappa-sigma）を使用してください。</font></p>
+<p align="justify"><font face="Arial" size="2"><b>期待できる結果</b><br>
+明らかに最も高度なアルゴリズムは、星を固定する効果をもたらすComet and Starsスタッキングです。<br>
+ゆっくりと動く彗星は、検出が困難な大きな天体や大きな星になり、このような場合、彗星抽出プロセスが完璧ではない可能性があります。<br>
+いずれの場合も、彗星のない同じ領域の一連の画像を（前日または翌日に）撮影すると、最終的な画像の見た目が大幅に向上します。</font></p>
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 <p align="justify"><b>
 <span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
-<a name="rawdecod"></a>RAW images development process</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
-</span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAW 
-files decoding</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The RAW files 
-created by 
-the DSLRs are decoded using <A href="https://www.libraw.org/" > LibRaw</A>&nbsp;Copyright 
-ï¿½&nbsp;2008-2019 LibRaw LLC, which is based on the original DCRaw by Dave Coffin.<br>
-            DeepSkyStacker uses the 
-latest version of LibRaw available at the time&nbsp;it was&nbsp;released, and will warn you 
-if your camera isn't supported.</span>
+<a name="rawdecod"></a>RAW画像の現像プロセス</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAWファイルのデコード</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+DSLRによって作成されたRAWファイルは、Dave CoffinによるオリジナルのDCRawをベースにしたLibRaw（Copyright © 2008-2019 LibRaw LLC）を使用してデコードされます。<br>
+DeepSkyStackerはリリース時に利用可能な最新バージョンのLibRawを使用しており、カメラがサポートされていない場合は警告を表示します。</span>
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 <P></P>
-<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAW files 
-development process</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
-</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">A 
-file is the equivalent of the digital negative. Thus, each raw file needs a 
-development process.<br>
-There are two kinds of raw files: the one using a Bayer matrix (most of them) 
-and the one not using a Bayer matrix (for example the one using a Foveon chip).<br>
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAWファイルの現像プロセス</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+ファイルはデジタルネガと同等です。そのため、各RAWファイルには現像プロセスが必要です。<br>
+RAWファイルには2種類あります。Bayer（ベイヤー）行列を使用するもの（ほとんどがこれに該当します）と、Bayer行列を使用しないもの（例えば、Foveonチップを使用するもの）です。<br>
 <br>
-During the following explanations I will only consider the raw files created by 
-a Bayer matrix based DSLR.</span></p>
+以下の説明では、Bayer行列ベースのDSLRによって作成されたRAWファイルのみを対象とします。</span></p>
 <div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
-<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Bayer 
-Matrix<br>
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Bayer行列<br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-First, a small reminder of what is the Bayer matrix<br>
-When you are using an 8 mega-pixels DSLR, the CMOS or CCD chip is a black and 
-white chip of 8 mega-pixels on which is glued a Bayer matrix which is in fact a 
-pattern of RGBG or CYMK filters in front of each pixel (other patterns are 
-possible) <br>
+まず、Bayer行列とは何かについて簡単に復習しておきます。<br>
+8メガピクセルのDSLRを使用する場合、CMOSまたはCCDチップは8メガピクセルの白黒チップであり、その上にBayer行列が貼り付けられています。これは実際には、各ピクセルの前面にあるRGBGまたはCYMKフィルターのパターンです（他のパターンも可能です）。<br>
 <br>
-In the case of RGBG filters a fourth of the pixels are capturing
-<span style="COLOR: red">red</span>, another fourth <span style="COLOR: blue">blue</span> 
-and the remaining half <span style="COLOR: green">green</span>.<br>
-So your 8 mega-pixels DSLR is producing pictures with 2 millions red pixels, the 
-same amount of blue pixels and 4 millions green pixels.<br>
+RGBGフィルターの場合、ピクセルの4分の1が赤、別の4分の1が青、残りの半分が緑を捉えています。<br>
+つまり、8メガピクセルのDSLRは、200万個の赤いピクセル、同じ数の青いピクセル、400万個の緑のピクセルを含む画像を生成します。<br>
 <br>
-Then how the DSLR is creating "true" colors pictures?<br>
-Very simply by interpolating the missing primary colors from neighboring pixels.
-</span></p>
+では、DSLRはどのようにして「真の」カラー画像を生成するのでしょうか？<br>
+非常に簡単で、隣接するピクセルから欠落している原色を補間（interpolation）するだけです。</span></p>
 
 <hr color="#0000ff">
-<p><font size="2" face="Arial"><b>Color reconstruction using the Bayer matrix - <font color="#0000ff">
-Interpolation</font></b></font></p>
+<p><font size="2" face="Arial"><b>Bayer行列を使用した色再現 - <font color="#0000ff">補間（Interpolation）</font></b></font></p>
 
 <table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber1">
   <tr>
     <td width="51%">
-    <p class="Standard"><font size="2" face="Arial">The first way to reconstruct the 
-    colors from the Bayer matrix is to interpolate the missing primaries from 
-    the neighboring pixels.</font></p>
+    <p class="Standard"><font size="2" face="Arial">Bayer行列から色を再現する最初の方法は、隣接するピクセルから欠落している原色を補間することです。</font></p>
     <p class="Standard">
-    <font size="2" face="Arial">A lot of different interpolation methods are 
-    available producing bad to good results (linear, gradient...) but all are 
-    degrading the quality of the final picture by guessing what the missing 
-    colors should be.</font><p class="Standard">
-    <font face="Arial" size="2">When each picture is slightly blurred by the 
-    interpolating process, the stacking of several pictures is loosing a lot of 
-    fine details.<br>
+    <font size="2" face="Arial">さまざまな補間メソッドが利用可能で、品質の悪いものから良いものまで（線形、勾配など）ありますが、いずれも欠落している色を推測するため、最終的な画像の品質を低下させます。</font></p><p class="Standard">
+    <font face="Arial" size="2">各画像が補間プロセスによってわずかにぼやけるため、複数の画像をスタッキングすると多くの細かいディテールが失われます。<br>
     <br>
-    If you still plan to use the interpolation method know that the software 
-    coming with your DSLR is probably the worst choice when it comes to 
-    preserving quality in astrophotography pictures. <br>
+    それでも補間メソッドを使用する予定がある場合は、DSLRに付属のソフトウェアが、天体写真の品質を維持するという点においておそらく最悪の選択肢であることを知っておいてください。<br>
     <br>
-    If you were using it to transform your raw files to 16 bit TIFF files you 
-    will instantly see an improvement by using DeepSkyStacker.<br>
-&nbsp;</font></p></td>
+    RAWファイルを16ビットのTIFFファイルに変換するためにそれを使用していた場合、DeepSkyStackerを使用することで品質の向上がすぐにわかります。<br>
+    &nbsp;</font></p></td>
     <td width="51%">
-    <IMG border=0 src="../images/BayerInterpolation.jpg" width=375 align=right height=285></td>
+    <p align="right"><IMG border=0 src="../images/BayerInterpolation.jpg" width=375 align=right height=285></p></td>
   </tr>
 </table>
 <hr color="#0000ff">
-<p><font size="2" face="Arial"><b><a name="superpixel"></a>Color reconstruction using the Bayer matrix - <font color="#0000ff">
-Super-pixel</font></b></font></p>
+<p><font size="2" face="Arial"><b><a name="superpixel"></a>Bayer行列を使用した色再現 - <font color="#0000ff">スーパーピクセル（Super-pixel）</font></b></font></p>
 
 <table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber2">
   <tr>
     <td width="51%">
-    <p class="Standard"><font face="Arial" size="2">With LibRaw it is possible to 
-    access the Bayer matrix before any interpolation. Thus it is possible to use 
-    other methods to reconstruct the true colors without guessing the missing 
-    primaries with interpolation.</font></p>
+    <p class="Standard"><font face="Arial" size="2">LibRawを使用すると、補間が行われる前にBayer行列にアクセスすることができます。したがって、補間によって欠落している原色を推測することなく、真の色を再現する他の方法を使用できます。</font></p>
     <p class="Standard">
-    <font size="2" face="Arial">The Super Pixel method does not interpolate but 
-    instead creates a single super pixel from each group of four pixels (RGBG).</font></p>
+    <font size="2" face="Arial">スーパーピクセル（Super Pixel）メソッドは補間を行わず、代わりに4ピクセル（RGBG）の各グループから単一のスーパーピクセルを作成します。</font></p>
     <p class="Standard"><font size="2" face="Arial"><br>
-    Indeed each group of 4 pixels contains all the necessary information for 
-    each primary and the luminance.<br>
-    This method is very simple and has the drawback (or is it a bonus) to divide 
-    the size of the resulting picture by 4.<br>
+    実際、4ピクセルの各グループには、各原色と輝度に対する必要な情報がすべて含まれています。<br>
+    このメソッドは非常にシンプルであり、結果として得られる画像のサイズを4分の1に縮小するという欠点（またはメリット？）があります。<br>
     <br>
-    The Super Pixel method is giving very good results when only a few pictures are 
-    available for the stacking process.</font></p></td>
+    スーパーピクセルメソッドは、スタッキングプロセスに使用できる画像が少ない場合に非常に良い結果を出します。</font></p></td>
     <td width="49%">
-    <IMG border=0 src="../images/BayerSuperPixel.jpg" width=373 align=right height=280></td>
+    <p align="right"><IMG border=0 src="../images/BayerSuperPixel.jpg" width=373 align=right height=280></p></td>
   </tr>
 </table>
 <p>&nbsp;</p>
 
 <hr color="#0000ff">
-<p><font size="2" face="Arial"><b><a name="bayerdrizzle"></a>Color reconstruction 
-using the Bayer matrix - <font color="#0000ff">Bayer drizzle</font></b></font></p>
+<p><font size="2" face="Arial"><b><a name="bayerdrizzle"></a>Bayer行列を使用した色再現 - <font color="#0000ff">ベイヤードリズル（Bayer drizzle）</font></b></font></p>
 
 <table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber3">
   <tr>
     <td width="51%">
     <p class="Standard"><font size="2" face="Arial">
-                
-                 
-          The</font><font size="2" face="Arial"> &nbsp;last method which was 
-    suggested by Dave Coffin uses the property of the stacking process to 
-    compute the true RGB values of each resulting pixel by using the "natural" 
-    drift existing between each picture.<br>
+    最後に、Dave Coffinによって提案されたメソッドは、画像間に存在する「自然な」ドリフトを利用して、結果として得られる各ピクセルの真のRGB値を計算するスタッキングプロセスの特性を使用します。<br>
     <br>
-    When a large number of pictures is available and with its sub pixel 
-    alignment, DeepSkyStacker computes bit by bit the true values of each 
-    primary for each pixel, all without any interpolation.<br>
-&nbsp;<br>
-    After the stacking process another algorithm is used to normalize the RGB 
-    values to avoid information's holes.<br>
+    多数の画像が利用可能で、かつサブピクセル位置合わせが行われている場合、DeepSkyStackerは補間を一切使用せずに、各ピクセルの各原色の真の値を計算します。<br>
+    &nbsp;<br>
+    スタッキングプロセス後、情報の欠落を防ぐためにRGB値を正規化する別のアルゴリズムが使用されます。<br>
     <br>
-    The Bayer Drizzle method gives excellent results when a large number of 
-    light frames is available and when the guiding precision is greater than one 
-    pixel (which is almost always the case).</font></p></td>
+    Bayer Drizzleメソッドは、多数のライトフレームが利用可能で、かつガイド精度が1ピクセルより高い場合（ほとんどの場合これに該当します）に優れた結果をもたらします。</font></p></td>
     <td width="49%">
-    <IMG border=0 src="../images/BayerDrizzle.jpg" width=375 align=right height=287></td>
+    <p align="right"><IMG border=0 src="../images/BayerDrizzle.jpg" width=375 align=right height=287></p></td>
   </tr>
 </table>
 <p>&nbsp;</p>
