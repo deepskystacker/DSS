@@ -37,7 +37,6 @@ set(Header_Files
     "BitmapInfo.h"
     "BitmapIterator.h"
     "BitmapPartFile.h"
-    "BezierAdjust.h"
     "cfa.h"
     "CFABitmapInfo.h"
     "ChannelAlign.h"
@@ -167,6 +166,7 @@ set(AVX_non-AVX_Files
 
 set(Source_Files
     "AHDDemosaicing.cpp"
+    "asinhstretch.cpp"
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -175,6 +175,7 @@ set(Source_Files
     "BitMapFiller.cpp"
     "BitmapInfo.cpp"
     "ChannelAlign.cpp"
+    "colourbalance.cpp"
     "ColorBitmap.cpp"
     "ColorHelpers.cpp"
     "ColorMultiBitmap.cpp"
@@ -371,6 +372,12 @@ qt_add_translations(${PROJECT_NAME}
     TS_FILE_DIR i18n
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en.ts
     PLURALS_TS_FILE i18n/${PROJECT_NAME}_en_GB.ts
+    QM_FILES_OUTPUT_VARIABLE qm_files
+    )
+qt_add_resources(${PROJECT_NAME} "kernel_translations"
+    PREFIX "/i18n"
+    BASE "${CMAKE_CURRENT_BINARY_DIR}"
+    FILES ${qm_files}
     )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets Qt6::Network)

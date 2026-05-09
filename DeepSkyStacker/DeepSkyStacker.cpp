@@ -191,6 +191,7 @@ namespace
 				.arg(vFiles.size()).arg(strSize);
 
 			QMessageBox msgBox(QMessageBox::Question, QString(""), strMsg, (QMessageBox::Yes | QMessageBox::No));
+			msgBox.setWindowModality(Qt::ApplicationModal);
 
 			msgBox.setDefaultButton(QMessageBox::Yes);
 
@@ -247,7 +248,7 @@ bool loadTranslations()
 	static QTranslator theAppTranslator;
 	static QTranslator theKernelTranslator;
 
-	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
+	Q_INIT_RESOURCE(kernel_translations);
 
 	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
 	QSettings settings;
@@ -268,8 +269,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	lowerDockWidget{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },
+	processingDlg{ nullptr },
 	// m_taskbarList{ nullptr },
-	m_DeepStack{ std::make_unique<CDeepStack>() },
 	activePanel{ ActivePanel::StackingPanel },
 	args{ qApp->arguments() },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
@@ -277,8 +278,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	statusBarText{ new QLabel("") },
 	errorMessageDialog{ new QErrorMessage(this) },
 	eMDI{ nullptr },		// errorMessageDialogIcon pointer
-	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) },
-	progressDlg{ new DSS::ProgressDlg(this)}
+	helpShortCut{ new QShortcut(QKeySequence::HelpContents, this) }
+	// progressDlg{ new DSS::ProgressDlg(this)}
 {
 	ZFUNCTRACE_RUNTIME();
 	DSSBase::setInstance(this);
@@ -626,11 +627,6 @@ DSS::ProcessingDlg& DeepSkyStacker::getProcessingDlg()
 	return *processingDlg;
 }
 
-CDeepStack& DeepSkyStacker::deepStack()
-{
-	return *m_DeepStack.get();
-}
-
 QString DeepSkyStacker::statusMessage()
 {
 	return statusBarText->text();
@@ -691,8 +687,10 @@ void DeepSkyStacker::help()
 	QString appPath{ QCoreApplication::applicationDirPath() };
 #if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
 	QString helpFile{ appPath + "/Help/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+//	QString helpFile{ appPath + "/Help/" + "DeepSkyStacker Help.chm" };
 #elif defined(Q_OS_MACOS)
 	QString helpFile{ appPath + "/../Resources/" + tr("DeepSkyStacker Help.chm","IDS_HELPFILE") };
+//	QString helpFile{ appPath + "/../Resources/" + "DeepSkyStacker Help.chm" };
 #endif
 
 #if defined(Q_OS_LINUX)

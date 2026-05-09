@@ -238,11 +238,11 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 			//if ((*it).m_wLightValue >= (*it).m_wDarkValue )
 			{
 				{
-					double	fValue = static_cast<double>((*it).m_wLightValue) - static_cast<double>((*it).m_wDarkValue))*k);
+					double	fValue = static_cast<double>((*it).m_wLightValue) - static_cast<double>((*it).m_wDarkValue)*k;
 
 					//if (fValue >= 0)
 					{
-						lNrValues += (*it).m_lCount;
+						lNrValues += (*it).m_lCount;`
 						fPowSum += (fValue*fValue)*(*it).m_lCount;
 						fSum	+= fValue * (*it).m_lCount;
 						fMaxValue = std::max(fMaxValue, fValue);
@@ -1083,7 +1083,7 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 	bool				bMonochrome = pBitmap->IsMonochrome();
 	bool				bCFA = pBitmap->IsCFA();
 
-	rgbHistogram.SetSize(256.0, std::numeric_limits<std::uint16_t>::max() + 1);
+	rgbHistogram.SetSize(256.0, static_cast<size_t>(std::numeric_limits<std::uint16_t>::max() + 1));
 	for (int i = rc.left; i < rc.right; i++)
 	{
 		for (int j = rc.top; j < rc.bottom; j++)
@@ -1608,7 +1608,7 @@ public:
 		m_pBitmap{ pBitmap },
 		m_pProgress{ pProgress }
 	{
-		m_RGBHistogram.SetSize(256.0, 65535);
+		m_RGBHistogram.SetSize(256.0, static_cast<size_t>(65535));
 	}
 
 	~CFindHotPixelTask1() = default;
@@ -1623,11 +1623,11 @@ template <class T> struct threadLocals {
 
 	explicit threadLocals(const T* bm) : bitmap{ bm }, PixelIt{ bm }
 	{
-		rgbHistogram.SetSize(256.0, 65535);
+		rgbHistogram.SetSize(256.0, static_cast<size_t>(65535));
 	}
 	threadLocals(const threadLocals& rhs) : bitmap{ rhs.bitmap }, PixelIt{ rhs.bitmap }
 	{
-		rgbHistogram.SetSize(256.0, 65535);
+		rgbHistogram.SetSize(256.0, static_cast<size_t>(65535));
 	}
 };
 

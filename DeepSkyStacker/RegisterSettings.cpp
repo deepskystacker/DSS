@@ -68,8 +68,6 @@ namespace DSS
 	{
 		ui->setupUi(this);
 
-		connectSignalsToSlots();
-
 		perCentValidator = new QIntValidator(0, 100, this);
 		ui->percentStack->setValidator(perCentValidator);
 
@@ -107,12 +105,6 @@ namespace DSS
 		ui->luminanceThreshold->setEnabled(state == 0);
 		ui->label_4->setEnabled(state == 0);
 		this->detectionThreshold = static_cast<uint>(state == 0 ? ui->luminanceThreshold->value() : 0);
-
-		if (state != 0)
-		{
-			this->medianFilter_stateChanged(0);
-			this->hotPixels_stateChanged(0);
-		}
 	}
 
 	void RegisterSettings::onInitDialog()
@@ -248,6 +240,8 @@ namespace DSS
 		}
 
 		ui->forceRegister->setChecked(forceRegister);
+		connectSignalsToSlots();
+
 	}
 
 	void RegisterSettings::forceRegister_stateChanged(int)

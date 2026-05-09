@@ -581,6 +581,7 @@ namespace DSS
 				break;
 			case PICTURETYPE_OFFSETFRAME:
 				kappa = workspace->value("Stacking/Offset_Kappa", 2.0).toDouble();
+				break;
 			default:
 				break;
 			}

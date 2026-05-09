@@ -370,7 +370,7 @@ namespace DSS
 
 						std::shared_ptr<CMemoryBitmap> pBitmap;
 						std::shared_ptr<QImage> pQImage;
-						if (::FetchPicture(filePath, pBitmap, false, &dlg, pQImage))
+						if (::FetchPicture(filePath, pBitmap, &dlg, pQImage))
 						{
 							// Apply offset, dark and flat to lightframe
 							MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);

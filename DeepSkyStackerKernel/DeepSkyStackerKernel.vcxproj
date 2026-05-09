@@ -31,6 +31,7 @@
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>false</UseOfMfc>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
@@ -110,7 +111,7 @@
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -276,6 +277,7 @@
     <ClCompile Include=".\TaskInfo.cpp" />
     <ClCompile Include=".\TIFFUtil.cpp" />
     <ClCompile Include=".\Workspace.cpp" />
+    <ClCompile Include="asinhstretch.cpp" />
     <ClCompile Include="avx_1.cpp" />
     <ClCompile Include="avx_avg_1.cpp" />
     <ClCompile Include="avx_bitmap_util.cpp" />
@@ -286,6 +288,7 @@
     <ClCompile Include="avx_luminance_1.cpp" />
     <ClCompile Include="avx_output_1.cpp" />
     <ClCompile Include="avx_simd_check.cpp" />
+    <ClCompile Include="colourbalance.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="ExceptionHandling.cpp" />
     <ClCompile Include="ImageListModel.cpp" />
@@ -344,7 +347,6 @@
     <ClInclude Include="avx_includes.h" />
     <ClInclude Include="avx_simd_check.h" />
     <ClInclude Include="avx_simd_factory.h" />
-    <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="ExceptionHandling.h" />
     <QtMoc Include="ImageListModel.h" />
     <QtMoc Include="QEventLogger.h" />
@@ -399,7 +401,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="i18n\DeepSkyStackerKernel_translations.qrc" />
+    <QtRcc Include="i18n\kernel_translations.qrc" />
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DeepSkyStackerKernel_ca.ts" />

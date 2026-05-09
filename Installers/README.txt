@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.1.3
+Welcome to DeepSkyStacker 6.2.0
 ===============================
 
 Reporting problems:
@@ -13,6 +13,90 @@ Known problems:
    then the exposure is set to zero.   This would be a lot of work to fix as it would require us to implement our own
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
+
+Changes for DeepSkyStacker 6.2.0
+================================
+
+1.  Change the UI for the Raw/DDP Processing settings so that the choice of white balance processing is made much clearer.
+
+2.  Change the code so that (in most cases) the Qt Widgets based File Open Dialog is only used on Linux, so that external
+    drives are visible on macOS.    The exception is "Save picture to file..." which needs to use the Qt Widgets based
+    version.
+
+3.  Update Libraw to 0.22
+
+4.  Bug fix: When we converted to use vcpkg for building dependencies, the build of the Libraw package didn't include
+    support for X3F files which was needed for support of some Fujitsu and Sigma cameras.   This has now been resolved
+    by creating an overlay port with the necessary build options.
+
+5.  Changes to support adjustment of TIFF images.   This is needed when processing TIFF files from (for example) the Dwarf
+    Mini which uses 15 second exposures which are very dark.   Increasing the image brightness by (say) a factor of 4.5
+    allows the images to be registered and stacked which wasn't possible previously.
+
+6.  Re-design image adjustment so that adjustments are applied after calibration frames have been applied for 
+    registration and stacking, rather than while the image files are being read in the first place which caused
+    problems with calibration.   These changes should solve problems with incorrect calibration when intensity
+    or colour channel adjustment is used.
+
+    Also redesign the UI for DDP (Digital Development Processing) Settings (was Raw/FITS DDP Settings).
+
+    Image adjustment now applies to all image types, rather than just RAW and FITS images
+
+7.  Bug fix: TIFF output files didn't always report the total exposure time.
+
+8.  Bug fix: Resolve crashes in Avx256Stacking::pixelPartitioning() when using AVX (SIMD) which were caused by a data
+    vector over-run when reading a 32 byte block of pixel data using SIMD instructions.  Over-allocating the vector used
+    to store pixel data in the InitInternals() function of the "GrayBitmap" class ensures that reading the final valid pixel
+    values from the vector will no longer result in an over-run.
+
+9.  Bug fix: Loop in AVX code over-running bounds in Avx256BezierAndSaturation::avx256LowerBoundPs().
+
+10. Bug fix: Crash in StackingDlg::eventFilter() during shutdown when run under Address Sanitizer.
+
+11. Bug fix: Undefined behaviour in the quickMedian code in avx_output.cpp when a negative lower bound, or an upper 
+    bound greater than valid for the datatype was passed to the lambda.
+
+12. Bug fix: Correct the calculation used for the estimated remaining time displayed by the progress dialogue.
+
+13. Bug fix: When using "Compute the number of detected stars" from the Register Settings dialogue, the image
+    adjustments from DDP settings were not applied.
+
+14. Bug fix: Register Settings dialogue was losing changes.
+
+15. Improve the Quality Chart FWHM plot by replacing FWHM more than three standard deviations above the median
+    value with the median value before processing.  This prevents very bright stars from dominating the plot.
+
+16. Major re-design of the "Processing" panel.  The old controls have been removed and replaced with a control
+    to perform an inverse hyperbolic sine stretch of the image with the ability to preview the changes.
+
+17. Issue an error message for problems reading a broken FITS file instead of throwing an exception.
+
+18. Bug fix: Crash in ProcessingDlg code if image load fails.  StackedBitmap code wasn't returning the error code
+    when the load failed.
+
+19. Clean up error handling in StackingDlg when asynchronous image load fails.
+
+20. Colourise the pixel information display on the Stacking pane, and add the same to the Processing pane.
+
+21. Add a tab to the processing controls to allow colour balance adjustment.
+
+22. Japanese translation for DeepSkyStacker.  ありがとうありがとう (Thank you very much) to
+    三浦 修 (Miura Shu) for this contribution.
+
+23. Bug fix: Crash in StackedBitmap::normalise when processing a monochrome stacked image.
+
+24. Change so that each tab on the Processing pane has its own apply button.
+
+25. Reduce sensitivity of adjustments to Colour Balance.
+
+26. Provide tooltips for the Undo and Redo buttons showing what they will do.
+
+27. Bug fix: An exception was thrown for "invalid deque<T> subscript" if an image wasn't loaded
+    in the processing pane and any of Copy to clipboard, Create a Star Mask or Save image were selected.
+
+28. Japanese help files contributed by 三浦 修 (Miura Shu), thank you once again.
+
+29. Corrections to the French help files kindly provided by Luc Coiffier.
 
 Changes for DeepSkyStacker 6.1.3
 ================================

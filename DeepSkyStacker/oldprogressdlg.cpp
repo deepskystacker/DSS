@@ -201,35 +201,40 @@ void OldProgressDlg::applyStart2Text(const QString& strText)
 	}
 }
 
-void OldProgressDlg::applyProgress1(int lAchieved)
+void OldProgressDlg::applyProgress1(int completedSteps)
 {
-	ui->ProgressBar1->setValue(lAchieved);
+	ui->ProgressBar1->setValue(completedSteps);
 
-	// Now do time remaining as well
-	if (m_total1 > 1 && lAchieved > 1)
+	//
+	// Code changes to avoid undefined behaviour running with -fsanitize=undefined,
+	// and to correct the calculation of the estimated remaining time.
+	//
+	if (0 != completedSteps )	// must have achieved some progress to be able to estimate remaining time.
 	{
-		std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(m_timer.elapsed()) / static_cast<double>(lAchieved - 1) * static_cast<double>(m_total1 - lAchieved + 1));
-		if (lAchieved > m_total1)	// If OpemMP tasks are not multiple of processors, this gets too large!
-			dwRemainingTime = 0;
-		else
-			dwRemainingTime /= 1000;
+		int remainingSteps = m_total1 - completedSteps;
+		if (remainingSteps < 0)	remainingSteps = 0;
+		std::uint32_t remainingTime = static_cast<std::uint32_t>(
+			(static_cast<double>(m_timer.elapsed()) * remainingSteps) /
+				static_cast<double>(completedSteps));
 
-		const std::uint32_t dwHour = dwRemainingTime / 3600;
-		dwRemainingTime -= dwHour * 3600;
-		const std::uint32_t dwMin = dwRemainingTime / 60;
-		dwRemainingTime -= dwMin * 60;
-		const std::uint32_t dwSec = dwRemainingTime;
+		remainingTime /= 1000;
+
+		const std::uint32_t hours = remainingTime / 3600;
+		remainingTime -= hours * 3600;
+		const std::uint32_t minutes = remainingTime / 60;
+		remainingTime -= minutes * 60;
+		const std::uint32_t seconds = remainingTime;
 
 		QString qStrText;
-		if (dwHour != 0)
+		if (hours != 0)
 			qStrText = tr("Estimated remaining time: %1 hr %2 mn %3 s ",
-				"IDS_ESTIMATED3").arg(dwHour).arg(dwMin).arg(dwSec);
-		else if (dwMin != 0)
+				"IDS_ESTIMATED3").arg(hours).arg(minutes).arg(seconds);
+		else if (minutes != 0)
 			qStrText = tr("Estimated remaining time: %1 mn %2 s ",
-				"IDS_ESTIMATED2").arg(dwMin).arg(dwSec);
-		else if (dwSec != 0)
+				"IDS_ESTIMATED2").arg(minutes).arg(seconds);
+		else if (seconds != 0)
 			qStrText = tr("Estimated remaining time : %1 s ",
-				"IDS_ESTIMATED1").arg(dwSec);
+				"IDS_ESTIMATED1").arg(seconds);
 		else
 			qStrText = tr("Estimated remaining time: < 1 s ",
 				"IDS_ESTIMATED0");

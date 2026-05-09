@@ -45,7 +45,7 @@ namespace {
 			{
 				double fValue;
 				inputBitmap.GetPixel(x, y, fValue);
-				fSumX += fValue * x;
+				fSumX += fValue * static_cast<double>(x);
 				fNrValuesX += fValue;
 			}
 			if (fNrValuesX > 0)
@@ -65,7 +65,7 @@ namespace {
 			{
 				double fValue;
 				inputBitmap.GetPixel(x, y, fValue);
-				fSumY += fValue * y;
+				fSumY += fValue * static_cast<double>(y);
 				fNrValuesY += fValue;
 			}
 			if (fNrValuesY > 0)
@@ -91,7 +91,7 @@ namespace {
 			inputBitmap.GetPixel(x, yCoord, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
 //			fSumX += fValue * x;
-			fSquareSumX += (x - star.m_fX) * (x - star.m_fX) * fValue;
+			fSquareSumX += (static_cast<double>(x) - star.m_fX) * (static_cast<double>(x) - star.m_fX) * fValue;
 			fNrValuesX += fValue;
 		}
 		fStdDevX = std::sqrt(fSquareSumX / fNrValuesX);
@@ -107,7 +107,7 @@ namespace {
 			inputBitmap.GetPixel(xCoord, y, fValue);
 			fValue = std::max(0.0, fValue - backgroundLevel);
 //			fSumY += fValue * y;
-			fSquareSumY += (y - star.m_fY) * (y - star.m_fY) * fValue;
+			fSquareSumY += (static_cast<double>(y) - star.m_fY) * (static_cast<double>(y) - star.m_fY) * fValue;
 			fNrValuesY += fValue;
 		}
 		fStdDevY = std::sqrt(fSquareSumY / fNrValuesY);

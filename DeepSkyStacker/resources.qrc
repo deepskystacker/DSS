@@ -35,6 +35,7 @@
         <file alias="taiwan.png">res/Taiwan.png</file>
         <file alias="turkish.png">res/Turkish.png</file>
         <file alias="prc.png">res/prc.png</file>
+        <file alias="japan.png">res/japan.png</file>
     </qresource>
     <qresource prefix="/stacking">
         <file alias="normalmode.bmp">res/normalmode.bmp</file>

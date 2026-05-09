@@ -136,7 +136,13 @@ namespace DSS
 			QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
 			QFileDialog::ShowDirsOnly
 			| QFileDialog::DontResolveSymlinks
-			| QFileDialog::DontUseNativeDialog);	// Always use non-native dialog for consistency
+#ifdef Q_OS_LINUX
+			//
+			// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+			//
+			| QFileDialog::DontUseNativeDialog
+#endif // Q_OS_LINUX
+			);	// Always use non-native dialog for consistency
 
 		if (dir.length() > 0)
 		{

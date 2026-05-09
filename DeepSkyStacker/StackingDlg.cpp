@@ -576,90 +576,87 @@ namespace DSS
 			return true;
 		}
 #endif
-		if (pictureList->tableView == watched)
+		if (QEvent::KeyPress == event->type() && pictureList->tableView == watched)
 		{
-			if (QEvent::KeyPress == event->type())
+			qsizetype i{ 0 };
+			QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+			const QKeySequence received(keyEvent->key() | keyEvent->modifiers());
+			QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
+			ImageListModel* imageModel{ frameList.currentTableModel() }; 
+
+			//
+			// Was it the Space Bar?  If so toggle the checked state of all selected items
+			//
+			if (Qt::Key_Space == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
 			{
-				qsizetype i{ 0 };
-				QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-				const QKeySequence received(keyEvent->key() | keyEvent->modifiers());
-				QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
-				ImageListModel* imageModel{ frameList.currentTableModel() }; 
+				QModelIndexList selectedRows = qsm->selectedRows();
+
+				auto rowCount = selectedRows.size();
 
 				//
-				// Was it the Space Bar?  If so toggle the checked state of all selected items
+				// If the QSortFilterProxyModel is being used, need to map 
+				// to the imageModel index in the base imageModel (our ImageListModel)
 				//
-				if (Qt::Key_Space == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+				if (pictureList->tableView->model() == proxyModel)
 				{
-					QModelIndexList selectedRows = qsm->selectedRows();
-
-					auto rowCount = selectedRows.size();
-
-					//
-					// If the QSortFilterProxyModel is being used, need to map 
-					// to the imageModel index in the base imageModel (our ImageListModel)
-					//
-					if (pictureList->tableView->model() == proxyModel)
-					{
-						for (i = 0; i < rowCount; i++)
-						{
-							selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
-						}
-					}
-
 					for (i = 0; i < rowCount; i++)
 					{
-						int row = selectedRows[i].row();
-
-						if (Qt::Checked == imageModel->mydata[row].m_bChecked)
-							imageModel->mydata[row].m_bChecked = Qt::Unchecked;
-						else
-							imageModel->mydata[row].m_bChecked = Qt::Checked;
-
-						imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
+						selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
 					}
-					return true;
+				}
+
+				for (i = 0; i < rowCount; i++)
+				{
+					int row = selectedRows[i].row();
+
+					if (Qt::Checked == imageModel->mydata[row].m_bChecked)
+						imageModel->mydata[row].m_bChecked = Qt::Unchecked;
+					else
+						imageModel->mydata[row].m_bChecked = Qt::Checked;
+
+					imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
+				}
+				return true;
+			}
+
+			//
+			// Was it the Delete key? If so, remove all selected rows
+			//
+			if (Qt::Key_Delete == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+			{
+				QModelIndexList selectedRows = qsm->selectedRows();
+
+				qsizetype rowCount = selectedRows.size();
+
+				//
+				// If the QSortFilterProxyModel is being used, need to map 
+				// to the imageModel index in the base imageModel (our ImageListModel)
+				//
+				if (pictureList->tableView->model() == proxyModel)
+				{
+					for (i = 0; i < rowCount; i++)
+					{
+						selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
+					}
 				}
 
 				//
-				// Was it the Delete key? If so, remove all selected rows
+				// Sort the list of QModelIndex in descending order so that 
+				// when we iterate over the list we will delete the rows 
+				// with higher row numbers first.
 				//
-				if (Qt::Key_Delete == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+				std::sort(selectedRows.rbegin(), selectedRows.rend());
+
+				for (i = 0; i < rowCount; i++)
 				{
-					QModelIndexList selectedRows = qsm->selectedRows();
-
-					qsizetype rowCount = selectedRows.size();
-
-					//
-					// If the QSortFilterProxyModel is being used, need to map 
-					// to the imageModel index in the base imageModel (our ImageListModel)
-					//
-					if (pictureList->tableView->model() == proxyModel)
-					{
-						for (i = 0; i < rowCount; i++)
-						{
-							selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
-						}
-					}
-
-					//
-					// Sort the list of QModelIndex in descending order so that 
-					// when we iterate over the list we will delete the rows 
-					// with higher row numbers first.
-					//
-					std::sort(selectedRows.rbegin(), selectedRows.rend());
-
-					for (i = 0; i < rowCount; i++)
-					{
-						int row = selectedRows[i].row();
-						frameList.removeFromMap(imageModel->mydata[row].filePath);
-						imageModel->beginRemoveRows(QModelIndex(), row, row);
-						imageModel->removeRows(row, 1);
-						imageModel->endRemoveRows();
-					}
-					updateListInfo();
-					return true;
+					int row = selectedRows[i].row();
+					frameList.removeFromMap(imageModel->mydata[row].filePath);
+					imageModel->beginRemoveRows(QModelIndex(), row, row);
+					imageModel->removeRows(row, 1);
+					imageModel->endRemoveRows();
 				}
+				updateListInfo();
+				return true;
 			}
 		}
 		return Inherited::eventFilter(watched, event);
@@ -1114,7 +1111,14 @@ namespace DSS
 	{
 		if (pos.x() >= 0 && pos.y() >= 0)
 		{
-			ui->pixelInfo->setText(tr("X: %1 Y: %2\nR: %3 G: %4 B: %5")
+			//
+			// Use "deepskyblue" (rbg(0, 191, 255)) for the blue text as pure blue
+			// is hard to read on a black background	
+			// 
+			ui->pixelInfo->setText(QString("X: %1 Y: %2<br>"
+				"<font color=#ff0000>R: %3 </font>"
+				"<font color=#00ff00>G: %4 </font>"
+				"<font color=#00bfff>B: %5 </font>")
 				.arg(pos.x())
 				.arg(pos.y())
 				.arg(qRed(colour))
@@ -1513,8 +1517,8 @@ namespace DSS
 				// Display the blue gradient with no text
 				//
 				ui->information->setStyleSheet(
-					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
+					"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+					"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
 				ui->information->setText("");
 				//
 				// No longer interested in signals from the imageView object
@@ -1541,6 +1545,22 @@ namespace DSS
 		QMessageBox::warning(this,
 			"DeepSkyStacker",
 			tr("Failed to load image %1").arg(fileToShow.generic_u16string()));
+
+		//
+		// Display the blue gradient with no text
+		//
+		ui->information->setStyleSheet(
+			"QLabel { background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,"
+			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255)) }");
+		ui->information->setText("");
+		//
+		// No longer interested in signals from the imageView object
+		//
+		ui->picture->disconnect(editStars, nullptr);
+		ui->picture->disconnect(selectRect, nullptr);
+
+		pToolBar->setVisible(false); pToolBar->setEnabled(false);
+		editStars->setBitmap(nullptr);
 	}
 
 	void StackingDlg::toolBar_rectButtonPressed(bool)
@@ -1609,9 +1629,11 @@ namespace DSS
 		QString				strTitle;
 
 		//
-		// Always use the Qt Widget file dialog for consistency
-		// 
+		// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+		//
+#ifdef Q_OS_LINUX
 		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+#endif // Q_OS_LINUX
 
 		bool				checked{ true };  // Automatically check all frames
 		switch (type)

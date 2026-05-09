@@ -202,7 +202,13 @@ namespace DSS
 				ui->tempFilesFolder->text(),
 				QFileDialog::ShowDirsOnly
 				| QFileDialog::DontResolveSymlinks
-				| QFileDialog::DontUseNativeDialog);	// Use Qt dialog for consistency across platforms
+#ifdef Q_OS_LINUX
+				//
+				// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+				//
+				| QFileDialog::DontUseNativeDialog
+#endif // Q_OS_LINUX
+				);
 
 		if (dir.length() > 0)
 		{

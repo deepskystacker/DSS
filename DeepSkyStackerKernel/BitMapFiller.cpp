@@ -12,12 +12,12 @@ using namespace DSS;
 // BitmapFillerInterface
 // ----------------------------------
 
-std::unique_ptr<BitmapFillerInterface> BitmapFillerInterface::makeBitmapFiller(CMemoryBitmap* pBitmap, OldProgressBase* pProgress, const double redWb, const double greenWb, const double blueWb)
+std::unique_ptr<BitmapFillerInterface> BitmapFillerInterface::makeBitmapFiller(CMemoryBitmap* pBitmap, OldProgressBase* pProgress)
 {
 	if (AvxSimdCheck::checkSimdAvailability())
-		return std::make_unique<AvxBitmapFiller>(pBitmap, pProgress, redWb, greenWb, blueWb);
+		return std::make_unique<AvxBitmapFiller>(pBitmap, pProgress);
 	else
-		return std::make_unique<NonAvxBitmapFiller>(pBitmap, pProgress, redWb, greenWb, blueWb);
+		return std::make_unique<NonAvxBitmapFiller>(pBitmap, pProgress);
 }
 
 bool BitmapFillerInterface::isThreadSafe() const { return false; }
@@ -27,14 +27,10 @@ bool BitmapFillerInterface::isThreadSafe() const { return false; }
 // BitmapFillerBase
 // ----------------------------------
 
-BitmapFillerBase::BitmapFillerBase(CMemoryBitmap* pB, OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
+BitmapFillerBase::BitmapFillerBase(CMemoryBitmap* pB, OldProgressBase* pP) :
 	BitmapFillerInterface{},
 	pProgress{ pP },
 	pBitmap{ pB },
-	redScale{ static_cast<float>(redWb) },
-	greenScale{ static_cast<float>(greenWb) },
-	blueScale{ static_cast<float>(blueWb) },
-
 	cfaType{ CFATYPE_NONE },
 	isGray{ true },
 	width{ 0 },
@@ -42,8 +38,7 @@ BitmapFillerBase::BitmapFillerBase(CMemoryBitmap* pB, OldProgressBase* pP, const
 	bytesPerChannel{ 0 },
 	redBuffer{},
 	greenBuffer{},
-	blueBuffer{},
-	cfaFactors{ 1.0f, 1.0f, 1.0f, 1.0f }
+	blueBuffer{}
 {}
 
 void BitmapFillerBase::SetCFAType(CFATYPE cfaTp)
@@ -51,25 +46,7 @@ void BitmapFillerBase::SetCFAType(CFATYPE cfaTp)
 	this->cfaType = cfaTp;
 	if (auto* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap))
 		pGray16Bitmap->SetCFAType(cfaTp);
-	setCfaFactors();
 }
-
-void BitmapFillerBase::setCfaFactors()
-{
-	const auto setFactors = [this](const float f0, const float f1, const float f2, const float f3) -> void
-	{
-		this->cfaFactors.assign({ f0, f1, f2, f3 });
-	};
-
-	switch (cfaType)
-	{
-	case CFATYPE_BGGR: return setFactors(blueScale, greenScale, greenScale, redScale);
-	case CFATYPE_GRBG: return setFactors(greenScale, redScale, blueScale, greenScale);
-	case CFATYPE_GBRG: return setFactors(greenScale, blueScale, redScale, greenScale);
-	case CFATYPE_RGGB: return setFactors(redScale, greenScale, greenScale, blueScale);
-	default: return setFactors(1.0f, 1.0f, 1.0f, 1.0f);
-	}
-};
 
 bool BitmapFillerBase::isRgbBayerPattern() const
 {
@@ -110,8 +87,8 @@ void BitmapFillerBase::setMaxColors(int maxcolors)
 // Non-AVX Bitmap Filler
 // ---------------------------------
 
-NonAvxBitmapFiller::NonAvxBitmapFiller(CMemoryBitmap* pB, OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
-	BitmapFillerBase{ pB, pP, redWb, greenWb, blueWb }
+NonAvxBitmapFiller::NonAvxBitmapFiller(CMemoryBitmap* pB, OldProgressBase* pP) :
+	BitmapFillerBase{ pB, pP }
 {}
 
 bool NonAvxBitmapFiller::isThreadSafe() const { return true; }
@@ -154,14 +131,6 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 				redBuffer[i] = static_cast<float>(bswap_16(pData[i])); // Load and convert to little endian
 		}
 
-		if (this->isRgbBayerPattern())
-		{
-			const size_t y = 2 * (rowIndex % 2); // 0, 2, 0, 2, ...
-			const float adjustFactors[2] = { this->cfaFactors[y], this->cfaFactors[y + 1] }; // {0, 1} or {2, 3}, depending on the line number.
-			for (size_t i = 0; i < nrPixels; ++i)
-				redBuffer[i] = adjustColor(redBuffer[i], adjustFactors[i % 2]);
-		}
-
 		auto* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap);
 		ZASSERTSTATE(pGray16Bitmap != nullptr);
 		std::uint16_t* const pOut = pGray16Bitmap->m_vPixels.data() + rowIndex * nrPixels;
@@ -195,10 +164,6 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 				blueBuffer[i] = static_cast<float>(bswap_16(pData[2]));
 			}
 		}
-
-		std::for_each(redBuffer.begin(), redBuffer.end(), [this](float& v) { v = adjustColor(v, this->redScale); });
-		std::for_each(greenBuffer.begin(), greenBuffer.end(), [this](float& v) { v = adjustColor(v, this->greenScale); });
-		std::for_each(blueBuffer.begin(), blueBuffer.end(), [this](float& v) { v = adjustColor(v, this->blueScale); });
 
 		auto* pColor16Bitmap = dynamic_cast<C48BitColorBitmap*>(pBitmap);
 		ZASSERTSTATE(pColor16Bitmap != nullptr);

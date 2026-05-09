@@ -179,7 +179,7 @@ TEST_CASE("OpenMP parallelization", "[OpenMP]")
 	{
 		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		pBitmap->Init(3, 2);
-		CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<NonAvxBitmapFiller>(pBitmap.get(), nullptr, 1.0, 1.0, 1.0);
+		CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<NonAvxBitmapFiller>(pBitmap.get(), nullptr);
 		filler->setGrey(true);
 #pragma warning (suppress: 4189)
 		const bool isThreadSafe = filler->isThreadSafe();

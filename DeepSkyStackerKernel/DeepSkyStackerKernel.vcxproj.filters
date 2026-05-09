@@ -230,6 +230,12 @@
     <ClCompile Include="avx_output_1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="colourbalance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="asinhstretch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -484,9 +490,6 @@
     <ClInclude Include="avx_bitmap_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BezierAdjust.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include=".\DSSProgress.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -501,11 +504,6 @@
     <QtMoc Include="QEventLogger.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <QtRcc Include="i18n\DeepSkyStackerKernel_translations.qrc">
-      <Filter>Qt\i18n</Filter>
-    </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <QtTranslation Include="i18n\DeepSkyStackerKernel_ca.ts">
@@ -556,5 +554,10 @@
     <QtTranslation Include="i18n\DeepSkyStackerKernel_en_GB.ts">
       <Filter>Qt\i18n</Filter>
     </QtTranslation>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\kernel_translations.qrc">
+      <Filter>Qt\i18n</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

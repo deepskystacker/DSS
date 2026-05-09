@@ -114,7 +114,7 @@ inline T Maximum(const std::vector<T>& values)
 template <class T>
 inline double Average(const std::vector<T>& values)
 {
-    return std::accumulate(values.cbegin(), values.cend(), 0.0) / values.size();
+    return std::accumulate(values.cbegin(), values.cend(), 0.0) / static_cast<double>(values.size());
 }
 
 
@@ -127,11 +127,15 @@ inline double Sigma2(const std::vector<T>& values, double& average)
 	// Compute the average
 	average = Average(values);
 
-    for (double val : values)
-        squareDiff += std::pow(val - average, 2);
+	for (double val : values)
+	{
+		squareDiff += std::pow(val - average, 2);
+	}
 
-    if (values.size())
-        result = sqrt(squareDiff / values.size());
+	if (values.size())
+	{
+		result = sqrt(squareDiff / static_cast<double>(values.size()));
+	}
 
 	return result;
 }
@@ -152,16 +156,90 @@ double CalculateSigmaFromAverage(const std::vector<T>& values, const double targ
 	double squareDiff = 0.0;
 
     for (double val : values)
+	{
         squareDiff += std::pow(val - targetAverage, 2);
+	}
 
-	return sqrt(squareDiff / values.size());
+	return sqrt(squareDiff / static_cast<double>(values.size()));
 }
 
 /* ------------------------------------------------------------------- */
 
+typedef struct blend_data
+{
+	float sf[3]; // Luminance stretched values
+	float tf[3]; // Independently stretched values
+	const bool* do_channel; // Whether or not to do each channel
+} blend_data;
 
 /* ------------------------------------------------------------------- */
 
+
+//
+// The (𝑟, 𝑔, 𝑏) values are stretched first based on the luminance value rgb_original
+// to give (𝑟′, 𝑔′, 𝑏′).
+//
+// Then the original(𝑟, 𝑔, 𝑏) values are independently stretched to give(𝑟″, 𝑔″, 𝑏″).
+//
+// Finally the largest value of 𝑘 is identified such that
+//
+//    𝑘 × 𝑟′ + (1 − 𝑘) × 𝑟″ ≤ 1;
+//
+//    𝑘 × 𝑔′ + (1 − 𝑘) × 𝑔″ ≤ 1;
+//
+// and
+//
+//    𝑘 × 𝑏′ + (1 − 𝑘) × 𝑏″ ≤ 1
+//
+// Then the transformed values are calculated as
+//
+// (𝑘 × 𝑟′ + (1 −𝑘) × 𝑟″, 𝑘 × 𝑔′ + (1 −𝑘) × 𝑔″, 𝑘 × 𝑏′ + (1 −𝑘) × 𝑏″)
+//
+static inline void rgbblend(blend_data* data, float* r, float* g, float* b, float m_CB)
+{
+	// load channel components
+	float sf0 = data->sf[0], sf1 = data->sf[1], sf2 = data->sf[2];
+	float tf0 = data->tf[0], tf1 = data->tf[1], tf2 = data->tf[2];
+
+	// maxima
+	float sfmax = std::max(std::max(sf0, sf1), sf2);
+	float tfmax = std::max(std::max(tf0, tf1), tf2);
+
+	// difference
+	float d = sfmax - tfmax;
+
+	// build masks as 0.0f / 1.0f without branching
+	float mask_cond = (tfmax + m_CB * d > 1.0f) ? 1.0f : 0.0f;   // condition tfmax + m_CB*d > 1
+	float mask_dnz = (d != 0.0f) ? 1.0f : 0.0f;   // d != 0
+
+	// full_mask = mask_cond && mask_dnz  (still 0.0f or 1.0f)
+	float full_mask = mask_cond * mask_dnz;
+
+	// construct safe_d: if d!=0 then d else 1.0f  (done branchless)
+	float safe_d = mask_dnz * d + (1.0f - mask_dnz) * 1.0f;
+
+	// candidate and limited value
+	float candidate = (1.0f - tfmax) / safe_d;       // safe even when original d==0 due to safe_d
+	float limited = std::fmin(m_CB, candidate);		 // safe when NaNs are possibly involved
+
+	// final k = full_mask ? limited : m_CB  (blend)
+	float k = full_mask * limited + (1.0f - full_mask) * m_CB;
+
+	// precompute factor
+	float one_minus_k = 1.0f - k;
+
+	// channel masks (0 or 1) to decide whether to update each channel
+	float mr = data->do_channel[0] ? 1.0f : 0.0f;
+	float mg = data->do_channel[1] ? 1.0f : 0.0f;
+	float mb = data->do_channel[2] ? 1.0f : 0.0f;
+
+	// blend per-channel without branching:
+	// if channel enabled: result = one_minus_k * tf + k * sf
+	// else: keep old value (*r, *g, *b)
+	*r = mr * (one_minus_k * tf0 + k * sf0) + (1.0f - mr) * (*r);
+	*g = mg * (one_minus_k * tf1 + k * sf1) + (1.0f - mg) * (*g);
+	*b = mb * (one_minus_k * tf2 + k * sf2) + (1.0f - mb) * (*b);
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -200,8 +278,8 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 
 	if (vValues.size())
 	{
-		fAverage /= vValues.size();
-		fAverageVariation = fTotalVariation/vValues.size();
+		fAverage /= static_cast<double>(vValues.size());
+		fAverageVariation = fTotalVariation/ static_cast<double>(vValues.size());
 	};
 
 	for (double fThreshold = 0.05;fThreshold<=0.20;fThreshold+=0.05)
@@ -218,9 +296,10 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 					if (fp.m_lEnd-fp.m_lStart>2)
 					{
 						// This is a flat (at least 3 values)
-						fp.m_fAverage /= fp.Length();
-						fp.m_fAverageVariation /= fp.Length();
-						fp.m_fAbsAverageVariation /= fp.Length();
+						double divisor = static_cast<double>(fp.Length());	
+						fp.m_fAverage /= divisor;
+						fp.m_fAverageVariation /= divisor;
+						fp.m_fAbsAverageVariation /= divisor;
 						vFlatParts.push_back(fp);
 
 						// Start again - a little later
@@ -253,9 +332,10 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 
 		if (bInFlatPart && fp.Length())
 		{
-			fp.m_fAverage /= fp.Length();
-			fp.m_fAverageVariation /= fp.Length();
-			fp.m_fAbsAverageVariation /= fp.Length();
+			double divisor = static_cast<double>(fp.Length());
+			fp.m_fAverage /= divisor;
+			fp.m_fAverageVariation /= divisor;
+			fp.m_fAbsAverageVariation /= divisor;
 			vFlatParts.push_back(fp);
 			bInFlatPart		 = false;
 			fSummedVariation = 0;

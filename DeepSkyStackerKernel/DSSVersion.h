@@ -3,14 +3,14 @@
 //#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 2
+#define DSSBETARELEASE 8
 constexpr int DSSBETAEXPIREYEAR = 2026;
-constexpr int DSSBETAEXPIREMONTH = 3;
+constexpr int DSSBETAEXPIREMONTH = 8;
 #endif
 
 #define DSSVER_MAJOR			6
-#define DSSVER_MINOR			1
-#define DSSVER_SUB				3
+#define DSSVER_MINOR			2
+#define DSSVER_SUB				0
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
@@ -39,7 +39,7 @@ constexpr int DSSBETAEXPIREMONTH = 3;
 #define DSSVER_FILEVERSION		VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
-#define DSSVER_COPYRIGHT "Copyright © 2018-2025 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow,\
+#define DSSVER_COPYRIGHT "Copyright © 2018-2026 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow,\
 Tomas Tatara, Michal Schulz, Martin Toeltsch, Iustin Amihaesei;\n\
 Copyright © 2006-2019 Luc Coiffier"
 	

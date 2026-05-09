@@ -38,7 +38,7 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 
 void	SpaceToQString(std::uintmax_t ulSpace, QString& strSpace)
 {
-	double fKb(ulSpace / 1024.0);
+	double fKb(static_cast<double>(ulSpace) / 1024.0);
 	double fMb(fKb / 1024.0);
 	double fGb(fMb / 1024.0);
 
@@ -116,7 +116,7 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, OldProgressBase
 		if (bOverrideRAW)
 			PushRAWSettings(false, true); // Allways use Raw Bayer for dark, offset, and flat frames
 		std::shared_ptr<QImage> pQImage;
-		bResult = ::FetchPicture(filePath, rpBitmap, PictureType == PICTURETYPE_FLATFRAME, pProgress, pQImage);
+		bResult = ::FetchPicture(filePath, rpBitmap, pProgress, pQImage);
 
 		if (bOverrideRAW)
 			PopRAWSettings();
@@ -2039,7 +2039,6 @@ std::uintmax_t CAllStackingTasks::AvailableDiskSpace(fs::path& strDrive)
 
 void CAllStackingTasks::GetTemporaryFilesFolder(fs::path& tempPath)
 {
-	ZFUNCTRACE_RUNTIME();
 	QSettings	settings;
 
 	tempPath = settings.value("Stacking/TemporaryFilesFolder", QString("")).toString().toStdU16String();

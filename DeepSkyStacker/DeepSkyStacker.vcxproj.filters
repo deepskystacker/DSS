@@ -150,12 +150,6 @@
     <ClCompile Include="ProcessingDlg.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
-    <ClCompile Include="RGBTab.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
-    <ClCompile Include="ProcessingSettingsDlg.cpp">
-      <Filter>Dialogs\Processing</Filter>
-    </ClCompile>
     <ClCompile Include="Delaunay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -203,14 +197,14 @@
     <ClInclude Include="dslr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ProcessingSettings.h">
-      <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
     <ClInclude Include="..\DeepSkyStackerKernel\histogram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\griddata.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="undoredostack.h">
+      <Filter>Dialogs\Processing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -508,6 +502,9 @@
     <Image Include="Icon\DeepSkyStacker.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\japan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
@@ -594,9 +591,6 @@
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\ProcessingDlg.ui">
-      <Filter>Qt\ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\ProcessingSettingsDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\StarMaskDlg.ui">
@@ -713,9 +707,6 @@
       <Filter>Dialogs</Filter>
     </QtMoc>
     <QtMoc Include="ProcessingDlg.h">
-      <Filter>Dialogs\Processing</Filter>
-    </QtMoc>
-    <QtMoc Include="ProcessingSettingsDlg.h">
       <Filter>Dialogs\Processing</Filter>
     </QtMoc>
     <QtMoc Include="SavePicture.h">

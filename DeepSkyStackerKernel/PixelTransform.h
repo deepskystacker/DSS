@@ -193,9 +193,9 @@ inline std::array<double, 4> ComputeAll4PixelDispatches(const QPointF& pt, std::
 	ycoords[0] = yfi; ycoords[1] = yfi;     ycoords[2] = yfi + 1; ycoords[3] = yfi + 1;
 
 	return {
-		(1.0 - pt.x() + xf) * (1.0 - pt.y() + yf),
-		(pt.x() - xf) * (1.0 - pt.y() + yf),
-		(1.0 - pt.x() + xf) * (pt.y() - yf),
+		(1.0 - (pt.x() - xf)) * (1.0 - (pt.y() - yf)),
+		(pt.x() - xf) * (1.0 - (pt.y() - yf)),
+		(1.0 - (pt.x() - xf)) * (pt.y() - yf),
 		(pt.x() - xf) * (pt.y() - yf)
 	};
 }

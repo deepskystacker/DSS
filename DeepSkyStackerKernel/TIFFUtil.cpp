@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TIFFUtil.h"
 //#include "resource.h"
+#include "Workspace.h"
 #include "ztrace.h"
 #include "BitmapInfo.h"
 #include "DSSProgress.h"
@@ -102,14 +103,8 @@ void DSSTIFFInitialize()
 	}
 }
 
-
 /* ------------------------------------------------------------------- */
 
-CTIFFReader::CTIFFReader(const fs::path& p, OldProgressBase* pProgress) :
-	m_tiff{ nullptr },
-	file{ p },
-	m_pProgress{ pProgress }
-{}
 
 void CTIFFReader::decodeCfaDimPat(int patternSize, const char* tagName)
 {
@@ -258,7 +253,7 @@ bool CTIFFReader::Open()
 		{
 			int			lExposure;
 			if (TIFFGetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSUREOLD, &lExposure))
-				exposureTime = lExposure;
+				exposureTime = static_cast<float>(lExposure);
 		}
 
 		// Check that this is a compatible TIFF format
@@ -1573,12 +1568,21 @@ bool WriteTIFF(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 		tiff.SetDescription(szDescription);
 		if (lISOSpeed)
 			tiff.SetISOSpeed(lISOSpeed);
+		else
+			tiff.SetISOSpeed(pBitmap->GetISOSpeed());
 		if (lGain >= 0)
 			tiff.SetGain(lGain);
+		else
+			tiff.SetGain(pBitmap->GetGain());
 		if (0. != fExposure)
 			tiff.SetExposureTime(fExposure);
+		else
+			tiff.SetExposureTime(pBitmap->GetExposure());
 		if (0. != fAperture)
 			tiff.SetAperture(fAperture);
+		else
+			tiff.SetAperture(pBitmap->GetAperture());
+		tiff.SetNrFrames(pBitmap->GetNrFrames());
 		tiff.SetFormatAndCompression(TIFFFormat, TIFFCompression);
 
 		if (tiff.Open())
@@ -1685,11 +1689,14 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 	if (static_cast<bool>(m_pBitmap))
 	{
 		bResult = m_pBitmap->Init(w, h);
-
 		m_pBitmap->SetCFA(cfa);
-		if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(m_pBitmap.get()))
+
+		if (cfatype != CFATYPE_NONE)
 		{
-			if (0 != cfatype) pCFABitmapInfo->SetCFAType(static_cast<CFATYPE>(cfatype));
+			if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(m_pBitmap.get()))
+			{
+				if (0 != cfatype) pCFABitmapInfo->SetCFAType(static_cast<CFATYPE>(cfatype));
+			}
 		}
 
 		m_pBitmap->SetMaster(master);
@@ -1724,6 +1731,7 @@ bool CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
 	}
+
 	catch (ZException& e)
 	{
 		QString errorMessage;

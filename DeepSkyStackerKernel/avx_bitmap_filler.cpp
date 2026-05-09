@@ -52,8 +52,8 @@
 // AVX Bitmap Filler
 // ---------------------------------
 
-AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP, const double redWb, const double greenWb, const double blueWb) :
-	BitmapFillerBase{ pB, pP, redWb, greenWb, blueWb },
+AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, DSS::OldProgressBase* pP) :
+	BitmapFillerBase{ pB, pP},
 	sourceBuffer{}
 {}
 
@@ -110,23 +110,6 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 			const std::uint16_t* const p16 = static_cast<const std::uint16_t*>(source);
 			for (size_t i = nrVectors * vectorLen; i < nrPixels; ++i) // Remaining pixels of line
 				pBuf[i] = static_cast<float>(bswap_16(p16[i])); // Load an convert to little endian
-		}
-
-		if (this->isRgbBayerPattern())
-		{
-			const size_t y = 2 * (rowIndex % 2); // 0, 2, 0, 2, ...
-			const float adjustFactors[2] = { this->cfaFactors[y], this->cfaFactors[y + 1] }; // {0, 1} or {2, 3}, depending on the line number.
-			const __m256 adjustFactorsVec = _mm256_setr_ps(cfaFactors[y], cfaFactors[y + 1], cfaFactors[y], cfaFactors[y + 1], cfaFactors[y], cfaFactors[y + 1], cfaFactors[y], cfaFactors[y + 1]);
-			pBuf = redBuffer.data();
-			for (size_t i = 0; i < nrPixels / 8; ++i, pBuf += 8)
-			{
-				const __m256 value = _mm256_loadu_ps(pBuf);
-				const __m256 adjusted = _mm256_mul_ps(value, adjustFactorsVec);
-				const __m256 limited = _mm256_min_ps(adjusted, _mm256_set1_ps(static_cast<float>(std::numeric_limits<std::uint16_t>::max() - 1)));
-				_mm256_storeu_ps(pBuf, limited);
-			}
-			for (size_t i = (nrPixels / 8) * 8; i < nrPixels; ++i, ++pBuf) // Remaining pixels of line
-				*pBuf = adjustColor(*pBuf, adjustFactors[i % 2]);
 		}
 
 		auto* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap);
@@ -203,26 +186,6 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 				*pGreen = static_cast<float>(bswap_16(pData[1]));
 				*pBlue = static_cast<float>(bswap_16(pData[2]));
 			}
-		}
-
-		pRed = redBuffer.data();
-		pGreen = greenBuffer.data();
-		pBlue = blueBuffer.data();
-		const __m256 MAXIMUM = _mm256_set1_ps(static_cast<float>(std::numeric_limits<std::uint16_t>::max() - 1));
-		for (size_t n = 0; n < nrPixels / 8; ++n, pRed += 8, pGreen += 8, pBlue += 8)
-		{
-			const __m256 r = _mm256_mul_ps(_mm256_loadu_ps(pRed), _mm256_set1_ps(redScale));
-			const __m256 g = _mm256_mul_ps(_mm256_loadu_ps(pGreen), _mm256_set1_ps(greenScale));
-			const __m256 b = _mm256_mul_ps(_mm256_loadu_ps(pBlue), _mm256_set1_ps(blueScale));
-			_mm256_storeu_ps(pRed, _mm256_min_ps(r, MAXIMUM));
-			_mm256_storeu_ps(pGreen, _mm256_min_ps(g, MAXIMUM));
-			_mm256_storeu_ps(pBlue, _mm256_min_ps(b, MAXIMUM));
-		}
-		for (size_t i = (nrPixels / 8) * 8; i < nrPixels; ++i, ++pRed, ++pGreen, ++pBlue)
-		{
-			*pRed = adjustColor(*pRed, redScale);
-			*pGreen = adjustColor(*pGreen, greenScale);
-			*pBlue = adjustColor(*pBlue, blueScale);
 		}
 
 		auto* pColor16Bitmap = dynamic_cast<C48BitColorBitmap*>(pBitmap);

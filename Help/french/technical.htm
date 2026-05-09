@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+ï»¿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html data-geolocscriptallow="true"><head>
 
 
@@ -6,7 +6,7 @@
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 <meta name="ProgId" content="FrontPage.Editor.Document">
 <meta name="keywords" content="Ciel profond Enregistrement Empilement Astrophotographie Bayer matrice" lang="fr">
-<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252"><title>Ditails Techniques</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>DÃ©tails Techniques</title>
 
 <style>
 <!--
@@ -14,185 +14,187 @@
 -->
 </style></head><body>
 
-<p><b><font size="5" face="Arial">Détails techniques</font></b></p>
+<p><b><font size="5" face="Arial">DÃ©tails techniques</font></b></p>
 <blockquote>
 
 <p><b><font face="Arial"><A href="#Registering">Enregistrement</A><br>
 <A href="#Alignment">Alignement</A><br>
 <A href="#filegroup">Les groupes de fichiers</A><br>
 <A href="#Stacking">Empilement</A><br>
-<A href="#stackingmethods">Les méthodes d'empilement</A><br>
+<A href="#stackingmethods">Les mÃ©thodes d'empilement</A><br>
 <A href="#Drizzle">Drizzle</A><br>
-<A href="#cometstacking">Empilement d'images de comète</A><br>
-<A href="#rawdecod">Décodage et traitement des fichiers RAW</A></font></b></p>
+<A href="#cometstacking">Empilement d'images de comÃ¨te</A><br>
+<A href="#rawdecod">DÃ©codage et traitement des fichiers RAW</A></font></b></p>
 </blockquote>
 <hr color="#0000ff">
 <p align="justify"><font face="Arial"><b><font size="4" color="#ff0000">
 <a name="Registering"></a>Enregistrement</font><font size="2"><br>
-Détection des étoiles</font><br>
-</b><font size="2">Pour chaque image, DeepSkyStacker détecte automatiquement les 
-étoiles.<br>
-Sans rentrer dans les détails, une étoile  est un objet rond 
-dont la luminosité va décroissante de façon régulière dans toutes les 
-directions..<br>
-Une fois l'étoile détectée, son centre exact est calculé à l'aide d'une courbe 
-de Gauss sur la luminosité.</font></font></p>
+DÃ©tection des Ã©toiles</font><br>
+</b><font size="2">Pour chaque image, DeepSkyStacker dÃ©tecte automatiquement les 
+Ã©toiles.<br>
+Sans rentrer dans les dÃ©tails, une Ã©toile  est un objet rond 
+dont la luminositÃ© va dÃ©croissante de faÃ§on rÃ©guliÃ¨re dans toutes les 
+directions.<br>
+Une fois l'Ã©toile dÃ©tectÃ©e, son centre exact est calculÃ© Ã  l'aide d'une courbe 
+de Gauss sur la luminositÃ©.</font></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><font face="Arial"><b><font size="2">Utilisation des darks, flat et offsets 
 pendant l'enregistrement</font><br>
-</b><font size="2">Si des darks, flat et offsets sont cochés ils sont 
-automatiquement appliqués aux images avant l'enregistrement..<br>
+</b><font size="2">Si des darks, flat et offsets sont cochÃ©s ils sont 
+automatiquement appliquÃ©s aux images avant l'enregistrement..<br>
 Dans le cas d'images comportant de nombreux pixels chauds il est fortement 
-conseillés de sélectionner au moins des fichiers darks pour éviter de fausse 
-détection d'étoiles..</font></font></p>
+conseillÃ©s de sÃ©lectionner au moins des fichiers darks pour Ã©viter de fausse 
+dÃ©tection d'Ã©toiles.</font></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><font face="Arial"><b>
-<font size="2"><a name="hotpixels"></a>Détection automatique des pixels chauds</font><br>
-</b><font size="2">Optionnellement DeepSkyStacker tente de détecter les pixels 
-chauds pendant le processus d'enregistrement afin des les éliminer pour ne pas 
-les confondre avec des étoiles.<br>
+<font size="2"><a name="hotpixels"></a>DÃ©tection automatique des pixels chauds</font><br>
+</b><font size="2">Optionnellement DeepSkyStacker tente de dÃ©tecter les pixels 
+chauds pendant le processus d'enregistrement afin des les Ã©liminer pour ne pas 
+les confondre avec des Ã©toiles.<br>
 Il faut noter que cette option n'est valable que sur les images monochromes et 
 sur les images RAW ou FITS dans les modes <A href="#superpixel">Super-pixels</A>,
-<A href="#bayerdrizzle">Bayer.Drizzle</A> et interpolation bilinéaire ou AHD.</font></font></p>
+<A href="#bayerdrizzle">Bayer.Drizzle</A> et interpolation bilinÃ©aire ou AHD.</font></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><b><font size="2" face="Arial"><a name="detectionthreshold"></a>Changement du 
-seuil de détection des étoiles</font></b><font size="2" face="Arial"><b><br>
-</b>Le seuil de détection des 
-étoiles est fixé à 10% par défaut (10% de la luminosité maximale).<br>&nbsp;</font></p><font size="2" face="Arial"><font size="2" face="Arial">
+seuil de dÃ©tection des Ã©toiles</font></b><font size="2" face="Arial"><b><br>
+</b>Le seuil de dÃ©tection des 
+Ã©toiles est fixÃ© Ã  10% par dÃ©faut (10% de la luminositÃ© maximale).<br>&nbsp;</font></p><font size="2" face="Arial"><font size="2" face="Arial">
 <p align="justify">
 <table style="BORDER-COLLAPSE: collapse" width="100%" cellspacing="0" cellpadding="5" bordercolor="#c0c0c0" border="1">
   <tbody>
   <tr>
     <td width="63%"><font size="2">Vous
-pouvez modifier le seuil dans l'onglet Avancé des Paramètres
-d'enregistrement ou en sélectionnant Enregistrement/Paramètre
+pouvez modifier le seuil dans l'onglet AvancÃ© des ParamÃ¨tres
+d'enregistrement ou en sÃ©lectionnant Enregistrement/ParamÃ¨tre
 d'enregistrement.</font><font size="2" face="Arial"> 
-      </font><p align="justify"><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="EN-US"><font size="2" face="Arial"><em><strong>La réduction </strong></em>du seuil de détection des étoiles a pour effet de permettre à DeepSkyStacker de trouver <span style="FONT-STYLE: italic"><span style="FONT-WEIGHT: bold">plus</span></span><em><strong></strong></em> 
-      d'étoiles (plus faibles) alors que si vous <span style="FONT-STYLE: italic"><span style="FONT-WEIGHT: bold">augmentez</span></span><em><strong></strong></em> le seuil, seules les étoiles les plus brillantes sont détectées ce qui réduit le nombre d'étoiles trouvées.<br><br>Baisser
-le seuil à des valeurs très basses de façon à détecter des centaines
-d'étoiles est contre-productif en ralentissant les processus et en
-risquant des erreurs d'alignement. Quelques dizaines d'étoiles sont
-amplement suffisantes pour un bon alignement..</font></span></p>
+      </font><p align="justify"><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="EN-US"><font size="2" face="Arial"><em><strong>La rÃ©duction </strong></em>du seuil de dÃ©tection des Ã©toiles a pour effet de permettre Ã  DeepSkyStacker de trouver <span style="FONT-STYLE: italic"><span style="FONT-WEIGHT: bold">plus</span></span><em><strong></strong></em> 
+      d'Ã©toiles (plus faibles) alors que si vous <span style="FONT-STYLE: italic"><span style="FONT-WEIGHT: bold">augmentez</span></span><em><strong></strong></em> le seuil, seules les Ã©toiles les plus brillantes sont dÃ©tectÃ©es ce qui rÃ©duit le nombre d'Ã©toiles trouvÃ©es.<br><br>Baisser
+le seuil Ã  des valeurs trÃ¨s basses de faÃ§on Ã  dÃ©tecter des centaines
+d'Ã©toiles est contre-productif en ralentissant les processus et en
+risquant des erreurs d'alignement. Quelques dizaines d'Ã©toiles sont
+amplement suffisantes pour un bon alignement.</font></span></p>
 <font size="2" face="Arial">      </font><p align="justify"><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="EN-US"><font size="2" face="Arial">Si
-vous avez fixé le seuil à une valeur très basse et que DeepSkyStacker
-ne trouve toujours pas suffisament d'étoiles, il est possible que votre
-image soit sous-exposée. Dans ce cas vous pouvez augmenter la
-luminosité de l'image en ajustant la "Luminosité" dans les paramèttres
+vous avez fixÃ© le seuil Ã  une valeur trÃ¨s basse et que DeepSkyStacker
+ne trouve toujours pas suffisament d'Ã©toiles, il est possible que votre
+image soit sous-exposÃ©e. Dans ce cas vous pouvez augmenter la
+luminositÃ© de l'image en ajustant la "LuminositÃ©" dans les paramÃ¨ttres
 Raw/FITS DDP.</font></span></p>
 <font size="2" face="Arial">      </font><p align="justify"><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="EN-US"><font size="2" face="Arial">Si
-vos images sont bruitées (par exemple à cause de la pollution
-lumineuse), vous pouvez réduire le bruit en activant l'option Réduire
-le bruit en utilisant un filtre médian.</font></span></p>
-<font size="2" face="Arial">      </font><p align="justify"><font size="2" face="Arial">Pour vous aider à trouver le meilleur seuil pour vos images, vous pouvez calculer le nombre d'étoiles qui vont être détectées.<br>
-Pour cela DeepSkyStacker utilise la première image et désactive temporaitement la détection des pixels chauds.<br>
-</font></p><p align="justify"><font size="2" face="Arial">Ce nombre est uniquement un guide et le nombre réel d'étoiles détectées va varier en fonction des autres paramètres.</font></p>
+vos images sont bruitÃ©es (par exemple Ã  cause de la pollution
+lumineuse), vous pouvez rÃ©duire le bruit en activant l'option RÃ©duire
+le bruit en utilisant un filtre mÃ©dian.</font></span></p>
+<font size="2" face="Arial">      </font><p align="justify"><font size="2" face="Arial">Pour vous aider Ã  trouver le meilleur seuil pour vos images, vous pouvez calculer le nombre d'Ã©toiles qui vont Ãªtre dÃ©tectÃ©es.<br>
+Pour cela DeepSkyStacker utilise la premiÃ¨re image et dÃ©sactive temporaitement la dÃ©tection des pixels chauds.<br>
+</font></p><p align="justify"><font size="2" face="Arial">Ce nombre est uniquement un guide et le nombre rÃ©el d'Ã©toiles dÃ©tectÃ©es va varier en fonction des autres paramÃ¨tres.</font></p>
 <p align="justify"><FONT size=2><SPAN lang=fr class="HwtZe" 
-jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname ="jqKxS"><SPAN 
 class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Si vous sélectionnez «&nbsp;Utiliser le seuil 
-automatique&nbsp;», DeepSkyStacker essaiera de déterminer un bon seuil de 
-détection à l'aide d'un algorithme d'optimisation.<BR></SPAN></SPAN><SPAN 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb">Si vous sÃ©lectionnez Â«&nbsp;Utiliser le seuil 
+automatique&nbsp;Â», DeepSkyStacker essaiera de dÃ©terminer un bon seuil de 
+dÃ©tection Ã  l'aide d'un algorithme d'optimisation.<BR></SPAN></SPAN><SPAN 
 class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Cela signifie qu'il n'est plus nécessaire d'ajuster manuellement 
-le «&nbsp;Seuil de détection d'étoiles&nbsp;».</SPAN></SPAN></SPAN> 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb">Cela signifie qu'il n'est plus nÃ©cessaire d'ajuster manuellement 
+le Â«&nbsp;Seuil de dÃ©tection d'Ã©toiles&nbsp;Â».</SPAN></SPAN></SPAN> 
       </FONT>
 </p>
 <p align="justify"><SPAN lang=fr class="HwtZe" 
-jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"  
+      jsname="jqKxS"><SPAN 
 class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje"><FONT size=2>Cela est particulièrement utile pour les images où le seuil 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb"></SPAN></SPAN><SPAN class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb"><FONT size=2>Cela est particuliÃ¨rement utile pour les images oÃ¹ le seuil 
 minimum de 1&nbsp;% n'est toujours pas assez bas pour trouver un nombre 
-raisonnable d'étoiles (le seuil automatique peut descendre jusqu'à 
+raisonnable d'Ã©toiles (le seuil automatique peut descendre jusqu'Ã  
 0,05&nbsp;%).<BR></FONT></SPAN></SPAN></SPAN><FONT size=2><SPAN lang=fr class="HwtZe" 
-jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e" jsname ="jqKxS"><SPAN 
 class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Le seuil sera défini de telle sorte que le nombre d'étoiles 
-détectées soit d'au moins 50 (si possible, sinon un nombre inférieur est 
-accepté).</SPAN></SPAN></SPAN> </FONT>
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb">Le seuil sera dÃ©fini de telle sorte que le nombre d'Ã©toiles 
+dÃ©tectÃ©es soit d'au moins 50 (si possible, sinon un nombre infÃ©rieur est 
+acceptÃ©).</SPAN></SPAN></SPAN> </FONT>
 </p>
 <p align="justify"><SPAN lang=fr class="HwtZe" 
-jsname="jqKxS" jsaction ="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"><SPAN 
+jsaction="mouseup:Sxi9L,BR6jm; mousedown:qjlr0e"  
+      jsname="jqKxS"><SPAN 
 class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje"></SPAN></SPAN><FONT size=2><SPAN class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Le seuil calculé de la première image sera utilisé comme point 
-de départ pour trouver le seuil optimal pour les images suivantes.</SPAN></SPAN> 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb"></SPAN></SPAN><FONT size=2><SPAN class="jCAhz ChMk0b" 
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb">Le seuil calculÃ© de la premiÃ¨re image sera utilisÃ© comme point 
+de dÃ©part pour trouver le seuil optimal pour les images suivantes.</SPAN></SPAN> 
 <SPAN class="jCAhz ChMk0b" 
-jsname="txFAF" 
-jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
-jsname="W297wb" jsaction  
-="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:PDNqTc,c2aHje">Si un cadre de référence a déjà été choisi, cette image sera 
-alors utilisée comme première à enregistrer.</SPAN></SPAN></FONT></SPAN></p></td>
+jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb" 
+jsname="txFAF" jscontroller="BiTO4b"><SPAN class="ryNqvb" 
+jsaction="click:PDNqTc,GFf3ac,qlVvte;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te;  
+&#13;&#10;&#13;&#10;mouseover:PDNqTc,c2aHje" jsname ="W297wb">Si un cadre de rÃ©fÃ©rence a dÃ©jÃ  Ã©tÃ© choisi, cette image sera 
+alors utilisÃ©e comme premiÃ¨re Ã  enregistrer.</SPAN></SPAN></FONT></SPAN></p></td>
     <td>&nbsp;<IMG alt="" src="../images/french/Register_Settings.jpg"></td></tr></tbody></table>
 </p></font></font><hr size="1" color="#0000ff">
 
 <P></P>
 <p></p>
-<p align="justify"><font size="2" face="Arial"><b>Sauvegarde des résultats de l'enregistrement<br>
-</b>Les paramètres de l'enregistrement (nombre d'étoiles détectées, position, 
-luminosité de chaque étoile) sont sauvegardés dans un fichier texte qui porte le 
-même nom que l'image avec l'extension .Info.txt.<br>
-Ceci évite de procéder de nouveau à l'enregistrement lors d'un futur processus 
-d'empilement..</font></p>
+<p align="justify"><font size="2" face="Arial"><b>Sauvegarde des rÃ©sultats de l'enregistrement<br>
+</b>Les paramÃ¨tres de l'enregistrement (nombre d'Ã©toiles dÃ©tectÃ©es, position, 
+luminositÃ© de chaque Ã©toile) sont sauvegardÃ©s dans un fichier texte qui porte le 
+mÃªme nom que l'image avec l'extension .Info.txt.<br>
+Ceci Ã©vite de procÃ©der de nouveau Ã  l'enregistrement lors d'un futur processus 
+d'empilement.</font></p>
 <hr size="1" color="#0000ff">
-<p align="justify"><font size="2" face="Arial"><b>Résultats de l'enregistrement et paramètres<br>
-</b>Le résultat de l'enregistrement est étroitement dépendant des paramètres 
-sélectionnés (en particulier  des paramètres de 
-développement des fichiers raw).<br>
-En cas de modification de ces paramètres, il est impératif de procéder de 
-nouveau à l'enregistrement des images.
+<p align="justify"><font size="2" face="Arial"><b>RÃ©sultats de l'enregistrement et paramÃ¨tres<br>
+</b>Le rÃ©sultat de l'enregistrement est Ã©troitement dÃ©pendant des paramÃ¨tres 
+sÃ©lectionnÃ©s (en particulier  des paramÃ¨tres de 
+dÃ©veloppement des fichiers raw).<br>
+En cas de modification de ces paramÃ¨tres, il est impÃ©ratif de procÃ©der de 
+nouveau Ã  l'enregistrement des images.
 </font></p>
 <hr size="1" color="#0000ff">
-<p align="justify"><font size="2" face="Arial"><b>Empilement après enregistrement<br>
-</b>DeepSkyStacker permet d'enchaîner automatiquement l'enregistrement et 
-l'empilement des images. Il suffit juste de préciser le pourcentage des images 
-qui seront conservées à l'issu du processus d'enregistrement pour l'empilement.<br>
+<p align="justify"><font size="2" face="Arial"><b>Empilement aprÃ¨s enregistrement<br>
+</b>DeepSkyStacker permet d'enchaÃ®ner automatiquement l'enregistrement et 
+l'empilement des images. Il suffit juste de prÃ©ciser le pourcentage des images 
+qui seront conservÃ©es Ã  l'issu du processus d'enregistrement pour l'empilement.<br>
 Ainsi il est possible de lancer le processus complet puis d'aller se coucher 
-pour visualiser les premiers résultats après une bonne nuit (journée ?) de 
+pour visualiser les premiers rÃ©sultats aprÃ¨s une bonne nuit (journÃ©e ?) de 
 sommeil.</font></p>
 <hr color="#0000ff">
 <p align="justify"><b><font size="4" face="Arial" color="#ff0000">
 <a name="Alignment"></a>Alignement</font></b><font face="Arial"><b><br>
-<font size="2">Calcul des décalages et des angles de rotations</font><br>
+<font size="2">Calcul des dÃ©calages et des angles de rotations</font><br>
 </b><font size="2">Lors du processus d'alignement, l'image ayant obtenue le 
-meilleur score est utilisée comme image de départ sauf si vous avez choisi une 
-autre image comme image de référence en utilisant le
+meilleur score est utilisÃ©e comme image de dÃ©part sauf si vous avez choisi une 
+autre image comme image de rÃ©fÃ©rence en utilisant le
 <a href="http://deepskystacker.free.fr/french/userguide.htm#contextmenu">menu contextuel</a>.<br>
-Tous les décalages et rotations sont calculés en référence à cette image.<br>
+Tous les dÃ©calages et rotations sont calculÃ©s en rÃ©fÃ©rence Ã  cette image.<br>
 <br>
-Le calcul des décalages et de l'angle de rotation est effectué en identifiant 
-les groupes d'étoiles dont les distances se retrouve d'une image sur l'autre.<br>
+Le calcul des dÃ©calages et de l'angle de rotation est effectuÃ© en identifiant 
+les groupes d'Ã©toiles dont les distances se retrouve d'une image sur l'autre.<br>
 Pour faire simple, l'algorithme cherche les plus grands triangles pour lesquels 
-les distances des cotés (et donc les angles entre les cotés) sont les plus 
+les distances des cotÃ©s (et donc les angles entre les cotÃ©s) sont les plus 
 proches.<br>
-Lorsqu'un nombre suffisant de triangles ayant ces caractéristiques est détecté 
-entre l'image de départ et l'image à aligner, le décalage et la rotation sont 
-calculés et validés par la méthode des moindres carrés.<br>
-En fonction du nombre d'étoiles une transformation bilinéaire ou bicarrée et 
-utilisée.<br>
+Lorsqu'un nombre suffisant de triangles ayant ces caractÃ©ristiques est dÃ©tectÃ© 
+entre l'image de dÃ©part et l'image Ã  aligner, le dÃ©calage et la rotation sont 
+calculÃ©s et validÃ©s par la mÃ©thode des moindres carrÃ©s.<br>
+En fonction du nombre d'Ã©toiles une transformation bilinÃ©aire ou bicarrÃ©e et 
+utilisÃ©e.<br>
 <br>
-Pour plus d'information sur les algorithmes ayant inspirés celui utilisé par 
+Pour plus d'information sur les algorithmes ayant inspirÃ©s celui utilisÃ© par 
 DeepSkyStacker vous pouvez consulter les 
 informations suivantes (en anglais) :<br>
 <a target="_blank" href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=1995PASP..107.1119V&amp;db_key=AST&amp;high=39463d35aa24090">
@@ -201,18 +203,18 @@ FOCAS Automatic Catalog Matching Algorithms</a><br>
 <a target="_blank" href="http://lear.inrialpes.fr/pubs/2004/MR04/">Pattern 
 Matching with Differential Voting and Median Transformation Derivation</a></font></p>
 <p align="justify"><font size="2" face="Arial"><b><a name="stackinfofile"></a>
-Réutilisation automatique des décalages précédemment calculés<br>
+RÃ©utilisation automatique des dÃ©calages prÃ©cÃ©demment calculÃ©s<br>
 </b>DeepSkyStacker enregistre toutes les transformation entre une image de 
-référence et toutes les autres images de façon à ce qu'il ne soit pas nécessaire 
+rÃ©fÃ©rence et toutes les autres images de faÃ§on Ã  ce qu'il ne soit pas nÃ©cessaire 
 de les calculer de nouveau tant que les informations d'enregistrement n'ont pas 
-été modifiées.<br>
-Les informations sont enregistrées dans un fichier dont le nom est celui de 
-l'image de référence (et dans le même répertoire) avec une extension<i> .stackinfo.txt</i>.</font></p>
+Ã©tÃ© modifiÃ©es.<br>
+Les informations sont enregistrÃ©es dans un fichier dont le nom est celui de 
+l'image de rÃ©fÃ©rence (et dans le mÃªme rÃ©pertoire) avec une extension<i> .stackinfo.txt</i>.</font></p>
 <hr color="#0000ff">
 <p align="justify"><font size="2" face="Arial"><a name="filegroup"></a></font><b><font size="4" face="Arial" color="#ff0000">Les groupes de fichiers<br>
 </font></b><font size="2" face="Arial">Les groupes de 
-fichiers permettent de simplifier la gestion de sessions sur un même objet 
-réparties sur plusieurs nuits en regroupant logiquement  des fichiers d'une même 
+fichiers permettent de simplifier la gestion de sessions sur un mÃªme objet 
+rÃ©parties sur plusieurs nuits en regroupant logiquement  des fichiers d'une mÃªme 
 session.<br>
 <b>Si vous n'utilisez que le <i>groupe principal</i> DeepSkyStacker se comporte 
 exactement comme avant.</b><br>
@@ -221,510 +223,532 @@ Il y a deux types de groupe : le <i>groupe principal</i> et les autres.</font></
 <ul>
   <li>
   <p align="justify"><font size="2" face="Arial">Les fichiers images du <i>groupe principal</i> 
-  ne peuvent être associés qu'à des darks, flats et offset/bias du <i>groupe 
+  ne peuvent Ãªtre associÃ©s qu'Ã  des darks, flats et offset/bias du <i>groupe 
   principal</i>. <br>
   Cela correspond au fonctionnement de DeepSkyStacker avant l'introduction des 
   groupes de fichiers.</font></p><li>
   <p align="justify"><font size="2" face="Arial">Tous les fichiers darks, flats et offset/bias 
-  du <i>groupe principal</i> peuvent être associés à des fichiers images de 
+  du <i>groupe principal</i> peuvent Ãªtre associÃ©s Ã  des fichiers images de 
   n'importe quel groupe.</font></p><li>
   <p align="justify"><font size="2" face="Arial">Tous les fichiers darks, flats et offset/bias 
-  des autres groupes ne peuvent être associés qu'à des fichiers images du même 
+  des autres groupes ne peuvent Ãªtre associÃ©s qu'Ã  des fichiers images du mÃªme 
   groupe.</font></p></li>
 </ul>
-<p align="justify"><font size="2" face="Arial">Vous pouvez créer autant de groupes que vous le 
-souhaitez sachant qu'un fichier ne peut pas être présent dans deux groupes 
-différents.</font></p>
+<p align="justify"><font size="2" face="Arial">Vous pouvez crÃ©er autant de groupes que vous le 
+souhaitez sachant qu'un fichier ne peut pas Ãªtre prÃ©sent dans deux groupes 
+diffÃ©rents.</font></p>
 <p align="justify"><font size="2" face="Arial"><b>Exemple d'utilisation :<br>
-</b>Vous avez deux nuits d'affilée prit des photos d'un même objet. <br>
+</b>Vous avez deux nuits d'affilÃ©e prit des photos d'un mÃªme objet. <br>
 Pour chaque nuit vous avez un ensemble de photos, de darks et de flats, mais la 
-température ayant variée d'une nuit à l'autre les darks ne sont pas compatibles 
-d'une nuit sur l'autre et l'orientation ayant légèrement changée les flats sont 
-également différents.<br>
+tempÃ©rature ayant variÃ©e d'une nuit Ã  l'autre les darks ne sont pas compatibles 
+d'une nuit sur l'autre et l'orientation ayant lÃ©gÃ¨rement changÃ©e les flats sont 
+Ã©galement diffÃ©rents.<br>
 <br>
 Afin d'associer les bons darks et les bons flats avec les bonnes images il 
-suffit de mettre toutes les photos+darks+flats de la première nuit dans un 
+suffit de mettre toutes les photos+darks+flats de la premiÃ¨re nuit dans un 
 groupe et tous ceux de la seconde nuit dans un second groupe.<br>
-Les offsets/bias étant communs à toutes les photos ceux ci doivent être mis dans 
+Les offsets/bias Ã©tant communs Ã  toutes les photos ceux ci doivent Ãªtre mis dans 
 le groupe principal.<br>
 <br>
-DeepSkyStacker associera automatiquement les photos de la première nuit avec 
-darks et flats de la première nuit et les photos de la seconde nuit avec les 
+DeepSkyStacker associera automatiquement les photos de la premiÃ¨re nuit avec 
+darks et flats de la premiÃ¨re nuit et les photos de la seconde nuit avec les 
 darks et flats de la seconde nuit. Les offset/bias communs (puisque dans le <i>
-groupe principal</i>) seront utilisés pour les photos de la première et de la 
+groupe principal</i>) seront utilisÃ©s pour les photos de la premiÃ¨re et de la 
 seconde nuit.</font></p>
 <hr color="#0000ff">
 <p align="justify"><b><font size="4" face="Arial" color="#ff0000">
 <a name="Stacking"></a>Empilement</font></b><font face="Arial"><b><br>
 <font size="2"><a name="backgroundcalibration"></a>Calibration du fond des 
 images</font><br>
-</b><font size="2">La calibration du fond des images consiste à normaliser la 
+</b><font size="2">La calibration du fond des images consiste Ã  normaliser la 
 valeur du fond de chaque image de la pile avant l'empilement.<br>
-La valeur du fond est la valeur médiane de tous les pixels de l'image.</font></font></p>
+La valeur du fond est la valeur mÃ©diane de tous les pixels de l'image.</font></font></p>
 <p align="justify"><font size="2" face="Arial">Deux options sont disponibles :</font></p>
 <ul>
   <li>
 <p align="justify"><font size="2" face="Arial">Avec l'option de <b>Calibration 
-du fond de chacun des canaux</b> le fond de chaque canal est ajusté pour 
-correspondre au fond du même canal de l'image de référence.</font></p><li>
+du fond de chacun des canaux</b> le fond de chaque canal est ajustÃ© pour 
+correspondre au fond du mÃªme canal de l'image de rÃ©fÃ©rence.</font></p><li>
 <p align="justify"><font size="2" face="Arial">Avec l'option de <b>Calibration 
 RVB du fond</b>, les trois canaux <font color="#ff0000">rouge</font>,
 <font color="#008000">vert</font> et <font color="#0000ff">bleu</font> de chaque 
-image sont normalisés à la même valeur de fond qui est le minimum des trois 
-valeurs médianes (une par canal) calculées sur l'image de référence.</font></p>
+image sont normalisÃ©s Ã  la mÃªme valeur de fond qui est le minimum des trois 
+valeurs mÃ©dianes (une par canal) calculÃ©es sur l'image de rÃ©fÃ©rence.</font></p>
   </li>
 </ul>
-<p align="justify"><font size="2" face="Arial">En particulier, il est très important de sélectionner 
+<p align="justify"><font size="2" face="Arial">En particulier, il est trÃ¨s important de sÃ©lectionner 
 une des ces options lors de 
-l'utilisation des méthodes de Kappa-Sigma Clipping ou Médiane Kappa-Sigma 
-Clipping pour éviter d'empiler des images dont les fonds n'ont pas la même 
+l'utilisation des mÃ©thodes de Kappa-Sigma Clipping ou MÃ©diane Kappa-Sigma 
+Clipping pour Ã©viter d'empiler des images dont les fonds n'ont pas la mÃªme 
 valeur.</font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="flatcalibration"></a>Calibration automatique des flats</b></font><b><br>
 </b><font size="2">L'objectif de la calibration automatique des flats est 
-d'égaliser les différences de luminosité entre les différents flats avant de les 
-combiner ensemble pour obtenir un maître flat.<br>
+d'Ã©galiser les diffÃ©rences de luminositÃ© entre les diffÃ©rents flats avant de les 
+combiner ensemble pour obtenir un maÃ®tre flat.<br>
 <br>
-Le premier flat est utilisé comme référence. Les autres flats sont normalisés de 
-façon à ce que la luminosité moyenne et l'intervalle dynamique soit les mêmes 
+Le premier flat est utilisÃ© comme rÃ©fÃ©rence. Les autres flats sont normalisÃ©s de 
+faÃ§on Ã  ce que la luminositÃ© moyenne et l'intervalle dynamique soit les mÃªmes 
 que ceux du premier flat.</font></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><font face="Arial"><font size="2">
-<b><a name="hotpixelsremoval"></a>Détection et suppression automatique des 
+<b><a name="hotpixelsremoval"></a>DÃ©tection et suppression automatique des 
 pixels chauds</b></font><b><br>
-</b><font size="2">L'objectif de la détection automatique et de la suppression 
-des pixels chaud est de remplacer ces pixels hors norme par une valeur calculée 
-à partir des pixels voisins.<br>
+</b><font size="2">L'objectif de la dÃ©tection automatique et de la suppression 
+des pixels chaud est de remplacer ces pixels hors norme par une valeur calculÃ©e 
+Ã  partir des pixels voisins.<br>
 <br>
-Dans un premier temps ces pixels sont identifiés par l'analyse des darks (ou du 
+Dans un premier temps ces pixels sont identifiÃ©s par l'analyse des darks (ou du 
 master dark quand il est disponible). Tous les pixels dont la valeur est 
-supérieure à [médiane] + 16 x [écart type] sont marqués comme pixels chauds.<br>
+supÃ©rieure Ã  [mÃ©diane] + 16 x [Ã©cart type] sont marquÃ©s comme pixels chauds.<br>
 <br>
-Pour chacun de ces pixels la valeur dans l'image calibrée (après soustraction 
-des bias/offset et dark et division par le flat) est interpolée à partir des 
+Pour chacun de ces pixels la valeur dans l'image calibrÃ©e (aprÃ¨s soustraction 
+des bias/offset et dark et division par le flat) est interpolÃ©e Ã  partir des 
 pixels voisins.</font></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><font face="Arial"><font size="2">
-<b><a name="badlinesdetection"></a>Détection et suppression automatique des 
+<b><a name="badlinesdetection"></a>DÃ©tection et suppression automatique des 
 mauvaise colonnes </b></font><b><br>
-</b><font size="2">Sur certaines caméras CCD il peut apparaître des colonnes&nbsp; 
-blanches créées par le blooming sur les pixels chauds ou noires (colonnes 
+</b><font size="2">Sur certaines camÃ©ras CCD il peut apparaÃ®tre des colonnes&nbsp; 
+blanches crÃ©Ã©es par le blooming sur les pixels chauds ou noires (colonnes 
 mortes).<br>
 <br>
-La détection et la suppression des mauvaises colonnes peut être utilisées dans 
+La dÃ©tection et la suppression des mauvaises colonnes peut Ãªtre utilisÃ©es dans 
 ces cas.<br>
-Elle détecte automatiquement les lignes verticales de 1 pixel de large qui sont 
-soit saturées, soit noires et les traite comme s'il s'agissait de pixels chauds 
-en interpolant les valeurs à partir des pixels voisins.</font></font></p>
+Elle dÃ©tecte automatiquement les lignes verticales de 1 pixel de large qui sont 
+soit saturÃ©es, soit noires et les traite comme s'il s'agissait de pixels chauds 
+en interpolant les valeurs Ã  partir des pixels voisins.</font></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><font face="Arial"><font size="2">
-<b><a name="darkentropy"></a>Soustraction des darks basé sur la réduction de 
+<b><a name="darkentropy"></a>Soustraction des darks basÃ© sur la rÃ©duction de 
 l'entropie</b></font><b><br>
-</b><font size="2">La soustraction des darks peut être optionnellement optimisée 
-par la réduction de l'entropie de l'image obtenue après soustraction.<br>
-L'idée ici est d'appliquer un coefficient multiplicateur entre 0 et 1 au dark 
-afin que l'image obtenue après soustraction ait l'entropie la plus faible 
+</b><font size="2">La soustraction des darks peut Ãªtre optionnellement optimisÃ©e 
+par la rÃ©duction de l'entropie de l'image obtenue aprÃ¨s soustraction.<br>
+L'idÃ©e ici est d'appliquer un coefficient multiplicateur entre 0 et 1 au dark 
+afin que l'image obtenue aprÃ¨s soustraction ait l'entropie la plus faible 
 possible.<br>
-En pratique cela permet d'utiliser des darks qui ne sont pas créés dans les 
-conditions optimales (en particulier de température)..<br>
+En pratique cela permet d'utiliser des darks qui ne sont pas crÃ©Ã©s dans les 
+conditions optimales (en particulier de tempÃ©rature)..<br>
 </font></font><font size="2" face="Arial"><br>
-Pour plus d'information sur cette méthode pour pouvez vous reporter au document 
+Pour plus d'information sur cette mÃ©thode pour pouvez vous reporter au document 
 suivant (en anglais):<br>
 <a target="_blank" href="http://www.cs.ubc.ca/%7Eheidrich/Papers/PICS.01.pdf">
 Entropy-Based Dark Frame Subtraction</a></font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><font face="Arial"><b>
 Processus d'empilement<br>
-</b><font size="2">Le processus d'empilement de DeepSkyStacker est très 
+</b><font size="2">Le processus d'empilement de DeepSkyStacker est trÃ¨s 
 classique.<br>
 <u><b>Etape 1 <br>
-</b></u></font></font><font size="2" face="Arial">Création du master offset à 
-partir de toutes les images marquées offset (selon la méthode sélectionnée).<br>
-Si plus d'une image est marqué offset, un master offset est enregistré dans le 
-fichier MasterOffset_ISOxxx.tif (format TIFF 8 16 ou 32 bits) dans le répertoire de la 
-première image marquée offset. Ce fichier pourra être utilisé comme offset 
+</b></u></font></font><font size="2" face="Arial">CrÃ©ation du master offset Ã  
+partir de toutes les images marquÃ©es offset (selon la mÃ©thode sÃ©lectionnÃ©e).<br>
+Si plus d'une image est marquÃ© offset, un master offset est enregistrÃ© dans le 
+fichier MasterOffset_ISOxxx.tif (format TIFF 8 16 ou 32 bits) dans le rÃ©pertoire de la 
+premiÃ¨re image marquÃ©e offset. Ce fichier pourra Ãªtre utilisÃ© comme offset 
 unique lors d'une prochaine utilisation.<br>
 <br>
 <b>Etape 2<br>
-</b>Création du master dark à partir de toutes les images marquées.dark (selon 
-la méthode sélectionnée). 
-Le master d'offset est soustrait à chaque dark.<br>
-Si plus d'une image est marqué dark, un master dark est enregistré dans le 
-fichier MasterDark_ISOxxx_yyys.tif (format TIFF 8 16 ou 32 bits) dans le répertoire de la 
-première image marquée dark. Ce fichier pourra être utilisé comme dark unique 
+</b>CrÃ©ation du master dark Ã  partir de toutes les images marquÃ©es.dark (selon 
+la mÃ©thode sÃ©lectionnÃ©e). 
+Le master d'offset est soustrait Ã  chaque dark.<br>
+Si plus d'une image est marquÃ© dark, un master dark est enregistrÃ© dans le 
+fichier MasterDark_ISOxxx_yyys.tif (format TIFF 8 16 ou 32 bits) dans le rÃ©pertoire de la 
+premiÃ¨re image marquÃ©e dark. Ce fichier pourra Ãªtre utilisÃ© comme dark unique 
 lors de la prochaine utilisation.<br>
 <br>
-Création du master dark flat à partir de toutes les images marquées.dark flat (selon 
-la méthode sélectionnée). 
-Le master d'offset est soustrait à chaque dark flat.<br>
-Si plus d'une image est marqué dark flat, un master dark flat est enregistré dans le 
+CrÃ©ation du master dark flat Ã  partir de toutes les images marquÃ©es.dark flat (selon 
+la mÃ©thode sÃ©lectionnÃ©e). 
+Le master d'offset est soustrait Ã  chaque dark flat.<br>
+Si plus d'une image est marquÃ© dark flat, un master dark flat est enregistrÃ© dans le 
 fichier MasterDarkFlat_ISOxxx_yyys.tif (format TIFF 8 16 ou 32 bits) dans le 
-répertoire de la première image marquée dark flat. Ce fichier pourra être 
-utilisé comme dark flat unique lors de la prochaine utilisation.<br>
+rÃ©pertoire de la premiÃ¨re image marquÃ©e dark flat. Ce fichier pourra Ãªtre 
+utilisÃ© comme dark flat unique lors de la prochaine utilisation.<br>
 <br>
 <b>Etape 3<br>
-</b>Création du master flat à partir de toutes les images marquées flat (selon 
-la méthode sélectionnée). 
+</b>CrÃ©ation du master flat Ã  partir de toutes les images marquÃ©es flat (selon 
+la mÃ©thode sÃ©lectionnÃ©e). 
 Les masters d'offset et dark flat sont soustrait de chaque flat. Le master flat est 
-automatiquement normalisé.<br>
-Si plus d'une image est marqué flat, un master flat est enregistré dans le 
-fichier MasterFlat_ISOxxx.tif (format TIFF 8 16 ou 32 bits) dans le répertoire de la 
-première image marquée flat. Ce fichier pourra être utilisé comme flat unique 
+automatiquement normalisÃ©.<br>
+Si plus d'une image est marquÃ© flat, un master flat est enregistrÃ© dans le 
+fichier MasterFlat_ISOxxx.tif (format TIFF 8 16 ou 32 bits) dans le rÃ©pertoire de la 
+premiÃ¨re image marquÃ©e flat. Ce fichier pourra Ãªtre utilisÃ© comme flat unique 
 lors de la prochaine utilisation.<br>
 <br>
 <b>Etape 4<br>
-</b>Calculs des décalages et rotations pour toutes les images à empiler.<br>
+</b>Calculs des dÃ©calages et rotations pour toutes les images Ã  empiler.<br>
 <br>
 <b>Etape 5<br>
-</b>Création de l'image finale par addition des images individuelles selon la 
-méthode sélectionnée. <br>
+</b>CrÃ©ation de l'image finale par addition des images individuelles selon la 
+mÃ©thode sÃ©lectionnÃ©e. <br>
 Le 
 master d'offset et le master de dark sont automatiquement soustrait de chaque image et le 
-résultat est divisé par le master flat normalisé et si l'option est activée les 
-pixels chauds détectées dans le master dark sont supprimés et remplacés par la 
-valeur interpolée à partir des pixels voisins.<br>
+rÃ©sultat est divisÃ© par le master flat normalisÃ© et si l'option est activÃ©e les 
+pixels chauds dÃ©tectÃ©es dans le master dark sont supprimÃ©s et remplacÃ©s par la 
+valeur interpolÃ©e Ã  partir des pixels voisins.<br>
 <br>
 <b>Etape 6<br>
-</b>Dans le cas du développement raw avec la méthode du
+</b>Dans le cas du dÃ©veloppement raw avec la mÃ©thode du
 <A href="#bayerdrizzle">Bayer drizzle</A>, les valeurs des trois composantes RGB 
-sont normalisées pour éviter les trous d'information.<br>
+sont normalisÃ©es pour Ã©viter les trous d'information.<br>
 <br>
 <b>Etape 7<br>
-</b>L'image résultant du traitement est automatiquement enregistrée dans 
-un fichier AutoSave.tif qui est située dans le même répertoire que la 
-première des images empilées.</font></p>
+</b>L'image rÃ©sultant du traitement est automatiquement enregistrÃ©e dans 
+un fichier AutoSave.tif qui est situÃ©e dans le mÃªme rÃ©pertoire que la 
+premiÃ¨re des images empilÃ©es.</font></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><b>
 <span style="FONT-FAMILY: Arial" lang="FR-FR"><a name="ChannelsAlignment"></a>
 Alignement des canaux RVB<br>
 </span></b><font size="2"><span style="FONT-FAMILY: Arial">Quand cette option 
-est activée </span></font><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">DeepSkyStacker </span>
+est activÃ©e </span></font><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">DeepSkyStacker </span>
 <span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">essayes d'aligner les trois 
-canaux de l'image finale pour réduire le décalage des couleurs entre les canaux</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">.<br>
+canaux de l'image finale pour rÃ©duire le dÃ©calage des couleurs entre les canaux</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">.<br>
 </span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Le principal effet 
-visible est que les étoiles ne sont plus rouge d'un coté et bleu de l'autre</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">.<br>
+visible est que les Ã©toiles ne sont plus rouge d'un cotÃ© et bleu de l'autre</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">.<br>
 <br>
 </span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Chaque canal est 
-enregistré (les étoiles sont détectées) et une transformation est calculée entre 
+enregistrÃ© (les Ã©toiles sont dÃ©tectÃ©es) et une transformation est calculÃ©e entre 
 le meilleur canal et les deux autres</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">.<br>
 </span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">La transformation est 
-alors appliquée aux deux autres canaux ce qui a pour effet de les aligner sur le 
+alors appliquÃ©e aux deux autres canaux ce qui a pour effet de les aligner sur le 
 meilleur canal</span><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial" lang="FR-FR">.</span></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><b>
-<span style="FONT-FAMILY: Arial"><a name="reusemasters"></a>Réutilisation 
-automatique des fichiers maître précédemment créés<br>
+<span style="FONT-FAMILY: Arial"><a name="reusemasters"></a>RÃ©utilisation 
+automatique des fichiers maÃ®tre prÃ©cÃ©demment crÃ©Ã©s<br>
 </span></b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Les fichiers 
-maître existants (dark, offset, flat et dark flat) créés depuis une liste de fichiers sont 
-automatiquement utilisés quand c'est possible tant que :<br>
-- La liste des fichiers utilisés pour les créer n'est pas modifiée.<br>
-- Les paramètres utilisés pour les créer ne sont pas modifiés. Ceci inclus la 
-méthode d'empilement et les paramètres de développement RAW ou FITS quand des 
-fichiers RAW ou FITS sont utilisés.<br>
+maÃ®tre existants (dark, offset, flat et dark flat) crÃ©Ã©s depuis une liste de fichiers sont 
+automatiquement utilisÃ©s quand c'est possible tant que :<br>
+- La liste des fichiers utilisÃ©s pour les crÃ©er n'est pas modifiÃ©e.<br>
+- Les paramÃ¨tres utilisÃ©s pour les crÃ©er ne sont pas modifiÃ©s. Ceci inclus la 
+mÃ©thode d'empilement et les paramÃ¨tres de dÃ©veloppement RAW ou FITS quand des 
+fichiers RAW ou FITS sont utilisÃ©s.<br>
 <br>
-Un fichier texte contenant les paramètres et la liste des fichiers utilisés est 
-enregistré dans le dossier du fichier maître correspondant.<br>
-Le fichier de description a le même nom que le fichier maître avec l'extension .Description.txt.<br>
+Un fichier texte contenant les paramÃ¨tres et la liste des fichiers utilisÃ©s est 
+enregistrÃ© dans le dossier du fichier maÃ®tre correspondant.<br>
+Le fichier de description a le mÃªme nom que le fichier maÃ®tre avec l'extension .Description.txt.<br>
 <br>
-Lorsque la description ne correspond les nouveaux paramètres plus les fichiers 
-maîtres sont automatiquement recréés.<br>
+Lorsque la description ne correspond les nouveaux paramÃ¨tres plus les fichiers 
+maÃ®tres sont automatiquement recrÃ©Ã©s.<br>
 <br>
-Cette fonctionnalité est complètement transparente pour l'utilisateur qui ne 
-constate que le gain de temps lorsqu'il n'est pas nécessaire de recréer les 
-fichiers maîtres.</span></p>
+Cette fonctionnalitÃ© est complÃ¨tement transparente pour l'utilisateur qui ne 
+constate que le gain de temps lorsqu'il n'est pas nÃ©cessaire de recrÃ©er les 
+fichiers maÃ®tres.</span></p>
 <hr size="1" color="#0000ff">
 <p align="justify"><b><font face="Arial"><a name="customrect"></a>Utilisation 
-d'un rectangle personnalisé</font></b><font face="Arial"><b><br>
-</b><font size="2">DeepSkyStacker permet d'utiliser un rectangle personnalisé 
-qui va définir la position et la taille de l'image résultante.<br>
+d'un rectangle personnalisÃ©</font></b><font face="Arial"><b><br>
+</b><font size="2">DeepSkyStacker permet d'utiliser un rectangle personnalisÃ© 
+qui va dÃ©finir la position et la taille de l'image rÃ©sultante.<br>
 <br>
 Pour ce faire, vous devez d'abord visualiser une image en cliquant dessus depuis 
 la liste. <br>
-Vous pouvez choisir n'importe quelle image mais comme vous allez définir le 
-rectangle qui va contenir l'image résultante, le mieux est de sélectionner 
-l'image qui va servir de référence à l'empilement (celle dont le score est le 
-plus important ou celle que vous avez choisie en forçant le choix via le
+Vous pouvez choisir n'importe quelle image mais comme vous allez dÃ©finir le 
+rectangle qui va contenir l'image rÃ©sultante, le mieux est de sÃ©lectionner 
+l'image qui va servir de rÃ©fÃ©rence Ã  l'empilement (celle dont le score est le 
+plus important ou celle que vous avez choisie en forÃ§ant le choix via le
 <a href="http://deepskystacker.free.fr/french/userguide.htm#contextmenu">menu contextuel</a>).<br>
 <br>
-Ensuite il suffit juste de sélectionner à la souris le rectangle que vous 
-souhaitez utiliser comme rectangle personnalisé.<br>
-Lorsque que vous lancerez l'empilement, le rectangle que vous avez sélectionné 
-sera choisi par défaut comme méthode d'empilement.<br>
+Ensuite il suffit juste de sÃ©lectionner Ã  la souris le rectangle que vous 
+souhaitez utiliser comme rectangle personnalisÃ©.<br>
+Lorsque que vous lancerez l'empilement, le rectangle que vous avez sÃ©lectionnÃ© 
+sera choisi par dÃ©faut comme mÃ©thode d'empilement.<br>
 <br>
-Cette option peut être particulièrement utile si vous utilisez l'option
+Cette option peut Ãªtre particuliÃ¨rement utile si vous utilisez l'option
 <A href="#Drizzle">Drizzle</A> qui double ou triple la taille des images 
-résultantes et donc l'espace disque et l'espace mémoire utilisés lors de 
+rÃ©sultantes et donc l'espace disque et l'espace mÃ©moire utilisÃ©s lors de 
 l'empilement.<br>
 <br>
-En effet, lorsqu'un rectangle personnalisé plus petit est utilisé pour l'image 
-résultante, DeepSkyStacker n'utilise que l'espace disque et la mémoire 
-nécessaire pour créer une image de la taille du rectangle personnalisé.</font></font></p>
+En effet, lorsqu'un rectangle personnalisÃ© plus petit est utilisÃ© pour l'image 
+rÃ©sultante, DeepSkyStacker n'utilise que l'espace disque et la mÃ©moire 
+nÃ©cessaire pour crÃ©er une image de la taille du rectangle personnalisÃ©.</font></font></p>
 <hr color="#0000ff">
 <p align="justify">
-<b><font face="Arial" color="#ff0000"><a name="stackingmethods"></a>Les méthodes 
+<b><font face="Arial" color="#ff0000"><a name="stackingmethods"></a>Les mÃ©thodes 
 d'empilement</font><font size="2" face="Arial"><font color="#ff0000"><br>
 </font>
 <font color="#800000">Moyenne</font><br>
 </font>
-</b><font size="2" face="Arial">C'est la méthode la plus simple. La moyenne des valeurs des pixels de la 
-pile est calculée pour chaque pixel. Aucun pixel n'est rejeté.<br>
+</b><font size="2" face="Arial">C'est la mÃ©thode la plus simple. La moyenne des valeurs des pixels de la 
+pile est calculÃ©e pour chaque pixel. Aucun pixel n'est rejetÃ©.<br>
 <br>
-<b><font color="#800000">Médiane</font><br>
-</b>C'est la méthode par défaut pour la création des masters dark, flat et 
-offset. La valeur médiane de la pile est calculée pour chaque pixel.<br>
+<b><font color="#800000">MÃ©diane</font><br>
+</b>C'est la mÃ©thode par dÃ©faut pour la crÃ©ation des masters dark, flat et 
+offset. La valeur mÃ©diane de la pile est calculÃ©e pour chaque pixel.<br>
 <br>
 <b><font color="#800000">Maximum</font><br>
-</b>C'est une méthode ultra simple à n'utiliser qu'avec beaucoup de précaution. 
-La valeur maximale des pixels de la pile est calculée pour chaque pixel.<br>
+</b>C'est une mÃ©thode ultra simple Ã  n'utiliser qu'avec beaucoup de prÃ©caution. 
+La valeur maximale des pixels de la pile est calculÃ©e pour chaque pixel.<br>
 <br>
 <b><font color="#800000">Kappa-Sigma Clipping</font><br>
-</b>Cette méthode permet d'écarter les pixels déviants de façon itérative.<br>
-Deux paramètres sont fixés : le nombre d'itération et la coefficient 
-multiplicateur de l'écart type utilisée (Kappa).<br>
-A chaque itération, la moyenne et l'écart type (Sigma) des pixels de la pile 
-sont calculés.<br>
-Tout pixel dont la valeur s'écarte de la moyenne de plus de Kappa * Sigma est 
-rejeté.<br>
-La moyenne des pixels restant est calculée pour chaque pixel.<br>
+</b>Cette mÃ©thode permet d'Ã©carter les pixels dÃ©viants de faÃ§on itÃ©rative.<br>
+Deux paramÃ¨tres sont fixÃ©s : le nombre d'itÃ©ration et la coefficient 
+multiplicateur de l'Ã©cart type utilisÃ©e (Kappa).<br>
+A chaque itÃ©ration, la moyenne et l'Ã©cart type (Sigma) des pixels de la pile 
+sont calculÃ©s.<br>
+Tout pixel dont la valeur s'Ã©carte de la moyenne de plus de Kappa * Sigma est 
+rejetÃ©.<br>
+La moyenne des pixels restant est calculÃ©e pour chaque pixel.<br>
 <b><font color="#800000"><br>
-Kappa-Sigma Clipping Médiane</font><br>
-</b>Cette méthode est similaire à la méthode Kappa-Sigma Clipping mais au lieu 
-de rejeter les valeurs elles sont remplacées par la médiane.<br>
+Kappa-Sigma Clipping MÃ©diane</font><br>
+</b>Cette mÃ©thode est similaire Ã  la mÃ©thode Kappa-Sigma Clipping mais au lieu 
+de rejeter les valeurs elles sont remplacÃ©es par la mÃ©diane.<br>
 <br>
-<font color="#800000"><b>Moyenne pondérée auto adaptative</b></font><br>
-La moyenne pondérée auto 
-adaptative est adaptée des travaux de Dr. Peter B. Stetson (see&nbsp;<A href="https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html">
+<font color="#800000"><b>Moyenne pondÃ©rÃ©e auto adaptative</b></font><br>
+La moyenne pondÃ©rÃ©e auto 
+adaptative est adaptÃ©e des travaux de Dr. Peter B. Stetson (see&nbsp;<A href="https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html">
 The 
 Techniques of Least Squares and Stellar Photometry with CCDs</A>&nbsp;- Peter B. 
 Stetson 1989).<br><br>
-Cette méthode permet de calculer une moyenne robuste obtenue en pondérant de 
-façon itérative les pixels en fonction de leurs écart à la moyenne par rapport à 
-l'écart moyen.<br>
+Cette mÃ©thode permet de calculer une moyenne robuste obtenue en pondÃ©rant de 
+faÃ§on itÃ©rative les pixels en fonction de leurs Ã©cart Ã  la moyenne par rapport Ã  
+l'Ã©cart moyen.<br>
 <br>
-<font color="#800000"><b>Moyenne pondérée par l'entropie (High Dynamic Range)</b></font><br>
-Cette méthode est basée sur les travaux de German, Jenkin et Lesperance (<a target="_blank" href="http://doi.ieeecomputersociety.org/10.1109/CRV.2005.38">Entropy-Based 
+<font color="#800000"><b>Moyenne pondÃ©rÃ©e par l'entropie (High Dynamic Range)</b></font><br>
+Cette mÃ©thode est basÃ©e sur les travaux de German, Jenkin et Lesperance (<a target="_blank" href="http://doi.ieeecomputersociety.org/10.1109/CRV.2005.38">Entropy-Based 
 image merging - 2005</a>) et permet d'additionner les images en conservant la 
 meilleure dynamique de chaque image, pixel par pixel.<br>
-Elle permet en particulier de lors de l'addition d'image réalisées avec des 
-sensibilités et des temps de pause différent de conserver la meilleure dynamique 
-possible sur l'image finale. En clair cela permet d'éviter de brûler le centre 
-des galaxies et nébuleuses.<br>
-Note : cette méthode est particulièrement consommatrice en temps machine et en 
-mémoire.</font></p>
+Elle permet en particulier de lors de l'addition d'image rÃ©alisÃ©es avec des 
+sensibilitÃ©s et des temps de pause diffÃ©rent de conserver la meilleure dynamique 
+possible sur l'image finale. En clair cela permet d'Ã©viter de brÃ»ler le centre 
+des galaxies et nÃ©buleuses.<br>
+Note : cette mÃ©thode est particuliÃ¨rement consommatrice en temps machine et en 
+mÃ©moire.</font></p>
   <span>
   <hr width="100%" size="2" noshade color="blue" align="center">
 <p align="justify"><b><font size="4" face="Arial" color="#ff0000">
 <a name="Drizzle"></a>Drizzle</font></b><br>
-<font size="2" face="Arial">Le Drizzle est une méthode développée par la NASA 
-pour les observations du projet Hubble Deep Field réalisées par le Télescope 
+<font size="2" face="Arial">Le Drizzle est une mÃ©thode dÃ©veloppÃ©e par la NASA 
+pour les observations du projet Hubble Deep Field rÃ©alisÃ©es par le TÃ©lescope 
 Spatial Hubble.<br>
 L'algorithme est aussi connu sous le nom de Variable Pixel Linear Reconstruction.<br>
 <br>
-Il a de nombreux usages dont celui de pouvoir améliorer la résolution d'une pile 
-d'image par rapport à la résolution d'une seule image tout en préservant les 
-caractéristiques de l'image (couleurs, luminance).</font></p>
+Il a de nombreux usages dont celui de pouvoir amÃ©liorer la rÃ©solution d'une pile 
+d'image par rapport Ã  la rÃ©solution d'une seule image tout en prÃ©servant les 
+caractÃ©ristiques de l'image (couleurs, luminance).</font></p>
 <table id="AutoNumber4" width="100%" cellspacing="1" border="0">
   <tbody><tr>
     <td width="40%" valign="top">
     <p class="Standard">
   <span>
     <font size="2" face="Arial">Pour faire simple chaque image est agrandie 2 ou 
-  3 fois juste avant d'être empilée (n'importe quelle valeur supérieure à 1 peut 
-  être utilisée mais DeepSkyStacker propose uniquement des facteurs 2 ou 3 qui 
-  sont des valeurs classiques), puis projetée sur une grille plus grande.<br>
+  3 fois juste avant d'Ãªtre empilÃ©e (n'importe quelle valeur supÃ©rieure Ã  1 peut 
+  Ãªtre utilisÃ©e mais DeepSkyStacker propose uniquement des facteurs 2 ou 3 qui 
+  sont des valeurs classiques), puis projetÃ©e sur une grille plus grande.<br>
     <br>
-    Le résultat est que la taille de l'image finale est doublée (ou triplée) et 
+    Le rÃ©sultat est que la taille de l'image finale est doublÃ©e (ou triplÃ©e) et 
   qu'un petit objet qui n'occupait qu'une dizaine de pixels va maintenant en 
   occuper deux ou trois fois plus ce qui va simplifier le post traitement.</font></span></p></td>
     <td width="60%">
     <p align="center">
-    <IMG border=0 src="technical_files/Drizzle.jpg" width=250 align=middle height=250></p></td>
+    <IMG border=0 src="../images/Drizzle.jpg" width=250 align=middle height=250></p></td>
   </tr>
   <tr>
     <td width="40%" valign="top">
     <p class="Standard"><font size="2" face="Arial">
   <span>
     <b>Quand et de quoi avez vous besoin pour utiliser l'option Drizzle</b><br>
-    Juste d'un nombre important d'images qui ne soient pas parfaitement alignées 
-    (un décalage de quelques pixels suffit).<br>
+    Juste d'un nombre important d'images qui ne soient pas parfaitement alignÃ©es 
+    (un dÃ©calage de quelques pixels suffit).<br>
     Cela n'a pas de sens d'utiliser le drizzle avec seulement quelques images brutes.<br>
     <br>
-    Le Drizzle est particulièrement efficace pour améliorer la résolution et 
-    donc il est particulièrement utile lorsque  de petits objets sont 
-    photographiés avec une courte focale.<br>
+    Le Drizzle est particuliÃ¨rement efficace pour amÃ©liorer la rÃ©solution et 
+    donc il est particuliÃ¨rement utile lorsque  de petits objets sont 
+    photographiÃ©s avec une courte focale.<br>
     <br>
-    L'exemple ci contre montre un exemple de M57 à peine post traitée (photo 
-    prise avec un télescope de 254/1200 et un appareil photo Canon).<br>
+    L'exemple ci contre montre un exemple de M57 Ã  peine post traitÃ©e (photo 
+    prise avec un tÃ©lescope de 254/1200 et un appareil photo Canon).<br>
     <br>
-    D'habitude M57 est très petite dans cette configuration mais en utilisant un 
-    Drizzle x2 et environ 100 images brutes, l'image résultante est deux fois 
-    plus grande et la résolution est bien meilleure.<br>
+    D'habitude M57 est trÃ¨s petite dans cette configuration mais en utilisant un 
+    Drizzle x2 et environ 100 images brutes, l'image rÃ©sultante est deux fois 
+    plus grande et la rÃ©solution est bien meilleure.<br>
     <br>
     Passer la souris sur le texte pour voir<br>
 &nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Pas de Drizzle - Agrandie 4 fois';" href="javascript:void(0);">
-M57 non traitée - Pas de Drizzle (agrandie 4 fois)</A><br>
+M57 non traitÃ©e - Pas de Drizzle (agrandie 4 fois)</A><br>
 &nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Drizzle x2 - Agrandie 2 fois';" href="javascript:void(0);">
-M57 non traitée - Drizzle x2 (agrandie 2 fois)</A></span></font></p></td>
+M57 non traitÃ©e - Drizzle x2 (agrandie 2 fois)</A></span></font></p></td>
     <td width="60%">
     <p align="center">
-    <IMG id=DRIZZLE01 border=0 name=DRIZZLE01 src="technical_files/M57_NoDrizzle.jpg" width=411 height=353><br>
+    <IMG id=DRIZZLE01 border=0 name=DRIZZLE01 src="../images/M57_NoDrizzle.jpg" width=411 height=353><br>
     <font size="2" face="Arial"><b id="DRIZZLELEGEND01" name="DRIZZLELEGEND01">M57 - 
     Pas de Drizzle (Agrandie 4 fois)</b></font></p></td>
   </tr>
 </tbody></table>
 <p align="justify"><b><font size="2" face="Arial">Les effets secondaires de 
 l'utilisation du drizzle</font></b><font size="2" face="Arial"><br>
-Le principal effet secondaire est que la quantité de mémoire et d'espace disque 
-nécessaire pour créer et traiter les images est multipliée par le carré du 
-facteur de drizzle. Bien entendu le temps de traitement pour créer les images 
-est également allongé.<br>
+Le principal effet secondaire est que la quantitÃ© de mÃ©moire et d'espace disque 
+nÃ©cessaire pour crÃ©er et traiter les images est multipliÃ©e par le carrÃ© du 
+facteur de drizzle. Bien entendu le temps de traitement pour crÃ©er les images 
+est Ã©galement allongÃ©.<br>
 <br>
 Par exemple, en utilisant le Drizzle x2 sur une image de 3000x2000 pixels, 
-l'image résultante fera 6000x4000 pixels et va nécessiter 4 fois la quantité de 
-mémoire et d'espace disque et va être beaucoup plus longue a créer.<br>
+l'image rÃ©sultante fera 6000x4000 pixels et va nÃ©cessiter 4 fois la quantitÃ© de 
+mÃ©moire et d'espace disque et va Ãªtre beaucoup plus longue a crÃ©er.<br>
 <br>
-Lorsque le Drizzle x3 est utilisée, tout est multiplié par 9 (3 au carré) et 
-sauf si vous avez une machine très puissante et beaucoup de mémoire et d'espace 
-disque disponible vous ne souhaitez pas l'utiliser à partir d'images créées par 
+Lorsque le Drizzle x3 est utilisÃ©e, tout est multipliÃ© par 9 (3 au carrÃ©) et 
+sauf si vous avez une machine trÃ¨s puissante et beaucoup de mÃ©moire et d'espace 
+disque disponible vous ne souhaitez pas l'utiliser Ã  partir d'images crÃ©Ã©es par 
 des APN.<br>
 <br>
-Toutefois sur des petites images (telles que celles créées par les premières 
-caméras DSI et LPI) cela peut être utile d'utiliser un Drizzle x3 pour augmenter 
-la résolution de l'image finale.<br>
+Toutefois sur des petites images (telles que celles crÃ©Ã©es par les premiÃ¨res 
+camÃ©ras DSI et LPI) cela peut Ãªtre utile d'utiliser un Drizzle x3 pour augmenter 
+la rÃ©solution de l'image finale.<br>
 <br>
-Dans tous les cas une bonne façon de limiter l'augmentation de la quantité 
-d'espace disque et de mémoire nécessaire liés au Drizzle est d'utiliser un
-<A href="#customrect">rectangle personnalisé</A>.<br>
+Dans tous les cas une bonne faÃ§on de limiter l'augmentation de la quantitÃ© 
+d'espace disque et de mÃ©moire nÃ©cessaire liÃ©s au Drizzle est d'utiliser un
+<A href="#customrect">rectangle personnalisÃ©</A>.<br>
 <br>
 <b>Drizzle et Bayer Drizzle</b><br>
-Même s'ils utilisent deux versions de l'algorithme Drizzle, il n'est pas 
-recommandé d'utiliser le Drizzle et le Bayer Drizzle en même temps.<br>
+MÃªme s'ils utilisent deux versions de l'algorithme Drizzle, il n'est pas 
+recommandÃ© d'utiliser le Drizzle et le Bayer Drizzle en mÃªme temps.<br>
 DeepSkyStacker affiche un avertissement quand vous essayez de le faire.</font></p>
   </span>
   <span>
   <hr width="100%" size="2" noshade color="blue" align="center">
 <p align="justify"><b><font size="4" face="Arial" color="#ff0000">
-<a name="cometstacking"></a>Empilement d'images de comète</font></b><br>
-<font size="2" face="Arial">Les comètes sont des objets se déplaçant rapidement 
-et lorsque des images de comètes sont empilées deux choses peuvent arriver :<br>
-- si l'alignement est réalisé sur les étoiles la comète est floue<br>
-- si l'alignement est réalisé sur la comète les étoiles ne sont pas ponctuelles.<br>
+<a name="cometstacking"></a>Empilement d'images de comÃ¨te</font></b><br>
+<font size="2" face="Arial">Les comÃ¨tes sont des objets se dÃ©plaÃ§ant rapidement 
+et lorsque des images de comÃ¨tes sont empilÃ©es deux choses peuvent arriver :<br>
+- si l'alignement est rÃ©alisÃ© sur les Ã©toiles la comÃ¨te est floue<br>
+- si l'alignement est rÃ©alisÃ© sur la comÃ¨te les Ã©toiles ne sont pas ponctuelles.<br>
 <br>
-A partir de la version 3.0 DeepSkyStacker ajoute deux options spécifiques à 
-l'empilement d'image de comète:<br>
-- Créer une image alignée sur la comète qui va montrer des filés d'étoiles<br>
-- Créer une image alignée sur la comète et sur les étoiles qui ne montrera pas 
-de filés d'étoiles.<br>
+A partir de la version 3.0 DeepSkyStacker ajoute deux options spÃ©cifiques Ã  
+l'empilement d'image de comÃ¨te:<br>
+- CrÃ©er une image alignÃ©e sur la comÃ¨te qui va montrer des filÃ©s d'Ã©toiles<br>
+- CrÃ©er une image alignÃ©e sur la comÃ¨te et sur les Ã©toiles qui ne montrera pas 
+de filÃ©s d'Ã©toiles.<br>
 <br>
-Ci dessous un exemple des différents modes d'empilement (passer la souris sur le 
-texte pour voir les résultats)</font></p>
+Ci dessous un exemple des diffÃ©rents modes d'empilement (passer la souris sur le 
+texte pour voir les rÃ©sultats)</font></p>
 <table id="AutoNumber5" width="100%" cellspacing="1" border="0">
   <tbody><tr>
     <td width="41%">
 <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px"><font size="2" face="Arial"><br>
 <b><A onmouseover="document['COMETSTACK'].src='../images/FuzzyComet.jpg';" href="javascript:void(0);">
 Empilement standard</A></b><br>
-La position de la comète est ignorée.<br>
-La comète est floue est les étoiles sont ponctuelles.</font></p>
+La position de la comÃ¨te est ignorÃ©e.<br>
+La comÃ¨te est floue est les Ã©toiles sont ponctuelles.</font></p>
 <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px"><A href="javascript:void(0);"><b>
 <font size="2" face="Arial"></font></b></A><b><font size="2" face="Arial"><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);">
-Alignement sur la comète : filés d'étoiles</A></font><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);"></A></b><font size="2" face="Arial"><br>
-La position de la comète est utilisée. Les images sont alignées sur la comète et 
-les positions des étoiles sont utilisées uniquement pour compenser une rotation 
+Alignement sur la comÃ¨te : filÃ©s d'Ã©toiles</A></font><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);"></A></b><font size="2" face="Arial"><br>
+La position de la comÃ¨te est utilisÃ©e. Les images sont alignÃ©es sur la comÃ¨te et 
+les positions des Ã©toiles sont utilisÃ©es uniquement pour compenser une rotation 
 du champ.<br>
 <br>
 <b><A onmouseover="document['COMETSTACK'].src='../images/StarFreeze.jpg';" href="javascript:void(0);">
-Alignement sur la comète et les étoiles : effet "étoiles arrêtées"</A></b><br>
-La position de la comète est utilisée.<br>
-Un premier empilement est réalisé pour extraire la comète du fond stellaire.<br>
-Ensuite un second empilement est réalisé pour geler les étoiles (la comète est 
-soustraite de chaque image calibrée et enregistrée avant l'empilement).<br>
-Pour finir l'image finale est obtenue en insérant la comète de nouveau dans 
+Alignement sur la comÃ¨te et les Ã©toiles : effet "Ã©toiles arrÃªtÃ©es"</A></b><br>
+La position de la comÃ¨te est utilisÃ©e.<br>
+Un premier empilement est rÃ©alisÃ© pour extraire la comÃ¨te du fond stellaire.<br>
+Ensuite un second empilement est rÃ©alisÃ© pour geler les Ã©toiles (la comÃ¨te est 
+soustraite de chaque image calibrÃ©e et enregistrÃ©e avant l'empilement).<br>
+Pour finir l'image finale est obtenue en insÃ©rant la comÃ¨te de nouveau dans 
 l'image ainsi obtenue.</font></p>
 <p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px">&nbsp;</p>
     </td>
     <td width="59%" align="center">
-    <IMG id=COMETSTACK border=0 name=COMETSTACK src="technical_files/FuzzyComet.jpg" width=472 height=366></td>
+    <IMG id=COMETSTACK border=0 name=COMETSTACK src="../images/FuzzyComet.jpg" width=472 height=366></td>
   </tr>
 </tbody></table><font size="2" face="Arial">
 <p align="justify"><br>
-Si vous prévoyez d'aligner uniquement sur les étoiles vous n'avez pas besoin de 
-faire ce qui est décrit dans les paragraphes ci dessous puisqu'il s'agit du 
-comportement par défaut.<br>
+Si vous prÃ©voyez d'aligner uniquement sur les Ã©toiles vous n'avez pas besoin de 
+faire ce qui est dÃ©crit dans les paragraphes ci dessous puisqu'il s'agit du 
+comportement par dÃ©faut.<br>
 <br>
 </font><font face="Arial"><b><font size="2">Ce que vous devez faire <br>
-Etape 1 : Enregistrer la position de la comète</font><br>
-</b></font><font size="2" face="Arial">DeepSkyStacker ne peut pas détecter automatiquement la 
-position de la comète dans les images brutes.&nbsp;&nbsp; <SPAN lang=fr 
-class="HwtZe" jsname="jqKxS" 
-jsaction ="mouseup:Sxi9L,BR6jm; &#13;&#10;&#13;&#10;mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
-jsname="txFAF" 
+Etape 1 : Enregistrer la position de la comÃ¨te</font><br>
+</b></font><font size="2" face="Arial">DeepSkyStacker ne peut pas dÃ©tecter automatiquement la 
+position de la comÃ¨te dans les images brutes.&nbsp;&nbsp; <SPAN lang=fr 
+class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;mousedown:qjlr0e" jsname ="jqKxS"><SPAN class="jCAhz ChMk0b" 
 jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
-jsaction   ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;&#13;&#10;contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><FONT size=3 face="Times New Roman">Donc, vous devez 
+jsname="txFAF" 
+jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
+&#13;&#10;&#13;&#10;&#13;&#10;&#13;&#10;contextmenu:Nqw7Te,QP7LD;   mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje" jsname ="W297wb"><FONT size=3 face="Times New Roman">Donc, vous devez 
 :</FONT></SPAN></SPAN></SPAN>        </font></P>
 <UL>
   <LI>
-<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class="HwtZe" jsname="jqKxS" 
-  jsaction   
-  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
+<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;   
+  &#13;&#10;   &#13;&#10;    
+  &#13;&#10;   &#13;&#10; 
+  &#13;&#10;  &#13;&#10;  mousedown:qjlr0e" 
+  jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
-  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
-  jsaction     
-  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><SPAN 
-  lang=fr class="HwtZe" jsname="jqKxS" 
-  jsaction   
-  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsname="txFAF" 
-  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
-  jsaction     
-  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje">Marquez 
-  la position du centre de la comète dans 2 images lumineuses avec une grande 
-  distance temporelle (idéalement la première et la dernière image lumineuse 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
+  &#13;&#10;     
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD;  
+  mouseout:Nqw7Te;  mouseover:E6Tfl,c2aHje" 
+  jsname="W297wb"><SPAN 
+  lang=fr class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;   
+  &#13;&#10;   &#13;&#10;    
+  &#13;&#10;   &#13;&#10; 
+  &#13;&#10;  &#13;&#10;  mousedown:qjlr0e" 
+  jsname="jqKxS"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
+  jsname="txFAF" 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
+  &#13;&#10;     
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD;  
+  mouseout:Nqw7Te;  mouseover:E6Tfl,c2aHje" 
+  jsname="W297wb">Marquez 
+  la position du centre de la comÃ¨te dans 2 images lumineuses avec une grande 
+  distance temporelle (idÃ©alement la premiÃ¨re et la derniÃ¨re image lumineuse 
   dans l'ordre 
   chronologique).</SPAN></SPAN></FONT></FONT></SPAN></SPAN></SPAN></SPAN>        </font></div>
   <LI>
-<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class="HwtZe" jsname="jqKxS" 
-  jsaction   
-  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><SPAN class="jCAhz ChMk0b" 
+<div align="justify"><font size="2" face="Arial"><SPAN lang=fr class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;   
+  &#13;&#10;   &#13;&#10;    
+  &#13;&#10;   &#13;&#10; 
+  &#13;&#10;  &#13;&#10;  mousedown:qjlr0e" 
+  jsname="jqKxS"><SPAN class="jCAhz ChMk0b" 
+  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
   jsname="txFAF" 
-  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
-  jsaction     
-  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"><SPAN 
-  lang=fr class="HwtZe" jsname="jqKxS" 
-  jsaction   
-  ="mouseup:Sxi9L,BR6jm; &#13;&#10;  &#13;&#10;  mousedown:qjlr0e"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsname="txFAF" 
-  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
-  jsaction     
-  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje"></SPAN></SPAN><SPAN 
-  class="jCAhz ChMk0b" jsname="txFAF" 
-  jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
-  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsname="W297wb" 
-  jsaction     
-  ="click:E6Tfl,GFf3ac,tMZCfe; &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD; mouseout:Nqw7Te; mouseover:E6Tfl,c2aHje">Marquer 
-  le centre de la comète dans des cadres lumineux supplémentaires peut 
-  potentiellement améliorer les 
-  résultats.</SPAN></SPAN></FONT></FONT></SPAN></SPAN></SPAN></SPAN>        </font></div></LI></UL>
-<p align="justify"><font size="2" face="Arial">Pour ce faire, sélectionnez juste une image brute dans la liste et en utilisant 
-le <a href="http://deepskystacker.free.fr/french/userguide.htm#imagepreview">mode d'édition de la comète</a> précisez 
-la position de la comète dans l'image.<br>
-Si le centre de la comète est trop faible ou trop brillant vous devrez forcer 
-DeepSkyStacker à accepter n'importe quelle position en maintenant la touche 
-majuscule enfoncée pendant que vous positionnez le centre de la comète.<br>
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
+  &#13;&#10;     
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD;  
+  mouseout:Nqw7Te;  mouseover:E6Tfl,c2aHje" 
+  jsname="W297wb"><SPAN 
+  lang=fr class="HwtZe" jsaction="mouseup:Sxi9L,BR6jm; 
+  &#13;&#10;   
+  &#13;&#10;   &#13;&#10;    
+  &#13;&#10;   &#13;&#10; 
+  &#13;&#10;  &#13;&#10;  mousedown:qjlr0e" 
+  jsname="jqKxS"><FONT size=3><FONT face="Times New Roman"><SPAN class="jCAhz ChMk0b" jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
+  jsname="txFAF" 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
+  &#13;&#10;     
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD;  
+  mouseout:Nqw7Te;  mouseover:E6Tfl,c2aHje" 
+  jsname="W297wb"></SPAN></SPAN><SPAN 
+  class="jCAhz ChMk0b" jsaction="agoMJf:PFBcW;MZfLnc:P7O7bd;nt4Alf:pvnm0e,pfE8Hb,PFBcW;B01qod:dJXsye;H1e5u:iXtTIf;lYIUJf:hij5Wb;bmeZHc:iURhpf;Oxj3Xe:qAKMYb,yaf12d" 
+  jsname="txFAF" 
+  jscontroller="Gn4SMb"><SPAN class="ryNqvb" jsaction="click:E6Tfl,GFf3ac,tMZCfe; 
+  &#13;&#10;     
+  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  &#13;&#10;  contextmenu:Nqw7Te,QP7LD;  
+  mouseout:Nqw7Te;  mouseover:E6Tfl,c2aHje" 
+  jsname="W297wb">Marquer 
+  le centre de la comÃ¨te dans des cadres lumineux supplÃ©mentaires peut 
+  potentiellement amÃ©liorer les 
+  rÃ©sultats.</SPAN></SPAN></FONT></FONT></SPAN></SPAN></SPAN></SPAN>        </font></div></LI></UL>
+<p align="justify"><font size="2" face="Arial">Pour ce faire, sÃ©lectionnez juste une image brute dans la liste et en utilisant 
+le <a href="http://deepskystacker.free.fr/french/userguide.htm#imagepreview">mode d'Ã©dition de la comÃ¨te</a> prÃ©cisez 
+la position de la comÃ¨te dans l'image.<br>
+Si le centre de la comÃ¨te est trop faible ou trop brillant vous devrez forcer 
+DeepSkyStacker Ã  accepter n'importe quelle position en maintenant la touche 
+majuscule enfoncÃ©e pendant que vous positionnez le centre de la comÃ¨te.<br>
 <br>
-Ensuite vous devez enregistrer le résultat en cliquant sur le bouton Enregistrer 
+Ensuite vous devez enregistrer le rÃ©sultat en cliquant sur le bouton Enregistrer 
 les modifications de la barre d'outils.<br>
 Si vous ne le faite pas DeepSkyStacker vous le demandera et vous aurez une 
 option pour enregistrer les modifications automatiquement.<br>
 <br>
-Une fois que la position de la comète est fixée vous verrez apparaître un +(C) à 
-coté du nombre d'étoiles dans la colonne #Etoiles de la liste.<br>
+Une fois que la position de la comÃ¨te est fixÃ©e vous verrez apparaÃ®tre un +(C) Ã  
+cotÃ© du nombre d'Ã©toiles dans la colonne #Etoiles de la liste.<br>
 <br>
-Vous devez répéter cette opération pour toutes les images brutes. </font></p>
+Vous devez rÃ©pÃ©ter cette opÃ©ration pour toutes les images brutes. </font></p>
 <table id="AutoNumber6" width="100%" cellspacing="1" cellpadding="10" border="1">
   <tbody><tr>
     <td width="100%" bgcolor="#ffff99"><font size="2" face="Arial">
@@ -732,65 +756,65 @@ Vous devez répéter cette opération pour toutes les images brutes. </font></p>
     <b>Astuce<br>
     </b>
   <span lang="FR-FR">
-  Si la date et l'heure des images est précise (comme en utilisant un APN ou 
+  Si la date et l'heure des images est prÃ©cise (comme en utilisant un APN ou 
 certaine</span>s<span lang="FR-FR">
-    caméra</span>s<span lang="FR-FR">
+    camÃ©ra</span>s<span lang="FR-FR">
   
   CCD) vous pouvez trier les images sur la date et l'heure et 
-fixer la position de la comète uniquement sur la première et la dernière image 
-ainsi que sur l'image de référence (celle qui a le score le plus important si 
-vous n'avez pas utilisé le menu contextuel pour forcer une autre image de 
-référence). <br>
+fixer la position de la comÃ¨te uniquement sur la premiÃ¨re et la derniÃ¨re image 
+ainsi que sur l'image de rÃ©fÃ©rence (celle qui a le score le plus important si 
+vous n'avez pas utilisÃ© le menu contextuel pour forcer une autre image de 
+rÃ©fÃ©rence). <br>
 DeepSkyStacker calculera 
 </span>
     alors automatiquement (juste avant l'empilement) la position du centre de la 
-    comète dans toutes les images dans l'intervalle de temps pour lesquelles la 
-    position n'est pas fixée. <br>
-    Pour ce faire il utilisera le temps écoulé entre la première image et chaque 
-    image pour interpoler la position de la comète.</span></font></td>
+    comÃ¨te dans toutes les images dans l'intervalle de temps pour lesquelles la 
+    position n'est pas fixÃ©e. <br>
+    Pour ce faire il utilisera le temps Ã©coulÃ© entre la premiÃ¨re image et chaque 
+    image pour interpoler la position de la comÃ¨te.</span></font></td>
   </tr>
 </tbody></table>
-<p align="justify"><font face="Arial"><b><font size="2">Etape 2 : Sélectionner le mode 
+<p align="justify"><font face="Arial"><b><font size="2">Etape 2 : SÃ©lectionner le mode 
 d'empilement</font><br>
-</b></font><font size="2" face="Arial">Ceci est réalisé dans l'<a href="http://deepskystacker.free.fr/french/userguide.htm#comettab">onglet 
-Comète</a> du dialogue des paramètres d'empilement.<br>
-Cet onglet est disponible dès que au moins deux images (y compris l'image de 
-référence) ont une comète enregistrée.<br>
-Depuis cet onglet vous pouvez sélectionner l'un des trois modes d'empilement 
-disponibles pour les comètes.<br>
+</b></font><font size="2" face="Arial">Ceci est rÃ©alisÃ© dans l'<a href="http://deepskystacker.free.fr/french/userguide.htm#comettab">onglet 
+ComÃ¨te</a> du dialogue des paramÃ¨tres d'empilement.<br>
+Cet onglet est disponible dÃ¨s que au moins deux images (y compris l'image de 
+rÃ©fÃ©rence) ont une comÃ¨te enregistrÃ©e.<br>
+Depuis cet onglet vous pouvez sÃ©lectionner l'un des trois modes d'empilement 
+disponibles pour les comÃ¨tes.<br>
 &nbsp;<br>
-<b>Mélanger des images contenant une comète avec des images ne contenant pas de 
-comète</b><br>
-DeepSkyStacker peut utiliser des images contenant et ne contenant pas une comète 
-enregistrée dans la même pile.<br>
-Ceci peut être très utile pour obtenir un meilleur rapport signal/bruit sur 
-l'image résultante en particulier pour faire ressortir les détails faibles du 
-fond stellaire (une comète passant à coté d'une nébuleuse ou d'une galaxie par 
+<b>MÃ©langer des images contenant une comÃ¨te avec des images ne contenant pas de 
+comÃ¨te</b><br>
+DeepSkyStacker peut utiliser des images contenant et ne contenant pas une comÃ¨te 
+enregistrÃ©e dans la mÃªme pile.<br>
+Ceci peut Ãªtre trÃ¨s utile pour obtenir un meilleur rapport signal/bruit sur 
+l'image rÃ©sultante en particulier pour faire ressortir les dÃ©tails faibles du 
+fond stellaire (une comÃ¨te passant Ã  cotÃ© d'une nÃ©buleuse ou d'une galaxie par 
 exemple).</font></p>
 <p align="justify"><font size="2" face="Arial"><b>Quel mode d'empilement<br>
-</b>Si vous cherchez à faire des filés d'étoiles la moyenne est la meilleure 
-méthode.<br>
-Dans les autres cas il est préférable d'utiliser un empilement médian pour peu 
+</b>Si vous cherchez Ã  faire des filÃ©s d'Ã©toiles la moyenne est la meilleure 
+mÃ©thode.<br>
+Dans les autres cas il est prÃ©fÃ©rable d'utiliser un empilement mÃ©dian pour peu 
 d'images et kappa-sigma lorsque beaucoup d'images sont disponibles.</font></p>
-<p align="justify"><font size="2" face="Arial"><b>Quels résultats espérer</b><br>
-De toute évidence l'algorithme le plus exigeant est celui qui permet d'obtenir 
-l'effet "étoiles arrêtées".<br>
-Des comètes se déplaçant peu rendent complexe la détection des gros objets ou 
-étoiles très brillantes du fond stellaire et dans ce cas l'extraction de la 
-comète peut ne pas être parfaite.<br>
-Dans tous les cas, si vous prenez des images de la même zone sans la comète (la 
-veille ou le lendemain) cela améliorera la qualité de l'image finale.</font></p>
+<p align="justify"><font size="2" face="Arial"><b>Quels rÃ©sultats espÃ©rer</b><br>
+De toute Ã©vidence l'algorithme le plus exigeant est celui qui permet d'obtenir 
+l'effet "Ã©toiles arrÃªtÃ©es".<br>
+Des comÃ¨tes se dÃ©plaÃ§ant peu rendent complexe la dÃ©tection des gros objets ou 
+Ã©toiles trÃ¨s brillantes du fond stellaire et dans ce cas l'extraction de la 
+comÃ¨te peut ne pas Ãªtre parfaite.<br>
+Dans tous les cas, si vous prenez des images de la mÃªme zone sans la comÃ¨te (la 
+veille ou le lendemain) cela amÃ©liorera la qualitÃ© de l'image finale.</font></p>
   </span>
 <hr color="#0000ff">
-<p align="justify"><font face="Arial"><b><font size="4" color="#ff0000"><a name="rawdecod"></a>Décodage et traitement 
+<p align="justify"><font face="Arial"><b><font size="4" color="#ff0000"><a name="rawdecod"></a>DÃ©codage et traitement 
 des fichiers raw</font><br>
-<font size="2">Décodage des fichiers raw</font><br>
+<font size="2">DÃ©codage des fichiers raw</font><br>
 </b><font size="2">
               Les 
-fichiers raw produits par les appareils photos numériques sont décodés à 
+fichiers raw produits par les appareils photos numÃ©riques sont dÃ©codÃ©s Ã  
 l'aide de<A href="https://www.libraw.org/">
 LibRaw</A>&nbsp;Copyright 
-©&nbsp;2008-2019 LibRaw LLC, which is based on the original DCRaw by Dave 
+Â©&nbsp;2008-2019 LibRaw LLC, which is based on the original DCRaw by Dave 
 Coffin.
 <br>
 DeepSkyStacker uses the latest version of LibRaw 
@@ -803,121 +827,121 @@ camera isn't supported.<br><br><font size="3" face="Times New Roman"> </font>
 
 </p><hr color="#0000ff"><p></p>
 <p align="justify"><font face="Arial"><b>
-<font size="2">Le développement des fichiers raw</font><br>
-</b><font size="2">Un fichier raw peut être comparé à un négatif numérique. 
-Chaque fichier raw nécessite donc un processus de développement..<br>
-Il est possible de distinguer deux types de fichiers raw : ceux qui sont basés 
-sur une matrice de Bayer (l'écrasante majorité), et ceux qui ne le sont pas (en 
+<font size="2">Le dÃ©veloppement des fichiers raw</font><br>
+</b><font size="2">Un fichier raw peut Ãªtre comparÃ© Ã  un nÃ©gatif numÃ©rique. 
+Chaque fichier raw nÃ©cessite donc un processus de dÃ©veloppement..<br>
+Il est possible de distinguer deux types de fichiers raw : ceux qui sont basÃ©s 
+sur une matrice de Bayer (l'Ã©crasante majoritÃ©), et ceux qui ne le sont pas (en 
 particulier ceux qui utilisent des capteurs Foveon).<br>
 <br>
-Je ne m'intéresserais dans la suite qu'aux fichiers raw basés sur une matrice de 
+Je ne m'intÃ©resserais dans la suite qu'aux fichiers raw basÃ©s sur une matrice de 
 Bayer.</font></font></p>
 
 <hr color="#0000ff">
 <p align="justify"><font size="2" face="Arial"><b>Utilisation de la matrice de Bayer<br>
 </b>Tout d'abord un petit rappel sur la matrice de Bayer.<br>
-Prenons le cas d'un appareil photo numérique 8 millions de pixels. Le capteur 
+Prenons le cas d'un appareil photo numÃ©rique 8 millions de pixels. Le capteur 
 CCD ou CMOS de cet appareil photo est en fait un capteur noir et blanc de 8 
-millions de pixels sur lequel est plaquée la fameuse matrice de Bayer qui 
-consiste en une succession de filtres RGBG ou CYMK (il y a également d'autres 
+millions de pixels sur lequel est plaquÃ©e la fameuse matrice de Bayer qui 
+consiste en une succession de filtres RGBG ou CYMK (il y a Ã©galement d'autres 
 variantes).<br>
 <br>
 Dans le cas des filtres RGBG un quart des des pixels capte le
 <font color="#ff0000">rouge</font>, un autre quart le <font color="#0000ff">bleu</font> 
-et la moitié restante le <font color="#008000">vert</font>.<br>
+et la moitiÃ© restante le <font color="#008000">vert</font>.<br>
 En fait votre appareil photo 8 millions de pixels contient donc 2 millions de 
 pixels pour le rouge, autant pour le bleu, et 4 millions de pixels pour le vert.<br>
 <br>
-Alors comment sont reconstituées les "vraies" couleurs par l'appareil photo ?<br>
-Tout simplement en interpolant les couleurs primaires manquantes à partir des 
+Alors comment sont reconstituÃ©es les "vraies" couleurs par l'appareil photo ?<br>
+Tout simplement en interpolant les couleurs primaires manquantes Ã  partir des 
 pixels alentour. </font></p>
 
 <hr color="#0000ff">
-<p><font size="2" face="Arial"><b>Reconstitution des couleurs à partir de la 
+<p><font size="2" face="Arial"><b>Reconstitution des couleurs Ã  partir de la 
 matrice de Bayer- <font color="#0000ff">L'interpolation</font></b></font></p>
 
 <table style="BORDER-COLLAPSE: collapse" id="AutoNumber1" width="87%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
   <tbody><tr>
     <td width="51%">
-    <p class="Standard"><font size="2" face="Arial">La première méthode permettant 
-    de reconstituer les couleurs à partir de la matrice de Bayer consiste donc à 
-    interpoler les couleurs manquantes à partir des pixels avoisinants.</font></p>
+    <p class="Standard"><font size="2" face="Arial">La premiÃ¨re mÃ©thode permettant 
+    de reconstituer les couleurs Ã  partir de la matrice de Bayer consiste donc Ã  
+    interpoler les couleurs manquantes Ã  partir des pixels avoisinants.</font></p>
     <p class="Standard">
     <font size="2" face="Arial"><br>
-    De nombreuses méthodes d'interpolation permettent d'obtenir des résultats 
-    plus ou moins bons (linéaire, gradient ...), mais toute au détriment de la 
-    qualité de l'image finale par rapport au négatif numérique. En effet, qui 
-    dit interpolation dit "estimation" et donc l'introduction d'une imprécision 
-    dans l'image traitée et a fortiori dans l'image finale qui est la somme des 
-    images empilées.<br>
+    De nombreuses mÃ©thodes d'interpolation permettent d'obtenir des rÃ©sultats 
+    plus ou moins bons (linÃ©aire, gradient ...), mais toute au dÃ©triment de la 
+    qualitÃ© de l'image finale par rapport au nÃ©gatif numÃ©rique. En effet, qui 
+    dit interpolation dit "estimation" et donc l'introduction d'une imprÃ©cision 
+    dans l'image traitÃ©e et a fortiori dans l'image finale qui est la somme des 
+    images empilÃ©es.<br>
     <br>
-    A ce propos, les logiciels fournis avec les appareils photos numériques sont 
-    probablement les moins bien placés en terme de qualité dans le cadre d'une 
+    A ce propos, les logiciels fournis avec les appareils photos numÃ©riques sont 
+    probablement les moins bien placÃ©s en terme de qualitÃ© dans le cadre d'une 
     utilisation en astrophotographie. <br>
     Si vous les utilisiez pour transformer vos fichiers RAW en fichiers TIFF 16 
-    bits, vous pourrez constater immédiatement une amélioration sensible en 
+    bits, vous pourrez constater immÃ©diatement une amÃ©lioration sensible en 
     utilisant DeepSkyStacker.<br>
 &nbsp;</font></p></td>
     <td width="51%">
-    <IMG border=0 src="technical_files/BayerInterpolation.jpg" width=375 align=right height=285></td>
+    <IMG border=0 src="../images/BayerInterpolation.jpg" width=375 align=right height=285></td>
   </tr>
 </tbody></table>
 <hr color="#0000ff">
-<p><font size="2" face="Arial"><b><a name="superpixel"></a>Reconstitution des couleurs à partir de la 
+<p><font size="2" face="Arial"><b><a name="superpixel"></a>Reconstitution des couleurs Ã  partir de la 
 matrice de Bayer- <font color="#0000ff">Le super-pixel</font></b></font></p>
 
 <table style="BORDER-COLLAPSE: collapse" id="AutoNumber2" width="87%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
   <tbody><tr>
     <td width="51%">
-    <p class="Standard"><font size="2" face="Arial">Grâce à LibRaw il est possible 
-    d'accéder directement à la matrice de Bayer avant toute interpolation. ceci 
-    permet d'utiliser d'autres méthodes pour reconstituer les vraies couleurs 
+    <p class="Standard"><font size="2" face="Arial">GrÃ¢ce Ã  LibRaw il est possible 
+    d'accÃ©der directement Ã  la matrice de Bayer avant toute interpolation. ceci 
+    permet d'utiliser d'autres mÃ©thodes pour reconstituer les vraies couleurs 
     sans "estimer" les valeurs manquantes par interpolation.</font></p>
     <p class="Standard">
-    <font size="2" face="Arial">La seconde méthode consiste à éviter 
-    l'interpolation en créant un seul super pixel à partir de chaque groupe de 4 
+    <font size="2" face="Arial">La seconde mÃ©thode consiste Ã  Ã©viter 
+    l'interpolation en crÃ©ant un seul super pixel Ã  partir de chaque groupe de 4 
     pixels (RGBG).</font></p>
     <p class="Standard"><font size="2" face="Arial"><br>
-    En effet tous les groupes de 4 pixels contiennent l'intégralité de 
+    En effet tous les groupes de 4 pixels contiennent l'intÃ©gralitÃ© de 
     l'information pour chacune des couleurs primaires et pour la luminance.<br>
-    Cette méthode à l'avantage de la simplicité et l'inconvénient (ou est-ce un 
-    avantage ?) de diviser la taille des images résultantes par 4.<br>
+    Cette mÃ©thode Ã  l'avantage de la simplicitÃ© et l'inconvÃ©nient (ou est-ce un 
+    avantage ?) de diviser la taille des images rÃ©sultantes par 4.<br>
     <br>
-    La méthode du super-pixel donne de très bon résultats dans le cas où peu 
+    La mÃ©thode du super-pixel donne de trÃ¨s bon rÃ©sultats dans le cas oÃ¹ peu 
     d'images sont disponibles.</font></p></td>
     <td width="49%">
-    <IMG border=0 src="technical_files/BayerSuperPixel.jpg" width=373 align=right height=280></td>
+    <IMG border=0 src="../images/BayerSuperPixel.jpg" width=373 align=right height=280></td>
   </tr>
 </tbody></table>
 <p>&nbsp;</p>
 
 <hr color="#0000ff">
 <p><font size="2" face="Arial"><b><a name="bayerdrizzle"></a>Reconstitution des 
-couleurs à partir de la matrice de Bayer- <font color="#0000ff">Le Bayer drizzle</font></b></font></p>
+couleurs Ã  partir de la matrice de Bayer- <font color="#0000ff">Le Bayer drizzle</font></b></font></p>
 
 <table style="BORDER-COLLAPSE: collapse" id="AutoNumber3" width="87%" cellspacing="0" cellpadding="0" bordercolor="#111111" border="0">
   <tbody><tr>
     <td width="51%">
-    <p class="Standard"><font size="2" face="Arial">La .dernière méthode, qui m'a 
-    été suggérée par Dave Coffin,  utilise la spécificité de 
+    <p class="Standard"><font size="2" face="Arial">La .derniÃ¨re mÃ©thode, qui m'a 
+    Ã©tÃ© suggÃ©rÃ©e par Dave Coffin,  utilise la spÃ©cificitÃ© de 
     l'empilement des images astro pour calculer les vraies valeurs RGB de chaque 
-    pixel en profitant du décalage "naturel" qui existe entre chaque photo.<br>
+    pixel en profitant du dÃ©calage "naturel" qui existe entre chaque photo.<br>
     <br>
     Lorsque qu'un nombre relativement important d'images est disponible, et en 
-    profitant d'un alignement avec une précision supérieure au pixel, 
-    DeepSkyStacker détermine ainsi par petit bout les valeurs réelles des trois 
+    profitant d'un alignement avec une prÃ©cision supÃ©rieure au pixel, 
+    DeepSkyStacker dÃ©termine ainsi par petit bout les valeurs rÃ©elles des trois 
     composantes RGB pour chaque pixel, et ce sans qu'aucune interpolation ne 
-    soit nécessaire.<br>
+    soit nÃ©cessaire.<br>
 &nbsp;<br>
-    A l'issue du processus d'empilement, un algorithme est utilisé pour 
-    normaliser les valeurs des trois composantes RGB et ainsi éviter les "trous" 
+    A l'issue du processus d'empilement, un algorithme est utilisÃ© pour 
+    normaliser les valeurs des trois composantes RGB et ainsi Ã©viter les "trous" 
     d'information.<br>
     <br>
-    Cette méthode donne d'excellent résultats lorsqu'un nombre important 
-    d'images est disponible et lorsque la précision du suivi ou de l'autoguidage 
-    est inférieure au pixel (ce qui est quasiment tout le temps le cas).</font></p></td>
+    Cette mÃ©thode donne d'excellent rÃ©sultats lorsqu'un nombre important 
+    d'images est disponible et lorsque la prÃ©cision du suivi ou de l'autoguidage 
+    est infÃ©rieure au pixel (ce qui est quasiment tout le temps le cas).</font></p></td>
     <td width="49%">
-    <IMG border=0 src="technical_files/BayerDrizzle.jpg" width=375 align=right height=287></td>
+    <IMG border=0 src="../images/BayerDrizzle.jpg" width=375 align=right height=287></td>
   </tr>
 </tbody></table>
 <p>&nbsp;</p>

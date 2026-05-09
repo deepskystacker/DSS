@@ -209,27 +209,29 @@ namespace DSS
 		//
 		// SavePicture is a sub-class of QFileDialog, we'll set the QFileDialog vars first
 		//
-		QFileDialog dlg{ this, tr("Save the StarMask as ...", "IDS_TITLE_MASK"), QString::fromStdU16String(file.generic_u16string()) };
-		dlg.setNameFilters(fileFilters);
+		QFileDialog fileDialog{ this, tr("Save the StarMask as ...", "IDS_TITLE_MASK"), QString::fromStdU16String(file.generic_u16string()) };
+		fileDialog.setNameFilters(fileFilters);
 		auto filter{ fileFilters.at(selectedType-1) };
-		dlg.selectNameFilter(filter);
-		dlg.setAcceptMode(QFileDialog::AcceptSave);
+		fileDialog.selectNameFilter(filter);
+		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
 
 		//
-		// Always use the Qt Widget file dialog for consistency
-		// 
-		dlg.setOption(QFileDialog::DontUseNativeDialog, true);
+		// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+		//
+#ifdef Q_OS_LINUX
+		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+#endif // Q_OS_LINUX
 
 		//
 		// display the dialogue
 		//
-		if (QDialog::Accepted == dlg.exec())
+		if (QDialog::Accepted == fileDialog.exec())
 		{
-			outputFile_ = dlg.selectedFiles().at(0).toStdU16String();
+			outputFile_ = fileDialog.selectedFiles().at(0).toStdU16String();
 			//
 			// For compatability with the old code add one so this is a 1 based index
 			// 
-			auto index{ fileFilters.indexOf(dlg.selectedNameFilter()) + 1 };
+			auto index{ fileFilters.indexOf(fileDialog.selectedNameFilter()) + 1 };
 
 			settings.setValue("StarMask/FileType", static_cast<uint>(index));
 			switch (index)

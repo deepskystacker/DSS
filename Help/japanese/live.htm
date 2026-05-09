@@ -1,0 +1,198 @@
+﻿<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DeepSkyStacker ライブ</title>
+<style>
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">DeepSkyStacker Live ユーザーマニュアル<br>
+&nbsp;</font></b></p>
+<blockquote>
+
+<p><b><font face="Arial"><A href="#Introduction">はじめに</A><br>
+<A href="#QuickStart">クイックスタート</A></font></b><br>
+<b><font face="Arial"><A href="#Settings">設定</A></font></b><br>
+<b><font face="Arial"><A href="#Graphs">グラフ</A></font></b><br>
+<b><font face="Arial"><A href="#Technical">技術情報</A></font></b></p>
+</blockquote>
+<hr color="#0000ff">
+<p><b><font face="Arial" size="4" color="#ff0000"><a name="Introduction"></a>はじめに</font></b><font face="Arial"><b><br>
+<br>
+DeepSkyStacker Live とは？<br>
+</b><font size="2">DeepSkyStacker Live は、撮影セッション中に現場で使用し、以下のタスクを実行できるように設計されています。 </font></font></p>
+<ul>
+  <li><font size="2" face="Arial">画像のキャプチャに合わせて位置合わせ（レジストレーション）およびスタックを行う。</font>
+  <li><font size="2" face="Arial">入力された画像の統計情報（FWHM、検出された星の数、ドリフトなど）を計算して表示する。</font>
+  <li><font face="Arial" size="2">スタックされた画像を表示する。</font>
+  <li><font face="Arial" size="2">ドリフトがユーザー定義の値を超えた場合など、特定の条件が満たされたときに警告を発する。</font></li>
+</ul>
+<p><font size="2" face="Arial">DeepSkyStacker Live は、キャプチャされた画像がフォルダに保存され、認識されたファイル形式（FITS、TIFF、JPEG、およびほとんどのデジタル一眼レフのRAW画像）であれば、あらゆるキャプチャデバイス（デジタル一眼レフ、CCDカメラ）およびあらゆるソフトウェアと互換性があります。<br>
+<br>
+<u><b>補足：</b></u> DeepSkyStacker Live は DeepSkyStacker の代わりになるものではありません。
+<br>
+これらは同じエンジンを使用していますが、DeepSkyStacker Live には、正確に後処理できる画像を作成するために必要な機能がすべて揃っているわけではありません。 
+<br>
+たとえば、画像のキャリブレーション（ダークおよびバイアス減算、フラット除算）を行ったり、最も高度なスタッキング方法（カッパシグマや適応加重平均など）を DeepSkyStacker Live で使用したりすることはできません。<br>
+<br>
+<br>
+</font><font face="Arial"><b>DeepSkyStacker Live ユーザーインターフェース</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="99%" id="AutoNumber9">
+  <tr>
+    <td width="45%">
+    <p class="Standard"><font face="Arial" size="2">DeepSkyStacker と同様に、DeepSkyStacker Live のユーザーインターフェースは非常にシンプルで直感的であり、すべての主な機能とコマンドをすぐに利用できます。</font></p>
+    <p class="Standard"><font face="Arial" size="2"><br>
+    画面上部にある3つのボタンは、モニタリングの開始、スタッキングの開始、および停止に使用されます。<br>
+    <br>
+    下部は、撮影セッション中の進行状況をさまざまな視点から監視するために使用されます。</font></p>
+    <ul>
+      <li>
+    <p class="Standard" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px" 
+       ><font face="Arial" size="2">スタック画像</font></p>
+      <li>
+    <p class="Standard" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px" 
+       ><font face="Arial" size="2">最後の画像</font></p>
+      <li>
+    <p class="Standard" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px" 
+       ><font face="Arial" size="2">さまざまな統計情報を表示するグラフ</font></p>
+      <li>
+    <p class="Standard" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px" 
+       ><font face="Arial" size="2">画像リスト</font></p>
+      <li>
+    <p class="Standard" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px" 
+       ><font face="Arial" size="2">ログ</font></p>
+      </li>
+    </ul>
+    <p class="Standard"><font face="Arial" size="2">最後のタブは、DeepSkyStacker Live の動作を制御するパラメータを設定するために使用されます。</font></p>
+    <p class="Standard">&nbsp;</p>
+    <p>&nbsp;</p></td>
+    <td width="62%" valign="top">
+    <IMG border=0 alt=DeepSkyStackerのメイン画面 src ="../images/japanese/Live_Main.jpg" width=549 align=right height=469 ></td>
+  </tr>
+</table>
+<hr color="#0000ff">
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000">
+<a name="QuickStart"></a>クイックスタート</font></b><font face="Arial"><b><br>
+</b>
+<font size="2">夜間の撮影セッション用にお使いのノートパソコンが準備され、CCDまたはデジタル一眼レフのキャプチャソフトウェアが起動して実行されています。</font></font></p>
+<p align="justify">
+<font size="2" face="Arial">DeepSkyStacker Live を起動し、「スタック」ボタンをクリックして、監視するフォルダを選択します。これだけです！</font><font face="Arial" size="2"><br>
+<br>
+これ以降、監視対象のフォルダに作成されたすべての画像は、設定タブで設定した特定の条件に一致しない限り、レジストレーション、位置合わせ、およびスタックされます。</font></p>
+<p align="justify"><font face="Arial" size="2">もちろん、DeepSkyStacker Live が受信ファイルを監視している間でも設定を変更できます。</font></p>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#ff0000">
+<a name="Settings"></a>設定</font><br>
+</b>
+<font size="2">まず、DeepSkyStacker Live は、画像のデコード、星の検出閾値、位置合わせ方法、および背景キャリブレーションオプションに関するすべての設定を DeepSkyStacker と共有しています。これらの値を変更するには、DeepSkyStacker を使用する必要があります。<br>
+唯一の違いは、AHDとBayer Drizzleが自動的にバイリニア補間に変換されることです。<br>
+<br>
+設定タブは、入力された画像をスタックするタイミング、警告を発するタイミング、および警告の発行方法を定義するために使用されます。</font></font></p>
+<p align="center"><IMG border=0 alt="" src="../images/japanese/Live_Settings.jpg" width=689 height=566 ></p>
+<p align="justify"><font face="Arial" size="2"><font color="#0000ff"><b>スタッキングオプション</b></font><br>
+<b>少なくとも </b>xxx<b> 枚の画像が利用可能になるまでスタックしない<br>
+</b>このオプションは、参照フレームとして使用する画像を決定する前に、最小限の画像枚数が揃うのを待つために使用されます。<br>
+最小限の画像枚数が利用可能になると、DeepSkyStacker Live は最もスコアの高い画像を参照フレームとして使用します。<br>
+このオプションは、短い露出で撮影していて、すべてのライトフレームが十分に良好であるかどうかわからない場合に特に役立ちます。</font></p>
+<p align="justify"><font face="Arial" size="2"><b>警告/スタックしないオプション<br>
+</b>これらのオプションは直感的で、画像をスタックしない、および/または警告を発するべきさまざまな条件を設定するために使用できます。<br>
+以下の条件を設定できます：</font></p>
+<ul>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">スコア</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">検出された星の数</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">FWHM（半値全幅）</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">ドリフト（dX または dY）</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">回転角</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">空の背景</font></p>
+  </li>
+</ul>
+<p align="justify"><font face="Arial" size="2"><font color="#0000ff"><b>警告</b></font><br>
+警告条件が検出された場合、以下の4つの異なる方法で通知を受け取ることができます。</font></p>
+<ul>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2"><b>サウンド</b>：コンピュータのクラシックなビープ音</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2"><b>アプリケーションのフラッシュ</b>：DeepSkyStacker Live が4回点滅します</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2"><b>警告ファイルの作成</b>：警告メッセージを含む DSSLiveWarning.txt という名前のファイルが、選択したフォルダに作成されます。これはローカルフォルダでもネットワークフォルダでも構いません。ファイルがすでに存在する場合は、新しい警告メッセージが追加されます。</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2"><b>メールの送信</b>：警告メッセージを含むメールが指定したアドレスに送信されます。<br>
+メール設定ダイアログボックスで、最初の警告に対してのみメールを送信するように選択できます。この場合、メールが送信されるとすぐに、メールの内部カウンターをリセットするためのリセットボタンが表示されます。</font></p>
+  </li>
+</ul>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2"><font color="#0000ff"><b>スタック画像の作成</b></font><br>
+スタックされた画像はメモリ内でのみ作成され、デフォルトでは保存されません。<br>
+このオプションを使用すると、xxx 枚の画像がスタックに追加されるたびに、スタックされた画像を含むファイルを作成できます。<br>
+<br>
+スタックされた画像は、選択したフォルダに Autostack.tif という名前のファイルとして保存されます。ファイルがすでに存在する場合は上書きされます。<br>
+常に16ビットのTIFF画像であり、入力される画像に応じてカラーまたはグレースケールになります。<br>
+&nbsp;</font></p>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#ff0000">
+<a name="Graphs"></a>グラフ</font><br>
+</b>
+<font size="2">各画像について、DeepSkyStacker Live は以下のシンボルを使用します：</font></font></p>
+<ul>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">処理された各画像に対する<font color="#008000">緑色</font>の円</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">緑色の円の後ろにある<font color="#ff9900">オレンジ色</font>の円：警告条件が満たされたことを示します</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">緑色の円の上にある<font color="#ff0000">赤色</font>の三角形：スタックしない条件が満たされたことを示します</font></p>
+  <li>
+<p align="justify" style="MARGIN-BOTTOM: 0px; MARGIN-TOP: 0px">
+<font face="Arial" size="2">dX/dY および角度グラフで参照フレームを表すために使用される<font color="#008080">緑色</font>の四角形</font></p>
+  </li>
+</ul>
+<p align="justify"><font face="Arial" size="2">dX/dY グラフについて：<font color="#ff0000">赤い線</font>は dX を表し、<font color="#0000ff">青い線</font>は dY を表します。</font></p>
+<p align="justify"><font face="Arial" size="2">画像をスタックできない場合、dX/dY および角度グラフには表示されません。</font></p>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#ff0000">
+<a name="Technical"></a>技術情報</font><br>
+</b>
+<font size="2">DeepSkyStacker Live は平均スタッキング方法を使用します（これは、画像の枚数が事前にわからない場合に使用できる唯一の方法です）。<br>
+キャリブレーションは不可能なため、スタックする前に、入力されたライトフレームに対して単純なホットピクセル検出と除去が使用されます。<br>
+「最後の画像」タブでホットピクセルを確認できますが、スタックされた画像からは削除されるはずです。<br>
+<br>
+DeepSkyStacker とは異なり、DeepSkyStacker Live は、複数のプロセッサが利用可能な場合でも、すべてのバックグラウンドタスク（読み込み、登録、スタック）に単一のプロセッサのみを使用します。</font></font></p>
+<hr color="#0000ff">
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

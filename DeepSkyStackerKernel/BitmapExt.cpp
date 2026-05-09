@@ -191,7 +191,7 @@ bool LoadPicture(const fs::path& file, CAllDepthBitmap& AllDepthBitmap, OldProgr
 	{
 		AllDepthBitmap.Clear();
 
-		if (FetchPicture(file, AllDepthBitmap.m_pBitmap, false, pProgress, AllDepthBitmap.m_Image))
+		if (FetchPicture(file, AllDepthBitmap.m_pBitmap, pProgress, AllDepthBitmap.m_Image))
 		{
 			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
 			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
@@ -313,12 +313,20 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 		return false;
 	}
 
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnrvo"
+#endif
 	const auto makeMap = [&file]<typename Bitmap>(const char text[])
 	{
 		std::shared_ptr<CMemoryBitmap> pMap = std::make_shared<Bitmap>();
 		ZTRACE_RUNTIME(text, pMap.get(), file.generic_u8string().c_str());
 		return pMap;
 	};
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
 	std::shared_ptr<CMemoryBitmap> pBitmap;
 	const int bits = pQImage->bitPlaneCount();
 	switch (bits)
@@ -1042,7 +1050,7 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness,
+bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBitmap,
 	OldProgressBase* const pProgress, std::shared_ptr<QImage>& pQImage)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1079,7 +1087,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		if (rawFileExtensions.contains(extension))			// No need to call IsRawPicture here
 		{
-			result = LoadRAWPicture(filePath, rpBitmap, ignoreBrightness, pProgress);
+			result = LoadRAWPicture(filePath, rpBitmap, pProgress);
 			break;
 		}
 
@@ -1110,7 +1118,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		else if (mime.inherits("image/fits") || mime.inherits("application/fits"))
 		{
-			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, ignoreBrightness, pProgress);
+			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;

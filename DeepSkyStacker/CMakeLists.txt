@@ -23,14 +23,12 @@ set(Dialogs__Processing
     "processingcontrols.h"
     "ProcessingDlg.cpp"
     "ProcessingDlg.h"
-    "ProcessingSettings.h"
-    "ProcessingSettingsDlg.cpp"
-    "ProcessingSettingsDlg.h"
-    "RGBTab.cpp"
     "SavePicture.cpp"
     "SavePicture.h"
     "StarMaskDlg.cpp"
     "StarMaskDlg.h"
+    "processingcontrols.cpp"
+    "undoredostack.h"
 )
 source_group("Dialogs\\Processing" FILES ${Dialogs__Processing})
 
@@ -140,17 +138,16 @@ set(Ui_Files
 	"ui/CometStacking.ui"
 	"ui/DropFilesDlg.ui"
 	"ui/ExplorerBar.ui"
-    "ui/FlatChart.ui"
+        "ui/FlatChart.ui"
 	"ui/ImageProperties.ui"
 	"ui/IntermediateFiles.ui"
-    "ui/OldProgressDlg.ui"
+        "ui/OldProgressDlg.ui"
 	"ui/OutputTab.ui"
 	"ui/PictureList.ui"
 	"ui/PostCalibration.ui"
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
-	"ui/ProcessingSettingsDlg.ui"
-    "ui/ProgressDlg.ui"
+        "ui/ProgressDlg.ui"
 	"ui/QualityChart.ui"
 	"ui/RawDDPSettings.ui"
 	"ui/RecommendedSettings.ui"
@@ -173,7 +170,7 @@ set(i18n_Files
 	"i18n/DeepSkyStacker_de.ts"
 	"i18n/DeepSkyStacker_en.ts"
 	"i18n/DeepSkyStacker_en_GB.ts"
-    "i18n/DeepSkyStacker_es.ts"
+        "i18n/DeepSkyStacker_es.ts"
 	"i18n/DeepSkyStacker_fr.ts"
 	"i18n/DeepSkyStacker_it.ts"
 	"i18n/DeepSkyStacker_ja_JP.ts"
@@ -257,6 +254,7 @@ set(Resources
     "res/ImageList_Mask.bmp"
     "res/intersectionmode.bmp"
     "res/Italian.png"
+    "res/japan.png"
     "res/LightColour.png"
     "res/LightColour@2x.png"
     "res/LightCYMG.png"
@@ -343,6 +341,7 @@ set(Help_Files
     "${CMAKE_SOURCE_DIR}/Help/Ayuda DeepSkyStacker.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Ajuda.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_JP.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Hilfe.chm"
 	)
 source_group("Help" FILES ${Help_Files})
@@ -354,15 +353,15 @@ set(ALL_FILES
     ${Dialogs__Settings}
     ${Dialogs__Stacking}
     ${Header_Files}
-	${Ui_Files}
-	${Resources}
+    ${Ui_Files}
+    ${Resources}
     ${Qt_Resource_Files}
     ${Resource_Files}
     ${Source_Files}
     ${Tools}
     ${DSSCL}
     ${app_icon_macos}
-	${file_icon_macos}
+    ${file_icon_macos}
 )
 
 ################################################################################

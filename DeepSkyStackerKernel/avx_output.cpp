@@ -34,6 +34,7 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include <algorithm>
 #include "avx_includes.h"
 #include "avx_output.h"
 #include "avx_support.h"
@@ -138,7 +139,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 	// ************* Median *************
 
-	std::vector<T> medianData(nrLightframes * size_t{ 16 }); // 16 pixels x nLightframes
+	std::vector<T> medianData(nrLightframes * size_t{ 16 } + size_t{ 16 }); // 16 pixels x nLightframes + 16 pixels margin for reading 32 bits at once.
 	int sizes[16]; // Nr of lightframes != 0 for the 16 pixels
 
 	const auto initMedianData = [&lineAddresses, &medianData, &sizes, nrLightframes](const size_t offset, const int nPixels) -> void
@@ -168,8 +169,11 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 		if (N == 0)
 			return 0.0f;
 
-		const T lowerBound = static_cast<T>(lBound);
-		const T upperBound = static_cast<T>(uBound);
+		//
+		// Clamp the bounds between 0 and the maximum valid value of the data type.
+		//
+		const T lowerBound = static_cast<T>(std::clamp(lBound, 0.0F, static_cast<float>(std::numeric_limits<T>::max())));
+		const T upperBound = static_cast<T>(std::clamp(uBound, 0.0F, static_cast<float>(std::numeric_limits<T>::max())));
 		const T currentMedian = static_cast<T>(currMedian);
 		T* const pData = medianData.data() + pixelIndex * nrLightframes;
 
@@ -369,7 +373,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 					if constexpr (Method == MedianKappaSigma)
 					{
 						const T* const pColor = medianData.data() + lightFrame;
-						colorValue = *pColor;
+						colorValue = static_cast<float>(*pColor);
 					}
 					if constexpr (Method == KappaSigma)
 					{

@@ -251,7 +251,8 @@ void ProgressDlg::showProgress()
 
 void ProgressDlg::hideProgress()
 {
-	DeepSkyStacker::instance()->enableSubDialogs();
+	DeepSkyStacker* pMainWindow = DeepSkyStacker::instance();
+	if (pMainWindow) pMainWindow->enableSubDialogs();
 	hide();
 }
 

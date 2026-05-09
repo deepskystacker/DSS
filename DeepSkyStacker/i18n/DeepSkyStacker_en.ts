@@ -16,7 +16,7 @@
 <context>
     <name>DSS::OldProgressDlg</name>
     <message numerus="yes">
-        <location filename="../oldprogressdlg.cpp" line="254"/>
+        <location filename="../oldprogressdlg.cpp" line="259"/>
         <source>%n Processor(s) Used</source>
         <translation>
             <numerusform>%n Processor used</numerusform>
@@ -27,7 +27,7 @@
 <context>
     <name>DSS::ProcessingDlg</name>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="656"/>
+        <location filename="../ProcessingDlg.cpp" line="692"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -74,9 +74,9 @@ This operation cannot be reversed or cancelled.</numerusform>
 <context>
     <name>DSS::StarMaskDlg</name>
     <message numerus="yes">
-        <location filename="../StarMaskDlg.cpp" line="155"/>
-        <location filename="../StarMaskDlg.cpp" line="160"/>
-        <location filename="../StarMaskDlg.cpp" line="170"/>
+        <location filename="../StarMaskDlg.cpp" line="156"/>
+        <location filename="../StarMaskDlg.cpp" line="161"/>
+        <location filename="../StarMaskDlg.cpp" line="171"/>
         <source>%n pixel(s)</source>
         <translation>
             <numerusform></numerusform>

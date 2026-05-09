@@ -1064,6 +1064,10 @@ void QLinearGradientCtrl::setShowToolTips(bool)
 	//	m_Impl->SynchronizeTooltips();
 }
 
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnrvo"
+#endif
 QGradientStop QLinearGradientCtrl::selectedStop() const
 {
 	QGradientStop nullStop;   // QPair(0.0, QColor())  QColor() is not a valid colour!
@@ -1076,6 +1080,10 @@ QGradientStop QLinearGradientCtrl::selectedStop() const
 	ZASSERT(selectedPeg > startPegStop && selectedPeg < endPegStop);
 	return stops[selectedPeg];
 }
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
 
 const QGradientStops& QLinearGradientCtrl::getStops() const
 {

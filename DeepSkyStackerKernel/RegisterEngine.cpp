@@ -466,10 +466,10 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 		if (n1 != 0)
 		{
 			constexpr double Offset = 1.05;
-			const double InfinityPoint = 5.0 + numberOfWantedStars;
+			const double InfinityPoint = 5.0 + static_cast<double>(numberOfWantedStars);
 			const double tau = std::log(Offset - 1.0) / (-InfinityPoint);
-			const double nAvg = (1 + n1 + n2) / 2;
-			const double nDelta = n1 - n2;
+			const double nAvg = (1.0 + static_cast<double>(n1) + static_cast<double>(n2)) / 2.0;
+			const double nDelta = static_cast<double>(n1) - static_cast<double>(n2);
 			const bool tooManyStars = n1 >= std::max(3 * numberOfWantedStars, size_t{ 150 });
 			oneMoreIteration = oneMoreIteration == 0 ? (tooManyStars ? 1 : 0) : 2; // IF number of stars too large -> add one iteration with increased threshold.
 			factor = tooManyStars
@@ -900,13 +900,60 @@ void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminan
 
 		std::shared_ptr<CMemoryBitmap> pBitmap;
 		std::shared_ptr<QImage> pQImage;
-		bLoaded = ::FetchPicture(filePath, pBitmap, this->m_PictureType == PICTURETYPE_FLATFRAME, m_pProgress, pQImage);
+		bLoaded = ::FetchPicture(filePath, pBitmap, m_pProgress, pQImage);
 
 		if (m_pProgress != nullptr)
 			m_pProgress->End2();
 
 		if (bLoaded)
 		{
+
+			//
+			// Apply image scaling here.
+			// 
+			ZTRACE_RUNTIME("Apply image adjustment");
+			Workspace workspace{};
+
+			auto greenFactor = workspace.value("RawDDP/Brightness", 1.0).toDouble();
+			auto redFactor = greenFactor * workspace.value("RawDDP/RedScale", 1.0).toDouble();
+			auto blueFactor = greenFactor * workspace.value("RawDDP/BlueScale", 1.0).toDouble();
+			ZTRACE_RUNTIME("Image adjustment factors: R=%f, G=%f, B=%f", redFactor, greenFactor, blueFactor);
+
+
+			if (1.0 != redFactor || 1.0 != greenFactor || 1.0 != blueFactor)
+			{
+				CMemoryBitmap* rawPtr = pBitmap.get();
+				CGrayBitmap* pGrayBitmap = dynamic_cast<CGrayBitmap*>(rawPtr);
+				C8BitGrayBitmap* p8BitGrayBitmap = dynamic_cast<C8BitGrayBitmap*>(rawPtr);
+				C16BitGrayBitmap* p16BitGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(rawPtr);
+				C32BitGrayBitmap* p32BitGrayBitmap = dynamic_cast<C32BitGrayBitmap*>(rawPtr);
+				C32BitFloatGrayBitmap* p32BitFloatGrayBitmap = dynamic_cast<C32BitFloatGrayBitmap*>(rawPtr);
+
+				C24BitColorBitmap* p24BitColorBitmap = dynamic_cast<C24BitColorBitmap*>(rawPtr);
+				C48BitColorBitmap* p48BitColorBitmap = dynamic_cast<C48BitColorBitmap*>(rawPtr);
+				C96BitColorBitmap* p96BitColorBitmap = dynamic_cast<C96BitColorBitmap*>(rawPtr);
+				C96BitFloatColorBitmap* p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap*>(rawPtr);
+
+				if (nullptr != pGrayBitmap)
+					pGrayBitmap->applyImageScaling(greenFactor);
+				else if (nullptr != p8BitGrayBitmap)
+					p8BitGrayBitmap->applyImageScaling(greenFactor);
+				else if (nullptr != p16BitGrayBitmap)
+					p16BitGrayBitmap->applyImageScaling(greenFactor);
+				else if (nullptr != p32BitGrayBitmap)
+					p32BitGrayBitmap->applyImageScaling(greenFactor);
+				else if (nullptr != p32BitFloatGrayBitmap)
+					p32BitFloatGrayBitmap->applyImageScaling(greenFactor);
+				else if (nullptr != p24BitColorBitmap)
+					p24BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+				else if (nullptr != p48BitColorBitmap)
+					p48BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+				else if (nullptr != p96BitColorBitmap)
+					p96BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+				else if (nullptr != p96BitFloatColorBitmap)
+					p96BitFloatColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+			}
+
 			RegisterPicture(pBitmap.get(), -1); // -1 means, we do NOT register a series of frames.
 //			ComputeRedBlueShifting(pBitmap);
 		}
@@ -1045,7 +1092,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 
 		std::shared_ptr<CMemoryBitmap> outputBitmap;
 		std::shared_ptr<QImage> pQImage;
-		bool success = ::FetchPicture(lfInfo->filePath, outputBitmap, lfInfo->m_PictureType == PICTURETYPE_FLATFRAME, pTaskProgress, pQImage);
+		bool success = ::FetchPicture(lfInfo->filePath, outputBitmap, pTaskProgress, pQImage);
 		return std::make_tuple(std::move(outputBitmap), success, std::move(lfInfo), std::move(bmpInfo));
 	};
 
@@ -1099,6 +1146,52 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QStrin
 
 		// Apply offset, dark and flat to lightframe
 		masterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
+
+		//
+		// Apply image scaling here.
+		// 
+		ZTRACE_RUNTIME("Apply image adjustment");
+		Workspace workspace{};
+
+		auto greenFactor = workspace.value("RawDDP/Brightness", 1.0).toDouble();
+		auto redFactor = greenFactor * workspace.value("RawDDP/RedScale", 1.0).toDouble();
+		auto blueFactor = greenFactor * workspace.value("RawDDP/BlueScale", 1.0).toDouble();
+		ZTRACE_RUNTIME("Image adjustment factors: R=%f, G=%f, B=%f", redFactor, greenFactor, blueFactor);
+
+
+		if (1.0 != redFactor || 1.0 != greenFactor || 1.0 != blueFactor)
+		{
+			CMemoryBitmap* rawPtr = pBitmap.get();
+			CGrayBitmap* pGrayBitmap = dynamic_cast<CGrayBitmap*>(rawPtr);
+			C8BitGrayBitmap* p8BitGrayBitmap = dynamic_cast<C8BitGrayBitmap*>(rawPtr);
+			C16BitGrayBitmap* p16BitGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(rawPtr);
+			C32BitGrayBitmap* p32BitGrayBitmap = dynamic_cast<C32BitGrayBitmap*>(rawPtr);
+			C32BitFloatGrayBitmap* p32BitFloatGrayBitmap = dynamic_cast<C32BitFloatGrayBitmap*>(rawPtr);
+
+			C24BitColorBitmap* p24BitColorBitmap = dynamic_cast<C24BitColorBitmap*>(rawPtr);
+			C48BitColorBitmap* p48BitColorBitmap = dynamic_cast<C48BitColorBitmap*>(rawPtr);
+			C96BitColorBitmap* p96BitColorBitmap = dynamic_cast<C96BitColorBitmap*>(rawPtr);
+			C96BitFloatColorBitmap* p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap*>(rawPtr);
+
+			if (nullptr != pGrayBitmap)
+				pGrayBitmap->applyImageScaling(greenFactor);
+			else if (nullptr != p8BitGrayBitmap)
+				p8BitGrayBitmap->applyImageScaling(greenFactor);
+			else if (nullptr != p16BitGrayBitmap)
+				p16BitGrayBitmap->applyImageScaling(greenFactor);
+			else if (nullptr != p32BitGrayBitmap)
+				p32BitGrayBitmap->applyImageScaling(greenFactor);
+			else if (nullptr != p32BitFloatGrayBitmap)
+				p32BitFloatGrayBitmap->applyImageScaling(greenFactor);
+			else if (nullptr != p24BitColorBitmap)
+				p24BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+			else if (nullptr != p48BitColorBitmap)
+				p48BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+			else if (nullptr != p96BitColorBitmap)
+				p96BitColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+			else if (nullptr != p96BitFloatColorBitmap)
+				p96BitFloatColorBitmap->applyImageScaling(redFactor, greenFactor, blueFactor);
+		}
 
 		QString strCalibratedFile;
 		if (m_bSaveCalibrated &&

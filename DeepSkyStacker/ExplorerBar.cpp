@@ -572,9 +572,12 @@ namespace DSS
 		bool				fileLoaded(false);
 
 		//
-		// Always use the Qt Widget file dialog for consistency
-		// 
+		// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+		//
+#ifdef Q_OS_LINUX
 		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+#endif // Q_OS_LINUX
+
 		// 
 		// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 		// create the directory to avoid surprises
@@ -624,9 +627,11 @@ namespace DSS
 		bool				fileSaved(false);
 
 		//
-		// Always use the Qt Widget file dialog for consistency
-		// 
+		// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+		//
+#ifdef Q_OS_LINUX
 		fileDialog.setOption(QFileDialog::DontUseNativeDialog, true);
+#endif // Q_OS_LINUX
 
 		// Save the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
 		// create the directory to avoid surprises

@@ -180,7 +180,7 @@ bool loadTranslations()
 	static QTranslator theAppTranslator;
 	static QTranslator theKernelTranslator;
 
-	Q_INIT_RESOURCE(DeepSkyStackerKernel_translations);
+	Q_INIT_RESOURCE(kernel_translations);
 
 	// Try to load each language file - allow failures though (due to issue with ro and reloading en translations)
 	QSettings settings;
@@ -889,7 +889,13 @@ bool DeepSkyStackerLive::setMonitoredFolder([[maybe_unused]] const QString& link
 			startDir,
 			QFileDialog::ShowDirsOnly
 			| QFileDialog::DontResolveSymlinks
-			| QFileDialog::DontUseNativeDialog);	// Use Qt dialog for consistency across platforms
+#ifdef Q_OS_LINUX
+			//
+			// Use the Qt Widget file dialog on Linux so that a file type filter specifying .cr2 also works for .CR2 files
+			//
+			| QFileDialog::DontUseNativeDialog
+#endif // Q_OS_LINUX
+			);
 
 		if (!dir.isEmpty())
 		{
@@ -1367,7 +1373,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 		}
 
 	}
-	chartTab->addQualityFWHMStars(name, lfi->quality, lfi->m_fFWHM, lfi->m_vStars.size(), lfi->m_SkyBackground.m_fLight * 100.0);
+	chartTab->addQualityFWHMStars(name, lfi->quality, lfi->m_fFWHM, static_cast<double>(lfi->m_vStars.size()), lfi->m_SkyBackground.m_fLight * 100.0);
 }
 
 void DeepSkyStackerLive::addToStackingQueue(std::shared_ptr<CLightFrameInfo> lfi)

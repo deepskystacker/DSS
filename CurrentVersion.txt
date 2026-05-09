@@ -1,1 +1,1 @@
-DeepSkyStackerVersion=6.1.3
+DeepSkyStackerVersion=6.2.0

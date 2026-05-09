@@ -92,7 +92,7 @@
     </IncludePath>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</ExternalIncludePath>
-    <LinkIncremental>true</LinkIncremental>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>
@@ -214,7 +214,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <ShowIncludes>false</ShowIncludes>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <WarningLevel>Level4</WarningLevel>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
@@ -320,7 +320,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="picturelist.cpp" />
     <ClCompile Include="processingcontrols.cpp" />
     <ClCompile Include="ProcessingDlg.cpp" />
-    <ClCompile Include="ProcessingSettingsDlg.cpp" />
     <ClCompile Include="oldprogressdlg.cpp" />
     <ClCompile Include="progressdlg.cpp" />
     <ClCompile Include="QualityChart.cpp" />
@@ -360,7 +359,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="SaveEditChanges.cpp" />
     <ClCompile Include="SavePicture.cpp" />
     <ClCompile Include="selectrect.cpp" />
-    <ClCompile Include="RGBTab.cpp" />
     <ClCompile Include="StackingDlg.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -387,6 +385,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="toolbar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="undoredostack.h" />
     <QtMoc Include="progressdlg.h" />
     <QtMoc Include="QualityChart.h" />
     <QtMoc Include="..\Tools\imageview.h" />
@@ -421,8 +420,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="PostCalibration.h" />
     <QtMoc Include="ProcessingDlg.h" />
     <QtMoc Include="processingcontrols.h" />
-    <ClInclude Include="ProcessingSettings.h" />
-    <QtMoc Include="ProcessingSettingsDlg.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="oldprogressdlg.h" />
     <QtMoc Include="RecommendedSettings.h" />
@@ -508,6 +505,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <Image Include="res\ImageList_Mask.bmp" />
     <Image Include="res\intersectionmode.bmp" />
     <Image Include="res\Italian.png" />
+    <Image Include="res\japan.png" />
     <Image Include="res\linear.bmp" />
     <Image Include="res\linear_en.bmp" />
     <Image Include="res\linear_fr.bmp" />
@@ -573,7 +571,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtUic Include="ui\PostCalibration.ui" />
     <QtUic Include="ui\ProcessingControls.ui" />
     <QtUic Include="ui\ProcessingDlg.ui" />
-    <QtUic Include="ui\ProcessingSettingsDlg.ui" />
     <QtUic Include="ui\OldProgressDlg.ui" />
     <QtUic Include="ui\ProgressDlg.ui" />
     <QtUic Include="ui\QualityChart.ui" />

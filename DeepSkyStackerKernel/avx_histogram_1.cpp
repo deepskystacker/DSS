@@ -98,9 +98,9 @@ int AvxBezierAndSaturation::toHsl()
 	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [](auto&& o) { return o.avxToHsl(); });
 }
 
-int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const DSS::RGBHistogramAdjust& histoAdjust)
+int AvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps)
 {
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps, histoAdjust); });
+	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [&](auto&& o) { return o.avxAdjustRGB(nBitmaps); });
 }
 
 int AvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
@@ -109,11 +109,6 @@ int AvxBezierAndSaturation::avxToRgb(const bool markOverAndUnderExposure)
 		this,
 		[markOverAndUnderExposure](auto&& o) { return o.avxToRgb(markOverAndUnderExposure); }
 	);
-}
-
-int AvxBezierAndSaturation::avxBezierAdjust(const size_t len)
-{
-	return SimdSelector<Avx256BezierAndSaturation, NonAvxBezierAndSaturation>(this, [len](auto&& o) { return o.avxBezierAdjust(len); });
 }
 
 int AvxBezierAndSaturation::avxBezierSaturation(const size_t len, const float saturationShift)
@@ -167,7 +162,7 @@ int NonAvxHistogram::mergeOneChannelHisto(HistogramVectorType& targetHisto, Hist
 // Non AVX Bezier functions
 // ------------------------
 
-int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class DSS::RGBHistogramAdjust& histoAdjust)
+int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps)
 {
 	const float scale = 255.0f / static_cast<float>(nBitmaps);
 
@@ -177,18 +172,6 @@ int NonAvxBezierAndSaturation::avxAdjustRGB(const int nBitmaps, const class DSS:
 		this->histoData.greenBuffer[n] *= scale;
 		this->histoData.blueBuffer[n] *= scale;
 	}
-	for (size_t n = 0, bufferLen = this->histoData.redBuffer.size(); n < bufferLen; ++n)
-	{
-		double r = this->histoData.redBuffer[n];
-		double g = this->histoData.greenBuffer[n];
-		double b = this->histoData.blueBuffer[n];
-		histoAdjust.Adjust(r, g, b);
-
-		this->histoData.redBuffer[n] = static_cast<float>(r);
-		this->histoData.greenBuffer[n] = static_cast<float>(g);
-		this->histoData.blueBuffer[n] = static_cast<float>(b);
-	}
-
 	constexpr size_t VecLen = sizeof(__m128) / sizeof(float);
 	constexpr float scalingFactor = static_cast<float>(1.0 / 255.0);
 

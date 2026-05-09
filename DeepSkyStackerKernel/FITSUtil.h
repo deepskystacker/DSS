@@ -217,7 +217,7 @@ class CMemoryBitmap;
 
 CFATYPE GetFITSCFATYPE();
 bool GetFITSInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
-bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, DSS::OldProgressBase* pProgress);
+bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::OldProgressBase* pProgress);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription, int lISOSpeed, int lGain, double fExposure);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, FITSFORMAT FITSFormat);
@@ -225,7 +225,7 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgr
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, const QString& szDescription);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);
 bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
-int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, DSS::OldProgressBase* pProgress);
+int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::OldProgressBase* pProgress);
 bool IsFITSRawBayer();
 bool IsFITSSuperPixels();
 bool IsFITSBilinear();

@@ -293,7 +293,7 @@ namespace DSS
 		//
 		// Create a validator for the scale values
 		//
-		scaleValidator = new QDoubleValidator(0.0, 5.0, 4, this);
+		scaleValidator = new QDoubleValidator(0.0, 16.0, 4, this);
 		//
 		// Create a validator for the FITS range values
 		rangeValidator = new QDoubleValidator(this);
@@ -303,9 +303,6 @@ namespace DSS
 		connect(ui->brightness, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_editingFinished);
 		connect(ui->redScale, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_editingFinished);
 		connect(ui->blueScale, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_editingFinished);
-		connect(ui->brightness_2, &QLineEdit::editingFinished, this, &RawDDPSettings::brightness_2_editingFinished);
-		connect(ui->redScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::redScale_2_editingFinished);
-		connect(ui->blueScale_2, &QLineEdit::editingFinished, this, &RawDDPSettings::blueScale_2_editingFinished);
 
 		connect(ui->dataMin, &QLineEdit::editingFinished, this, &RawDDPSettings::dataMin_editingFinished);
 		connect(ui->dataMax, &QLineEdit::editingFinished, this, &RawDDPSettings::dataMax_editingFinished);
@@ -369,7 +366,7 @@ namespace DSS
 		}
 
 		//
-		// First initialise the controls on the Raw Files tab
+		// First initialise the controls on the Image Scaling tab
 		//
 		value = workspace->value("RawDDP/Brightness", scaleDefault).toDouble();
 		ui->brightness->setText(QString("%L1").arg(value, 0, 'f', 4));
@@ -380,9 +377,21 @@ namespace DSS
 		value = workspace->value("RawDDP/BlueScale", scaleDefault).toDouble();
 		ui->blueScale->setText(QString("%L1").arg(value, 0, 'f', 4));
 
-		ui->noWB->setChecked(workspace->value("RawDDP/NoWB", false).toBool());
+		//
+		// Now initialise the controls on the Raw Files tab
+		//
 
-		ui->cameraWB->setChecked(workspace->value("RawDDP/CameraWB", false).toBool());
+		auto noWB = workspace->value("RawDDP/NoWB", false).toBool();
+		auto cameraWB = workspace->value("RawDDP/CameraWB", false).toBool();
+		if (!noWB && !cameraWB)
+		{
+			ui->daylightWB->setChecked(true);
+		}
+		else
+		{
+			ui->noWB->setChecked(noWB);
+			ui->cameraWB->setChecked(cameraWB);
+		}
 
 		bool isSuperPixels;
 		bool isRawBayer;
@@ -418,15 +427,6 @@ namespace DSS
 		//
 		ui->isFITSRaw->setChecked(workspace->value("FitsDDP/FITSisRAW", false).toBool());
 
-		value = workspace->value("FitsDDP/Brightness", scaleDefault).toDouble();
-		ui->brightness_2->setText(QString("%L1").arg(value, 0, 'f', 4));
-
-		value = workspace->value("FitsDDP/RedScale", scaleDefault).toDouble();
-		ui->redScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
-
-		value = workspace->value("FitsDDP/BlueScale", scaleDefault).toDouble();
-		ui->blueScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
-
 		value = workspace->value("FitsDDP/DataMin", dataMinDefault).toDouble();
 		ui->dataMin->setText(QString("%L1").arg(value, 0, 'f', QLocale::FloatingPointShortest));
 
@@ -456,6 +456,9 @@ namespace DSS
 
 		updateBayerPattern().updateControls();
 
+		//
+		// Finally, make sure the first tab is selected
+		//
 		ui->tabWidget->setCurrentIndex(0);
 
 	}
@@ -526,8 +529,6 @@ namespace DSS
 
 			bCYMG = ::IsCYMGType(vector_DSLRs[index].m_CFAType);
 
-			ui->colourAdjustment->setEnabled(!bCYMG);
-
 			ui->rawBayer_2->setEnabled(!bCYMG);
 			ui->superPixels_2->setEnabled(!bCYMG);
 			ui->AHD_2->setEnabled(!bCYMG);
@@ -553,14 +554,11 @@ namespace DSS
 
 		ui->textDSLRs->setEnabled(isFITSRaw);
 		ui->DSLRs->setEnabled(isFITSRaw);
-		ui->colourAdjustment->setEnabled(true);
 		ui->bayerGroup->setEnabled(isFITSRaw);
 
 		return *this;
 	}
-
-
-	// Slots for RAW Files tab
+	// Slots for Image adjustment tab
 	void RawDDPSettings::brightness_editingFinished()
 	{
 		QLocale locale;
@@ -618,29 +616,26 @@ namespace DSS
 		}
 	}
 
-	void RawDDPSettings::on_noWB_stateChanged()
+	// Slots for RAW Files tab
+	void RawDDPSettings::on_noWB_clicked()
 	{
-		bool checked{ ui->noWB->isChecked() };
 
-		workspace->setValue("RawDDP/NoWB", checked);
-
-		if (checked)		// Can't have Camera WB selected if no WB selected.
-		{
-			ui->cameraWB->setChecked(false);
-			workspace->setValue("RawDDP/CameraWB", false);
-		}
+		workspace->setValue("RawDDP/NoWB", true);
+		workspace->setValue("RawDDP/CameraWB", false);
 	}
-	void RawDDPSettings::on_cameraWB_stateChanged()
+
+	void RawDDPSettings::on_daylightWB_clicked()
 	{
-		bool checked{ ui->cameraWB->isChecked() };
 
-		workspace->setValue("RawDDP/CameraWB", checked);
+		workspace->setValue("RawDDP/NoWB", false);
+		workspace->setValue("RawDDP/CameraWB", false);
+	}
 
-		if (checked)		// Can't have no WB selected if Camera WB selected.
-		{
-			ui->noWB->setChecked(false);
-			workspace->setValue("RawDDP/NoWB", false);
-		}
+	void RawDDPSettings::on_cameraWB_clicked()
+	{
+
+		workspace->setValue("RawDDP/NoWB", false);
+		workspace->setValue("RawDDP/CameraWB", true);
 	}
 
 	void RawDDPSettings::on_bilinear_clicked()
@@ -685,63 +680,6 @@ namespace DSS
 		workspace->setValue("FitsDDP/DSLR", ui->DSLRs->currentText());
 		workspace->setValue("FitsDDP/BayerPattern", ui->DSLRs->currentData().toUInt());
 		updateBayerPattern().updateControls();
-	}
-
-	void RawDDPSettings::brightness_2_editingFinished()
-	{
-		QLocale locale;
-		QString string{ ui->brightness_2->text() };
-		int unused{ 0 };
-		bool OK = false;
-		if (QValidator::Acceptable == scaleValidator->validate(string, unused))
-		{
-			const double value{ locale.toDouble(string, &OK) };
-			if (OK) workspace->setValue("FitsDDP/Brightness", value);
-		}
-		else
-		{
-			QApplication::beep();
-			const double value = workspace->value("FitsDDP/Brightness", scaleDefault).toDouble();
-			ui->brightness_2->setText(QString("%L1").arg(value, 0, 'f', 4));
-		}
-	}
-
-	void RawDDPSettings::redScale_2_editingFinished()
-	{
-		QLocale locale;
-		QString string{ ui->redScale_2->text() };
-		int unused{ 0 };
-		bool OK = false;
-		if (QValidator::Acceptable == scaleValidator->validate(string, unused))
-		{
-			const double value{ locale.toDouble(string, &OK) };
-			if (OK) workspace->setValue("FitsDDP/RedScale", value);
-		}
-		else
-		{
-			QApplication::beep();
-			const double value = workspace->value("FitsDDP/RedScale", scaleDefault).toDouble();
-			ui->redScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
-		}
-	}
-
-	void RawDDPSettings::blueScale_2_editingFinished()
-	{
-		QLocale locale;
-		QString string{ ui->blueScale_2->text() };
-		int unused{ 0 };
-		bool OK = false;
-		if (QValidator::Acceptable == scaleValidator->validate(string, unused))
-		{
-			const double value{ locale.toDouble(string, &OK) };
-			if (OK) workspace->setValue("FitsDDP/BlueScale", value);
-		}
-		else
-		{
-			QApplication::beep();
-			const double value = workspace->value("FitsDDP/BlueScale", scaleDefault).toDouble();
-			ui->blueScale_2->setText(QString("%L1").arg(value, 0, 'f', 4));
-		}
 	}
 
 	void RawDDPSettings::dataMin_editingFinished()
@@ -816,6 +754,8 @@ namespace DSS
 			apply();
 		}
 	}
+
+	// Other slots
 
 	void RawDDPSettings::accept()
 	{

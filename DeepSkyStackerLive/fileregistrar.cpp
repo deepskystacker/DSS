@@ -198,14 +198,14 @@ namespace DSS
 
 				QString warning;
 
-				if (imageWarning(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->quality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
+				if (imageWarning(file, static_cast<double>(lfi->m_vStars.size()), lfi->m_fFWHM, lfi->quality, lfi->m_SkyBackground.m_fLight * 100.0, warning))
 				{
 					strText = tr("Warning: Image %1 -> %2\n", "IDS_LOG_WARNING").arg(name).arg(warning);
 					emit writeToLog(strText, true, false, false, QColorConstants::Svg::orange);
 					emit handleWarning(strText);
 				};
 				
-				if (isImageStackable(file, lfi->m_vStars.size(), lfi->m_fFWHM, lfi->quality, lfi->m_SkyBackground.m_fLight * 100.0, strText))
+				if (isImageStackable(file, static_cast<double>(lfi->m_vStars.size()), lfi->m_fFWHM, lfi->quality, lfi->m_SkyBackground.m_fLight * 100.0, strText))
 				{
 					// Check against stacking conditions before adding it to
 					// the stack list

@@ -176,9 +176,23 @@ public:
 protected:
 	fs::path file;
 	OldProgressBase* m_pProgress;
+	double					m_fGreenRatio;
+	double					m_fRedRatio;
+	double					m_fBlueRatio;
+	double					m_fBrightnessRatio;
 
 public:
-	CTIFFReader(const fs::path& p, OldProgressBase* pProgress);
+	CTIFFReader(const fs::path& path, OldProgressBase* pProgress) :
+		CTIFFHeader(),
+		m_tiff{ nullptr },
+		file{ path },
+		m_pProgress{ pProgress },
+		m_fGreenRatio{ 1.0 },
+		m_fRedRatio{ 1.0 },
+		m_fBlueRatio{ 1.0 },
+		m_fBrightnessRatio{ 1.0 }
+	{
+	}
 
 	virtual ~CTIFFReader() override
 	{

@@ -99,21 +99,6 @@ bool IsFITSAHD()
 	return (0 == interpolation.compare("AHD", Qt::CaseInsensitive));
 }
 
-double GetFITSBrightnessRatio()
-{
-	return Workspace{}.value("FitsDDP/Brightness", 1.0).toDouble();
-}
-
-void GetFITSRatio(double& fRed, double& fGreen, double& fBlue)
-{
-	Workspace workspace{};
-
-	fGreen = workspace.value("FitsDDP/Brightness", 1.0).toDouble();
-	fRed = fGreen * workspace.value("FitsDDP/RedScale", 1.0).toDouble();
-	fBlue = fGreen * workspace.value("FitsDDP/BlueScale", 1.0).toDouble();
-}
-
-
 bool CFITSReader::ReadKey(const char * szKey, double& fValue, QString& strComment)
 {
 	bool				bResult = false;
@@ -692,11 +677,18 @@ bool CFITSReader::Read()
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
-			const QString errMsg(QString("fits_read_pixll returned a status of %1, error text is \"%2\"").arg(status).arg(error_text));
-			ZException exc(errMsg.toLatin1().constData(), status, ZException::unrecoverable);
-			exc.addLocation(ZEXCEPTION_LOCATION());
-			exc.logExceptionData();
-			throw exc;
+			DSSBase::instance()->reportError(
+				QCoreApplication::translate("FITSUtil",
+					"fits_read_pixll returned a status of %1, error text is \"%2\"\n"
+					"reading file %3.\n"
+					"The file will not be processed.")
+					.arg(status)
+					.arg(error_text)
+					.arg(file.generic_u16string().c_str()),
+				"",
+				DSSBase::Severity::Warning,
+				DSSBase::Method::QMessageBox);
+			return false;
 		}
 
 		//
@@ -890,13 +882,11 @@ class CFITSReadInMemoryBitmap : public CFITSReader
 private :
 	std::shared_ptr<CMemoryBitmap>& m_outBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
-	bool ignoreBrightness;
 
 public :
-	CFITSReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBr, OldProgressBase* pProgress) :
+	CFITSReadInMemoryBitmap(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress) :
 		CFITSReader{ szFileName, pProgress },
-		m_outBitmap{ rpBitmap },
-		ignoreBrightness{ ignoreBr }
+		m_outBitmap{ rpBitmap }
 	{}
 
 	virtual ~CFITSReadInMemoryBitmap() override { Close(); }
@@ -1018,14 +1008,8 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 					pCFABitmapInfo->UseBilinear(true);
 				else if (IsFITSAHD())
 					pCFABitmapInfo->UseAHD(true);
-
-				// Retrieve ratios
-				if (!this->ignoreBrightness)
-					GetFITSRatio(m_fRedRatio, m_fGreenRatio, m_fBlueRatio);
 			}
 		}
-		else
-			m_fBrightnessRatio = this->ignoreBrightness ? 1.0 : GetFITSBrightnessRatio();
 
 		m_pBitmap->SetMaster(false);
 		if (0. != m_fExposureTime)
@@ -1053,44 +1037,12 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 
 bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
-	//
-	// Define maximal scaled pixel value of 255 (will be multiplied up later)
-	//
-	constexpr double maxValue = 255.0;
 	bool result = true;
 
 	try
 	{
 		if (static_cast<bool>(m_pBitmap))
 		{
-			if (m_lNrChannels == 1)
-			{
-				if (m_CFAType != CFATYPE_NONE)
-				{
-					switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
-					{
-					case BAYER_BLUE:
-						fRed = std::min(maxValue, fRed * m_fBlueRatio);
-						break;
-					case BAYER_GREEN:
-						fRed = std::min(maxValue, fRed * m_fGreenRatio);
-						break;
-					case BAYER_RED:
-						fRed = std::min(maxValue, fRed * m_fRedRatio);
-						break;
-					default:
-						break;
-					}
-				}
-				else
-				{
-					fRed = std::min(maxValue, fRed * m_fBrightnessRatio);
-					fGreen = std::min(maxValue, fGreen * m_fBrightnessRatio);
-					fBlue = std::min(maxValue, fBlue * m_fBrightnessRatio);
-				}
-				m_pBitmap->SetPixel(lX, lY, fRed);
-			}
-			else
 				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
 	}
@@ -1135,10 +1087,10 @@ bool CFITSReadInMemoryBitmap::OnClose()
 }
 
 
-bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase* pProgress)
+bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CFITSReadInMemoryBitmap	fitsReader{ szFileName, rpBitmap, ignoreBrightness, pProgress };
+	CFITSReadInMemoryBitmap	fitsReader{ szFileName, rpBitmap, pProgress };
 	return fitsReader.Open() && fitsReader.Read();
 }
 
@@ -1944,14 +1896,14 @@ bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
 };
 
 
-int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, const bool ignoreBrightness, OldProgressBase* pProgress)
+int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1; // -1 means not a FITS file.
 
 	if (GetFITSInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
-		if (ReadFITS(szFileName, rpBitmap, ignoreBrightness, pProgress))
+		if (ReadFITS(szFileName, rpBitmap, pProgress))
 		{
 			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
 			{

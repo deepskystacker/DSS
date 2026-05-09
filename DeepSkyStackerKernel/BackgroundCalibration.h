@@ -9,9 +9,9 @@
 // ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Instructions for implementing a new Background Calibration algorithm:
 //
-// 1. Create a new class for the needed parameters, and the 'initialize' member function (see below).
+// 1. Create a new struct for the needed parameters, and the 'initialize' member function (see below).
 //
-// 2. Create a new class for the model with redParams, greenParams, blueParams, static inline constexpr std::string_view name, and the 'calibrate' member function.
+// 2. Create a new struct for the model with redParams, greenParams, blueParams, static inline constexpr std::string_view name, and the 'calibrate' member function.
 //
 // 3. Add your new model to: 
 // using BackgroundCalibrator = BackgroundCalibratorVariant<NoneModel, OffsetModel, LinearModel, RationalModel, YOUR_NEW_MODEL>;
