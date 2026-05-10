@@ -379,6 +379,8 @@ namespace DSS
 			showHistogram(); 
 
 			picture->clear();
+			setAdjustmentControlDefaults();
+
 			updateControls();
 
 			//
