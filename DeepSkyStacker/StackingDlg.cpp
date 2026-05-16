@@ -2103,7 +2103,7 @@ namespace DSS
 
 
 		ZTRACE_RUNTIME("About to show file save dlg");
-		const QString file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex] /*DssFileListFilter*/, nullptr);
+		const QString file = QFileDialog::getSaveFileName(this, tr("Save file list"), QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex] /*DssFileListFilter*/, nullptr);
 		if (!file.isEmpty())
 		{
 			// If the user has not specified the extension, we add it.
