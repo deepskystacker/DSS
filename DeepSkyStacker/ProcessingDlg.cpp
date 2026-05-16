@@ -253,6 +253,9 @@ namespace DSS
 		connect(controls->redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
 		connect(controls->resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
 
+		connect(controls->linkButton, &QPushButton::toggled, this, &ProcessingDlg::onLinkToggled);
+		connect(controls->autostretchButton, &QPushButton::clicked, this, &ProcessingDlg::onAutostretch);
+
 		//
 		// If the user changes the ASinH stretch settings, update the controls to match and process the change
 		//
@@ -1050,6 +1053,13 @@ namespace DSS
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
 			break;
 
+		case ProcessingFunction::AutoStretch:
+			//
+			// Apply the MTF autostretch to the image
+			//
+			bitmap.autoStretch(controls->linkButton->isChecked());
+			break;
+
 		default:
 			ZASSERT(false);	// Invalid processing function
 			break;
@@ -1101,6 +1111,10 @@ namespace DSS
 			QMetaObject::invokeMethod(controls->cbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
 			break;
 
+		case ProcessingFunction::AutoStretch:
+			// No apply button to enable for autostretch - it applies directly
+			break;
+
 		default:
 			ZASSERT(false);	// Invalid processing function
 			break;
@@ -1122,9 +1136,13 @@ namespace DSS
 	{
 		//
 		// Get the current DeepStack object from the undo-redo stack and duplicate it at the top
-		// of the undo-redo stack
+		// of the undo-redo stack. For Autostretch, we duplicate the base image (index 0) to prevent
+		// iterative stretching of already stretched data when toggling states.
 		//
-		undoRedoStack.add(undoRedoStack.current());
+		if (function == ProcessingFunction::AutoStretch)
+			undoRedoStack.add(undoRedoStack.at(0));
+		else
+			undoRedoStack.add(undoRedoStack.current());
 
 		//
 		// Now process the image with the current settings and show the result
@@ -1162,6 +1180,20 @@ namespace DSS
 				.arg(redShift).arg(greenShift).arg(blueShift));
 
 			zeroColourBalanceControls();
+			break;
+
+		case ProcessingFunction::AutoStretch:
+			{
+				//
+				// Apply the MTF autostretch to the image
+				//
+				bool linked = controls->linkButton->isChecked();
+				bitmap.autoStretch(linked);
+				deepStack.setDescription(tr("Autostretch: %1")
+					.arg(linked ? tr("Linked") : tr("Unlinked")));
+
+				zeroAdjustmentControls();
+			}
 			break;
 
 		default:
@@ -1273,6 +1305,32 @@ namespace DSS
 
 		processAndShow();
 		showHistogram();
+	}
+
+	void ProcessingDlg::onLinkToggled()
+	{
+		if (!imageLoaded || undoRedoStack.empty())
+			return;
+
+		//
+		// If the most recent operation was an Autostretch, automatically
+		// re-apply it when the link state is toggled to update the view.
+		//
+		if (undoRedoStack.current().description().startsWith(tr("Autostretch:")))
+		{
+			emit onApply(ProcessingFunction::AutoStretch);
+		}
+	}
+
+	void ProcessingDlg::onAutostretch()
+	{
+		if (!imageLoaded)
+			return;
+
+		//
+		// Apply an MTF autostretch to the image
+		//
+		emit onApply(ProcessingFunction::AutoStretch);
 	}
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)

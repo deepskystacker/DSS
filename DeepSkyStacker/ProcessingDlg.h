@@ -82,7 +82,8 @@ namespace DSS
 		enum class ProcessingFunction
 		{
 			AsinhStretch,
-			ColourBalance
+			ColourBalance,
+			AutoStretch
 		};
 
 		//
@@ -191,6 +192,8 @@ namespace DSS
 		void onUndo();
 		void onRedo();
 		void onReset();
+		void onLinkToggled();
+		void onAutostretch();
 
 		//
 		// Asinh stretch and black point sliders and spin boxes

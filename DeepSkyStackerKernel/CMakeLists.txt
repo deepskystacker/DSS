@@ -167,6 +167,7 @@ set(AVX_non-AVX_Files
 set(Source_Files
     "AHDDemosaicing.cpp"
     "asinhstretch.cpp"
+    "autostretch.cpp"
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
