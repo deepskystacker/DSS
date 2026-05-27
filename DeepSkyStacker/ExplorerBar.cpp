@@ -135,13 +135,11 @@ namespace DSS
 
 		ui->keepTracefile->setChecked(!traceControl.deleteOnExit());
 		ui->enableSounds->setChecked(QSettings{}.value("Beep", false).toBool());
-		ui->showClipping->setChecked(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
+
 		connect(ui->keepTracefile, &QCheckBox::checkStateChanged,
 			this, &ExplorerBar::keepTraceChanged);
 		connect(ui->enableSounds, &QCheckBox::checkStateChanged,
 			this, &ExplorerBar::onEnableSoundsStateChanged);
-		connect(ui->showClipping, &QCheckBox::checkStateChanged,
-			this, &ExplorerBar::onShowClippingStateChanged);
 	}
 	void ExplorerBar::makeLinks()
 	{
@@ -486,12 +484,6 @@ namespace DSS
 		Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
 		QSettings{}.setValue("Beep", (Qt::Checked == checked));
 
-	}
-
-	void ExplorerBar::onShowClippingStateChanged(int state)
-	{
-		Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
-		QSettings{}.setValue("ShowBlackWhiteClipping", (Qt::Checked == checked));
 	}
 
 #if QT_VERSION >= 0x060500

@@ -422,6 +422,12 @@ namespace DSS
 			emit onApply(ProcessingFunction::ColourBalance);
 		}
 
+		//
+		// Triggered whne the user changes the state of the "Show Clipping" checkbox, which
+		// controls whether to show clipping of black and white pixels in the preview image
+		//
+		void clippingStateChanged(int);
+
 		void updatePixelInfo(QPoint pos, QRgb colour);
 
 #if (0)

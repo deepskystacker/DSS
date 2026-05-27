@@ -95,7 +95,7 @@
          <x>0</x>
          <y>0</y>
          <width>298</width>
-         <height>883</height>
+         <height>858</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -659,16 +659,6 @@ Tick this box to keep the trace file.</string>
               </size>
              </property>
             </spacer>
-           </item>
-           <item>
-            <widget class="QCheckBox" name="showClipping">
-             <property name="toolTip">
-              <string>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</string>
-             </property>
-             <property name="text">
-              <string>Show clipping for Black/White Points</string>
-             </property>
-            </widget>
            </item>
           </layout>
          </widget>

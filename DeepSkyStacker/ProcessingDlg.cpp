@@ -130,6 +130,8 @@ namespace DSS
 		controls->asinhBPSlider->setTracking(false);
 		controls->asinhStretchSlider->setTracking(false);
 
+		controls->showClipping->setChecked(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
+
 		connectSignalsToSlots();
 
 		updateControls();
@@ -278,6 +280,9 @@ namespace DSS
 		connect(controls->cbApply, &QPushButton::pressed, this, &ProcessingDlg::cbApplyPressed);
 
 		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
+
+		connect(controls->showClipping, &QCheckBox::checkStateChanged,
+			this, &ProcessingDlg::clippingStateChanged);
 
 		connect(picture, &DSS::ImageView::mouseMovedOverImage,
 			this, &ProcessingDlg::updatePixelInfo);
@@ -1273,6 +1278,16 @@ namespace DSS
 
 		processAndShow();
 		showHistogram();
+	}
+
+	//
+	// Triggered whne the user changes the state of the "Show Clipping" checkbox, which
+	// controls whether to show clipping of black and white pixels in the preview image
+	//
+	void ProcessingDlg::clippingStateChanged(int state)
+	{
+		Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
+		QSettings{}.setValue("ShowBlackWhiteClipping", (Qt::Checked == checked));
 	}
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)

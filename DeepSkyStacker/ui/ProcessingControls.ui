@@ -509,7 +509,7 @@
         </property>
         <property name="maximumSize">
          <size>
-          <width>350</width>
+          <width>390</width>
           <height>16777215</height>
          </size>
         </property>
@@ -568,31 +568,63 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="histogram">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QWidget" name="widget_2" native="true">
      <property name="minimumSize">
       <size>
-       <width>450</width>
-       <height>280</height>
+       <width>460</width>
+       <height>370</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>450</width>
-       <height>300</height>
+       <width>460</width>
+       <height>370</height>
       </size>
      </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <spacer name="verticalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="histogram">
+        <property name="minimumSize">
+         <size>
+          <width>450</width>
+          <height>280</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>450</width>
+          <height>300</height>
+         </size>
+        </property>
+        <property name="text">
+         <string notr="true"/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="showClipping">
+        <property name="toolTip">
+         <string>Show pixels below the Black Level as blue and pixels above the White Level as red.</string>
+        </property>
+        <property name="text">
+         <string>Show clipping for Black/White Points</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>

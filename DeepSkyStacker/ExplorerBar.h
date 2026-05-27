@@ -95,7 +95,6 @@ namespace DSS
 
 		void keepTraceChanged(int);
 		void onEnableSoundsStateChanged(int);
-		void onShowClippingStateChanged(int);
 
 #if QT_VERSION >= 0x060500
 		void onColorSchemeChanged(Qt::ColorScheme colorScheme);
