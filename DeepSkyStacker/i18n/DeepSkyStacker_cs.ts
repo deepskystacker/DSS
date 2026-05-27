@@ -801,72 +801,62 @@ Zaškrtnutím tohoto políčka uchováte trasovací soubor.</translation>
         <translation>Povolit zvuky postupu</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="666"/>
-        <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
-        <translation>Na Processing Panel zobrazte pixely pod Black Level jako modré a pixely nad White Level jako červené.</translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="669"/>
-        <source>Show clipping for Black/White Points</source>
-        <translation>Zobrazit výstřižek pro černé/bílé body</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="298"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Nastavení zpracování...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="301"/>
+        <location filename="../ExplorerBar.cpp" line="299"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Parametry slučování...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="343"/>
+        <location filename="../ExplorerBar.cpp" line="341"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Obnovit výchozí nastavení</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="345"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Načíst nastavení DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="349"/>
+        <location filename="../ExplorerBar.cpp" line="347"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Načíst...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="410"/>
+        <location filename="../ExplorerBar.cpp" line="408"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Uložit jako nastavení DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="414"/>
+        <location filename="../ExplorerBar.cpp" line="412"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Uložit jako...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="587"/>
+        <location filename="../ExplorerBar.cpp" line="579"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Načtení nastavení DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="591"/>
-        <location filename="../ExplorerBar.cpp" line="646"/>
+        <location filename="../ExplorerBar.cpp" line="583"/>
+        <location filename="../ExplorerBar.cpp" line="638"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Nastavení DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="641"/>
+        <location filename="../ExplorerBar.cpp" line="633"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Uložení nastavení DeepSkyStacker</translation>
@@ -1331,7 +1321,17 @@ Zjištěné studené pixely: %L3 (%L4 %)
         <translation>Použít</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="560"/>
+        <location filename="../ui/ProcessingControls.ui" line="503"/>
+        <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+        <translation>Zobrazte pixely pod Black Level jako modré a pixely nad White Level jako červené.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="506"/>
+        <source>Show Shadow and Highlight clipping</source>
+        <translation>Zobrazit ořez stínů a světlých bodů</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="570"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Obnovit</translation>
@@ -1340,95 +1340,95 @@ Zjištěné studené pixely: %L3 (%L4 %)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1004"/>
+        <location filename="../ProcessingDlg.cpp" line="1009"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Chcete změny uložit?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="445"/>
+        <location filename="../ProcessingDlg.cpp" line="450"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Obrázky TIFF a FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="329"/>
+        <location filename="../ProcessingDlg.cpp" line="334"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Maska hvězd vytvořená v DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="331"/>
+        <location filename="../ProcessingDlg.cpp" line="336"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Uložení masky hvězd do %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="408"/>
-        <location filename="../ProcessingDlg.cpp" line="520"/>
+        <location filename="../ProcessingDlg.cpp" line="413"/>
+        <location filename="../ProcessingDlg.cpp" line="525"/>
         <source>Failed to load image %1</source>
         <translation>Nepodařilo se načíst obrázek %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="549"/>
+        <location filename="../ProcessingDlg.cpp" line="554"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF obraz 16 bit/k (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="550"/>
+        <location filename="../ProcessingDlg.cpp" line="555"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF obraz 32 bit/k - celočíselné (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="551"/>
+        <location filename="../ProcessingDlg.cpp" line="556"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF obraz 32 bit/k - racionální (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="552"/>
+        <location filename="../ProcessingDlg.cpp" line="557"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS obraz 16 bit/k (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="553"/>
+        <location filename="../ProcessingDlg.cpp" line="558"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS obraz 32 bit/k - integer (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="554"/>
+        <location filename="../ProcessingDlg.cpp" line="559"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS obraz 32 bit/k - rational (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="563"/>
+        <location filename="../ProcessingDlg.cpp" line="568"/>
         <source>Save Image</source>
         <translation>Uložit obrázek</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="666"/>
+        <location filename="../ProcessingDlg.cpp" line="671"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Není žádný obraz k uložení.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="681"/>
+        <location filename="../ProcessingDlg.cpp" line="686"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Informace jsou nedostupné</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="703"/>
+        <location filename="../ProcessingDlg.cpp" line="708"/>
         <source>Exposure: %1 </source>
         <translation>Expozice: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="704"/>
+        <location filename="../ProcessingDlg.cpp" line="709"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1438,25 +1438,25 @@ Zjištěné studené pixely: %L3 (%L4 %)
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1149"/>
+        <location filename="../ProcessingDlg.cpp" line="1154"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
         <translation>ASinH stretch: beta %L1, bp %L2, hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1161"/>
+        <location filename="../ProcessingDlg.cpp" line="1166"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
         <translation>Barevná vyváženost: R %L1, G %L2, B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1172"/>
-        <location filename="../ProcessingDlg.cpp" line="1199"/>
-        <location filename="../ProcessingDlg.cpp" line="1227"/>
+        <location filename="../ProcessingDlg.cpp" line="1177"/>
+        <location filename="../ProcessingDlg.cpp" line="1204"/>
+        <location filename="../ProcessingDlg.cpp" line="1232"/>
         <source>Undo %1</source>
         <translation>Vrátit zpět %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1188"/>
-        <location filename="../ProcessingDlg.cpp" line="1231"/>
+        <location filename="../ProcessingDlg.cpp" line="1193"/>
+        <location filename="../ProcessingDlg.cpp" line="1236"/>
         <source>Redo %1</source>
         <translation>Znovu %1</translation>
     </message>
