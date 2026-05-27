@@ -18,13 +18,13 @@
     <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
-       <width>390</width>
+       <width>430</width>
        <height>370</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>390</width>
+       <width>430</width>
        <height>370</height>
       </size>
      </property>
@@ -33,13 +33,13 @@
        <widget class="QTabWidget" name="tabWidget">
         <property name="minimumSize">
          <size>
-          <width>390</width>
+          <width>430</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>390</width>
+          <width>430</width>
           <height>16777215</height>
          </size>
         </property>
@@ -513,13 +513,13 @@
        <widget class="QWidget" name="buttonWidget" native="true">
         <property name="minimumSize">
          <size>
-          <width>350</width>
+          <width>430</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>390</width>
+          <width>430</width>
           <height>16777215</height>
          </size>
         </property>
