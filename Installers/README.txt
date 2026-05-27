@@ -31,6 +31,12 @@ Changes for DeepSkyStacker 6.2.1 Beta 2
    Super-pixel mode should have been set for the bitmap *after* reading the FITS file into it, not before.  It
    would appear that this problem dates back to before 2018.
 
+6. Relocate the check-box for controlling the display of Shadow and Highlight clipping to the Processing Panel,
+   as it will be more obvious there.
+
+7. Add a Mid-tone Transfer Function (MTF) Transformation (or Stretch) with an Auto-stretch capability.  I'm most
+   grateful to Amila Karunarathna for contributing this.
+
 Changes for DeepSkyStacker 6.2.0
 ================================
 

@@ -1281,7 +1281,7 @@ namespace DSS
 	}
 
 	//
-	// Triggered whne the user changes the state of the "Show Clipping" checkbox, which
+	// Triggered when the user changes the state of the "Show Clipping" checkbox, which
 	// controls whether to show clipping of black and white pixels in the preview image
 	//
 	void ProcessingDlg::clippingStateChanged(int state)
