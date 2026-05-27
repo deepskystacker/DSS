@@ -1282,7 +1282,7 @@ namespace DSS
 
 	//
 	// Triggered when the user changes the state of the "Show Clipping" checkbox, which
-	// controls whether to show clipping of black and white pixels in the preview image
+	// controls whether to show clipping of shadow and highlight pixels in the image
 	//
 	void ProcessingDlg::clippingStateChanged(int state)
 	{
