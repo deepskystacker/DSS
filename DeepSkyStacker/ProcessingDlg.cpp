@@ -1288,6 +1288,19 @@ namespace DSS
 	{
 		Qt::CheckState checked{ static_cast<Qt::CheckState>(state) };
 		QSettings{}.setValue("ShowBlackWhiteClipping", (Qt::Checked == checked));
+		if (preview)
+		{
+			if (controls->tabWidget->currentWidget() == controls->asinhStretchTab)
+			{
+				// Apply the stretch asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::AsinhStretch);
+			}
+			if (controls->tabWidget->currentWidget() == controls->colourBalanceTab)
+			{
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::ColourBalance);
+			}
+		}
 	}
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
