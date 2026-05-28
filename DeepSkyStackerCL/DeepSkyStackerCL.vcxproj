@@ -145,7 +145,7 @@
     <QtTranslation>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
-      <NoObsolete>true</NoObsolete>
+      <NoObsolete>false</NoObsolete>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -195,7 +195,7 @@
     <QtTranslation>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
-      <NoObsolete>true</NoObsolete>
+      <NoObsolete>false</NoObsolete>
     </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>

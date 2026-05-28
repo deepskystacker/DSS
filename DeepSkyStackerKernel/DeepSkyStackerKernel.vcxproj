@@ -129,7 +129,7 @@
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
       <QmOutputFile>%(Filename).qm</QmOutputFile>
-      <NoObsolete>true</NoObsolete>
+      <NoObsolete>false</NoObsolete>
     </QtTranslation>
     <PreBuildEvent>
       <Command>
@@ -171,7 +171,7 @@
     <QtTranslation>
       <BuildAction>lrelease</BuildAction>
       <QmOutputDir>%(RelativeDir)</QmOutputDir>
-      <NoObsolete>true</NoObsolete>
+      <NoObsolete>false</NoObsolete>
       <QmOutputFile>%(Filename).qm</QmOutputFile>
     </QtTranslation>
     <PreBuildEvent>
