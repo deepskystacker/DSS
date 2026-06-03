@@ -152,8 +152,8 @@ namespace DSS
 		QIcon linkIcon;
 		linkIcon.addFile(":/processing/chain.svg", QSize(), QIcon::Normal, QIcon::Off);
 		linkIcon.addFile(":/processing/chain-linked.svg", QSize(), QIcon::Normal, QIcon::On);
-		controls->linkButton->setIcon(linkIcon);
-		controls->linkButton->setIconSize(QSize(16, 16));
+		controls->mtfLinkButton->setIcon(linkIcon);
+		controls->mtfLinkButton->setIconSize(QSize(16, 16));
 		setMtfClippingLabelText(0.0, 0.0);
 
 		connectSignalsToSlots();
@@ -266,7 +266,7 @@ namespace DSS
 				controls->mtfRedGradient->setColor(Qt::red);
 				controls->mtfGreenGradient->setVisible(true);
 				controls->mtfBlueGradient->setVisible(true);
-				controls->linkButton->setEnabled(true);
+				controls->mtfLinkButton->setEnabled(true);
 			}
 			else
 			{
@@ -274,7 +274,7 @@ namespace DSS
 				controls->mtfRedGradient->setColor(Qt::white);
 				controls->mtfGreenGradient->setVisible(false);
 				controls->mtfBlueGradient->setVisible(false);
-				controls->linkButton->setEnabled(false);
+				controls->mtfLinkButton->setEnabled(false);
 			}
 			syncMtfSpinBoxesFromModel();
 		}
@@ -295,10 +295,10 @@ namespace DSS
 		connect(controls->redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
 		connect(controls->resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
 
-		connect(controls->linkButton, &QPushButton::toggled, this, &ProcessingDlg::onLinkToggled);
-		connect(controls->autostretchButton, &QPushButton::clicked, this, &ProcessingDlg::onAutostretch);
-		controls->autostretchButton->setContextMenuPolicy(Qt::CustomContextMenu);
-		connect(controls->autostretchButton, &QPushButton::customContextMenuRequested, this, &ProcessingDlg::onAutostretchContextMenu);
+		connect(controls->mtfLinkButton, &QPushButton::toggled, this, &ProcessingDlg::onLinkToggled);
+		connect(controls->mtfAutostretchButton, &QPushButton::clicked, this, &ProcessingDlg::onAutostretch);
+		controls->mtfAutostretchButton->setContextMenuPolicy(Qt::CustomContextMenu);
+		connect(controls->mtfAutostretchButton, &QPushButton::customContextMenuRequested, this, &ProcessingDlg::onAutostretchContextMenu);
 
 		//
 		// If the user changes the ASinH stretch settings, update the controls to match and process the change
@@ -370,7 +370,7 @@ namespace DSS
 		connect(controls->showClipping, &QCheckBox::checkStateChanged,
 			this, &ProcessingDlg::clippingStateChanged);
 
-		controls->autostretchButton->setFixedWidth(controls->mtfApply->sizeHint().width());
+		controls->mtfAutostretchButton->setFixedWidth(controls->mtfApply->sizeHint().width());
 
 		connect(picture, &DSS::ImageView::mouseMovedOverImage,
 			this, &ProcessingDlg::updatePixelInfo);
@@ -1264,7 +1264,7 @@ namespace DSS
 			//
 			// Apply the MTF autostretch to the image
 			//
-			bitmap.mtfAutoStretch(controls->linkButton->isChecked(), mtfTargetBkg, mtfShadowClip);
+			bitmap.mtfAutoStretch(controls->mtfLinkButton->isChecked(), mtfTargetBkg, mtfShadowClip);
 			break;
 
 
@@ -1416,7 +1416,7 @@ namespace DSS
 			//
 			// Apply the MTF autostretch to the image
 			//
-			bool linked = controls->linkButton->isChecked();
+			bool linked = controls->mtfLinkButton->isChecked();
 			bitmap.mtfAutoStretch(linked, mtfTargetBkg, mtfShadowClip);
 			deepStack.setDescription(tr("Autostretch: %1")
 				.arg(linked ? tr("Linked") : tr("Unlinked")));
@@ -1592,7 +1592,7 @@ namespace DSS
 		DeepStack tempStack = undoRedoStack.current();
 		StackedBitmap& tempBitmap = tempStack.GetStackedBitmap();
 		tempBitmap.normalise();
-		tempBitmap.mtfAutoStretch(controls->linkButton->isChecked(), mtfTargetBkg, mtfShadowClip, &s, &m, &h);
+		tempBitmap.mtfAutoStretch(controls->mtfLinkButton->isChecked(), mtfTargetBkg, mtfShadowClip, &s, &m, &h);
 
 		controls->mtfRedGradient->setValues(s, m, h);
 		controls->mtfGreenGradient->setValues(s, m, h);
@@ -1665,7 +1665,7 @@ namespace DSS
 		mtfMidtone_r = controls->mtfRedGradient->midtones();
 		mtfHighlights_r = controls->mtfRedGradient->highlights();
 
-		if (controls->linkButton->isChecked())
+		if (controls->mtfLinkButton->isChecked())
 		{
 			controls->mtfGreenGradient->setValues(mtfShadows_r, mtfMidtone_r, mtfHighlights_r);
 			controls->mtfBlueGradient->setValues(mtfShadows_r, mtfMidtone_r, mtfHighlights_r);
@@ -1684,7 +1684,7 @@ namespace DSS
 		mtfMidtone_g = controls->mtfGreenGradient->midtones();
 		mtfHighlights_g = controls->mtfGreenGradient->highlights();
 
-		if (controls->linkButton->isChecked())
+		if (controls->mtfLinkButton->isChecked())
 		{
 			controls->mtfRedGradient->setValues(mtfShadows_g, mtfMidtone_g, mtfHighlights_g);
 			controls->mtfBlueGradient->setValues(mtfShadows_g, mtfMidtone_g, mtfHighlights_g);
@@ -1703,7 +1703,7 @@ namespace DSS
 		mtfMidtone_b = controls->mtfBlueGradient->midtones();
 		mtfHighlights_b = controls->mtfBlueGradient->highlights();
 
-		if (controls->linkButton->isChecked())
+		if (controls->mtfLinkButton->isChecked())
 		{
 			controls->mtfRedGradient->setValues(mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
 			controls->mtfGreenGradient->setValues(mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
@@ -1725,7 +1725,7 @@ namespace DSS
 		getCurrentChannelValues(s, m, h);
 
 		QColor labelColour{ Qt::black };
-		if (!controls->linkButton->isChecked() && !mtfMonochrome)
+		if (!controls->mtfLinkButton->isChecked() && !mtfMonochrome)
 		{
 			switch (activeMtfChannel)
 			{
@@ -1762,7 +1762,7 @@ namespace DSS
 			}
 		};
 
-		if (forceAllChannels || controls->linkButton->isChecked())
+		if (forceAllChannels || controls->mtfLinkButton->isChecked())
 		{
 			setChannel(0, shadows, midtones, highlights);
 			setChannel(1, shadows, midtones, highlights);
@@ -1820,7 +1820,7 @@ namespace DSS
 	{
 		QMenu menu(this);
 		QAction* settingsAction = menu.addAction(tr("Edit autostretch parameters ..."));
-		if (menu.exec(controls->autostretchButton->mapToGlobal(pos)) == settingsAction)
+		if (menu.exec(controls->mtfAutostretchButton->mapToGlobal(pos)) == settingsAction)
 		{
 			onMtfAutostretchSettings();
 		}

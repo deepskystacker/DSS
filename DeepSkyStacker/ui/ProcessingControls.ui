@@ -157,7 +157,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="linkButton">
+             <widget class="QPushButton" name="mtfLinkButton">
               <property name="toolTip">
                <string>Link RGB channels so moving one MTF slider updates all channels together.</string>
               </property>
@@ -189,7 +189,7 @@
              </spacer>
             </item>
             <item>
-             <widget class="QPushButton" name="autostretchButton">
+             <widget class="QPushButton" name="mtfAutostretchButton">
               <property name="toolTip">
                <string>Automatically estimate MTF shadow, midtone, and highlight values from the current image.</string>
               </property>
