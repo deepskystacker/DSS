@@ -36,6 +36,7 @@
 ****************************************************************************/
 #include <QWidget>
 #include <QColor>
+class QKeyEvent;
 
 namespace DSS
 {
@@ -71,6 +72,7 @@ namespace DSS
 
 	protected:
 		void paintEvent(QPaintEvent* event) override;
+		void keyPressEvent(QKeyEvent* event) override;
 		void mousePressEvent(QMouseEvent* event) override;
 		void mouseMoveEvent(QMouseEvent* event) override;
 		void mouseReleaseEvent(QMouseEvent* event) override;
@@ -90,6 +92,9 @@ namespace DSS
 		double valueFromPos(int pos) const;
 		void drawHandle(QPainter& p, int x, ActiveHandle type);
 		ActiveHandle hitTest(int x, int y) const;
+
+		constexpr static double arrowIncrement = 0.0001;
+		constexpr static double pageIncrement = 0.001;
 	};
 
 } // namespace DSS

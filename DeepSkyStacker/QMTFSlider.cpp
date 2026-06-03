@@ -46,6 +46,8 @@ namespace DSS
 	QMTFSlider::QMTFSlider(QWidget* parent)
 		: QWidget(parent), m_Shadows(0.0), m_Midtones(0.5), m_Highlights(1.0), m_Color(Qt::white), m_ActiveHandle(ActiveHandle::None), m_SelectedHandle(ActiveHandle::None)
 	{
+		// Ensure we get key events when the control is clicked
+		setFocusPolicy(Qt::ClickFocus);
 		setMinimumHeight(24);
 		setCursor(Qt::ArrowCursor);
 	}
@@ -237,6 +239,58 @@ namespace DSS
 			m_ActiveHandle = ActiveHandle::None;
 			emit valuesChanged(m_Shadows, m_Midtones, m_Highlights);
 		}
+	}
+
+	void QMTFSlider::keyPressEvent(QKeyEvent* e)
+	{
+		bool handled = false;
+		double increment = 0.0;
+
+		//
+		// Firstly check for keys of interest (up/down/page up/page down) and set
+		// the increment appropriately.
+		//
+		switch(e->key())
+		{
+		case Qt::Key_Up:
+			increment = arrowIncrement;
+			break;
+		case Qt::Key_Down:
+			increment = -arrowIncrement;
+			break;
+		case Qt::Key_PageUp:
+			increment = pageIncrement;
+			break;
+		case Qt::Key_PageDown:
+			increment = -pageIncrement;
+			break;
+		default:
+			break;
+		}
+
+		switch (m_SelectedHandle)
+		{
+		case ActiveHandle::Shadows:
+			setShadows(m_Shadows + increment);
+			emit sliderMoved();
+			handled = true;
+			break;
+		case ActiveHandle::Midtones:
+			setMidtones(m_Midtones + increment);
+			emit sliderMoved();	
+			handled = true;
+			break;
+		case ActiveHandle::Highlights:
+			setHighlights(m_Highlights + increment);
+			emit sliderMoved();
+			handled = true;
+			break;
+		default:
+			break;
+		}
+
+		if (!handled)
+			Inherited::keyPressEvent(e);
 	}
 
 	void QMTFSlider::wheelEvent(QWheelEvent* event)
