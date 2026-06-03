@@ -51,6 +51,8 @@ set(Dialogs__Settings
     "OutputTab.h"
     "PostCalibration.cpp"
     "PostCalibration.h"
+    "MtfAutostretchSettings.cpp"
+    "MtfAutostretchSettings.h"
     "RawDDPSettings.cpp"
     "RawDDPSettings.h"
     "ResultParameters.cpp"
@@ -145,6 +147,7 @@ set(Ui_Files
 	"ui/OutputTab.ui"
 	"ui/PictureList.ui"
 	"ui/PostCalibration.ui"
+	"ui/MtfAutostretchSettings.ui"
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
         "ui/ProgressDlg.ui"
@@ -323,6 +326,8 @@ set(Tools
     "../Tools/griddata.cpp"
     "../Tools/QElidedLabel.cpp"
     "../Tools/QLinearGradientCtrl.cpp"
+    "QMTFSlider.cpp"
+    "QMTFSlider.h"
 )
 source_group("Tools" FILES ${Tools})
 

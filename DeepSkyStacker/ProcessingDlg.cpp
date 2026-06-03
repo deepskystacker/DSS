@@ -37,6 +37,7 @@
 #include <QtConcurrentRun>
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
+#include "MtfAutostretchSettings.h"
 #include "oldprogressdlg.h"
 #include "selectrect.h"
 #include "FrameInfoSupport.h"
@@ -45,7 +46,8 @@
 #include "StarMask.h"
 #include "FITSUtil.h"
 #include "TIFFUtil.h"
-
+#include "QLinearGradientCtrl.h"
+#include <QMenu>
 #define dssApp DeepSkyStacker::instance()
 
 /* ------------------------------------------------------------------- */
@@ -97,7 +99,8 @@ namespace DSS
 		previewTimer{ this },
 		redSliderTimer{ this },
 		greenSliderTimer{ this },
-		blueSliderTimer{ this }
+		blueSliderTimer{ this },
+		mtfSliderTimer{ this }
 	{
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);
@@ -116,6 +119,8 @@ namespace DSS
 		greenSliderTimer.setSingleShot(true);	// Fires only once after started
 		blueSliderTimer.setSingleShot(true);		// Fires only once after started	
 
+		mtfSliderTimer.setSingleShot(true);
+
 		//
 		// Disable keyboard tracking for the spin boxes so that the valueChanged
 		// signal is only emitted when the user has finished changing the value
@@ -131,6 +136,25 @@ namespace DSS
 		controls->asinhStretchSlider->setTracking(false);
 
 		controls->showClipping->setChecked(QSettings{}.value("ShowBlackWhiteClipping", true).toBool());
+
+		controls->mtfRedGradient->setColor(Qt::red);
+		controls->mtfGreenGradient->setColor(Qt::green);
+		controls->mtfBlueGradient->setColor(Qt::blue);
+
+		QSizePolicy spGreen = controls->mtfGreenGradient->sizePolicy();
+		spGreen.setRetainSizeWhenHidden(true);
+		controls->mtfGreenGradient->setSizePolicy(spGreen);
+
+		QSizePolicy spBlue = controls->mtfBlueGradient->sizePolicy();
+		spBlue.setRetainSizeWhenHidden(true);
+		controls->mtfBlueGradient->setSizePolicy(spBlue);
+
+		QIcon linkIcon;
+		linkIcon.addFile(":/processing/chain.svg", QSize(), QIcon::Normal, QIcon::Off);
+		linkIcon.addFile(":/processing/chain-linked.svg", QSize(), QIcon::Normal, QIcon::On);
+		controls->linkButton->setIcon(linkIcon);
+		controls->linkButton->setIconSize(QSize(16, 16));
+		setMtfClippingLabelText(0.0, 0.0);
 
 		connectSignalsToSlots();
 
@@ -198,16 +222,10 @@ namespace DSS
 		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
 		const QSignalBlocker previewBlocker(controls->previewCB);
 
-		asinhBeta = DefaultAsinhBeta;
-		asinhBP = DefaultAsinhBP;
-
-		controls->asinhStretchSpinBox->setValue(DefaultAsinhBeta);
-		controls->asinhStretchSlider->setValue(static_cast<int>(DefaultAsinhBeta * 10.0f));
-
-		controls->asinhBPSpinBox->setValue(DefaultAsinhBP);
-		controls->asinhBPSlider->setValue(static_cast<int>(DefaultAsinhBP * 1000.0f));
+		zeroAsinHControls();
 
 		zeroColourBalanceControls();
+		zeroMtfControls();
 
 		asinhHWLuminance = true;
 		controls->asinhHumanWeighted->setChecked(true);
@@ -218,7 +236,7 @@ namespace DSS
 		//
 		// Finally select the stretch tab
 		//
-		controls->tabWidget->setCurrentWidget(controls->asinhStretchTab);
+		controls->tabWidget->setCurrentWidget(controls->mtfStretchTab);
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -237,6 +255,28 @@ namespace DSS
 			//
 			controls->undoButton->setEnabled(undoRedoStack.backwardAvailable());
 			controls->redoButton->setEnabled(undoRedoStack.forwardAvailable());
+
+			StackedBitmap& bmp{ dssApp->deepStack().GetStackedBitmap() };
+			bool colour{ !bmp.isMonochrome() };
+			controls->colourBalanceTab->setEnabled(colour);
+
+			if (colour)
+			{
+				mtfMonochrome = false;
+				controls->mtfRedGradient->setColor(Qt::red);
+				controls->mtfGreenGradient->setVisible(true);
+				controls->mtfBlueGradient->setVisible(true);
+				controls->linkButton->setEnabled(true);
+			}
+			else
+			{
+				mtfMonochrome = true;
+				controls->mtfRedGradient->setColor(Qt::white);
+				controls->mtfGreenGradient->setVisible(false);
+				controls->mtfBlueGradient->setVisible(false);
+				controls->linkButton->setEnabled(false);
+			}
+			syncMtfSpinBoxesFromModel();
 		}
 		else
 		{
@@ -254,6 +294,11 @@ namespace DSS
 		connect(controls->undoButton, &QPushButton::pressed, this, &ProcessingDlg::onUndo);
 		connect(controls->redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
 		connect(controls->resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
+
+		connect(controls->linkButton, &QPushButton::toggled, this, &ProcessingDlg::onLinkToggled);
+		connect(controls->autostretchButton, &QPushButton::clicked, this, &ProcessingDlg::onAutostretch);
+		controls->autostretchButton->setContextMenuPolicy(Qt::CustomContextMenu);
+		connect(controls->autostretchButton, &QPushButton::customContextMenuRequested, this, &ProcessingDlg::onAutostretchContextMenu);
 
 		//
 		// If the user changes the ASinH stretch settings, update the controls to match and process the change
@@ -279,10 +324,53 @@ namespace DSS
 
 		connect(controls->cbApply, &QPushButton::pressed, this, &ProcessingDlg::cbApplyPressed);
 
+		//
+		// If the user changes the MTF stretch settings, update the controls to match and process the change
+		//
+		connect(controls->mtfRedGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfRedGradientSliderMoved);
+		connect(controls->mtfGreenGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfGreenGradientSliderMoved);
+		connect(controls->mtfBlueGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfBlueGradientSliderMoved);
+		connect(controls->mtfRedGradient, &QMTFSlider::sliderClicked, this, [this]() {
+			controls->mtfGreenGradient->clearSelectedHandle();
+			controls->mtfBlueGradient->clearSelectedHandle();
+			activeMtfChannel = 0;
+			syncMtfSpinBoxesFromModel();
+		});
+		connect(controls->mtfGreenGradient, &QMTFSlider::sliderClicked, this, [this]() {
+			controls->mtfRedGradient->clearSelectedHandle();
+			controls->mtfBlueGradient->clearSelectedHandle();
+			activeMtfChannel = 1;
+			syncMtfSpinBoxesFromModel();
+		});
+		connect(controls->mtfBlueGradient, &QMTFSlider::sliderClicked, this, [this]() {
+			controls->mtfRedGradient->clearSelectedHandle();
+			controls->mtfGreenGradient->clearSelectedHandle();
+			activeMtfChannel = 2;
+			syncMtfSpinBoxesFromModel();
+		});
+
+		connect(controls->mtfShadowsSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfShadowsSpinBoxChanged);
+		connect(controls->mtfMidtonesSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfMidtonesSpinBoxChanged);
+		connect(controls->mtfHighlightsSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfHighlightsSpinBoxChanged);
+
+		connect(&mtfSliderTimer, &QTimer::timeout, this, [this]() {
+			previewIsAutoStretch = false;
+			if (preview) emit onPreview(ProcessingFunction::MtfStretch);
+			else
+			{
+				controls->mtfApply->setEnabled(true);
+				showHistogram();
+			}
+		});
+
+		connect(controls->mtfApply, &QPushButton::pressed, this, &ProcessingDlg::mtfApplyPressed);
+
 		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
 
 		connect(controls->showClipping, &QCheckBox::checkStateChanged,
 			this, &ProcessingDlg::clippingStateChanged);
+
+		controls->autostretchButton->setFixedWidth(controls->mtfApply->sizeHint().width());
 
 		connect(picture, &DSS::ImageView::mouseMovedOverImage,
 			this, &ProcessingDlg::updatePixelInfo);
@@ -738,8 +826,116 @@ namespace DSS
 		{
 			undoRedoStack.current().computeDisplayHistogram(histogram);
 		}
+
+		updateMtfClippingLabels(histogram);
 		
 		drawHistogram(histogram);
+	}
+
+	void ProcessingDlg::updateMtfClippingLabels(RGBHistogram& histogram)
+	{
+		const size_t binCount = histogram.GetRedHistogram().GetNrValues();
+		if (binCount == 0)
+		{
+			setMtfClippingLabelText(0.0, 0.0);
+			return;
+		}
+
+		const bool monochrome = !controls->mtfGreenGradient->isVisible() || !controls->mtfBlueGradient->isVisible();
+
+		double shadowThreshold = mtfShadows_r;
+		double highlightThreshold = mtfHighlights_r;
+		if (!monochrome)
+		{
+			shadowThreshold = (mtfShadows_r + mtfShadows_g + mtfShadows_b) / 3.0;
+			highlightThreshold = (mtfHighlights_r + mtfHighlights_g + mtfHighlights_b) / 3.0;
+		}
+
+		shadowThreshold = std::clamp(shadowThreshold, 0.0, 1.0);
+		highlightThreshold = std::clamp(highlightThreshold, 0.0, 1.0);
+
+		const double maxBinIndex = static_cast<double>(binCount - 1);
+		const size_t shadowBin = static_cast<size_t>(std::clamp(shadowThreshold * maxBinIndex, 0.0, maxBinIndex));
+		const size_t highlightBin = static_cast<size_t>(std::clamp(highlightThreshold * maxBinIndex, 0.0, maxBinIndex));
+
+		double total[3] = { 0.0, 0.0, 0.0 };
+		double clippedShadow[3] = { 0.0, 0.0, 0.0 };
+		double clippedHighlight[3] = { 0.0, 0.0, 0.0 };
+
+		for (size_t i = 0; i < binCount; i++)
+		{
+			double redCount = 0.0;
+			double greenCount = 0.0;
+			double blueCount = 0.0;
+			histogram.GetValues(i, redCount, greenCount, blueCount);
+
+			total[0] += redCount;
+			total[1] += greenCount;
+			total[2] += blueCount;
+
+			if (i <= shadowBin)
+			{
+				clippedShadow[0] += redCount;
+				clippedShadow[1] += greenCount;
+				clippedShadow[2] += blueCount;
+			}
+			if (i >= highlightBin)
+			{
+				clippedHighlight[0] += redCount;
+				clippedHighlight[1] += greenCount;
+				clippedHighlight[2] += blueCount;
+			}
+		}
+
+		double shadowPercent = 0.0;
+		double highlightPercent = 0.0;
+		if (monochrome)
+		{
+			if (total[0] > 0.0)
+			{
+				shadowPercent = (clippedShadow[0] / total[0]) * 100.0;
+				highlightPercent = (clippedHighlight[0] / total[0]) * 100.0;
+			}
+		}
+		else
+		{
+			double shadowAccumulator = 0.0;
+			double highlightAccumulator = 0.0;
+			int validChannels = 0;
+
+			for (int ch = 0; ch < 3; ch++)
+			{
+				if (total[ch] <= 0.0)
+					continue;
+
+				shadowAccumulator += (clippedShadow[ch] / total[ch]) * 100.0;
+				highlightAccumulator += (clippedHighlight[ch] / total[ch]) * 100.0;
+				validChannels++;
+			}
+
+			if (validChannels > 0)
+			{
+				shadowPercent = shadowAccumulator / static_cast<double>(validChannels);
+				highlightPercent = highlightAccumulator / static_cast<double>(validChannels);
+			}
+		}
+
+		setMtfClippingLabelText(shadowPercent, highlightPercent);
+	}
+
+	//
+	// Split clipping labels into separate text and value labels for precise layout control:
+	// - Text label ("Shadows Clipping:") remains fixed width
+	// - Value label ("X.XXX%") is right-aligned and can be independently styled
+	//
+	void ProcessingDlg::setMtfClippingLabelText(double shadowPercent, double highlightPercent)
+	{
+		controls->mtfShadowClipLabel->setText(tr("Shadows Clipping:"));
+		controls->mtfShadowClipValueLabel->setText(
+			QString("<b>%1%</b>").arg(QString::number(std::clamp(shadowPercent, 0.0, 100.0), 'f', 3)));
+		controls->mtfHighlightClipLabel->setText(tr("Highlights Clipping:"));
+		controls->mtfHighlightClipValueLabel->setText(
+			QString("<b>%1%</b>").arg(QString::number(std::clamp(highlightPercent, 0.0, 100.0), 'f', 3)));
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -1055,6 +1251,23 @@ namespace DSS
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
 			break;
 
+		case ProcessingFunction::MtfStretch:
+			//
+			// Apply a manual MTF stretch using specific shadow, midtone, and highlight parameters
+			//
+			bitmap.mtfStretch(mtfShadows_r, mtfMidtone_r, mtfHighlights_r,
+				mtfShadows_g, mtfMidtone_g, mtfHighlights_g,
+				mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
+			break;
+
+		case ProcessingFunction::AutoStretch:
+			//
+			// Apply the MTF autostretch to the image
+			//
+			bitmap.mtfAutoStretch(controls->linkButton->isChecked(), mtfTargetBkg, mtfShadowClip);
+			break;
+
+
 		default:
 			ZASSERT(false);	// Invalid processing function
 			break;
@@ -1106,6 +1319,10 @@ namespace DSS
 			QMetaObject::invokeMethod(controls->cbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
 			break;
 
+		case ProcessingFunction::AutoStretch:
+			// No apply button to enable for autostretch - it applies directly
+			break;
+
 		default:
 			ZASSERT(false);	// Invalid processing function
 			break;
@@ -1127,9 +1344,13 @@ namespace DSS
 	{
 		//
 		// Get the current DeepStack object from the undo-redo stack and duplicate it at the top
-		// of the undo-redo stack
+		// of the undo-redo stack. For Autostretch, we duplicate the base image (index 0) to prevent
+		// iterative stretching of already stretched data when toggling states.
 		//
-		undoRedoStack.add(undoRedoStack.current());
+		if (function == ProcessingFunction::AutoStretch)
+			undoRedoStack.add(undoRedoStack.at(0));
+		else
+			undoRedoStack.add(undoRedoStack.current());
 
 		//
 		// Now process the image with the current settings and show the result
@@ -1168,6 +1389,35 @@ namespace DSS
 
 			zeroColourBalanceControls();
 			break;
+
+		case ProcessingFunction::MtfStretch:
+		{
+			//
+			// Apply manual MTF stretch
+			//
+			bitmap.mtfStretch(mtfShadows_r, mtfMidtone_r, mtfHighlights_r,
+				mtfShadows_g, mtfMidtone_g, mtfHighlights_g,
+				mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
+			deepStack.setDescription(tr("MTF Stretch"));
+
+			zeroAdjustmentControls();
+		}
+		break;
+
+		case ProcessingFunction::AutoStretch:
+		{
+			//
+			// Apply the MTF autostretch to the image
+			//
+			bool linked = controls->linkButton->isChecked();
+			bitmap.mtfAutoStretch(linked, mtfTargetBkg, mtfShadowClip);
+			deepStack.setDescription(tr("Autostretch: %1")
+				.arg(linked ? tr("Linked") : tr("Unlinked")));
+
+			zeroAdjustmentControls();
+		}
+		break;
+
 
 		default:
 			ZASSERT(false);	// Invalid processing function
@@ -1303,6 +1553,52 @@ namespace DSS
 		}
 	}
 
+	void ProcessingDlg::onLinkToggled()
+	{
+		syncMtfSpinBoxesFromModel();
+
+		if (!imageLoaded || undoRedoStack.empty())
+			return;
+
+		//
+		// If the most recent operation was an Autostretch, automatically
+		// re-apply it when the link state is toggled to update the view.
+		//
+		if (undoRedoStack.current().description().startsWith(tr("Autostretch:")))
+		{
+			emit onApply(ProcessingFunction::AutoStretch);
+		}
+	}
+
+	void ProcessingDlg::onAutostretch()
+	{
+		if (!imageLoaded)
+			return;
+
+		previewIsAutoStretch = true;
+
+		float s = 0.0f, m = 0.5f, h = 1.0f;
+
+		//
+		// Create a temporary copy and normalise it to properly calculate the MTF parameters
+		//
+		DeepStack tempStack = undoRedoStack.current();
+		StackedBitmap& tempBitmap = tempStack.GetStackedBitmap();
+		tempBitmap.normalise();
+		tempBitmap.mtfAutoStretch(controls->linkButton->isChecked(), mtfTargetBkg, mtfShadowClip, &s, &m, &h);
+
+		controls->mtfRedGradient->setValues(s, m, h);
+		controls->mtfGreenGradient->setValues(s, m, h);
+		controls->mtfBlueGradient->setValues(s, m, h);
+
+		mtfShadows_r = s; mtfShadows_g = s; mtfShadows_b = s;
+		mtfMidtone_r = m; mtfMidtone_g = m; mtfMidtone_b = m;
+		mtfHighlights_r = h; mtfHighlights_g = h; mtfHighlights_b = h;
+		syncMtfSpinBoxesFromModel();
+
+		if (preview) emit onPreview(ProcessingFunction::AutoStretch);
+	}
+
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
 	{
 		selectionRect = DSSRect(static_cast<int>(rect.x()), static_cast<int>(rect.y()),
@@ -1333,5 +1629,227 @@ namespace DSS
 		{
 			pixelInfo->setText("");
 		}
+	}
+	void ProcessingDlg::zeroMtfControls()
+	{
+		previewIsAutoStretch = false;
+
+		mtfShadows_r = 0.0f; mtfShadows_g = 0.0f; mtfShadows_b = 0.0f;
+		mtfMidtone_r = 0.5f; mtfMidtone_g = 0.5f; mtfMidtone_b = 0.5f;
+		mtfHighlights_r = 1.0f; mtfHighlights_g = 1.0f; mtfHighlights_b = 1.0f;
+		mtfTargetBkg = 0.125f;
+		mtfShadowClip = 2.8f;
+
+		controls->mtfRedGradient->setValues(0.0, 0.5, 1.0);
+		controls->mtfGreenGradient->setValues(0.0, 0.5, 1.0);
+		controls->mtfBlueGradient->setValues(0.0, 0.5, 1.0);
+		syncMtfSpinBoxesFromModel();
+
+		if (imageLoaded && !undoRedoStack.empty())
+			showHistogram();
+		else
+			setMtfClippingLabelText(0.0, 0.0);
+	}
+
+	void ProcessingDlg::mtfRedGradientSliderMoved()
+	{
+		activeMtfChannel = 0;
+		mtfShadows_r = controls->mtfRedGradient->shadows();
+		mtfMidtone_r = controls->mtfRedGradient->midtones();
+		mtfHighlights_r = controls->mtfRedGradient->highlights();
+
+		if (controls->linkButton->isChecked())
+		{
+			controls->mtfGreenGradient->setValues(mtfShadows_r, mtfMidtone_r, mtfHighlights_r);
+			controls->mtfBlueGradient->setValues(mtfShadows_r, mtfMidtone_r, mtfHighlights_r);
+
+			mtfShadows_g = mtfShadows_r; mtfMidtone_g = mtfMidtone_r; mtfHighlights_g = mtfHighlights_r;
+			mtfShadows_b = mtfShadows_r; mtfMidtone_b = mtfMidtone_r; mtfHighlights_b = mtfHighlights_r;
+		}
+		syncMtfSpinBoxesFromModel();
+		mtfSliderTimer.start(mtfPreviewDelay);
+	}
+	
+	void ProcessingDlg::mtfGreenGradientSliderMoved()
+	{
+		activeMtfChannel = 1;
+		mtfShadows_g = controls->mtfGreenGradient->shadows();
+		mtfMidtone_g = controls->mtfGreenGradient->midtones();
+		mtfHighlights_g = controls->mtfGreenGradient->highlights();
+
+		if (controls->linkButton->isChecked())
+		{
+			controls->mtfRedGradient->setValues(mtfShadows_g, mtfMidtone_g, mtfHighlights_g);
+			controls->mtfBlueGradient->setValues(mtfShadows_g, mtfMidtone_g, mtfHighlights_g);
+
+			mtfShadows_r = mtfShadows_g; mtfMidtone_r = mtfMidtone_g; mtfHighlights_r = mtfHighlights_g;
+			mtfShadows_b = mtfShadows_g; mtfMidtone_b = mtfMidtone_g; mtfHighlights_b = mtfHighlights_g;
+		}
+		syncMtfSpinBoxesFromModel();
+		mtfSliderTimer.start(mtfPreviewDelay);
+	}
+
+	void ProcessingDlg::mtfBlueGradientSliderMoved()
+	{
+		activeMtfChannel = 2;
+		mtfShadows_b = controls->mtfBlueGradient->shadows();
+		mtfMidtone_b = controls->mtfBlueGradient->midtones();
+		mtfHighlights_b = controls->mtfBlueGradient->highlights();
+
+		if (controls->linkButton->isChecked())
+		{
+			controls->mtfRedGradient->setValues(mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
+			controls->mtfGreenGradient->setValues(mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
+
+			mtfShadows_r = mtfShadows_b; mtfMidtone_r = mtfMidtone_b; mtfHighlights_r = mtfHighlights_b;
+			mtfShadows_g = mtfShadows_b; mtfMidtone_g = mtfMidtone_b; mtfHighlights_g = mtfHighlights_b;
+		}
+		syncMtfSpinBoxesFromModel();
+		mtfSliderTimer.start(mtfPreviewDelay);
+	}
+
+	void ProcessingDlg::syncMtfSpinBoxesFromModel()
+	{
+		const QSignalBlocker shadowsBlocker(controls->mtfShadowsSpinBox);
+		const QSignalBlocker midtonesBlocker(controls->mtfMidtonesSpinBox);
+		const QSignalBlocker highlightsBlocker(controls->mtfHighlightsSpinBox);
+
+		float s, m, h;
+		getCurrentChannelValues(s, m, h);
+
+		QColor labelColour{ Qt::black };
+		if (!controls->linkButton->isChecked() && !mtfMonochrome)
+		{
+			switch (activeMtfChannel)
+			{
+			case 0: labelColour = Qt::red; break;
+			case 1: labelColour = Qt::darkGreen; break;
+			case 2: labelColour = Qt::blue; break;
+			}
+		}
+		const QString style{ QString("color: %1;").arg(labelColour.name()) };
+		controls->mtfShadowsSpinLabel->setText(tr("Shadows"));
+		controls->mtfMidtonesSpinLabel->setText(tr("Midtones"));
+		controls->mtfHighlightsSpinLabel->setText(tr("Highlights"));
+		controls->mtfShadowsSpinLabel->setStyleSheet(style);
+		controls->mtfMidtonesSpinLabel->setStyleSheet(style);
+		controls->mtfHighlightsSpinLabel->setStyleSheet(style);
+
+		controls->mtfShadowsSpinBox->setValue(s);
+		controls->mtfMidtonesSpinBox->setValue(m);
+		controls->mtfHighlightsSpinBox->setValue(h);
+	}
+
+	void ProcessingDlg::applyMtfSpinValues(float shadows, float midtones, float highlights, bool forceAllChannels)
+	{
+		if (midtones < shadows)
+			midtones = shadows;
+		if (midtones > highlights)
+			midtones = highlights;
+
+		auto setChannel = [&](int ch, float s, float m, float h) {
+			switch (ch) {
+			case 0: mtfShadows_r = s; mtfMidtone_r = m; mtfHighlights_r = h; controls->mtfRedGradient->setValues(s, m, h); break;
+			case 1: mtfShadows_g = s; mtfMidtone_g = m; mtfHighlights_g = h; controls->mtfGreenGradient->setValues(s, m, h); break;
+			case 2: mtfShadows_b = s; mtfMidtone_b = m; mtfHighlights_b = h; controls->mtfBlueGradient->setValues(s, m, h); break;
+			}
+		};
+
+		if (forceAllChannels || controls->linkButton->isChecked())
+		{
+			setChannel(0, shadows, midtones, highlights);
+			setChannel(1, shadows, midtones, highlights);
+			setChannel(2, shadows, midtones, highlights);
+		}
+		else
+		{
+			setChannel(activeMtfChannel, shadows, midtones, highlights);
+		}
+
+		syncMtfSpinBoxesFromModel();
+		mtfSliderTimer.start(mtfPreviewDelay);
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	//
+	// Helper method to get current channel values based on activeMtfChannel.
+	// Reduces code duplication across spinbox change handlers.
+	//
+	void ProcessingDlg::getCurrentChannelValues(float& shadows, float& midtones, float& highlights) const
+	{
+		switch (activeMtfChannel)
+		{
+		case 0: shadows = mtfShadows_r; midtones = mtfMidtone_r; highlights = mtfHighlights_r; break;
+		case 1: shadows = mtfShadows_g; midtones = mtfMidtone_g; highlights = mtfHighlights_g; break;
+		case 2: shadows = mtfShadows_b; midtones = mtfMidtone_b; highlights = mtfHighlights_b; break;
+		}
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void ProcessingDlg::mtfShadowsSpinBoxChanged(double value)
+	{
+		float s, m, h;
+		getCurrentChannelValues(s, m, h);
+		applyMtfSpinValues(static_cast<float>(value), m, h, false);
+	}
+
+	void ProcessingDlg::mtfMidtonesSpinBoxChanged(double value)
+	{
+		float s, m, h;
+		getCurrentChannelValues(s, m, h);
+		applyMtfSpinValues(s, static_cast<float>(value), h, false);
+	}
+
+	void ProcessingDlg::mtfHighlightsSpinBoxChanged(double value)
+	{
+		float s, m, h;
+		getCurrentChannelValues(s, m, h);
+		applyMtfSpinValues(s, m, static_cast<float>(value), false);
+	}
+
+	void ProcessingDlg::onAutostretchContextMenu(const QPoint& pos)
+	{
+		QMenu menu(this);
+		QAction* settingsAction = menu.addAction(tr("Edit autostretch parameters ..."));
+		if (menu.exec(controls->autostretchButton->mapToGlobal(pos)) == settingsAction)
+		{
+			onMtfAutostretchSettings();
+		}
+	}
+
+
+	void ProcessingDlg::onMtfAutostretchSettings()
+	{
+		MtfAutostretchSettings dlg(mtfTargetBkg, mtfShadowClip, this);
+		if (dlg.exec() == QDialog::Accepted)
+		{
+			mtfTargetBkg = dlg.targetBkg();
+			mtfShadowClip = dlg.shadowClip();
+		}
+	}
+
+	void ProcessingDlg::mtfApplyPressed()
+	{
+		mtfShadows_r = controls->mtfRedGradient->shadows();
+		mtfMidtone_r = controls->mtfRedGradient->midtones();
+		mtfHighlights_r = controls->mtfRedGradient->highlights();
+		mtfShadows_g = controls->mtfGreenGradient->shadows();
+		mtfMidtone_g = controls->mtfGreenGradient->midtones();
+		mtfHighlights_g = controls->mtfGreenGradient->highlights();
+		mtfShadows_b = controls->mtfBlueGradient->shadows();
+		mtfMidtone_b = controls->mtfBlueGradient->midtones();
+		mtfHighlights_b = controls->mtfBlueGradient->highlights();
+
+		if (previewIsAutoStretch)
+		{
+			onApply(ProcessingFunction::AutoStretch);
+		}
+		else
+		{
+			onApply(ProcessingFunction::MtfStretch);
+		}
+		zeroMtfControls();
 	}
 } // namespace DSS
