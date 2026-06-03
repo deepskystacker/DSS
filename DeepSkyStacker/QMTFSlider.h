@@ -43,7 +43,7 @@ namespace DSS
 	{
 		Q_OBJECT
 
-		typedef QWidget Inherited;
+		using Inherited = QWidget;
 
 	public:
 		explicit QMTFSlider(QWidget* parent = nullptr);
