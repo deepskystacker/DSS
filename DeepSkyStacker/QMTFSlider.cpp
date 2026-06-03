@@ -268,25 +268,28 @@ namespace DSS
 			break;
 		}
 
-		switch (m_SelectedHandle)
+		if (0.0 != increment && m_SelectedHandle != ActiveHandle::None)
 		{
-		case ActiveHandle::Shadows:
-			setShadows(m_Shadows + increment);
+			switch (m_SelectedHandle)
+			{
+			case ActiveHandle::Shadows:
+				setShadows(m_Shadows + increment);
+				handled = true;
+				break;
+			case ActiveHandle::Midtones:
+				setMidtones(m_Midtones + increment);
+				handled = true;
+				break;
+			case ActiveHandle::Highlights:
+				setHighlights(m_Highlights + increment);
+				handled = true;
+				break;
+			default:
+				break;
+			}
 			emit sliderMoved();
+			emit valuesChanged(m_Shadows, m_Midtones, m_Highlights);
 			handled = true;
-			break;
-		case ActiveHandle::Midtones:
-			setMidtones(m_Midtones + increment);
-			emit sliderMoved();	
-			handled = true;
-			break;
-		case ActiveHandle::Highlights:
-			setHighlights(m_Highlights + increment);
-			emit sliderMoved();
-			handled = true;
-			break;
-		default:
-			break;
 		}
 
 		if (!handled)
