@@ -271,7 +271,9 @@ namespace DSS
 				return;
 			}
 		}
-		QWidget::wheelEvent(event);
+		Inherited::wheelEvent(event);
 	}
+
+
 
 } // namespace DSS
