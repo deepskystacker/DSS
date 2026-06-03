@@ -925,17 +925,15 @@ namespace DSS
 
 	//
 	// Split clipping labels into separate text and value labels for precise layout control:
-	// - Text label ("Shadows Clipping:") remains fixed width
+	// - Text label ("Shadow Clipping:") remains fixed width
 	// - Value label ("X.XXX%") is right-aligned and can be independently styled
 	//
 	void ProcessingDlg::setMtfClippingLabelText(double shadowPercent, double highlightPercent)
 	{
-		controls->mtfShadowClipLabel->setText(tr("Shadows Clipping:"));
 		controls->mtfShadowClipValueLabel->setText(
-			QString("<b>%1%</b>").arg(QString::number(std::clamp(shadowPercent, 0.0, 100.0), 'f', 3)));
-		controls->mtfHighlightClipLabel->setText(tr("Highlights Clipping:"));
+			QString("<b>%L1%</b>").arg(QString::number(std::clamp(shadowPercent, 0.0, 100.0), 'f', 3)));
 		controls->mtfHighlightClipValueLabel->setText(
-			QString("<b>%1%</b>").arg(QString::number(std::clamp(highlightPercent, 0.0, 100.0), 'f', 3)));
+			QString("<b>%L1%</b>").arg(QString::number(std::clamp(highlightPercent, 0.0, 100.0), 'f', 3)));
 	}
 
 	/* ------------------------------------------------------------------- */

@@ -52,13 +52,13 @@
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_MTF">
           <property name="leftMargin">
-             <number>7</number>
-          </property>
-          <property name="rightMargin">
-           <number>12</number>
+           <number>7</number>
           </property>
           <property name="topMargin">
            <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>12</number>
           </property>
           <property name="bottomMargin">
            <number>9</number>
@@ -114,7 +114,7 @@
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Expanding</enum>
+               <enum>QSizePolicy::Policy::Expanding</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -130,7 +130,7 @@
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
+               <enum>QSizePolicy::Policy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -145,30 +145,30 @@
               <property name="orientation">
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Policy::Fixed</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>10</width>
                 <height>20</height>
                </size>
               </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
              </spacer>
             </item>
             <item>
              <widget class="QPushButton" name="mtfLinkButton">
-              <property name="toolTip">
-               <string>Link RGB channels so moving one MTF slider updates all channels together.</string>
-              </property>
-              <property name="checkable">
-               <bool>true</bool>
-              </property>
               <property name="maximumSize">
                <size>
                 <width>24</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>Link RGB channels so moving one MTF slider updates all channels together.</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -178,7 +178,7 @@
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
+               <enum>QSizePolicy::Policy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -190,8 +190,11 @@
             </item>
             <item>
              <widget class="QPushButton" name="mtfAutostretchButton">
-              <property name="toolTip">
-               <string>Automatically estimate MTF shadow, midtone, and highlight values from the current image.</string>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="minimumSize">
                <size>
@@ -205,11 +208,8 @@
                 <height>16777215</height>
                </size>
               </property>
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+              <property name="toolTip">
+               <string>Automatically estimate MTF shadow, midtone, and highlight values from the current image.</string>
               </property>
               <property name="text">
                <string comment="IDC_AUTOSTRETCH">Autostretch</string>
@@ -229,7 +229,7 @@
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
               <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
+               <enum>QSizePolicy::Policy::Fixed</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -242,26 +242,23 @@
             <item>
              <layout class="QGridLayout" name="gridLayout_MTFSpinBoxes">
               <property name="horizontalSpacing">
-                  <number>18</number>
+               <number>18</number>
               </property>
               <property name="verticalSpacing">
                <number>2</number>
               </property>
               <item row="0" column="0">
                <widget class="QLabel" name="mtfShadowsSpinLabel">
-                <property name="indent">
-                 <number>5</number>
-                </property>
                 <property name="text">
                  <string>Shadows</string>
+                </property>
+                <property name="indent">
+                 <number>5</number>
                 </property>
                </widget>
               </item>
               <item row="0" column="1">
                <widget class="QDoubleSpinBox" name="mtfShadowsSpinBox">
-                <property name="toolTip">
-                 <string>MTF shadow point.</string>
-                </property>
                 <property name="minimumSize">
                  <size>
                   <width>75</width>
@@ -273,6 +270,9 @@
                   <width>75</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>MTF shadow point.</string>
                 </property>
                 <property name="decimals">
                  <number>4</number>
@@ -287,19 +287,16 @@
               </item>
               <item row="1" column="0">
                <widget class="QLabel" name="mtfMidtonesSpinLabel">
-                <property name="indent">
-                 <number>5</number>
-                </property>
                 <property name="text">
                  <string>Midtones</string>
+                </property>
+                <property name="indent">
+                 <number>5</number>
                 </property>
                </widget>
               </item>
               <item row="1" column="1">
                <widget class="QDoubleSpinBox" name="mtfMidtonesSpinBox">
-                <property name="toolTip">
-                 <string>MTF midtone balance point.</string>
-                </property>
                 <property name="minimumSize">
                  <size>
                   <width>75</width>
@@ -311,6 +308,9 @@
                   <width>75</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>MTF midtone balance point.</string>
                 </property>
                 <property name="decimals">
                  <number>4</number>
@@ -328,19 +328,16 @@
               </item>
               <item row="2" column="0">
                <widget class="QLabel" name="mtfHighlightsSpinLabel">
-                <property name="indent">
-                 <number>5</number>
-                </property>
                 <property name="text">
                  <string>Highlights</string>
+                </property>
+                <property name="indent">
+                 <number>5</number>
                 </property>
                </widget>
               </item>
               <item row="2" column="1">
                <widget class="QDoubleSpinBox" name="mtfHighlightsSpinBox">
-                <property name="toolTip">
-                 <string>MTF highlight point.</string>
-                </property>
                 <property name="minimumSize">
                  <size>
                   <width>75</width>
@@ -352,6 +349,9 @@
                   <width>75</width>
                   <height>16777215</height>
                  </size>
+                </property>
+                <property name="toolTip">
+                 <string>MTF highlight point.</string>
                 </property>
                 <property name="decimals">
                  <number>4</number>
@@ -369,9 +369,6 @@
               </item>
               <item row="1" column="3">
                <widget class="QLabel" name="mtfShadowClipLabel">
-                <property name="indent">
-                 <number>10</number>
-                </property>
                 <property name="minimumSize">
                  <size>
                   <width>180</width>
@@ -381,19 +378,19 @@
                 <property name="toolTip">
                  <string>Estimated percentage of pixels below the current MTF shadow point.</string>
                 </property>
-                <property name="alignment">
-                 <set>Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-                </property>
                 <property name="text">
-                 <string>Shadows Clipping:</string>
+                 <string>Shadow Clipping:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="indent">
+                 <number>10</number>
                 </property>
                </widget>
               </item>
               <item row="1" column="4">
                <widget class="QLabel" name="mtfShadowClipValueLabel">
-                <property name="indent">
-                 <number>5</number>
-                </property>
                 <property name="minimumSize">
                  <size>
                   <width>72</width>
@@ -406,19 +403,19 @@
                   <height>16777215</height>
                  </size>
                 </property>
-                <property name="alignment">
-                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignVCenter</set>
-                </property>
                 <property name="text">
                  <string>&lt;b&gt;0.000%&lt;/b&gt;</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="indent">
+                 <number>5</number>
                 </property>
                </widget>
               </item>
               <item row="2" column="3">
                <widget class="QLabel" name="mtfHighlightClipLabel">
-                <property name="indent">
-                 <number>10</number>
-                </property>
                 <property name="minimumSize">
                  <size>
                   <width>180</width>
@@ -428,19 +425,19 @@
                 <property name="toolTip">
                  <string>Estimated percentage of pixels above the current MTF highlight point.</string>
                 </property>
-                <property name="alignment">
-                 <set>Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-                </property>
                 <property name="text">
-                 <string>Highlights Clipping:</string>
+                 <string>Highlight Clipping:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="indent">
+                 <number>10</number>
                 </property>
                </widget>
               </item>
               <item row="2" column="4">
                <widget class="QLabel" name="mtfHighlightClipValueLabel">
-                <property name="indent">
-                 <number>5</number>
-                </property>
                 <property name="minimumSize">
                  <size>
                   <width>72</width>
@@ -453,11 +450,14 @@
                   <height>16777215</height>
                  </size>
                 </property>
-                <property name="alignment">
-                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignVCenter</set>
-                </property>
                 <property name="text">
                  <string>&lt;b&gt;0.000%&lt;/b&gt;</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                </property>
+                <property name="indent">
+                 <number>5</number>
                 </property>
                </widget>
               </item>
@@ -1051,20 +1051,19 @@
            </property>
           </widget>
          </item>
-
          <item>
           <spacer name="horizontalSpacerAfterLink">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Policy::Fixed</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>15</width>
              <height>20</height>
             </size>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
            </property>
           </spacer>
          </item>
