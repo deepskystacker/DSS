@@ -26,7 +26,7 @@ float roundSig(const float value, const float mult) {
 }
 
 float truncSig(const float value, const float mult) {
-	return static_cast<int>(value * mult);
+	return static_cast<float>(static_cast<int>(value * mult));
 }
 
 TEST_CASE("AVX Entropy", "[AVX][Entropy]")

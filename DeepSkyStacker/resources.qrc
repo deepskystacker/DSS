@@ -119,6 +119,8 @@
         <file alias="logsqrt-dark.png">Icon/logsqrt-dark.png</file>
         <file alias="sqrt.png">Icon/sqrt.png</file>
         <file alias="sqrt-dark.png">Icon/sqrt-dark.png</file>
+        <file alias="chain-linked.svg">Icon/chain-linked.svg</file>
+        <file alias="chain.svg">Icon/chain.svg</file>
     </qresource>
     <qresource prefix="/starmask">
         <file alias="StarShape_Bell.bmp">res/StarShape_Bell.bmp</file>

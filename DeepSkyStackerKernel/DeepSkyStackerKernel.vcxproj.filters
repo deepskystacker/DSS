@@ -236,6 +236,9 @@
     <ClCompile Include="asinhstretch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mtfstretch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

@@ -82,7 +82,9 @@ namespace DSS
 		enum class ProcessingFunction
 		{
 			AsinhStretch,
-			ColourBalance
+			ColourBalance,
+			MtfStretch,
+			AutoStretch
 		};
 
 		//
@@ -99,6 +101,7 @@ namespace DSS
 		{
 			zeroAsinHControls();
 			zeroColourBalanceControls();
+			zeroMtfControls();
 		}
 
 		void connectSignalsToSlots();
@@ -120,10 +123,18 @@ namespace DSS
 		void	drawGaussianCurves(QPainter& painter, RGBHistogram& Histogram, int lWidth, int lHeight);
 
 		void showHistogram();	// Calls drawHistogram 
+		void updateMtfClippingLabels(RGBHistogram& histogram);
+		void setMtfClippingLabelText(double shadowPercent, double highlightPercent);
+		void syncMtfSpinBoxesFromModel();
+		void applyMtfSpinValues(float shadows, float midtones, float highlights, bool forceAllChannels = false);
+		void getCurrentChannelValues(float& shadows, float& midtones, float& highlights) const;
 
 		bool askToSave();
 
 		bool imageLoaded{ false };	// Whether an image is loaded and can be processed	
+
+		// Timer delay for MTF preview updates (milliseconds)
+		static constexpr int mtfPreviewDelay{ 200 };
 
 		//
 		// Image adjustment parameters, which are used for the preview image and histogram when the preview
@@ -133,11 +144,21 @@ namespace DSS
 		float asinhBeta{ DefaultAsinhBeta };	// Asinh stretch value
 		float asinhBP{ DefaultAsinhBP };		// Asinh black point value
 		bool asinhHWLuminance{ true };	// Whether to use human weighted luminance for asinh stretch
+		
+		int activeMtfChannel{ 0 }; // 0: Red, 1: Green, 2: Blue
+		bool mtfMonochrome{ false };
+		float mtfShadows_r{ 0.0f }, mtfShadows_g{ 0.0f }, mtfShadows_b{ 0.0f };
+		float mtfMidtone_r{ 0.5f }, mtfMidtone_g{ 0.5f }, mtfMidtone_b{ 0.5f };
+		float mtfHighlights_r{ 1.0f }, mtfHighlights_g{ 1.0f }, mtfHighlights_b{ 1.0f };
+		float mtfTargetBkg{ 0.125f };
+		float mtfShadowClip{ 2.8f };
+
 		float redShift{ 0.0f };		// Red channel shift value
 		float greenShift{ 0.0f };	// Green channel shift value
 		float blueShift{ 0.0f };	// Blue channel shift value
 
 		bool preview{ true };		// Whether to show a preview of the processed image
+		bool previewIsAutoStretch{ false };
 
 		//
 		// Flag to control which DeepStack object to use for processAndShow() and showHistogram().
@@ -170,6 +191,13 @@ namespace DSS
 		QTimer blueSliderTimer;
 
 		//
+		// Timer to control handling of valueChanged signals from the MTF gradient sliders
+		// and spin boxes, to avoid excessive processing of the preview image when the user
+		// is adjusting the MTF controls.
+		//
+		QTimer mtfSliderTimer;
+
+		//
 		// The DeepStack object used for the preview image and histogram, created by the doPreview() method
 		//
 		DeepStack previewDeepStack;	
@@ -191,6 +219,8 @@ namespace DSS
 		void onUndo();
 		void onRedo();
 		void onReset();
+		void onLinkToggled();
+		void onAutostretch();
 
 		//
 		// Asinh stretch and black point sliders and spin boxes
@@ -339,6 +369,7 @@ namespace DSS
 			else controls->asinhApply->setEnabled(true);
 		}
 
+		void zeroMtfControls();
 		void previewChanged(Qt::CheckState state)
 		{
 			switch (state)
@@ -364,7 +395,7 @@ namespace DSS
 				}
 			}
 		}
-
+		
 		void redSliderChanged(int value)
 		{
 			//
@@ -410,6 +441,16 @@ namespace DSS
 			else controls->cbApply->setEnabled(true);
 		}
 
+		void mtfRedGradientSliderMoved();
+		void mtfGreenGradientSliderMoved();
+		void mtfBlueGradientSliderMoved();
+		void onAutostretchContextMenu(const QPoint& pos);
+		void mtfShadowsSpinBoxChanged(double value);
+		void mtfMidtonesSpinBoxChanged(double value);
+		void mtfHighlightsSpinBoxChanged(double value);
+
+		void onMtfAutostretchSettings();
+
 		void asinhApplyPressed()
 		{
 			controls->asinhApply->setEnabled(false);
@@ -422,6 +463,8 @@ namespace DSS
 			emit onApply(ProcessingFunction::ColourBalance);
 		}
 
+		void mtfApplyPressed();
+
 		//
 		// Triggered when the user changes the state of the "Show Clipping" checkbox, which
 		// controls whether to show clipping of shadow and highlight pixels in the image
@@ -431,17 +474,14 @@ namespace DSS
 		void updatePixelInfo(QPoint pos, QRgb colour);
 
 #if (0)
-
 		void	UpdateMonochromeControls();
 
 
 		// Implementation
 	public:
-
 		void	CopyPictureToClipboard();
 		bool	SavePictureToFile();
 		void	CreateStarMask();
-
 #endif
 	 
 	};

@@ -201,6 +201,29 @@ namespace DSS
 		//
 		void saturationShift(float value);
 
+		//
+		// The MTF (Midtone Transfer Function) autostretch is a non-linear stretch that automatically 
+		// evaluates image statistics to determine the optimal black point and midtone balance,
+		// making faint detail visible while preserving overall structure.
+		//
+		// The 'linked' parameter controls whether the stretch is applied identically across all
+		// channels to preserve colour balance, or independently per channel to neutralise colour casts.
+		//
+		// The image data is expected to have been normalised to the range [0.0, 1.0]
+		//
+		// Source is in mtfstretch.cpp
+		//
+				void mtfAutoStretch(bool linked, float targetMedian = 0.125f, float shadowClipFactor = 2.8f, float* outShadows = nullptr, float* outMidtones = nullptr, float* outHighlights = nullptr);
+
+
+		//
+		// Apply a manual MTF stretch using specific shadow (black point), midtone, and highlight (white point)
+		// parameters, similar to a Levels adjustment.
+		//
+		// Source is in mtfstretch.cpp
+		//
+		void mtfStretch(float shadow_r, float midtone_r, float highlight_r, float shadow_g, float midtone_g, float highlight_g, float shadow_b, float midtone_b, float highlight_b);
+
 		void Clear();
 		int	GetWidth() const;
 		int	GetHeight() const;
