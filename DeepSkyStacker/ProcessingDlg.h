@@ -81,9 +81,9 @@ namespace DSS
 
 		enum class ProcessingFunction
 		{
+			MtfStretch,
 			AsinhStretch,
 			ColourBalance,
-			MtfStretch,
 			AutoStretch
 		};
 

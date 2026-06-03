@@ -1236,6 +1236,15 @@ namespace DSS
 
 		switch (function)
 		{
+		case ProcessingFunction::MtfStretch:
+			//
+			// Apply a manual MTF stretch using specific shadow, midtone, and highlight parameters
+			//
+			bitmap.mtfStretch(mtfShadows_r, mtfMidtone_r, mtfHighlights_r,
+				mtfShadows_g, mtfMidtone_g, mtfHighlights_g,
+				mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
+			break;
+
 		case ProcessingFunction::AsinhStretch:
 			//
 			// Apply the ASinH stretch to the image and set the stretch values to zero
@@ -1249,15 +1258,6 @@ namespace DSS
 			// reset the colour balance shifts to zero
 			//
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
-			break;
-
-		case ProcessingFunction::MtfStretch:
-			//
-			// Apply a manual MTF stretch using specific shadow, midtone, and highlight parameters
-			//
-			bitmap.mtfStretch(mtfShadows_r, mtfMidtone_r, mtfHighlights_r,
-				mtfShadows_g, mtfMidtone_g, mtfHighlights_g,
-				mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
 			break;
 
 		case ProcessingFunction::AutoStretch:
@@ -1305,6 +1305,13 @@ namespace DSS
 		//
 		switch (function)
 		{
+		case ProcessingFunction::MtfStretch:
+			//
+			// Enable the Apply button for the MTF stretch controls
+			//
+			QMetaObject::invokeMethod(controls->mtfApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
+			break;
+
 		case ProcessingFunction::AsinhStretch:
 			//
 			// Enable the Apply button for the ASinH stretch controls
