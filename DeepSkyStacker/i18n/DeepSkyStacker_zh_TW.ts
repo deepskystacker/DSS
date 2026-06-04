@@ -1036,6 +1036,44 @@ Ctrl+4 切換四角模式</translation>
     </message>
 </context>
 <context>
+    <name>DSS::MtfAutostretchSettings</name>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
+        <source>Autostretch Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
+        <source>Target Background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
+        <source>Target background level used by autostretch. Lower values produce a darker background.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
+        <source>Reset target background to the default value (0.125).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
+        <source>Shadow Clipping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
+        <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
+        <source>Reset shadow clipping factor to the default value (2.8).</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DSS::OldProgressDlg</name>
     <message>
         <location filename="../oldprogressdlg.cpp" line="155"/>
@@ -1274,54 +1312,132 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="271"/>
+        <location filename="../ui/ProcessingControls.ui" line="759"/>
         <source>Colour Balance</source>
         <translation>色彩平衡</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <location filename="../ui/ProcessingControls.ui" line="539"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH 影像拉伸</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="59"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <source>MTF Stretch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="168"/>
+        <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="216"/>
+        <source>Autostretch</source>
+        <comment>IDC_AUTOSTRETCH</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="254"/>
+        <source>Shadows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <source>MTF shadow point.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="292"/>
+        <source>Midtones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="314"/>
+        <source>MTF midtone balance point.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="333"/>
+        <source>Highlights</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="355"/>
+        <source>MTF highlight point.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="380"/>
+        <source>Estimated percentage of pixels below the current MTF shadow point.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="383"/>
+        <source>Shadow Clipping:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="427"/>
+        <source>Estimated percentage of pixels above the current MTF highlight point.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="430"/>
+        <source>Highlight Clipping:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="513"/>
+        <source>Apply the current MTF stretch settings to the image.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="547"/>
         <source>Stretch Factor</source>
         <translation>拉伸係數</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="133"/>
+        <location filename="../ui/ProcessingControls.ui" line="621"/>
         <source>Black Point</source>
         <translation>黑點</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="211"/>
+        <location filename="../ui/ProcessingControls.ui" line="699"/>
         <source>Human-weighted luminance</source>
         <translation>人為加權亮度</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="480"/>
+        <location filename="../ui/ProcessingControls.ui" line="968"/>
         <source>Preview</source>
         <translation>預覽</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="248"/>
-        <location filename="../ui/ProcessingControls.ui" line="452"/>
+        <location filename="../ui/ProcessingControls.ui" line="516"/>
+        <location filename="../ui/ProcessingControls.ui" line="736"/>
+        <location filename="../ui/ProcessingControls.ui" line="940"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>套用</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="503"/>
+        <location filename="../ui/ProcessingControls.ui" line="212"/>
+        <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
+Right-click to change Autostretch parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="991"/>
         <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>將低於黑色電平的像素顯示為藍色，將高於白色電平的像素顯示為紅色。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="506"/>
+        <location filename="../ui/ProcessingControls.ui" line="994"/>
         <source>Show Shadow and Highlight clipping</source>
         <translation>顯示陰影和高光剪切</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="570"/>
+        <location filename="../ui/ProcessingControls.ui" line="1074"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>重設</translation>
@@ -1330,95 +1446,95 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1009"/>
+        <location filename="../ProcessingDlg.cpp" line="1203"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>要儲存這些改變嗎？</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="450"/>
+        <location filename="../ProcessingDlg.cpp" line="538"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF 或 FITS 影像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="334"/>
+        <location filename="../ProcessingDlg.cpp" line="422"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>星點遮罩由DeepSkyStacker製作</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="336"/>
+        <location filename="../ProcessingDlg.cpp" line="424"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>將星點遮罩儲存於 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="413"/>
-        <location filename="../ProcessingDlg.cpp" line="525"/>
+        <location filename="../ProcessingDlg.cpp" line="501"/>
+        <location filename="../ProcessingDlg.cpp" line="613"/>
         <source>Failed to load image %1</source>
         <translation>加載圖像 %1 失敗</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="554"/>
+        <location filename="../ProcessingDlg.cpp" line="642"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色16 bit (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="555"/>
+        <location filename="../ProcessingDlg.cpp" line="643"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔 每色32 bit - 整數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="556"/>
+        <location filename="../ProcessingDlg.cpp" line="644"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF檔(每色32 bit - 有理數 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="557"/>
+        <location filename="../ProcessingDlg.cpp" line="645"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色16 bit (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="558"/>
+        <location filename="../ProcessingDlg.cpp" line="646"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS檔 每色32 bit - 整數 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="559"/>
+        <location filename="../ProcessingDlg.cpp" line="647"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 檔 每色32 bit - 有理數 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="568"/>
+        <location filename="../ProcessingDlg.cpp" line="656"/>
         <source>Save Image</source>
         <translation>儲存影像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="671"/>
+        <location filename="../ProcessingDlg.cpp" line="759"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>沒有可存的照片.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="686"/>
+        <location filename="../ProcessingDlg.cpp" line="774"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>沒有資訊</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="708"/>
+        <location filename="../ProcessingDlg.cpp" line="796"/>
         <source>Exposure: %1 </source>
         <translation>曝光: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="709"/>
+        <location filename="../ProcessingDlg.cpp" line="797"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1426,27 +1542,57 @@ Detected Cold Pixels: %L3 (%L4%)
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1154"/>
+        <location filename="../ProcessingDlg.cpp" line="1380"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
         <translation>ASinH 拉伸：β %L1，bp %L2，hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1166"/>
+        <location filename="../ProcessingDlg.cpp" line="1392"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
         <translation>色彩平衡：R %L1，G %L2，B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1177"/>
-        <location filename="../ProcessingDlg.cpp" line="1204"/>
-        <location filename="../ProcessingDlg.cpp" line="1232"/>
+        <location filename="../ProcessingDlg.cpp" line="1406"/>
+        <source>MTF Stretch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1419"/>
+        <source>Autostretch: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1420"/>
+        <source>Linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1420"/>
+        <source>Unlinked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1432"/>
+        <location filename="../ProcessingDlg.cpp" line="1459"/>
+        <location filename="../ProcessingDlg.cpp" line="1487"/>
         <source>Undo %1</source>
         <translation>撤銷 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1193"/>
-        <location filename="../ProcessingDlg.cpp" line="1236"/>
+        <location filename="../ProcessingDlg.cpp" line="1448"/>
+        <location filename="../ProcessingDlg.cpp" line="1491"/>
         <source>Redo %1</source>
         <translation>重做 %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1572"/>
+        <source>Autostretch:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1815"/>
+        <source>Edit autostretch parameters ...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
