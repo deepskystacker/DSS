@@ -209,7 +209,8 @@
                </size>
               </property>
               <property name="toolTip">
-               <string>Automatically estimate MTF shadow, midtone, and highlight values from the current image.</string>
+               <string>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
+Right-click to change Autostretch parameters</string>
               </property>
               <property name="text">
                <string comment="IDC_AUTOSTRETCH">Autostretch</string>
@@ -404,7 +405,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>&lt;b&gt;0.000%&lt;/b&gt;</string>
+                 <string notr="true">&lt;b&gt;0.000%&lt;/b&gt;</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -451,7 +452,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>&lt;b&gt;0.000%&lt;/b&gt;</string>
+                 <string notr="true">&lt;b&gt;0.000%&lt;/b&gt;</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
