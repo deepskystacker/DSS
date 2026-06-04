@@ -41,7 +41,7 @@
 #include "Multitask.h"
 #include "StackedBitmap.h"
 
-namespace DSS
+namespace
 {
 	//
 	// The Midtone Transfer Function (MTF) is a pixel-value remapping function used to
@@ -148,6 +148,10 @@ namespace DSS
 
 		return std::clamp(numerator / denominator, 0.0f, 1.0f);
 	}
+}
+
+namespace DSS
+{
 
 	//
 	// The MTF (Midtone Transfer Function) autostretch is a non-linear stretch that automatically 
