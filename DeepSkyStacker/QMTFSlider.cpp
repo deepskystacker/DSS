@@ -83,7 +83,12 @@ namespace DSS
 	{
 		m_Shadows = std::clamp(s, 0.0, 1.0);
 		m_Highlights = std::clamp(h, m_Shadows, 1.0);
-		m_Midtones = std::clamp(m, m_Shadows, m_Highlights);
+		//
+		// Change midtones to allow the value to be less than the shadows value
+		// but still less than the highlights value. This allows the midtones handle to be moved
+		// past the shadows handle
+		//
+		m_Midtones = std::clamp(m, 0.0, m_Highlights);
 		update();
 	}
 

@@ -1733,9 +1733,6 @@ namespace DSS
 			}
 		}
 		const QString style{ QString("color: %1;").arg(labelColour.name()) };
-		controls->mtfShadowsSpinLabel->setText(tr("Shadows"));
-		controls->mtfMidtonesSpinLabel->setText(tr("Midtones"));
-		controls->mtfHighlightsSpinLabel->setText(tr("Highlights"));
 		controls->mtfShadowsSpinLabel->setStyleSheet(style);
 		controls->mtfMidtonesSpinLabel->setStyleSheet(style);
 		controls->mtfHighlightsSpinLabel->setStyleSheet(style);
@@ -1747,8 +1744,6 @@ namespace DSS
 
 	void ProcessingDlg::applyMtfSpinValues(float shadows, float midtones, float highlights, bool forceAllChannels)
 	{
-		if (midtones < shadows)
-			midtones = shadows;
 		if (midtones > highlights)
 			midtones = highlights;
 
