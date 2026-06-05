@@ -1047,37 +1047,37 @@ Ctrl+4 для переключения режима 4-х углов</translation
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
         <source>Autostretch Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры авторастяжения</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
         <source>Target Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Целевой фон</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
         <source>Target background level used by autostretch. Lower values produce a darker background.</source>
-        <translation type="unfinished"></translation>
+        <translation>Уровень целевого фона, используемый при автоматической настройке. Более низкие значения приводят к более тёмному фону.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
         <source>Reset target background to the default value (0.125).</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбросить значение целевого фона до значения по умолчанию (0,125).</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
         <source>Shadow Clipping</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезание теней</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
         <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Интенсивность обрезания теней в единицах MAD для автоматической настройки.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
         <source>Reset shadow clipping factor to the default value (2.8).</source>
-        <translation type="unfinished"></translation>
+        <translation>Сбросить коэффициент обрезания теней до значения по умолчанию (2,8).</translation>
     </message>
 </context>
 <context>
@@ -1333,73 +1333,73 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>Растяжение MTF</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="168"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
-        <translation type="unfinished"></translation>
+        <translation>Связать каналы RGB, чтобы при перемещении ползунка MTF все каналы обновлялись одновременно.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="216"/>
         <source>Autostretch</source>
         <comment>IDC_AUTOSTRETCH</comment>
-        <translation type="unfinished"></translation>
+        <translation>Автонастройка</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="254"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Тени</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="276"/>
         <source>MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Точка теней MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="292"/>
         <source>Midtones</source>
-        <translation type="unfinished"></translation>
+        <translation>Средние тона</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="314"/>
         <source>MTF midtone balance point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Точка баланса средних тонов MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="333"/>
         <source>Highlights</source>
-        <translation type="unfinished"></translation>
+        <translation>Светлые участки</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="355"/>
         <source>MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Точка светлых участков MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="380"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Расчетный процент пикселей ниже текущей точки теней MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="383"/>
         <source>Shadow Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезание теней:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="427"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Расчетный процент пикселей выше текущей точки светлых участков MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="430"/>
         <source>Highlight Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрезание светов:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="513"/>
         <source>Apply the current MTF stretch settings to the image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить текущие настройки растяжения MTF к изображению.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="547"/>
@@ -1433,7 +1433,8 @@ Detected Cold Pixels: %L3 (%L4%)
         <location filename="../ui/ProcessingControls.ui" line="212"/>
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматически оценить значения теней, полутонов и светов MTF по текущему изображению.
+Щелкните правой кнопкой мыши, чтобы изменить параметры автоматического растяжения</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="991"/>
@@ -1565,22 +1566,22 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1406"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>Растяжение MTF</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1419"/>
         <source>Autostretch: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматическое растяжение: %1</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Linked</source>
-        <translation type="unfinished"></translation>
+        <translation>Связано</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Unlinked</source>
-        <translation type="unfinished"></translation>
+        <translation>Развязано</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1432"/>
@@ -1598,12 +1599,12 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1572"/>
         <source>Autostretch:</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматическое растяжение:</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1815"/>
         <source>Edit autostretch parameters ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать параметры автоматического растяжения ...</translation>
     </message>
 </context>
 <context>

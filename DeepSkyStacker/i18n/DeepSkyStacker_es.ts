@@ -1045,37 +1045,37 @@ Ctrl+4 para alternar el modo de 4 esquinas</translation>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
         <source>Autostretch Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Parámetros de ajuste automático</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
         <source>Target Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fondo objetivo</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
         <source>Target background level used by autostretch. Lower values produce a darker background.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nivel de fondo objetivo utilizado por el ajuste automático. Los valores más bajos producen un fondo más oscuro.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
         <source>Reset target background to the default value (0.125).</source>
-        <translation type="unfinished"></translation>
+        <translation>Restablecer el fondo objetivo al valor predeterminado (0,125).</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
         <source>Shadow Clipping</source>
-        <translation type="unfinished"></translation>
+        <translation>Recorte de sombras</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
         <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Intensidad del recorte de sombras en unidades MAD para el ajuste automático.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
         <source>Reset shadow clipping factor to the default value (2.8).</source>
-        <translation type="unfinished"></translation>
+        <translation>Restablecer el factor de recorte de sombras al valor predeterminado (2,8).</translation>
     </message>
 </context>
 <context>
@@ -1330,73 +1330,73 @@ Píxeles fríos detectados: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>Ampliación MTF</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="168"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vincula los canales RGB para que al mover un control deslizante MTF se actualicen todos los canales a la vez.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="216"/>
         <source>Autostretch</source>
         <comment>IDC_AUTOSTRETCH</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ampliación automática</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="254"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Sombras</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="276"/>
         <source>MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto de sombra MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="292"/>
         <source>Midtones</source>
-        <translation type="unfinished"></translation>
+        <translation>Tonos medios</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="314"/>
         <source>MTF midtone balance point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto de equilibrio de tonos medios MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="333"/>
         <source>Highlights</source>
-        <translation type="unfinished"></translation>
+        <translation>Luces</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="355"/>
         <source>MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto de luces MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="380"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Porcentaje estimado de píxeles por debajo del punto de sombra MTF actual.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="383"/>
         <source>Shadow Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Recorte de sombras:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="427"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Porcentaje estimado de píxeles por encima del punto de luces MTF actual.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="430"/>
         <source>Highlight Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Recorte de luces:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="513"/>
         <source>Apply the current MTF stretch settings to the image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplica la configuración actual de estiramiento MTF a la imagen.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="547"/>
@@ -1430,7 +1430,7 @@ Píxeles fríos detectados: %L3 (%L4%)
         <location filename="../ui/ProcessingControls.ui" line="212"/>
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Estima automáticamente los valores de sombras, tonos medios y luces MTF a partir de la imagen actual.Haz clic con el botón derecho para cambiar los parámetros de estiramiento automático</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="991"/>
@@ -1561,22 +1561,22 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1406"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>Ampliación MTF</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1419"/>
         <source>Autostretch: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Estiramiento automático: %1</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Linked</source>
-        <translation type="unfinished"></translation>
+        <translation>Vinculado</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Unlinked</source>
-        <translation type="unfinished"></translation>
+        <translation>Desvinculado</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1432"/>
@@ -1594,12 +1594,12 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1572"/>
         <source>Autostretch:</source>
-        <translation type="unfinished"></translation>
+        <translation>Estiramiento automático:</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1815"/>
         <source>Edit autostretch parameters ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Editar parámetros de Estiramiento automático ...</translation>
     </message>
 </context>
 <context>

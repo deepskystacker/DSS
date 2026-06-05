@@ -1053,32 +1053,32 @@ Ctrl+4 přepne režim 4 rohů</translation>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
         <source>Target Background</source>
-        <translation>Cílové pozadí</translation>
+        <translation>Cílová úroveň pozadí</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
         <source>Target background level used by autostretch. Lower values produce a darker background.</source>
-        <translation>Cílová úroveň pozadí používaná automatickým roztažením. Nižší hodnoty vytvářejí tmavší pozadí</translation>
+        <translation>Cílová úroveň pozadí používaná automatickým roztažením. Nižší hodnoty vytvářejí tmavší pozadí.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
         <source>Reset target background to the default value (0.125).</source>
-        <translation>Obnoví cílové pozadí na výchozí hodnotu (0,125).</translation>
+        <translation>Obnovit výchozí hodnotu cílové úrovně pozadí (0,125).</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
         <source>Shadow Clipping</source>
-        <translation>Ořezávání stínů</translation>
+        <translation>Ořez stínů</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
         <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
-        <translation>Agresivita ořezávání stínů v jednotkách MAD pro automatické protažení.</translation>
+        <translation>Intenzita ořezu stínů v jednotkách MAD pro automatické roztažení.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
         <source>Reset shadow clipping factor to the default value (2.8).</source>
-        <translation>Obnoví faktor ořezávání stínů na výchozí hodnotu (2,8).</translation>
+        <translation>Obnovit výchozí hodnotu faktoru ořezu stínů (2,8).</translation>
     </message>
 </context>
 <context>
@@ -1339,13 +1339,13 @@ Zjištěné studené pixely: %L3 (%L4 %)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="168"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
-        <translation>Propojí RGB kanály tak, že posunutím jednoho posuvníku MTF se aktualizují všechny kanály najednou.</translation>
+        <translation>Propojte kanály RGB tak, aby posunutí jednoho posuvníku MTF aktualizovalo všechny kanály najednou.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="216"/>
         <source>Autostretch</source>
         <comment>IDC_AUTOSTRETCH</comment>
-        <translation>Automatické protažení</translation>
+        <translation>Automatické roztažení</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="254"/>
@@ -1355,7 +1355,7 @@ Zjištěné studené pixely: %L3 (%L4 %)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="276"/>
         <source>MTF shadow point.</source>
-        <translation>Stínový bod MTF.</translation>
+        <translation>Bod stínů MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="292"/>
@@ -1365,7 +1365,7 @@ Zjištěné studené pixely: %L3 (%L4 %)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="314"/>
         <source>MTF midtone balance point.</source>
-        <translation>Bod vyvážení středních tónů MTF.</translation>
+        <translation>Bod rovnováhy středních tónů MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="333"/>
@@ -1375,32 +1375,32 @@ Zjištěné studené pixely: %L3 (%L4 %)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="355"/>
         <source>MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bod světel MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="380"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
-        <translation>Odhadované procento pixelů pod aktuálním bodem stínu MTF.</translation>
+        <translation>Odhadované procento pixelů pod aktuálním bodem stínů MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="383"/>
         <source>Shadow Clipping:</source>
-        <translation>Ořezávání stínů:</translation>
+        <translation>Ořez stínů:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="427"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
-        <translation type="unfinished">Odhadované procento pixelů nad aktuálním bodem zvýraznění MTF.</translation>
+        <translation>Odhadované procento pixelů nad aktuálním bodem zvýraznění MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="430"/>
         <source>Highlight Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ořez světel:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="513"/>
         <source>Apply the current MTF stretch settings to the image.</source>
-        <translation>Použijte na obrázek aktuální nastavení roztažení MTF.</translation>
+        <translation>Použijte aktuální nastavení roztažení MTF na obrázek.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="547"/>
@@ -1434,8 +1434,8 @@ Zjištěné studené pixely: %L3 (%L4 %)
         <location filename="../ui/ProcessingControls.ui" line="212"/>
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
-        <translation>Automaticky odhadnout hodnoty stínů, středních tónů a světlých bodů MTF z aktuálního obrázku.
-Kliknutím pravým tlačítkem myši změníte parametry automatického roztažení.</translation>
+        <translation>Automaticky odhadněte hodnoty stínů, středních tónů a světel MTF z aktuálního obrázku.
+Klikněte pravým tlačítkem myši pro změnu parametrů automatického roztažení</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="991"/>
@@ -1567,22 +1567,22 @@ Kliknutím pravým tlačítkem myši změníte parametry automatického roztaže
     <message>
         <location filename="../ProcessingDlg.cpp" line="1406"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF Stretch</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1419"/>
         <source>Autostretch: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatické roztažení: %1</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Linked</source>
-        <translation type="unfinished"></translation>
+        <translation>Propojeno</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Unlinked</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpojeno</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1432"/>
@@ -1600,12 +1600,12 @@ Kliknutím pravým tlačítkem myši změníte parametry automatického roztaže
     <message>
         <location filename="../ProcessingDlg.cpp" line="1572"/>
         <source>Autostretch:</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatické roztažení:</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1815"/>
         <source>Edit autostretch parameters ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Upravit parametry automatického roztažení ...</translation>
     </message>
 </context>
 <context>

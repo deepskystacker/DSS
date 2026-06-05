@@ -1044,37 +1044,37 @@ veya yakınlaştırmak için fare tekerleğini kullanın
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
         <source>Autostretch Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik Genişletme Parametreleri</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
         <source>Target Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Hedef Arka Plan</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
         <source>Target background level used by autostretch. Lower values produce a darker background.</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik ayarlama sırasında kullanılan hedef arka plan seviyesi. Daha düşük değerler daha koyu bir arka plan oluşturur.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
         <source>Reset target background to the default value (0.125).</source>
-        <translation type="unfinished"></translation>
+        <translation>Hedef arka planı varsayılan değere (0,125) sıfırlayın.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
         <source>Shadow Clipping</source>
-        <translation type="unfinished"></translation>
+        <translation>Gölge Kırpma</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
         <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik ayarlama için MAD birimlerinde gölge kırpma yoğunluğu.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
         <source>Reset shadow clipping factor to the default value (2.8).</source>
-        <translation type="unfinished"></translation>
+        <translation>Gölge kırpma faktörünü varsayılan değere (2,8) sıfırlayın.</translation>
     </message>
 </context>
 <context>
@@ -1328,73 +1328,73 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF Genişletme</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="168"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
-        <translation type="unfinished"></translation>
+        <translation>RGB kanallarını birbirine bağlayın, böylece bir MTF kaydırıcısını hareket ettirdiğinizde tüm kanallar birlikte güncellenir.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="216"/>
         <source>Autostretch</source>
         <comment>IDC_AUTOSTRETCH</comment>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik Genişletme</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="254"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Gölgeler</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="276"/>
         <source>MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF gölge noktası.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="292"/>
         <source>Midtones</source>
-        <translation type="unfinished"></translation>
+        <translation>Orta Tonlar</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="314"/>
         <source>MTF midtone balance point.</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF orta ton denge noktası.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="333"/>
         <source>Highlights</source>
-        <translation type="unfinished"></translation>
+        <translation>Vurgular</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="355"/>
         <source>MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF vurgu noktası.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="380"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mevcut MTF gölge noktasının altındaki piksellerin tahmini yüzdesi.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="383"/>
         <source>Shadow Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Gölge kırpma:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="427"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mevcut MTF vurgu noktasının üzerindeki piksellerin tahmini yüzdesi.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="430"/>
         <source>Highlight Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vurgu kırpma:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="513"/>
         <source>Apply the current MTF stretch settings to the image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mevcut MTF genişletme ayarlarını görüntüye uygula.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="547"/>
@@ -1428,7 +1428,8 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <location filename="../ui/ProcessingControls.ui" line="212"/>
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Mevcut görüntüden MTF gölge, orta ton ve vurgu değerlerini otomatik olarak tahmin edin.
+Otomatik uzatma parametrelerini değiştirmek için sağ tıklayın</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="991"/>
@@ -1558,22 +1559,22 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1406"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF Genişletme</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1419"/>
         <source>Autostretch: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik uzatma: %1</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Linked</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlı</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1420"/>
         <source>Unlinked</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlantısı kesik</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1432"/>
@@ -1591,12 +1592,12 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1572"/>
         <source>Autostretch:</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik uzatma:</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1815"/>
         <source>Edit autostretch parameters ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Otomatik uzatma parametrelerini düzenle ...</translation>
     </message>
 </context>
 <context>

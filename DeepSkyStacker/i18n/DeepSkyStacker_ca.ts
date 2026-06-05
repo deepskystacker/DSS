@@ -1047,12 +1047,12 @@ Ctrl+4 per canviar el mode de 4 cantonades</translation>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
         <source>Target Background</source>
-        <translation>Fons de destinació</translation>
+        <translation>Fons objectiu</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
         <source>Target background level used by autostretch. Lower values produce a darker background.</source>
-        <translation>Nivell de fons de destinació utilitzat per l&apos;estirament automàtic. Els valors més baixos produeixen un fons més fosc.</translation>
+        <translation>Nivell de fons objectiu que utilitza l&apos;estirament automàtic. Els valors més baixos produeixen un fons més fosc.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
@@ -1072,7 +1072,7 @@ Ctrl+4 per canviar el mode de 4 cantonades</translation>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
         <source>Reset shadow clipping factor to the default value (2.8).</source>
-        <translation>Restableix el factor de retall d&apos;ombra al valor predeterminat (2,8).</translation>
+        <translation>Restabli el factor de retall de les ombres al valor per defecte (2,8).</translation>
     </message>
 </context>
 <context>
@@ -1332,7 +1332,7 @@ Píxels freds detectats: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="168"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
-        <translation>Enllaça els canals RGB de manera que moure un control lliscant MTF actualitza tots els canals junts.</translation>
+        <translation>Enllaça els canals RGB, de manera que en moure un control lliscant MTF s&apos;actualitzen tots els canals alhora.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="216"/>
@@ -1363,12 +1363,12 @@ Píxels freds detectats: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="333"/>
         <source>Highlights</source>
-        <translation>Ressaltars</translation>
+        <translation>Tons clars</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="355"/>
         <source>MTF highlight point.</source>
-        <translation>Punt ressaltat de l&apos;MTF</translation>
+        <translation>Punt de tons clars MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="380"/>
@@ -1383,12 +1383,12 @@ Píxels freds detectats: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="427"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
-        <translation>Percentatge estimat de píxels per sobre del punt de ressaltat MTF actual.</translation>
+        <translation>Percentatge estimat de píxels per sobre del punt de tons clar MTF actual.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="430"/>
         <source>Highlight Clipping:</source>
-        <translation>Retall des ressaltats</translation>
+        <translation>Retall des tons clars:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="513"/>
@@ -1428,7 +1428,7 @@ Píxels freds detectats: %L3 (%L4%)
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
         <translation>Estima automàticament els valors d&apos;ombra, tons mitjans i llums MTF de la imatge actual.
-Feu clic amb el botó dret per canviar els paràmetres d&apos;estirament automàtic.</translation>
+Feu clic amb el botó dret per canviar els paràmetres d&apos;estirament automàtic</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="991"/>
