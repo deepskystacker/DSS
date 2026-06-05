@@ -222,7 +222,14 @@ namespace DSS
 		const QSignalBlocker humanWeightedBlocker(controls->asinhHumanWeighted);
 		const QSignalBlocker previewBlocker(controls->previewCB);
 
-		zeroAsinHControls();
+		asinhBeta = DefaultAsinhBeta;
+		asinhBP = DefaultAsinhBP;
+
+		controls->asinhStretchSpinBox->setValue(DefaultAsinhBeta);
+		controls->asinhStretchSlider->setValue(static_cast<int>(DefaultAsinhBeta * 10.0f));
+
+		controls->asinhBPSpinBox->setValue(DefaultAsinhBP);
+		controls->asinhBPSlider->setValue(static_cast<int>(DefaultAsinhBP * 1000.0f));
 
 		zeroColourBalanceControls();
 		zeroMtfControls();
@@ -374,6 +381,9 @@ namespace DSS
 
 		connect(picture, &DSS::ImageView::mouseMovedOverImage,
 			this, &ProcessingDlg::updatePixelInfo);
+		
+		connect(controls->tabWidget, &QTabWidget::currentChanged,
+			this, &ProcessingDlg::tabChanged);
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -482,13 +492,13 @@ namespace DSS
 			updateControls();
 
 			//
-			// Do this before the preview stuff otherwise the direty flag isn't cleared if preview is active
+			// Do this before the preview stuff otherwise the dirty flag isn't cleared if preview is active
 			// 
 			setDirty(false);
 
 			if (preview)
 			{
-				emit onPreview(ProcessingFunction::AsinhStretch);
+				emit onPreview(ProcessingFunction::MtfStretch);
 			}
 			else
 			{
@@ -599,7 +609,7 @@ namespace DSS
 
 					if (preview)
 					{
-						onPreview(ProcessingFunction::AsinhStretch);
+						onPreview(ProcessingFunction::MtfStretch);
 					}
 					else
 					{

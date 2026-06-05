@@ -202,6 +202,8 @@ namespace DSS
 
 		void doPreview(ProcessingFunction function);
 
+		void updatePixelInfo(QPoint pos, QRgb colour);
+
 	signals:
 		void asinhBPChanged(double value);
 		void asinhStretchChanged(double value);
@@ -469,7 +471,26 @@ namespace DSS
 		//
 		void clippingStateChanged(int);
 
-		void updatePixelInfo(QPoint pos, QRgb colour);
+		void tabChanged(int index)
+		{
+			if (preview)
+			{
+				switch (index)
+				{
+				case 0: // MTF stretch tab
+					emit onPreview(ProcessingFunction::MtfStretch);
+					break;
+				case 1:	// Asinh stretch tab
+					emit onPreview(ProcessingFunction::AsinhStretch);
+					break;
+				case 2: // Colour balance tab
+					emit onPreview(ProcessingFunction::ColourBalance);
+					break;
+				default:
+					break;
+				}
+			}
+		}
 
 #if (0)
 		void	UpdateMonochromeControls();
