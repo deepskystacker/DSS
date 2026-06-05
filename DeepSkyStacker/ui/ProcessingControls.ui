@@ -213,7 +213,7 @@
 Right-click to change Autostretch parameters</string>
               </property>
               <property name="text">
-               <string comment="IDC_AUTOSTRETCH">Autostretch</string>
+               <string>Autostretch</string>
               </property>
              </widget>
             </item>
