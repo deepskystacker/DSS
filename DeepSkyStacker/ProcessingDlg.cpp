@@ -170,6 +170,45 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
+	void ProcessingDlg::zeroAsinHControls()
+	{
+		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
+		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
+		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
+		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
+
+		asinhBeta = 0.0f;
+		asinhBP = 0.0f;
+		controls->asinhStretchSpinBox->setValue(0.0f);
+		controls->asinhStretchSlider->setValue(0);
+		controls->asinhStretchSlider->setSliderPosition(0);
+
+		controls->asinhBPSpinBox->setValue(0.0f);
+		controls->asinhBPSlider->setValue(0);
+		controls->asinhBPSlider->setSliderPosition(0);
+	}
+
+	void ProcessingDlg::zeroMtfControls()
+	{
+		previewIsAutoStretch = false;
+
+		mtfParameters.clipPoint[0] = 0.0f; mtfParameters.clipPoint[1] = 0.0f; mtfParameters.clipPoint[2] = 0.0f;
+		mtfParameters.midtoneBalance[0] = 0.5f; mtfParameters.midtoneBalance[1] = 0.5f; mtfParameters.midtoneBalance[2] = 0.5f;
+		mtfParameters.whitePoint[0] = 1.0f; mtfParameters.whitePoint[1] = 1.0f; mtfParameters.whitePoint[2] = 1.0f;
+		mtfTargetBkg = 0.125f;
+		mtfShadowClip = 2.8f;
+
+		controls->mtfRedGradient->setValues(0.0, 0.5, 1.0);
+		controls->mtfGreenGradient->setValues(0.0, 0.5, 1.0);
+		controls->mtfBlueGradient->setValues(0.0, 0.5, 1.0);
+		syncMtfSpinBoxesFromModel();
+
+		if (imageLoaded && !undoRedoStack.empty())
+			showHistogram();
+		else
+			setMtfClippingLabelText(0.0, 0.0);
+	}
+
 	void ProcessingDlg::zeroColourBalanceControls()
 	{
 		const QSignalBlocker redSliderBlocker(controls->redSlider);
@@ -191,27 +230,8 @@ namespace DSS
 		controls->greenSlider->setValue(value);
 		controls->greenSlider->setSliderPosition(value);
 		controls->blueSlider->setValue(value);
-		controls->blueSlider->setSliderPosition(value);	
+		controls->blueSlider->setSliderPosition(value);
 	}
-
-	void ProcessingDlg::zeroAsinHControls()
-	{
-		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
-		const QSignalBlocker betaSliderBlocker(controls->asinhStretchSlider);
-		const QSignalBlocker bpSpinBoxBlocker(controls->asinhBPSpinBox);
-		const QSignalBlocker bpSliderBlocker(controls->asinhBPSlider);
-
-		asinhBeta = 0.0f;
-		asinhBP = 0.0f;
-		controls->asinhStretchSpinBox->setValue(0.0f);
-		controls->asinhStretchSlider->setValue(0);
-		controls->asinhStretchSlider->setSliderPosition(0);
-
-		controls->asinhBPSpinBox->setValue(0.0f);
-		controls->asinhBPSlider->setValue(0);
-		controls->asinhBPSlider->setSliderPosition(0);
-	}
-
 
 	void ProcessingDlg::setAdjustmentControlDefaults()
 	{
@@ -1374,6 +1394,7 @@ namespace DSS
 				.arg(mtfParameters.clipPoint[2], 0, 'f', 4).arg(mtfParameters.midtoneBalance[2], 0, 'f', 4).arg(mtfParameters.whitePoint[2], 0, 'f', 4));
 
 			zeroMtfControls();
+			zeroAsinHControls();
 			break;
 
 		case ProcessingFunction::AsinhStretch:
@@ -1384,6 +1405,7 @@ namespace DSS
 			deepStack.setDescription(tr("ASinH stretch: beta %L1, bp %L2, hw %3")
 				.arg(asinhBeta, 0, 'f', 1).arg(asinhBP, 0, 'f', 4).arg(QVariant(asinhHWLuminance).toString()));
 
+			zeroMtfControls();
 			zeroAsinHControls();
 			break;
 
@@ -1604,26 +1626,6 @@ namespace DSS
 		{
 			pixelInfo->setText("");
 		}
-	}
-	void ProcessingDlg::zeroMtfControls()
-	{
-		previewIsAutoStretch = false;
-
-		mtfParameters.clipPoint[0] = 0.0f; mtfParameters.clipPoint[1] = 0.0f; mtfParameters.clipPoint[2] = 0.0f;
-		mtfParameters.midtoneBalance[0] = 0.5f; mtfParameters.midtoneBalance[1] = 0.5f; mtfParameters.midtoneBalance[2] = 0.5f;
-		mtfParameters.whitePoint[0] = 1.0f; mtfParameters.whitePoint[1] = 1.0f; mtfParameters.whitePoint[2] = 1.0f;
-		mtfTargetBkg = 0.125f;
-		mtfShadowClip = 2.8f;
-
-		controls->mtfRedGradient->setValues(0.0, 0.5, 1.0);
-		controls->mtfGreenGradient->setValues(0.0, 0.5, 1.0);
-		controls->mtfBlueGradient->setValues(0.0, 0.5, 1.0);
-		syncMtfSpinBoxesFromModel();
-
-		if (imageLoaded && !undoRedoStack.empty())
-			showHistogram();
-		else
-			setMtfClippingLabelText(0.0, 0.0);
 	}
 
 	void ProcessingDlg::mtfRedGradientSliderMoved()
