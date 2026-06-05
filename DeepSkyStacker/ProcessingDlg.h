@@ -156,7 +156,6 @@ namespace DSS
 		float blueShift{ 0.0f };	// Blue channel shift value
 
 		bool preview{ true };		// Whether to show a preview of the processed image
-		bool previewIsAutoStretch{ false };
 
 		//
 		// Flag to control which DeepStack object to use for processAndShow() and showHistogram().

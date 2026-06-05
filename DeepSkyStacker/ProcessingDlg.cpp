@@ -190,8 +190,6 @@ namespace DSS
 
 	void ProcessingDlg::zeroMtfControls()
 	{
-		previewIsAutoStretch = false;
-
 		mtfParameters.clipPoint[0] = 0.0f; mtfParameters.clipPoint[1] = 0.0f; mtfParameters.clipPoint[2] = 0.0f;
 		mtfParameters.midtoneBalance[0] = 0.5f; mtfParameters.midtoneBalance[1] = 0.5f; mtfParameters.midtoneBalance[2] = 0.5f;
 		mtfParameters.whitePoint[0] = 1.0f; mtfParameters.whitePoint[1] = 1.0f; mtfParameters.whitePoint[2] = 1.0f;
@@ -381,7 +379,6 @@ namespace DSS
 		connect(controls->mtfHighlightsSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfHighlightsSpinBoxChanged);
 
 		connect(&mtfSliderTimer, &QTimer::timeout, this, [this]() {
-			previewIsAutoStretch = false;
 			if (preview) emit onPreview(ProcessingFunction::MtfStretch);
 			else
 			{
@@ -1575,8 +1572,6 @@ namespace DSS
 	{
 		if (!imageLoaded)
 			return;
-
-		previewIsAutoStretch = true;
 
 		//
 		// Create a temporary copy and normalise it to properly calculate the MTF parameters
