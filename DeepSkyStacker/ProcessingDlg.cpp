@@ -1372,7 +1372,7 @@ namespace DSS
 			//
 			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
 			deepStack.setDescription(tr("ASinH stretch: beta %L1, bp %L2, hw %3")
-				.arg(asinhBeta, 0, 'f', 4).arg(asinhBP, 0, 'f', 4).arg(QVariant(asinhHWLuminance).toString()));
+				.arg(asinhBeta, 0, 'f', 1).arg(asinhBP, 0, 'f', 4).arg(QVariant(asinhHWLuminance).toString()));
 
 			zeroAsinHControls();
 			break;
