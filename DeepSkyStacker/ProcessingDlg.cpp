@@ -1561,6 +1561,7 @@ namespace DSS
 		syncMtfSpinBoxesFromModel();
 
 		if (preview) emit onPreview(ProcessingFunction::MtfStretch);
+		else controls->mtfApply->setEnabled(true);
 	}
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
