@@ -164,9 +164,8 @@ namespace DSS
 	// When 'linked' is false, statistics are computed independently for each channel,
 	// performing an implicit background neutralisation that removes colour casts.
 	//
-	void StackedBitmap::mtfAutoStretch(bool linked, float targetMedian, float shadowClipFactor, float* outShadows, float* outMidtones, float* outHighlights)
+	void StackedBitmap::mtfComputeAutoStretchParameters(bool linked, MTFStretchParameters& parameters, float targetMedian, float shadowClipFactor)
 	{
-		const int nrProcessors{ ::Multitask::GetNrProcessors() };
 		const std::int64_t n = static_cast<std::int64_t>(m_lWidth) * m_lHeight;
 
 		if (n == 0)
@@ -261,22 +260,15 @@ namespace DSS
 
 		float whitePoint[3] = { 1.0f, 1.0f, 1.0f };
 
-		if (outShadows && outMidtones && outHighlights)
+		for (int ch = 0; ch < numChannels; ch++)
 		{
-			float avgC = 0.0f, avgB = 0.0f, avgW = 0.0f;
-			for (int ch = 0; ch < numChannels; ch++)
-			{
-				avgC += clipPoint[ch];
-				avgB += midtoneBalance[ch];
-				avgW += whitePoint[ch];
-			}
-			*outShadows = avgC / numChannels;
-			*outMidtones = avgB / numChannels;
-			*outHighlights = avgW / numChannels;
-			return; // Do not apply stretch if we only requested parameters
+			parameters.clipPoint[ch] = clipPoint[ch];
+			parameters.midtoneBalance[ch] = midtoneBalance[ch];
+			parameters.whitePoint[ch] = whitePoint[ch];
 		}
 
-
+		return; 
+#if (0)
 		if (m_bMonochrome)
 		{
 			const float c = clipPoint[0];
@@ -311,12 +303,13 @@ namespace DSS
 				buf[2][i] = applyMTF(bB, xB);
 			}
 		}
+#endif
 	}
 
 	//
 	// Manual MTF Stretch
 	//
-	void StackedBitmap::mtfStretch(float shadow_r, float midtone_r, float highlight_r, float shadow_g, float midtone_g, float highlight_g, float shadow_b, float midtone_b, float highlight_b)
+	void StackedBitmap::mtfStretch(const MTFStretchParameters& parameters)
 	{
 		const int nrProcessors{ ::Multitask::GetNrProcessors() };
 		const std::int64_t n = static_cast<std::int64_t>(m_lWidth) * m_lHeight;
@@ -330,17 +323,17 @@ namespace DSS
 			m_bMonochrome ? nullptr : m_vBluePlane.data()
 		};
 
-		const float rangeR = highlight_r - shadow_r;
-		const float rangeG = highlight_g - shadow_g;
-		const float rangeB = highlight_b - shadow_b;
+		const float rangeR = parameters.whitePoint[0] - parameters.clipPoint[0];
+		const float rangeG = parameters.whitePoint[1] - parameters.clipPoint[1];
+		const float rangeB = parameters.whitePoint[2] - parameters.clipPoint[2];
 
 		if (m_bMonochrome)
 		{
 			#pragma omp parallel for schedule(static) if (nrProcessors > 1)
 			for (std::int64_t i = 0; i < n; i++)
 			{
-				float x = (rangeR > 1.0e-6f) ? std::clamp((buf[0][i] - shadow_r) / rangeR, 0.0f, 1.0f) : 0.0f;
-				buf[0][i] = applyMTF(midtone_r, x);
+				float x = (rangeR > 1.0e-6f) ? std::clamp((buf[0][i] - parameters.clipPoint[0]) / rangeR, 0.0f, 1.0f) : 0.0f;
+				buf[0][i] = applyMTF(parameters.midtoneBalance[0], x);
 			}
 		}
 		else
@@ -348,13 +341,13 @@ namespace DSS
 			#pragma omp parallel for schedule(static) if (nrProcessors > 1)
 			for (std::int64_t i = 0; i < n; i++)
 			{
-				float xR = (rangeR > 1.0e-6f) ? std::clamp((buf[0][i] - shadow_r) / rangeR, 0.0f, 1.0f) : 0.0f;
-				float xG = (rangeG > 1.0e-6f) ? std::clamp((buf[1][i] - shadow_g) / rangeG, 0.0f, 1.0f) : 0.0f;
-				float xB = (rangeB > 1.0e-6f) ? std::clamp((buf[2][i] - shadow_b) / rangeB, 0.0f, 1.0f) : 0.0f;
+				float xR = (rangeR > 1.0e-6f) ? std::clamp((buf[0][i] - parameters.clipPoint[0]) / rangeR, 0.0f, 1.0f) : 0.0f;
+				float xG = (rangeG > 1.0e-6f) ? std::clamp((buf[1][i] - parameters.clipPoint[1]) / rangeG, 0.0f, 1.0f) : 0.0f;
+				float xB = (rangeB > 1.0e-6f) ? std::clamp((buf[2][i] - parameters.clipPoint[2]) / rangeB, 0.0f, 1.0f) : 0.0f;
 
-				buf[0][i] = applyMTF(midtone_r, xR);
-				buf[1][i] = applyMTF(midtone_g, xG);
-				buf[2][i] = applyMTF(midtone_b, xB);
+				buf[0][i] = applyMTF(parameters.midtoneBalance[0], xR);
+				buf[1][i] = applyMTF(parameters.midtoneBalance[1], xG);
+				buf[2][i] = applyMTF(parameters.midtoneBalance[2], xB);
 			}
 		}
 	}

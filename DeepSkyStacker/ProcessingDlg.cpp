@@ -843,12 +843,12 @@ namespace DSS
 
 		const bool monochrome = !controls->mtfGreenGradient->isVisible() || !controls->mtfBlueGradient->isVisible();
 
-		double shadowThreshold = mtfShadows_r;
-		double highlightThreshold = mtfHighlights_r;
+		double shadowThreshold = mtfParameters.clipPoint[0];	// Default to red channel shadow threshold
+		double highlightThreshold = mtfParameters.whitePoint[0];	// Default to red channel highlight threshold
 		if (!monochrome)
 		{
-			shadowThreshold = (mtfShadows_r + mtfShadows_g + mtfShadows_b) / 3.0;
-			highlightThreshold = (mtfHighlights_r + mtfHighlights_g + mtfHighlights_b) / 3.0;
+			shadowThreshold = (mtfParameters.clipPoint[0] + mtfParameters.clipPoint[1] + mtfParameters.clipPoint[2]) / 3.0;
+			highlightThreshold = (mtfParameters.whitePoint[0] + mtfParameters.whitePoint[1] + mtfParameters.whitePoint[2]) / 3.0;
 		}
 
 		shadowThreshold = std::clamp(shadowThreshold, 0.0, 1.0);
@@ -1236,11 +1236,9 @@ namespace DSS
 		{
 		case ProcessingFunction::MtfStretch:
 			//
-			// Apply a manual MTF stretch using specific shadow, midtone, and highlight parameters
+			// Apply the MTF stretch using specific shadow, midtone, and highlight parameters
 			//
-			bitmap.mtfStretch(mtfShadows_r, mtfMidtone_r, mtfHighlights_r,
-				mtfShadows_g, mtfMidtone_g, mtfHighlights_g,
-				mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
+			bitmap.mtfStretch(mtfParameters);
 			break;
 
 		case ProcessingFunction::AsinhStretch:
@@ -1257,14 +1255,6 @@ namespace DSS
 			//
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
 			break;
-
-		case ProcessingFunction::AutoStretch:
-			//
-			// Apply the MTF autostretch to the image
-			//
-			bitmap.mtfAutoStretch(controls->mtfLinkButton->isChecked(), mtfTargetBkg, mtfShadowClip);
-			break;
-
 
 		default:
 			ZASSERT(false);	// Invalid processing function
@@ -1324,10 +1314,6 @@ namespace DSS
 			QMetaObject::invokeMethod(controls->cbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
 			break;
 
-		case ProcessingFunction::AutoStretch:
-			// No apply button to enable for autostretch - it applies directly
-			break;
-
 		default:
 			ZASSERT(false);	// Invalid processing function
 			break;
@@ -1349,13 +1335,8 @@ namespace DSS
 	{
 		//
 		// Get the current DeepStack object from the undo-redo stack and duplicate it at the top
-		// of the undo-redo stack. For Autostretch, we duplicate the base image (index 0) to prevent
-		// iterative stretching of already stretched data when toggling states.
-		//
-		if (function == ProcessingFunction::AutoStretch)
-			undoRedoStack.add(undoRedoStack.at(0));
-		else
-			undoRedoStack.add(undoRedoStack.current());
+		// of the undo-redo stack.
+		undoRedoStack.add(undoRedoStack.current());
 
 		//
 		// Now process the image with the current settings and show the result
@@ -1372,13 +1353,26 @@ namespace DSS
 
 		switch (function)
 		{
+		case ProcessingFunction::MtfStretch:
+			//
+			// Apply the MTF stretch and set the stretch values to zero
+			//
+			bitmap.mtfStretch(mtfParameters);
+			deepStack.setDescription(tr("MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9")
+				.arg(mtfParameters.clipPoint[0], 0, 'f', 4).arg(mtfParameters.midtoneBalance[0], 0, 'f', 4).arg(mtfParameters.whitePoint[0], 0, 'f', 4)
+				.arg(mtfParameters.clipPoint[1], 0, 'f', 4).arg(mtfParameters.midtoneBalance[1], 0, 'f', 4).arg(mtfParameters.whitePoint[1], 0, 'f', 4)
+				.arg(mtfParameters.clipPoint[2], 0, 'f', 4).arg(mtfParameters.midtoneBalance[2], 0, 'f', 4).arg(mtfParameters.whitePoint[2], 0, 'f', 4));
+
+			zeroMtfControls();
+			break;
+
 		case ProcessingFunction::AsinhStretch:
 			//
 			// Apply the ASinH stretch to the image and set the stretch values to zero
 			//
 			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
 			deepStack.setDescription(tr("ASinH stretch: beta %L1, bp %L2, hw %3")
-				.arg(asinhBeta).arg(asinhBP).arg(QVariant(asinhHWLuminance).toString()));
+				.arg(asinhBeta, 0, 'f', 4).arg(asinhBP, 0, 'f', 4).arg(QVariant(asinhHWLuminance).toString()));
 
 			zeroAsinHControls();
 			break;
@@ -1390,39 +1384,10 @@ namespace DSS
 			//
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
 			deepStack.setDescription(tr("Colour Balance: R %L1, G %L2, B %L3")
-				.arg(redShift).arg(greenShift).arg(blueShift));
+				.arg(redShift, 0, 'f', 2).arg(greenShift, 0, 'f', 2).arg(blueShift, 0, 'f', 2));
 
 			zeroColourBalanceControls();
 			break;
-
-		case ProcessingFunction::MtfStretch:
-		{
-			//
-			// Apply manual MTF stretch
-			//
-			bitmap.mtfStretch(mtfShadows_r, mtfMidtone_r, mtfHighlights_r,
-				mtfShadows_g, mtfMidtone_g, mtfHighlights_g,
-				mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
-			deepStack.setDescription(tr("MTF Stretch"));
-
-			zeroAdjustmentControls();
-		}
-		break;
-
-		case ProcessingFunction::AutoStretch:
-		{
-			//
-			// Apply the MTF autostretch to the image
-			//
-			bool linked = controls->mtfLinkButton->isChecked();
-			bitmap.mtfAutoStretch(linked, mtfTargetBkg, mtfShadowClip);
-			deepStack.setDescription(tr("Autostretch: %1")
-				.arg(linked ? tr("Linked") : tr("Unlinked")));
-
-			zeroAdjustmentControls();
-		}
-		break;
-
 
 		default:
 			ZASSERT(false);	// Invalid processing function
@@ -1440,6 +1405,7 @@ namespace DSS
 
 		processAndShow();
 		showHistogram();
+
 		setDirty(true);
 	}
 
@@ -1545,6 +1511,11 @@ namespace DSS
 		QSettings{}.setValue("ShowBlackWhiteClipping", (Qt::Checked == checked));
 		if (preview)
 		{
+			if (controls->tabWidget->currentWidget() == controls->mtfStretchTab)
+			{
+				// Apply the stretch asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::MtfStretch);
+			}
 			if (controls->tabWidget->currentWidget() == controls->asinhStretchTab)
 			{
 				// Apply the stretch asynchronously to the preview image.
@@ -1565,14 +1536,7 @@ namespace DSS
 		if (!imageLoaded || undoRedoStack.empty())
 			return;
 
-		//
-		// If the most recent operation was an Autostretch, automatically
-		// re-apply it when the link state is toggled to update the view.
-		//
-		if (undoRedoStack.current().description().startsWith(tr("Autostretch:")))
-		{
-			emit onApply(ProcessingFunction::AutoStretch);
-		}
+		if (preview) emit onPreview(ProcessingFunction::MtfStretch);
 	}
 
 	void ProcessingDlg::onAutostretch()
@@ -1582,26 +1546,21 @@ namespace DSS
 
 		previewIsAutoStretch = true;
 
-		float s = 0.0f, m = 0.5f, h = 1.0f;
-
 		//
 		// Create a temporary copy and normalise it to properly calculate the MTF parameters
 		//
 		DeepStack tempStack = undoRedoStack.current();
 		StackedBitmap& tempBitmap = tempStack.GetStackedBitmap();
 		tempBitmap.normalise();
-		tempBitmap.mtfAutoStretch(controls->mtfLinkButton->isChecked(), mtfTargetBkg, mtfShadowClip, &s, &m, &h);
+		tempBitmap.mtfComputeAutoStretchParameters(controls->mtfLinkButton->isChecked(), mtfParameters, mtfTargetBkg, mtfShadowClip);
 
-		controls->mtfRedGradient->setValues(s, m, h);
-		controls->mtfGreenGradient->setValues(s, m, h);
-		controls->mtfBlueGradient->setValues(s, m, h);
+		controls->mtfRedGradient->setValues(mtfParameters.clipPoint[0], mtfParameters.midtoneBalance[0], mtfParameters.whitePoint[0]);
+		controls->mtfGreenGradient->setValues(mtfParameters.clipPoint[1], mtfParameters.midtoneBalance[1], mtfParameters.whitePoint[1]);
+		controls->mtfBlueGradient->setValues(mtfParameters.clipPoint[2], mtfParameters.midtoneBalance[2], mtfParameters.whitePoint[2]);
 
-		mtfShadows_r = s; mtfShadows_g = s; mtfShadows_b = s;
-		mtfMidtone_r = m; mtfMidtone_g = m; mtfMidtone_b = m;
-		mtfHighlights_r = h; mtfHighlights_g = h; mtfHighlights_b = h;
 		syncMtfSpinBoxesFromModel();
 
-		if (preview) emit onPreview(ProcessingFunction::AutoStretch);
+		if (preview) emit onPreview(ProcessingFunction::MtfStretch);
 	}
 
 	void ProcessingDlg::setSelectionRect(const QRectF& rect)
@@ -1639,9 +1598,9 @@ namespace DSS
 	{
 		previewIsAutoStretch = false;
 
-		mtfShadows_r = 0.0f; mtfShadows_g = 0.0f; mtfShadows_b = 0.0f;
-		mtfMidtone_r = 0.5f; mtfMidtone_g = 0.5f; mtfMidtone_b = 0.5f;
-		mtfHighlights_r = 1.0f; mtfHighlights_g = 1.0f; mtfHighlights_b = 1.0f;
+		mtfParameters.clipPoint[0] = 0.0f; mtfParameters.clipPoint[1] = 0.0f; mtfParameters.clipPoint[2] = 0.0f;
+		mtfParameters.midtoneBalance[0] = 0.5f; mtfParameters.midtoneBalance[1] = 0.5f; mtfParameters.midtoneBalance[2] = 0.5f;
+		mtfParameters.whitePoint[0] = 1.0f; mtfParameters.whitePoint[1] = 1.0f; mtfParameters.whitePoint[2] = 1.0f;
 		mtfTargetBkg = 0.125f;
 		mtfShadowClip = 2.8f;
 
@@ -1659,17 +1618,17 @@ namespace DSS
 	void ProcessingDlg::mtfRedGradientSliderMoved()
 	{
 		activeMtfChannel = 0;
-		mtfShadows_r = controls->mtfRedGradient->shadows();
-		mtfMidtone_r = controls->mtfRedGradient->midtones();
-		mtfHighlights_r = controls->mtfRedGradient->highlights();
+		mtfParameters.clipPoint[0] = controls->mtfRedGradient->shadows();
+		mtfParameters.midtoneBalance[0] = controls->mtfRedGradient->midtones();
+		mtfParameters.whitePoint[0] = controls->mtfRedGradient->highlights();
 
 		if (controls->mtfLinkButton->isChecked())
 		{
-			controls->mtfGreenGradient->setValues(mtfShadows_r, mtfMidtone_r, mtfHighlights_r);
-			controls->mtfBlueGradient->setValues(mtfShadows_r, mtfMidtone_r, mtfHighlights_r);
+			controls->mtfGreenGradient->setValues(mtfParameters.clipPoint[0], mtfParameters.midtoneBalance[0], mtfParameters.whitePoint[0]);
+			controls->mtfBlueGradient->setValues(mtfParameters.clipPoint[0], mtfParameters.midtoneBalance[0], mtfParameters.whitePoint[0]);
 
-			mtfShadows_g = mtfShadows_r; mtfMidtone_g = mtfMidtone_r; mtfHighlights_g = mtfHighlights_r;
-			mtfShadows_b = mtfShadows_r; mtfMidtone_b = mtfMidtone_r; mtfHighlights_b = mtfHighlights_r;
+			mtfParameters.clipPoint[1] = mtfParameters.clipPoint[0]; mtfParameters.midtoneBalance[1] = mtfParameters.midtoneBalance[0]; mtfParameters.whitePoint[1] = mtfParameters.whitePoint[0];
+			mtfParameters.clipPoint[2] = mtfParameters.clipPoint[0]; mtfParameters.midtoneBalance[2] = mtfParameters.midtoneBalance[0]; mtfParameters.whitePoint[2] = mtfParameters.whitePoint[0]	;
 		}
 		syncMtfSpinBoxesFromModel();
 		mtfSliderTimer.start(mtfPreviewDelay);
@@ -1678,17 +1637,17 @@ namespace DSS
 	void ProcessingDlg::mtfGreenGradientSliderMoved()
 	{
 		activeMtfChannel = 1;
-		mtfShadows_g = controls->mtfGreenGradient->shadows();
-		mtfMidtone_g = controls->mtfGreenGradient->midtones();
-		mtfHighlights_g = controls->mtfGreenGradient->highlights();
+		mtfParameters.clipPoint[1] = controls->mtfGreenGradient->shadows();
+		mtfParameters.midtoneBalance[1] = controls->mtfGreenGradient->midtones();
+		mtfParameters.whitePoint[1] = controls->mtfGreenGradient->highlights();
 
 		if (controls->mtfLinkButton->isChecked())
 		{
-			controls->mtfRedGradient->setValues(mtfShadows_g, mtfMidtone_g, mtfHighlights_g);
-			controls->mtfBlueGradient->setValues(mtfShadows_g, mtfMidtone_g, mtfHighlights_g);
+			controls->mtfRedGradient->setValues(mtfParameters.clipPoint[1], mtfParameters.midtoneBalance[1], mtfParameters.whitePoint[1]);
+			controls->mtfBlueGradient->setValues(mtfParameters.clipPoint[1], mtfParameters.midtoneBalance[1], mtfParameters.whitePoint[1]);
 
-			mtfShadows_r = mtfShadows_g; mtfMidtone_r = mtfMidtone_g; mtfHighlights_r = mtfHighlights_g;
-			mtfShadows_b = mtfShadows_g; mtfMidtone_b = mtfMidtone_g; mtfHighlights_b = mtfHighlights_g;
+			mtfParameters.clipPoint[0] = mtfParameters.clipPoint[1]; mtfParameters.midtoneBalance[0] = mtfParameters.midtoneBalance[1]; mtfParameters.whitePoint[0] = mtfParameters.whitePoint[1];
+			mtfParameters.clipPoint[2] = mtfParameters.clipPoint[1]; mtfParameters.midtoneBalance[2] = mtfParameters.midtoneBalance[1]; mtfParameters.whitePoint[2] = mtfParameters.whitePoint[1];
 		}
 		syncMtfSpinBoxesFromModel();
 		mtfSliderTimer.start(mtfPreviewDelay);
@@ -1697,17 +1656,17 @@ namespace DSS
 	void ProcessingDlg::mtfBlueGradientSliderMoved()
 	{
 		activeMtfChannel = 2;
-		mtfShadows_b = controls->mtfBlueGradient->shadows();
-		mtfMidtone_b = controls->mtfBlueGradient->midtones();
-		mtfHighlights_b = controls->mtfBlueGradient->highlights();
+		mtfParameters.clipPoint[2] = controls->mtfBlueGradient->shadows();
+		mtfParameters.midtoneBalance[2] = controls->mtfBlueGradient->midtones();
+		mtfParameters.whitePoint[2] = controls->mtfBlueGradient->highlights();
 
 		if (controls->mtfLinkButton->isChecked())
 		{
-			controls->mtfRedGradient->setValues(mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
-			controls->mtfGreenGradient->setValues(mtfShadows_b, mtfMidtone_b, mtfHighlights_b);
+			controls->mtfRedGradient->setValues(mtfParameters.clipPoint[2], mtfParameters.midtoneBalance[2], mtfParameters.whitePoint[2]);
+			controls->mtfGreenGradient->setValues(mtfParameters.clipPoint[2], mtfParameters.midtoneBalance[2], mtfParameters.whitePoint[2]);
 
-			mtfShadows_r = mtfShadows_b; mtfMidtone_r = mtfMidtone_b; mtfHighlights_r = mtfHighlights_b;
-			mtfShadows_g = mtfShadows_b; mtfMidtone_g = mtfMidtone_b; mtfHighlights_g = mtfHighlights_b;
+			mtfParameters.clipPoint[0] = mtfParameters.clipPoint[2]; mtfParameters.midtoneBalance[0] = mtfParameters.midtoneBalance[2]; mtfParameters.whitePoint[0] = mtfParameters.whitePoint[2];
+			mtfParameters.clipPoint[1] = mtfParameters.clipPoint[2]; mtfParameters.midtoneBalance[1] = mtfParameters.midtoneBalance[2]; mtfParameters.whitePoint[1] = mtfParameters.whitePoint[2];
 		}
 		syncMtfSpinBoxesFromModel();
 		mtfSliderTimer.start(mtfPreviewDelay);
@@ -1749,9 +1708,9 @@ namespace DSS
 
 		auto setChannel = [&](int ch, float s, float m, float h) {
 			switch (ch) {
-			case 0: mtfShadows_r = s; mtfMidtone_r = m; mtfHighlights_r = h; controls->mtfRedGradient->setValues(s, m, h); break;
-			case 1: mtfShadows_g = s; mtfMidtone_g = m; mtfHighlights_g = h; controls->mtfGreenGradient->setValues(s, m, h); break;
-			case 2: mtfShadows_b = s; mtfMidtone_b = m; mtfHighlights_b = h; controls->mtfBlueGradient->setValues(s, m, h); break;
+			case 0: mtfParameters.clipPoint[0] = s; mtfParameters.midtoneBalance[0] = m; mtfParameters.whitePoint[0] = h; controls->mtfRedGradient->setValues(s, m, h); break;
+			case 1: mtfParameters.clipPoint[1] = s; mtfParameters.midtoneBalance[1] = m; mtfParameters.whitePoint[1] = h; controls->mtfGreenGradient->setValues(s, m, h); break;
+			case 2: mtfParameters.clipPoint[2] = s; mtfParameters.midtoneBalance[2] = m; mtfParameters.whitePoint[2] = h; controls->mtfBlueGradient->setValues(s, m, h); break;
 			}
 		};
 
@@ -1780,9 +1739,9 @@ namespace DSS
 	{
 		switch (activeMtfChannel)
 		{
-		case 0: shadows = mtfShadows_r; midtones = mtfMidtone_r; highlights = mtfHighlights_r; break;
-		case 1: shadows = mtfShadows_g; midtones = mtfMidtone_g; highlights = mtfHighlights_g; break;
-		case 2: shadows = mtfShadows_b; midtones = mtfMidtone_b; highlights = mtfHighlights_b; break;
+		case 0: shadows = mtfParameters.clipPoint[0]; midtones = mtfParameters.midtoneBalance[0]; highlights = mtfParameters.whitePoint[0]; break;
+		case 1: shadows = mtfParameters.clipPoint[1]; midtones = mtfParameters.midtoneBalance[1]; highlights = mtfParameters.whitePoint[1]; break;
+		case 2: shadows = mtfParameters.clipPoint[2]; midtones = mtfParameters.midtoneBalance[2]; highlights = mtfParameters.whitePoint[2]; break;
 		}
 	}
 
@@ -1832,24 +1791,17 @@ namespace DSS
 
 	void ProcessingDlg::mtfApplyPressed()
 	{
-		mtfShadows_r = controls->mtfRedGradient->shadows();
-		mtfMidtone_r = controls->mtfRedGradient->midtones();
-		mtfHighlights_r = controls->mtfRedGradient->highlights();
-		mtfShadows_g = controls->mtfGreenGradient->shadows();
-		mtfMidtone_g = controls->mtfGreenGradient->midtones();
-		mtfHighlights_g = controls->mtfGreenGradient->highlights();
-		mtfShadows_b = controls->mtfBlueGradient->shadows();
-		mtfMidtone_b = controls->mtfBlueGradient->midtones();
-		mtfHighlights_b = controls->mtfBlueGradient->highlights();
+		mtfParameters.clipPoint[0] = controls->mtfRedGradient->shadows();
+		mtfParameters.midtoneBalance[0] = controls->mtfRedGradient->midtones();
+		mtfParameters.whitePoint[0] = controls->mtfRedGradient->highlights();
+		mtfParameters.clipPoint[1] = controls->mtfGreenGradient->shadows();
+		mtfParameters.midtoneBalance[1] = controls->mtfGreenGradient->midtones();
+		mtfParameters.whitePoint[1] = controls->mtfGreenGradient->highlights();
+		mtfParameters.clipPoint[2] = controls->mtfBlueGradient->shadows();
+		mtfParameters.midtoneBalance[2] = controls->mtfBlueGradient->midtones();
+		mtfParameters.whitePoint[2] = controls->mtfBlueGradient->highlights();
 
-		if (previewIsAutoStretch)
-		{
-			onApply(ProcessingFunction::AutoStretch);
-		}
-		else
-		{
-			onApply(ProcessingFunction::MtfStretch);
-		}
+		onApply(ProcessingFunction::MtfStretch);
 		zeroMtfControls();
 	}
 } // namespace DSS

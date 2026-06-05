@@ -70,6 +70,17 @@ class CFITSWriter;
 /* ------------------------------------------------------------------- */
 namespace DSS
 {
+	//
+// Define a structure to hold the parameters for the MTF autostretch, which can be used to store the computed
+// shadow (black point), midtone, and highlight (white point) values for each channel (R=0, G=1, B=2).
+// 
+	struct MTFStretchParameters
+	{
+		float clipPoint[3];
+		float midtoneBalance[3];
+		float whitePoint[3];
+	};
+
 	class StackedBitmap final
 	{
 	private:
@@ -199,8 +210,9 @@ namespace DSS
 		//
 		// Saturation shift allows to shift the saturation of the image by a given amount, either increasing or decreasing it.
 		//
-		void saturationShift(float value);
+		//void saturationShift(float value);
 
+		// 
 		//
 		// The MTF (Midtone Transfer Function) autostretch is a non-linear stretch that automatically 
 		// evaluates image statistics to determine the optimal black point and midtone balance,
@@ -213,7 +225,7 @@ namespace DSS
 		//
 		// Source is in mtfstretch.cpp
 		//
-				void mtfAutoStretch(bool linked, float targetMedian = 0.125f, float shadowClipFactor = 2.8f, float* outShadows = nullptr, float* outMidtones = nullptr, float* outHighlights = nullptr);
+		void mtfComputeAutoStretchParameters(bool linked, MTFStretchParameters& parameters, float targetMedian = 0.125f, float shadowClipFactor = 2.8f);
 
 
 		//
@@ -222,7 +234,7 @@ namespace DSS
 		//
 		// Source is in mtfstretch.cpp
 		//
-		void mtfStretch(float shadow_r, float midtone_r, float highlight_r, float shadow_g, float midtone_g, float highlight_g, float shadow_b, float midtone_b, float highlight_b);
+		void mtfStretch(const MTFStretchParameters& parameters);
 
 		void Clear();
 		int	GetWidth() const;

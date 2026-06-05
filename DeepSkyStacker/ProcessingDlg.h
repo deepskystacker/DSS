@@ -41,6 +41,7 @@
 #include "processingcontrols.h"
 #include "undoredostack.h"
 #include "ui_ProcessingDlg.h"
+#include "StackedBitmap.h"
 
 namespace DSS
 {
@@ -83,8 +84,7 @@ namespace DSS
 		{
 			MtfStretch,
 			AsinhStretch,
-			ColourBalance,
-			AutoStretch
+			ColourBalance
 		};
 
 		//
@@ -147,9 +147,7 @@ namespace DSS
 		
 		int activeMtfChannel{ 0 }; // 0: Red, 1: Green, 2: Blue
 		bool mtfMonochrome{ false };
-		float mtfShadows_r{ 0.0f }, mtfShadows_g{ 0.0f }, mtfShadows_b{ 0.0f };
-		float mtfMidtone_r{ 0.5f }, mtfMidtone_g{ 0.5f }, mtfMidtone_b{ 0.5f };
-		float mtfHighlights_r{ 1.0f }, mtfHighlights_g{ 1.0f }, mtfHighlights_b{ 1.0f };
+		MTFStretchParameters mtfParameters {{0.0f, 0.0f, 0.0f}, {0.5f, 0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}};
 		float mtfTargetBkg{ 0.125f };
 		float mtfShadowClip{ 2.8f };
 
