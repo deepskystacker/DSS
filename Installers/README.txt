@@ -37,6 +37,8 @@ Changes for DeepSkyStacker 6.2.1 Beta 2
 7. Add a Mid-tone Transfer Function (MTF) Transformation (or Stretch) with an Auto-stretch capability.  I'm most
    grateful to Amila Karunarathna for contributing this.
 
+8. Remove the degree symbol from the angle column in the image list display and add it to the column header.
+
 Changes for DeepSkyStacker 6.2.0
 ================================
 
