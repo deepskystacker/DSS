@@ -394,8 +394,6 @@ namespace DSS
 		connect(controls->showClipping, &QCheckBox::checkStateChanged,
 			this, &ProcessingDlg::clippingStateChanged);
 
-		controls->mtfAutostretchButton->setFixedWidth(controls->mtfApply->sizeHint().width());
-
 		connect(picture, &DSS::ImageView::mouseMovedOverImage,
 			this, &ProcessingDlg::updatePixelInfo);
 		

@@ -141,22 +141,6 @@
              </spacer>
             </item>
             <item>
-             <spacer name="horizontalSpacer_MTFClipToLink">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Policy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>10</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
              <widget class="QPushButton" name="mtfLinkButton">
               <property name="maximumSize">
                <size>
@@ -191,7 +175,7 @@
             <item>
              <widget class="QPushButton" name="mtfAutostretchButton">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -204,7 +188,7 @@
               </property>
               <property name="maximumSize">
                <size>
-                <width>16777215</width>
+                <width>130</width>
                 <height>16777215</height>
                </size>
               </property>
