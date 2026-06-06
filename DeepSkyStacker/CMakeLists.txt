@@ -173,7 +173,7 @@ set(i18n_Files
 	"i18n/DeepSkyStacker_de.ts"
 	"i18n/DeepSkyStacker_en.ts"
 	"i18n/DeepSkyStacker_en_GB.ts"
-        "i18n/DeepSkyStacker_es.ts"
+    "i18n/DeepSkyStacker_es.ts"
 	"i18n/DeepSkyStacker_fr.ts"
 	"i18n/DeepSkyStacker_it.ts"
 	"i18n/DeepSkyStacker_ja_JP.ts"
