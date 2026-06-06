@@ -1327,7 +1327,7 @@ Pixel freddi rilevati: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="523"/>
         <source>ASinH Image stretch</source>
-        <translation>Estensione dell&apos;immagine ASinH</translation>
+        <translation>Stiramento ASinH</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>

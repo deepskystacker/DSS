@@ -1328,7 +1328,7 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="523"/>
         <source>ASinH Image stretch</source>
-        <translation>ASinH Растяжение изображения</translation>
+        <translation>Растяжение ASinH</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>
