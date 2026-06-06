@@ -1321,12 +1321,12 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="759"/>
+        <location filename="../ui/ProcessingControls.ui" line="743"/>
         <source>Colour Balance</source>
         <translation>Цветовой баланс</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="539"/>
+        <location filename="../ui/ProcessingControls.ui" line="523"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH Растяжение изображения</translation>
     </message>
@@ -1336,118 +1336,117 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>Растяжение MTF</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="168"/>
+        <location filename="../ui/ProcessingControls.ui" line="152"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
         <translation>Связать каналы RGB, чтобы при перемещении ползунка MTF все каналы обновлялись одновременно.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="216"/>
-        <source>Autostretch</source>
-        <comment>IDC_AUTOSTRETCH</comment>
-        <translation>Автонастройка</translation>
-    </message>
-    <message>
-        <location filename="../ui/ProcessingControls.ui" line="254"/>
+        <location filename="../ui/ProcessingControls.ui" line="238"/>
         <source>Shadows</source>
         <translation>Тени</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <location filename="../ui/ProcessingControls.ui" line="260"/>
         <source>MTF shadow point.</source>
         <translation>Точка теней MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="292"/>
+        <location filename="../ui/ProcessingControls.ui" line="276"/>
         <source>Midtones</source>
         <translation>Средние тона</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="314"/>
+        <location filename="../ui/ProcessingControls.ui" line="298"/>
         <source>MTF midtone balance point.</source>
         <translation>Точка баланса средних тонов MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="333"/>
+        <location filename="../ui/ProcessingControls.ui" line="317"/>
         <source>Highlights</source>
         <translation>Светлые участки</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="355"/>
+        <location filename="../ui/ProcessingControls.ui" line="339"/>
         <source>MTF highlight point.</source>
         <translation>Точка светлых участков MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="380"/>
+        <location filename="../ui/ProcessingControls.ui" line="364"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
         <translation>Расчетный процент пикселей ниже текущей точки теней MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="383"/>
+        <location filename="../ui/ProcessingControls.ui" line="367"/>
         <source>Shadow Clipping:</source>
         <translation>Обрезание теней:</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="427"/>
+        <location filename="../ui/ProcessingControls.ui" line="411"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
         <translation>Расчетный процент пикселей выше текущей точки светлых участков MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="430"/>
+        <location filename="../ui/ProcessingControls.ui" line="414"/>
         <source>Highlight Clipping:</source>
         <translation>Обрезание светов:</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="513"/>
+        <location filename="../ui/ProcessingControls.ui" line="497"/>
         <source>Apply the current MTF stretch settings to the image.</source>
         <translation>Применить текущие настройки растяжения MTF к изображению.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="547"/>
+        <location filename="../ui/ProcessingControls.ui" line="531"/>
         <source>Stretch Factor</source>
         <translation>Коэффициент растяжения</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="621"/>
+        <location filename="../ui/ProcessingControls.ui" line="605"/>
         <source>Black Point</source>
         <translation>Блэк Пойнт</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="699"/>
+        <location filename="../ui/ProcessingControls.ui" line="683"/>
         <source>Human-weighted luminance</source>
         <translation>Яркость, взвешенная по человеческому признаку</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="968"/>
+        <location filename="../ui/ProcessingControls.ui" line="952"/>
         <source>Preview</source>
         <translation>Предварительный просмотр</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="516"/>
-        <location filename="../ui/ProcessingControls.ui" line="736"/>
-        <location filename="../ui/ProcessingControls.ui" line="940"/>
+        <location filename="../ui/ProcessingControls.ui" line="500"/>
+        <location filename="../ui/ProcessingControls.ui" line="720"/>
+        <location filename="../ui/ProcessingControls.ui" line="924"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="212"/>
+        <location filename="../ui/ProcessingControls.ui" line="196"/>
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
         <translation>Автоматически оценить значения теней, полутонов и светов MTF по текущему изображению.
 Щелкните правой кнопкой мыши, чтобы изменить параметры автоматического растяжения</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="991"/>
+        <location filename="../ui/ProcessingControls.ui" line="200"/>
+        <source>Autostretch</source>
+        <translation>Автонастройка</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="975"/>
         <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>Oтобразите пиксели ниже Black Level синим цветом, а пиксели выше White Level — красным.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="994"/>
+        <location filename="../ui/ProcessingControls.ui" line="978"/>
         <source>Show Shadow and Highlight clipping</source>
         <translation>Показать отсечение теней и светлых участков</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="1074"/>
+        <location filename="../ui/ProcessingControls.ui" line="1058"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Сбросить</translation>
@@ -1456,95 +1455,95 @@ Right-click to change Autostretch parameters</source>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1203"/>
+        <location filename="../ProcessingDlg.cpp" line="1228"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="538"/>
+        <location filename="../ProcessingDlg.cpp" line="563"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Изображение TIFF или FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="422"/>
+        <location filename="../ProcessingDlg.cpp" line="447"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Маска звёзд, созданная DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="424"/>
+        <location filename="../ProcessingDlg.cpp" line="449"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Сохранить маску звёзд в %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="501"/>
-        <location filename="../ProcessingDlg.cpp" line="613"/>
+        <location filename="../ProcessingDlg.cpp" line="526"/>
+        <location filename="../ProcessingDlg.cpp" line="638"/>
         <source>Failed to load image %1</source>
         <translation>Не удалось загрузить изображение %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="642"/>
+        <location filename="../ProcessingDlg.cpp" line="667"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Изображение 16 бит/канал (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="643"/>
+        <location filename="../ProcessingDlg.cpp" line="668"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - целые (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="644"/>
+        <location filename="../ProcessingDlg.cpp" line="669"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - дробные (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="645"/>
+        <location filename="../ProcessingDlg.cpp" line="670"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 16 бит/канал (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="646"/>
+        <location filename="../ProcessingDlg.cpp" line="671"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 32 бит/канал - целые (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="647"/>
+        <location filename="../ProcessingDlg.cpp" line="672"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS изображение 32 бит/канал -дробные (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="656"/>
+        <location filename="../ProcessingDlg.cpp" line="681"/>
         <source>Save Image</source>
         <translation>Сохранить изображение</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="759"/>
+        <location filename="../ProcessingDlg.cpp" line="784"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Нечего сохранять.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="774"/>
+        <location filename="../ProcessingDlg.cpp" line="799"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Инфо не доступно</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="796"/>
+        <location filename="../ProcessingDlg.cpp" line="821"/>
         <source>Exposure: %1 </source>
         <translation>Выдержка: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="797"/>
+        <location filename="../ProcessingDlg.cpp" line="822"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1554,55 +1553,35 @@ Right-click to change Autostretch parameters</source>
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1380"/>
+        <location filename="../ProcessingDlg.cpp" line="1386"/>
+        <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
+        <translation>Растяжение MTF: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1400"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
         <translation>ASinH stretch: beta %L1, bp %L2, ​​hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1392"/>
+        <location filename="../ProcessingDlg.cpp" line="1413"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
         <translation>Цветовой баланс: R %L1, G %L2, ​​B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1406"/>
-        <source>MTF Stretch</source>
-        <translation>Растяжение MTF</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="1419"/>
-        <source>Autostretch: %1</source>
-        <translation>Автоматическое растяжение: %1</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="1420"/>
-        <source>Linked</source>
-        <translation>Связано</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="1420"/>
-        <source>Unlinked</source>
-        <translation>Развязано</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="1432"/>
-        <location filename="../ProcessingDlg.cpp" line="1459"/>
-        <location filename="../ProcessingDlg.cpp" line="1487"/>
+        <location filename="../ProcessingDlg.cpp" line="1424"/>
+        <location filename="../ProcessingDlg.cpp" line="1452"/>
+        <location filename="../ProcessingDlg.cpp" line="1480"/>
         <source>Undo %1</source>
         <translation>Отменить %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1448"/>
-        <location filename="../ProcessingDlg.cpp" line="1491"/>
+        <location filename="../ProcessingDlg.cpp" line="1441"/>
+        <location filename="../ProcessingDlg.cpp" line="1484"/>
         <source>Redo %1</source>
         <translation>Повторить %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1572"/>
-        <source>Autostretch:</source>
-        <translation>Автоматическое растяжение:</translation>
-    </message>
-    <message>
-        <location filename="../ProcessingDlg.cpp" line="1815"/>
+        <location filename="../ProcessingDlg.cpp" line="1780"/>
         <source>Edit autostretch parameters ...</source>
         <translation>Редактировать параметры автоматического растяжения ...</translation>
     </message>
