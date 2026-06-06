@@ -54,14 +54,14 @@ namespace DSS
 
 	void QMTFSlider::setShadows(double val)
 	{
-		m_Shadows = std::clamp(val, 0.0, m_Midtones);
+		m_Shadows = std::clamp(val, 0.0, m_Highlights);
 		update();
 		emit shadowsChanged(m_Shadows);
 	}
 
 	void QMTFSlider::setMidtones(double val)
 	{
-		m_Midtones = std::clamp(val, m_Shadows, m_Highlights);
+		m_Midtones = std::clamp(val, 0.0, m_Highlights);
 		update();
 		emit midtonesChanged(m_Midtones);
 	}
@@ -218,7 +218,7 @@ namespace DSS
 
 			if (m_ActiveHandle == ActiveHandle::Shadows)
 			{
-				val = std::clamp(val, 0.0, m_Midtones); // Cannot pass midtones
+				val = std::clamp(val, 0.0, m_Highlights);
 				m_Shadows = val;
 			}
 			else if (m_ActiveHandle == ActiveHandle::Highlights)
@@ -228,7 +228,7 @@ namespace DSS
 			}
 			else if (m_ActiveHandle == ActiveHandle::Midtones)
 			{
-				val = std::clamp(val, m_Shadows, m_Highlights);
+				val = std::clamp(val, 0.0, m_Highlights);
 				m_Midtones = val;
 			}
 
