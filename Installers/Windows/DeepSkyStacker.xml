@@ -229,10 +229,10 @@
                     <actionList>
                         <setInstallerVariable name="vcredist_require_install" value="1"/>
                         <setInstallerVariable name="vcredist_install_mode" value="install"/>
-                        <logMessage text="Visual Studio Runtime build ${bld} is installed, install build 36231"/>
+                        <logMessage text="Visual Studio Runtime build ${bld} is installed, install build 36328"/>
                     </actionList>
                     <ruleList>
-                        <compareValues logic="less" value1="${bld}" value2="36231"/>
+                        <compareValues logic="less" value1="${bld}" value2="36328"/>
                     </ruleList>
                 </actionGroup>
                 <actionGroup>
@@ -242,7 +242,7 @@
                         <logMessage text="Visual Studio Runtime build ${bld} is already installed, do a repair install"/>
                     </actionList>
                     <ruleList>
-                        <compareValues logic="equals" value1="${bld}" value2="36231"/>
+                        <compareValues logic="equals" value1="${bld}" value2="36328"/>
                     </ruleList>
                 </actionGroup>
                 <actionGroup>
@@ -251,7 +251,7 @@
                         <logMessage text="Visual Studio Runtime build ${bld} is installed, do nothing"/>
                     </actionList>
                     <ruleList>
-                        <compareValues logic="greater" value1="${bld}" value2="36231"/>
+                        <compareValues logic="greater" value1="${bld}" value2="36328"/>
                     </ruleList>
                 </actionGroup>
             </elseActionList>
