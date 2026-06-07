@@ -555,13 +555,13 @@ Right-click to change Autostretch parameters</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>80</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>70</width>
+                <width>80</width>
                 <height>16777215</height>
                </size>
               </property>
@@ -623,13 +623,13 @@ Right-click to change Autostretch parameters</string>
              <widget class="QDoubleSpinBox" name="asinhBPSpinBox">
               <property name="minimumSize">
                <size>
-                <width>70</width>
+                <width>80</width>
                 <height>0</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>70</width>
+                <width>80</width>
                 <height>16777215</height>
                </size>
               </property>
