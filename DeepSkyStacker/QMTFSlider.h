@@ -49,9 +49,9 @@ namespace DSS
 	public:
 		explicit QMTFSlider(QWidget* parent = nullptr);
 
-		double shadows() const { return m_Shadows; }
-		double midtones() const { return m_Midtones; }
-		double highlights() const { return m_Highlights; }
+		float shadows() const { return static_cast<float>(m_Shadows); }
+		float midtones() const { return static_cast<float>(m_Midtones); }
+		float highlights() const { return static_cast<float>(m_Highlights); }
 		QColor color() const { return m_Color; }
 
 	public slots:

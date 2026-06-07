@@ -1695,6 +1695,7 @@ namespace DSS
 			case 0: labelColour = Qt::red; break;
 			case 1: labelColour = Qt::darkGreen; break;
 			case 2: labelColour = Qt::blue; break;
+			default: break;
 			}
 		}
 		const QString style{ QString("color: %1;").arg(labelColour.name()) };
@@ -1712,11 +1713,29 @@ namespace DSS
 		if (midtones > highlights)
 			midtones = highlights;
 
-		auto setChannel = [&](int ch, float s, float m, float h) {
-			switch (ch) {
-			case 0: mtfParameters.clipPoint[0] = s; mtfParameters.midtoneBalance[0] = m; mtfParameters.whitePoint[0] = h; controls->mtfRedGradient->setValues(s, m, h); break;
-			case 1: mtfParameters.clipPoint[1] = s; mtfParameters.midtoneBalance[1] = m; mtfParameters.whitePoint[1] = h; controls->mtfGreenGradient->setValues(s, m, h); break;
-			case 2: mtfParameters.clipPoint[2] = s; mtfParameters.midtoneBalance[2] = m; mtfParameters.whitePoint[2] = h; controls->mtfBlueGradient->setValues(s, m, h); break;
+		auto setChannel = [&](int ch, float s, float m, float h)
+			{
+			switch (ch)
+			{
+			case 0:
+				mtfParameters.clipPoint[0] = s;
+				mtfParameters.midtoneBalance[0] = m;
+				mtfParameters.whitePoint[0] = h;
+				controls->mtfRedGradient->setValues(s, m, h);
+				break;
+			case 1:
+				mtfParameters.clipPoint[1] = s;
+				mtfParameters.midtoneBalance[1] = m;
+				mtfParameters.whitePoint[1] = h;
+				controls->mtfGreenGradient->setValues(s, m, h);
+				break;
+			case 2:
+				mtfParameters.clipPoint[2] = s;
+				mtfParameters.midtoneBalance[2] = m;
+				mtfParameters.whitePoint[2] = h;
+				controls->mtfBlueGradient->setValues(s, m, h);
+				break;
+			default: break;
 			}
 		};
 
@@ -1743,12 +1762,9 @@ namespace DSS
 	//
 	void ProcessingDlg::getCurrentChannelValues(float& shadows, float& midtones, float& highlights) const
 	{
-		switch (activeMtfChannel)
-		{
-		case 0: shadows = mtfParameters.clipPoint[0]; midtones = mtfParameters.midtoneBalance[0]; highlights = mtfParameters.whitePoint[0]; break;
-		case 1: shadows = mtfParameters.clipPoint[1]; midtones = mtfParameters.midtoneBalance[1]; highlights = mtfParameters.whitePoint[1]; break;
-		case 2: shadows = mtfParameters.clipPoint[2]; midtones = mtfParameters.midtoneBalance[2]; highlights = mtfParameters.whitePoint[2]; break;
-		}
+		shadows = mtfParameters.clipPoint[activeMtfChannel];
+		midtones = mtfParameters.midtoneBalance[activeMtfChannel];
+		highlights = mtfParameters.whitePoint[activeMtfChannel];
 	}
 
 	/* ------------------------------------------------------------------- */
