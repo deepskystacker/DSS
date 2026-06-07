@@ -1694,7 +1694,7 @@ namespace DSS
 			{
 			case 0: labelColour = Qt::red; break;
 			case 1: labelColour = Qt::darkGreen; break;
-			case 2: labelColour = Qt::blue; break;
+			case 2: labelColour = QColorConstants::Svg::deepskyblue; break;
 			default: break;
 			}
 		}
