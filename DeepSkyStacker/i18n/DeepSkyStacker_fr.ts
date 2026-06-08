@@ -1047,37 +1047,37 @@ Ctrl + 4 pour basculer en mode 4 coins</translation>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
         <source>Autostretch Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres d&apos;Autostretch</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
         <source>Target Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Fond cible</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
         <source>Target background level used by autostretch. Lower values produce a darker background.</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveau de fond cible utilisé par l&apos;autostretch. Des valeurs plus basses produisent un fond plus sombre.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
         <source>Reset target background to the default value (0.125).</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser le fond cible à la valeur par défaut (0,125).</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
         <source>Shadow Clipping</source>
-        <translation type="unfinished"></translation>
+        <translation>Clipping des ombres</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
         <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
-        <translation type="unfinished"></translation>
+        <translation>Agressivité du clipping des ombres en unités EAM (Ecart Absolu Médian) pour l&apos;autostretch.</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
         <source>Reset shadow clipping factor to the default value (2.8).</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser le facteur de clipping des ombres à la valeur par défaut (2,8).</translation>
     </message>
 </context>
 <context>
@@ -1331,67 +1331,67 @@ Pixels froids détectés : %L3 (%L4%)</translation>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>Étirement MTF</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="152"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lier les canaux RVB : déplacer un curseur MTF met à jour tous les canaux simultanément.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="238"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>Ombres</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="260"/>
         <source>MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Point d&apos;ombre MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="276"/>
         <source>Midtones</source>
-        <translation type="unfinished"></translation>
+        <translation>Tons moyens</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="298"/>
         <source>MTF midtone balance point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Point d&apos;équilibre des tons moyens MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="317"/>
         <source>Highlights</source>
-        <translation type="unfinished"></translation>
+        <translation>Hautes lumières</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="339"/>
         <source>MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Point de haute lumière MTF.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="364"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pourcentage estimé de pixels situés en dessous du point d&apos;ombre MTF actuel.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="367"/>
         <source>Shadow Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Clipping des ombres:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="411"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pourcentage estimé de pixels situés au-dessus du point de haute lumière MTF actuel.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="414"/>
         <source>Highlight Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>Clipping des hautes lumières:</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="497"/>
         <source>Apply the current MTF stretch settings to the image.</source>
-        <translation type="unfinished"></translation>
+        <translation>Appliquer les réglages MTF actuels à l&apos;image.</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="531"/>
@@ -1425,12 +1425,13 @@ Pixels froids détectés : %L3 (%L4%)</translation>
         <location filename="../ui/ProcessingControls.ui" line="196"/>
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Estimer automatiquement les valeurs MTF pour les ombres, les tons moyens et les hautes lumières à partir de l&apos;image courante.
+Clic droit pour modifier les paramètres d&apos;autostretch</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="200"/>
         <source>Autostretch</source>
-        <translation type="unfinished"></translation>
+        <translation>Autostretch</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="975"/>
@@ -1551,7 +1552,7 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1386"/>
         <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
-        <translation type="unfinished"></translation>
+        <translation>Étirement MTF: R %L1 %L2 %L3, V %L4 %L5 %L6, B %L7 %L8 %L9</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1400"/>
@@ -1577,9 +1578,9 @@ Right-click to change Autostretch parameters</source>
         <translation>Refaire %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1780"/>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
         <source>Edit autostretch parameters ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifier les paramètres d&apos;autostretch ...</translation>
     </message>
 </context>
 <context>
@@ -2574,18 +2575,30 @@ Utilisez-la si vous prévoyez d&apos;effectuer tout le traitement dans un autre 
         <translation>Réduire la priorité des processus de traitement</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="98"/>
-        <location filename="../ui/StackSettings.ui" line="108"/>
+        <location filename="../ui/StackSettings.ui" line="90"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Utiliser les données du Système de Coordonnées Mondiales (WCS) issues des en-têtes FITS
+(si disponibles) pour déterminer les décalages et la rotation de l&apos;image.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="94"/>
+        <source>Use FITS WCS data</source>
+        <translation>Utiliser les données WCS FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="109"/>
+        <location filename="../ui/StackSettings.ui" line="119"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>Un maximum de 8 threads est suggéré</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="101"/>
+        <location filename="../ui/StackSettings.ui" line="112"/>
         <source>Maximum number of processing threads</source>
         <translation>Nombre maximal de threads de traitement</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="130"/>
+        <location filename="../ui/StackSettings.ui" line="141"/>
         <source>SIMD vectorisation</source>
         <translation>Vectorisation SIMD</translation>
     </message>
@@ -2614,7 +2627,7 @@ Utilisez-la si vous prévoyez d&apos;effectuer tout le traitement dans un autre 
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="201"/>
+        <location filename="../StackSettings.cpp" line="204"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Sélectionner le répertoire qui va contenir les fichiers temporaires.</translation>
@@ -3255,13 +3268,6 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsorisez DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation>Aide DeepSkyStacker.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

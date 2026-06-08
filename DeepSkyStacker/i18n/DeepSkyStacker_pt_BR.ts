@@ -1579,7 +1579,7 @@ Clique com o botão direito do mouse para alterar os parâmetros de alongamento 
         <translation>Refazer %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1780"/>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
         <source>Edit autostretch parameters ...</source>
         <translation>Editar parâmetros de alongamento automático ...</translation>
     </message>
@@ -2576,18 +2576,30 @@ Use-a se você planeja fazer todo o processamento em outro software.</translatio
         <translation>Reduzindo prioridades no trabalho</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="98"/>
-        <location filename="../ui/StackSettings.ui" line="108"/>
+        <location filename="../ui/StackSettings.ui" line="90"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Usar dados do Sistema de Coordenadas Mundiais (WCS) dos cabeçalhos FITS
+(se disponíveis) para determinar deslocamentos e rotação da imagem.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="94"/>
+        <source>Use FITS WCS data</source>
+        <translation>Usar dados WCS do FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="109"/>
+        <location filename="../ui/StackSettings.ui" line="119"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>É sugerido um máximo de 8 threads</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="101"/>
+        <location filename="../ui/StackSettings.ui" line="112"/>
         <source>Maximum number of processing threads</source>
         <translation>Número máximo de threads de processamento</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="130"/>
+        <location filename="../ui/StackSettings.ui" line="141"/>
         <source>SIMD vectorisation</source>
         <translation>Vetorização SIMD</translation>
     </message>
@@ -2616,7 +2628,7 @@ Use-a se você planeja fazer todo o processamento em outro software.</translatio
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="201"/>
+        <location filename="../StackSettings.cpp" line="204"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Por favor selecione a pasta que ira conter os ficheiros temporarios</translation>
@@ -3251,13 +3263,6 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Patrocinador DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation>DeepSkyStacker Ajuda.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

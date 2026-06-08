@@ -1574,7 +1574,7 @@ Feu clic amb el botó dret per canviar els paràmetres d&apos;estirament automà
         <translation>Refer %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1780"/>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
         <source>Edit autostretch parameters ...</source>
         <translation>Edita els paràmetres d&apos;estirament automàtic...</translation>
     </message>
@@ -2571,18 +2571,30 @@ Utilitzeu-la si teniu previst fer tot el processament en un altre programari.</t
         <translation>Reduir la prioritat d&apos;execució</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="98"/>
-        <location filename="../ui/StackSettings.ui" line="108"/>
+        <location filename="../ui/StackSettings.ui" line="90"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Utilitza les dades del Sistema de Coordinades Mundials (WCS) dels encapçalaments FITS
+(si estan disponibles) per determinar els desplaçaments i la rotació de la imatge.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="94"/>
+        <source>Use FITS WCS data</source>
+        <translation>Utilitza les dades WCS de FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="109"/>
+        <location filename="../ui/StackSettings.ui" line="119"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>Es recomana un màxim de 8 fils</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="101"/>
+        <location filename="../ui/StackSettings.ui" line="112"/>
         <source>Maximum number of processing threads</source>
         <translation>Nombre màxim de fils de processament</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="130"/>
+        <location filename="../ui/StackSettings.ui" line="141"/>
         <source>SIMD vectorisation</source>
         <translation>Vectorització SIMD</translation>
     </message>
@@ -2611,7 +2623,7 @@ Utilitzeu-la si teniu previst fer tot el processament en un altre programari.</t
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="201"/>
+        <location filename="../StackSettings.cpp" line="204"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Si us plau seleccioni la carpeta que conté els arxius temporals</translation>
@@ -3249,13 +3261,6 @@ Probablement en podeu obtenir un altre o descarregar la versió final del lloc w
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Patrocina DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation>Ayuda DeepSkyStacker.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

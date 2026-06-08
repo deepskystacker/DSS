@@ -1577,7 +1577,7 @@ Klik met de rechtermuisknop om de Autostretch-parameters te wijzigen</translatio
         <translation>Opnieuw doen %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1780"/>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
         <source>Edit autostretch parameters ...</source>
         <translation>Bewerk autostretch-parameters ...</translation>
     </message>
@@ -2574,18 +2574,30 @@ Gebruik deze optie als u van plan bent alle bewerkingen in andere software uit t
         <translation>Verminder werker threads voorrang</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="98"/>
-        <location filename="../ui/StackSettings.ui" line="108"/>
+        <location filename="../ui/StackSettings.ui" line="90"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Gebruik World Coordinate System (WCS)-gegevens uit FITS-headers
+(indien beschikbaar) om beeldverschuivingen en rotatie te bepalen.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="94"/>
+        <source>Use FITS WCS data</source>
+        <translation>Gebruik FITS WCS-gegevens</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="109"/>
+        <location filename="../ui/StackSettings.ui" line="119"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>Er wordt een maximum van 8 threads voorgesteld</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="101"/>
+        <location filename="../ui/StackSettings.ui" line="112"/>
         <source>Maximum number of processing threads</source>
         <translation>Maximaal aantal verwerkingsthreads</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="130"/>
+        <location filename="../ui/StackSettings.ui" line="141"/>
         <source>SIMD vectorisation</source>
         <translation>SIMD vectorisatie</translation>
     </message>
@@ -2614,7 +2626,7 @@ Gebruik deze optie als u van plan bent alle bewerkingen in andere software uit t
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="201"/>
+        <location filename="../StackSettings.cpp" line="204"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Selecteer a.u.b. de map die alle tijdelijke bestanden bevattten</translation>
@@ -3254,13 +3266,6 @@ U kunt waarschijnlijk een andere krijgen of de definitieve versie van de website
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsor DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

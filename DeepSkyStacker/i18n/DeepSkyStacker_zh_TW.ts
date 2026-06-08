@@ -1570,7 +1570,7 @@ Right-click to change Autostretch parameters</source>
         <translation>重做 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1780"/>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
         <source>Edit autostretch parameters ...</source>
         <translation>編輯自動拉伸參數 ...</translation>
     </message>
@@ -2566,18 +2566,30 @@ Use it if you plan to do all the processing in other software.</source>
         <translation>降低執行緒的優先性</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="98"/>
-        <location filename="../ui/StackSettings.ui" line="108"/>
+        <location filename="../ui/StackSettings.ui" line="90"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>使用 FITS 標頭中的世界座標系統 (WCS) 資料
+（若可用）來確定影像的位移與旋轉。</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="94"/>
+        <source>Use FITS WCS data</source>
+        <translation>使用 FITS WCS 資料</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="109"/>
+        <location filename="../ui/StackSettings.ui" line="119"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>建議最多 8 個線程</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="101"/>
+        <location filename="../ui/StackSettings.ui" line="112"/>
         <source>Maximum number of processing threads</source>
         <translation>最大處理線程數</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="130"/>
+        <location filename="../ui/StackSettings.ui" line="141"/>
         <source>SIMD vectorisation</source>
         <translation>SIMD 矢量化</translation>
     </message>
@@ -2606,7 +2618,7 @@ Use it if you plan to do all the processing in other software.</source>
         <translation>偏壓</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="201"/>
+        <location filename="../StackSettings.cpp" line="204"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>請選擇暫存檔用的檔案夾</translation>
@@ -3236,13 +3248,6 @@ You can probably get another one or download the final release from the web site
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>贊助 DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

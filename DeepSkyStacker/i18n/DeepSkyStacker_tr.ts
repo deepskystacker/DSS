@@ -1574,7 +1574,7 @@ Otomatik uzatma parametrelerini değiştirmek için sağ tıklayın</translation
         <translation>Yeniden Yap %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1780"/>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
         <source>Edit autostretch parameters ...</source>
         <translation>Otomatik uzatma parametrelerini düzenle ...</translation>
     </message>
@@ -2570,18 +2570,30 @@ Tüm işlemleri başka bir yazılımda yapmayı planlıyorsanız bunu kullanın.
         <translation>Görev yürütme birimi önceliğini düşür</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="98"/>
-        <location filename="../ui/StackSettings.ui" line="108"/>
+        <location filename="../ui/StackSettings.ui" line="90"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Görüntü kaydırmalarını ve dönüşünü belirlemek için FITS başlıklarından Dünya Koordinat Sistemi (WCS) verilerini
+(varsa) kullanın.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="94"/>
+        <source>Use FITS WCS data</source>
+        <translation>FITS WCS verilerini kullan</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackSettings.ui" line="109"/>
+        <location filename="../ui/StackSettings.ui" line="119"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>Maksimum 8 işlem iş parçacığı önerilir</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="101"/>
+        <location filename="../ui/StackSettings.ui" line="112"/>
         <source>Maximum number of processing threads</source>
         <translation>Maksimum işlem iş parçacığı sayısı</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="130"/>
+        <location filename="../ui/StackSettings.ui" line="141"/>
         <source>SIMD vectorisation</source>
         <translation>SIMD vektörleştirme</translation>
     </message>
@@ -2610,7 +2622,7 @@ Tüm işlemleri başka bir yazılımda yapmayı planlıyorsanız bunu kullanın.
         <translation>Ofset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="201"/>
+        <location filename="../StackSettings.cpp" line="204"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Lütfen bütün geçici dosyaları içerecek klasörü seçin</translation>
@@ -3246,13 +3258,6 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsor DeepSkyStacker</translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
-        <source>DeepSkyStacker Help.chm</source>
-        <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>
