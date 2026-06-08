@@ -180,8 +180,9 @@ void CFITSReader::ReadAllKeys()
 		QString strPropagated(settings.value("FitsDDP/Propagated", "").toString());
 
 		if (strPropagated.isEmpty())
-			strPropagated = "[DATE-OBS][CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
-
+			strPropagated = "[DATE-OBS][CRPIX1][CRPIX2][CRVAL1][CRVAL2][CTYPE1][CTYPE2][CDELT1][CDELT2]"
+				"[CD1_1][CD2_1][CD1_2][CD2_2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA]"
+				"[SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
 
 		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
 		for (int i = 1;i<=nKeywords;i++)
@@ -531,6 +532,60 @@ bool CFITSReader::Open()
 					};
 				};
 			};
+
+			//
+			// Populate the WCSInfo structure with the WCS information from the FITS header, if present.
+			//
+			ReadKey("CRPIX1", wcsInfo.crpix1);
+			ReadKey("CRPIX2", wcsInfo.crpix2);
+			ReadKey("CRVAL1", wcsInfo.crval1);
+			ReadKey("CRVAL2", wcsInfo.crval2);
+
+			bool have_CD = 
+				ReadKey("CD1_1", wcsInfo.cd11) &&
+				ReadKey("CD1_2", wcsInfo.cd12) && 
+				ReadKey("CD2_1", wcsInfo.cd21) && 
+				ReadKey("CD2_2", wcsInfo.cd22);
+
+			if (have_CD)
+			{
+				ZTRACE_RUNTIME("CD matrix found in FITS header, using that to populate WCS information.");
+				wcsInfo.ok = true;
+			}
+			// If we don't have CD matrix elements, try to get CDELT and PCn values and
+			// calculate the CD matrix from those.
+			else
+			{
+				double cdelt1 = 0., cdelt2 = 0.;
+				if (ReadKey("CDELT1", cdelt1) && ReadKey("CDELT2", cdelt2))
+				{
+					double pc11 = 0, pc12 = 0, pc21 = 0, pc22 = 0;
+					bool have_PC =
+						ReadKey("PC1_1", pc11) &&
+						ReadKey("PC1_2", pc12) &&
+						ReadKey("PC2_1", pc21) &&
+						ReadKey("PC2_2", pc22);
+
+					if (have_PC)
+					{
+						ZTRACE_RUNTIME("CD matrix not found in FITS header, but CDELT and PC matrix elements found, using those to calculate CD matrix.");
+						// CD_i_j = PC_i_j * CDELT_j
+						wcsInfo.cd11 = pc11 * cdelt1;
+						wcsInfo.cd12 = pc12 * cdelt2;
+						wcsInfo.cd21 = pc21 * cdelt1;
+						wcsInfo.cd22 = pc22 * cdelt2;
+						wcsInfo.ok = true;
+					}	
+				}
+			}
+			if (wcsInfo.ok)
+			{
+				ZTRACE_RUNTIME("WCS information found in FITS header:\n"
+					"CRPIX1=%lf, CRPIX2=%lf, CRVAL1=%lf, CRVAL2=%lf\n"
+					"CD11=%lf, CD12=%lf, CD21=%lf, CD22=%lf",
+					wcsInfo.crpix1, wcsInfo.crpix2, wcsInfo.crval1, wcsInfo.crval2,
+					wcsInfo.cd11, wcsInfo.cd12, wcsInfo.cd21, wcsInfo.cd22);
+			}
 
 			if (bResult)
 			{
@@ -1091,7 +1146,7 @@ bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 }
 
 
-bool GetFITSInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
+bool GetFITSInfo(const fs::path& path, BitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -1137,6 +1192,7 @@ bool GetFITSInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		BitmapInfo.m_xBayerOffset	= fits.getXOffset();
 		BitmapInfo.m_yBayerOffset	= fits.getYOffset();
 		BitmapInfo.m_filterName		= fits.m_filterName;
+		BitmapInfo.wcsInfo			= fits.wcsInfo;
 		bResult = true;
 	}
 
@@ -1885,14 +1941,14 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, OldProgressBa
 }
 
 
-bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo)
+bool IsFITSPicture(const fs::path& szFileName, BitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetFITSInfo(szFileName, BitmapInfo);
 };
 
 
-int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
+int	LoadFITSPicture(const fs::path& szFileName, BitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1; // -1 means not a FITS file.

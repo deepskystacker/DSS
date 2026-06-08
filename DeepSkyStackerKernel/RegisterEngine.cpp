@@ -876,7 +876,7 @@ void CLightFrameInfo::RegisterPicture(const fs::path& bitmap, double fMinLuminan
 	m_bApplyMedianFilter= bApplyMedianFilter ? true : false;
 	m_pProgress			= pProgress;
 
-	CBitmapInfo			bmpInfo;
+	BitmapInfo			bmpInfo;
 	bool				bLoaded;
 
 	if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
@@ -1073,22 +1073,22 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, const QString& referenceFrame, bool bForce, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	using ReadReturnType = std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>;
+	using ReadReturnType = std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<BitmapInfo>>;
 	using FutureType = std::future<ReadReturnType>;
 
 	const auto ReadTask = [bForce](const FRAMEINFOVECTOR::const_pointer pBitmap, OldProgressBase* pTaskProgress) -> ReadReturnType
 	{
 		if (pBitmap == nullptr)
-			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<BitmapInfo>{});
 
 		auto lfInfo = std::make_unique<CLightFrameInfo>();
 		lfInfo->SetBitmap(pBitmap->filePath);
 		if (!bForce && lfInfo->IsRegistered())
-			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<BitmapInfo>{});
 
-		auto bmpInfo = std::make_unique<CBitmapInfo>();
+		auto bmpInfo = std::make_unique<BitmapInfo>();
 		if (!GetPictureInfo(lfInfo->filePath, *bmpInfo) || !bmpInfo->CanLoad())
-			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo>{});
+			return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<BitmapInfo>{});
 
 		std::shared_ptr<CMemoryBitmap> outputBitmap;
 		std::shared_ptr<QImage> pQImage;

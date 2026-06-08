@@ -1260,7 +1260,7 @@ namespace DSS
 
 		size_t fileCount{ 0 };
 
-		CBitmapInfo	bitmapInfo;
+		BitmapInfo	bitmapInfo;
 
 		const auto addFileIfValid = [&](const auto file) -> void
 		{
@@ -2901,7 +2901,7 @@ namespace DSS
 
 	bool StackingDlg::isValidImage(const fs::path& path)
 	{
-		CBitmapInfo			BitmapInfo;
+		BitmapInfo			BitmapInfo;
 
 		return (GetPictureInfo(path, BitmapInfo));
 	}

@@ -60,7 +60,7 @@ bool LoadFrame(const fs::path filePath, PICTURETYPE PictureType, OldProgressBase
 	ZFUNCTRACE_RUNTIME();
 
 	bool bResult = false;
-	CBitmapInfo bmpInfo;
+	BitmapInfo bmpInfo;
 
 	const auto fileName{ QString::fromStdU16String(filePath.generic_u16string()) };
 

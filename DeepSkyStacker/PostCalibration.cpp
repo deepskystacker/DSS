@@ -355,7 +355,7 @@ namespace DSS
 					MasterFrames.LoadMasters(StackingInfo, &dlg);
 
 					// Load the image
-					CBitmapInfo		bmpInfo;
+					BitmapInfo		bmpInfo;
 					// Load the bitmap
 					if (GetPictureInfo(filePath, bmpInfo) && bmpInfo.CanLoad())
 					{

@@ -97,7 +97,7 @@ namespace DSS
 		int m_lTotalTime{ 0 };
 		bool m_bMonochrome{ false };
 
-		CBitmapInfo bmpInfo{};
+		BitmapInfo bmpInfo{};
 	public:
 		StackedBitmap();
 		~StackedBitmap() = default;

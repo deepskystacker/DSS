@@ -239,6 +239,9 @@
     <ClCompile Include="mtfstretch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="wcsinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -494,6 +497,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include=".\DSSProgress.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wcsinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

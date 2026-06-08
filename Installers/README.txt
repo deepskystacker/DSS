@@ -39,6 +39,10 @@ Changes for DeepSkyStacker 6.2.1 Beta 2
 
 8. Remove the degree symbol from the angle column in the image list display and add it to the column header.
 
+9. If all light frames are FITS files with valid World Coordinate System (WCS) data and the option to use
+   WCS data is set in the stacking settings, then this data should be used to determine the image offsets and
+   rotation rather than calculating them from the image data (which can take a long time).
+
 Changes for DeepSkyStacker 6.2.0
 ================================
 

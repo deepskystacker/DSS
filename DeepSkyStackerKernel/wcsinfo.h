@@ -1,7 +1,7 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2023 David C. Partridge
+** Copyright (C) 2020, 2022 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
@@ -34,59 +34,34 @@
 **
 **
 ****************************************************************************/
-// BitmapInfo.h : header file
-#include "BitmapExtraInfo.h"
-#include "wcsinfo.h"
-#include "cfa.h"
 
-class BitmapInfo
+namespace DSS
 {
-public:
-	fs::path m_strFileName;
-	QString m_strFileType;
-	QString m_strModel;
-	int m_lISOSpeed;
-	int m_lGain;
-	double m_fExposure;
-	double m_fAperture;
-	int m_lWidth;
-	int m_lHeight;
-	int m_lBitsPerChannel;
-	int m_lNrChannels;
-	bool m_bCanLoad;
-	bool m_bFloat;
-	CFATYPE m_CFAType;
-	bool m_bMaster;
-	bool m_bFITS16bit;
-	QString m_strDateTime;
-	QDateTime m_DateTime;
-	QDateTime m_InfoTime;
-	CBitmapExtraInfo m_ExtraInfo;
-	int m_xBayerOffset;
-	int m_yBayerOffset;
-	QString m_filterName;
-	DSS::WCSInfo wcsInfo;
- 
-private:
-	void CopyFrom(const BitmapInfo& bi);
-	void Init();
+	class WCSInfo
+	{
+	public:
 
-public:
-	BitmapInfo();
-	BitmapInfo(const BitmapInfo& bi);
-	BitmapInfo(const fs::path& fileName);
 
-	virtual ~BitmapInfo() = default;
+		double crval1{ 0.0 }; // Reference RA in degrees
+		double crval2{ 0.0 }; // Reference Dec in degrees
+		double cd11{ 0.0 };   // CD matrix element (RA)
+		double cd12{ 0.0 };   // CD matrix element (RA)
+		double cd21{ 0.0 };   // CD matrix element (Dec)
+		double cd22{ 0.0 };   // CD matrix element (Dec)
+		double crpix1{ 0.0 }; // Reference pixel X
+		double crpix2{ 0.0 }; // Reference pixel Y
+		bool ok{ false };
 
-	BitmapInfo& operator = (const BitmapInfo& bi);
-	bool operator<(const BitmapInfo& other) const;
-	bool operator==(const BitmapInfo& other) const;
+		std::tuple<double, double> pixelToWorld(double x, double y) const;
 
-	bool CanLoad() const;
-	bool IsCFA();
-	bool IsMaster();
-	void GetDescription(QString& strDescription);
-	bool IsInitialized();
-};
+		std::tuple<double, double> worldToPixel(double ra, double dec) const;
 
-bool RetrieveEXIFInfo(const fs::path& fileName, BitmapInfo& BitmapInfo);
+		double rotationAngle() const;
+
+		double pixelScale() const;
+
+		std::tuple <double, double> offsetXY(const WCSInfo& referenceWCSInfo) const;
+
+		double rotationFrom(const WCSInfo& referenceWCSInfo) const;
+	};
+}

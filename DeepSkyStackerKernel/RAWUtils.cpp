@@ -901,7 +901,7 @@ bool IsRAWPicture(const fs::path& szFileName, QString& strModel)
 
 /* ------------------------------------------------------------------- */
 
-bool IsRAWPicture(const fs::path& path, CBitmapInfo& BitmapInfo)
+bool IsRAWPicture(const fs::path& path, BitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;

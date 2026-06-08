@@ -94,6 +94,7 @@ set(Header_Files
     "TaskInfo.h"
     "TIFFUtil.h"
     "tracecontrol.h"
+    "wcsinfo.h"
     "Workspace.h"
 )
 if(WIN32)
@@ -216,6 +217,7 @@ set(Source_Files
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
+    "wcsinfo.cpp"
     "Workspace.cpp"
 )
 if(WIN32)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>686</width>
-    <height>364</height>
+    <height>371</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -81,6 +81,17 @@
         <widget class="QCheckBox" name="reducePriority">
          <property name="text">
           <string>Reduce worker threads priority</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="useWCS">
+         <property name="toolTip">
+          <string>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</string>
+         </property>
+         <property name="text">
+          <string>Use FITS WCS data</string>
          </property>
         </widget>
        </item>

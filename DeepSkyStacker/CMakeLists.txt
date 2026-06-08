@@ -19,8 +19,8 @@ set(Dialogs
 source_group("Dialogs" FILES ${Dialogs})
 
 set(Dialogs__Processing
-	"MtfAutostretchSettings.cpp"
-	"MtfAutostretchSettings.h"
+    "MtfAutostretchSettings.cpp"
+    "MtfAutostretchSettings.h"
     "processingcontrols.cpp"
     "processingcontrols.h"
     "ProcessingDlg.cpp"

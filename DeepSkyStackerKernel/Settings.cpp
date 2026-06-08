@@ -121,7 +121,7 @@ void	CGlobalSettings::WriteToFile(const fs::path& file)
 bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, const fs::path& file)
 {
 	bool				bResult = false;
-	CBitmapInfo			bmpInfo;
+	BitmapInfo			bmpInfo;
 
 	m_sSettings.clear();
 	m_vFiles.clear();

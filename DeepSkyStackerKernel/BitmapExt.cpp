@@ -1,6 +1,7 @@
 #include "pch.h"
 #include <unordered_set>
 #include "BackgroundCalibration.h"
+#include "BitmapInfo.h"
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "MemoryBitmap.h"
@@ -502,7 +503,7 @@ bool LoadOtherPicture(const fs::path& file, std::shared_ptr<CMemoryBitmap>& rpBi
 
 	rpBitmap = pBitmap;
 
-	CBitmapInfo bmpInfo;
+	BitmapInfo bmpInfo;
 	if (RetrieveEXIFInfo(file, bmpInfo))
 		pBitmap->m_DateTime = bmpInfo.m_DateTime;
 
@@ -795,9 +796,9 @@ namespace {
 
 	template <class T> struct BitmapInfoHash;
 	template<>
-	struct BitmapInfoHash<CBitmapInfo>
+	struct BitmapInfoHash<BitmapInfo>
 	{
-		size_t operator()(const CBitmapInfo& other) const
+		size_t operator()(const BitmapInfo& other) const
 		{
 			const auto& str = QString::fromStdU16String(other.m_strFileName.generic_u16string().c_str());
 			const QByteArray data = str.toUtf8();
@@ -806,10 +807,10 @@ namespace {
 		}
 	};
 
-	//typedef std::set<CBitmapInfo> InfoCache;
+	//typedef std::set<BitmapInfo> InfoCache;
 	// We absolutely must use a thread-safe cache, otherwise GetPictureInfo() crashes if used concurrently (e.g. with OpenMP).
 
-	using InfoCache = std::unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>>;
+	using InfoCache = std::unordered_set<BitmapInfo, BitmapInfoHash<BitmapInfo>>;
 	InfoCache g_sBitmapInfoCache;
 	QDateTime g_BitmapInfoTime{ QDateTime::currentDateTime() };
 	std::shared_mutex bitmapInfoMutex;
@@ -851,7 +852,7 @@ namespace big_endian {
 	}
 }
 
-bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
+bool GetPictureInfo(const fs::path& path, BitmapInfo& bitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -874,10 +875,10 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 	else
 	{
 		std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
-		InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(path));
+		InfoCache::const_iterator it = g_sBitmapInfoCache.find(BitmapInfo(path));
 		if (it != g_sBitmapInfoCache.cend())
 		{
-			BitmapInfo = *it;
+			bitmapInfo = *it;
 			bResult = true;
 		}
 	}
@@ -893,12 +894,12 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		if (mime.inherits("image/jpeg"))
 		{
 			isJpeg = true;
-			BitmapInfo.m_strFileType = "JPEG";
+			bitmapInfo.m_strFileType = "JPEG";
 		}
 		else if (mime.inherits("image/png"))
 		{
 			isPng = true;
-			BitmapInfo.m_strFileType = "PNG";
+			bitmapInfo.m_strFileType = "PNG";
 		}
 
 		//
@@ -907,12 +908,12 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 		// The Mime type for a FITS file changed in 6.8.0 from "image/fits" to
 		// "application/fits", but not on all platforms so need to check for both.
 		//
-		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, BitmapInfo))
+		if (rawFileExtensions.contains(extension) && IsRAWPicture(path, bitmapInfo))
 			bResult = true;
-		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, BitmapInfo))
+		else if (mime.inherits("image/tiff") && IsTIFFPicture(path, bitmapInfo))
 			bResult = true;
 		else if ((mime.inherits("image/fits") || mime.inherits("application/fits")) &&
-				IsFITSPicture(path, BitmapInfo))
+				IsFITSPicture(path, bitmapInfo))
 			bResult = true;
 		else if (isJpeg || isPng)
 		{
@@ -945,10 +946,10 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 						if ((0xC0 <= b) and (b <= 0xCF) and (b != 0xC4) and (b != 0xC8) and (b != 0xCC))
 						{
 							f.seekg(2, std::ios::cur);
-							BitmapInfo.m_lBitsPerChannel = f.get();
-							BitmapInfo.m_lHeight = big_endian::read_word(f);
-							BitmapInfo.m_lWidth = big_endian::read_word(f);
-							BitmapInfo.m_lNrChannels = f.get();
+							bitmapInfo.m_lBitsPerChannel = f.get();
+							bitmapInfo.m_lHeight = big_endian::read_word(f);
+							bitmapInfo.m_lWidth = big_endian::read_word(f);
+							bitmapInfo.m_lNrChannels = f.get();
 							foundSOF = true;
 							break;
 						}
@@ -982,37 +983,37 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 					f.read(type, sizeof(type));
 					if (0 != memcmp(type, IHDR, sizeof(type))) return false;
 
-					BitmapInfo.m_lWidth = big_endian::read_dword(f);
-					BitmapInfo.m_lHeight = big_endian::read_dword(f);
-					BitmapInfo.m_lBitsPerChannel = f.get();
+					bitmapInfo.m_lWidth = big_endian::read_dword(f);
+					bitmapInfo.m_lHeight = big_endian::read_dword(f);
+					bitmapInfo.m_lBitsPerChannel = f.get();
 
 					char colorType = static_cast<char>(f.get());
 					switch (colorType)
 					{
 					case 0:
 					case 4:
-						BitmapInfo.m_lNrChannels = 1;
+						bitmapInfo.m_lNrChannels = 1;
 						break;
 					case 2:		// RGB
 					case 6:		// RGBA (strictly 4 channels but we say 3)
-						BitmapInfo.m_lNrChannels = 3;
+						bitmapInfo.m_lNrChannels = 3;
 						break;
 					default:
 						return false;
 					}
 				}
-				BitmapInfo.m_strFileName = path;
-				BitmapInfo.m_CFAType = CFATYPE_NONE;
-				BitmapInfo.m_bCanLoad = true;
+				bitmapInfo.m_strFileName = path;
+				bitmapInfo.m_CFAType = CFATYPE_NONE;
+				bitmapInfo.m_bCanLoad = true;
 				bResult = true;
-				RetrieveEXIFInfo(path, BitmapInfo);
+				RetrieveEXIFInfo(path, bitmapInfo);
 			}
 			else return false;
 		}
 
 		if (bResult)
 		{
-			if (!BitmapInfo.m_DateTime.isValid())
+			if (!bitmapInfo.m_DateTime.isValid())
 			{
 
 				//
@@ -1028,21 +1029,21 @@ bool GetPictureInfo(const fs::path& path, CBitmapInfo& BitmapInfo)
 					fileTime = lastModified;
 				}
 
-				BitmapInfo.m_DateTime = fileTime;
+				bitmapInfo.m_DateTime = fileTime;
 			};
 
-			BitmapInfo.m_InfoTime = now;
+			bitmapInfo.m_InfoTime = now;
 
 			//
 			// Originally used ISO 8601 date format yyyy-MM-ddThh:mm:ss - change to use the more
 			// familiar form: yyyy/MM/dd hh:mm:ss
 			//
-			BitmapInfo.m_strDateTime = BitmapInfo.m_DateTime.toString("yyyy/MM/dd hh:mm:ss"); 
+			bitmapInfo.m_strDateTime = bitmapInfo.m_DateTime.toString("yyyy/MM/dd hh:mm:ss"); 
 
 			std::unique_lock<std::shared_mutex> writeLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
 				g_BitmapInfoTime = now;
-			g_sBitmapInfoCache.insert(BitmapInfo);
+			g_sBitmapInfoCache.insert(bitmapInfo);
 		}
 	}
 	return bResult;
@@ -1079,7 +1080,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 
 	do  // do { ... } while (false); to be able to leave with break;
 	{
-		CBitmapInfo BitmapInfo;
+		BitmapInfo bitmapInfo;
 		int loadResult = 0;
 
 		//
@@ -1104,7 +1105,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 			//
 			// If the file loaded or failed to load, leave the loop with an appropriate value of bResult set.
 
-			loadResult = LoadTIFFPicture(filePath, BitmapInfo, rpBitmap, pProgress);
+			loadResult = LoadTIFFPicture(filePath, bitmapInfo, rpBitmap, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;
@@ -1118,7 +1119,7 @@ bool FetchPicture(const fs::path filePath, std::shared_ptr<CMemoryBitmap>& rpBit
 		//
 		else if (mime.inherits("image/fits") || mime.inherits("application/fits"))
 		{
-			loadResult = LoadFITSPicture(filePath, BitmapInfo, rpBitmap, pProgress);
+			loadResult = LoadFITSPicture(filePath, bitmapInfo, rpBitmap, pProgress);
 			if (0 == loadResult)
 			{
 				result = true;
@@ -1515,107 +1516,3 @@ void CAllDepthBitmap::Clear()
 	m_Image.reset();
 }
 
-//////////////////////////////////////////////////////////////////////////
-CBitmapInfo::CBitmapInfo()
-{
-	Init();
-}
-
-CBitmapInfo::CBitmapInfo(const CBitmapInfo& bi)
-{
-	CopyFrom(bi);
-}
-
-CBitmapInfo::CBitmapInfo(const fs::path& fileName)
-{
-	Init();
-	m_strFileName = fileName;
-}
-
-void CBitmapInfo::CopyFrom(const CBitmapInfo& bi)
-{
-	m_strFileName = bi.m_strFileName;
-	m_strFileType = bi.m_strFileType;
-	m_strModel = bi.m_strModel;
-	m_lISOSpeed = bi.m_lISOSpeed;
-	m_lGain = bi.m_lGain;
-	m_fExposure = bi.m_fExposure;
-	m_fAperture = bi.m_fAperture;
-	m_lWidth = bi.m_lWidth;
-	m_lHeight = bi.m_lHeight;
-	m_lBitsPerChannel = bi.m_lBitsPerChannel;
-	m_lNrChannels = bi.m_lNrChannels;
-	m_bCanLoad = bi.m_bCanLoad;
-	m_bFloat = bi.m_bFloat;
-	m_CFAType = bi.m_CFAType;
-	m_bMaster = bi.m_bMaster;
-	m_bFITS16bit = bi.m_bFITS16bit;
-	m_strDateTime = bi.m_strDateTime;
-	m_DateTime = bi.m_DateTime;
-	m_InfoTime = bi.m_InfoTime;
-	m_ExtraInfo = bi.m_ExtraInfo;
-	m_xBayerOffset = bi.m_xBayerOffset;
-	m_yBayerOffset = bi.m_yBayerOffset;
-	m_filterName = bi.m_filterName;
-}
-
-void CBitmapInfo::Init()
-{
-	m_lWidth = 0;
-	m_lHeight = 0;
-	m_lBitsPerChannel = 0;
-	m_lNrChannels = 0;
-	m_bCanLoad = false;
-	m_CFAType = CFATYPE_NONE;
-	m_bMaster = false;
-	m_bFloat = false;
-	m_lISOSpeed = 0;
-	m_lGain = -1;
-	m_fExposure = 0.0;
-	m_fAperture = 0.0;
-	m_bFITS16bit = false;
-	m_xBayerOffset = 0;
-	m_yBayerOffset = 0;
-}
-
-CBitmapInfo& CBitmapInfo::operator=(const CBitmapInfo& bi)
-{
-	CopyFrom(bi);
-	return (*this);
-}
-
-bool CBitmapInfo::operator<(const CBitmapInfo& other) const
-{
-	return (m_strFileName.compare(other.m_strFileName) < 0);
-}
-
-bool CBitmapInfo::operator==(const CBitmapInfo& other) const
-{
-	return this->m_strFileName.compare(other.m_strFileName) == 0;
-}
-bool CBitmapInfo::CanLoad() const
-{
-	return m_bCanLoad;
-}
-
-bool CBitmapInfo::IsCFA()
-{
-	return (m_CFAType != CFATYPE_NONE);
-};
-
-bool CBitmapInfo::IsMaster()
-{
-	return m_bMaster;
-};
-
-void CBitmapInfo::GetDescription(QString& strDescription)
-{
-	strDescription = m_strFileType;
-	if (m_strModel.length() > 0)
-		strDescription = m_strFileType + " " + m_strModel;
-};
-
-bool CBitmapInfo::IsInitialized()
-{
-	return m_lWidth && m_lHeight;
-}

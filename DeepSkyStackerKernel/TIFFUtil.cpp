@@ -395,7 +395,7 @@ bool CTIFFReader::Open()
 		}
 		else
 		{
-			CBitmapInfo			BitmapInfo;
+			BitmapInfo			BitmapInfo;
 			if (RetrieveEXIFInfo(file, BitmapInfo))
 			{
 				exposureTime = static_cast<float>(BitmapInfo.m_fExposure);
@@ -1783,7 +1783,7 @@ bool ReadTIFF(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 
 /* ------------------------------------------------------------------- */
 
-bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
+bool	GetTIFFInfo(const fs::path& szFileName, BitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -1820,14 +1820,14 @@ bool	GetTIFFInfo(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool	IsTIFFPicture(const fs::path& szFileName, CBitmapInfo & BitmapInfo)
+bool	IsTIFFPicture(const fs::path& szFileName, BitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetTIFFInfo(szFileName, BitmapInfo);
 }
 
 
-int LoadTIFFPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
+int LoadTIFFPicture(const fs::path& szFileName, BitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, OldProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int result = -1;		// -1 means not a TIFF file.
