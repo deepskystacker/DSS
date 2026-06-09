@@ -37,18 +37,6 @@
 	}
 #endif
 
-namespace
-{
-	double ang_sep_arcsec(double ra1_deg, double dec1_deg, double ra2_deg, double dec2_deg) {
-		// small-angle approx corrected by cos(dec)
-		double deg2rad = M_PI / 180.0;
-		double dra = (ra2_deg - ra1_deg) * cos(((dec1_deg + dec2_deg) / 2.0) * deg2rad);
-		double ddec = (dec2_deg - dec1_deg);
-		double sep_deg = sqrt(dra * dra + ddec * ddec);
-		return sep_deg * 3600.0;
-	}
-}
-
 void CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 {
 	ZFUNCTRACE_RUNTIME();
