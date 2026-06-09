@@ -228,7 +228,7 @@ Copyright Tőkés Attila</source>
     <message>
         <location filename="../About.cpp" line="163"/>
         <source>Japanese version: 三浦 修 (Miura Shu)&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>日语版本： 三浦 修 (Miura Shu)&lt;br&gt;</translation>
     </message>
 </context>
 <context>
@@ -1040,37 +1040,37 @@ Ctrl+4 切換四角模式</translation>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
         <source>Autostretch Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>自动拉伸参数</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
         <source>Target Background</source>
-        <translation type="unfinished"></translation>
+        <translation>目标背景</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
         <source>Target background level used by autostretch. Lower values produce a darker background.</source>
-        <translation type="unfinished"></translation>
+        <translation>自动调整过程中使用的目标背景亮度。数值越低，背景越暗。</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
         <source>Reset target background to the default value (0.125).</source>
-        <translation type="unfinished"></translation>
+        <translation>将目标背景重置为默认值（0.125）。</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
         <source>Shadow Clipping</source>
-        <translation type="unfinished"></translation>
+        <translation>阴影剪切</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
         <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
-        <translation type="unfinished"></translation>
+        <translation>自动调整时阴影剪切的强度（单位为MAD）。</translation>
     </message>
     <message>
         <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
         <source>Reset shadow clipping factor to the default value (2.8).</source>
-        <translation type="unfinished"></translation>
+        <translation>将阴影剪切系数重置为默认值（2.8）。</translation>
     </message>
 </context>
 <context>
@@ -1324,67 +1324,67 @@ Detected Cold Pixels: %L3 (%L4%)
     <message>
         <location filename="../ui/ProcessingControls.ui" line="51"/>
         <source>MTF Stretch</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF 拉伸</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="152"/>
         <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
-        <translation type="unfinished"></translation>
+        <translation>将 RGB 通道关联起来，以便移动 MTF 滑块时，所有通道同步更新。</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="238"/>
         <source>Shadows</source>
-        <translation type="unfinished"></translation>
+        <translation>阴影</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="260"/>
         <source>MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF 阴影点。</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="276"/>
         <source>Midtones</source>
-        <translation type="unfinished"></translation>
+        <translation>中间调</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="298"/>
         <source>MTF midtone balance point.</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF 中间调平衡点。</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="317"/>
         <source>Highlights</source>
-        <translation type="unfinished"></translation>
+        <translation>高光</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="339"/>
         <source>MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF高光点。</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="364"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
-        <translation type="unfinished"></translation>
+        <translation>低于当前MTF阴影点的像素估计百分比。</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="367"/>
         <source>Shadow Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>阴影剪切：</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="411"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
-        <translation type="unfinished"></translation>
+        <translation>高于当前MTF高光点的像素估计百分比。</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="414"/>
         <source>Highlight Clipping:</source>
-        <translation type="unfinished"></translation>
+        <translation>高光剪切：</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="497"/>
         <source>Apply the current MTF stretch settings to the image.</source>
-        <translation type="unfinished"></translation>
+        <translation>将当前MTF拉伸设置应用到图像。</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="531"/>
@@ -1418,12 +1418,13 @@ Detected Cold Pixels: %L3 (%L4%)
         <location filename="../ui/ProcessingControls.ui" line="196"/>
         <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
 Right-click to change Autostretch parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>根据当前图像自动估算MTF阴影、中间调和高光值。
+右键单击以更改自动扩展参数</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="200"/>
         <source>Autostretch</source>
-        <translation type="unfinished"></translation>
+        <translation>阴影</translation>
     </message>
     <message>
         <location filename="../ui/ProcessingControls.ui" line="975"/>
@@ -1543,7 +1544,7 @@ Right-click to change Autostretch parameters</source>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1386"/>
         <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
-        <translation type="unfinished"></translation>
+        <translation>MTF 拉伸: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</translation>
     </message>
     <message>
         <location filename="../ProcessingDlg.cpp" line="1400"/>
