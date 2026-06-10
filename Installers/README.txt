@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.2.1 Beta 2
+Welcome to DeepSkyStacker 6.2.1 Beta 3
 ===============================
 
 Reporting problems:
@@ -14,34 +14,36 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.2.1 Beta 2
+Changes for DeepSkyStacker 6.2.1 Beta 3
 ================================
 
-1. Bug fix: Set image adjustment controls to default when a stacked image is loaded.
+1.  Bug fix: Set image adjustment controls to default when a stacked image is loaded.
 
-2. Bug fix: Correct zeroing of colour balance controls after apply.
+2.  Bug fix: Correct zeroing of colour balance controls after apply.
 
-3. Increase range of ASinH beta (stretch factor) from [0.0, 1000.0] to [0.0, 2000.0]
+3.  Increase range of ASinH beta (stretch factor) from [0.0, 1000.0] to [0.0, 2000.0]
 
-4. Bug fix: If a new image was loaded in the Processing pane with preview active, and was smaller than the previous image,
+4.  Bug fix: If a new image was loaded in the Processing pane with preview active, and was smaller than the previous image,
    then it was displayed in the upper left quadrant of the old image.  If the new image was larger, then only the upper
    left quadrant (the size of the smaller image) of the new image was displayed.
 
-5. Bug fix: Selecting Super-Pixel mode for FITS files results in assertion failures in CGrayBitmapT::CheckXY().
+5.  Bug fix: Selecting Super-Pixel mode for FITS files results in assertion failures in CGrayBitmapT::CheckXY().
    Super-pixel mode should have been set for the bitmap *after* reading the FITS file into it, not before.  It
    would appear that this problem dates back to before 2018.
 
-6. Relocate the check-box for controlling the display of Shadow and Highlight clipping to the Processing Panel,
+6.  Relocate the check-box for controlling the display of Shadow and Highlight clipping to the Processing Panel,
    as it will be more obvious there.
 
-7. Add a Mid-tone Transfer Function (MTF) Transformation (or Stretch) with an Auto-stretch capability.  I'm most
+7.  Add a Mid-tone Transfer Function (MTF) Transformation (or Stretch) with an Auto-stretch capability.  I'm most
    grateful to Amila Karunarathna for contributing this.
 
-8. Remove the degree symbol from the angle column in the image list display and add it to the column header.
+8.  Remove the degree symbol from the angle column in the image list display and add it to the column header.
 
-9. If all light frames are FITS files with valid World Coordinate System (WCS) data and the option to use
+9.  If all light frames are FITS files with valid World Coordinate System (WCS) data and the option to use
    WCS data is set in the stacking settings, then this data should be used to determine the image offsets and
    rotation rather than calculating them from the image data (which can take a long time).
+
+10. Relocate the "Use FITS WCS Data" check box to the "Light" tab of the "Stacking Settings" dialogue.
 
 Changes for DeepSkyStacker 6.2.0
 ================================
