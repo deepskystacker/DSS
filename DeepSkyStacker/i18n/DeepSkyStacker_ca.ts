@@ -2956,38 +2956,50 @@ Vol desar els canvis?</translation>
 (Alt rang dinàmic)</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Utilitza les dades del Sistema de Coordinades Mundials (WCS) dels encapçalaments FITS
+(si estan disponibles) per determinar els desplaçaments i la rotació de la imatge.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>Utilitza les dades WCS de FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>Paràmetres</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>Optimització de Darks</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>Detecció i eliminat de columnes defectuoses</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Detecció i eliminat de Hot Pixels</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>Factor de multiplicació de Dark</translation>
@@ -3011,7 +3023,7 @@ Vol desar els canvis?</translation>
         <translation>Calibració de Fons de Canals RGB</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -3025,7 +3037,7 @@ són eliminats iterativament.
 Els píxels restants són promitjats.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -3039,7 +3051,7 @@ són reemplaçats iterativament pel valor mig.
 Els píxels són posteriorment promitjats.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -3051,7 +3063,7 @@ partint de la desviació de la mitjana
 comparativament a la desviació estàndard (%1).</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>Opcions...</translation>

@@ -155,9 +155,6 @@ namespace DSS
 			emit tabChanged(resultTab);
 		}
 
-		bool useWCS = settings.value("Stacking/UseWCS", true).toBool();
-		ui->useWCS->setChecked(useWCS);
-
 		updateControls();
 	}
 
@@ -250,11 +247,6 @@ namespace DSS
 		// Save the temporary files folder
 		//
 		CAllStackingTasks::SetTemporaryFilesFolder(ui->tempFilesFolder->text());
-
-		//
-		// Save the value of the Use WCS checkbox
-		//
-		settings.setValue("Stacking/UseWCS", ui->useWCS->isChecked());
 
 		//
 		// Ask the output tab to save the Output Settings direct to QSettings

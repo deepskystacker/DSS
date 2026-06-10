@@ -2958,38 +2958,50 @@ Quer que guarde essas alteracoes?</translation>
         <translation>Proporcoes Avaliadas  Entropia\n(High Dynamic Range)</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Usar dados do Sistema de Coordenadas Mundiais (WCS) dos cabeçalhos FITS
+(se disponíveis) para determinar deslocamentos e rotação da imagem.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>Usar dados WCS do FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation>Debloom</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>Configuracoes</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>Optimizacao do Dark</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>Deteccao Eliminacao d artefactos nefastos</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Pixels quentes detectados e removidos</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>Factor de Multiplicacao Dark</translation>
@@ -3013,7 +3025,7 @@ Quer que guarde essas alteracoes?</translation>
         <translation>Calibracao Canais RGB do Background</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -3027,7 +3039,7 @@ interaccao removida.
 Mantem se a proporcionalidade dos pixels.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -3041,7 +3053,7 @@ interactividade subtituida por valores medios.
 Os pixels estao proporcionais.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -3053,7 +3065,7 @@ desde o desvio ate ao meio termo
 comparativamente ao desvio normalizado (%1).</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>Opcoes...</translation>

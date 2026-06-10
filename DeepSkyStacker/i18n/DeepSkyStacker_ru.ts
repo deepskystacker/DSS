@@ -2969,38 +2969,50 @@ Do you want to save the changes?</source>
 (широкий динамический диапозон)</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Использовать данные системы координат мира (WCS) из заголовков FITS
+(если доступны) для определения смещений и поворота изображения.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>Использовать данные WCS из FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation>Деблюминг</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>Оптимизация Dark</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>Поиск и удаление битых колонок</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Поиск и удаление горячих пикселей</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>Фактор умножения Dark:</translation>
@@ -3024,7 +3036,7 @@ Do you want to save the changes?</source>
         <translation>RGB калибровка фона</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -3038,7 +3050,7 @@ The remaining pixels are averaged.</source>
 Оставшиеся пиксели усредняются.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -3052,7 +3064,7 @@ The pixels are then averaged.</source>
 Пиксели усредняются.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -3064,7 +3076,7 @@ compared to the standard deviation (%1).</source>
 сравнивая со стандартным отклонением (%1).</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>Настройки</translation>

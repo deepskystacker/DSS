@@ -2937,38 +2937,50 @@ Offset/Bias Frames: %5</source>
         <translation>エントロピー加重平均（高ダイナミックレンジ）</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>FITSヘッダーのワールド座標系（WCS）データ
+（利用可能な場合）を使用して、画像のオフセットと回転を決定します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>FITS WCSデータを使用</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation>ブルーミング除去</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>ダーク最適化</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>不良カラムの検出と除去</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>ホットピクセルの検出と除去</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>ダーク乗算係数</translation>
@@ -2992,7 +3004,7 @@ Offset/Bias Frames: %5</source>
         <translation>RGB 背景補正</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -3004,7 +3016,7 @@ The remaining pixels are averaged.</source>
 残ったピクセルは平均化されます。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -3016,7 +3028,7 @@ The pixels are then averaged.</source>
 その後、すべてのピクセルが平均化されます。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -3025,7 +3037,7 @@ compared to the standard deviation (%1).</source>
         <translation>&lt;b&gt;加重平均&lt;/b&gt; は、各ピクセルの平均値からの偏差（標準偏差 %1 に対する相対量）に基づいて重み付けを行い、反復処理によって算出されます。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>オプション...</translation>

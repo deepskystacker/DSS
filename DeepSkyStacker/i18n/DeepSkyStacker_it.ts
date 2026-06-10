@@ -2961,38 +2961,50 @@ Vuoi salvarli?</translation>
         <translation>Media Entropica (Alta Dinamica)</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Utilizza i dati del Sistema di Coordinate Globali (WCS) dalle intestazioni FITS
+(se disponibili) per determinare gli offset e la rotazione dell&apos;immagine.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>Utilizza i dati WCS FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation>Debloom</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>Ottimizzazione del Dark</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>Rilevamento e rimozione di Colonne Sparate</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Rilevamento e rimozione Pixels Caldi</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>Fattore di moltiplicazione del dark</translation>
@@ -3016,7 +3028,7 @@ Vuoi salvarli?</translation>
         <translation>Calibrazione Canali RGB dello Sfondo</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -3030,7 +3042,7 @@ sono iterativamente rimossi.
 Dei pixel rimanenti viene calcolata la media.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -3044,7 +3056,7 @@ sono iterativamente sostituiti dal valore mediano.
 Dei pixel viene quindi calcolata la media.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -3056,7 +3068,7 @@ dallo scostamento dal mediano
 confrontato al normale scostamento (%1).</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>Opzioni...</translation>

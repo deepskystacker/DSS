@@ -722,8 +722,8 @@ namespace
 				break;
 			}
 		}
-		QSettings settings;
-		bool useWCS = settings.value("Stacking/UseWCS", true).toBool();
+		Workspace workspace;
+		bool useWCS = workspace.value("Stacking/UseWCS", true).toBool();
 
 		LIGHTFRAMEINFOVECTOR& lightFrames = pStackingEngine->LightFrames();
 		DSS::WCSInfo referenceWCSInfo = lightFrames[0].wcsInfo; // Get the WCS Info of the reference frame.
