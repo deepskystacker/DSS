@@ -273,7 +273,19 @@ is greater than or equal to the given threshold value. </font></P>
     <A href="technical.htm#hotpixelsremoval">detection and removal of hot pixels</A> 
     and <A href="technical.htm#badlinesdetection">bad columns detection and 
     removal</A> 
-    for the dark frames.</font></p></td>
+    for the dark frames.</font></p>
+    <p class="Standard"><FONT size=2 face=Arial>If all your 
+      light frames are FITS files, and they have valid World Coordinate System 
+      (WCS) data in the&nbsp;FITS file headers, then the checkbox "Use FITS WCS 
+      Data" controls whether to use that data to&nbsp;determine the image 
+      offsets and rotation with respect to the reference frame.</FONT></p>
+    <p class="Standard"><FONT size=2 face=Arial>If it is 
+      checked, then the image offsets and rotation with respect to the reference 
+      frame will be derived from the WCS data which is very fast, whereas if it 
+      is not checked then the offsets and rotation&nbsp;will be calculated by 
+      comparing the location of the stars in the reference frame and the current 
+      image which is much slower.<BR></p></FONT>
+    <p class="Standard"><FONT size=2       face=Arial></FONT>&nbsp;</p></td>
     <td width="66%" align="center">
     <IMG border=0 alt="DeepSkyStacker - Stacking Parameters" src ="../images/english/StackingSettings.jpg" width=491 height=403 ><p>&nbsp;</p></td>
   </tr>
@@ -432,21 +444,21 @@ cellSpacing=0 cellPadding=0 width="85%" border=0>
       <p>&nbsp;</p></td>
     <td width="42%"><IMG style="HEIGHT: 514px; WIDTH: 491px" border=0 alt="Processing Tab preview, with RGB histogram" src="../images/english/ProcessingTab.png" width=351 height=431 ></td></tr></table>
 <p><font size=2 face=Arial><b>The Mid-tone Transfer Function Transformation or 
-Stretch</B></font></p>
-<p><font size=2 face=Arial>
+Stretch</b></font></p>
+<p><font size=2 face=Arial>&nbsp;
 <table id=AutoNumber2 style="WIDTH: 85%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
-  
+  <TBODY>
   <tr>
     <td width="58%">
       <p class=Standard><font size=2 face=Arial       >The MTF&nbsp;Transformation&nbsp;(or Stretch) is one 
-      of the most powerful image stretching tools available.</FONT></P>
-      <p class=Standard><font size=2 face=Arial       >The tool is presented in the form of three sliders 
-      for each primary colour which can be moved to transform the 
-      image.&nbsp;&nbsp; If the "link" button (to the left of the Autostretch 
-      button)&nbsp;is set to "linked" then the sliders for the three colours are 
-      linked together, whereas if it is set to "un-linked", then the sliders for 
-      each colour are independent.</FONT></P>
+      of the most powerful image stretching tools available.</font></p>
+      <p class=Standard><font size=2 face=Arial       >The tool is presented in the form of three sliders for 
+      each primary colour which can be moved to transform the image.&nbsp;&nbsp; 
+      If the "link" button (to the left of the Autostretch button)&nbsp;is set 
+      to "linked" then the sliders for the three colours are linked together, 
+      whereas if it is set to "un-linked", then the sliders for each colour are 
+      independent.</font></p>
       <p class=Standard><font size=2 face=Arial       >The left hand slider changes applies to the shadow 
       signal, the middle one is the midtone balance adjustment and the right 
       hand slider adjusts the highlights.&nbsp;&nbsp; The values of these 
@@ -454,23 +466,107 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       spin-boxes that are linked to the slider settings.&nbsp;&nbsp; You can 
       directly edit the values in the spin-boxes, or use the the Page-Up 
       and&nbsp;Page-Down keys for coarse changes, or the cursor up and down keys 
-      for finer changes.</FONT></P>
+      for finer changes.</font></p>
       <p class=Standard><font size=2 face=Arial       >If the sliders are linked, then the text to the left 
       of the spin boxes is displayed in the normal "text" colour.&nbsp;&nbsp; If 
       they are not linked, then the colour of the text matches the primary 
-      colour for which adjustments are currently active.</FONT></P>
-      <p class=Standard><FONT size=2       >To the right of the spin-boxes are displayed the 
-      percentage of pixels that are clipped by the transformation, as ideally 
-      you want to minimise the amount of clipping created by the 
-      transform.</FONT></P>
-      <p class=Standard><FONT size=2       >Theory:&nbsp; TO BE ADDED.</FONT></P>
+      colour for which adjustments are currently active.</font></p>
+      <p class=Standard><FONT size=2>To 
+      the right of the spin-boxes are displayed the percentage of pixels that 
+      are clipped by the transformation, as ideally you want to minimise the 
+      amount of clipping created by the transform.</FONT></p>
+      <p class=Standard><FONT size=2>The shadow (left hand) 
+      slider sets the black clipping point which allows you to darken the image 
+      background by cutting off the extreme left tail of the histogram, thus 
+      removing sensor noise and establishing a true black point.&nbsp;&nbsp; 
+      Dragging this slider slightly to the right or using the Shadows spinbox to 
+      increase the setting will darken the image background.&nbsp;&nbsp; Don't 
+      overdo this as otherwise you could lose faint nebulosity or shadow 
+      detail.</FONT></p>
+      <p class=Standard><FONT size=2>The midtone balance 
+      slider controls the MTF function which </FONT><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+      data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2> 
+       maps input pixel values x (between 0 and 1) to output values y. It is 
+      formally expressed </FONT></SPAN><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+      data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT       size=2>as:<BR><BR></FONT></SPAN><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+      data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT face=Courier><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+      data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT       face=Courier>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(m - 
+      1)x<BR></FONT></SPAN>&nbsp;y 
+      =&nbsp;-------------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(</FONT></SPAN><SPAN 
+      class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+      data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT       face=Courier>2m - 1)x - m</FONT></SPAN></p>
+      <p class=Standard><SPAN 
+      class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+      data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""></SPAN><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2       >&nbsp;</FONT></SPAN><font size=2 face=Arial       >where m is the midtone balance slider 
+value.</font></p>
+      <UL>
+        <LI>
+      <div class=Standard><font size=2 face=Arial         ><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2         >m = 0.5: Leaves the midtones of the image unchanged 
+        (identity function).</FONT></SPAN></font></div>
+        <LI>
+        <div class=Standard><font size=2 face=Arial         ><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""></SPAN><SPAN 
+        class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2         >m &lt; 0.5: Brightens the midtones (pushes the curve 
+        to the left).</FONT></SPAN></FONT></DIV>
+        <LI>
+        <div class=Standard><font size=2 face=Arial         ><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2         ><!--TgQPHd|[]--></FONT></SPAN><!--TgQPHd|[]--><SPAN 
+        class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1h" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2         >m &gt; 0.5: Darkens the midtones (pushes the curve 
+        to the right</FONT>).</SPAN></FONT></DIV></LI></UL>
+      <p class=Standard><font size=2 face=Arial       >The right hand slider or Highlights spin box&nbsp;sets 
+      the&nbsp;white point.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >In addition to the manual adjustments described above 
       there is an "Autostretch" button.&nbsp;&nbsp; It behaves slightly 
-      differently depending on the "link" button.</FONT></P>
-      <p class=Standard><font size=2 face=Arial       >When "linked" is true, the image statistics used to 
-      calculate the stretch parameters to apply&nbsp;are computed as an average 
-      across all three channels, which results in the existing colour balance 
-      being preserved.</FONT></P>
+      differently depending on the "link" button (just to the left of the 
+      Autostretch button).&nbsp; &nbsp;When "linked" is true, the image 
+      statistics used to calculate the stretch parameters to apply&nbsp;are 
+      computed as an average across all three channels, which results in the 
+      existing colour balance being preserved.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >When "linked" is false, then the statistics are 
       computed on a per channel basis which means that the colour channels are 
       stretched independently which results in an implicit background 
@@ -484,17 +580,23 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       theroetical range is [0.0, 1.0] with a default 
       of&nbsp;0.125.&nbsp;&nbsp;&nbsp;You'd probably set a value in the range 
       of&nbsp;.125 to .25 for an acceptable result.</FONT></P>
-      <p class=Standard><FONT size=2       >The Shadow Clipping parameter controls (TO BE 
-      ADDED)</FONT></P>
-      <p class=Standard><font face=Arial       ><FONT size=2>If the Preview 
-      check box is ticked (the default setting), then adjusting the parameters 
-      (by editing the spin box fields directly, or by selecting the spin box or 
+      <p class=Standard><FONT size=2>The 
+      Shadow Clipping parameter controls how far below the median the black 
+      point should be set.&nbsp; The value is in units of Median Absolute 
+      Deviation (MAD) which is a robust statistical measure of the variability 
+      of the data.&nbsp;&nbsp; Unlike the standard deviation. which 
+      is&nbsp;highly sensitive to extreme values, the MAD measures the typical 
+      distance from the median and is completely resistant to 
+      outliers.</FONT></P>
+      <p class=Standard><font face=Arial       ><FONT size=2>If the Preview check 
+      box is ticked (the default setting), then adjusting the parameters (by 
+      editing the spin box fields directly, or by selecting the spin box or 
       slider and using the Page-Up and&nbsp;Page-Down keys for coarse changes, 
       or the cursor up and down keys for finer changes), then the displayed 
       image and histogram will change to reflect the parameter 
       changes.&nbsp;&nbsp; However, to actually apply the changes you need to 
-      press the Apply button.</FONT></FONT></P></TD>
-    <td width="42%"><IMG style="HEIGHT: 455px; WIDTH: 486px" border=0 alt="MTF stretch image" src="../images/english/mtf.png" width=261 height=238 ></TD></TR></TABLE></FONT></P>
+      press the Apply button.</FONT></FONT></P></td>
+    <td width="42%"><IMG style="HEIGHT: 455px; WIDTH: 486px" border=0 alt="MTF stretch image" src="../images/english/mtf.png" width=261 height=238 ></TD></tr></TBODY></table></font></p>
 <p><font size=2 face=Arial><b>The ASinH Transformation or Stretch</B></FONT></P>
 <table id=AutoNumber2 style="WIDTH: 85%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
@@ -1437,9 +1539,9 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       <P>The stretch factor (otherwise known as beta) can 
       take values between 0.0 and 1000.0.&nbsp;&nbsp; Larger values result in a 
       greater degree of image stretching being applied.<BR 
-      ><BR>The "black point" value has 
-      a range of&nbsp;[00000,&nbsp;0.20000].&nbsp;&nbsp; The value of 0.2 
-      implies that the blackpoint is set to 20% of the maximum possible ADU 
+      ><BR>The "black point" value has a 
+      range of&nbsp;[00000,&nbsp;0.20000].&nbsp;&nbsp; The value of 0.2 implies 
+      that the blackpoint is set to 20% of the maximum possible ADU 
       value.&nbsp;&nbsp;&nbsp; Values below the back point are treated as being 
       black.</P>
       <P>As rgb_original is an average of the three colour 
@@ -1449,11 +1551,11 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       adjust the "gain" applied to the channels) is used to ensure 
       that&nbsp;such&nbsp;clipping does not&nbsp;occur.</P>
       <P>When the Human-weighted luminance option is <EM 
-      ><STRONG>not 
-      ticked</STRONG></EM>, rgb_original is the mean of the three pixel values; 
-      when it is set, the weighting changes to 0.2126 for the red value, 0.7152 
-      for the green value and 0.0722 for the blue value, which gets results 
-      closer to human perceptual color balance.</P>
+      ><STRONG>not ticked</STRONG></EM>, 
+      rgb_original is the mean of the three pixel values; when it is set, the 
+      weighting changes to 0.2126 for the red value, 0.7152 for the green value 
+      and 0.0722 for the blue value, which gets results closer to human 
+      perceptual color balance.</P>
       <P>If the Preview check box is ticked (the default 
       setting), then adjusting the parameters (by editing the spin box fields 
       directly, or by selecting the spin box or slider and using the Page-Up 
@@ -1518,9 +1620,9 @@ style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"
 <p></SPAN></SPAN></SPAN></SPAN></SPAN><FONT size=2><FONT face=Arial>Undo/Redo adjustment 
 parameters</FONT> </FONT></P>
 <p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT size=2></FONT>&nbsp;</P>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT size=2><FONT face=Arial>On the bottom 
-of each tab a set of buttons is available:<br>- to apply 
-the last modifications to the picture<br>- to undo the last 
+<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT size=2><FONT face=Arial>On the bottom of 
+each tab a set of buttons is available:<br>- to apply the 
+last modifications to the picture<br>- to undo the last 
 applied modifications<br>- to redo the last undone 
 modifications<br>- to reset all the values<br></FONT><br><FONT face=Arial>Loading a picture</FONT> </FONT></P>
 <p class=MsoNormal style="MARGIN: 0cm" align=justify><br><FONT size=2 face=Arial>DeepSkyStacker 
@@ -1537,29 +1639,30 @@ cellSpacing=0 cellPadding=0 width="87%" border=0>
       32 bit TIFF or FITS&nbsp; files using two methods:</FONT></P>
       <UL>
         <LI>
-        <div class=Standard><font size=2 face=Arial         >Applying the adjustments:&nbsp; This saves the 
-        image with any changes you have made using the&nbsp;"Apply" 
+        <div class=Standard><font size=2 face=Arial         >Applying the adjustments:&nbsp; This saves the image 
+        with any changes you have made using the&nbsp;"Apply" 
         button.&nbsp;&nbsp; You should use this if you plan to do further 
         adjustments in other software.<BR></FONT></DIV>
         <LI>
-        <div class=Standard><font size=2 face=Arial         >Not applying the adjustments:&nbsp;&nbsp; This 
-        saves the image without any changes that you have made using 
-        the&nbsp;"Apply" button.&nbsp;&nbsp; You should use this if you plan to 
-        do all post processing in other software.<br 
+        <div class=Standard><font size=2 face=Arial         >Not applying the adjustments:&nbsp;&nbsp; This saves 
+        the image without any changes that you have made using the&nbsp;"Apply" 
+        button.&nbsp;&nbsp; You should use this if you plan to do all post 
+        processing in other software.<br 
         >&nbsp;</FONT></DIV></LI></UL></TD>
     <td width="46%"><IMG style="HEIGHT: 123px; WIDTH: 415px" border=0 alt="" src="../images/english/saveoptions.png" width=314 height=84 ></TD></TR></TABLE>
 <p><font size=2 face=Arial>For more 
 information about the saving methods you can read the <A href="faq.htm#saveresult" >faq</A>.</FONT></P>
 <hr color=#0000ff>
 
-<p align=justify><b><font color=#ff0000 size=4 face=Arial><a name=creatingstarmask></A>Create a Star Mask<br></FONT></B><font size=2 face=Arial>Using a Star Mask is often very useful during 
-post-processing to use different processing techniques for the stars and for the 
-rest of the image.<br>The Create a Star Mask feature may be 
-used to create a variety of star masks that can be used later in any software 
-you are using to post process (Photoshop, PixInsight, ...).<br><br><font color=#ff0000>DeepSkyStacker will&nbsp;only creating star mask files. 
-It&nbsp;does not use them in any way.</FONT><br>You can 
-view this feature as a tool intended to provide quickly and simply a star mask 
-file based on real star detection.</FONT></P>
+<p align=justify><b><font color=#ff0000 size=4 face=Arial><a name=creatingstarmask></A>Create a Star Mask<br></FONT></B><font size=2 face=Arial>Using 
+a Star Mask is often very useful during post-processing to use different 
+processing techniques for the stars and for the rest of the image.<br>The Create a Star Mask feature may be used to create a 
+variety of star masks that can be used later in any software you are using to 
+post process (Photoshop, PixInsight, ...).<br><br><font color=#ff0000>DeepSkyStacker 
+will&nbsp;only creating star mask files. It&nbsp;does not use them in any 
+way.</FONT><br>You can view this feature as a tool intended 
+to provide quickly and simply a star mask file based on real star 
+detection.</FONT></P>
 <table id=AutoNumber21 cellSpacing=1 width="100%" border=0 
   >
   <tr>
@@ -1568,27 +1671,24 @@ file based on real star detection.</FONT></P>
       >A star mask is a synthetic grayscale image on which 
       each bright enough star is replaced by a round white area which is fading 
       to black following a curve.<br><br 
-      >You can see an example of a star mask on the 
-      right.<br>Mouse over the text to see <b 
-      ><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Field';" href="javascript:void(0);" >the image</A></B> or <b 
+      >You can see an example of a star mask on the right.<br 
+      >Mouse over the text to see <b><A onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Field';" href="javascript:void(0);" >the image</A></B> or <b 
       ><A onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Mask';" href="javascript:void(0);" >the star mask</A></B>.</FONT></P></TD>
     <td width="56%">
-      <p align=center><IMG id=STARMASK01 border=0 name=STARMASK01 src="../images/StarMask_Stars.jpg" width=279 align=center height=291 ><br 
-      ><font size=2 face=Arial><b 
-      id=STARMASK01TEXT name="STARMASK01TEXT">Star 
-      Field</B></FONT></P></TD></TR>
+      <p align=center><IMG id=STARMASK01 border=0 name=STARMASK01 src="../images/StarMask_Stars.jpg" width=279 align=center height=291 ><br><font       size=2 face=Arial><b id=STARMASK01TEXT 
+       name="STARMASK01TEXT">Star Field</B></FONT></P></TD></TR>
   <tr>
     <td vAlign=top width="44%">
       <p class=Standard><font size=2 face=Arial       ><b>Star Mask Creation</B><br 
       >To create a Star Mask you must load an image in the 
       processing tab.<br>&nbsp;</FONT> 
-      <p class=Standard><font size=2 face=Arial       >Then just click on the Create Star Mask... menu on 
-      the right and the dialog on the right will open.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >Then just click on the Create Star Mask... menu on the 
+      right and the dialog on the right will open.</FONT> 
       <p class=Standard><font size=2 face=Arial       >From there you can change the shape of the stars in 
       the mask, the star detection threshold and a few other parameters.</FONT> 
-      <p class=Standard><font size=2 face=Arial       >Once you are done, just click on the OK button and 
-      you will be asked to select a file (either a TIFF or a FITS file) in which 
-      the star mask will be saved.</FONT> 
+      <p class=Standard><font size=2 face=Arial       >Once you are done, just click on the OK button and you 
+      will be asked to select a file (either a TIFF or a FITS file) in which the 
+      star mask will be saved.</FONT> 
       <p class=Standard><font size=2 face=Arial       >The saved file is always a grayscale 16 bit image. It 
       is not automatically loaded by DeepSkyStacker.</FONT> 
       <p class=Standard><font size=2 face=Arial       >The star mask is always created from the image as you 
@@ -1598,18 +1698,17 @@ file based on real star detection.</FONT></P>
       <p align=center><IMG border=0 src="../images/english/CreateStarMask.jpg" width=407 height=401 ></P></TD></TR></TABLE>
 <hr color=#0000ff>
 
-<p><font color=#ff0000 size=4 face=Arial><b><a name=imagelist></A>The Picture List<br></B></FONT><font size=2 face=Arial>The 
-picture list, common to Registering and Stacking processes contains all the 
-pictures used by the registering and stacking processes.<br>- Light frames<br>- Dark frames<br>- Flat frames<br>- bias/offsets 
-frames<br><br>Only the checked 
-pictures are used by the registering and stacking processes.<br><br>The list contains the following 
-columns:</FONT></P>
-<table id=AutoNumber1 cellSpacing=1 width="100%" border=1 
-  >
+<p><font color=#ff0000 size=4 face=Arial><b><a name=imagelist></A>The Picture List<br></B></FONT><font size=2 face=Arial>The picture list, common to Registering 
+and Stacking processes contains all the pictures used by the registering and 
+stacking processes.<br>- Light frames<br>- Dark frames<br>- Flat frames<br>- bias/offsets frames<br><br>Only the checked pictures are used by the registering and 
+stacking processes.<br><br>The list 
+contains the following columns:</FONT></P>
+<table id=AutoNumber1 cellSpacing=1 width="100%" border=1>
+  
   <tr>
     <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>Checkbox</FONT></TD>
     <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>checked if the picture should be 
-      used</FONT></TD></TR>
+    used</FONT></TD></TR>
   <tr>
     <td width="17%"><font size=2 face=Arial       >Path</FONT></TD>
     <td width="83%"><font size=2 face=Arial       >Path to the picture file</FONT></TD></TR>
@@ -1646,7 +1745,7 @@ columns:</FONT></P>
   <tr>
     <td width="17%"><font size=2 face=Arial       >Size</FONT></TD>
     <td width="83%"><font size=2 face=Arial       >Size of the picture in pixel (Width x 
-    Height)</FONT></TD></TR>
+  Height)</FONT></TD></TR>
   <tr>
     <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>CFA</FONT></TD>
     <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Yes if the picture is resulting from a 
@@ -1674,20 +1773,21 @@ columns:</FONT></P>
   <tr>
     <td bgColor=#ebe9ed width="17%"><font size=2       face=Arial>#Stars</FONT></TD>
     <td bgColor=#ebe9ed width="83%"><font size=2       face=Arial>Number of detected stars.<br 
-      >When a comet position is set a +(C) is appended to 
-      the number of stars</FONT></TD></TR>
+      >When a comet position is set a +(C) is appended to the 
+      number of stars</FONT></TD></TR>
   <tr>
     <td bgColor=#ffffff width="17%"><font size=2       face=Arial>Sky Background</FONT></TD>
     <td bgColor=#ffffff width="83%"><font size=2       face=Arial>Sky background value for registered image 
       in %</FONT></TD></TR></TABLE>
-<p><font size=2 face=Arial>You can 
-sort the list on any column by clicking on the column header (and by clicking 
-again to reverse the sort order).<br><br>You can change the columns order and each column width. 
-Everything is saved after each use of DeepSkyStacker. The column widths order 
-will be reloaded the next time DeepSkyStacker is used.<br><br>You can preview a picture from the 
-list by selecting it.<br>If the selected picture is a RAW 
-file, the RAW DDP settings will be used to decode the RAW file before previewing 
-it.</FONT></P>
+<p><font size=2 face=Arial>You can sort 
+the list on any column by clicking on the column header (and by clicking again 
+to reverse the sort order).<br><br>You 
+can change the columns order and each column width. Everything is saved after 
+each use of DeepSkyStacker. The column widths order will be reloaded the next 
+time DeepSkyStacker is used.<br><br>You 
+can preview a picture from the list by selecting it.<br>If 
+the selected picture is a RAW file, the RAW DDP settings will be used to decode 
+the RAW file before previewing it.</FONT></P>
 <table id=AutoNumber11 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
 cellSpacing=0 cellPadding=0 width="94%" border=0>
   
@@ -1727,12 +1827,10 @@ cellSpacing=0 cellPadding=0 width="94%" border=0>
     <td width="62%" align=center><IMG border=0 alt="DeepSkyStacker - File Properties" src="../images/english/Properties.jpg" width=399 height=312 ></TD></TR></TABLE>
 <hr color=#0000ff>
 
-<p><b><font color=#ff0000 size=4 face=Arial><a name=imagepreview></A>Picture Preview<br></FONT></B><font size=2 face=Arial>The 
-picture preview is used to quickly view a picture from the picture list 
-(Registering and Stacking Tabs) or to view the picture being processed 
-(Processing Tab).<br><br>You can zoom 
-in and zoom out by pointing the mouse and using the wheel. This is the only way 
-to pan and to zoom.</FONT></P>
+<p><b><font color=#ff0000 size=4 face=Arial><a name=imagepreview></A>Picture Preview<br></FONT></B><font size=2 face=Arial>The picture preview is used to quickly 
+view a picture from the picture list (Registering and Stacking Tabs) or to view 
+the picture being processed (Processing Tab).<br><br>You can zoom in and zoom out by pointing the mouse and using 
+the wheel. This is the only way to pan and to zoom.</FONT></P>
 <p><font face=Arial><b>Star and Comet editing</B></FONT></P>
 <table id=AutoNumber6 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
 cellSpacing=0 cellPadding=0 width="78%" border=0>
@@ -1762,25 +1860,24 @@ cellSpacing=0 cellPadding=0 width="78%" border=0>
         
         <tr>
           <td bgColor=#ffff99 width="100%">
-            <p class=Standard><font color=#ff0000 size=2             face=Arial><b>Comet 
-            editing note:</B><br>The comet center may not 
-            be automatically detected by DeepSkyStacker.<br 
-            >To <b>force</B> the comet 
-            to a given&nbsp; position hold down the <b 
-            >Shift</B> key while positioning the comet 
-            center.</FONT></P></TD></TR></TABLE></P></TD>
+            <p class=Standard><font color=#ff0000 size=2             face=Arial><b>Comet editing 
+            note:</B><br>The comet center may not be 
+            automatically detected by DeepSkyStacker.<br>To 
+            <b>force</B> the comet to a given&nbsp; position 
+            hold down the <b>Shift</B> key while positioning 
+            the comet center.</FONT></P></TD></TR></TABLE></P></TD>
     <td width="47%">
       <p align=center><IMG border=0 src="../images/EditToolbar.jpg" width=279 height=265 ></P></TD></TR>
   <tr>
     <td width="53%">
-      <p class=Standard><font size=2 face=Arial       >When used from the processing tab, the picture 
-      preview may be used to select a part of the image by drawing a rectangle 
-      directly on the picture. </FONT></P>
+      <p class=Standard><font size=2 face=Arial       >When used from the processing tab, the picture preview 
+      may be used to select a part of the image by drawing a rectangle directly 
+      on the picture. </FONT></P>
       <p class=Standard><font size=2 face=Arial       >This rectangle is used on one hand to apply the 
       adjustments only to this rectangle and on the other hand, optionally, to 
       save only a part of the image.<br>&nbsp;</FONT></P>
-      <p class=Standard><font size=2 face=Arial       >If no rectangle is defined the adjustments are 
-      applied to the full image.</FONT></P>
+      <p class=Standard><font size=2 face=Arial       >If no rectangle is defined the adjustments are applied 
+      to the full image.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >In all the cases, when the image is saved to disk the 
       adjustments are applied to the full image.</FONT> 
       <p>&nbsp;</P></TD>
@@ -1805,30 +1902,30 @@ borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
         <div class=Standard><FONT size=2 face=Arial         >The overall image brightness which applies to the 
         green channel</FONT></DIV>
         <LI>
-        <div class=Standard><FONT size=2 face=Arial         >The brightness of the Red and Blue channels 
-        relative to the Green channel.<BR 
-      ></FONT></DIV></LI></UL>
-      <p class=Standard><FONT face=Arial       ><FONT size=2       >Image&nbsp;Adjustment (or Color Adjustment) is 
-      applied after the image has been read and scaled appropriately for the 
-      type of image (Raw, FITS or TIFF), and after all calibration frames have 
-      been applied.&nbsp;&nbsp;&nbsp;<SPAN style="mso-spacerun: yes" 
-      > </SPAN>If you use these adjustments, as you increase 
-      the values beyond the default value of 1.0, more and more pixels will 
-      become saturated. <o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p><FONT size=2 face=Arial       ></FONT></O:P></P>
+        <div class=Standard><FONT size=2 face=Arial         >The brightness of the Red and Blue channels relative 
+        to the Green channel.<BR></FONT></DIV></LI></UL>
+      <p class=Standard><FONT face=Arial       ><FONT size=2>Image&nbsp;Adjustment 
+      (or Color Adjustment) is applied after the image has been read and scaled 
+      appropriately for the type of image (Raw, FITS or TIFF), and after all 
+      calibration frames have been applied.&nbsp;&nbsp;&nbsp;<SPAN 
+      style="mso-spacerun: yes"> </SPAN>If you use these 
+      adjustments, as you increase the values beyond the default value of 1.0, 
+      more and more pixels will become saturated. <o:p 
+      ></O:P></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT face=Arial><FONT size=2       >The brightness (or luminance) adjustment applies 
       equally to all three channels.<SPAN style="mso-spacerun: yes" 
       >&nbsp; </SPAN>The values for the <FONT color=#ff0000       >Red</FONT> and <FONT color=#0000ff       >Blue</FONT> scale factors are relative to the <FONT       color=#008000>Green</FONT> channel whose scale factor 
       is the brightness value.<o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p><FONT size=2 face=Arial       ></FONT></O:P></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
       <p><FONT face=Arial><FONT size=2       >If you wish to scale 12 bit TIFF or FITS files to 16 
       bits, then this can be done by setting a brightness value of 16.<BR 
-      ><BR>This can also be useful if 
-      you want to set the channel balance for FITS or CFA format TIFF files 
-      based on the documentation for your camera. </FONT></FONT></P></TD>
+      ><BR>This can also be useful if you 
+      want to set the channel balance for FITS or CFA format TIFF files based on 
+      the documentation for your camera. </FONT></FONT></P></TD>
     <td width="50%"><IMG alt="" src="../images/english/imageadjustment.png" ></TD></TR></TABLE></P>
 <table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
@@ -1844,35 +1941,35 @@ borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
         <LI>
         <div class=Standard><FONT size=2 face=Arial         >Interpolation mode </FONT></DIV></LI></UL>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><FONT size=2 face=Arial>By 
-      default DeepSkyStacker will use Daylight White Balance, unless either "No 
-      White Balance Processing" or "Use Camera White Balance" is selected.<SPAN 
+      ><FONT size=2 face=Arial>By default 
+      DeepSkyStacker will use Daylight White Balance, unless either "No White 
+      Balance Processing" or "Use Camera White Balance" is selected.<SPAN 
       style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>If you 
       select "No White Balance Processing", then no white balance scaling is 
       performed at all, which is desirable if you are using software such as 
       StarTools to post process your stacked images.<BR><BR 
-      >In most other cases we recommend that you use 
-      Daylight White Balance.</FONT></P>
+      >In most other cases we recommend that you use Daylight 
+      White Balance.</FONT></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT size=2><FONT face=Arial 
       >&nbsp;</P></FONT></FONT></FONT></FONT>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p></O:P></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ></O:P></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT face=Arial><FONT size=2       >The option to choose Use Auto White Balance is no 
       longer supported because it resulted in each frame getting its own unique 
       white balance which messed up dark and flat frame processing.<SPAN 
       style="mso-spacerun: yes">&nbsp; </SPAN>However, if 
       you really want to use Auto White Balance, set your camera to Auto White 
-      Balance and select "Use Camera White Balance".<BR 
-      ><o:p></O:P></FONT></FONT></P>
-      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><o:p><FONT size=2 face=Arial       ></FONT></O:P></P>
+      Balance and select "Use Camera White Balance".<BR><o:p 
+      ></O:P></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p 
+      ><FONT size=2 face=Arial       ></FONT></O:P></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
-      ><FONT size=2 face=Arial>The 
-      white balance adjustment values are extracted from the RAW files by LibRaw 
+      ><FONT size=2 face=Arial>The white 
+      balance adjustment values are extracted from the RAW files by LibRaw 
       Copyright © 2008-2019 LibRaw LLC.<SPAN style="mso-spacerun: yes" 
       >&nbsp; </SPAN>LibRaw is based upon the original DCRaw 
       decoder for RAW files written by Dave Coffin.</FONT></P>
@@ -1893,17 +1990,17 @@ borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
     <td vAlign=top width="50%">
       <p class=Standard><b><font       face=Arial><a name=fitssettings 
       ></A>FITS</FONT></B><font face=Arial       ><b> Files<br 
-      ></B></FONT><font size=2 face=Arial       ><br></FONT><font size=2       face=Arial>If the check box "Single plane 16 bit FITS 
-      files are&nbsp;from ..." is <STRONG>not 
-      selected</STRONG>, DeepSkyStacker will attempt to use automatic detection 
-      of the&nbsp;&nbsp;CFA matrix based upon FITS keywords such as BAYERPAT, 
+      ></B></FONT><font size=2 face=Arial       ><br></FONT><font size=2 face=Arial       >If the check box "Single plane 16 bit FITS files 
+      are&nbsp;from ..." is <STRONG>not selected</STRONG>, 
+      DeepSkyStacker will attempt to use automatic detection of 
+      the&nbsp;&nbsp;CFA matrix based upon FITS keywords such as BAYERPAT, 
       COLORTYP, and MOSAIC (for Meade DSI colour cameras).&nbsp;&nbsp; If the 
       FITS file doesn't contain these keywords or the incorrect pattern is 
       specified in the file, you may select the check box and choose the 
       camera/pattern to be used as in earlier releases of DeepSkyStacker. 
       </FONT></P>
-      <p class=Standard><font size=2 face=Arial       >The first step is to select the DSLR or the CCD 
-      camera used to take the images from the list. This is necessary to use the 
+      <p class=Standard><font size=2 face=Arial       >The first step is to select the DSLR or the CCD camera 
+      used to take the images from the list. This is necessary to use the 
       correct Bayer Filter Pattern that will be used to decode the image 
       transforming them from B&amp;W to color images.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >The settings control the values used for:<br 
