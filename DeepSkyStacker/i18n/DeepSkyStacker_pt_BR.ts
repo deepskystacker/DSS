@@ -3269,7 +3269,7 @@ Você provavelmente pode obter outro ou baixar a versão final do site.</transla
         <location filename="../DeepSkyStacker.cpp" line="692"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>DeepSkyStacker Help_PT.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>
