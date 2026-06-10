@@ -2575,30 +2575,18 @@ Utilisez-la si vous prévoyez d&apos;effectuer tout le traitement dans un autre 
         <translation>Réduire la priorité des processus de traitement</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="90"/>
-        <source>Use World Coordinate System (WCS) data from FITS headers
-(if available) to determine image offsets and rotation.</source>
-        <translation>Utiliser les données du Système de Coordonnées Mondiales (WCS) issues des en-têtes FITS
-(si disponibles) pour déterminer les décalages et la rotation de l&apos;image.</translation>
-    </message>
-    <message>
-        <location filename="../ui/StackSettings.ui" line="94"/>
-        <source>Use FITS WCS data</source>
-        <translation>Utiliser les données WCS FITS</translation>
-    </message>
-    <message>
-        <location filename="../ui/StackSettings.ui" line="109"/>
-        <location filename="../ui/StackSettings.ui" line="119"/>
+        <location filename="../ui/StackSettings.ui" line="98"/>
+        <location filename="../ui/StackSettings.ui" line="108"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>Un maximum de 8 threads est suggéré</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="112"/>
+        <location filename="../ui/StackSettings.ui" line="101"/>
         <source>Maximum number of processing threads</source>
         <translation>Nombre maximal de threads de traitement</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="141"/>
+        <location filename="../ui/StackSettings.ui" line="130"/>
         <source>SIMD vectorisation</source>
         <translation>Vectorisation SIMD</translation>
     </message>
@@ -2627,7 +2615,7 @@ Utilisez-la si vous prévoyez d&apos;effectuer tout le traitement dans un autre 
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="204"/>
+        <location filename="../StackSettings.cpp" line="201"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Sélectionner le répertoire qui va contenir les fichiers temporaires.</translation>
@@ -3280,6 +3268,13 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsorisez DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="689"/>
+        <location filename="../DeepSkyStacker.cpp" line="692"/>
+        <source>DeepSkyStacker Help.chm</source>
+        <comment>IDS_HELPFILE</comment>
+        <translation>DeepSkyStacker Help_FR.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

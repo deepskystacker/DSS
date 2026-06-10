@@ -2579,30 +2579,18 @@ Folosește-o dacă intenționezi să faci toată procesarea în alt software.</t
         <translation>Lucreaza la nivel redus de incarcare</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="90"/>
-        <source>Use World Coordinate System (WCS) data from FITS headers
-(if available) to determine image offsets and rotation.</source>
-        <translation>Utilizați datele Sistemului de Coordonate Globale (WCS) din anteturile FITS
-(dacă sunt disponibile) pentru a determina decalajele și rotația imaginii.</translation>
-    </message>
-    <message>
-        <location filename="../ui/StackSettings.ui" line="94"/>
-        <source>Use FITS WCS data</source>
-        <translation>Utilizați datele WCS FITS</translation>
-    </message>
-    <message>
-        <location filename="../ui/StackSettings.ui" line="109"/>
-        <location filename="../ui/StackSettings.ui" line="119"/>
+        <location filename="../ui/StackSettings.ui" line="98"/>
+        <location filename="../ui/StackSettings.ui" line="108"/>
         <source>A maximum of 8 threads is suggested</source>
         <translation>Se sugerează un maxim de 8 fire de acțiune</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="112"/>
+        <location filename="../ui/StackSettings.ui" line="101"/>
         <source>Maximum number of processing threads</source>
         <translation>Numărul maxim de fire de procesare</translation>
     </message>
     <message>
-        <location filename="../ui/StackSettings.ui" line="141"/>
+        <location filename="../ui/StackSettings.ui" line="130"/>
         <source>SIMD vectorisation</source>
         <translation>Vectorizare SIMD</translation>
     </message>
@@ -2631,7 +2619,7 @@ Folosește-o dacă intenționezi să faci toată procesarea în alt software.</t
         <translation>Bias/Offset</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="204"/>
+        <location filename="../StackSettings.cpp" line="201"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Selectați directorul care va conține toate fișierele temporare</translation>
@@ -3287,6 +3275,13 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../DeepSkyStacker.cpp" line="522"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsorizează DeepSkyStacker</translation>
+    </message>
+    <message>
+        <location filename="../DeepSkyStacker.cpp" line="689"/>
+        <location filename="../DeepSkyStacker.cpp" line="692"/>
+        <source>DeepSkyStacker Help.chm</source>
+        <comment>IDS_HELPFILE</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>
