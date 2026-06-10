@@ -342,12 +342,12 @@ if(APPLE)
 endif()
 
 set(Help_Files
-    "${CMAKE_SOURCE_DIR}/Help/Aide DeepSkyStacker.chm"
-    "${CMAKE_SOURCE_DIR}/Help/Ayuda DeepSkyStacker.chm"
-    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Ajuda.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_DE.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_ES.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_FR.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_JP.chm"
-    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Hilfe.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_PT.chm"
 	)
 source_group("Help" FILES ${Help_Files})
 
