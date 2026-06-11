@@ -1518,10 +1518,23 @@ namespace DSS
 		// 
 		setDirty(false);
 
+		auto index = controls->tabWidget->currentIndex();
 		if (preview)
 		{
-			emit onPreview(ProcessingFunction::AsinhStretch);
-			return;
+			switch (index)
+			{
+			case 0: // MTF stretch tab
+				emit onPreview(ProcessingFunction::MtfStretch);
+				break;
+			case 1:	// Asinh stretch tab
+				emit onPreview(ProcessingFunction::AsinhStretch);
+				break;
+			case 2: // Colour balance tab
+				emit onPreview(ProcessingFunction::ColourBalance);
+				break;
+			default:
+				break;
+			}
 		}
 
 		processAndShow();
