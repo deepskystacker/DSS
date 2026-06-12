@@ -15,6 +15,8 @@
 #pragma warning(pop)
 #endif
 
+#include "../DeepSkyStackerKernel/avx_includes.h"
+
 // Std
 #include <vector>
 #include <algorithm>
@@ -22,13 +24,15 @@
 #include <deque>
 #include <set>
 #include <numeric>
-#include "../DeepSkyStackerKernel/avx_includes.h"
 #include <limits>
 #include <iostream>
 #include <filesystem>
+#include <ranges>
+
+// Boost
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
-#include <ranges>
+
 
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
