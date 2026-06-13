@@ -46,12 +46,3 @@ using std::max;
 #include "../ZClass/zdefs.h"
 #include "../ZClass/ztrace.h"
 #include "../ZClass/zexcept.h"
-
-
-// Windows (to go!)
-#if defined(Q_OS_WIN)
-#include <WTypesbase.h>
-#include <atlstr.h>
-#include <cassert>
-#include <atltypes.h>
-#endif
