@@ -5,14 +5,17 @@
 #if defined (_MSC_VER)
 #pragma warning(push)
 #pragma warning(disable: 4996)
+#pragma warning(disable: 4251)
 #endif
 #include <QCoreApplication>
 #include <QString>
 #include <QPoint>
 #include <QElapsedTimer>
 #include <QDateTime>
+#include <QTimeZone>
 #if defined (_MSC_VER)
 #pragma warning(pop)
+#pragma warning(disable: 4251)
 #endif
 
 #include "../DeepSkyStackerKernel/avx_includes.h"
