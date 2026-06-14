@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1000 520"
+   width="100%"
+   height="100%"
+   style="background-color: #ffffff; font-family: 'Segoe UI', Arial, sans-serif;"
+   version="1.1"
+   id="svg26"
+   sodipodi:docname="Calibration_Full.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs26">
+    <linearGradient
+       id="linearGradient26"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#63c0f2;stop-opacity:1;"
+         offset="0"
+         id="stop27" />
+      <stop
+         style="stop-color:#0024de;stop-opacity:1;"
+         offset="1"
+         id="stop26" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient26"
+       id="linearGradient27"
+       x1="160"
+       y1="465"
+       x2="815"
+       y2="465"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0284026,0,0,1,-23.148113,0)" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview26"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.072"
+     inkscape:cx="500"
+     inkscape:cy="260.26119"
+     inkscape:window-width="2251"
+     inkscape:window-height="1224"
+     inkscape:window-x="193"
+     inkscape:window-y="147"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg26" />
+  <g
+     id="horizontal-process-track"
+     transform="matrix(0.96326873,0,0,0.62521187,20.688122,174.45994)">
+    <rect
+       x="141.3963"
+       y="448"
+       width="673.6037"
+       height="34"
+       fill="#63c0f2"
+       id="rect1"
+       style="mix-blend-mode:normal;fill:url(#linearGradient27);fill-opacity:1;stroke-width:1.0144;stroke-dasharray:none" />
+    <polygon
+       points="815,498 815,432 848,465 "
+       fill="#0020dd"
+       id="polygon1" />
+  </g>
+  <g
+     id="node-bias">
+    <rect
+       x="185"
+       y="5"
+       width="145"
+       height="45"
+       fill="#5b5b95"
+       id="rect2" />
+    <text
+       x="192"
+       y="34"
+       fill="#ffffff"
+       font-size="20"
+       id="text2">Bias/Offset</text>
+    <rect
+       x="185"
+       y="115"
+       width="145"
+       height="70"
+       fill="#5b5b95"
+       id="rect3" />
+    <text
+       x="192"
+       y="145"
+       fill="#ffffff"
+       font-size="20"
+       id="text3">Master</text>
+    <text
+       x="192"
+       y="172"
+       fill="#ffffff"
+       font-size="20"
+       id="text4">Bias/Offset</text>
+  </g>
+  <g
+     id="node-dark">
+    <rect
+       x="355"
+       y="5"
+       width="145"
+       height="45"
+       fill="#111111"
+       id="rect4" />
+    <text
+       x="365"
+       y="34"
+       fill="#ffffff"
+       font-size="22"
+       id="text5">Dark</text>
+    <rect
+       x="355"
+       y="210"
+       width="145"
+       height="70"
+       fill="#111111"
+       id="rect5" />
+    <text
+       x="362"
+       y="240"
+       fill="#ffffff"
+       font-size="21"
+       id="text6">Master</text>
+    <text
+       x="362"
+       y="267"
+       fill="#ffffff"
+       font-size="21"
+       id="text7">Dark</text>
+  </g>
+  <g
+     id="node-dark-flat">
+    <rect
+       x="525"
+       y="5"
+       width="145"
+       height="45"
+       fill="#2d2d30"
+       id="rect7" />
+    <text
+       x="532"
+       y="34"
+       fill="#ffffff"
+       font-size="20"
+       id="text8">Dark Flat</text>
+    <rect
+       x="525"
+       y="210"
+       width="145"
+       height="70"
+       fill="#2d2d30"
+       id="rect8" />
+    <text
+       x="532"
+       y="240"
+       fill="#ffffff"
+       font-size="20"
+       id="text9">Master</text>
+    <text
+       x="532"
+       y="267"
+       fill="#ffffff"
+       font-size="20"
+       id="text10">Dark Flat</text>
+  </g>
+  <g
+     id="node-flat">
+    <rect
+       x="695"
+       y="5"
+       width="145"
+       height="45"
+       fill="#ededed"
+       stroke="#b5b5b5"
+       stroke-width="1"
+       id="rect10" />
+    <text
+       x="705"
+       y="34"
+       fill="#111111"
+       font-size="22"
+       id="text11">Flat</text>
+    <rect
+       x="695"
+       y="295"
+       width="145"
+       height="85"
+       fill="#ededed"
+       stroke="#b5b5b5"
+       stroke-width="1"
+       id="rect11" />
+    <text
+       x="702"
+       y="332"
+       fill="#111111"
+       font-size="21"
+       id="text12">Master</text>
+    <text
+       x="702"
+       y="362"
+       fill="#111111"
+       font-size="21"
+       id="text13">Flat</text>
+  </g>
+  <g
+     id="node-endpoints">
+    <rect
+       x="2"
+       y="440"
+       width="145"
+       height="50"
+       fill="#63c0f2"
+       id="rect13" />
+    <text
+       x="12"
+       y="475"
+       fill="#ffffff"
+       font-size="24"
+       id="text14">Light</text>
+    <rect
+       x="845"
+       y="440"
+       width="153"
+       height="50"
+       fill="#0020dd"
+       id="rect14" />
+    <text
+       x="852"
+       y="475"
+       fill="#ffffff"
+       font-size="22"
+       id="text15">Calibrated</text>
+  </g>
+  <g
+     id="arrow-bias-comb"
+     transform="matrix(0.78738559,0,0,0.95374787,53.500965,3.8158009)">
+    <rect
+       x="246"
+       y="50"
+       width="23"
+       height="45"
+       fill="#5b5b95"
+       id="rect15" />
+    <polygon
+       points="281,95 234,95 257.5,115 "
+       fill="#5b5b95"
+       id="polygon15"
+       transform="matrix(0.75213286,0,0,1,63.262092,0)" />
+    <text
+       x="60.121006"
+       y="-255.35663"
+       fill="#ffffff"
+       font-size="11px"
+       transform="rotate(90)"
+       id="text16">Comb.</text>
+  </g>
+  <g
+     id="arrow-bias-to-dark"
+     transform="matrix(1,0,0,0.78963708,9.8495529,29.627501)">
+    <rect
+       x="330"
+       y="138"
+       width="45"
+       height="24"
+       fill="#5b5b95"
+       id="rect16" />
+    <polygon
+       points="375,176 375,124 398,150 "
+       fill="#5b5b95"
+       id="polygon16"
+       transform="matrix(1,0,0,0.85886043,0,22.937794)" />
+    <text
+       x="345"
+       y="156"
+       fill="#ffffff"
+       font-size="24px"
+       font-weight="bold"
+       id="text17">-</text>
+  </g>
+  <g
+     id="arrow-dark-comb"
+     transform="matrix(0.90447399,0,0,0.96936226,40.999301,5.2898724)">
+    <rect
+       x="416"
+       y="50"
+       width="23"
+       height="140"
+       fill="#111111"
+       id="rect17" />
+    <polygon
+       points="463,190 392,190 427.5,210 "
+       fill="#111111"
+       id="polygon17"
+       transform="matrix(0.60949176,0,0,1,166.67045,-0.54364872)" />
+    <text
+       x="82.87114"
+       y="-423.97302"
+       fill="#ffffff"
+       font-size="13px"
+       font-weight="bold"
+       transform="rotate(90)"
+       id="text18">Combination</text>
+  </g>
+  <g
+     id="arrow-sub-dark-darkflat"
+     transform="matrix(0.95072991,0,0,0.8892633,22.300991,14.994664)">
+    <rect
+       x="445"
+       y="138"
+       width="114.29169"
+       height="24"
+       fill="#5b5b95"
+       id="rect18"
+       style="stroke-width:0.975926" />
+    <polygon
+       points="565,124 588,150 565,176 "
+       fill="#5b5b95"
+       id="polygon18"
+       transform="matrix(1,0,0,0.84840565,-5.7083116,23.418714)" />
+    <text
+       x="468"
+       y="154"
+       fill="#ffffff"
+       font-size="12px"
+       font-weight="bold"
+       id="text19">Subtraction</text>
+  </g>
+  <g
+     id="arrow-darkflat-comb"
+     transform="matrix(0.92733127,0,0,0.97411988,39.987996,3.5487974)">
+    <rect
+       x="586"
+       y="50"
+       width="23"
+       height="140"
+       fill="#2d2d30"
+       id="rect19" />
+    <polygon
+       points="597.5,210 633,190 562,190 "
+       fill="#2d2d30"
+       id="polygon19"
+       transform="matrix(0.58269218,0,0,1,248.66186,-0.27182436)" />
+    <text
+       x="83.287697"
+       y="-593.32544"
+       fill="#ffffff"
+       font-size="13px"
+       font-weight="bold"
+       transform="rotate(90)"
+       id="text20">Combination</text>
+  </g>
+  <g
+     id="arrow-sub-darkflat-flat"
+     transform="matrix(1,0,0,0.95107908,-0.20794842,5.7242179)">
+    <rect
+       x="615"
+       y="138"
+       width="109.62311"
+       height="24"
+       fill="#5b5b95"
+       id="rect20"
+       style="stroke-width:0.907874" />
+    <polygon
+       points="748,124 771,150 748,176 "
+       fill="#5b5b95"
+       id="polygon20"
+       transform="matrix(1,0,0,0.73863043,-23.920543,39.47726)" />
+    <text
+       x="645"
+       y="154"
+       fill="#ffffff"
+       font-size="12px"
+       font-weight="bold"
+       id="text21">Subtraction</text>
+  </g>
+  <g
+     id="arrow-darkflat-to-flat"
+     transform="matrix(1,0,0,0.84626422,24.426907,41.030372)">
+    <rect
+       x="649.33105"
+       y="228"
+       width="56.668922"
+       height="24"
+       fill="#111111"
+       id="rect21"
+       style="stroke-width:1.25465" />
+    <polygon
+       points="724,240 706,262 706,218 "
+       fill="#111111"
+       id="polygon21" />
+    <text
+       x="750.83405"
+       y="213.13422"
+       fill="#ffffff"
+       font-size="12.6472px"
+       font-weight="bold"
+       id="text22"
+       transform="scale(0.86975912,1.1497436)"
+       style="stroke-width:1.14974">Subtraction</text>
+  </g>
+  <g
+     id="arrow-flat-comb"
+     transform="matrix(0.76042644,0,0,0.96087716,179.94743,7.4731352)">
+    <rect
+       x="751"
+       y="50"
+       width="33"
+       height="225"
+       fill="#ffffff"
+       stroke="#5b5b95"
+       stroke-width="2"
+       id="rect22" />
+    <polygon
+       points="767.5,295 802,275 733,275 "
+       fill="#ffffff"
+       stroke="#5b5b95"
+       stroke-width="2"
+       id="polygon22"
+       transform="matrix(0.87910313,0,0,1.0107143,92.251416,-2.5119025)" />
+    <line
+       x1="752"
+       y1="275"
+       x2="783"
+       y2="275"
+       stroke="#ffffff"
+       stroke-width="3"
+       id="line22" />
+    <text
+       x="146.42531"
+       y="-578.87122"
+       fill="#5b5b95"
+       font-size="17.1105px"
+       transform="matrix(0,0.75976692,-1.3161931,0,0,0)"
+       id="text23"
+       style="stroke-width:1.31619">Combination</text>
+  </g>
+  <g
+     id="track-bias-sub"
+     transform="matrix(0.79053022,0,0,0.97277325,50.89272,10.298129)">
+    <rect
+       x="244"
+       y="185"
+       width="27"
+       height="237"
+       fill="#5b5b95"
+       id="rect23" />
+    <polygon
+       points="220,422 257.5,448 295,422 "
+       fill="#5b5b95"
+       id="polygon23"
+       transform="matrix(0.57409495,0,0,1,109.48265,-0.75159714)" />
+    <text
+       x="266.99362"
+       y="-252.85344"
+       fill="#ffffff"
+       font-size="16px"
+       transform="rotate(90)"
+       id="text24">Subtraction</text>
+  </g>
+  <g
+     id="track-dark-sub"
+     transform="matrix(0.77086576,0,0,0.97505583,99.407709,9.9907573)">
+    <rect
+       x="414"
+       y="280"
+       width="27"
+       height="142"
+       fill="#111111"
+       id="rect24" />
+    <polygon
+       points="427.5,448 465,422 390,422 "
+       fill="#111111"
+       id="polygon24"
+       transform="matrix(0.61229667,0,0,0.92681652,165.52333,30.50763)" />
+    <text
+       x="312.8815"
+       y="-422.96628"
+       fill="#ffffff"
+       font-size="16px"
+       transform="rotate(90)"
+       id="text25">Subtraction</text>
+  </g>
+  <g
+     id="track-flat-div"
+     transform="matrix(0.64650322,0,0,0.9233088,269.04304,32.593169)">
+    <rect
+       x="752"
+       y="380"
+       width="31"
+       height="42"
+       fill="#ffffff"
+       stroke="#5b5b95"
+       stroke-width="2"
+       id="rect25" />
+    <polygon
+       points="807,422 728,422 767.5,448 "
+       fill="#ffffff"
+       stroke="#5b5b95"
+       stroke-width="2"
+       id="polygon25"
+       transform="matrix(0.7088712,0,0,1.0189763,223.89138,-8.1188832)" />
+    <line
+       x1="753"
+       y1="422"
+       x2="782"
+       y2="422"
+       stroke="#ffffff"
+       stroke-width="3"
+       id="line25" />
+    <text
+       x="438.00943"
+       y="-662.54956"
+       fill="#5b5b95"
+       font-size="18.3718px"
+       transform="matrix(0,0.87089982,-1.1482377,0,0,0)"
+       id="text26"
+       style="stroke-width:1.14824">Division</text>
+  </g>
+</svg>
