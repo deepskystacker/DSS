@@ -46,113 +46,9 @@
 #include "zexcept.h"
 
 // Classes etc. private to this file
-#if (0)
-namespace
-{
-	inline QRgb SolveColor(double fValue, double fMean, double fStdDev)
-	{
-		double			red = 0, green = 0, blue = 0;
-
-		fValue -= fMean;
-		fValue /= fStdDev;
-
-		if (std::abs(fValue) < 0.5)
-			green = 255;
-		else if (fValue < 0)
-		{
-			red = std::max(0.0, 255.0 - std::max(0.0, 3.0 - std::abs(fValue)) * 255.0 / 3.0);
-			green = std::max(0.0, std::max(0.0, 3.0 - std::abs(fValue)) * 255.0 / 3.0);
-		}
-		else
-		{
-			blue = std::max(0.0, 255.0 - std::max(0.0, 3.0 - std::abs(fValue)) * 255.0 / 3.0);
-			green = std::max(0.0, std::max(0.0, 3.0 - std::abs(fValue)) * 255.0 / 3.0);
-		};
-
-		return qRgba(red, green, blue, 0.3 * 255);
-	};
-
-	inline double StarValue(const CStar& star)
-	{
-		return (star.m_fLargeMinorAxis + star.m_fSmallMinorAxis) / (star.m_fLargeMajorAxis + star.m_fSmallMajorAxis);
-	};
-
-}
-#endif
-
 
 namespace DSS
 {
-#if (0)
-	void QualityGrid::InitGrid(STARVECTOR& vStars)
-	{
-		double fPowSum = 0.0;
-		vertexSet sVertices;
-
-		mean = 0;
-		triangles.clear();
-
-		if (!vStars.empty())
-		{
-			for (auto& star : vStars)
-			{
-				if (!star.m_bRemoved)
-				{
-					vertex v(static_cast<float>(star.m_fX), static_cast<float>(star.m_fY));
-
-					star.m_fX = v.GetX();
-					star.m_fY = v.GetY();
-
-					sVertices.insert(v);
-
-					const double fValue = StarValue(star);
-
-					mean += fValue;
-					fPowSum += fValue * fValue;
-				}
-			}
-
-			if (!sVertices.empty())
-			{
-				stdDev = sqrt(fPowSum / sVertices.size() - pow(mean / sVertices.size(), 2));
-				mean /= sVertices.size();
-			};
-
-			Delaunay delaunay;
-			triangleSet sTriangles;
-
-			//
-			// ### To Do
-			// March 2023: Delaunay::Triangulate() does nothing. sTriangles will be empty.
-			//
-			delaunay.Triangulate(sVertices, sTriangles);
-
-			triangles.reserve(sTriangles.size());
-
-			for (ctIterator cit = sTriangles.cbegin(); cit != sTriangles.cend(); ++cit)
-			{
-				DelaunayTriangle tr;
-				tr.pt1 = cit->GetVertex(0)->GetPoint();
-				tr.pt2 = cit->GetVertex(1)->GetPoint();
-				tr.pt3 = cit->GetVertex(2)->GetPoint();
-
-				// Find the value for each point
-				const auto solve = [mean = this->mean, stdev = this->stdDev, &vStars](const float x, const float y)->QRgb
-				{
-					const auto it = lower_bound(vStars.cbegin(), vStars.cend(), CStar(x, y));
-					return SolveColor(it != vStars.cend() ? StarValue(*it) : mean, mean, stdev);
-				};
-
-				tr.cr1 = solve(tr.pt1.x(), tr.pt1.y());
-				tr.cr2 = solve(tr.pt2.x(), tr.pt2.y());
-				tr.cr3 = solve(tr.pt3.x(), tr.pt3.y());
-
-				triangles.push_back(tr);
-			}
-		}
-	}
-#endif
-
 	EditStars::EditStars(QWidget* parent) :
 		QWidget{ parent },
 		imageView{ dynamic_cast<ImageView*>(parent) },
@@ -908,6 +804,7 @@ namespace DSS
 		}
 		painter.end();
 		return;
+
 	}
 
 //	void	EditStars::drawQualityGrid(QPainter& painter, const QRect& rcClient)
