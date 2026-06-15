@@ -2082,7 +2082,7 @@ namespace DSS
 		// The default file name shown in the file save dialog.
 		// If we already used a file-list before -> take that. Otherwise use the folder of the light frames.
 		//
-		const fs::path defaultName = this->fileList.empty() ? LightframeFolder() : fileList;
+		const fs::path defaultName = fileList.empty() ? LightframeFolder() : fileList;
 
 
 		// if we already used a file-list set the extension in the save dialog accordingly
