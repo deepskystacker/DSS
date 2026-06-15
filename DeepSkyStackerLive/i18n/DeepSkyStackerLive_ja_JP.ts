@@ -691,7 +691,7 @@ At this point all the incoming (and all previously registered) images will be st
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="526"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1208"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1211"/>
         <source>No stacked image</source>
         <comment>IDS_NOSTACKEDIMAGE</comment>
         <translation>スタック済み画像なし</translation>
@@ -727,97 +727,94 @@ At this point all the incoming (and all previously registered) images will be st
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="585"/>
-<<<<<<< HEAD
-=======
         <source>Score</source>
         <comment>IDS_COLUMN_SCORE</comment>
 <translation>スコア</translation>
     </message>
     <message>
         <location filename="../DeepSkyStackerLive.cpp" line="586"/>
->>>>>>> master
         <source>Quality</source>
         <comment>IDS_COLUMN_MEANQUALITY</comment>
         <translation>品質</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="586"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="587"/>
         <source>#Stars</source>
         <comment>IDS_COLUMN_STARS</comment>
         <translation>星の数</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="587"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="588"/>
         <source>FWHM</source>
         <translation>FWHM（半値全幅）</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="588"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="589"/>
         <source>dX</source>
         <comment>IDS_COLUMN_DX</comment>
         <translation>dX</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="589"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="590"/>
         <source>dY</source>
         <comment>IDS_COLUMN_DY</comment>
         <translation>dY</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="590"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="591"/>
         <source>Angle</source>
         <comment>IDS_COLUMN_ANGLE</comment>
         <translation>角度</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="591"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="592"/>
         <source>Date/Time</source>
         <comment>IDS_COLUMN_DATETIME</comment>
         <translation>日時</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="592"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="593"/>
         <source>Size</source>
         <comment>IDS_COLUMN_SIZES</comment>
         <translation>サイズ</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="593"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="594"/>
         <source>CFA</source>
         <comment>IDS_COLUMN_CFA</comment>
         <translation>CFA</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="594"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="595"/>
         <source>Depth</source>
         <comment>IDS_COLUMN_DEPTH</comment>
         <translation>色深度</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="595"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="596"/>
         <source>Info</source>
         <comment>IDS_COLUMN_INFOS</comment>
         <translation>情報</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="596"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="597"/>
         <source>ISO/Gain</source>
         <comment>IDS_COLUMN_ISO_GAIN</comment>
         <translation>ISO/ゲイン</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="597"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="598"/>
         <source>Sky Background</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
         <translation>スカイバックグラウンド</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="699"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="701"/>
         <source>%1 is not a directory. Please select a valid directory.</source>
         <translation>%1 はディレクトリではありません。有効なディレクトリを選択してください。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="709"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="711"/>
         <source>Start monitoring folder %1
 </source>
         <comment>IDS_LOG_STARTMONITORING</comment>
@@ -825,64 +822,64 @@ At this point all the incoming (and all previously registered) images will be st
 </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="722"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="724"/>
         <source>Stop monitoring folder %1</source>
         <comment>IDS_LOG_STOPMONITORING</comment>
         <translation>フォルダ %1 の監視を停止しました</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="733"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="735"/>
         <source>Stop Stacking files</source>
 <comment>IDS_LOG_STOPSTACKING</comment>
         <translation>ファイルのスタッキングを停止しました</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="749"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="751"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Help.chm</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="854"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="856"/>
         <source>You cannot change the monitored folder while monitoring.</source>
         <comment>IDS_CANTCHANGEMONITOREDFOLDER</comment>
         <translation>監視中に監視フォルダを変更することはできません。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="866"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="868"/>
         <source>Select the folder to be monitored</source>
         <comment>IDS_SELECTMONITOREDFOLDER</comment>
         <translation>監視するフォルダを選択してください</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="901"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1247"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="903"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1250"/>
         <source>Stacked</source>
         <comment>IDS_STATUS_STACKED</comment>
         <translation>スタック済み</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="907"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1165"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1232"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="909"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1168"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1235"/>
         <source>Pending</source>
         <translation>保留中</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="908"/>
-        <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="910"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1241"/>
         <source>Registered</source>
         <comment>IDS_STATUS_REGISTERED</comment>
         <translation>登録済み</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1017"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1019"/>
         <source>Start Stacking files</source>
         <comment>IDS_LOG_STARTSTACKING</comment>
         <translation>ファイルのスタッキングを開始します</translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1082"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1084"/>
         <source>You have %n image(s) in the monitored folder.
 Do you want to process them?</source>
         <comment>IDS_USEEXISTINGIMAGES</comment>
@@ -892,7 +889,7 @@ Do you want to process them?</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../DeepSkyStackerLive.cpp" line="1093"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1095"/>
         <source>%n new file(s) found
 </source>
         <comment>IDS_LOG_NEWFILESFOUND</comment>
@@ -902,45 +899,35 @@ Do you want to process them?</source>
         </translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1219"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1222"/>
         <source>Click here to save the stacked image to file</source>
         <comment>IDS_SAVESTACKEDIMAGE</comment>
         <translation>ここをクリックしてスタッキング済み画像を保存</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1235"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1238"/>
         <source>Loaded</source>
         <comment>IDS_STATUS_LOADED</comment>
         <translation>読み込み済み</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1241"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1244"/>
         <source>Stack delayed</source>
         <comment>IDS_STATUS_STACKDELAYED</comment>
         <translation>スタック待機中</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1244"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1247"/>
         <source>Not stackable</source>
         <comment>IDS_STATUS_NOTSTACKABLE</comment>
         <translation>スタック不可</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1326"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1330"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>いいえ</translation>
     </message>
-<<<<<<< HEAD
-    <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1328"/>
-        <source>Yes</source>
-        <comment>IDS_YES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1331"/>
-=======
 <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1332"/>
         <source>Yes</source>
@@ -948,24 +935,23 @@ Do you want to process them?</source>
         <translation>はい</translation>
     </message> <message>
         <location filename="../DeepSkyStackerLive.cpp" line="1335"/>
->>>>>>> master
         <source>RGB %1 bit/ch</source>
         <comment>IDS_FORMAT_RGB</comment>
         <translation>RGB %1 bit/ch</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1333"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1337"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
         <translation>グレー %1 bit</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1345"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1349"/>
         <source>%1%</source>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="1526"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="1530"/>
         <source>Pending: %1 - Registered: %2 - Stacked: %3 - Total exposure time: %4</source>
         <translation>保留中: %1 - 登録済み: %2 - スタック済み: %3 - 総露出時間: %4</translation>
     </message>
