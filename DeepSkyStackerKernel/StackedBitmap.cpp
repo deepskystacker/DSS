@@ -1230,7 +1230,7 @@ public :
 
 	virtual bool	OnOpen() override;
 	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
-	virtual bool	OnClose() override;
+	virtual void	OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1277,10 +1277,9 @@ bool CFITSReadStacker::OnRead(int lX, int lY, double fRed, double fGreen, double
 
 /* ------------------------------------------------------------------- */
 
-bool CFITSReadStacker::OnClose()
+void CFITSReadStacker::OnClose()
 {
 	ZFUNCTRACE_RUNTIME();
-	return true;
 };
 
 /* ------------------------------------------------------------------- */

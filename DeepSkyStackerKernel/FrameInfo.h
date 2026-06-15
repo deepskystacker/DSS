@@ -5,6 +5,7 @@
 #include "SkyBackground.h"
 #include "BilinearParameters.h"
 #include "MatchingStars.h"
+#include "wcsinfo.h"
 
 // From FITSUtils.h/.cpp
 CFATYPE GetFITSCFATYPE();
@@ -34,6 +35,7 @@ public:
 	bool m_bFITS16bit{ false };
 	CBitmapExtraInfo m_ExtraInfo{};
 	QString m_filterName;
+	DSS::WCSInfo wcsInfo;
     mutable	QString incompatibilityReason;
 
 private:

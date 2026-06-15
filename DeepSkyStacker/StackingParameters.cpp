@@ -33,6 +33,7 @@ namespace DSS
 		// 
 		// First the light settings
 		//
+		ui->useWCS->setVisible(false);
 		ui->backgroundCalibration->setVisible(false);
 		ui->debloom->setVisible(false);
 		ui->deBloomSettings->setVisible(false);
@@ -151,6 +152,10 @@ namespace DSS
 			kappa = workspace->value("Stacking/Light_Kappa", 2.0).toDouble();
 			setControls();
 
+			ui->useWCS->setVisible(true);
+			isChecked = workspace->value("Stacking/UseWCS", true).toBool();
+			ui->useWCS->setChecked(isChecked);
+
 			//
 			// Use our friendship with StackSettings to get at pStackingTasks pointer
 			//
@@ -162,6 +167,7 @@ namespace DSS
 				// ui->deBloomSettings->setVisible(false); 
 				ui->debloom->setChecked(workspace->value("Stacking/Debloom", false).toBool());
 			};
+
 
 			//
 			// Set up the background calibration control
@@ -442,6 +448,14 @@ namespace DSS
 	void StackingParameters::on_modeMaximum_clicked()
 	{
 		setMethod(MBP_MAXIMUM);
+	}
+
+	void StackingParameters::on_useWCS_stateChanged(int state)
+	{
+		//
+		// If it's checked then set Use WCS to true
+		//
+		workspace->setValue("Stacking/UseWCS", (Qt::Checked == state) ? true : false);
 	}
 
 	void StackingParameters::on_debloom_stateChanged(int state)

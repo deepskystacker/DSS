@@ -800,72 +800,62 @@ Cochez cette case pour conserver le fichier de trace.</translation>
         <translation>Activer les sons de progression</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="666"/>
-        <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
-        <translation>Dans le Processing Panel, affichez les pixels inférieurs au Black Level en bleu et les pixels supérieurs au White Level en rouge.</translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="669"/>
-        <source>Show clipping for Black/White Points</source>
-        <translation>Afficher le clip pour les points noirs/blancs</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="298"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Paramètres d&apos;enregistrement...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="301"/>
+        <location filename="../ExplorerBar.cpp" line="299"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Paramètres d&apos;empilement ...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="343"/>
+        <location filename="../ExplorerBar.cpp" line="341"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Restaurer les paramètres par défaut</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="345"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Charger les paramètres de DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="349"/>
+        <location filename="../ExplorerBar.cpp" line="347"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Charger...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="410"/>
+        <location filename="../ExplorerBar.cpp" line="408"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Enregistrer comme paramètres de DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="414"/>
+        <location filename="../ExplorerBar.cpp" line="412"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="587"/>
+        <location filename="../ExplorerBar.cpp" line="579"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Charger les paramètres de DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="591"/>
-        <location filename="../ExplorerBar.cpp" line="646"/>
+        <location filename="../ExplorerBar.cpp" line="583"/>
+        <location filename="../ExplorerBar.cpp" line="638"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Paramètres DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="641"/>
+        <location filename="../ExplorerBar.cpp" line="633"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Enregistrer les paramètres de DeepSkyStacker</translation>
@@ -1050,6 +1040,44 @@ Ctrl + 4 pour basculer en mode 4 coins</translation>
         <location filename="../lowerdockwidget.cpp" line="46"/>
         <source>Double click here to dock/undock</source>
         <translation>Double-cliquez ici pour ancrer/détacher</translation>
+    </message>
+</context>
+<context>
+    <name>DSS::MtfAutostretchSettings</name>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
+        <source>Autostretch Parameters</source>
+        <translation>Paramètres d&apos;Autostretch</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
+        <source>Target Background</source>
+        <translation>Fond cible</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
+        <source>Target background level used by autostretch. Lower values produce a darker background.</source>
+        <translation>Niveau de fond cible utilisé par l&apos;autostretch. Des valeurs plus basses produisent un fond plus sombre.</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
+        <source>Reset target background to the default value (0.125).</source>
+        <translation>Réinitialiser le fond cible à la valeur par défaut (0,125).</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
+        <source>Shadow Clipping</source>
+        <translation>Clipping des ombres</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
+        <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
+        <translation>Agressivité du clipping des ombres en unités EAM (Ecart Absolu Médian) pour l&apos;autostretch.</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
+        <source>Reset shadow clipping factor to the default value (2.8).</source>
+        <translation>Réinitialiser le facteur de clipping des ombres à la valeur par défaut (2,8).</translation>
     </message>
 </context>
 <context>
@@ -1291,44 +1319,132 @@ Pixels froids détectés : %L3 (%L4%)</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="271"/>
+        <location filename="../ui/ProcessingControls.ui" line="743"/>
         <source>Colour Balance</source>
         <translation>Équilibre des couleurs</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <location filename="../ui/ProcessingControls.ui" line="523"/>
         <source>ASinH Image stretch</source>
         <translation>Étirement d&apos;image ASinH</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="59"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <source>MTF Stretch</source>
+        <translation>Étirement MTF</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="152"/>
+        <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
+        <translation>Lier les canaux RVB : déplacer un curseur MTF met à jour tous les canaux simultanément.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="238"/>
+        <source>Shadows</source>
+        <translation>Ombres</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="260"/>
+        <source>MTF shadow point.</source>
+        <translation>Point d&apos;ombre MTF.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <source>Midtones</source>
+        <translation>Tons moyens</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="298"/>
+        <source>MTF midtone balance point.</source>
+        <translation>Point d&apos;équilibre des tons moyens MTF.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="317"/>
+        <source>Highlights</source>
+        <translation>Hautes lumières</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="339"/>
+        <source>MTF highlight point.</source>
+        <translation>Point de haute lumière MTF.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="364"/>
+        <source>Estimated percentage of pixels below the current MTF shadow point.</source>
+        <translation>Pourcentage estimé de pixels situés en dessous du point d&apos;ombre MTF actuel.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="367"/>
+        <source>Shadow Clipping:</source>
+        <translation>Clipping des ombres:</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="411"/>
+        <source>Estimated percentage of pixels above the current MTF highlight point.</source>
+        <translation>Pourcentage estimé de pixels situés au-dessus du point de haute lumière MTF actuel.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="414"/>
+        <source>Highlight Clipping:</source>
+        <translation>Clipping des hautes lumières:</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="497"/>
+        <source>Apply the current MTF stretch settings to the image.</source>
+        <translation>Appliquer les réglages MTF actuels à l&apos;image.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="531"/>
         <source>Stretch Factor</source>
         <translation>Facteur d&apos;étirement</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="133"/>
+        <location filename="../ui/ProcessingControls.ui" line="605"/>
         <source>Black Point</source>
         <translation>Point noir</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="211"/>
+        <location filename="../ui/ProcessingControls.ui" line="683"/>
         <source>Human-weighted luminance</source>
         <translation>Luminance pondérée par l&apos;humain</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="480"/>
+        <location filename="../ui/ProcessingControls.ui" line="952"/>
         <source>Preview</source>
         <translation>Aperçu</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="248"/>
-        <location filename="../ui/ProcessingControls.ui" line="452"/>
+        <location filename="../ui/ProcessingControls.ui" line="500"/>
+        <location filename="../ui/ProcessingControls.ui" line="720"/>
+        <location filename="../ui/ProcessingControls.ui" line="924"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Appliquer</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="560"/>
+        <location filename="../ui/ProcessingControls.ui" line="196"/>
+        <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
+Right-click to change Autostretch parameters</source>
+        <translation>Estimer automatiquement les valeurs MTF pour les ombres, les tons moyens et les hautes lumières à partir de l&apos;image courante.
+Clic droit pour modifier les paramètres d&apos;autostretch</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="200"/>
+        <source>Autostretch</source>
+        <translation>Autostretch</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="975"/>
+        <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+        <translation>Affichez les pixels inférieurs au Black Level en bleu et les pixels supérieurs au White Level en rouge.</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="978"/>
+        <source>Show Shadow and Highlight clipping</source>
+        <translation>Afficher l&apos;écrêtage des ombres et des hautes lumières</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1058"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Réinitialiser</translation>
@@ -1337,95 +1453,95 @@ Pixels froids détectés : %L3 (%L4%)</translation>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="992"/>
+        <location filename="../ProcessingDlg.cpp" line="1228"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Voulez-vous enregistrer les modifications ?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="563"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Fichiers TIFF ou FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="329"/>
+        <location filename="../ProcessingDlg.cpp" line="447"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Masque d&apos;étoiles créé par DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="331"/>
+        <location filename="../ProcessingDlg.cpp" line="449"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Enregistrement du masque d&apos;étoile dans %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="401"/>
-        <location filename="../ProcessingDlg.cpp" line="508"/>
+        <location filename="../ProcessingDlg.cpp" line="526"/>
+        <location filename="../ProcessingDlg.cpp" line="638"/>
         <source>Failed to load image %1</source>
         <translation>Impossible de charger l&apos;image %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="537"/>
+        <location filename="../ProcessingDlg.cpp" line="667"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Image TIFF 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="538"/>
+        <location filename="../ProcessingDlg.cpp" line="668"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Image TIFF 32 bit/ch entier (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="539"/>
+        <location filename="../ProcessingDlg.cpp" line="669"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Image TIFF 32 bit/ch réel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="540"/>
+        <location filename="../ProcessingDlg.cpp" line="670"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Image FITS 16 bit/ch (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="541"/>
+        <location filename="../ProcessingDlg.cpp" line="671"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Image FITS 32 bit/ch - entier (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="542"/>
+        <location filename="../ProcessingDlg.cpp" line="672"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>Image FITS 32 bit/ch - réel (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="551"/>
+        <location filename="../ProcessingDlg.cpp" line="681"/>
         <source>Save Image</source>
         <translation>Enregistrer l&apos;image</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="654"/>
+        <location filename="../ProcessingDlg.cpp" line="784"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Il n&apos;y a aucune image à enregistrer.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="799"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Aucune information disponible</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="691"/>
+        <location filename="../ProcessingDlg.cpp" line="821"/>
         <source>Exposure: %1 </source>
         <translation>Exposition: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="692"/>
+        <location filename="../ProcessingDlg.cpp" line="822"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1434,27 +1550,37 @@ Pixels froids détectés : %L3 (%L4%)</translation>
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1137"/>
+        <location filename="../ProcessingDlg.cpp" line="1386"/>
+        <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
+        <translation>Étirement MTF: R %L1 %L2 %L3, V %L4 %L5 %L6, B %L7 %L8 %L9</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1400"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Étirement ASinH : beta %L1, bp %L2, hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1149"/>
+        <location filename="../ProcessingDlg.cpp" line="1413"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
-        <translation type="unfinished"></translation>
+        <translation>Équilibre des couleurs : R %L1, G %L2, B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1160"/>
-        <location filename="../ProcessingDlg.cpp" line="1187"/>
-        <location filename="../ProcessingDlg.cpp" line="1215"/>
+        <location filename="../ProcessingDlg.cpp" line="1424"/>
+        <location filename="../ProcessingDlg.cpp" line="1452"/>
+        <location filename="../ProcessingDlg.cpp" line="1480"/>
         <source>Undo %1</source>
         <translation>Annuler %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1176"/>
-        <location filename="../ProcessingDlg.cpp" line="1219"/>
+        <location filename="../ProcessingDlg.cpp" line="1441"/>
+        <location filename="../ProcessingDlg.cpp" line="1484"/>
         <source>Redo %1</source>
         <translation>Refaire %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
+        <source>Edit autostretch parameters ...</source>
+        <translation>Modifier les paramètres d&apos;autostretch ...</translation>
     </message>
 </context>
 <context>
@@ -2670,6 +2796,11 @@ Offset/Bias : %5</translation>
         <translation>Ouvrir une autre Liste de Fichiers ...</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2106"/>
+        <source>Save file list</source>
+        <translation>Liste des fichiers enregistrés</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="2141"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
@@ -2819,38 +2950,50 @@ Voulez-vous enregistrer les modifications ?</translation>
 (High Dynamic Range)</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>Utiliser les données du Système de Coordonnées Mondiales (WCS) issues des en-têtes FITS
+(si disponibles) pour déterminer les décalages et la rotation de l&apos;image.</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>Utiliser les données WCS FITS</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation>Debloom</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>Paramètres...</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>Optimisation des darks</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>Suppression des mauvaises colonnes</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>Suppression des pixels chauds</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>Facteur de multiplication du noir :</translation>
@@ -2874,7 +3017,7 @@ Voulez-vous enregistrer les modifications ?</translation>
         <translation>Calibration RVB du fond</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -2888,7 +3031,7 @@ sont supprimés de façon itérative.
 Les pixels restant sont moyennés.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -2902,7 +3045,7 @@ sont remplacés par la médiane de façon itérative.
 Pour finir les pixels sont moyennés.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -2914,7 +3057,7 @@ en fonction de leurs écart à la moyenne
 par rapport à l&apos;écart moyen (%1).</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>Options...</translation>
@@ -3127,11 +3270,11 @@ Vous pouvez probablement en obtenir une autre ou télécharger la version finale
         <translation>Sponsorisez DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="703"/>
-        <location filename="../DeepSkyStacker.cpp" line="706"/>
+        <location filename="../DeepSkyStacker.cpp" line="689"/>
+        <location filename="../DeepSkyStacker.cpp" line="692"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
-        <translation>Aide DeepSkyStacker.chm</translation>
+        <translation>DeepSkyStacker Help_FR.chm</translation>
     </message>
     <message>
         <location filename="../DeepSkyStacker.cpp" line="381"/>

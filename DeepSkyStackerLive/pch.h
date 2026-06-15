@@ -1,8 +1,16 @@
 #pragma once
 
 // Qt Files
+#if defined (_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4996)
+#endif
 #include <QtWidgets>
 #include <QNetworkReply>
+#if defined (_MSC_VER)
+#pragma warning(pop)
+#endif
+
 
 // ZClass Files
 #include <zexcept.h>

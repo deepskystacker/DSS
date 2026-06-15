@@ -142,7 +142,7 @@ namespace DSS
 		QString name{ QString::fromStdU16String(file.filename().generic_u16string()) };
 
 		ZTRACE_RUNTIME("Registering %s", name.toUtf8().constData());
-		CBitmapInfo			bmpInfo;
+		BitmapInfo			bmpInfo;
 		bool result{ false };
 
 		if (GetPictureInfo(file, bmpInfo) && bmpInfo.CanLoad())

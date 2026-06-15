@@ -5,6 +5,7 @@
 #include "DSSCommon.h"
 #include "BitmapExtraInfo.h"
 #include "fitsio.h"
+#include "wcsinfo.h"
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1020)	
 #pragma comment(lib, "cfitsio.lib")
@@ -32,6 +33,7 @@ public:
 	int				m_bitPix;
 	QString			m_filterName;
 	int				m_nrframes;
+	DSS::WCSInfo	wcsInfo;
 
 	CFITSHeader();
 	virtual ~CFITSHeader();
@@ -151,11 +153,11 @@ public:
 
 	bool Open();
 	bool Read();
-	virtual bool Close();
+	virtual void Close();
 
 	virtual bool OnOpen() { return true; }
 	virtual bool OnRead(int, int, double, double, double) { return true; }
-	virtual bool OnClose() { return true; }
+	virtual void OnClose() {}
 };
 
 /* ------------------------------------------------------------------- */
@@ -212,11 +214,11 @@ public:
 };
 
 /* ------------------------------------------------------------------- */
-class CBitmapInfo;
+class BitmapInfo;
 class CMemoryBitmap;
 
 CFATYPE GetFITSCFATYPE();
-bool GetFITSInfo(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
+bool GetFITSInfo(const fs::path& szFileName, BitmapInfo& BitmapInfo);
 bool ReadFITS(const fs::path& szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::OldProgressBase* pProgress);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription, int lISOSpeed, int lGain, double fExposure);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, FITSFORMAT FITSFormat, const QString& szDescription);
@@ -224,8 +226,8 @@ bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgr
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, const QString& szDescriptionL, int lISOSpeed, int lGain, double fExposure);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress, const QString& szDescription);
 bool WriteFITS(const fs::path& szFileName, CMemoryBitmap* pBitmap, DSS::OldProgressBase* pProgress);
-bool IsFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo);
-int	LoadFITSPicture(const fs::path& szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::OldProgressBase* pProgress);
+bool IsFITSPicture(const fs::path& szFileName, BitmapInfo& BitmapInfo);
+int	LoadFITSPicture(const fs::path& szFileName, BitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::OldProgressBase* pProgress);
 bool IsFITSRawBayer();
 bool IsFITSSuperPixels();
 bool IsFITSBilinear();

@@ -60,7 +60,7 @@ cellPadding=5 width="100%" border=1>
   <TBODY>
   <TR>
     <TD width="63%"><FONT size=2>このしきい値は、「チェックした画像の登録/登録設定」ダイアログの「詳細」タブ、または Settings.../登録設定 を選択して（自動しきい値が選択されていない場合）変更できます。</FONT><font size="2" face="Arial">
-<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><EM><STRONG>星検出のしきい値を小さくすると</STRONG></EM>, DeepSkyStackerはより多くの（より暗い）星を見つけるようになります. 逆に, <EM><STRONG>しきい値を大きくすると</STRONG></EM>, より明るい星だけが検出されるようになり, 検出される星の数は<EM><STRONG>減ります</STRONG></EM>.<BR><BR>しきい値を非常に低くして何百もの星が検出されるように設定すると, 星の登録のために処理するデータ量がはるかに多くなり, 検出される星が多すぎると誤登録の可能性が高まるため, 逆効果になる可能性があります. 目標としては, 20〜25個以上の星を目指し, 多くても200個程度にするのが適切です.</span></p>
+<p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><EM><STRONG>星検出のしきい値を小さくすると</STRONG></EM>, DeepSkyStackerはより多くの（より暗い）星を見つけるようになります. 逆に, <EM><STRONG>しきい値を大きくすると</STRONG></EM>, より明るい星だけが検出されるようになり, 検出される星の数は<EM><STRONG>減ります</STRONG></EM>.<BR><BR>  しきい値を非常に低くして何百もの星が検出されるように設定すると, 星の登録のために処理するデータ量がはるかに多くなり, 検出される星が多すぎると誤登録の可能性が高まるため, 逆効果になる可能性があります. 目標としては、20〜25個以上の星を目指し、多くても200個程度にするのが適切です.</span></p>
 <p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">検出のしきい値を低く設定しても、画像が露出不足のためにDeepSkyStackerが十分な数の星を見つけられない場合は、RAW/FITS DDP設定の「明るさ（Brightness）」調整を使用して画像の明るさを上げることができます。</span></p>
 <p align="justify"><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">画像にノイズが多い（例：光害の結果）場合、「メディアンフィルターを使用してノイズを低減する（Reduce the noise by using a Median Filter）」オプションを有効にする必要がある場合があります。</span></p>
 <p align="justify">
@@ -73,7 +73,8 @@ cellPadding=5 width="100%" border=1>
                   
                    
                   </p>
-<P class=MsoNormal><FONT size=2>これにより、「星検出のしきい値」を手動で調整する必要がなくなります。<br>この機能は、最小しきい値の1%でも十分な数の星を見つけるのに十分な低さではない画像に特に役立ちます（自動しきい値は0.05%まで低くすることができます）。<BR>検出される星の数が少なくとも50個になるようにしきい値が設定されます（可能な場合。それ以外の場合は低い数が許容されます）。</FONT>       
+<P class=MsoNormal><FONT size=2>これにより、「星検出のしきい値」を手動で調整する必要がなくなります。<br>この機能は、最小しきい値の1%でも十分な数の星を見つけるのに十分な低さではない画像に特に役立ちます（自動しきい値は 
+      0.05%〜 まで低くすることができます）。<BR>検出される星の数が少なくとも50個になるようにしきい値が設定されます（可能な場合。それ以外の場合は低い数が許容されます）。</FONT>       
                  
        </P>
 <P class=MsoNormal><FONT size=2>最初の画像で計算されたしきい値は、後続の画像の最適なしきい値を見つけるための開始点として使用されます。すでにリファレンスフレームが選択されている場合は、この画像が最初に登録する画像として使用されます。<font face="Arial" ></P></font></FONT></TD>
@@ -140,7 +141,7 @@ FOCAS 自動カタログ照合アルゴリズム</a><br>
 <ul>
   <li>
   <p align="justify"><font size="2" face="Arial">メイングループのライトフレームは、メイングループのダーク、フラット、およびオフセット/バイアスフレームとのみ関連付けることができます。 <br>
-  这是、ファイルグループ導入前のDeepSkyStackerの動作と同じです。</font></p>
+  这是、これは、ファイルグループ導入前のDeepSkyStackerの動作と同じです。</font></p>
   <li>
   <p align="justify"><font size="2" face="Arial">メイングループのダーク、フラット、およびオフセット/バイアスフレームは、任意のグループのライトフレームに関連付けることができます。</font></p>
   <li>
@@ -455,7 +456,7 @@ DeepSkyStackerは、この操作を行おうとすると警告を発します。
   </tr>
 </table>
 <p align="justify"><font face="Arial" size="2">&nbsp;</font><font face="Arial"><b><font size="2">ステップ2：スタッキングモードを選択する</font><br>
-</b></font><font face="Arial" size="2">これは、スタッキングパラメータダイアログで利用可能な<A href="userguide.htm#comettab">Comet（コメット）</A>タブで行います。<br>
+</b></font><font face="Arial" size="2">これは、スタッキングパラメータダイアログで利用可能な<A href="userguide.htm#comettab">「彗星」</A>彗星」タブで行います。<br>
 Cometタブは、少なくとも2つのライトフレーム（リファレンスライトフレームを含む）に登録された彗星がある場合にのみ使用できます。<br>
 このタブから、利用可能な3つのコメットスタッキングオプションのいずれかを選択できます。<br>
 &nbsp;<br>
@@ -475,7 +476,10 @@ DeepSkyStackerは、彗星が登録された画像と彗星が登録されてい
 <a name="rawdecod"></a>RAW画像の現像プロセス</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 </span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAWファイルのデコード</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 </span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
-DSLRによって作成されたRAWファイルは、Dave CoffinによるオリジナルのDCRawをベースにしたLibRaw（Copyright © 2008-2019 LibRaw LLC）を使用してデコードされます。<br>
+DSLRによって作成されたRAWファイルは、Dave 
+CoffinによるオリジナルのDCRawをベースにしたLibRaw(<STRONG>Copyright © 2008-2019 LibRaw 
+LLC</STRONG>
+     )を使用してデコードされます。<br>
 DeepSkyStackerはリリース時に利用可能な最新バージョンのLibRawを使用しており、カメラがサポートされていない場合は警告を表示します。</span>
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
@@ -547,7 +551,7 @@ RGBGフィルターの場合、ピクセルの4分の1が赤、別の4分の1が
   <tr>
     <td width="51%">
     <p class="Standard"><font size="2" face="Arial">
-    最後に、Dave Coffinによって提案されたメソッドは、画像間に存在する「自然な」ドリフトを利用して、結果として得られる各ピクセルの真のRGB値を計算するスタッキングプロセスの特性を使用します。<br>
+    3つ目の方法は、Dave Coffinによって提案されたメソッドは、画像間に存在する「自然な」ドリフトを利用して、結果として得られる各ピクセルの真のRGB値を計算するスタッキングプロセスの特性を使用します。<br>
     <br>
     多数の画像が利用可能で、かつサブピクセル位置合わせが行われている場合、DeepSkyStackerは補間を一切使用せずに、各ピクセルの各原色の真の値を計算します。<br>
     &nbsp;<br>

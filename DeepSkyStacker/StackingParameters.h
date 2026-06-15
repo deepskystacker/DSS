@@ -72,6 +72,8 @@ namespace DSS
 		void on_modeEWA_clicked();
 		void on_modeMaximum_clicked();
 
+		void on_useWCS_stateChanged(int);
+
 		void on_backgroundCalibration_clicked();
 		void backgroundCalibrationOptions();
 

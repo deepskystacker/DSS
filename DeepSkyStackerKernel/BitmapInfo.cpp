@@ -45,7 +45,7 @@ using namespace Exiv2;
 // Type for an Exiv2 Easy access function
 using EasyAccessFct = Exiv2::ExifData::const_iterator(*)(const Exiv2::ExifData&);
 
-bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
+bool RetrieveEXIFInfo(const fs::path& fileName, BitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool result{ false };
@@ -123,3 +123,110 @@ bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo)
 	}
 	return result;
 }
+
+//////////////////////////////////////////////////////////////////////////
+BitmapInfo::BitmapInfo()
+{
+	Init();
+}
+
+BitmapInfo::BitmapInfo(const BitmapInfo& bi)
+{
+	CopyFrom(bi);
+}
+
+BitmapInfo::BitmapInfo(const fs::path& fileName)
+{
+	Init();
+	m_strFileName = fileName;
+}
+
+void BitmapInfo::CopyFrom(const BitmapInfo& bi)
+{
+	m_strFileName = bi.m_strFileName;
+	m_strFileType = bi.m_strFileType;
+	m_strModel = bi.m_strModel;
+	m_lISOSpeed = bi.m_lISOSpeed;
+	m_lGain = bi.m_lGain;
+	m_fExposure = bi.m_fExposure;
+	m_fAperture = bi.m_fAperture;
+	m_lWidth = bi.m_lWidth;
+	m_lHeight = bi.m_lHeight;
+	m_lBitsPerChannel = bi.m_lBitsPerChannel;
+	m_lNrChannels = bi.m_lNrChannels;
+	m_bCanLoad = bi.m_bCanLoad;
+	m_bFloat = bi.m_bFloat;
+	m_CFAType = bi.m_CFAType;
+	m_bMaster = bi.m_bMaster;
+	m_bFITS16bit = bi.m_bFITS16bit;
+	m_strDateTime = bi.m_strDateTime;
+	m_DateTime = bi.m_DateTime;
+	m_InfoTime = bi.m_InfoTime;
+	m_ExtraInfo = bi.m_ExtraInfo;
+	m_xBayerOffset = bi.m_xBayerOffset;
+	m_yBayerOffset = bi.m_yBayerOffset;
+	m_filterName = bi.m_filterName;
+	wcsInfo = bi.wcsInfo;
+}
+
+void BitmapInfo::Init()
+{
+	m_lWidth = 0;
+	m_lHeight = 0;
+	m_lBitsPerChannel = 0;
+	m_lNrChannels = 0;
+	m_bCanLoad = false;
+	m_CFAType = CFATYPE_NONE;
+	m_bMaster = false;
+	m_bFloat = false;
+	m_lISOSpeed = 0;
+	m_lGain = -1;
+	m_fExposure = 0.0;
+	m_fAperture = 0.0;
+	m_bFITS16bit = false;
+	m_xBayerOffset = 0;
+	m_yBayerOffset = 0;
+}
+
+BitmapInfo& BitmapInfo::operator=(const BitmapInfo& bi)
+{
+	CopyFrom(bi);
+	return (*this);
+}
+
+bool BitmapInfo::operator<(const BitmapInfo& other) const
+{
+	return (m_strFileName.compare(other.m_strFileName) < 0);
+}
+
+bool BitmapInfo::operator==(const BitmapInfo& other) const
+{
+	return this->m_strFileName.compare(other.m_strFileName) == 0;
+}
+bool BitmapInfo::CanLoad() const
+{
+	return m_bCanLoad;
+}
+
+bool BitmapInfo::IsCFA()
+{
+	return (m_CFAType != CFATYPE_NONE);
+};
+
+bool BitmapInfo::IsMaster()
+{
+	return m_bMaster;
+};
+
+void BitmapInfo::GetDescription(QString& strDescription)
+{
+	strDescription = m_strFileType;
+	if (m_strModel.length() > 0)
+		strDescription = m_strFileType + " " + m_strModel;
+};
+
+bool BitmapInfo::IsInitialized()
+{
+	return m_lWidth && m_lHeight;
+}
+

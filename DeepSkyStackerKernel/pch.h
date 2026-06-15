@@ -5,6 +5,10 @@
 #pragma once
 
 // Qt Files
+#if defined (_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4996)
+#endif
 #include <QCoreApplication>
 #include <QFileInfo>
 #include <QDir>
@@ -35,6 +39,10 @@
 #include <QActionGroup>
 #include <QMimeDatabase>
 #include <QStandardPaths>
+#if defined (_MSC_VER)
+#pragma warning(pop)
+#endif
+
 
 // Dependency Libraries
 #include <exiv2/exiv2.hpp>

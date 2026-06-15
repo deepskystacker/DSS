@@ -278,9 +278,9 @@
     </message>
     <message>
         <location filename="../ImageListModel.cpp" line="380"/>
-        <source>Angle</source>
+        <source>Angle°</source>
         <comment>IDS_COLUMN_ANGLE</comment>
-        <translation>Unghi</translation>
+        <translation>Unghi°</translation>
     </message>
     <message>
         <location filename="../ImageListModel.cpp" line="382"/>
@@ -465,13 +465,13 @@ Valorile implicite ale DATAMIN = %L1 și DATAMAX = %L2 din FITS/DDP
 vor fi utilizate setările.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="980"/>
+        <location filename="../FITSUtil.cpp" line="978"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker nu va debayeriza imaginile pe 8 biti</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1338"/>
+        <location filename="../FITSUtil.cpp" line="1334"/>
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -499,8 +499,8 @@ a returnat o stare de %2, textul de eroare este:
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="262"/>
-        <location filename="../FITSUtil.cpp" line="1054"/>
-        <location filename="../FITSUtil.cpp" line="1779"/>
+        <location filename="../FITSUtil.cpp" line="1028"/>
+        <location filename="../FITSUtil.cpp" line="1775"/>
         <location filename="../MultiBitmapProcess.cpp" line="229"/>
         <location filename="../StackingEngine.cpp" line="2334"/>
         <location filename="../TIFFUtil.cpp" line="1478"/>
@@ -514,8 +514,8 @@ a returnat o stare de %2, textul de eroare este:
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="272"/>
-        <location filename="../FITSUtil.cpp" line="1063"/>
-        <location filename="../FITSUtil.cpp" line="1788"/>
+        <location filename="../FITSUtil.cpp" line="1037"/>
+        <location filename="../FITSUtil.cpp" line="1784"/>
         <location filename="../MultiBitmapProcess.cpp" line="238"/>
         <location filename="../StackingEngine.cpp" line="2343"/>
         <location filename="../TIFFUtil.cpp" line="1487"/>

@@ -36,9 +36,10 @@
 ****************************************************************************/
 // BitmapInfo.h : header file
 #include "BitmapExtraInfo.h"
+#include "wcsinfo.h"
 #include "cfa.h"
 
-class CBitmapInfo
+class BitmapInfo
 {
 public:
 	fs::path m_strFileName;
@@ -64,21 +65,22 @@ public:
 	int m_xBayerOffset;
 	int m_yBayerOffset;
 	QString m_filterName;
-
+	DSS::WCSInfo wcsInfo;
+ 
 private:
-	void CopyFrom(const CBitmapInfo& bi);
+	void CopyFrom(const BitmapInfo& bi);
 	void Init();
 
 public:
-	CBitmapInfo();
-	CBitmapInfo(const CBitmapInfo& bi);
-	CBitmapInfo(const fs::path& fileName);
+	BitmapInfo();
+	BitmapInfo(const BitmapInfo& bi);
+	BitmapInfo(const fs::path& fileName);
 
-	virtual ~CBitmapInfo() = default;
+	virtual ~BitmapInfo() = default;
 
-	CBitmapInfo& operator = (const CBitmapInfo& bi);
-	bool operator<(const CBitmapInfo& other) const;
-	bool operator==(const CBitmapInfo& other) const;
+	BitmapInfo& operator = (const BitmapInfo& bi);
+	bool operator<(const BitmapInfo& other) const;
+	bool operator==(const BitmapInfo& other) const;
 
 	bool CanLoad() const;
 	bool IsCFA();
@@ -87,4 +89,4 @@ public:
 	bool IsInitialized();
 };
 
-bool RetrieveEXIFInfo(const fs::path& fileName, CBitmapInfo& BitmapInfo);
+bool RetrieveEXIFInfo(const fs::path& fileName, BitmapInfo& BitmapInfo);

@@ -29,8 +29,8 @@ list hosted at groups.io:<BR>
 <p><b><font face="Arial"><A href="#Introduction">Introduction</A><br>
 <A href="#QuickStart">Quick Start</A><br>
 <A href="#RegisteringStackingTab">Registering and Stacking Tab</A><br>
-<A href="#batchstacking">Batch Stacking</A><br>
-<A href="#processingtab">Processing Tab</A><br>
+<A href="#batchstacking">Batch Stacking</A><br><A href="#processingtab">Processing Tab</A>
+ <br>
 <A href="#creatingstarmask">Create a Star Mask</A><br>
 <A href="#imagelist">The Picture List</A><br>
 <A href="#imagepreview">Picture Preview <font size="2">(Stars and Comet editing)</font></A><br>
@@ -273,7 +273,18 @@ is greater than or equal to the given threshold value. </font></P>
     <A href="technical.htm#hotpixelsremoval">detection and removal of hot pixels</A> 
     and <A href="technical.htm#badlinesdetection">bad columns detection and 
     removal</A> 
-    for the dark frames.</font></p></td>
+    for the dark frames.</font></p>
+    <p class="Standard"><FONT size=2 face=Arial>If all your 
+      light frames are FITS files, and they have valid World Coordinate System 
+      (WCS) data in the&nbsp;FITS file headers, then the checkbox "Use FITS WCS 
+      Data" controls whether to use that data to&nbsp;determine the image 
+      offsets and rotation with respect to the reference frame.</FONT></p>
+    <p class="Standard"><FONT size=2 face=Arial>If it is checked, then the image offsets and rotation 
+      with respect to the reference frame will be derived from the WCS data 
+      which is very fast, whereas if it is not checked then the offsets and 
+      rotation&nbsp;will be calculated by comparing the location of the stars in 
+      the reference frame and the current image which is much 
+    slower.</FONT></p></td>
     <td width="66%" align="center">
     <IMG border=0 alt="DeepSkyStacker - Stacking Parameters" src ="../images/english/StackingSettings.jpg" width=491 height=403 ><p>&nbsp;</p></td>
   </tr>
@@ -373,8 +384,8 @@ frame..<br>If an Autosave.tif file already exists in the
 folder, an Autosave001.tif (002, 003, ...) is created.</font></p>
 <hr color=#0000ff>
 
-<p><b><font color=#ff0000 size=4 face=Arial><a name=batchstacking></A>Batch Stacking<br></FONT></B><font size=2 face=Arial>The Batch Stacking dialog is used to 
-create resulting images from more than one stack.</FONT></P><font color=#ff0000 size=4 face=Arial>
+<p><b><font color=#ff0000 size=4 face=Arial><a name=batchstacking></a>Batch Stacking<br></font></b><font size=2 face=Arial>The Batch Stacking dialog is used to 
+create resulting images from more than one stack.</font></p><font color=#ff0000 size=4 face=Arial>
 <p>
 <table id=AutoNumber23 style="HEIGHT: 381px; WIDTH: 1165px" cellSpacing=0 
 cellPadding=0 width=1165 border=0>
@@ -389,54 +400,310 @@ cellPadding=0 width=1165 border=0>
       >You just need to add the file lists previously 
       created by the Save File List command to the list.<br 
       >Each File List that is checked will be 
-      processed.</FONT></P>
+      processed.</font></p>
       <p class=Standard><font size=2 face=Arial       >At the end of the stacking process, the output file 
-      name replaces the list name for each processed file list.</FONT></P>
+      name replaces the list name for each processed file list.</font></p>
       <p class=Standard><u><b 
-      ><font size=2 face=Arial       >Notes:</FONT></B></U></P>
+      ><font size=2 face=Arial       >Notes:</font></b></u></p>
       <ul>
         <li>
         <p class=Standard><font size=2 face=Arial         >It is not possible to define a custom rectangle for 
-        batch stacking. </FONT></P></LI></UL></TD>
+        batch stacking. </font></p></li></ul></td>
     <td width="56%">
-      <p align=center><IMG style="HEIGHT: 378px; WIDTH: 483px" border=0 src="../images/english/BatchStacking.jpg" width=396 height=323 ></P></TD></TR></TABLE></P>
+      <p align=center><IMG style="HEIGHT: 378px; WIDTH: 483px" border=0 src="../images/english/BatchStacking.jpg" width=396 height=323 ></p></td></tr></table></p>
 <hr color=#0000ff>
 
-<p>&nbsp;<STRONG>Processing Tab<br></STRONG></FONT><font size=2 face=Arial>The processing tab contains the commands and features 
-pertaining to post processing.</FONT></P>
+<p><STRONG>P<A 
+name=processingtab></A>rocessing Tab<br></STRONG></font><font size=2 face=Arial>The processing tab contains the commands and features 
+pertaining to post processing.</font></P>
 <table id=AutoNumber5 style="BORDER-COLLAPSE: collapse" borderColor=#111111 
 cellSpacing=0 cellPadding=0 width="85%" border=0>
   
   <tr>
-    <td width="58%">
-      <p class=Standard><font size=2 face=Arial       >I would like to emphasise that&nbsp;DeepSkyStacker 
-      only allows a simple stretch and colour balance adjustment &nbsp;of the 
+    <td width="58%" vAlign=top>
+      <p class=Standard><font size=2 face=Arial       >  I would like to 
+      emphasise that&nbsp;DeepSkyStacker only allows simple stretch and colour balance adjustments&nbsp;&nbsp;of the 
       image to allow you to visualise the result of the stacking process.&nbsp; 
       However, if there's no background gradient, it may be possible to achieve 
       a quite acceptable&nbsp;result using just the tools provided here.<BR 
       ><br>Any complex&nbsp;post 
       processing should take place in other software specifically designed for 
-      that task.</FONT></P>
+      that task.</font></p>
       <p class=Standard><font size=2 face=Arial       >The processing tab contains a preview of the RGB 
-      histogram,&nbsp;a tab&nbsp;that allows an Inverse Hyperbolic Size (ASinH) 
+      histogram,&nbsp;a tab that allows a Mid-tone Transfer Function (MTF) image stretch to be applied, 
+      a tab&nbsp;that allows an Inverse Hyperbolic Size (ASinH) 
       image&nbsp;stretch to be applied, and another tab that allows the Colour 
-      Balance to be adjusted.</FONT></P>
+      Balance to be adjusted.</font></p>
       <p class=Standard><FONT size=2 face=Arial       >If you want to adjust the colour balance, you should 
       first adjust the stretch parameters and Apply the stretch, then switch to 
       the Colour Balance tab, make&nbsp;your adjustments and Apply 
-      them.</FONT></P>
-      <p class=Standard><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
-      <p class=Standard>&nbsp;</P>
-      <p>&nbsp;</P>
-      <p>&nbsp;</P>
-      <p>&nbsp;</P></TD>
-    <td width="42%"><IMG style="HEIGHT: 514px; WIDTH: 491px" border=0 alt="Processing Tab preview, with RGB histogram" src="../images/english/ProcessingTab.png" width=351 height=431 ></TD></TR></TABLE>
-<p><font size=2 face=Arial><b>The ASinH Transformation or Stretch</B></FONT></P>
+      them.</FONT></p>
+      <p class=Standard><FONT size=2 face=Arial       ></FONT>&nbsp;</p>
+      <p class=Standard>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p></td>
+    <td width="42%" vAlign=top><IMG style="HEIGHT: 548px; WIDTH: 530px" border=0 alt="Processing Tab preview, with RGB histogram" src="../images/english/ProcessingTab.png" width=351 height=431 ></td></tr></table>
+<p><font size=2 face=Arial>&nbsp;
+<table id=AutoNumber2 style="WIDTH: 85%; BORDER-COLLAPSE: collapse" 
+borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
+  <TBODY>
+  <tr>
+    <td width="58%">
+      <p class=Standard><font size=2 face=Arial       ><STRONG><FONT size=3>The Mid-tone 
+      Transfer Function Transformation or Stretch</FONT>     
+       </STRONG>     
+             </font></p>
+      <p class=Standard><font size=2 face=Arial       >The MTF&nbsp;Transformation&nbsp;(or Stretch) is one 
+      of the most powerful image stretching tools available.</font></p>
+      <p class=Standard><font size=2 face=Arial       >The tool is presented in the form of three sliders for 
+      each primary colour which can be moved to transform the image.&nbsp;&nbsp; 
+      If the "link" button (to the left of the Autostretch button)&nbsp;is set 
+      to "linked" then the sliders for the three colours are linked together, 
+      whereas if it is set to "un-linked", then the sliders for each colour are 
+      independent.</font></p>
+      <p class=Standard><font size=2 face=Arial       >The left hand slider changes applies to the shadow 
+      signal, the middle one is the midtone balance adjustment and the right 
+      hand slider adjusts the highlights.&nbsp;&nbsp; The values of these 
+      sliders are displayed below the sliders on the left side of the tab as 
+      spin-boxes that are linked to the slider settings.&nbsp;&nbsp; You can 
+      directly edit the values in the spin-boxes, or use the the Page-Up 
+      and&nbsp;Page-Down keys for coarse changes, or the cursor up and down keys 
+      for finer changes.</font></p>
+      <p class=Standard><font size=2 face=Arial       >If the sliders are linked, then the text to the left 
+      of the spin boxes is displayed in the normal "text" colour.&nbsp;&nbsp; If 
+      they are not linked, then the colour of the text matches the primary 
+      colour for which adjustments are currently active.</font></p>
+      <p class=Standard><FONT size=2>To 
+      the right of the spin-boxes are displayed the percentage of pixels that 
+      are clipped by the transformation, as ideally you want to minimise the 
+      amount of clipping created by the transform.</FONT></p>
+      <p class=Standard><FONT size=2>The shadow (left hand) 
+      slider sets the black clipping point which allows you to darken the image 
+      background by cutting off the extreme left tail of the histogram, thus 
+      removing sensor noise and establishing a true black point.&nbsp;&nbsp; 
+      Dragging this slider slightly to the right or using the Shadows spinbox to 
+      increase the setting will darken the image background.&nbsp;&nbsp; Don't 
+      overdo this as otherwise you could lose faint nebulosity or shadow 
+      detail.</FONT></p>
+      <p class=Standard><FONT size=2>The midtone balance 
+      slider controls the MTF function which </FONT><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google                 
+         
+                            
+              
+                                                                            
+      &#13;&#10; &#13;&#10; &#13;&#10; 
+      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;         &#13;&#10;                            &#13;&#10;           &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                     &#13;&#10; &#13;&#10; Sans, 
+      &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+      font-size: &#13;&#10; 16px; font-weight: 
+      400; margin: 0px; 
+      &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+      &#13;&#10; &#13;&#10; 0px 
+      rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2> 
+       maps input pixel values x (between 0 and 1) to output values y. It is 
+      formally expressed </FONT></SPAN><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google                 
+         
+                            
+              
+                                                                            
+      &#13;&#10; &#13;&#10; &#13;&#10; 
+      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;         &#13;&#10;                            &#13;&#10;           &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                     &#13;&#10; &#13;&#10; Sans, 
+      &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+      font-size: &#13;&#10; 16px; font-weight: 
+      400; margin: 0px; 
+      &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+      &#13;&#10; &#13;&#10; 0px 
+      rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT                                                                         size=2>as:<BR><BR></FONT></SPAN><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google                 
+         
+                            
+              
+                                                                            
+      &#13;&#10; &#13;&#10; &#13;&#10; 
+      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;         &#13;&#10;                            &#13;&#10;           &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                     &#13;&#10; &#13;&#10; Sans, 
+      &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+      font-size: &#13;&#10; 16px; font-weight: 
+      400; margin: 0px; 
+      &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+      &#13;&#10; &#13;&#10; 0px 
+      rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT face=Courier><SPAN class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google                 
+         
+                            
+              
+                                                                            
+      &#13;&#10; &#13;&#10; &#13;&#10; 
+      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;         &#13;&#10;                            &#13;&#10;           &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                     &#13;&#10; &#13;&#10; Sans, 
+      &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+      font-size: &#13;&#10; 16px; font-weight: 
+      400; margin: 0px; 
+      &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+      &#13;&#10; &#13;&#10; 0px 
+      rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT                                                                                                                                     face=Courier      >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(m - 
+      1)x<BR></FONT></SPAN>&nbsp;y 
+      =&nbsp;-------------<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(</FONT></SPAN><SPAN 
+      class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google                 
+         
+                            
+              
+                                                                            
+      &#13;&#10; &#13;&#10; &#13;&#10; 
+      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;         &#13;&#10;                            &#13;&#10;           &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                     &#13;&#10; &#13;&#10; Sans, 
+      &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+      font-size: &#13;&#10; 16px; font-weight: 
+      400; margin: 0px; 
+      &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+      &#13;&#10; &#13;&#10; 0px 
+      rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT                                                                         face=Courier>2m - 1)x - m</FONT></SPAN></p>
+      <p class=Standard><SPAN 
+      class=T286Pc 
+      style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+      data-copy-service-computed-style="font-family: Google                 
+         
+                            
+              
+                                                                            
+      &#13;&#10; &#13;&#10; &#13;&#10; 
+      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;         &#13;&#10;                            &#13;&#10;           &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                     &#13;&#10; &#13;&#10; Sans, 
+      &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+      font-size: &#13;&#10; 16px; font-weight: 
+      400; margin: 0px; 
+      &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+      &#13;&#10; &#13;&#10; 0px 
+      rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" jsuid="kiZZDd_z" data-sfc-root="c" 
+      jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""></SPAN><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+        data-copy-service-computed-style="font-family: Google                 
+           
+                              
+              
+                                                                                
+      &#13;&#10; &#13;&#10; &#13;&#10; 
+      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;           &#13;&#10;                              &#13;&#10;           &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;      &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;        &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;        &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                     &#13;&#10; &#13;&#10; Sans, 
+      &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+      font-size: &#13;&#10; 16px; font-weight: 
+      400; margin: 0px; 
+      &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+      &#13;&#10; &#13;&#10; 0px 
+      rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" jsuid="kiZZDd_1f" 
+      data-sfc-root="c" jscontroller="fly6D#d5Qebf" jsaction="" 
+      data-sfc-cp=""><FONT size=2       >&nbsp;</FONT></SPAN><font size=2 face=Arial       >where m is the midtone balance slider 
+value.</font></p>
+      <UL>
+        <LI>
+      <div class=Standard><font size=2 face=Arial         ><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google                 
+           
+                              
+                
+                                                                                    
+        &#13;&#10; &#13;&#10; &#13;&#10; 
+        &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;           &#13;&#10;                              &#13;&#10;             &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;        &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                 &#13;&#10;        &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;        &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;                       &#13;&#10; &#13;&#10; Sans, 
+        &#13;&#10; Arial, &#13;&#10; sans-serif; &#13;&#10; 
+        font-size: &#13;&#10; 16px; font-weight: 
+        400; margin: 0px; 
+        &#13;&#10; text-decoration: &#13;&#10; none; border-bottom: 
+        &#13;&#10; &#13;&#10; 0px 
+        rgb(230, &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10; 232, 240);" data-sfc-cb="" 
+        jsuid="kiZZDd_1f" data-sfc-root="c" jscontroller="fly6D#d5Qebf" 
+        jsaction="" data-sfc-cp=""><FONT                                                                                         size=2>m = 0.5: Leaves the midtones of the image 
+        unchanged (identity function).</FONT></SPAN></font></div>
+        <LI>
+        <div class=Standard><font size=2 face=Arial         ><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         data-copy-service-computed-style="font-family: Google 
+        &#13;&#10; &#13;&#10; &#13;&#10; 
+        &#13;&#10; 
+        &#13;&#10; &#13;&#10; &#13;&#10;        &#13;&#10; &#13;&#10; &#13;&#10; &#13;&#10;        Sans, &#13;&#10;        &#13;&#10; Arial, &#13;&#10;        &#13;&#10; sans-serif; &#13;&#10; &#13;&#10;        font-size: &#13;&#10;             
+        16px; font-weight: 400; 
+        &#13;&#10; margin: 0px; 
+        text-decoration: &#13;&#10; &#13;&#10; none; 
+        border-bottom: &#13;&#10; 0px 
+        &#13;&#10; &#13;&#10; rgb(230, 
+        &#13;&#10; 232, &#13;&#10; 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""></SPAN><SPAN 
+        class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2         >m &lt; 0.5: Brightens the midtones (pushes the 
+        curve to the left).</FONT></SPAN></font></div>
+        <LI>
+        <div class=Standard><font size=2 face=Arial         ><SPAN class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1f" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2         ><!--TgQPHd|[]--></FONT></SPAN><!--TgQPHd|[]--><SPAN 
+        class=T286Pc 
+        style="FONT-SIZE: 16px; TEXT-DECORATION: none; FONT-FAMILY: Google Sans, Arial, sans-serif; BORDER-BOTTOM: rgb(230,232,240) 0px; FONT-WEIGHT: 400; MARGIN: 0px" 
+         
+        data-copy-service-computed-style="font-family: Google Sans, Arial, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(230, 232, 240);" 
+        data-sfc-cb="" jsuid="kiZZDd_1h" data-sfc-root="c" 
+        jscontroller="fly6D#d5Qebf" jsaction="" data-sfc-cp=""><FONT size=2         >m &gt; 0.5: Darkens the midtones (pushes the curve 
+        to the right</FONT>).</SPAN></font></div></LI></UL>
+      <p class=Standard><font size=2 face=Arial       >The right hand slider or Highlights spin 
+      box&nbsp;sets the&nbsp;white point.</font></p>
+      <p class=Standard><font size=2 face=Arial       >In addition to the manual adjustments described above 
+      there is an "Autostretch" button.&nbsp;&nbsp; It behaves slightly 
+      differently depending on the "link" button (just to the left of the 
+      Autostretch button).&nbsp; &nbsp;When "linked" is true, the image 
+      statistics used to calculate the stretch parameters to apply&nbsp;are 
+      computed as an average across all three channels, which results in the 
+      existing colour balance being preserved.</font></p>
+      <p class=Standard><font size=2 face=Arial       >When "linked" is false, then the statistics are 
+      computed on a per channel basis which means that the colour channels are 
+      stretched independently which results in an implicit background 
+      neutralisaion that tends to remove colour casts.</font></p>
+      <p class=Standard><FONT size=2       >Finally it is possible to adjust the parameters used 
+      for calculating the autostretch by right&nbsp;clicking the Autostretch 
+      button.&nbsp; These control the level of non-linearity applied by the auto 
+      stretch process.</FONT></p>
+      <p class=Standard><FONT size=2       >The&nbsp;Target Background parameter defines the 
+      median brightness of the background sky after the stretch.&nbsp;&nbsp; The 
+      theroetical range is [0.0, 1.0] with a default 
+      of&nbsp;0.125.&nbsp;&nbsp;&nbsp;You'd probably set a value in the range 
+      of&nbsp;.125 to .25 for an acceptable result.</FONT></p>
+      <p class=Standard><FONT size=2       >The Shadow Clipping parameter controls how far below 
+      the median the black point should be set.&nbsp; The value is in units of 
+      Median Absolute Deviation (MAD) which is a robust statistical measure of 
+      the variability of the data.&nbsp;&nbsp; Unlike the standard deviation, 
+      which is&nbsp;highly sensitive to extreme values, the MAD measures the 
+      typical distance from the median and is completely resistant to 
+      outliers.</FONT></P>
+      <p class=Standard><font face=Arial       ><FONT size=2>If the Preview 
+      check box is ticked (the default setting), then adjusting the parameters 
+      (by editing the spin box fields directly, or by selecting the spin box or 
+      slider and using the Page-Up and&nbsp;Page-Down keys for coarse changes, 
+      or the cursor up and down keys for finer changes), then the displayed 
+      image and histogram will change to reflect the parameter 
+      changes.&nbsp;&nbsp; However, to actually apply the changes you need to 
+      press the Apply button.</FONT></FONT></P></td>
+    <td vAlign=top width="42%"><IMG style="HEIGHT: 498px; WIDTH: 531px" border=0 alt="MTF stretch image" src="../images/english/mtf.png" width=261  valign="Top"></TD></tr></TBODY></table></font></p>
 <table id=AutoNumber2 style="WIDTH: 85%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
   
   <tr>
     <td width="58%">
+      <p class=Standard><font face=Arial       ><STRONG>The ASinH Transformation 
+      or Stretch</STRONG></FONT></P>
       <p class=Standard><font size=2 face=Arial       >The ASinH&nbsp;Transformation amplifies the darker 
       areas of the image.&nbsp;&nbsp; The&nbsp;parameters are the 
       stretch&nbsp;factor (or beta), the black point value, and whether or not 
@@ -1374,9 +1641,9 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       take values between 0.0 and 1000.0.&nbsp;&nbsp; Larger values result in a 
       greater degree of image stretching being applied.<BR 
       ><BR>The "black point" value has 
-      a range of&nbsp;[00000,&nbsp;0.20000].&nbsp;&nbsp; The value of 0.2 
+      a range of&nbsp;[0.0000,&nbsp;0.20000].&nbsp;&nbsp; The value of 0.2 
       implies that the blackpoint is set to 20% of the maximum possible ADU 
-      value.&nbsp;&nbsp;&nbsp; Values below the back point are treated as being 
+      value.&nbsp;&nbsp;&nbsp; Values below the black point are treated as being 
       black.</P>
       <P>As rgb_original is an average of the three colour 
       channels, one or two channel values will be greater than rgb_original and 
@@ -1401,9 +1668,7 @@ borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
       "multiplicative", so if&nbsp; you&nbsp;Apply a&nbsp;stretch of 200.0, and 
       then Apply&nbsp;a stretch of 10.0 the effective image stretch&nbsp;is 
       2000.0.</FONT></P></TD>
-    <td width="42%"><IMG style="HEIGHT: 455px; WIDTH: 456px" border=0 alt="ASinH stretch image" src="../images/english/asinh.png" width=261 height=238 ></TD></TR></TABLE><font size=2 face=Arial>
-<p><br><b>RGB 
-Histogram</B></P>
+    <td vAlign=top width="42%"><IMG style="HEIGHT: 515px; WIDTH: 533px" border=0 alt="ASinH stretch image" src="../images/english/asinh.png" width=261 height=238 ></TD></TR></TABLE><font size=2 face=Arial>
 <p><SPAN 
 style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
 style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
@@ -1415,28 +1680,30 @@ style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"
 borderColor=#111111 cellSpacing=0 cellPadding=0 width="85%" border=0>
   <TBODY>
   <tr>
-    <td width="58%">
-      <p class=Standard><font size=2 face=Arial       >The RGB histogram allows visualisation of the 
-      distribution of pixel values for each channel (R, G, B) in the image.<br 
-      ></FONT></P>
+    <td vAlign=top width="58%">
+      <p class=Standard><font face=Arial        valign="Top" width="58%"><STRONG 
+      >RGB Histogram</STRONG></FONT></P>
+      <p class=Standard><font size=2 face=Arial        valign="Top" width="58%">The RGB histogram allows 
+      visualisation of the distribution of pixel values for each channel (R, G, 
+      B) in the image.</FONT></P>
       <p class=Standard><font size=2 face=Arial       >In addition, a Gaussian curve for each channel is 
       drawn on top of the histogram data.</FONT></P>
       <p class=Standard><font size=2 face=Arial 
       >You can use the Colour Balance tab (see below) to 
       adjust the image colour balance, and that will result in the histogram 
       being re-drawn.<br></P></FONT></TD>
-    <td width="42%"><IMG style="HEIGHT: 268px; WIDTH: 413px" border=0 alt="RGB Histogram" src="../images/histogram.png" width=389 height=233 ></TD></TR></TBODY></TABLE></P>
-<p><STRONG><FONT size=2 face=Arial>Colour Balance 
-Adjustment</FONT></STRONG></P></SPAN></SPAN></SPAN></SPAN></SPAN></FONT>
+    <td vAlign=top width="42%"><IMG style="HEIGHT: 268px; WIDTH: 413px" border=0 alt="RGB Histogram" src="../images/histogram.png" width=389 height=233 ></TD></TR></TBODY></TABLE></P></SPAN></SPAN></SPAN></SPAN></SPAN></FONT>
 <table id=AutoNumber4 
 style="HEIGHT: 392px; WIDTH: 85%; BORDER-COLLAPSE: collapse" borderColor=#111111 
 cellSpacing=0 cellPadding=0 width="85%" border=0>
   
   <tr>
-    <td width="50%">
-      <p class=Standard><font size=2 face=Arial       >The Colour Balance tab allows adjustment of the image 
-      colour balance.&nbsp;&nbsp; You should make this adjustment after Applying 
-      any image stretch.</FONT></P>
+    <td vAlign=top width="50%"><font size=2 face=Arial       >
+      <p><STRONG><FONT size=3       face=Arial>Colour Balance 
+      Adjustment</FONT></STRONG></P>
+      <p class=Standard>The Colour Balance tab allows 
+      adjustment of the image colour balance.&nbsp;&nbsp; You should make this 
+      adjustment after Applying any image stretch.</FONT></P>
       <p class=Standard><font size=2 face=Arial 
       >If the Preview check box is ticked (the default 
       setting), then adjusting the parameters (by selecting the 
@@ -1445,15 +1712,13 @@ cellSpacing=0 cellPadding=0 width="85%" border=0>
       image and histogram will change to reflect the Colour Balance 
       changes.&nbsp;&nbsp; However, as with the image stretch,&nbsp;to actually 
       apply the changes you need to press the Apply button.</P></FONT></TD>
-    <td width="50%"><IMG style="HEIGHT: 361px; WIDTH: 730px" alt="" src="../images/english/colourbalance.png" width=1060 height=455 ></TD></TR></TABLE><SPAN 
+    <td vAlign=top width="50%"><IMG style="HEIGHT: 361px; WIDTH: 730px" alt="" src="../images/english/colourbalance.png" width=1060 height=455 ></TD></TR></TABLE><SPAN 
 style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
 style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
 style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'><SPAN 
 style='FONT-SIZE: 12pt; FONT-FAMILY: "Calibri",sans-serif; COLOR: black; mso-fareast-font-family: "Times New Roman"; mso-ansi-language: EN-GB; mso-fareast-language: JA; mso-bidi-language: AR-SA'><SPAN 
 style='FONT-SIZE: 12pt; COLOR: black; mso-fareast-font-family: "Times New Roman"'>
-<p></SPAN></SPAN></SPAN></SPAN></SPAN><FONT size=2><FONT face=Arial>Undo/Redo adjustment 
-parameters</FONT> </FONT></P>
-<p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT size=2></FONT>&nbsp;</P>
+<p></SPAN></SPAN></SPAN></SPAN></SPAN><FONT size=2><FONT size=3 face=Arial><STRONG>Undo/Redo adjustment parameters</STRONG></FONT> </FONT></P>
 <p class=MsoNormal style="MARGIN: 0cm" align=justify><FONT size=2><FONT face=Arial>On the bottom 
 of each tab a set of buttons is available:<br>- to apply 
 the last modifications to the picture<br>- to undo the last 
@@ -1724,9 +1989,10 @@ cellSpacing=0 cellPadding=0 width="78%" border=0>
       <p align=center><IMG border=0 alt="Selection rectangle used to process only a part of the picture" src="../images/PreviewRect.jpg" width=203 height=230 ></P></TD></TR></TABLE>
 <hr color=#0000ff>
 
-<p><b><font color=#ff0000 size=4 face=Arial>DDP (Digital Development Process) settings<br></FONT></B><font size=2 face=Arial>The 
-DDP settings dialog gives access to all the parameters used while developing 
-a&nbsp;image file to transform it into a picture.</FONT></P>
+<p><b><font color=#ff0000 size=4 face=Arial>DD<A name=rawddp></A>P (Digital Development 
+Process) settings<br></FONT></B><font size=2 face=Arial>The DDP settings dialog gives access to all the parameters 
+used while developing a&nbsp;image file to transform it into a 
+picture.</FONT></P>
 <p>
 <table id=AutoNumber10 style="WIDTH: 82%; BORDER-COLLAPSE: collapse" 
 borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
@@ -1788,7 +2054,51 @@ borderColor=#111111 cellSpacing=0 cellPadding=5 width="82%" border=0>
       performed at all, which is desirable if you are using software such as 
       StarTools to post process your stacked images.<BR><BR 
       >In most other cases we recommend that you use 
-      Daylight White Balance.</FONT></P>
+      Daylight White Balance, as this option minimizes the effort required to 
+      achieve a correct color balance during post-processing.</FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial><STRONG 
+      >Original manufacture Astrophotography 
+      DSLRs</STRONG></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT face=Arial       ></FONT></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT face=Arial       >For specialised cameras such as the Canon EOS 20Da / 
+      60Da / Ra and the Nikon D801A, you should set the camera to use Daylight 
+      White Balance and&nbsp;select "Use Camera White Balance" in 
+      DeepSkyStacker.&nbsp;&nbsp; The Daylight White Balance coefficients in the 
+      raw file will result in correct colour rendition in this 
+      case.</FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT face=Arial       ></FONT></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT face=Arial       >Choosing&nbsp;"Use Daylight White Balance" for an EOS 
+      60Da (for example), will result in a distinct pink colour 
+      cast.&nbsp;&nbsp; The reason for this is that the raw file reports that 
+      the camera is an EOS 60D (not a 60Da) whch means that LibRaw uses the 
+      white balance coefficients for the EOS 60D which aren't correct for an EOS 
+      60Da.</FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT face=Arial       ></FONT></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT color=#ff0000       face=Arial><STRONG>DSLRs 
+      modified for Astrophotography (H-Alpha 
+      modification)</STRONG></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2><FONT face=Arial       ></FONT></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial>You 
+      should probably select "Use Daylight White Balance" for this type of 
+      camera, even though it will result in&nbsp;a distinct pink colour cast 
+      which you will need to remove in post processing.&nbsp;&nbsp; There's no 
+      way that DSS can solve this automatically.</FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial       ></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
+      ><FONT size=2 face=Arial><STRONG 
+      >Auto White Balance</STRONG></FONT></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt" 
       ><FONT size=2><FONT face=Arial 
       >&nbsp;</P></FONT></FONT></FONT></FONT>

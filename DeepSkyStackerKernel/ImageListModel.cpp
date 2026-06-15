@@ -173,7 +173,7 @@ namespace DSS
                         if (Qt::EditRole == role)
                             return file.m_fAngle;
                         else
-                            return QString("%1\xc2\xb0").arg(file.m_fAngle * 180.0 / std::numbers::pi, 0, 'f', 2);
+                            return QString("%1").arg(file.m_fAngle * 180.0 / std::numbers::pi, 0, 'f', 2);
                     }
                     else
                     {
@@ -377,7 +377,7 @@ namespace DSS
             case Column::dY:
                 return tr("dY", "IDS_COLUMN_DY");
             case Column::Angle:
-                return tr("Angle", "IDS_COLUMN_ANGLE");
+                return tr("Angle\xc2\xb0", "IDS_COLUMN_ANGLE");
             case Column::FileTime:
                 return tr("Date/Time", "IDS_COLUMN_DATETIME");
             case Column::Size:

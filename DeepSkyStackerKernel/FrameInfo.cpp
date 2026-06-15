@@ -16,7 +16,7 @@ bool CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 		m_PictureType  = Type;
 	filePath = file;
 
-	CBitmapInfo			bmpInfo;
+	BitmapInfo			bmpInfo;
 
 	bResult = GetPictureInfo(file ,bmpInfo);
 
@@ -41,6 +41,7 @@ bool CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 
 		m_bMaster			= bmpInfo.IsMaster();
 		m_filterName		= bmpInfo.m_filterName;
+		wcsInfo				= bmpInfo.wcsInfo;
 
 		RefreshSuperPixel();
 	};

@@ -23,7 +23,7 @@ TEST_CASE("Gray Pixel Iterator", "[GrayPixelIterator]")
 		{
 			for (int x = 0; x < cols; ++x, ++ndx, ++it)
 			{
-				result[ndx] = it.GetPixel() * m;
+				result[ndx] = static_cast<T>(it.GetPixel() * m);
 			}
 		}
 
@@ -52,7 +52,7 @@ TEST_CASE("Gray Pixel Iterator", "[GrayPixelIterator]")
 			{
 				double r, g, b;
 				it.GetPixel(r, g, b);
-				result[ndx] = r * m;
+				result[ndx] = static_cast<T>(r * m);
 				if (r != g || r != b || g != b)
 					everythingOK = false;
 			}
@@ -190,9 +190,9 @@ TEST_CASE("Color Pixel Iterator", "[ColorPixelIterator]")
 			{
 				double r, g, b;
 				it.GetPixel(r, g, b);
-				rr[ndx] = r * m;
-				gr[ndx] = g * m;
-				br[ndx] = b * m;
+				rr[ndx] = static_cast<T>(r * m);
+				gr[ndx] = static_cast<T>(g * m);
+				br[ndx] = static_cast<T>(b * m);
 			}
 		}
 

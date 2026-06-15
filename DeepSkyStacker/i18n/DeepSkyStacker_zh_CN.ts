@@ -228,7 +228,7 @@ Copyright Tőkés Attila</source>
     <message>
         <location filename="../About.cpp" line="163"/>
         <source>Japanese version: 三浦 修 (Miura Shu)&lt;br&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>日语版本： 三浦 修 (Miura Shu)&lt;br&gt;</translation>
     </message>
 </context>
 <context>
@@ -793,72 +793,62 @@ Tick this box to keep the trace file.</source>
         <translation>启用处理时音效</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="666"/>
-        <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
-        <translation>在处理面板中将 Black Level 下方的像素显示为蓝色；White Level 上方的像素显示为红色。</translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="669"/>
-        <source>Show clipping for Black/White Points</source>
-        <translation>显示黑/白点的裁剪</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="298"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>星点检测设置...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="301"/>
+        <location filename="../ExplorerBar.cpp" line="299"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>堆栈设置...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="343"/>
+        <location filename="../ExplorerBar.cpp" line="341"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>恢复为默认值</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="345"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>加载 DeepSkyStacker Live 设置</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="349"/>
+        <location filename="../ExplorerBar.cpp" line="347"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>加载...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="410"/>
+        <location filename="../ExplorerBar.cpp" line="408"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>保存为 DeepSkyStacker Live 设置</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="414"/>
+        <location filename="../ExplorerBar.cpp" line="412"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>保存为...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="587"/>
+        <location filename="../ExplorerBar.cpp" line="579"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>加载 DeepSkyStacker 设置</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="591"/>
-        <location filename="../ExplorerBar.cpp" line="646"/>
+        <location filename="../ExplorerBar.cpp" line="583"/>
+        <location filename="../ExplorerBar.cpp" line="638"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker 设置配置文件 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="641"/>
+        <location filename="../ExplorerBar.cpp" line="633"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>保存 DeepSkyStacker 设置</translation>
@@ -1043,6 +1033,44 @@ Ctrl+4 切換四角模式</translation>
         <location filename="../lowerdockwidget.cpp" line="46"/>
         <source>Double click here to dock/undock</source>
         <translation>双击此处停靠/取消停靠</translation>
+    </message>
+</context>
+<context>
+    <name>DSS::MtfAutostretchSettings</name>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
+        <source>Autostretch Parameters</source>
+        <translation>自动拉伸参数</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
+        <source>Target Background</source>
+        <translation>目标背景</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
+        <source>Target background level used by autostretch. Lower values produce a darker background.</source>
+        <translation>自动调整过程中使用的目标背景亮度。数值越低，背景越暗。</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
+        <source>Reset target background to the default value (0.125).</source>
+        <translation>将目标背景重置为默认值（0.125）。</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
+        <source>Shadow Clipping</source>
+        <translation>阴影剪切</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
+        <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
+        <translation>自动调整时阴影剪切的强度（单位为MAD）。</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
+        <source>Reset shadow clipping factor to the default value (2.8).</source>
+        <translation>将阴影剪切系数重置为默认值（2.8）。</translation>
     </message>
 </context>
 <context>
@@ -1284,44 +1312,132 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="271"/>
+        <location filename="../ui/ProcessingControls.ui" line="743"/>
         <source>Colour Balance</source>
         <translation>色彩平衡</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <location filename="../ui/ProcessingControls.ui" line="523"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH 图像拉伸</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="59"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <source>MTF Stretch</source>
+        <translation>MTF 拉伸</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="152"/>
+        <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
+        <translation>将 RGB 通道关联起来，以便移动 MTF 滑块时，所有通道同步更新。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="238"/>
+        <source>Shadows</source>
+        <translation>阴影</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="260"/>
+        <source>MTF shadow point.</source>
+        <translation>MTF 阴影点。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <source>Midtones</source>
+        <translation>中间调</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="298"/>
+        <source>MTF midtone balance point.</source>
+        <translation>MTF 中间调平衡点。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="317"/>
+        <source>Highlights</source>
+        <translation>高光</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="339"/>
+        <source>MTF highlight point.</source>
+        <translation>MTF高光点。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="364"/>
+        <source>Estimated percentage of pixels below the current MTF shadow point.</source>
+        <translation>低于当前MTF阴影点的像素估计百分比。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="367"/>
+        <source>Shadow Clipping:</source>
+        <translation>阴影剪切：</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="411"/>
+        <source>Estimated percentage of pixels above the current MTF highlight point.</source>
+        <translation>高于当前MTF高光点的像素估计百分比。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="414"/>
+        <source>Highlight Clipping:</source>
+        <translation>高光剪切：</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="497"/>
+        <source>Apply the current MTF stretch settings to the image.</source>
+        <translation>将当前MTF拉伸设置应用到图像。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="531"/>
         <source>Stretch Factor</source>
         <translation>拉伸系数</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="133"/>
+        <location filename="../ui/ProcessingControls.ui" line="605"/>
         <source>Black Point</source>
         <translation>黑点</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="211"/>
+        <location filename="../ui/ProcessingControls.ui" line="683"/>
         <source>Human-weighted luminance</source>
         <translation>人为加权亮度</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="480"/>
+        <location filename="../ui/ProcessingControls.ui" line="952"/>
         <source>Preview</source>
         <translation>预览</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="248"/>
-        <location filename="../ui/ProcessingControls.ui" line="452"/>
+        <location filename="../ui/ProcessingControls.ui" line="500"/>
+        <location filename="../ui/ProcessingControls.ui" line="720"/>
+        <location filename="../ui/ProcessingControls.ui" line="924"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>应用</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="560"/>
+        <location filename="../ui/ProcessingControls.ui" line="196"/>
+        <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
+Right-click to change Autostretch parameters</source>
+        <translation>根据当前图像自动估算MTF阴影、中间调和高光值。
+右键单击以更改自动扩展参数</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="200"/>
+        <source>Autostretch</source>
+        <translation>阴影</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="975"/>
+        <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+        <translation>将低于黑电平的像素显示为蓝色，将高于白电平的像素显示为红色。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="978"/>
+        <source>Show Shadow and Highlight clipping</source>
+        <translation>显示阴影和高光剪切</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1058"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>重置</translation>
@@ -1330,95 +1446,95 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="992"/>
+        <location filename="../ProcessingDlg.cpp" line="1228"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>要保存这些修改吗？</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="563"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF 或 FITS 图像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="329"/>
+        <location filename="../ProcessingDlg.cpp" line="447"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>星点蒙版由 DeepSkyStacker 制作</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="331"/>
+        <location filename="../ProcessingDlg.cpp" line="449"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>保存星点蒙版到 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="401"/>
-        <location filename="../ProcessingDlg.cpp" line="508"/>
+        <location filename="../ProcessingDlg.cpp" line="526"/>
+        <location filename="../ProcessingDlg.cpp" line="638"/>
         <source>Failed to load image %1</source>
         <translation>加载图像 %1 失败</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="537"/>
+        <location filename="../ProcessingDlg.cpp" line="667"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 16 位每通道 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="538"/>
+        <location filename="../ProcessingDlg.cpp" line="668"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 32 位每通道整数 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="539"/>
+        <location filename="../ProcessingDlg.cpp" line="669"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 32 位每通道浮点数 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="540"/>
+        <location filename="../ProcessingDlg.cpp" line="670"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 16 位每通道 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="541"/>
+        <location filename="../ProcessingDlg.cpp" line="671"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 32 位每通道整数 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="542"/>
+        <location filename="../ProcessingDlg.cpp" line="672"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 32 位每通道浮点数 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="551"/>
+        <location filename="../ProcessingDlg.cpp" line="681"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="654"/>
+        <location filename="../ProcessingDlg.cpp" line="784"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>没有可保存的图像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="799"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>没有可用的信息</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="691"/>
+        <location filename="../ProcessingDlg.cpp" line="821"/>
         <source>Exposure: %1 </source>
         <translation>曝光: %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="692"/>
+        <location filename="../ProcessingDlg.cpp" line="822"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1426,27 +1542,37 @@ Detected Cold Pixels: %L3 (%L4%)
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1137"/>
+        <location filename="../ProcessingDlg.cpp" line="1386"/>
+        <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
+        <translation>MTF 拉伸: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1400"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
-        <translation type="unfinished"></translation>
+        <translation>ASinH 拉伸：β %L1，bp %L2，hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1149"/>
+        <location filename="../ProcessingDlg.cpp" line="1413"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
-        <translation type="unfinished"></translation>
+        <translation>色彩平衡：R %L1，G %L2，B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1160"/>
-        <location filename="../ProcessingDlg.cpp" line="1187"/>
-        <location filename="../ProcessingDlg.cpp" line="1215"/>
+        <location filename="../ProcessingDlg.cpp" line="1424"/>
+        <location filename="../ProcessingDlg.cpp" line="1452"/>
+        <location filename="../ProcessingDlg.cpp" line="1480"/>
         <source>Undo %1</source>
         <translation>撤销 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1176"/>
-        <location filename="../ProcessingDlg.cpp" line="1219"/>
+        <location filename="../ProcessingDlg.cpp" line="1441"/>
+        <location filename="../ProcessingDlg.cpp" line="1484"/>
         <source>Redo %1</source>
         <translation>重做 %1</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
+        <source>Edit autostretch parameters ...</source>
+        <translation>编辑自动拉伸参数 ...</translation>
     </message>
 </context>
 <context>
@@ -2653,6 +2779,11 @@ Offset/Bias Frames: %5</source>
         <translation>打开另一个文件列表...</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="2106"/>
+        <source>Save file list</source>
+        <translation>保存文件列表</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="2141"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
@@ -2806,38 +2937,50 @@ Do you want to save the changes?</source>
         <translation>熵加权平均 (高动态范围)</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>使用 FITS 头文件中的世界坐标系 (WCS) 数据
+（如有）来确定图像的平移和旋转。</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>使用 FITS WCS 数据</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation>去除光晕</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>暗场图像优化</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>检测并移除错误列</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>检测并移除热噪点</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>暗场乘法因子</translation>
@@ -2861,7 +3004,7 @@ Do you want to save the changes?</source>
         <translation>RGB 通道背景值校正</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -2874,7 +3017,7 @@ The remaining pixels are averaged.</source>
 剩余像素取平均值。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -2887,7 +3030,7 @@ The pixels are then averaged.</source>
 剩余像素取平均值。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -2898,7 +3041,7 @@ compared to the standard deviation (%1).</source>
 与标准偏差(%1)的差值</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>选项...</translation>
@@ -3106,8 +3249,8 @@ You can probably get another one or download the final release from the web site
         <translation>捐助 DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="703"/>
-        <location filename="../DeepSkyStacker.cpp" line="706"/>
+        <location filename="../DeepSkyStacker.cpp" line="689"/>
+        <location filename="../DeepSkyStacker.cpp" line="692"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation type="unfinished"></translation>

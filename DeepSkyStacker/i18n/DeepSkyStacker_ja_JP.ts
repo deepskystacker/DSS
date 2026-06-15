@@ -784,72 +784,62 @@ Tick this box to keep the trace file.</source>
         <translation>進行状況のサウンドを有効にする</translation>
     </message>
     <message>
-        <location filename="../ui/ExplorerBar.ui" line="666"/>
-        <source>In the Processing Panel, show pixels below the Black Level as blue and pixels above the White Level as red.</source>
-        <translation>Processing パネルで、ブラックレベル未満のピクセルを青、ホワイトレベルを超えるピクセルを赤で表示します。</translation>
-    </message>
-    <message>
-        <location filename="../ui/ExplorerBar.ui" line="669"/>
-        <source>Show clipping for Black/White Points</source>
-        <translation>黒点／白点のクリッピングを表示</translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="300"/>
+        <location filename="../ExplorerBar.cpp" line="298"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>星検出設定...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="301"/>
+        <location filename="../ExplorerBar.cpp" line="299"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>スタッキング設定...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="343"/>
+        <location filename="../ExplorerBar.cpp" line="341"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>デフォルト設定に戻す</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="345"/>
+        <location filename="../ExplorerBar.cpp" line="343"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>DeepSkyStacker Live 設定を読み込む</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="349"/>
+        <location filename="../ExplorerBar.cpp" line="347"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>読み込み...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="410"/>
+        <location filename="../ExplorerBar.cpp" line="408"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>DeepSkyStacker Live 設定として保存</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="414"/>
+        <location filename="../ExplorerBar.cpp" line="412"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="587"/>
+        <location filename="../ExplorerBar.cpp" line="579"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>DeepSkyStacker 設定を読み込む</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="591"/>
-        <location filename="../ExplorerBar.cpp" line="646"/>
+        <location filename="../ExplorerBar.cpp" line="583"/>
+        <location filename="../ExplorerBar.cpp" line="638"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker 設定 (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="641"/>
+        <location filename="../ExplorerBar.cpp" line="633"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>DeepSkyStacker 設定を保存</translation>
@@ -1034,6 +1024,44 @@ Ctrl+4 で四隅表示モードを切り替え</translation>
         <location filename="../lowerdockwidget.cpp" line="46"/>
         <source>Double click here to dock/undock</source>
         <translation>ここをダブルクリックしてドッキング／解除</translation>
+    </message>
+</context>
+<context>
+    <name>DSS::MtfAutostretchSettings</name>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="26"/>
+        <source>Autostretch Parameters</source>
+        <translation>オートストレッチ設定</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="58"/>
+        <source>Target Background</source>
+        <translation>目標背景レベル</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="90"/>
+        <source>Target background level used by autostretch. Lower values produce a darker background.</source>
+        <translation>オートストレッチで使用される目標背景レベルです。値を小さくすると背景が暗くなります。</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="115"/>
+        <source>Reset target background to the default value (0.125).</source>
+        <translation>目標背景レベルをデフォルト値（0.125）にリセットします。</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="125"/>
+        <source>Shadow Clipping</source>
+        <translation>シャドウクリップ</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="144"/>
+        <source>Shadow clipping aggressiveness in MAD units for autostretch.</source>
+        <translation>オートストレッチにおけるシャドウクリップの適用強度（MAD単位）です。</translation>
+    </message>
+    <message>
+        <location filename="../ui/MtfAutostretchSettings.ui" line="169"/>
+        <source>Reset shadow clipping factor to the default value (2.8).</source>
+        <translation>シャドウクリップ係数をデフォルト値（2.8）にリセットします。</translation>
     </message>
 </context>
 <context>
@@ -1275,44 +1303,132 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>フォーム</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="271"/>
+        <location filename="../ui/ProcessingControls.ui" line="743"/>
         <source>Colour Balance</source>
         <translation>カラーバランス</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <location filename="../ui/ProcessingControls.ui" line="523"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH 画像ストレッチ</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="59"/>
+        <location filename="../ui/ProcessingControls.ui" line="51"/>
+        <source>MTF Stretch</source>
+        <translation>MTF ストレッチ</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="152"/>
+        <source>Link RGB channels so moving one MTF slider updates all channels together.</source>
+        <translation>RGBチャンネルを連動させ、1つのMTFスライダーを動かすとすべてのチャンネルが同時に更新されるようにします。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="238"/>
+        <source>Shadows</source>
+        <translation>シャドウ</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="260"/>
+        <source>MTF shadow point.</source>
+        <translation>MTFのシャドウポイントです。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <source>Midtones</source>
+        <translation>ミッドトーン</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="298"/>
+        <source>MTF midtone balance point.</source>
+        <translation>MTFのミッドトーンバランスポイントです。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="317"/>
+        <source>Highlights</source>
+        <translation>ハイライト</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="339"/>
+        <source>MTF highlight point.</source>
+        <translation>MTFのハイライトポイントです。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="364"/>
+        <source>Estimated percentage of pixels below the current MTF shadow point.</source>
+        <translation>現在のMTFシャドウポイントを下回るピクセルの推定割合です。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="367"/>
+        <source>Shadow Clipping:</source>
+        <translation>シャドウクリップ：</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="411"/>
+        <source>Estimated percentage of pixels above the current MTF highlight point.</source>
+        <translation>現在のMTFハイライトポイントを上回るピクセルの推定割合です。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="414"/>
+        <source>Highlight Clipping:</source>
+        <translation>ハイライトクリップ：</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="497"/>
+        <source>Apply the current MTF stretch settings to the image.</source>
+        <translation>現在のMTFストレッチ設定を画像に適用します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="531"/>
         <source>Stretch Factor</source>
         <translation>ストレッチ係数</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="133"/>
+        <location filename="../ui/ProcessingControls.ui" line="605"/>
         <source>Black Point</source>
         <translation>ブラックポイント</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="211"/>
+        <location filename="../ui/ProcessingControls.ui" line="683"/>
         <source>Human-weighted luminance</source>
         <translation>人間工学に基づいた輝度重み付け</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="480"/>
+        <location filename="../ui/ProcessingControls.ui" line="952"/>
         <source>Preview</source>
         <translation>プレビュー</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="248"/>
-        <location filename="../ui/ProcessingControls.ui" line="452"/>
+        <location filename="../ui/ProcessingControls.ui" line="500"/>
+        <location filename="../ui/ProcessingControls.ui" line="720"/>
+        <location filename="../ui/ProcessingControls.ui" line="924"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>適用</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="560"/>
+        <location filename="../ui/ProcessingControls.ui" line="196"/>
+        <source>Automatically estimate MTF shadow, midtone, and highlight values from the current image.
+Right-click to change Autostretch parameters</source>
+        <translation>現在の画像からMTFのシャドウ、ミッドトーン、ハイライトの値を自動的に推定します。
+右クリックでオートストレッチのパラメータを変更できます。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="200"/>
+        <source>Autostretch</source>
+        <translation>オートストレッチ</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="975"/>
+        <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
+        <translation>ブラックレベル未満のピクセルを青、ホワイトレベルを超えるピクセルを赤で表示します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="978"/>
+        <source>Show Shadow and Highlight clipping</source>
+        <translation>シャドウとハイライトのクリッピングを表示</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1058"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>リセット</translation>
@@ -1321,95 +1437,95 @@ Detected Cold Pixels: %L3 (%L4%)
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="992"/>
+        <location filename="../ProcessingDlg.cpp" line="1228"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>変更を保存しますか？</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="438"/>
+        <location filename="../ProcessingDlg.cpp" line="563"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF / FITS 画像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="329"/>
+        <location filename="../ProcessingDlg.cpp" line="447"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>DeepSkyStacker により作成されたスター・マスク</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="331"/>
+        <location filename="../ProcessingDlg.cpp" line="449"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>スター・マスクを %1 に保存しています</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="401"/>
-        <location filename="../ProcessingDlg.cpp" line="508"/>
+        <location filename="../ProcessingDlg.cpp" line="526"/>
+        <location filename="../ProcessingDlg.cpp" line="638"/>
         <source>Failed to load image %1</source>
         <translation>画像 %1 の読み込みに失敗しました</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="537"/>
+        <location filename="../ProcessingDlg.cpp" line="667"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 画像 16bit/チャンネル (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="538"/>
+        <location filename="../ProcessingDlg.cpp" line="668"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 画像 32bit/チャンネル（整数） (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="539"/>
+        <location filename="../ProcessingDlg.cpp" line="669"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 画像 32bit/チャンネル（浮動小数） (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="540"/>
+        <location filename="../ProcessingDlg.cpp" line="670"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 画像 16bit/チャンネル (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="541"/>
+        <location filename="../ProcessingDlg.cpp" line="671"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 画像 32bit/チャンネル（整数） (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="542"/>
+        <location filename="../ProcessingDlg.cpp" line="672"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 画像 32bit/チャンネル（浮動小数） (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="551"/>
+        <location filename="../ProcessingDlg.cpp" line="681"/>
         <source>Save Image</source>
         <translation>画像を保存</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="654"/>
+        <location filename="../ProcessingDlg.cpp" line="784"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>保存できる画像がありません。</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="799"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>情報がありません</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="691"/>
+        <location filename="../ProcessingDlg.cpp" line="821"/>
         <source>Exposure: %1 </source>
         <translation>露出：%1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="692"/>
+        <location filename="../ProcessingDlg.cpp" line="822"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1417,27 +1533,37 @@ Detected Cold Pixels: %L3 (%L4%)
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1137"/>
+        <location filename="../ProcessingDlg.cpp" line="1386"/>
+        <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
+        <translation>MTF ストレッチ: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1400"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
         <translation>ASinH ストレッチ: beta %L1, bp %L2, hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1149"/>
+        <location filename="../ProcessingDlg.cpp" line="1413"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
         <translation>カラーバランス:  R %L1, G %L2, B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1160"/>
-        <location filename="../ProcessingDlg.cpp" line="1187"/>
-        <location filename="../ProcessingDlg.cpp" line="1215"/>
+        <location filename="../ProcessingDlg.cpp" line="1424"/>
+        <location filename="../ProcessingDlg.cpp" line="1452"/>
+        <location filename="../ProcessingDlg.cpp" line="1480"/>
         <source>Undo %1</source>
         <translation>%1 を元に戻す</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1176"/>
-        <location filename="../ProcessingDlg.cpp" line="1219"/>
+        <location filename="../ProcessingDlg.cpp" line="1441"/>
+        <location filename="../ProcessingDlg.cpp" line="1484"/>
         <source>Redo %1</source>
         <translation>%1 をやり直す</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1796"/>
+        <source>Edit autostretch parameters ...</source>
+        <translation>オートストレッチのパラメータを編集...</translation>
     </message>
 </context>
 <context>
@@ -1952,7 +2078,7 @@ Detected Cold Pixels: %L3 (%L4%)
         <location filename="../ResultParameters.cpp" line="159"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
         <comment>IDS_STACKINGMODE_INTERSECTION</comment>
-        <translation>スタック結果は全フレームの共通領域に限定されます。</translation>
+        <translation>スタック結果は全フレーム of の共通領域に限定されます。</translation>
     </message>
 </context>
 <context>
@@ -2059,7 +2185,7 @@ Use it if you plan to do all the processing in other software.</source>
         <location filename="../SavePicture.cpp" line="127"/>
         <source>Create an image from the selected rectangle.</source>
         <comment>IDC_USERECT</comment>
-        <translation>選択された範囲から画像を作成.</translation>
+        <translation>選択された範囲から画像を作成。</translation>
     </message>
     <message>
         <location filename="../SavePicture.cpp" line="123"/>
@@ -2404,7 +2530,7 @@ Use it if you plan to do all the processing in other software.</source>
         <location filename="../StackRecap.cpp" line="754"/>
         <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
-        <translation>警告：登録済み・キャリブレーション済み画像の保存が有効です。これらのファイルを保存するための十分な空き容量があるか確認してください.</translation>
+        <translation>警告：登録済み・キャリブレーション済み画像の保存が有効です。これらのファイルを保存するための十分な空き容量があるか確認してください。</translation>
     </message>
 </context>
 <context>
@@ -2586,12 +2712,6 @@ Do you want to save the changes?</source>
         <translation>画像 %1 の読み込みに失敗しました</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1866"/>
-        <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
-        <comment>IDS_LISTINFO</comment>
-        <translation>ライト フレーム: %1      -      ダーク フレーム: %2      -      フラット フレーム: %3      -   ダークのフラット フレーム: %4   -      オフセット/バイアス フレーム: %5</translation>
-    </message>
-    <message>
         <location filename="../StackingDlg.cpp" line="2158"/>
         <source>Internet version check error code %1:
 %2</source>
@@ -2664,6 +2784,12 @@ Do you want to save the changes?</source>
         <translation>バイアスフレームを開く...</translation>
     </message>
     <message>
+        <location filename="../StackingDlg.cpp" line="1866"/>
+        <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
+        <comment>IDS_LISTINFO</comment>
+        <translation>ライト: %1      -      ダーク: %2      -      フラット: %3      -   ダークフラット: %4   -      Oバイアス: %5</translation>
+    </message>
+    <message>
         <location filename="../StackingDlg.cpp" line="1879"/>
         <source>Light Frames: %1
 Dark Frames: %2
@@ -2682,6 +2808,11 @@ Offset/Bias Frames: %5</source>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>別のファイルリストを開く...</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2106"/>
+        <source>Save file list</source>
+        <translation>ファイルリストを保存</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2141"/>
@@ -2704,7 +2835,7 @@ Offset/Bias Frames: %5</source>
         <location filename="../StackingDlg.cpp" line="2363"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation>チェックされた画像は互換性がありません: %1.</translation>
+        <translation>チェックされた画像は互換性がありません: %1</translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="2367"/>
@@ -2794,38 +2925,50 @@ Offset/Bias Frames: %5</source>
         <translation>エントロピー加重平均（高ダイナミックレンジ）</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <location filename="../ui/StackingParameters.ui" line="223"/>
+        <source>Use World Coordinate System (WCS) data from FITS headers
+(if available) to determine image offsets and rotation.</source>
+        <translation>FITSヘッダーのワールド座標系（WCS）データ
+（利用可能な場合）を使用して、画像のオフセットと回転を決定します。</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="227"/>
+        <source>Use FITS WCS Data</source>
+        <translation>FITS WCSデータを使用</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="280"/>
         <source>Debloom</source>
         <comment>IDC_DEBLOOM</comment>
         <translation>ブルーミング除去</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <location filename="../ui/StackingParameters.ui" line="300"/>
         <source>Settings</source>
         <comment>IDC_DEBLOOMSETTINGS</comment>
         <extracomment>Not used!</extracomment>
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
         <source>Dark Optimisation</source>
         <comment>IDC_DARKOPTIMIZATION</comment>
         <translation>ダーク最適化</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
         <source>Bad column detection and removal</source>
         <comment>IDC_BADCOLUMNREMOVAL</comment>
         <translation>不良カラムの検出と除去</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <location filename="../ui/StackingParameters.ui" line="338"/>
         <source>Hot pixel detection and removal</source>
         <comment>IDC_HOTPIXELS</comment>
         <translation>ホットピクセルの検出と除去</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <location filename="../ui/StackingParameters.ui" line="358"/>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>ダーク乗算係数</translation>
@@ -2849,7 +2992,7 @@ Offset/Bias Frames: %5</source>
         <translation>RGB 背景補正</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="59"/>
+        <location filename="../StackingParameters.cpp" line="60"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively removed.
@@ -2861,7 +3004,7 @@ The remaining pixels are averaged.</source>
 残ったピクセルは平均化されます。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="68"/>
+        <location filename="../StackingParameters.cpp" line="69"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
@@ -2873,7 +3016,7 @@ The pixels are then averaged.</source>
 その後、すべてのピクセルが平均化されます。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="75"/>
+        <location filename="../StackingParameters.cpp" line="76"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
@@ -2882,7 +3025,7 @@ compared to the standard deviation (%1).</source>
         <translation>&lt;b&gt;加重平均&lt;/b&gt; は、各ピクセルの平均値からの偏差（標準偏差 %1 に対する相対量）に基づいて重み付けを行い、反復処理によって算出されます。</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="107"/>
+        <location filename="../StackingParameters.cpp" line="108"/>
         <source>Options...</source>
         <comment>ID_CALIBRATIONMENU_OPTIONS</comment>
         <translation>オプション...</translation>
@@ -3090,8 +3233,8 @@ You can probably get another one or download the final release from the web site
         <translation>DeepSkyStacker を支援する</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="703"/>
-        <location filename="../DeepSkyStacker.cpp" line="706"/>
+        <location filename="../DeepSkyStacker.cpp" line="689"/>
+        <location filename="../DeepSkyStacker.cpp" line="692"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Help_JP.chm</translation>
@@ -3168,7 +3311,7 @@ You can probably get another one or download the final release from the web site
         <location filename="../RecommendedSettings.cpp" line="317"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
-        <translation>AHD デベイヤー方式を使用</translation>
+        <translation>AHD デベイヤーを使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="323"/>
@@ -3180,7 +3323,7 @@ You can probably get another one or download the final release from the web site
         <location filename="../RecommendedSettings.cpp" line="326"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
-        <translation>バイリニアデベイヤー方式を使用</translation>
+        <translation>バイリニアデベイヤーを使用</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="359"/>

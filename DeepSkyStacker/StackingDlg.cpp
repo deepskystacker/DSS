@@ -1260,7 +1260,7 @@ namespace DSS
 
 		size_t fileCount{ 0 };
 
-		CBitmapInfo	bitmapInfo;
+		BitmapInfo	bitmapInfo;
 
 		const auto addFileIfValid = [&](const auto file) -> void
 		{
@@ -2103,7 +2103,7 @@ namespace DSS
 
 
 		ZTRACE_RUNTIME("About to show file save dlg");
-		const QString file = QFileDialog::getSaveFileName(this, "Save file list", QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex] /*DssFileListFilter*/, nullptr);
+		const QString file = QFileDialog::getSaveFileName(this, tr("Save file list"), QString::fromStdU16String(defaultName.generic_u16string()), OUTPUTLIST_FILTERS[filterIndex] /*DssFileListFilter*/, nullptr);
 		if (!file.isEmpty())
 		{
 			// If the user has not specified the extension, we add it.
@@ -2901,7 +2901,7 @@ namespace DSS
 
 	bool StackingDlg::isValidImage(const fs::path& path)
 	{
-		CBitmapInfo			BitmapInfo;
+		BitmapInfo			BitmapInfo;
 
 		return (GetPictureInfo(path, BitmapInfo));
 	}

@@ -94,6 +94,7 @@ set(Header_Files
     "TaskInfo.h"
     "TIFFUtil.h"
     "tracecontrol.h"
+    "wcsinfo.h"
     "Workspace.h"
 )
 if(WIN32)
@@ -167,6 +168,7 @@ set(AVX_non-AVX_Files
 set(Source_Files
     "AHDDemosaicing.cpp"
     "asinhstretch.cpp"
+    "mtfstretch.cpp"
     "BackgroundCalibration.cpp"
     "Bayer.cpp"
     "BilinearParameters.cpp"
@@ -215,6 +217,7 @@ set(Source_Files
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
+    "wcsinfo.cpp"
     "Workspace.cpp"
 )
 if(WIN32)

@@ -174,6 +174,12 @@
     <ClCompile Include="oldprogressdlg.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="QMTFSlider.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="MtfAutostretchSettings.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -608,6 +614,9 @@
     <QtUic Include="ui\FlatChart.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\MtfAutostretchSettings.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="BackgroundOptions.h">
@@ -732,6 +741,12 @@
     </QtMoc>
     <QtMoc Include="oldprogressdlg.h">
       <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="QMTFSlider.h">
+      <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="MtfAutostretchSettings.h">
+      <Filter>Dialogs\Processing</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

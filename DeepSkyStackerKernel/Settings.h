@@ -141,7 +141,7 @@ protected :
 
 	void	AddFileVariable(const QString& variable, const fs::path& file)
 	{
-		CBitmapInfo		bmpInfo;
+		BitmapInfo		bmpInfo;
 
 		// Retrieve the date and time of creation and append it to the file name
 		if (GetPictureInfo(file, bmpInfo))

@@ -1,6 +1,6 @@
 #pragma once
 
-class CBitmapInfo;
+class BitmapInfo;
 class CMemoryBitmap;
 namespace DSS { class OldProgressBase; }
 
@@ -13,5 +13,5 @@ void PushRAWSettings(bool bSuperPixel, bool bRawBayer);
 void PopRAWSettings();
 
 bool IsRAWPicture(const fs::path& path, QString& strModel);
-bool IsRAWPicture(const fs::path& path, CBitmapInfo& BitmapInfo);
+bool IsRAWPicture(const fs::path& path, BitmapInfo& BitmapInfo);
 bool LoadRAWPicture(const fs::path& path, std::shared_ptr<CMemoryBitmap>& rpBitmap, DSS::OldProgressBase* pProgress);

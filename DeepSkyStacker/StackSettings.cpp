@@ -216,6 +216,7 @@ namespace DSS
 		}
 
 	}
+
 	void StackSettings::accept()
 	{
 		QSettings settings;

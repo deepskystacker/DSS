@@ -421,7 +421,7 @@ namespace DSS
         // Draw cross-hairs in the centre
         // 
         pen.setColor(qRgba(255, 0, 0, 170));  // Red semi transparent
-        pen.setWidth(2.0);
+        pen.setWidthF(2.0);
         painter.setPen(pen);
         painter.drawLine(
             rect.left() + rect.width() / 2 - 10,

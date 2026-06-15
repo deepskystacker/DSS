@@ -19,6 +19,8 @@ set(Dialogs
 source_group("Dialogs" FILES ${Dialogs})
 
 set(Dialogs__Processing
+    "MtfAutostretchSettings.cpp"
+    "MtfAutostretchSettings.h"
     "processingcontrols.cpp"
     "processingcontrols.h"
     "ProcessingDlg.cpp"
@@ -138,16 +140,17 @@ set(Ui_Files
 	"ui/CometStacking.ui"
 	"ui/DropFilesDlg.ui"
 	"ui/ExplorerBar.ui"
-        "ui/FlatChart.ui"
+    "ui/FlatChart.ui"
 	"ui/ImageProperties.ui"
 	"ui/IntermediateFiles.ui"
-        "ui/OldProgressDlg.ui"
+    "ui/OldProgressDlg.ui"
 	"ui/OutputTab.ui"
 	"ui/PictureList.ui"
 	"ui/PostCalibration.ui"
+	"ui/MtfAutostretchSettings.ui"
 	"ui/ProcessingControls.ui"
 	"ui/ProcessingDlg.ui"
-        "ui/ProgressDlg.ui"
+    "ui/ProgressDlg.ui"
 	"ui/QualityChart.ui"
 	"ui/RawDDPSettings.ui"
 	"ui/RecommendedSettings.ui"
@@ -170,7 +173,7 @@ set(i18n_Files
 	"i18n/DeepSkyStacker_de.ts"
 	"i18n/DeepSkyStacker_en.ts"
 	"i18n/DeepSkyStacker_en_GB.ts"
-        "i18n/DeepSkyStacker_es.ts"
+    "i18n/DeepSkyStacker_es.ts"
 	"i18n/DeepSkyStacker_fr.ts"
 	"i18n/DeepSkyStacker_it.ts"
 	"i18n/DeepSkyStacker_ja_JP.ts"
@@ -323,6 +326,8 @@ set(Tools
     "../Tools/griddata.cpp"
     "../Tools/QElidedLabel.cpp"
     "../Tools/QLinearGradientCtrl.cpp"
+    "QMTFSlider.cpp"
+    "QMTFSlider.h"
 )
 source_group("Tools" FILES ${Tools})
 
@@ -337,12 +342,12 @@ if(APPLE)
 endif()
 
 set(Help_Files
-    "${CMAKE_SOURCE_DIR}/Help/Aide DeepSkyStacker.chm"
-    "${CMAKE_SOURCE_DIR}/Help/Ayuda DeepSkyStacker.chm"
-    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Ajuda.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_DE.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_ES.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_FR.chm"
     "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_JP.chm"
-    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Hilfe.chm"
+    "${CMAKE_SOURCE_DIR}/Help/DeepSkyStacker Help_PT.chm"
 	)
 source_group("Help" FILES ${Help_Files})
 

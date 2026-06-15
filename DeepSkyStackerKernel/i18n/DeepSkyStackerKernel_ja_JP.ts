@@ -278,9 +278,9 @@
     </message>
     <message>
         <location filename="../ImageListModel.cpp" line="380"/>
-        <source>Angle</source>
+        <source>Angle°</source>
         <comment>IDS_COLUMN_ANGLE</comment>
-        <translation>角度</translation>
+        <translation>角度°</translation>
     </message>
     <message>
         <location filename="../ImageListModel.cpp" line="382"/>
@@ -464,13 +464,13 @@ settings will be used.</source>
 FITS/DDP設定のデフォルト値（DATAMIN = %L1、DATAMAX = %L2）が使用されます。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="980"/>
+        <location filename="../FITSUtil.cpp" line="978"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStackerは8bit画像のデバイヤー処理を行いません</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1338"/>
+        <location filename="../FITSUtil.cpp" line="1334"/>
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -497,20 +497,26 @@ returned a status of %2, error text is:
 <context>
     <name>Kernel</name>
     <message>
+        <source>Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5</source>
+        <translation type="vanished">例外 %1 が %2 関数 : %3() 行 : %4 から投げられました\n\n %5</translation>
+    </message>
+    <message>
         <location filename="../BitmapExt.cpp" line="262"/>
-        <location filename="../FITSUtil.cpp" line="1054"/>
-        <location filename="../FITSUtil.cpp" line="1779"/>
+        <location filename="../FITSUtil.cpp" line="1028"/>
+        <location filename="../FITSUtil.cpp" line="1775"/>
         <location filename="../MultiBitmapProcess.cpp" line="229"/>
         <location filename="../StackingEngine.cpp" line="2334"/>
         <location filename="../TIFFUtil.cpp" line="1478"/>
         <location filename="../TIFFUtil.cpp" line="1740"/>
-      <source>Exception %1 thrown from %2 Function : %3() Line : %4\n\n %5</source>
-        <translation>例外 %1 が %2 関数 : %3() 行 : %4 から投げられました\n\n %5</translation>
+        <source>Exception %1 thrown from %2 Function : %3() Line : %4
+
+ %5</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="272"/>
-        <location filename="../FITSUtil.cpp" line="1063"/>
-        <location filename="../FITSUtil.cpp" line="1788"/>
+        <location filename="../FITSUtil.cpp" line="1037"/>
+        <location filename="../FITSUtil.cpp" line="1784"/>
         <location filename="../MultiBitmapProcess.cpp" line="238"/>
         <location filename="../StackingEngine.cpp" line="2343"/>
         <location filename="../TIFFUtil.cpp" line="1487"/>

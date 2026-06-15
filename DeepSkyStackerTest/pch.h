@@ -2,11 +2,23 @@
 #define NOMINMAX
 
 // Qt
+#if defined (_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable: 4996)
+#pragma warning(disable: 4251)
+#endif
 #include <QCoreApplication>
 #include <QString>
 #include <QPoint>
 #include <QElapsedTimer>
 #include <QDateTime>
+#include <QTimeZone>
+#if defined (_MSC_VER)
+#pragma warning(pop)
+#pragma warning(disable: 4251)
+#endif
+
+#include "../DeepSkyStackerKernel/avx_includes.h"
 
 // Std
 #include <vector>
@@ -15,13 +27,15 @@
 #include <deque>
 #include <set>
 #include <numeric>
-#include "../DeepSkyStackerKernel/avx_includes.h"
 #include <limits>
 #include <iostream>
 #include <filesystem>
+#include <ranges>
+
+// Boost
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
-#include <ranges>
+
 
 namespace bip = boost::interprocess;
 namespace fs = std::filesystem;
@@ -35,12 +49,3 @@ using std::max;
 #include "../ZClass/zdefs.h"
 #include "../ZClass/ztrace.h"
 #include "../ZClass/zexcept.h"
-
-
-// Windows (to go!)
-#if defined(Q_OS_WIN)
-#include <WTypesbase.h>
-#include <atlstr.h>
-#include <cassert>
-#include <atltypes.h>
-#endif

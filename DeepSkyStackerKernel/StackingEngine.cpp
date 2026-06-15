@@ -25,6 +25,7 @@
 #include "GreyMultiBitmap.h"
 #include "AHDDemosaicing.h"
 #include "BitmapIterator.h"
+#include "wcsinfo.h"
 
 #if !defined(__cpp_lib_atomic_ref)
 #include <boost/atomic/atomic_ref.hpp>
@@ -36,7 +37,6 @@
 		using std::atomic_ref;
 	}
 #endif
-
 
 void CLightFramesStackingInfo::SetReferenceFrame(const fs::path& path)
 {
@@ -3670,10 +3670,30 @@ namespace
 		std::atomic_bool stop{ false };
 		std::atomic<int> nLoopCount{ 1 };
 		const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
+
+		//
+		// Check if all the bitmaps have valid WCS valid information.
+		// If not, we will not use the WCS information for the offset calculation, even for those bitmaps that have it.
+		//
+		bool haveWCS = true;
+		for (const auto& bitmap : pStackingEngine->LightFrames())
+		{
+			if (!bitmap.wcsInfo.ok)
+			{
+				haveWCS = false;
+				break;
+			}
+		}
+		Workspace workspace;
+		bool useWCS = workspace.value("Stacking/UseWCS", true).toBool();
+
+		LIGHTFRAMEINFOVECTOR& lightFrames = pStackingEngine->LightFrames();
+		DSS::WCSInfo referenceWCSInfo = lightFrames[0].wcsInfo; // Get the WCS Info of the reference frame.
+
 		if (pProg != nullptr)
 			pProg->Progress1(strText, 0);
 
-	#pragma omp parallel for schedule(dynamic) default(shared) shared(stop, nLoopCount, strText) if(nrProcessors > 1)
+	#pragma omp parallel for schedule(dynamic) default(shared) shared(stop, nLoopCount, strText) if(nrProcessors > 1 && !(haveWCS && useWCS))
 		for (int i = 1; i < nrBitmaps; ++i)
 		{
 			// OpenMP loops need to loop till the end, breaking earlier is difficult. 
@@ -3684,7 +3704,38 @@ namespace
 			if (omp_get_thread_num() == 0 && pProg != nullptr)
 				pProg->Progress1(strText, nLoopCount.load());
 
-			if (pStackingEngine->ComputeLightFrameOffset(i))
+			bool offsetComputed = false;
+			
+			if (haveWCS && useWCS)
+			{
+				// Get a reference to the current Frameinfo of this bitmap
+				CLightFrameInfo& frameInfo = lightFrames[i];
+				// Get a const reference to the WCS info of this bitmap
+				const DSS::WCSInfo& wcsInfo = frameInfo.wcsInfo;
+
+				// Compute the offset using the WCS information of this frame and the reference frame.
+				auto [xOffset, yOffset] = wcsInfo.offsetXY(referenceWCSInfo);
+				ZTRACE_RUNTIME("Frame %d WCS offset to reference frame: x=%.3f, y=%.3f", i, xOffset, yOffset);
+
+				// Compute the angle (rotation) of this frame with respect to the reference frame using the WCS information.
+				auto angle = wcsInfo.rotationFrom(referenceWCSInfo);
+				ZTRACE_RUNTIME("Frame %d WCS rotation to reference frame: %.3f deg", i, angle);
+
+				//
+				// We now have what we need from the WCS information, so we can set the offsets and rotation for this bitmap.
+				//
+				frameInfo.m_fXOffset = xOffset;
+				frameInfo.m_fYOffset = yOffset;
+				frameInfo.m_fAngle = angle;	
+
+				offsetComputed = true;
+			}
+			else
+			{
+				offsetComputed = pStackingEngine->ComputeLightFrameOffset(i);
+			}
+
+			if (offsetComputed)
 			{
 				pStackingEngine->getBitmap(i).m_bDisabled = false;
 				pStackingEngine->incStackable();

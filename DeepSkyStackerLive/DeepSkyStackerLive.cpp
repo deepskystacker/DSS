@@ -1315,7 +1315,7 @@ void DeepSkyStackerLive::fileRegistered(std::shared_ptr<CLightFrameInfo> lfi)
 	QString name{ QString::fromStdU16String(lfi->filePath.filename().generic_u16string().c_str()) };
 	ZTRACE_RUNTIME("File %s registered", name.toUtf8().constData());
 	changeImageStatus(name, ImageStatus::registered);
-	CBitmapInfo				bmpInfo;
+	BitmapInfo				bmpInfo;
 	QString temp;
 
 	GetPictureInfo(lfi->filePath, bmpInfo);
