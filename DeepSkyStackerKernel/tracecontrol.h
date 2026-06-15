@@ -58,15 +58,6 @@ namespace DSS
 			erase = v;
 		}
 
-		inline void terminate()
-		{
-			if (erase)
-			{
-				std::error_code ec;
-				fs::remove(file, ec);
-			}
-		}
-
 	private:
 		std::string fileName;
 		const QString dirName;
