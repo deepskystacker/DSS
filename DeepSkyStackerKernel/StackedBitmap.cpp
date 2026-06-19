@@ -16,23 +16,6 @@
 using namespace DSS;
 /* ------------------------------------------------------------------- */
 
-//
-// Define some convenience "functions" to either turn Visual Leak Detector on and off
-// or do nothing
-//
-void turnOffVld();
-void turnOnVld();
-
-#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
-#include <vld.h>
-void turnOffVld() { VLDDisable(); }
-void turnOnVld() { VLDEnable(); }
-#else
-void turnOffVld() {}
-void turnOnVld() {}
-#endif
-
-
 namespace {
 	thread_local std::unique_ptr<AvxBezierAndSaturation> pAvxBezierAndSaturation{};
 }
