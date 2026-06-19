@@ -1701,7 +1701,11 @@ namespace DSS
 		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
 
 		ZTRACE_RUNTIME("About to show file open dlg");
-		if (QDialog::Accepted == fileDialog.exec())
+		// There are known memory leaks in QFileDialog::exec() on Windows
+		VLDDisable();
+		const auto result = fileDialog.exec();
+		VLDEnable();
+		if (QDialog::Accepted == result)
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 			QStringList files = fileDialog.selectedFiles();
@@ -2016,7 +2020,11 @@ namespace DSS
 		fileDialog.setDirectory(directory);
 
 		ZTRACE_RUNTIME("About to show file open dlg");
-		if (QDialog::Accepted == fileDialog.exec())
+		// There are known memory leaks in QFileDialog::exec() on Windows
+		VLDDisable();
+		const auto result = fileDialog.exec();
+		VLDEnable();
+		if (QDialog::Accepted == result)
 		{
 			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 			QStringList files = fileDialog.selectedFiles();

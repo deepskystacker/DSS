@@ -1,6 +1,19 @@
 #pragma once
 #define NOMINMAX
 
+//
+// Visual Leak Detector
+// 
+#if defined(_WINDOWS) && __has_include(<vld.h>)
+//
+// Visual Leak Detector
+//
+#include <vld.h>
+#else 
+#define VLDEnable()
+#define VLDDisable()
+#endif
+
 // Qt
 #if defined (_MSC_VER)
 #pragma warning(push)

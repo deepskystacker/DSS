@@ -36,12 +36,6 @@
 // DeepSkyStacker.cpp : Defines the entry point for the console application.
 //
 #include "pch.h"
-#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
-//
-// Visual Leak Detector
-//
-#include <vld.h>
-#endif
 
 #if defined(Q_OS_WIN)
 #include <htmlhelp.h>
@@ -837,7 +831,10 @@ int main(int argc, char* argv[])
 	_CrtSetDbgFlag(0);
 #endif
 
+	VLDDisable();		// Known leaks from QApplication
 	QApplication app(argc, argv);
+	VLDEnable();
+
 
 	if (hasExpired())
 		return 1;
