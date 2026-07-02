@@ -262,7 +262,7 @@ Right-click to change Autostretch parameters</string>
                  <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.001000000000000</double>
+                 <double>0.000100000000000</double>
                 </property>
                </widget>
               </item>
@@ -338,7 +338,7 @@ Right-click to change Autostretch parameters</string>
                  <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.001000000000000</double>
+                 <double>0.000100000000000</double>
                 </property>
                 <property name="value">
                  <double>0.500000000000000</double>
@@ -426,7 +426,7 @@ Right-click to change Autostretch parameters</string>
                  <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.001000000000000</double>
+                 <double>0.000100000000000</double>
                 </property>
                 <property name="value">
                  <double>1.000000000000000</double>

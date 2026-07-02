@@ -93,8 +93,8 @@ namespace DSS
 		void drawHandle(QPainter& p, int x, ActiveHandle type);
 		ActiveHandle hitTest(int x, int y) const;
 
-		constexpr static double arrowIncrement = 0.001;
-		constexpr static double pageIncrement = 0.01;
+		constexpr static double arrowIncrement = 0.0001;
+		constexpr static double pageIncrement = 0.001;
 	};
 
 } // namespace DSS
