@@ -105,6 +105,36 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);
 
+		// Replace the standard spin boxes with our custom version that handles wheel events
+		// differently from arrow button clicks.
+		auto replaceSpinBox = [this](QDoubleSpinBox*& pSpinBox, const char* name) {
+			MTFDoubleSpinBox* pNew = new MTFDoubleSpinBox(controls->mtfStretchTab);
+			pNew->setObjectName(QString::fromUtf8(name));
+			pNew->setDecimals(pSpinBox->decimals());
+			pNew->setMinimum(pSpinBox->minimum());
+			pNew->setMaximum(pSpinBox->maximum());
+			pNew->setSingleStep(pSpinBox->singleStep());
+			pNew->setValue(pSpinBox->value());
+			pNew->setKeyboardTracking(pSpinBox->keyboardTracking());
+			pNew->setMinimumWidth(pSpinBox->minimumWidth());
+			pNew->setMaximumWidth(pSpinBox->maximumWidth());
+			pNew->setToolTip(pSpinBox->toolTip());
+
+			// Replace in layout
+			QGridLayout* layout = qobject_cast<QGridLayout*>(controls->gridLayout_MTFSpinBoxes);
+			int index = layout->indexOf(pSpinBox);
+			int row, col, rowSpan, colSpan;
+			layout->getItemPosition(index, &row, &col, &rowSpan, &colSpan);
+			layout->removeWidget(pSpinBox);
+			delete pSpinBox;
+			pSpinBox = pNew;
+			layout->addWidget(pSpinBox, row, col, rowSpan, colSpan);
+		};
+
+		replaceSpinBox(controls->mtfShadowsSpinBox, "mtfShadowsSpinBox");
+		replaceSpinBox(controls->mtfMidtonesSpinBox, "mtfMidtonesSpinBox");
+		replaceSpinBox(controls->mtfHighlightsSpinBox, "mtfHighlightsSpinBox");
+
 		//
 		// Allow selection of partial image, don't display "Drizzle" rectangles.
 		//
@@ -130,6 +160,18 @@ namespace DSS
 		controls->mtfShadowsSpinBox->setKeyboardTracking(false);
 		controls->mtfMidtonesSpinBox->setKeyboardTracking(false);
 		controls->mtfHighlightsSpinBox->setKeyboardTracking(false);
+
+		controls->mtfShadowsSpinBox->setDecimals(7);
+		controls->mtfMidtonesSpinBox->setDecimals(7);
+		controls->mtfHighlightsSpinBox->setDecimals(7);
+
+		controls->mtfShadowsSpinBox->setMinimumWidth(100);
+		controls->mtfMidtonesSpinBox->setMinimumWidth(100);
+		controls->mtfHighlightsSpinBox->setMinimumWidth(100);
+
+		controls->mtfShadowsSpinBox->setSingleStep(0.0000001);
+		controls->mtfMidtonesSpinBox->setSingleStep(0.0000001);
+		controls->mtfHighlightsSpinBox->setSingleStep(0.0000001);
 
 		//
 		// Disable tracking for the sliders so that the valueChanged signal is 

@@ -42,11 +42,27 @@
 #include "undoredostack.h"
 #include "ui_ProcessingDlg.h"
 #include "StackedBitmap.h"
+#include <QDoubleSpinBox>
+#include <QWheelEvent>
 
 namespace DSS
 {
 	class SelectRect;
 	class ProcessingControls;
+
+	class MTFDoubleSpinBox : public QDoubleSpinBox
+	{
+	public:
+		using QDoubleSpinBox::QDoubleSpinBox;
+	protected:
+		void wheelEvent(QWheelEvent* event) override
+		{
+			const double originalStep = singleStep();
+			setSingleStep(0.0001);
+			QDoubleSpinBox::wheelEvent(event);
+			setSingleStep(originalStep);
+		}
+	};
 
 	class ProcessingDlg final: public QWidget, public Ui::ProcessingDlg
 	{
