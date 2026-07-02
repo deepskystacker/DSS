@@ -305,11 +305,11 @@ namespace DSS
 	{
 		if (m_SelectedHandle != ActiveHandle::None)
 		{
-			int delta = event->angleDelta().y();
-			if (delta != 0)
-			{
-				double step = (delta > 0) ? 0.005 : -0.005;
+			const double degrees = event->angleDelta().y() / 8.0;
+			const double step = (arrowIncrement * degrees) / wheelSensitivityDivisor;
 
+			if (step != 0.0)
+			{
 				if (m_SelectedHandle == ActiveHandle::Shadows)
 				{
 					m_Shadows = std::clamp(m_Shadows + step, 0.0, m_Midtones);

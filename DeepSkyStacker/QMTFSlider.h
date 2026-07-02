@@ -95,6 +95,7 @@ namespace DSS
 
 		constexpr static double arrowIncrement = 0.0001;
 		constexpr static double pageIncrement = 0.001;
+		constexpr static double wheelSensitivityDivisor = 10.0;
 	};
 
 } // namespace DSS

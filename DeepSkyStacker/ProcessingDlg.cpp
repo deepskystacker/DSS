@@ -127,6 +127,9 @@ namespace DSS
 		//
 		controls->asinhBPSpinBox->setKeyboardTracking(false);
 		controls->asinhStretchSpinBox->setKeyboardTracking(false);
+		controls->mtfShadowsSpinBox->setKeyboardTracking(false);
+		controls->mtfMidtonesSpinBox->setKeyboardTracking(false);
+		controls->mtfHighlightsSpinBox->setKeyboardTracking(false);
 
 		//
 		// Disable tracking for the sliders so that the valueChanged signal is 
