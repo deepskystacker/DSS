@@ -175,7 +175,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	for (int i = 0; const CStar& star : this->m_vStars)
 	{
 		fileOut << "Star# = " << i << Qt::endl;
-		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 6) << Qt::endl;
 		fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
 		fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("Eccentricity = %1").arg(star.eccentricity, 0, 'f', 2) << Qt::endl;

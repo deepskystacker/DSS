@@ -1,5 +1,5 @@
-Welcome to DeepSkyStacker 6.2.1
-===============================
+Welcome to DeepSkyStacker 6.2.2 Beta 1
+======================================
 
 Reporting problems:
 
@@ -13,6 +13,14 @@ Known problems:
    then the exposure is set to zero.   This would be a lot of work to fix as it would require us to implement our own
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
+
+Changes for DeepSkyStacker 6.2.2 Beta 1
+=======================================
+
+1.  Bug fix: When ludicrously under-exposed light frames were registered, the star intensity values in the ".info.txt"
+    files were written as 0.00 which meant that they were not treated as valid when read back in.   The code has been
+    changed to write this information with 6 decimal places rather than 2.  While technically this was a bug, it would
+    only ever cause a problem with incredibly under-exposed light frames.
 
 Changes for DeepSkyStacker 6.2.1
 ================================
