@@ -22,6 +22,9 @@ Changes for DeepSkyStacker 6.2.2 Beta 1
     changed to write this information with 6 decimal places rather than 2.  While technically this was a bug, it would
     only ever cause a problem with incredibly under-exposed light frames.
 
+2.  Decrease sensitivity of arrow keys and page-up/page-down keys for the MTF sliders and spin boxes by a factor of
+    ten.
+
 Changes for DeepSkyStacker 6.2.1
 ================================
 
