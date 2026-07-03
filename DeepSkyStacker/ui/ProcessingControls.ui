@@ -255,6 +255,12 @@ Right-click to change Autostretch parameters</string>
                 <property name="toolTip">
                  <string>MTF shadow point.</string>
                 </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="keyboardTracking">
+                 <bool>false</bool>
+                </property>
                 <property name="decimals">
                  <number>4</number>
                 </property>
@@ -330,6 +336,12 @@ Right-click to change Autostretch parameters</string>
                 </property>
                 <property name="toolTip">
                  <string>MTF midtone balance point.</string>
+                </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="keyboardTracking">
+                 <bool>false</bool>
                 </property>
                 <property name="decimals">
                  <number>4</number>
@@ -418,6 +430,12 @@ Right-click to change Autostretch parameters</string>
                 </property>
                 <property name="toolTip">
                  <string>MTF highlight point.</string>
+                </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="keyboardTracking">
+                 <bool>false</bool>
                 </property>
                 <property name="decimals">
                  <number>4</number>
