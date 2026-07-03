@@ -17,13 +17,14 @@ Known problems:
 Changes for DeepSkyStacker 6.2.2 Beta 1
 =======================================
 
-1.  Bug fix: When ludicrously under-exposed light frames were registered, the star intensity values in the ".info.txt"
+1.  Bug fix: When light frames with extremely short exposures were registered, the star intensity values in the ".info.txt"
     files were written as 0.00 which meant that they were not treated as valid when read back in.   The code has been
     changed to write this information with 6 decimal places rather than 2.  While technically this was a bug, it would
-    only ever cause a problem with incredibly under-exposed light frames.
+    only ever cause a problem with what would normally be considered as very under-exposed light frames.
 
-2.  Decrease sensitivity of arrow keys and page-up/page-down keys for the MTF sliders and spin boxes by a factor of
-    ten.
+2.  Decrease the sensitivity of arrow keys and page-up/page-down keys for the MTF sliders and spin boxes by a factor of
+    one hundred.   Set the spin boxes to be accelerated so they change faster as the keys are held down longer.
+    Turn off keyboard tracking so the values are only read when the entry field loses focus.
 
 Changes for DeepSkyStacker 6.2.1
 ================================
