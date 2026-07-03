@@ -23,8 +23,12 @@ Changes for DeepSkyStacker 6.2.2 Beta 1
     only ever cause a problem with what would normally be considered as very under-exposed light frames.
 
 2.  Decrease the sensitivity of arrow keys and page-up/page-down keys for the MTF sliders and spin boxes by a factor of
-    one hundred.   Set the spin boxes to be accelerated so they change faster as the keys are held down longer.
-    Turn off keyboard tracking so the values are only read when the entry field loses focus.
+    one hundred.
+
+    Set the spin boxes to be accelerated, so the spin box will increase/decrease the value faster the
+    longer you hold the button/key down.
+
+    Turn off keyboard tracking for the spin boxes so the values are only read when the entry field loses focus.
 
 Changes for DeepSkyStacker 6.2.1
 ================================
