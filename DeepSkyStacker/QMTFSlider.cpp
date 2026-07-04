@@ -214,22 +214,19 @@ namespace DSS
 	{
 		if (m_ActiveHandle != ActiveHandle::None)
 		{
-			double val = valueFromPos(event->pos().x());
+			const double val = valueFromPos(event->pos().x());
 
 			if (m_ActiveHandle == ActiveHandle::Shadows)
 			{
-				val = std::clamp(val, 0.0, m_Highlights);
-				m_Shadows = val;
-			}
-			else if (m_ActiveHandle == ActiveHandle::Highlights)
-			{
-				val = std::clamp(val, m_Midtones, 1.0); // Cannot pass midtones
-				m_Highlights = val;
+				setShadows(val);
 			}
 			else if (m_ActiveHandle == ActiveHandle::Midtones)
 			{
-				val = std::clamp(val, 0.0, m_Highlights);
-				m_Midtones = val;
+				setMidtones(val);
+			}
+			else if (m_ActiveHandle == ActiveHandle::Highlights)
+			{
+				setHighlights(val);
 			}
 
 			update();
@@ -305,28 +302,23 @@ namespace DSS
 	{
 		if (m_SelectedHandle != ActiveHandle::None)
 		{
-			int delta = event->angleDelta().y();
-			if (delta != 0)
+			const double degrees = event->angleDelta().y() / 8.0;	// Convert to degrees - 8 units per degree
+			const double step = (arrowIncrement * degrees) / wheelDivisor; // 15 degrees per step, divided by wheelDivisor for finer control
+			if (step != 0)
 			{
-				double step = (delta > 0) ? 0.005 : -0.005;
-
 				if (m_SelectedHandle == ActiveHandle::Shadows)
 				{
-					m_Shadows = std::clamp(m_Shadows + step, 0.0, m_Midtones);
-					emit shadowsChanged(m_Shadows);
-				}
-				else if (m_SelectedHandle == ActiveHandle::Highlights)
-				{
-					m_Highlights = std::clamp(m_Highlights + step, m_Midtones, 1.0);
-					emit highlightsChanged(m_Highlights);
+					setShadows(m_Shadows + step);
 				}
 				else if (m_SelectedHandle == ActiveHandle::Midtones)
 				{
-					m_Midtones = std::clamp(m_Midtones + step, m_Shadows, m_Highlights);
-					emit midtonesChanged(m_Midtones);
+					setMidtones(m_Midtones + step);
+				}
+				else if (m_SelectedHandle == ActiveHandle::Highlights)
+				{
+					setHighlights(m_Highlights + step);
 				}
 
-				update();
 				emit sliderMoved();
 				emit valuesChanged(m_Shadows, m_Midtones, m_Highlights);
 				event->accept();
@@ -335,7 +327,5 @@ namespace DSS
 		}
 		Inherited::wheelEvent(event);
 	}
-
-
 
 } // namespace DSS
