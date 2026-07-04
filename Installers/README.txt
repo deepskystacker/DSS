@@ -33,6 +33,8 @@ Changes for DeepSkyStacker 6.2.2 Beta 1
 3.  Improve mouse wheel handling for MTF slider controls so that the slider movement is proportional to the amount
     the mouse wheel is rotated.
 
+4.  Change MTF sliders so that the scale is non-linear by using the square root of the value.
+
 Changes for DeepSkyStacker 6.2.1
 ================================
 

@@ -105,7 +105,8 @@ namespace DSS
 	{
 		const int margin = 8;
 		int w = width() - 2 * margin;
-		return margin + static_cast<int>(val * w);
+		const auto result = std::sqrt(val);
+		return margin + static_cast<int>(result * w);
 	}
 
 	double QMTFSlider::valueFromPos(int pos) const
@@ -114,6 +115,7 @@ namespace DSS
 		int w = width() - 2 * margin;
 		if (w <= 0) return 0.0;
 		double val = static_cast<double>(pos - margin) / w;
+		val = val * val; // Square the value to get a non-linear response
 		return std::clamp(val, 0.0, 1.0);
 	}
 
