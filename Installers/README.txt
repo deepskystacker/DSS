@@ -30,6 +30,9 @@ Changes for DeepSkyStacker 6.2.2 Beta 1
 
     Turn off keyboard tracking for the spin boxes so the values are only read when the entry field loses focus.
 
+3.  Improve mouse wheel handling for MTF slider controls so that the slider movement is proportional to the amount
+    the mouse wheel is rotated.
+
 Changes for DeepSkyStacker 6.2.1
 ================================
 
