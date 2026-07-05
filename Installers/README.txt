@@ -38,6 +38,9 @@ Changes for DeepSkyStacker 6.2.2 Beta 1
 
 5.  Bug fix: The Histogram not always updated when Apply was pressed.
 
+6.  Reduce limit for star detection to 0.00050 (was 0.000750).  This means that more very faint stars can be found
+    in images with very short exposures. 
+
 Changes for DeepSkyStacker 6.2.1
 ================================
 
