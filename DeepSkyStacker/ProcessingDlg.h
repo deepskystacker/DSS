@@ -166,7 +166,7 @@ namespace DSS
 		// until the user clicks the Apply button.
 		//
 		bool usePreviewDeepStack{ false };
-		QMutex previewMutex;	// Mutex to protect access to the preview code
+		QMutex displayMutex;	// Mutex to protect access to the image updating code
 		
 		//
 		// Timer to control handling of valueChanged signals from the asinh stretch and black point

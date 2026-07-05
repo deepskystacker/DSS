@@ -201,10 +201,10 @@ namespace DSS
 		controls->mtfBlueGradient->setValues(0.0, 0.5, 1.0);
 		syncMtfSpinBoxesFromModel();
 
-		if (imageLoaded && !undoRedoStack.empty())
-			showHistogram();
-		else
-			setMtfClippingLabelText(0.0, 0.0);
+		//if (imageLoaded && !undoRedoStack.empty())
+		//	showHistogram();
+		//else
+		//setMtfClippingLabelText(0.0, 0.0);
 	}
 
 	void ProcessingDlg::zeroColourBalanceControls()
@@ -1245,7 +1245,7 @@ namespace DSS
 
 	void ProcessingDlg::doPreview(ProcessingFunction function)
 	{
-		previewMutex.lock();
+		QMutexLocker locker(&displayMutex);
 		// Copy the current DeepStack object from the undo-redo stack and process it with the current settings	
 		previewDeepStack = undoRedoStack.current();
 
@@ -1307,7 +1307,6 @@ namespace DSS
 		showHistogram();
 
 		usePreviewDeepStack = false;
-		previewMutex.unlock();
 
 		//
 		// enable the appropriate Apply button to allow the user to apply the adjustment
@@ -1358,6 +1357,8 @@ namespace DSS
 
 	void ProcessingDlg::onApply(ProcessingFunction function)
 	{
+		QMutexLocker locker(&displayMutex);
+
 		//
 		// Get the current DeepStack object from the undo-redo stack and duplicate it at the top
 		// of the undo-redo stack.
@@ -1389,7 +1390,6 @@ namespace DSS
 				.arg(mtfParameters.clipPoint[2], 0, 'f', 4).arg(mtfParameters.midtoneBalance[2], 0, 'f', 4).arg(mtfParameters.whitePoint[2], 0, 'f', 4));
 
 			zeroMtfControls();
-			zeroAsinHControls();
 			break;
 
 		case ProcessingFunction::AsinhStretch:
@@ -1400,7 +1400,6 @@ namespace DSS
 			deepStack.setDescription(tr("ASinH stretch: beta %L1, bp %L2, hw %3")
 				.arg(asinhBeta, 0, 'f', 1).arg(asinhBP, 0, 'f', 4).arg(QVariant(asinhHWLuminance).toString()));
 
-			zeroMtfControls();
 			zeroAsinHControls();
 			break;
 
@@ -1847,7 +1846,8 @@ namespace DSS
 		mtfParameters.midtoneBalance[2] = controls->mtfBlueGradient->midtones();
 		mtfParameters.whitePoint[2] = controls->mtfBlueGradient->highlights();
 
-		onApply(ProcessingFunction::MtfStretch);
+		controls->mtfApply->setEnabled(false);
+		emit onApply(ProcessingFunction::MtfStretch);
 		zeroMtfControls();
 	}
 } // namespace DSS
