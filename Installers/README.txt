@@ -36,6 +36,8 @@ Changes for DeepSkyStacker 6.2.2 Beta 1
 4.  Change MTF sliders so that the scale is non-linear by using the square root of the value to set the position of
     the sliders.
 
+5.  Bug fix: The Histogram not always updated when Apply was pressed.
+
 Changes for DeepSkyStacker 6.2.1
 ================================
 
