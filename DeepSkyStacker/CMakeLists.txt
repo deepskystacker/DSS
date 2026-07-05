@@ -413,7 +413,7 @@ target_include_directories(DeepSkyStacker PUBLIC
     GeneratedFiles
     ../ZClass
     ../Tools
-    ../qwt-6.3.0
+    ../qwt
   )
 
 if(WIN32)
@@ -514,7 +514,7 @@ target_link_libraries(DeepSkyStacker PRIVATE
 	DeepSkyStackerKernel
     DeepSkyStackerAVX
     ZClass
-    qwt-6.3.0
+    qwt
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)

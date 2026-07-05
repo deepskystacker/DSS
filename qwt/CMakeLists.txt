@@ -1,4 +1,4 @@
-set(PROJECT_NAME qwt-6.3.0)
+set(PROJECT_NAME qwt)
 message("Configuring project: " ${PROJECT_NAME})
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
@@ -275,10 +275,10 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-qt_add_library(qwt-6.3.0 STATIC ${ALL_FILES})
+qt_add_library(qwt STATIC ${ALL_FILES})
 
-set_target_properties(qwt-6.3.0 PROPERTIES FOLDER "Libraries")
-target_link_libraries(qwt-6.3.0 PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::OpenGLWidgets Qt6::OpenGL Qt6::Concurrent Qt6::Svg Qt6::PrintSupport)
+set_target_properties(qwt PROPERTIES FOLDER "Libraries")
+target_link_libraries(qwt PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::OpenGLWidgets Qt6::OpenGL Qt6::Concurrent Qt6::Svg Qt6::PrintSupport)
 
 ################################################################################
 # Output directory
