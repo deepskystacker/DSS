@@ -371,8 +371,13 @@ bool CFITSReader::Open()
 			// write their FITS files in that order.
 			if (ReadKey("ROWORDER", rowOrder))
 			{
-				topDown = (rowOrder == "TOP-DOWN");
+				bottomUp = (rowOrder == "BOTTOM-UP");
 			}
+
+			if (!bottomUp)
+				ZTRACE_RUNTIME("FITS file is top-down");
+			else
+				ZTRACE_RUNTIME("FITS file is bottom-up");
 
 			ReadKey("FILTER", filterName);
 
@@ -464,21 +469,6 @@ bool CFITSReader::Open()
 				}
 
 				CFAPattern = CFAPattern.trimmed();
-
-				//
-				// If the row order is not top-down, then we need to swap the first and second rows of the Bayer matrix
-				// (that is a hack that will work fine for 2x2 Bayer matrices, but will not work for larger matrices)
-				//
-				if (!topDown)
-				{
-					if (CFAPattern.length() == 4)
-					{
-						QString firstRow = CFAPattern.mid(0, 2);
-						QString secondRow = CFAPattern.mid(2, 2);
-						CFAPattern = secondRow + firstRow;
-						ZTRACE_RUNTIME("Row order is bottom up, swapping CFA Pattern rows to get %s", CFAPattern.toUtf8().constData());
-					}
-				}
 
 				if (!CFAPattern.isEmpty())
 				{
@@ -1100,7 +1090,7 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	{
 		if (static_cast<bool>(m_pBitmap))
 		{	
-			if (!topDown)
+			if (bottomUp)
 				lY = m_lHeight - 1 - lY;
 
 			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
