@@ -182,7 +182,7 @@ void CFITSReader::ReadAllKeys()
 		if (strPropagated.isEmpty())
 			strPropagated = "[DATE-OBS][CRPIX1][CRPIX2][CRVAL1][CRVAL2][CTYPE1][CTYPE2][CDELT1][CDELT2]"
 				"[CD1_1][CD2_1][CD1_2][CD2_2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA]"
-				"[SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
+				"[SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS][ROW_ORDER]";
 
 		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
 		for (int i = 1;i<=nKeywords;i++)
@@ -254,6 +254,7 @@ bool CFITSReader::Open()
 		int			lISOSpeed = 0;
 		int			lGain = -1;
 		double		xBayerOffset = 0.0, yBayerOffset = 0.0;
+		QString		rowOrder;
 
 
 		m_bDSI = false;
@@ -365,6 +366,14 @@ bool CFITSReader::Open()
 
 			ReadKey("GAIN", lGain);
 
+			// Attempt to get the row order if present, set whether top-down or bottom-up.
+			// DeepSkyStacker assumes a default of top-down (true) as most astro cameras
+			// write their FITS files in that order.
+			if (ReadKey("ROWORDER", rowOrder))
+			{
+				topDown = (rowOrder == "TOP-DOWN");
+			}
+
 			ReadKey("FILTER", filterName);
 
 			//
@@ -455,6 +464,21 @@ bool CFITSReader::Open()
 				}
 
 				CFAPattern = CFAPattern.trimmed();
+
+				//
+				// If the row order is not top-down, then we need to swap the first and second rows of the Bayer matrix
+				// (that is a hack that will work fine for 2x2 Bayer matrices, but will not work for larger matrices)
+				//
+				if (!topDown)
+				{
+					if (CFAPattern.length() == 4)
+					{
+						QString firstRow = CFAPattern.mid(0, 2);
+						QString secondRow = CFAPattern.mid(2, 2);
+						CFAPattern = secondRow + firstRow;
+						ZTRACE_RUNTIME("Row order is bottom up, swapping CFA Pattern rows to get %s", CFAPattern.toUtf8().constData());
+					}
+				}
 
 				if (!CFAPattern.isEmpty())
 				{
@@ -1075,8 +1099,11 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	try
 	{
 		if (static_cast<bool>(m_pBitmap))
-		{
-				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+		{	
+			if (!topDown)
+				lY = m_lHeight - 1 - lY;
+
+			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
 	}
 	catch (ZException& e)

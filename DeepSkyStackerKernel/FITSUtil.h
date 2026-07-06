@@ -125,6 +125,7 @@ protected:
 	double					m_fBrightnessRatio;
 	bool					m_bDSI;
 	bool	isCompressed{ false };
+	bool topDown{ true };
 
 private :
 	bool	ReadKey(const char * szKey, double & fValue, QString & strComment);
