@@ -1093,8 +1093,7 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 			//
 			// If the FITS file is bottom up, then we need to invert the Y coordinate when writing to the bitmap.
 			//
-			if (bottomUp)
-				lY = m_lHeight - 1 - lY;
+			if (bottomUp) lY = m_lHeight - 1 - lY;
 
 			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
