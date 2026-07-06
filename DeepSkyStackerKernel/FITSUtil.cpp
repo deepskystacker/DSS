@@ -586,6 +586,10 @@ bool CFITSReader::Open()
 					wcsInfo.crpix1, wcsInfo.crpix2, wcsInfo.crval1, wcsInfo.crval2,
 					wcsInfo.cd11, wcsInfo.cd12, wcsInfo.cd21, wcsInfo.cd22);
 			}
+			else
+			{
+				ZTRACE_RUNTIME("WCS information in FITS header was either not found or incomplete.");
+			}
 
 			if (bResult)
 			{
