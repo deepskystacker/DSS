@@ -182,7 +182,7 @@ void CFITSReader::ReadAllKeys()
 		if (strPropagated.isEmpty())
 			strPropagated = "[DATE-OBS][CRPIX1][CRPIX2][CRVAL1][CRVAL2][CTYPE1][CTYPE2][CDELT1][CDELT2]"
 				"[CD1_1][CD2_1][CD1_2][CD2_2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA]"
-				"[SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS][ROW_ORDER]";
+				"[SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
 
 		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
 		for (int i = 1;i<=nKeywords;i++)
@@ -1462,8 +1462,7 @@ bool CFITSWriter::Open()
 			fits_create_img(m_fits, nBitPixels, nAxis, nAxes, &status);
 			if (status == 0)
 			{
-				bResult = true;
-
+				bResult = WriteKey("ROWORDER", "TOP-DOWN", "Row order of the image data");
 				if (m_lISOSpeed)
 					bResult = bResult && WriteKey("ISOSPEED", m_lISOSpeed);
 				if (m_lGain >= 0)
