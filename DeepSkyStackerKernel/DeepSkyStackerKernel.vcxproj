@@ -305,6 +305,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="tracecontrol.cpp" />
+    <ClCompile Include="vibrance.cpp" />
     <ClCompile Include="wcsinfo.cpp" />
   </ItemGroup>
   <ItemGroup>

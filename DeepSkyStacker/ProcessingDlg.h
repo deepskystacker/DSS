@@ -80,11 +80,18 @@ namespace DSS
 		SelectRect* selectRect;
 		DSSRect	selectionRect;
 
+
+		//
+		// Enum to identify the image processing function to be applied to the preview image
+		// the enum values *must* correspond to the tab index of the tab widget in the
+		// ProcessingControls UI
+		//
 		enum class ProcessingFunction
 		{
 			MtfStretch,
 			AsinhStretch,
-			ColourBalance
+			ColourBalance,
+			Vibrance
 		};
 
 		//
@@ -97,11 +104,14 @@ namespace DSS
 		//
 		void zeroAsinHControls();
 		void zeroColourBalanceControls();
+		void zeroVibranceControls();
+
 		inline void zeroAdjustmentControls()
 		{
+			zeroMtfControls();
 			zeroAsinHControls();
 			zeroColourBalanceControls();
-			zeroMtfControls();
+			zeroVibranceControls();
 		}
 
 		void connectSignalsToSlots();
@@ -155,6 +165,8 @@ namespace DSS
 		float greenShift{ 0.0f };	// Green channel shift value
 		float blueShift{ 0.0f };	// Blue channel shift value
 
+		float vibranceFactor{ 0.0f };	// Vibrance factor value
+
 		bool preview{ true };		// Whether to show a preview of the processed image
 
 		//
@@ -193,6 +205,12 @@ namespace DSS
 		// is adjusting the MTF controls.
 		//
 		QTimer mtfSliderTimer;
+
+		// 
+		// Timer for the Vibrance control, to avoid excessive processing of the preview image when the user is
+		// adjusting the Vibrance slider.
+		//
+		QTimer vibranceTimer;
 
 		//
 		// The DeepStack object used for the preview image and histogram, created by the doPreview() method
@@ -369,6 +387,7 @@ namespace DSS
 		}
 
 		void zeroMtfControls();
+
 		void previewChanged(Qt::CheckState state)
 		{
 			switch (state)
@@ -382,16 +401,7 @@ namespace DSS
 			}
 			if (preview)
 			{
-				if (controls->tabWidget->currentWidget() == controls->asinhStretchTab)
-				{
-					// Apply the stretch asynchronously to the preview image.
-					emit onPreview(ProcessingFunction::AsinhStretch);
-				}
-				if (controls->tabWidget->currentWidget() == controls->colourBalanceTab)
-				{
-					// Apply the adjustment asynchronously to the preview image.
-					emit onPreview(ProcessingFunction::ColourBalance);
-				}
+				emit onPreview(static_cast<ProcessingFunction>(controls->tabWidget->currentIndex()));
 			}
 		}
 		
@@ -437,8 +447,23 @@ namespace DSS
 				// Apply the adjustment asynchronously to the preview image.
 				emit onPreview(ProcessingFunction::ColourBalance);
 			}
-			else controls->cbApply->setEnabled(true);
+			else controls->vbApply->setEnabled(true);
 		}
+
+		void vibranceSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 99, to a shift value between 0.0 and 0.99
+			//
+			vibranceFactor = (static_cast<float>(value) / 100.0f);
+			if (preview)
+			{
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::Vibrance);
+			}
+			else controls->vbApply->setEnabled(true);
+		}
+
 
 		void mtfRedGradientSliderMoved();
 		void mtfGreenGradientSliderMoved();
@@ -474,20 +499,7 @@ namespace DSS
 		{
 			if (preview)
 			{
-				switch (index)
-				{
-				case 0: // MTF stretch tab
-					emit onPreview(ProcessingFunction::MtfStretch);
-					break;
-				case 1:	// Asinh stretch tab
-					emit onPreview(ProcessingFunction::AsinhStretch);
-					break;
-				case 2: // Colour balance tab
-					emit onPreview(ProcessingFunction::ColourBalance);
-					break;
-				default:
-					break;
-				}
+				emit onPreview(static_cast<ProcessingFunction>(index));
 			}
 		}
 

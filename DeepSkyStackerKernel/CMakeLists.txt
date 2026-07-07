@@ -217,6 +217,7 @@ set(Source_Files
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
+	"vibrance.cpp"
     "wcsinfo.cpp"
     "Workspace.cpp"
 )

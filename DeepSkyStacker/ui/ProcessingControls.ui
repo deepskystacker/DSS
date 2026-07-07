@@ -44,7 +44,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="mtfStretchTab">
          <attribute name="title">
@@ -762,7 +762,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="redSlider">
             <property name="maximumSize">
              <size>
-              <width>400</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -811,7 +811,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="greenSlider">
             <property name="maximumSize">
              <size>
-              <width>400</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -860,7 +860,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="blueSlider">
             <property name="maximumSize">
              <size>
-              <width>400</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -929,6 +929,112 @@ Right-click to change Autostretch parameters</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="vibranceTab">
+         <attribute name="title">
+          <string>Vibrance</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <spacer name="verticalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>7</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QSlider" name="vibrance">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TickPosition::TicksBothSides</enum>
+              </property>
+              <property name="tickInterval">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="vibranceLabel">
+              <property name="minimumSize">
+               <size>
+                <width>25</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string notr="true">0</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::TextFormat::PlainText</enum>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>176</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <spacer name="horizontalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="vbApply">
+              <property name="text">
+               <string comment="IDC_PROCESS">Apply</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_10">
               <property name="orientation">
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
@@ -1112,5 +1218,22 @@ Right-click to change Autostretch parameters</string>
  <resources>
   <include location="../resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>vibrance</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>vibranceLabel</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>219</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

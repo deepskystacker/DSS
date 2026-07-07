@@ -41,9 +41,11 @@ Changes for DeepSkyStacker 6.2.2 Beta 2
 6.  Reduce limit for star detection to 0.00050 (was 0.000750).  This means that more very faint stars can be found
     in images with very short exposures.
 
-7.  If the ROW_ORDER in a FITS file is BOTTOM-UP, invert the image as it is being read, and if a CFAPATTERN is 
-    supplied, adjust it so the image will de-bayer correctly by swapping the two halves of any four byte CFAPATTERN.
-    For example: RGGB will be converted to GBRG.
+7.  If the ROW_ORDER keyword in a FITS file header specifies BOTTOM-UP, invert the image as it is being read.
+
+8.  Implement an experimental Vibrance tab for the processing pane.   It selectively boosts the intensity of muted, less
+    saturated colours in the image.  You would typically use this after Applying an MTF stretch, as that tends to desaturate
+    colours in the image.
 
 Changes for DeepSkyStacker 6.2.1
 ================================

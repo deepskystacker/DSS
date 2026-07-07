@@ -100,7 +100,8 @@ namespace DSS
 		redSliderTimer{ this },
 		greenSliderTimer{ this },
 		blueSliderTimer{ this },
-		mtfSliderTimer{ this }
+		mtfSliderTimer{ this },
+		vibranceTimer{ this }
 	{
 		ZFUNCTRACE_RUNTIME();
 		setupUi(this);
@@ -117,7 +118,8 @@ namespace DSS
 
 		redSliderTimer.setSingleShot(true);		// Fires only once after started
 		greenSliderTimer.setSingleShot(true);	// Fires only once after started
-		blueSliderTimer.setSingleShot(true);		// Fires only once after started	
+		blueSliderTimer.setSingleShot(true);	// Fires only once after started
+		vibranceTimer.setSingleShot(true);		// Fires only once after started
 
 		mtfSliderTimer.setSingleShot(true);
 
@@ -231,6 +233,18 @@ namespace DSS
 		controls->blueSlider->setSliderPosition(value);
 	}
 
+	void ProcessingDlg::zeroVibranceControls()
+	{
+		const QSignalBlocker vibranceBlocker(controls->vibrance);
+		vibranceFactor = 0.0f;
+		//
+		// Set the slider to zero 
+		//
+		controls->vibrance->setValue(0);
+		controls->vibrance->setSliderPosition(0);
+		controls->vibranceLabel->setNum(0);
+	}
+
 	void ProcessingDlg::setAdjustmentControlDefaults()
 	{
 		const QSignalBlocker betaSpinBoxBlocker(controls->asinhStretchSpinBox);
@@ -320,6 +334,46 @@ namespace DSS
 		connect(controls->redoButton, &QPushButton::pressed, this, &ProcessingDlg::onRedo);
 		connect(controls->resetButton, &QPushButton::pressed, this, &ProcessingDlg::onReset);
 
+		//
+		// If the user changes the MTF stretch settings, update the controls to match and process the change
+		//
+		connect(controls->mtfRedGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfRedGradientSliderMoved);
+		connect(controls->mtfGreenGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfGreenGradientSliderMoved);
+		connect(controls->mtfBlueGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfBlueGradientSliderMoved);
+		connect(controls->mtfRedGradient, &QMTFSlider::sliderClicked, this, [this]() {
+			controls->mtfGreenGradient->clearSelectedHandle();
+			controls->mtfBlueGradient->clearSelectedHandle();
+			activeMtfChannel = 0;
+			syncMtfSpinBoxesFromModel();
+			});
+		connect(controls->mtfGreenGradient, &QMTFSlider::sliderClicked, this, [this]() {
+			controls->mtfRedGradient->clearSelectedHandle();
+			controls->mtfBlueGradient->clearSelectedHandle();
+			activeMtfChannel = 1;
+			syncMtfSpinBoxesFromModel();
+			});
+		connect(controls->mtfBlueGradient, &QMTFSlider::sliderClicked, this, [this]() {
+			controls->mtfRedGradient->clearSelectedHandle();
+			controls->mtfGreenGradient->clearSelectedHandle();
+			activeMtfChannel = 2;
+			syncMtfSpinBoxesFromModel();
+			});
+
+		connect(controls->mtfShadowsSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfShadowsSpinBoxChanged);
+		connect(controls->mtfMidtonesSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfMidtonesSpinBoxChanged);
+		connect(controls->mtfHighlightsSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfHighlightsSpinBoxChanged);
+
+		connect(&mtfSliderTimer, &QTimer::timeout, this, [this]() {
+			if (preview) emit onPreview(ProcessingFunction::MtfStretch);
+			else
+			{
+				controls->mtfApply->setEnabled(true);
+				showHistogram();
+			}
+			});
+
+		connect(controls->mtfApply, &QPushButton::pressed, this, &ProcessingDlg::mtfApplyPressed);
+
 		connect(controls->mtfLinkButton, &QPushButton::toggled, this, &ProcessingDlg::onLinkToggled);
 		connect(controls->mtfAutostretchButton, &QPushButton::clicked, this, &ProcessingDlg::onAutostretch);
 		controls->mtfAutostretchButton->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -349,46 +403,9 @@ namespace DSS
 
 		connect(controls->cbApply, &QPushButton::pressed, this, &ProcessingDlg::cbApplyPressed);
 
-		//
-		// If the user changes the MTF stretch settings, update the controls to match and process the change
-		//
-		connect(controls->mtfRedGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfRedGradientSliderMoved);
-		connect(controls->mtfGreenGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfGreenGradientSliderMoved);
-		connect(controls->mtfBlueGradient, &QMTFSlider::sliderMoved, this, &ProcessingDlg::mtfBlueGradientSliderMoved);
-		connect(controls->mtfRedGradient, &QMTFSlider::sliderClicked, this, [this]() {
-			controls->mtfGreenGradient->clearSelectedHandle();
-			controls->mtfBlueGradient->clearSelectedHandle();
-			activeMtfChannel = 0;
-			syncMtfSpinBoxesFromModel();
-		});
-		connect(controls->mtfGreenGradient, &QMTFSlider::sliderClicked, this, [this]() {
-			controls->mtfRedGradient->clearSelectedHandle();
-			controls->mtfBlueGradient->clearSelectedHandle();
-			activeMtfChannel = 1;
-			syncMtfSpinBoxesFromModel();
-		});
-		connect(controls->mtfBlueGradient, &QMTFSlider::sliderClicked, this, [this]() {
-			controls->mtfRedGradient->clearSelectedHandle();
-			controls->mtfGreenGradient->clearSelectedHandle();
-			activeMtfChannel = 2;
-			syncMtfSpinBoxesFromModel();
-		});
-
-		connect(controls->mtfShadowsSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfShadowsSpinBoxChanged);
-		connect(controls->mtfMidtonesSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfMidtonesSpinBoxChanged);
-		connect(controls->mtfHighlightsSpinBox, &QDoubleSpinBox::valueChanged, this, &ProcessingDlg::mtfHighlightsSpinBoxChanged);
-
-		connect(&mtfSliderTimer, &QTimer::timeout, this, [this]() {
-			if (preview) emit onPreview(ProcessingFunction::MtfStretch);
-			else
-			{
-				controls->mtfApply->setEnabled(true);
-				showHistogram();
-			}
-		});
-
-		connect(controls->mtfApply, &QPushButton::pressed, this, &ProcessingDlg::mtfApplyPressed);
-
+		connect(controls->vibrance, &QSlider::valueChanged, this, [this]() { vibranceTimer.start(200);  });
+		connect(&vibranceTimer, &QTimer::timeout, this, [this]() { emit vibranceSliderChanged(controls->vibrance->value()); });
+		
 		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
 
 		connect(controls->showClipping, &QCheckBox::checkStateChanged,
@@ -1268,7 +1285,7 @@ namespace DSS
 
 		case ProcessingFunction::AsinhStretch:
 			//
-			// Apply the ASinH stretch to the image and set the stretch values to zero
+			// Apply the ASinH stretch to the image
 			//
 			bitmap.asinhStretch(asinhBeta, asinhBP, asinhHWLuminance);
 			break;
@@ -1276,9 +1293,15 @@ namespace DSS
 		case ProcessingFunction::ColourBalance:
 			//
 			// Adjust the colour balance of the image and
-			// reset the colour balance shifts to zero
 			//
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
+			break;
+
+		case ProcessingFunction::Vibrance:
+			//
+			// Adjust the image vibrance
+			//
+			bitmap.adjustVibrance(vibranceFactor);
 			break;
 
 		default:
@@ -1336,6 +1359,13 @@ namespace DSS
 			// Enable the Apply button for the Colour Balance controls
 			//
 			QMetaObject::invokeMethod(controls->cbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
+			break;
+
+		case ProcessingFunction::Vibrance:
+			//
+			// Enable the Apply button for the Vibrance control
+			//
+			QMetaObject::invokeMethod(controls->vbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
 			break;
 
 		default:
@@ -1413,6 +1443,14 @@ namespace DSS
 				.arg(redShift, 0, 'f', 2).arg(greenShift, 0, 'f', 2).arg(blueShift, 0, 'f', 2));
 
 			zeroColourBalanceControls();
+			break;
+
+		case ProcessingFunction::Vibrance:
+			//
+			// Adjust the image vibrance and set the vibrance factor to zero
+			//
+			bitmap.adjustVibrance(vibranceFactor);
+			zeroVibranceControls();
 			break;
 
 		default:
