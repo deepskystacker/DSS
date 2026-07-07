@@ -18,13 +18,13 @@
     <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
-       <width>430</width>
+       <width>450</width>
        <height>370</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>430</width>
+       <width>450</width>
        <height>370</height>
       </size>
      </property>
@@ -581,7 +581,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="asinhStretchSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>400</width>
               <height>16777215</height>
              </size>
             </property>
@@ -652,7 +652,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="asinhBPSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>400</width>
               <height>16777215</height>
              </size>
             </property>
@@ -762,7 +762,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="redSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>400</width>
               <height>16777215</height>
              </size>
             </property>
@@ -811,7 +811,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="greenSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>400</width>
               <height>16777215</height>
              </size>
             </property>
@@ -860,7 +860,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="blueSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>400</width>
               <height>16777215</height>
              </size>
             </property>
