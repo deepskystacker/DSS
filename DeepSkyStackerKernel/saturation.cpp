@@ -37,91 +37,17 @@
 #include "DSSTools.h"
 #include "Multitask.h"
 #include "StackedBitmap.h"
+#include "ColorHelpers.h"
 #include <algorithm>
-
-namespace
-{
-	static double hue2rgb(double p, double q, double t)
-	{
-		if (t < 0.0) t += 1.0;
-		if (t > 1.0) t -= 1.0;
-		if (t < 1.0 / 6.0) return p + (q - p) * 6.0 * t;
-		if (t < 1.0 / 2.0) return q;
-		if (t < 2.0 / 3.0) return p + (q - p) * (2.0 / 3.0 - t) * 6.0;
-		return p;
-	}
-
-	//
-	// Convert RGB values to HSL.
-	// r, g, b expected in [0, 1].
-	// 
-	// Returns h in degrees [0,360), s and l in [0,1].
-	//
-	std::tuple<double, double, double> rgbToHsl(double r, double g, double b)
-	{
-		double maxval = std::max({ r, g, b });
-		double minval = std::min({ r, g, b });
-		double l = (maxval + minval) * 0.5;
-		double h = 0.0;
-		double s = 0.0;
-
-		if (maxval != minval) {
-			double diff = maxval - minval;
-			s = (l > 0.5) ? (diff / (2.0 - maxval - minval)) : (diff / (maxval + minval));
-
-			if (maxval == r) {
-				h = (g - b) / diff + (g < b ? 6.0 : 0.0);
-			}
-			else if (maxval == g) {
-				h = (b - r) / diff + 2.0;
-			}
-			else { // maxval == b
-				h = (r - g) / diff + 4.0;
-			}
-			h *= 60.0; // convert to degrees
-		}
-
-		return { h, s, l };
-	}
-
-	//
-	// Convert HSL values to RGB.
-	// h expected in degrees (any real value, will be wrapped to [0,360)),
-	// s and l in [0,1].
-	// 
-	// Returns r, g, b in [0,1].
-	// 	
-	std::tuple<double, double, double> hslToRgb(double h, double s, double l)
-	{
-		double r, g, b;
-		if (s == 0.0)
-		{
-			r = g = b = l; // achromatic
-		}
-		else
-		{
-			// normalize hue to [0,1)
-			double hk = std::fmod(h, 360.0) / 360.0;
-			if (hk < 0.0) hk += 1.0;
-
-			double q = (l < 0.5) ? (l * (1.0 + s)) : (l + s - l * s);
-			double p = 2.0 * l - q;
-			r = hue2rgb(p, q, hk + 1.0 / 3.0);
-			g = hue2rgb(p, q, hk);
-			b = hue2rgb(p, q, hk - 1.0 / 3.0);
-		}
-		return { r, g, b };
-	}
-}
 
 namespace DSS
 {
-	void StackedBitmap::adjustVibrance(float vibranceFactor)
+	void StackedBitmap::adjustSaturation(float saturationShift, float vibranceFactor)
 	{
 		//
-		// Nothing to do if this is a monochrome image or the factor is zero
+		// Nothing to do if this is a monochrome image or the factors are zero
 		//
-		if (m_bMonochrome || 0.0f == vibranceFactor)
+		if (m_bMonochrome || (0.0f == saturationShift && 0.0f == vibranceFactor))
 			return;
 
 		float* buf[3] = {
@@ -135,22 +61,35 @@ namespace DSS
 
 		std::int64_t i, n = m_lWidth * m_lHeight;
 
-#pragma omp parallel for schedule(static) if (nrProcessors > 1)
+#pragma omp parallel for schedule(static) if (nrProcessors > 1) shared(buf, n, saturationShift, vibranceFactor) private(i)
 		for (i = 0; i < n; i++)
 		{
 			double R = buf[0][i], G = buf[1][i], B = buf[2][i];
 			auto [h, s, l] = rgbToHsl(R, G, B);
+			auto adjustedSaturation{ s };
 			//
+			// Initial step is to adjust overall saturation if asked to do so
+			//
+			if (0.0f != saturationShift)
+			{
+				float shiftVal = saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift;
+				adjustedSaturation = std::clamp(std::pow(s, shiftVal), 0.0, 1.0);
+			}
+
+			//
+			// Adjust the vibrance, which is a more subtle adjustment that increases saturation
+			// for less saturated pixels.
+			// 
 			// Create a mask so we only increase saturation for pixels that are
 			// not already highly saturated
 			//
-			double mask = 1.0 - s;
+			double mask = 1.0 - adjustedSaturation;
 
 			//
 			// Calculate the adjusted saturation based on the vibrance factor and the mask
 			// and clip it to the range [0.0, 1.0]
 			//
-			double adjustedSaturation = s * (1.0 + mask * vibranceFactor);
+			adjustedSaturation = adjustedSaturation * (1.0 + mask * vibranceFactor);
 			adjustedSaturation = std::clamp(adjustedSaturation, 0.0, 1.0);
 
 			// Convert back to RGB with the adjusted saturation
