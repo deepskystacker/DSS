@@ -27,7 +27,7 @@
 <context>
     <name>DSS::ProcessingDlg</name>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="822"/>
+        <location filename="../ProcessingDlg.cpp" line="849"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
