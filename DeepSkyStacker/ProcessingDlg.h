@@ -91,7 +91,7 @@ namespace DSS
 			MtfStretch,
 			AsinhStretch,
 			ColourBalance,
-			Vibrance
+			Saturation,
 		};
 
 		//
@@ -104,14 +104,14 @@ namespace DSS
 		//
 		void zeroAsinHControls();
 		void zeroColourBalanceControls();
-		void zeroVibranceControls();
+		void zeroSaturationControls();
 
 		inline void zeroAdjustmentControls()
 		{
 			zeroMtfControls();
 			zeroAsinHControls();
 			zeroColourBalanceControls();
-			zeroVibranceControls();
+			zeroSaturationControls();
 		}
 
 		void connectSignalsToSlots();
@@ -165,6 +165,7 @@ namespace DSS
 		float greenShift{ 0.0f };	// Green channel shift value
 		float blueShift{ 0.0f };	// Blue channel shift value
 
+		float saturationShift{ 0.0f };	// Saturation shift value
 		float vibranceFactor{ 0.0f };	// Vibrance factor value
 
 		bool preview{ true };		// Whether to show a preview of the processed image
@@ -207,9 +208,10 @@ namespace DSS
 		QTimer mtfSliderTimer;
 
 		// 
-		// Timer for the Vibrance control, to avoid excessive processing of the preview image when the user is
-		// adjusting the Vibrance slider.
+		// Timers for the Saturation and Vibrance controls, to avoid excessive processing of the preview image
+		// when the user is adjusting the Saturation and Vibrance sliders.
 		//
+		QTimer saturationTimer;
 		QTimer vibranceTimer;
 
 		//
@@ -447,7 +449,21 @@ namespace DSS
 				// Apply the adjustment asynchronously to the preview image.
 				emit onPreview(ProcessingFunction::ColourBalance);
 			}
-			else controls->vbApply->setEnabled(true);
+			else controls->saApply->setEnabled(true);
+		}
+
+		void saturationSliderChanged(int value)
+		{
+			//
+			// Save slider value, which is between -10 and 50
+			//
+			saturationShift = (static_cast<float>(value));
+			if (preview)
+			{
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::Saturation);
+			}
+			else controls->saApply->setEnabled(true);
 		}
 
 		void vibranceSliderChanged(int value)
@@ -459,9 +475,9 @@ namespace DSS
 			if (preview)
 			{
 				// Apply the adjustment asynchronously to the preview image.
-				emit onPreview(ProcessingFunction::Vibrance);
+				emit onPreview(ProcessingFunction::Saturation);
 			}
-			else controls->vbApply->setEnabled(true);
+			else controls->saApply->setEnabled(true);
 		}
 
 

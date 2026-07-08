@@ -101,6 +101,7 @@ namespace DSS
 		greenSliderTimer{ this },
 		blueSliderTimer{ this },
 		mtfSliderTimer{ this },
+		saturationTimer{ this },
 		vibranceTimer{ this }
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -119,6 +120,7 @@ namespace DSS
 		redSliderTimer.setSingleShot(true);		// Fires only once after started
 		greenSliderTimer.setSingleShot(true);	// Fires only once after started
 		blueSliderTimer.setSingleShot(true);	// Fires only once after started
+		saturationTimer.setSingleShot(true);	// Fires only once after started
 		vibranceTimer.setSingleShot(true);		// Fires only once after started
 
 		mtfSliderTimer.setSingleShot(true);
@@ -233,13 +235,18 @@ namespace DSS
 		controls->blueSlider->setSliderPosition(value);
 	}
 
-	void ProcessingDlg::zeroVibranceControls()
+	void ProcessingDlg::zeroSaturationControls()
 	{
+		const QSignalBlocker saturationBlocker(controls->saturation);
 		const QSignalBlocker vibranceBlocker(controls->vibrance);
+		saturationShift = 0.0f;
 		vibranceFactor = 0.0f;
 		//
-		// Set the slider to zero 
+		// Set the sliders to zero 
 		//
+		controls->saturation->setValue(0);
+		controls->saturation->setSliderPosition(0);
+		controls->saturationLabel->setNum(0);
 		controls->vibrance->setValue(0);
 		controls->vibrance->setSliderPosition(0);
 		controls->vibranceLabel->setNum(0);
@@ -403,9 +410,11 @@ namespace DSS
 
 		connect(controls->cbApply, &QPushButton::pressed, this, &ProcessingDlg::cbApplyPressed);
 
+		connect(controls->saturation, &QSlider::valueChanged, this, [this]() { saturationTimer.start(200);  });
+		connect(&saturationTimer, &QTimer::timeout, this, [this]() { emit saturationSliderChanged(controls->saturation->value()); });
 		connect(controls->vibrance, &QSlider::valueChanged, this, [this]() { vibranceTimer.start(200);  });
 		connect(&vibranceTimer, &QTimer::timeout, this, [this]() { emit vibranceSliderChanged(controls->vibrance->value()); });
-		
+
 		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
 
 		connect(controls->showClipping, &QCheckBox::checkStateChanged,
@@ -821,11 +830,12 @@ namespace DSS
 
 			//
 			// Technically this doesn't belong here, but it is a very convenient place to 
-			// enable/disable the colour balance controls based on whether the image is
+			// enable/disable the colour balance and saturation controls based on whether the image is
 			// is monochrome or not.
 			//
 			bool colour{ !bmp.isMonochrome() };
 			controls->colourBalanceTab->setEnabled(colour);
+			controls->saturationTab->setEnabled(colour);
 
 			isoSpeed = bmp.GetISOSpeed();
 			gain = bmp.GetGain();
@@ -1297,11 +1307,11 @@ namespace DSS
 			bitmap.adjustColourBalance(redShift, greenShift, blueShift);
 			break;
 
-		case ProcessingFunction::Vibrance:
+		case ProcessingFunction::Saturation:
 			//
-			// Adjust the image vibrance
+			// Adjust the image saturation and vibrance
 			//
-			bitmap.adjustVibrance(vibranceFactor);
+			bitmap.adjustSaturation(saturationShift, vibranceFactor);
 			break;
 
 		default:
@@ -1361,11 +1371,11 @@ namespace DSS
 			QMetaObject::invokeMethod(controls->cbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
 			break;
 
-		case ProcessingFunction::Vibrance:
+		case ProcessingFunction::Saturation:
 			//
 			// Enable the Apply button for the Vibrance control
 			//
-			QMetaObject::invokeMethod(controls->vbApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
+			QMetaObject::invokeMethod(controls->saApply, "setEnabled", Qt::ConnectionType::AutoConnection, Q_ARG(bool, true));
 			break;
 
 		default:
@@ -1445,12 +1455,12 @@ namespace DSS
 			zeroColourBalanceControls();
 			break;
 
-		case ProcessingFunction::Vibrance:
+		case ProcessingFunction::Saturation:
 			//
-			// Adjust the image vibrance and set the vibrance factor to zero
+			// Adjust the image satuation and vibrance and set the adjustments to zero
 			//
-			bitmap.adjustVibrance(vibranceFactor);
-			zeroVibranceControls();
+			bitmap.adjustSaturation(saturationShift, vibranceFactor);
+			zeroSaturationControls();
 			break;
 
 		default:

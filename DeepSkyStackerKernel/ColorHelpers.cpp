@@ -146,6 +146,33 @@ void CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, d
 }
 #endif
 
+double ToRGB1(double rm1, double rm2, double rh)
+{
+	if (rh > 360.0)
+		rh -= 360.0;
+	else if (rh < 0.0)
+		rh += 360.0;
+
+	if (rh < 60.0)
+		rm1 = rm1 + (rm2 - rm1) * rh / 60.0;
+	else if (rh < 180.0)
+		rm1 = rm2;
+	else if (rh < 240.0)
+		rm1 = rm1 + (rm2 - rm1) * (240. - rh) / 60.0;
+
+	return rm1 * 255.0;
+}
+
+double hue2rgb(double p, double q, double t)
+{
+	if (t < 0.0) t += 1.0;
+	if (t > 1.0) t -= 1.0;
+	if (t < 1.0 / 6.0) return p + (q - p) * 6.0 * t;
+	if (t < 1.0 / 2.0) return q;
+	if (t < 2.0 / 3.0) return p + (q - p) * (2.0 / 3.0 - t) * 6.0;
+	return p;
+}
+
 void ToHSL(double Red, double Green, double Blue, double& H, double& S, double& L)
 {
 	double minval = std::min(Red, std::min(Green, Blue));
@@ -176,6 +203,39 @@ void ToHSL(double Red, double Green, double Blue, double& H, double& S, double& 
 	}
 }
 
+//
+// Convert RGB values to HSL.
+// r, g, b expected in [0, 1].
+// 
+// Returns h in degrees [0,360), s and l in [0,1].
+//
+std::tuple<double, double, double> rgbToHsl(double r, double g, double b)
+{
+	double maxval = std::max({ r, g, b });
+	double minval = std::min({ r, g, b });
+	double l = (maxval + minval) * 0.5;
+	double h = 0.0;
+	double s = 0.0;
+
+	if (maxval != minval) {
+		double diff = maxval - minval;
+		s = (l > 0.5) ? (diff / (2.0 - maxval - minval)) : (diff / (maxval + minval));
+
+		if (maxval == r) {
+			h = (g - b) / diff + (g < b ? 6.0 : 0.0);
+		}
+		else if (maxval == g) {
+			h = (b - r) / diff + 2.0;
+		}
+		else { // maxval == b
+			h = (r - g) / diff + 4.0;
+		}
+		h *= 60.0; // convert to degrees
+	}
+
+	return { h, s, l };
+}
+
 void ToRGB(double H, double S, double L, double& Red, double& Green, double& Blue)
 {
 	if (S == 0.0)
@@ -198,21 +258,33 @@ void ToRGB(double H, double S, double L, double& Red, double& Green, double& Blu
 	}
 }
 
-double ToRGB1(double rm1, double rm2, double rh)
+//
+// Convert HSL values to RGB.
+// h expected in degrees (any real value, will be wrapped to [0,360)),
+// s and l in [0,1].
+// 
+// Returns r, g, b in [0,1].
+// 	
+std::tuple<double, double, double> hslToRgb(double h, double s, double l)
 {
-	if (rh > 360.0)
-		rh -= 360.0;
-	else if (rh < 0.0)
-		rh += 360.0;
+	double r, g, b;
+	if (s == 0.0)
+	{
+		r = g = b = l; // achromatic
+	}
+	else
+	{
+		// normalize hue to [0,1)
+		double hk = std::fmod(h, 360.0) / 360.0;
+		if (hk < 0.0) hk += 1.0;
 
-	if (rh < 60.0)
-		rm1 = rm1 + (rm2 - rm1) * rh / 60.0;
-	else if (rh < 180.0)
-		rm1 = rm2;
-	else if (rh < 240.0)
-		rm1 = rm1 + (rm2 - rm1) * (240. - rh) / 60.0;
-
-	return rm1 * 255.0;
+		double q = (l < 0.5) ? (l * (1.0 + s)) : (l + s - l * s);
+		double p = 2.0 * l - q;
+		r = hue2rgb(p, q, hk + 1.0 / 3.0);
+		g = hue2rgb(p, q, hk);
+		b = hue2rgb(p, q, hk - 1.0 / 3.0);
+	}
+	return { r, g, b };
 }
 
 // --- Don't this this is used ---

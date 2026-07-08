@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.2.2 Beta 2
+Welcome to DeepSkyStacker 6.2.2 Beta 3
 ======================================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.2.2 Beta 2
+Changes for DeepSkyStacker 6.2.2 Beta 3
 =======================================
 
 1.  Bug fix: When light frames with extremely short exposures were registered, the star intensity values in the ".info.txt"
@@ -24,10 +24,8 @@ Changes for DeepSkyStacker 6.2.2 Beta 2
 
 2.  Decrease the sensitivity of arrow keys and page-up/page-down keys for the MTF sliders and spin boxes by a factor of
     one hundred.
-
     Set the spin boxes to be accelerated, so the spin box will increase/decrease the value faster the
     longer you hold the button/key down.
-
     Turn off keyboard tracking for the spin boxes so the values are only read when the entry field loses focus.
 
 3.  Improve mouse wheel handling for MTF slider controls so that the slider movement is proportional to the amount
@@ -42,10 +40,11 @@ Changes for DeepSkyStacker 6.2.2 Beta 2
     in images with very short exposures.
 
 7.  If the ROW_ORDER keyword in a FITS file header specifies BOTTOM-UP, invert the image as it is being read.
+    Write FITS files with the ROWORDER keyword set to TOP-DOWN.
 
-8.  Implement an experimental Vibrance tab for the processing pane.   It selectively boosts the intensity of muted, less
-    saturated colours in the image.  You would typically use this after Applying an MTF stretch, as that tends to desaturate
-    colours in the image.
+8.  Implement an Saturation tab for the processing pane.   It provides controls to adjust both the colour saturation and
+    also the vibrance which selectively boosts the intensity of muted, less saturated colours in the image.
+    You would typically use this after Applying an MTF stretch, as that tends to desaturate colours in the image.
 
 Changes for DeepSkyStacker 6.2.1
 ================================

@@ -208,12 +208,13 @@ namespace DSS
 		void deNormalise();
 
 		//
-		// Adjust vibrance allows low colour saturation areas of the image to have the colour saturation boosted.
+		// Adjust saturation allows adjustment of both overall colour saturation and also vibrance which allows
+		// low colour saturation areas of the image to have the colour saturation boosted.
 		// As with the other adjustments, the image data is expected to have been normalised to the range [0.0, 1.0]
 		//
-		// Source is in vibrance.cpp
+		// Source is in saturation.cpp
 		//
-		void adjustVibrance(float value);
+		void adjustSaturation(float saturation, float vibrance);
 
 		// 
 		//
