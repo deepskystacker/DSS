@@ -209,6 +209,7 @@ set(Source_Files
     "RegisterCore.cpp"
     "RegisterEngine.cpp"
     "RunningStackingEngine.cpp"
+	"saturation.cpp"
     "Settings.cpp"
     "StackedBitmap.cpp"
     "StackingEngine.cpp"
@@ -217,7 +218,6 @@ set(Source_Files
     "TaskInfo.cpp"
     "TIFFUtil.cpp"
     "tracecontrol.cpp"
-	"vibrance.cpp"
     "wcsinfo.cpp"
     "Workspace.cpp"
 )
