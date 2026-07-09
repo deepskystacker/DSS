@@ -534,9 +534,6 @@ namespace DSS
 
 			updateControls();
 
-			//
-			// Do this before preview stuff otherwise the dirty flag doesn't get reset if preview is true
-			// 
 			setDirty(false);
 
 			processAndShow();
@@ -639,9 +636,6 @@ namespace DSS
 
 					updateControls();
 
-					//
-					// Do this before preview stuff otherwise the dirty flag doesn't get reset if preview is true
-					// 
 					setDirty(false);
 
 					processAndShow();
