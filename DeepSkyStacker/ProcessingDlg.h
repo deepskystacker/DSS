@@ -449,7 +449,7 @@ namespace DSS
 				// Apply the adjustment asynchronously to the preview image.
 				emit onPreview(ProcessingFunction::ColourBalance);
 			}
-			else controls->saApply->setEnabled(true);
+			else controls->cbApply->setEnabled(true);
 		}
 
 		void saturationSliderChanged(int value)
@@ -491,6 +491,8 @@ namespace DSS
 
 		void onMtfAutostretchSettings();
 
+		void mtfApplyPressed();
+
 		void asinhApplyPressed()
 		{
 			controls->asinhApply->setEnabled(false);
@@ -503,7 +505,11 @@ namespace DSS
 			emit onApply(ProcessingFunction::ColourBalance);
 		}
 
-		void mtfApplyPressed();
+		void saApplyPressed()
+		{
+			controls->saApply->setEnabled(false);
+			emit onApply(ProcessingFunction::Saturation);
+		}
 
 		//
 		// Triggered when the user changes the state of the "Show Clipping" checkbox, which
@@ -513,10 +519,27 @@ namespace DSS
 
 		void tabChanged(int index)
 		{
-			if (preview)
+			switch (index)
 			{
-				emit onPreview(static_cast<ProcessingFunction>(index));
+			case 0:
+				controls->mtfApply->setEnabled(false);
+				break;
+			case 1:
+				controls->asinhApply->setEnabled(false);
+				break;
+			case 2:
+				controls->cbApply->setEnabled(false);
+				break;
+			case 3:
+				controls->saApply->setEnabled(false);
+				break;
+			default:
+				break;
 			}
+			//if (preview)
+			//{
+			//	emit onPreview(static_cast<ProcessingFunction>(index));
+			//}
 		}
 
 #if (0)

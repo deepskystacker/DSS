@@ -415,6 +415,8 @@ namespace DSS
 		connect(controls->vibrance, &QSlider::valueChanged, this, [this]() { vibranceTimer.start(200);  });
 		connect(&vibranceTimer, &QTimer::timeout, this, [this]() { emit vibranceSliderChanged(controls->vibrance->value()); });
 
+		connect(controls->saApply, &QPushButton::pressed, this, &ProcessingDlg::saApplyPressed);
+
 		connect(controls->previewCB, &QCheckBox::checkStateChanged, this, &ProcessingDlg::previewChanged);
 
 		connect(controls->showClipping, &QCheckBox::checkStateChanged,
@@ -533,18 +535,12 @@ namespace DSS
 			updateControls();
 
 			//
-			// Do this before the preview stuff otherwise the dirty flag isn't cleared if preview is active
+			// Do this before preview stuff otherwise the dirty flag doesn't get reset if preview is true
 			// 
 			setDirty(false);
 
-			if (preview)
-			{
-				emit onPreview(ProcessingFunction::MtfStretch);
-			}
-			else
-			{
-				processAndShow();
-			}
+			processAndShow();
+			showHistogram();
 		}
 		else
 		{
@@ -648,15 +644,8 @@ namespace DSS
 					// 
 					setDirty(false);
 
-					if (preview)
-					{
-						onPreview(ProcessingFunction::MtfStretch);
-					}
-					else
-					{
-						processAndShow();
-						showHistogram();
-					}
+					processAndShow();
+					showHistogram();
 				}
 				else
 				{
@@ -1460,6 +1449,8 @@ namespace DSS
 			// Adjust the image satuation and vibrance and set the adjustments to zero
 			//
 			bitmap.adjustSaturation(saturationShift, vibranceFactor);
+			deepStack.setDescription(tr("Saturation: %L1, Vibrance: %L2")
+				.arg(saturationShift, 0, 'f', 0).arg(vibranceFactor, 0, 'f', 2));
 			zeroSaturationControls();
 			break;
 
