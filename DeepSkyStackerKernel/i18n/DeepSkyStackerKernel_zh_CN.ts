@@ -13,48 +13,48 @@
 <context>
     <name>BitmapExt</name>
     <message>
-        <location filename="../BitmapExt.cpp" line="1065"/>
+        <location filename="../BitmapExt.cpp" line="1066"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 文件不存在或格式错误</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1422"/>
+        <location filename="../BitmapExt.cpp" line="1423"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>平均值</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1425"/>
+        <location filename="../BitmapExt.cpp" line="1426"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>中位数</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1428"/>
+        <location filename="../BitmapExt.cpp" line="1429"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>最大值</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1431"/>
+        <location filename="../BitmapExt.cpp" line="1432"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1, 迭代次数 = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1434"/>
+        <location filename="../BitmapExt.cpp" line="1435"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>自适应加权平均 (迭代次数 = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1437"/>
+        <location filename="../BitmapExt.cpp" line="1438"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>熵加权平均</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1440"/>
+        <location filename="../BitmapExt.cpp" line="1441"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>中位数 Kappa-Sigma (Kappa = %1, 迭代次数 = %2)</translation>
@@ -104,7 +104,7 @@
     <name>DSS::Group</name>
     <message>
         <location filename="../group.cpp" line="109"/>
-        <location filename="../StackingEngine.cpp" line="2973"/>
+        <location filename="../StackingEngine.cpp" line="3024"/>
         <location filename="../ImageListModel.cpp" line="684"/>
         <source>Master Dark</source>
         <comment>IDS_TYPE_MASTERDARK</comment>
@@ -112,7 +112,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="111"/>
-        <location filename="../StackingEngine.cpp" line="2984"/>
+        <location filename="../StackingEngine.cpp" line="3035"/>
         <location filename="../ImageListModel.cpp" line="686"/>
         <source>Master Dark Flat</source>
         <comment>IDS_TYPE_MASTERDARKFLAT</comment>
@@ -120,7 +120,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="113"/>
-        <location filename="../StackingEngine.cpp" line="2995"/>
+        <location filename="../StackingEngine.cpp" line="3046"/>
         <location filename="../ImageListModel.cpp" line="688"/>
         <source>Master Flat</source>
         <comment>IDS_TYPE_MASTERFLAT</comment>
@@ -128,7 +128,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="115"/>
-        <location filename="../StackingEngine.cpp" line="2962"/>
+        <location filename="../StackingEngine.cpp" line="3013"/>
         <location filename="../ImageListModel.cpp" line="690"/>
         <source>Master Offset</source>
         <comment>IDS_TYPE_MASTEROFFSET</comment>
@@ -136,7 +136,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="120"/>
-        <location filename="../StackingEngine.cpp" line="2971"/>
+        <location filename="../StackingEngine.cpp" line="3022"/>
         <location filename="../ImageListModel.cpp" line="444"/>
         <location filename="../ImageListModel.cpp" line="695"/>
         <source>Dark</source>
@@ -145,7 +145,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="122"/>
-        <location filename="../StackingEngine.cpp" line="2982"/>
+        <location filename="../StackingEngine.cpp" line="3033"/>
         <location filename="../ImageListModel.cpp" line="454"/>
         <location filename="../ImageListModel.cpp" line="697"/>
         <source>Dark Flat</source>
@@ -154,7 +154,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="124"/>
-        <location filename="../StackingEngine.cpp" line="2993"/>
+        <location filename="../StackingEngine.cpp" line="3044"/>
         <location filename="../ImageListModel.cpp" line="449"/>
         <location filename="../ImageListModel.cpp" line="699"/>
         <source>Flat</source>
@@ -163,7 +163,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="126"/>
-        <location filename="../StackingEngine.cpp" line="2960"/>
+        <location filename="../StackingEngine.cpp" line="3011"/>
         <location filename="../ImageListModel.cpp" line="459"/>
         <location filename="../ImageListModel.cpp" line="701"/>
         <source>Bias/Offset</source>
@@ -172,7 +172,7 @@
     </message>
     <message>
         <location filename="../group.cpp" line="128"/>
-        <location filename="../StackingEngine.cpp" line="2952"/>
+        <location filename="../StackingEngine.cpp" line="3003"/>
         <location filename="../ImageListModel.cpp" line="440"/>
         <location filename="../ImageListModel.cpp" line="703"/>
         <source>Light</source>
@@ -343,30 +343,30 @@
     </message>
     <message>
         <location filename="../ImageListModel.cpp" line="402"/>
-        <source>Sky Background</source>
+        <source>Sky Background %</source>
         <comment>IDS_COLUMN_SKYBACKGROUND</comment>
-        <translation>天空背景</translation>
+        <translation>天空背景 %</translation>
     </message>
 </context>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../FrameInfo.cpp" line="79"/>
+        <location filename="../FrameInfo.cpp" line="80"/>
         <source>Width mismatch</source>
         <translation>宽度不匹配</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="84"/>
+        <location filename="../FrameInfo.cpp" line="85"/>
         <source>Height mismatch</source>
         <translation>高度不匹配</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="89"/>
+        <location filename="../FrameInfo.cpp" line="90"/>
         <source>Colour depth mismatch</source>
         <translation>色彩深度不匹配</translation>
     </message>
     <message>
-        <location filename="../FrameInfo.cpp" line="110"/>
+        <location filename="../FrameInfo.cpp" line="111"/>
         <source>Number of channels mismatch</source>
         <translation>通道数不匹配</translation>
     </message>
@@ -433,7 +433,7 @@
 <context>
     <name>FITSUtil</name>
     <message>
-        <location filename="../FITSUtil.cpp" line="227"/>
+        <location filename="../FITSUtil.cpp" line="228"/>
         <source>fits_open_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -442,12 +442,12 @@ returned a status of %2, error text is:
 错误内容: %3</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="281"/>
+        <location filename="../FITSUtil.cpp" line="283"/>
         <source>The second HDU of file %1 does not contain a compressed image.</source>
         <translation>文件 %1 的第二个 HDU 不包含压缩图像。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="681"/>
+        <location filename="../FITSUtil.cpp" line="754"/>
         <source>fits_read_pixll returned a status of %1, error text is &quot;%2&quot;
 reading file %3.
 The file will not be processed.</source>
@@ -456,7 +456,7 @@ The file will not be processed.</source>
 该文件将不会被处理。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="750"/>
+        <location filename="../FITSUtil.cpp" line="823"/>
         <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
 Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
 settings will be used.</source>
@@ -464,13 +464,13 @@ settings will be used.</source>
 将使用 FITS/DDP 设置中的默认值 DATAMIN = %L1 和 DATAMAX = %L2。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="978"/>
+        <location filename="../FITSUtil.cpp" line="1051"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker 不会对 8 位图像进行解拜耳处理</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1334"/>
+        <location filename="../FITSUtil.cpp" line="1413"/>
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -497,11 +497,11 @@ returned a status of %2, error text is:
 <context>
     <name>Kernel</name>
     <message>
-        <location filename="../BitmapExt.cpp" line="262"/>
-        <location filename="../FITSUtil.cpp" line="1028"/>
-        <location filename="../FITSUtil.cpp" line="1775"/>
+        <location filename="../BitmapExt.cpp" line="263"/>
+        <location filename="../FITSUtil.cpp" line="1106"/>
+        <location filename="../FITSUtil.cpp" line="1853"/>
         <location filename="../MultiBitmapProcess.cpp" line="229"/>
-        <location filename="../StackingEngine.cpp" line="2334"/>
+        <location filename="../StackingEngine.cpp" line="2385"/>
         <location filename="../TIFFUtil.cpp" line="1478"/>
         <location filename="../TIFFUtil.cpp" line="1740"/>
         <source>Exception %1 thrown from %2 Function : %3() Line : %4
@@ -510,11 +510,11 @@ returned a status of %2, error text is:
         <translation>函数 %1 抛出异常 %2: %3() 行: %4</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="272"/>
-        <location filename="../FITSUtil.cpp" line="1037"/>
-        <location filename="../FITSUtil.cpp" line="1784"/>
+        <location filename="../BitmapExt.cpp" line="273"/>
+        <location filename="../FITSUtil.cpp" line="1115"/>
+        <location filename="../FITSUtil.cpp" line="1862"/>
         <location filename="../MultiBitmapProcess.cpp" line="238"/>
-        <location filename="../StackingEngine.cpp" line="2343"/>
+        <location filename="../StackingEngine.cpp" line="2394"/>
         <location filename="../TIFFUtil.cpp" line="1487"/>
         <location filename="../TIFFUtil.cpp" line="1749"/>
         <source>Exception %1 thrown from an unknown Function.
@@ -524,9 +524,9 @@ returned a status of %2, error text is:
 %2</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="285"/>
+        <location filename="../BitmapExt.cpp" line="286"/>
         <location filename="../MultiBitmapProcess.cpp" line="247"/>
-        <location filename="../StackingEngine.cpp" line="2352"/>
+        <location filename="../StackingEngine.cpp" line="2403"/>
         <source>Unknown exception caught</source>
         <translation>未知异常</translation>
     </message>
@@ -632,43 +632,43 @@ returned a status of %2, error text is:
 <context>
     <name>StackRecap</name>
     <message>
-        <location filename="../BitmapExt.cpp" line="1454"/>
+        <location filename="../BitmapExt.cpp" line="1455"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
         <translation>平均值</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1457"/>
+        <location filename="../BitmapExt.cpp" line="1458"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
         <translation>中位数</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1460"/>
+        <location filename="../BitmapExt.cpp" line="1461"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
         <translation>最大值</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1463"/>
+        <location filename="../BitmapExt.cpp" line="1464"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
         <translation>Kappa-Sigma (Kappa = %1, 迭代次数 = %2)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1469"/>
+        <location filename="../BitmapExt.cpp" line="1470"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
         <translation>自适应加权平均 (迭代次数 = %1)</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1475"/>
+        <location filename="../BitmapExt.cpp" line="1476"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
         <translation>熵加权平均</translation>
     </message>
     <message>
-        <location filename="../BitmapExt.cpp" line="1480"/>
+        <location filename="../BitmapExt.cpp" line="1481"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
         <translation>中位数 Kappa-Sigma (Kappa = %1, 迭代次数 = %2)</translation>
@@ -699,237 +699,237 @@ returned a status of %2, error text is:
         <translation>1/%1 秒</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2627"/>
+        <location filename="../StackingEngine.cpp" line="2678"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
         <translation>堆栈方式: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2631"/>
+        <location filename="../StackingEngine.cpp" line="2682"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
         <translation>标准</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2634"/>
+        <location filename="../StackingEngine.cpp" line="2685"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
         <translation>马赛克</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2637"/>
+        <location filename="../StackingEngine.cpp" line="2688"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
         <translation>交叉</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2640"/>
+        <location filename="../StackingEngine.cpp" line="2691"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
         <translation>自定义矩形</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2648"/>
+        <location filename="../StackingEngine.cpp" line="2699"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
         <translation>星点对齐方法: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2654"/>
+        <location filename="../StackingEngine.cpp" line="2705"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
         <translation>自动模式</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2657"/>
+        <location filename="../StackingEngine.cpp" line="2708"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
         <translation>双线性</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2660"/>
+        <location filename="../StackingEngine.cpp" line="2711"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
         <translation>双二次方</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2663"/>
+        <location filename="../StackingEngine.cpp" line="2714"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
         <translation>双三次方</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2666"/>
+        <location filename="../StackingEngine.cpp" line="2717"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
         <translation>不进行星点对齐</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2676"/>
+        <location filename="../StackingEngine.cpp" line="2727"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
         <translation>%1x Drizzle</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2686"/>
+        <location filename="../StackingEngine.cpp" line="2737"/>
         <source>Comet processing: </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
         <translation>彗星处理: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2690"/>
+        <location filename="../StackingEngine.cpp" line="2741"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
         <translation>星点对齐 (无特殊处理)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2693"/>
+        <location filename="../StackingEngine.cpp" line="2744"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
         <translation>对齐彗星</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2696"/>
+        <location filename="../StackingEngine.cpp" line="2747"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
         <translation>同时对齐星点与彗星</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2709"/>
+        <location filename="../StackingEngine.cpp" line="2760"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
         <translation>热噪点修复 (滤波器 = %1 像素; 阈值 = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2714"/>
+        <location filename="../StackingEngine.cpp" line="2765"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
         <translation>冷噪点修复 (滤波器 = %1 像素; 阈值 = %L2%)&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2737"/>
+        <location filename="../StackingEngine.cpp" line="2788"/>
         <source>ISO</source>
         <comment>IDS_ISO</comment>
         <translation>ISO</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2738"/>
+        <location filename="../StackingEngine.cpp" line="2789"/>
         <source>Gain</source>
         <comment>IDS_GAIN</comment>
         <translation>增益</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2739"/>
+        <location filename="../StackingEngine.cpp" line="2790"/>
         <source>RGB Channels Background Calibration: %1</source>
         <comment>IDS_RECAP_BACKGROUNDCALIBRATION</comment>
         <translation>RGB 通道背景值已校正: %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2740"/>
+        <location filename="../StackingEngine.cpp" line="2791"/>
         <source>Per Channel Background Calibration: %1</source>
         <comment>IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION</comment>
         <translation>各通道背景已校正: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2761"/>
+        <location filename="../StackingEngine.cpp" line="2812"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
         <translation>堆栈步骤 %1&lt;br&gt;  -&gt;%2 幅图像 (%3: %4) - 总曝光: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2775"/>
-        <location filename="../StackingEngine.cpp" line="2802"/>
-        <location filename="../StackingEngine.cpp" line="2837"/>
-        <location filename="../StackingEngine.cpp" line="2875"/>
-        <location filename="../StackingEngine.cpp" line="2913"/>
+        <location filename="../StackingEngine.cpp" line="2826"/>
+        <location filename="../StackingEngine.cpp" line="2853"/>
+        <location filename="../StackingEngine.cpp" line="2888"/>
+        <location filename="../StackingEngine.cpp" line="2926"/>
+        <location filename="../StackingEngine.cpp" line="2964"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
         <translation>方法: </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2780"/>
+        <location filename="../StackingEngine.cpp" line="2831"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
         <translation>警告: 选择平均值以外的方法可能会导致 RAW DDP 设置中 Bayer Drizzle 产生异常结果。</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2793"/>
+        <location filename="../StackingEngine.cpp" line="2844"/>
         <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
         <translation>&gt; 偏置场: %1 (%2: %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2810"/>
-        <location filename="../StackingEngine.cpp" line="2846"/>
-        <location filename="../StackingEngine.cpp" line="2921"/>
+        <location filename="../StackingEngine.cpp" line="2861"/>
+        <location filename="../StackingEngine.cpp" line="2897"/>
+        <location filename="../StackingEngine.cpp" line="2972"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation>警告: ISO 和亮场图像不匹配</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2815"/>
-        <location filename="../StackingEngine.cpp" line="2851"/>
-        <location filename="../StackingEngine.cpp" line="2926"/>
+        <location filename="../StackingEngine.cpp" line="2866"/>
+        <location filename="../StackingEngine.cpp" line="2902"/>
+        <location filename="../StackingEngine.cpp" line="2977"/>
         <source>Warning: Gain does not match that of the light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
         <translation>警告: 增益和亮场图像不匹配</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2821"/>
+        <location filename="../StackingEngine.cpp" line="2872"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
         <translation>-&gt; 无偏置场</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2829"/>
+        <location filename="../StackingEngine.cpp" line="2880"/>
         <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
         <translation>-&gt; 暗场: %1 (%2 : %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2854"/>
+        <location filename="../StackingEngine.cpp" line="2905"/>
         <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
         <translation>警告: 曝光时间与亮场不匹配</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2859"/>
+        <location filename="../StackingEngine.cpp" line="2910"/>
         <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
         <translation>-&gt; 无暗场</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2867"/>
+        <location filename="../StackingEngine.cpp" line="2918"/>
         <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
         <translation>-&gt; 暗平场: %1 (%2 : %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2885"/>
+        <location filename="../StackingEngine.cpp" line="2936"/>
         <source>Warning: ISO speed does not match that of the flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
         <translation>警告: ISO 和平场图像不匹配</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2890"/>
+        <location filename="../StackingEngine.cpp" line="2941"/>
         <source>Warning: Gain does not match that of the flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
         <translation>警告: 增益和平场图像不匹配</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2893"/>
+        <location filename="../StackingEngine.cpp" line="2944"/>
         <source>Warning: Exposure does not match that of the flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation>警告: 曝光时间与平场不匹配</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2905"/>
+        <location filename="../StackingEngine.cpp" line="2956"/>
         <source>-&gt; Flat: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation>-&gt; 平场: %1 (%2 : %3) 曝光: %4</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2932"/>
+        <location filename="../StackingEngine.cpp" line="2983"/>
         <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
         <translation>无平场</translation>
@@ -974,69 +974,69 @@ returned a status of %2, error text is:
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1139"/>
-        <location filename="../StackedBitmap.cpp" line="1254"/>
+        <location filename="../StackedBitmap.cpp" line="1122"/>
+        <location filename="../StackedBitmap.cpp" line="1237"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>载入 %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="527"/>
+        <location filename="../StackedBitmap.cpp" line="510"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>图像处理中...</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="768"/>
+        <location filename="../StackedBitmap.cpp" line="751"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>保存 %1 bit TIFF</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="771"/>
-        <location filename="../StackedBitmap.cpp" line="972"/>
+        <location filename="../StackedBitmap.cpp" line="754"/>
+        <location filename="../StackedBitmap.cpp" line="955"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>保存 %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1022"/>
+        <location filename="../StackedBitmap.cpp" line="1005"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>应用设定并保存图像</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1024"/>
+        <location filename="../StackedBitmap.cpp" line="1007"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>嵌入设定并保存图像</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="969"/>
+        <location filename="../StackedBitmap.cpp" line="952"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>保存 %1 bit FITS</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1134"/>
+        <location filename="../StackedBitmap.cpp" line="1117"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>载入 %1 单色 TIFF</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1136"/>
+        <location filename="../StackedBitmap.cpp" line="1119"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>载入 %1 位每通道 TIFF</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1249"/>
+        <location filename="../StackedBitmap.cpp" line="1232"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>载入 %1 单色 FITS</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1251"/>
+        <location filename="../StackedBitmap.cpp" line="1234"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>载入 %1 位每通道 FITS</translation>
@@ -1054,81 +1054,81 @@ They should be smaller than %L3 pixels, so please check the defined comet centre
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="710"/>
-        <location filename="../StackingEngine.cpp" line="775"/>
+        <location filename="../StackingEngine.cpp" line="826"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
         <translation>计算偏移量</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1085"/>
+        <location filename="../StackingEngine.cpp" line="1136"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
         <translation>计算最终图像 (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1195"/>
+        <location filename="../StackingEngine.cpp" line="1246"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
         <translation>堆栈 - 微调拜耳 - 计算调整量</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1211"/>
+        <location filename="../StackingEngine.cpp" line="1262"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
         <translation>计算调整量 %1/%2</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1272"/>
+        <location filename="../StackingEngine.cpp" line="1323"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
         <translation>堆栈 - 微调拜耳 - 应用调整量</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1274"/>
+        <location filename="../StackingEngine.cpp" line="1325"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
         <translation>计算最大调整量</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1306"/>
+        <location filename="../StackingEngine.cpp" line="1357"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
         <translation>应用调整</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1374"/>
+        <location filename="../StackingEngine.cpp" line="1425"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
         <translation>保存已检测星点和校正的图像到 %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1422"/>
-        <location filename="../StackingEngine.cpp" line="1531"/>
-        <location filename="../StackingEngine.cpp" line="1570"/>
+        <location filename="../StackingEngine.cpp" line="1473"/>
+        <location filename="../StackingEngine.cpp" line="1582"/>
+        <location filename="../StackingEngine.cpp" line="1621"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>保存已校正的图像到 %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1709"/>
+        <location filename="../StackingEngine.cpp" line="1760"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
         <translation>使用 AHD 插值</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1759"/>
+        <location filename="../StackingEngine.cpp" line="1810"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
         <translation>计算熵值</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1717"/>
+        <location filename="../StackingEngine.cpp" line="1768"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
         <translation>计算背景校正参数</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1976"/>
+        <location filename="../StackingEngine.cpp" line="2027"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
@@ -1136,8 +1136,8 @@ Only %3 are available on this drive.</source>
 需要至少 %1 的剩余空间，但目前仅有 %3&gt;</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1977"/>
-        <location filename="../StackingEngine.cpp" line="2388"/>
+        <location filename="../StackingEngine.cpp" line="2028"/>
+        <location filename="../StackingEngine.cpp" line="2439"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -1145,13 +1145,13 @@ Do you really want to continue?</source>
 确定继续？</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2181"/>
+        <location filename="../StackingEngine.cpp" line="2232"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>正在堆栈 %1/%2 - 偏移量 [%3, %4] - 旋转角: %5° </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2188"/>
+        <location filename="../StackingEngine.cpp" line="2239"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -1159,7 +1159,7 @@ Do you really want to continue?</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2190"/>
+        <location filename="../StackingEngine.cpp" line="2241"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -1167,7 +1167,7 @@ Do you really want to continue?</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2387"/>
+        <location filename="../StackingEngine.cpp" line="2438"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -1181,19 +1181,19 @@ and help DeepSkyStacker find a transformation between the reference frame and th
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2398"/>
+        <location filename="../StackingEngine.cpp" line="2449"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>正在堆栈</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2731"/>
+        <location filename="../StackingEngine.cpp" line="2782"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2732"/>
+        <location filename="../StackingEngine.cpp" line="2783"/>
         <source>No</source>
         <comment>IDS_NO</comment>
         <translation>不是</translation>

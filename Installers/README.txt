@@ -47,6 +47,10 @@ Changes for DeepSkyStacker 6.2.2 Beta 4
 
 9.  Fix some problems with the handling of the Apply buttons of the Processing tabs.
 
+10. Remove the percent symbol from the sky background column data in the image list display and add it to the column
+    header.
+
+
 Changes for DeepSkyStacker 6.2.1
 ================================
 
