@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.2.2 Beta 3
+Welcome to DeepSkyStacker 6.2.2 Beta 4
 ======================================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.2.2 Beta 3
+Changes for DeepSkyStacker 6.2.2 Beta 4
 =======================================
 
 1.  Bug fix: When light frames with extremely short exposures were registered, the star intensity values in the ".info.txt"
@@ -23,18 +23,17 @@ Changes for DeepSkyStacker 6.2.2 Beta 3
     only ever cause a problem with what would normally be considered as very under-exposed light frames.
 
 2.  Decrease the sensitivity of arrow keys and page-up/page-down keys for the MTF sliders and spin boxes by a factor of
-    one hundred.
-    Set the spin boxes to be accelerated, so the spin box will increase/decrease the value faster the
-    longer you hold the button/key down.
-    Turn off keyboard tracking for the spin boxes so the values are only read when the entry field loses focus.
+    one hundred.   Set the spin boxes to be accelerated, so the spin box will increase/decrease the value faster the
+    longer you hold the button/key down.   Turn off keyboard tracking for the spin boxes so the values are only read
+    when the entry field loses focus.
 
 3.  Improve mouse wheel handling for MTF slider controls so that the slider movement is proportional to the amount
     the mouse wheel is rotated.
 
-4.  Change MTF sliders so that the scale is non-linear by using the square root of the value to set the position of
-    the sliders.
+4.  Change the MTF sliders so that the scale is non-linear by using the square root of the value to set the position of
+    the sliders.   This expands the scale at the lower end.
 
-5.  Bug fix: The Histogram not always updated when Apply was pressed.
+5.  Bug fix: The Histogram was not always updated when Apply was pressed.
 
 6.  Reduce limit for star detection to 0.00050 (was 0.000750).  This means that more very faint stars can be found
     in images with very short exposures.
@@ -42,9 +41,11 @@ Changes for DeepSkyStacker 6.2.2 Beta 3
 7.  If the ROW_ORDER keyword in a FITS file header specifies BOTTOM-UP, invert the image as it is being read.
     Write FITS files with the ROWORDER keyword set to TOP-DOWN.
 
-8.  Implement an Saturation tab for the processing pane.   It provides controls to adjust both the colour saturation and
-    also the vibrance which selectively boosts the intensity of muted, less saturated colours in the image.
+8.  Implement a Saturation tab for the processing pane.   It provides controls to adjust both saturation and
+    vibrance.  The vibrance control lets you to selectively boost the intensity of muted, less saturated colours.
     You would typically use this after Applying an MTF stretch, as that tends to desaturate colours in the image.
+
+9.  Fix some problems with the handling of the Apply buttons of the Processing tabs.
 
 Changes for DeepSkyStacker 6.2.1
 ================================
