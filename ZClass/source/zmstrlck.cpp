@@ -190,7 +190,7 @@ void ZMasterLock::getLock()
 
         CSSGASN(&pid, &RC); /* ASID */
 
-        sprintf(semname,"%ld",pid);
+        snprintf(semname, sizeof(semname), "%ld", pid);
         RLen=strlen(semname);
 
         BCSSENQ( QNAME, semname,  &ReqType, &RLen, &Scope, &RET, &RC);
@@ -227,7 +227,7 @@ void ZMasterLock::releaseLock()
 
         CSSGASN(&pid, &RC); /* ASID */
 
-        sprintf(semname,"%ld",pid);
+        snprintf(semname, sizeof(semname), "%ld", pid);
         RLen=strlen(semname);
 
                                                                                 
