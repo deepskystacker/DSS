@@ -141,7 +141,7 @@ namespace
 		// There's no need to have fall back code for the last few pixels,
 		// as the vector size is always a multiple of 8.
 		//
-//#pragma omp parallel for default(shared) schedule(static) if (nrProcessors > 1) 
+#pragma omp parallel for default(shared) schedule(static) if (nrProcessors > 1) 
 		for (std::int64_t n = 0; n < len; ++n)
 		{
 			const auto [h, s, l] = toHSL(
@@ -158,7 +158,7 @@ namespace
 
 	void adjustSaturation_sse2(std::vector<float>& greenBuffer, float saturationShift, float vibranceFactor)
 	{
-		const int nrProcessors{ Multitask::GetNrProcessors() };
+		[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
 		using VecType = __m128;
 		constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
 		std::int64_t len = static_cast<std::int64_t>(greenBuffer.size()) / vectorLength;
@@ -218,7 +218,7 @@ namespace
 	//
 	void hslToRgb_sse2(std::vector<float>& redBuffer, std::vector<float>& greenBuffer, std::vector<float>& blueBuffer)
 	{
-		const int nrProcessors{ Multitask::GetNrProcessors() };
+		[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
 		using VecType = __m128;
 		constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
 		std::int64_t len = static_cast<std::int64_t>(greenBuffer.size()) / vectorLength;
