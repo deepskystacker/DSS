@@ -62,7 +62,6 @@ namespace
 		const auto toHSL = [](const VecType r, const VecType g, const VecType b) -> std::tuple<VecType, VecType, VecType>
 			{
 				const VecType v0 = _mm_set1_ps(0.0f);
-				const VecType v1 = _mm_set1_ps(1.0f);
 				const VecType v2 = _mm_set1_ps(2.0f);
 				const VecType v4 = _mm_set1_ps(4.0f);
 				const VecType v6 = _mm_set1_ps(6.0f);
@@ -227,12 +226,10 @@ namespace
 		const VecType v1 = _mm_set1_ps(1.0f);
 		const VecType v_half = _mm_set1_ps(0.5f);
 		const VecType v6 = _mm_set1_ps(6.0f);
-		const VecType v60 = _mm_set1_ps(60.0f);
 		const VecType inv360 = _mm_set1_ps(1.0f / 360.0f);
 		const VecType one_th = _mm_set1_ps(1.0f / 3.0f);   // 1/3
 		const VecType two_th = _mm_set1_ps(2.0f / 3.0f);   // 2/3
 		const VecType one_six = _mm_set1_ps(1.0f / 6.0f);
-		const VecType full_mask = _mm_castsi128_ps(_mm_set1_epi32(-1));
 
 		//
 		// Convert the HSL values back to RGB 
