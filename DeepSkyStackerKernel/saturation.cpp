@@ -156,17 +156,17 @@ namespace
 
 	}
 
-	void adjustSaturation_sse2(std::vector<float>& greenBuffer, float saturationShift, float vibranceFactor)
+	void adjustSaturation_sse2(std::vector<float>& saturationBuffer, float saturationShift, float vibranceFactor)
 	{
 		[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
 		using VecType = __m128;
 		constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
-		std::int64_t len = static_cast<std::int64_t>(greenBuffer.size()) / vectorLength;
+		std::int64_t len = static_cast<std::int64_t>(saturationBuffer.size()) / vectorLength;
 
 		VecType minVal = _mm_set1_ps(0.0f);
 		VecType maxVal = _mm_set1_ps(1.0f);
 
-		float* const pGreen = greenBuffer.data();
+		float* const pSaturation = saturationBuffer.data();
 
 		//
 		// Now adjust the saturation for each pixel based on the saturationShift and vibranceFactor
@@ -177,7 +177,7 @@ namespace
 		for (std::int64_t n = 0; n < len ; ++n)
 		{
 
-			VecType s = _mm_loadu_ps(pGreen + n * vectorLength);	// Load 4 saturation values
+			VecType s = _mm_loadu_ps(pSaturation + n * vectorLength);	// Load 4 saturation values
 			VecType adjustedSaturation = s;
 			union { alignas(16) float f[4]; VecType s; } u;
 			u.s = s;
@@ -211,7 +211,7 @@ namespace
 			adjustedSaturation = _mm_mul_ps(adjustedSaturation, _mm_add_ps(_mm_set1_ps(1.0f), _mm_mul_ps(mask, _mm_set1_ps(vibranceFactor))));
 			adjustedSaturation = _mm_min_ps(_mm_max_ps(adjustedSaturation, minVal), maxVal);	// Clamp to [0, 1]
 
-			_mm_storeu_ps(pGreen + n * vectorLength, adjustedSaturation);
+			_mm_storeu_ps(pSaturation + n * vectorLength, adjustedSaturation);
 		}
 	}
 
@@ -360,6 +360,7 @@ namespace DSS
 
 		
 		// Now adjust the saturation for each pixel based on the saturationShift and vibranceFactor
+		// The saturation is stored in the green plane, so we only need to adjust that plane.
 		adjustSaturation_sse2(m_vGreenPlane, saturationShift, vibranceFactor);
 
 		//
