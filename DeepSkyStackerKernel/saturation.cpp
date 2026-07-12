@@ -39,6 +39,7 @@
 #include "StackedBitmap.h"
 #include "ColorHelpers.h"
 #include "avx_includes.h"
+
 #include <algorithm>
 namespace
 {
@@ -175,13 +176,22 @@ namespace
 #pragma omp parallel for default(shared) schedule(static) if (nrProcessors > 1) 
 		for (std::int64_t n = 0; n < len ; ++n)
 		{
-			const VecType s = _mm_loadu_ps(pGreen + n * vectorLength);	// Load 4 saturation values
+
+			VecType s = _mm_loadu_ps(pGreen + n * vectorLength);	// Load 4 saturation values
 			VecType adjustedSaturation = s;
-			// Adjust saturation using the shift value
+			union { alignas(16) float f[4]; VecType s; } u;
+			u.s = s;
+
+			// Adjust saturation using the shift value. We can't use __mm_pow_ps on Linux or macOS x64
+			// as it doesn't exist, so we have to use std::pow for each element in the vector
 			if (0.0f != saturationShift)
 			{
-				const VecType shiftVal = _mm_set1_ps(saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift);
-				adjustedSaturation = _mm_pow_ps(s, shiftVal);
+				const float shiftVal = saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift;
+				for (int i = 0; i < 4; ++i)
+				{
+					u.f[i] = std::pow(u.f[i], shiftVal);
+				}
+				adjustedSaturation = u.s;
 				adjustedSaturation = _mm_min_ps(_mm_max_ps(adjustedSaturation, minVal), maxVal);	// Clamp to [0, 1]
 			}
 
