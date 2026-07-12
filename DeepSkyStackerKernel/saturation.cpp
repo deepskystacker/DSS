@@ -94,7 +94,8 @@ namespace
 
 				// Handle cases where diff is zero (i.e., max == min), which means s should be zero
 				const VecType mask_diff_zero = _mm_cmpeq_ps(diff, v0); // diff == 0 ? all-ones : all-zeros
-				s = _mm_blendv_ps(s, v0, mask_diff_zero); // if (diff == 0) s = 0 else s = s
+				// SSE2 replacement for _mm_blendv_ps: zero s where diff == 0
+				s = _mm_andnot_ps(mask_diff_zero, s); // if (diff == 0) s = 0 else keep s
 
 				// Compute h based on which channel is the maximum
 				// t_r = (g - b)/diff + (g < b ? 6 : 0)
