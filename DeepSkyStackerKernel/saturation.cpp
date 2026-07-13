@@ -209,7 +209,7 @@ namespace
 			// Calculate the adjusted saturation based on the vibrance factor and the mask
 			//	adjustedSaturation = adjustedSaturation * (1.0 + mask * vibranceFactor);
 			// and clamp it to the range [0, 1]
-			adjustedSaturation = _mm_mul_ps(adjustedSaturation, _mm_add_ps(_mm_set1_ps(1.0f), _mm_mul_ps(mask, _mm_set1_ps(vibranceFactor))));
+			adjustedSaturation = _mm_mul_ps(adjustedSaturation, _mm_add_ps(maxVal, _mm_mul_ps(mask, _mm_set1_ps(vibranceFactor))));
 			adjustedSaturation = _mm_min_ps(_mm_max_ps(adjustedSaturation, minVal), maxVal);	// Clamp to [0, 1]
 
 			_mm_storeu_ps(pSaturation + n * vectorLength, adjustedSaturation);
