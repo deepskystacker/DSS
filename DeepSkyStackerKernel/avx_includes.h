@@ -46,23 +46,44 @@
 // Solution 2: Do not define SIMDE_ENABLE_NATIVE_ALIASES, but then all Simde symbols are prefixed with "simde_". So we would have to 
 //             changes thousands of data types and function calls, and we would be "locked-in" to Simde. 
 
-#if defined (Q_OS_MACOS) && defined(Q_PROCESSOR_ARM) // ARM -> We always have to emulate the x86-AVX instructions.
-
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
 #define SIMDE_ENABLE_NATIVE_ALIASES
+
+
+#if defined (Q_OS_MACOS) && defined(Q_PROCESSOR_X86_64)
+//
+// This definition is required for compiling code on macOS x86_64 that includes the
+// simde headers and is built without any AVX options.
+// 
+// If it's not set, you'll get errors like:
+// 
+// /Users/amonra/.vs/DSS/DeepSkyStackerKernel/simde/x86/avx512/types.h:634:27: error: typedef redefinition with different types ('simde__m128bh' (vector of 4 'simde_float32' values) vs '__attribute__((__vector_size__(8 * sizeof(__bf16)))) __bf16' (vector of 8 '__bf16' values))
+//   634 |     typedef simde__m128bh __m128bh;
+//       |                             ^
+//  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include/emmintrin.h:48:16: note: previous definition is here
+//    48 | typedef __bf16 __m128bh __attribute__((__vector_size__(16), __aligned__(16)));
+//       |                ^
+// 1 error generated.
+//
+#define SIMDE_X86_AVX512BF16_NATIVE
+#endif
+
+#if defined (Q_CC_CLANG)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
-#include "simde/x86/avx512.h"
-#pragma clang diagnostic pop
-#else
+#endif
 
-#if __has_include(<immintrin.h>)
+#include "simde/x86/avx512.h"
+#include "simde/x86/svml.h"
+
+#if defined (Q_CC_CLANG)
+#pragma clang diagnostic pop
+#endif
+
+#elif defined (Q_OS_WIN) // If it is Windows, include <immintrin.h> for MSVC
 
 #include <immintrin.h>
 
-#else // If, for some reason, immintrin.h is not found -> fall back to Simde.
-
-#define SIMDE_ENABLE_NATIVE_ALIASES
-#include "simde/x86/avx512.h"
-
-#endif
+#else
+#error "Unknown platform"
 #endif
