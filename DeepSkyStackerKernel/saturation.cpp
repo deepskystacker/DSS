@@ -180,22 +180,14 @@ namespace
 
 			VecType s = _mm_loadu_ps(pSaturation + n * vectorLength);	// Load 4 saturation values
 			VecType adjustedSaturation = s;
-			union { alignas(16) float f[4]; VecType s; } u;
-			u.s = s;
 
-			// Adjust saturation using the shift value. We can't use __mm_pow_ps on Linux or macOS x64
-			// as it doesn't exist, so we have to use std::pow for each element in the vector
+			// Adjust saturation using the shift value
 			if (0.0f != saturationShift)
 			{
-				const float shiftVal = saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift;
-				for (int i = 0; i < 4; ++i)
-				{
-					u.f[i] = std::pow(u.f[i], shiftVal);
-				}
-				adjustedSaturation = u.s;
+				const VecType shiftVal = _mm_set1_ps(saturationShift > 0 ? 10.0f / saturationShift : -0.1f * saturationShift);
+				adjustedSaturation = _mm_pow_ps(s, shiftVal);
 				adjustedSaturation = _mm_min_ps(_mm_max_ps(adjustedSaturation, minVal), maxVal);	// Clamp to [0, 1]
 			}
-
 			//
 			// Adjust the vibrance, which is a more subtle adjustment that increases saturation
 			// for less saturated pixels.
