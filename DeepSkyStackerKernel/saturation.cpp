@@ -50,8 +50,10 @@ namespace
 	// Returns h in degrees [0,360), s and l in [0,1].
 	//
 	// On input redBuffer, greenBuffer, blueBuffer contain R,G,B values, on output they contain H,S,L values.
+	// 
 	// There's no need to have fall back code for the last few pixels, as the vector size of CGrayBitmap
-	// is always (for float values) a multiple of 8 (32 bytes).
+	// is always a multiple of 32 bytes (8 floats).   This works perfectly for __m128 and __m256 types.
+	// If we ever decide to use __m512 types we will need to revisit the over-allocation in CGrayBitmapT<T>.
 	// 
 	// See CGrayBitmapT<T>::InitInternals() for details
 	// 
@@ -164,17 +166,17 @@ namespace
 	// Adjust the image saturation and vibrance using the saturationShift and vibranceFactor parameters.
 	// 
 	// On input saturationBuffer, contains the current saturation.
+	// 
 	// There's no need to have fall back code for the last few pixels, as the vector size of CGrayBitmap
-	// is always (for float values) a multiple of 8 (32 bytes).
+	// is always a multiple of 32 bytes (8 floats).   This works perfectly for __m128 and __m256 types.
+	// If we ever decide to use __m512 types we will need to revisit the over-allocation in CGrayBitmapT<T>.
 	// 
 	// See CGrayBitmapT<T>::InitInternals() for details
+	//
+	// Range for saturationShift was [-50, 50] in the original code.  The current GUI only uses a range 
+	// of [-10, 50] where negative values decrease saturation and positive values increase saturation. 
 	// 
-	// Range for saturationShift is [-10, 50], where negative values decrease saturation and positive values
-	// increase saturation. 
-	// 
-	// Range for vibranceFactor is [0, 99], where increaingly positive values increase vibrance.
-	// 
-	// See CGrayBitmapT<T>::InitInternals() for details
+	// Range for vibranceFactor is [0.0, 0.99], where increasingly positive values increase vibrance.
 	//
 	void adjustSaturation_sse2(std::vector<float>& saturationBuffer, float saturationShift, float vibranceFactor)
 	{
@@ -232,13 +234,12 @@ namespace
 	// H,S,L -> R,G,B vectorized with SSE2 (4 floats per loop).
 	// h: degrees in [0,360) (per-pixel), s,l in [0,1].
 	// r,g,b outputs in [0,1].
-	// n = number of pixels.
 	// 
 	// On input redBuffer, greenBuffer, blueBuffer contain H,S,L values, on output they contain R,G,B values.
-	// There's no need to have fall back code for the last few pixels, as the vector size of CGrayBitmap
-	// is always (for float values) a multiple of 8 (32 bytes).
 	// 
-	// See CGrayBitmapT<T>::InitInternals() for details
+	// There's no need to have fall back code for the last few pixels, as the vector size of CGrayBitmap
+	// is always a multiple of 32 bytes (8 floats).   This works perfectly for __m128 and __m256 types.
+	// If we ever decide to use __m512 types we will need to revisit the over-allocation in CGrayBitmapT<T>.
 	// 
 	void hslToRgb_sse2(std::vector<float>& redBuffer, std::vector<float>& greenBuffer, std::vector<float>& blueBuffer)
 	{
