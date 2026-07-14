@@ -50,15 +50,18 @@ namespace
 	// Returns h in degrees [0,360), s and l in [0,1].
 	//
 	// On input redBuffer, greenBuffer, blueBuffer contain R,G,B values, on output they contain H,S,L values.
-	// There's no need to have fall back code for the last few pixels,
-	// as the vector size is always a multiple of 8.
-	//
+	// There's no need to have fall back code for the last few pixels, as the vector size of CGrayBitmap
+	// is always (for float values) a multiple of 8 (32 bytes).
+	// 
+	// See CGrayBitmapT<T>::InitInternals() for details
+	// 
 	void rgbToHsl_sse2(std::vector<float>& redBuffer, std::vector<float>& greenBuffer, std::vector<float>& blueBuffer)
 	{
 		[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
 		using VecType = __m128;
 		constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
 		std::int64_t len = static_cast<std::int64_t>(greenBuffer.size()) / vectorLength;
+		ZASSERT(redBuffer.size() % 8 == 0);
 
 		const auto toHSL = [](const VecType r, const VecType g, const VecType b) -> std::tuple<VecType, VecType, VecType>
 			{
@@ -157,12 +160,29 @@ namespace
 
 	}
 
+	//
+	// Adjust the image saturation and vibrance using the saturationShift and vibranceFactor parameters.
+	// 
+	// On input saturationBuffer, contains the current saturation.
+	// There's no need to have fall back code for the last few pixels, as the vector size of CGrayBitmap
+	// is always (for float values) a multiple of 8 (32 bytes).
+	// 
+	// See CGrayBitmapT<T>::InitInternals() for details
+	// 
+	// Range for saturationShift is [-10, 50], where negative values decrease saturation and positive values
+	// increase saturation. 
+	// 
+	// Range for vibranceFactor is [0, 99], where increaingly positive values increase vibrance.
+	// 
+	// See CGrayBitmapT<T>::InitInternals() for details
+	//
 	void adjustSaturation_sse2(std::vector<float>& saturationBuffer, float saturationShift, float vibranceFactor)
 	{
 		[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
 		using VecType = __m128;
 		constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
 		std::int64_t len = static_cast<std::int64_t>(saturationBuffer.size()) / vectorLength;
+		ZASSERT(saturationBuffer.size() % 8 == 0);
 
 		VecType minVal = _mm_set1_ps(0.0f);
 		VecType maxVal = _mm_set1_ps(1.0f);
@@ -215,15 +235,18 @@ namespace
 	// n = number of pixels.
 	// 
 	// On input redBuffer, greenBuffer, blueBuffer contain H,S,L values, on output they contain R,G,B values.
-	// There's no need to have fall back code for the last few pixels,
-	// as the vector size is always a multiple of 8.
-	//
+	// There's no need to have fall back code for the last few pixels, as the vector size of CGrayBitmap
+	// is always (for float values) a multiple of 8 (32 bytes).
+	// 
+	// See CGrayBitmapT<T>::InitInternals() for details
+	// 
 	void hslToRgb_sse2(std::vector<float>& redBuffer, std::vector<float>& greenBuffer, std::vector<float>& blueBuffer)
 	{
 		[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
 		using VecType = __m128;
 		constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
 		std::int64_t len = static_cast<std::int64_t>(greenBuffer.size()) / vectorLength;
+		ZASSERT(redBuffer.size() % 8 == 0);
 
 		const VecType v0 = _mm_set1_ps(0.0f);
 		const VecType v1 = _mm_set1_ps(1.0f);
