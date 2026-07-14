@@ -1323,7 +1323,7 @@ void StackedBitmap::normalise()
 	auto pGreen = m_vGreenPlane.data();
 	auto pBlue = m_vBluePlane.data();
 
-#pragma omp parallel for schedule(static) if (Multitask::GetNrProcessors() > 1)
+#pragma omp parallel for schedule(static) if (nrProcessors > 1)
 	for (std::int64_t n = 0; n < len; ++n)
 	{
 		std::int64_t offset = n * vectorLength;
@@ -1355,7 +1355,7 @@ void StackedBitmap::deNormalise()
 	auto pGreen = m_vGreenPlane.data();
 	auto pBlue = m_vBluePlane.data();
 
-#pragma omp parallel for schedule(static) if (Multitask::GetNrProcessors() > 1)
+#pragma omp parallel for schedule(static) if (nrProcessors > 1)
 	for (std::int64_t n = 0; n < len; ++n)
 	{
 		std::int64_t offset = n * vectorLength;
