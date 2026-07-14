@@ -1329,7 +1329,7 @@ void StackedBitmap::normalise()
 		std::int64_t offset = n * vectorLength;
 		VecType temp = _mm_loadu_ps(pRed + offset);
 		temp = _mm_mul_ps(temp, scaleFactor);
-		_mm_storeu_ps(pRed + offset, temp	);
+		_mm_storeu_ps(pRed + offset, temp);
 		temp = _mm_loadu_ps(pGreen + offset);
 		temp = _mm_mul_ps(temp, scaleFactor);
 		_mm_storeu_ps(pGreen + offset, temp);
