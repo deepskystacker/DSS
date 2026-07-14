@@ -12,6 +12,7 @@
 #include "BitmapExt.h"
 #include "Multitask.h"
 #include "avx_histogram.h"
+#include "avx_includes.h"
 
 using namespace DSS;
 /* ------------------------------------------------------------------- */
@@ -1312,16 +1313,29 @@ bool StackedBitmap::LoadFITS(const fs::path& file, OldProgressBase * pProgress)
 //
 void StackedBitmap::normalise()
 {
-	const float scaleFactor{ m_lNrBitmaps * 256.0f };
+	[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
+	using VecType = __m128;
+	constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
+	std::int64_t len = static_cast<std::int64_t>(m_vRedPlane.size()) / vectorLength;
+
+	const VecType scaleFactor = _mm_set1_ps(1/(256.0f * m_lNrBitmaps));
+	auto pRed = m_vRedPlane.data();
+	auto pGreen = m_vGreenPlane.data();
+	auto pBlue = m_vBluePlane.data();
+
 #pragma omp parallel for schedule(static) if (Multitask::GetNrProcessors() > 1)
-	for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
+	for (std::int64_t n = 0; n < len; ++n)
 	{
-		m_vRedPlane[i] /= scaleFactor;
-		if (!m_bMonochrome)
-		{
-			m_vGreenPlane[i] /= scaleFactor;
-			m_vBluePlane[i] /= scaleFactor;
-		}
+		std::int64_t offset = n * vectorLength;
+		VecType temp = _mm_loadu_ps(pRed + offset);
+		temp = _mm_mul_ps(temp, scaleFactor);
+		_mm_storeu_ps(pRed + offset, temp	);
+		temp = _mm_loadu_ps(pGreen + offset);
+		temp = _mm_mul_ps(temp, scaleFactor);
+		_mm_storeu_ps(pGreen + offset, temp);
+		temp = _mm_loadu_ps(pBlue + offset);
+		temp = _mm_mul_ps(temp, scaleFactor);
+		_mm_storeu_ps(pBlue + offset, temp);
 	}
 }
 
@@ -1331,16 +1345,29 @@ void StackedBitmap::normalise()
 //
 void StackedBitmap::deNormalise()
 {
-	const float scaleFactor{ m_lNrBitmaps * 256.0f };
+	[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
+	using VecType = __m128;
+	constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
+	std::int64_t len = static_cast<std::int64_t>(m_vRedPlane.size()) / vectorLength;
+
+	const VecType scaleFactor = _mm_set1_ps(256.0f * m_lNrBitmaps);
+	auto pRed = m_vRedPlane.data();
+	auto pGreen = m_vGreenPlane.data();
+	auto pBlue = m_vBluePlane.data();
+
 #pragma omp parallel for schedule(static) if (Multitask::GetNrProcessors() > 1)
-	for (std::int64_t i = 0; i < m_vRedPlane.size(); i++)
+	for (std::int64_t n = 0; n < len; ++n)
 	{
-		m_vRedPlane[i] *= scaleFactor;
-		if (!m_bMonochrome)
-		{
-			m_vGreenPlane[i] *= scaleFactor;
-			m_vBluePlane[i] *= scaleFactor;
-		}
+		std::int64_t offset = n * vectorLength;
+		VecType temp = _mm_loadu_ps(pRed + offset);
+		temp = _mm_mul_ps(temp, scaleFactor);
+		_mm_storeu_ps(pRed + offset, temp);
+		temp = _mm_loadu_ps(pGreen + offset);
+		temp = _mm_mul_ps(temp, scaleFactor);
+		_mm_storeu_ps(pGreen + offset, temp);
+		temp = _mm_loadu_ps(pBlue + offset);
+		temp = _mm_mul_ps(temp, scaleFactor);
+		_mm_storeu_ps(pBlue + offset, temp);
 	}
 }
 
