@@ -50,7 +50,7 @@ Changes for DeepSkyStacker 6.2.2 Beta 4
 10. Remove the percent symbol from the sky background column data in the image list display and add it to the column
     header.
 
-11. Re-write the saturation and vibrance code to improve the performance by using SSE2 code.
+11. Re-write the saturation and vibrance code to improve the performance by using SSE2.
 
 
 Changes for DeepSkyStacker 6.2.1
