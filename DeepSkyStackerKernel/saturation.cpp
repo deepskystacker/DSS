@@ -241,6 +241,8 @@ namespace
 	// is always a multiple of 32 bytes (8 floats).   This works perfectly for __m128 and __m256 types.
 	// If we ever decide to use __m512 types we will need to revisit the over-allocation in CGrayBitmapT<T>.
 	// 
+	// See CGrayBitmapT<T>::InitInternals() for details
+	//
 	void hslToRgb_sse2(std::vector<float>& redBuffer, std::vector<float>& greenBuffer, std::vector<float>& blueBuffer)
 	{
 		[[maybe_unused]] const int nrProcessors{ Multitask::GetNrProcessors() };
@@ -362,6 +364,12 @@ namespace
 }
 namespace DSS
 {
+	//
+	// Range for saturationShift was [-50, 50] in the original code.  The current GUI only uses a range 
+	// of [-10, 50] where negative values decrease saturation and positive values increase saturation. 
+	// 
+	// Range for vibranceFactor is [0.0, 0.99], where increasingly positive values increase vibrance.
+	//
 	void StackedBitmap::adjustSaturation(float saturationShift, float vibranceFactor)
 	{
 		//
