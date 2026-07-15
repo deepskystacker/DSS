@@ -38,7 +38,7 @@ Changes for DeepSkyStacker 6.2.2 Beta 4
 6.  Reduce limit for star detection to 0.00050 (was 0.000750).  This means that more very faint stars can be found
     in images with very short exposures.
 
-7.  If the ROW_ORDER keyword in a FITS file header specifies BOTTOM-UP, invert the image as it is being read.
+7.  If the ROWORDER keyword in a FITS file header specifies BOTTOM-UP, invert the image as it is being read.
     Write FITS files with the ROWORDER keyword set to TOP-DOWN.
 
 8.  Implement a Saturation tab for the processing pane.   It provides controls to adjust both saturation and
