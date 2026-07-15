@@ -1318,7 +1318,7 @@ void StackedBitmap::normalise()
 	constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
 	std::int64_t len = static_cast<std::int64_t>(m_vRedPlane.size()) / vectorLength;
 
-	const VecType scaleFactor = _mm_set1_ps(1/(256.0f * m_lNrBitmaps));
+	const VecType scaleFactor = _mm_set1_ps(1/(256.0f * static_cast<float>(m_lNrBitmaps)));
 	auto pRed = m_vRedPlane.data();
 	auto pGreen = m_vGreenPlane.data();
 	auto pBlue = m_vBluePlane.data();
@@ -1350,7 +1350,7 @@ void StackedBitmap::deNormalise()
 	constexpr size_t vectorLength = sizeof(VecType) / sizeof(float);
 	std::int64_t len = static_cast<std::int64_t>(m_vRedPlane.size()) / vectorLength;
 
-	const VecType scaleFactor = _mm_set1_ps(256.0f * m_lNrBitmaps);
+	const VecType scaleFactor = _mm_set1_ps(256.0f * static_cast<float>(m_lNrBitmaps));
 	auto pRed = m_vRedPlane.data();
 	auto pGreen = m_vGreenPlane.data();
 	auto pBlue = m_vBluePlane.data();
