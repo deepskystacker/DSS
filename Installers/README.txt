@@ -1,5 +1,5 @@
-Welcome to DeepSkyStacker 6.2.2 Beta 4
-======================================
+Welcome to DeepSkyStacker 6.2.2
+===============================
 
 Reporting problems:
 
@@ -14,8 +14,8 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.2.2 Beta 4
-=======================================
+Changes for DeepSkyStacker 6.2.2
+================================
 
 1.  Bug fix: When light frames with extremely short exposures were registered, the star intensity values in the ".info.txt"
     files were written as 0.00 which meant that they were not treated as valid when read back in.   The code has been
@@ -52,6 +52,9 @@ Changes for DeepSkyStacker 6.2.2 Beta 4
 
 11. Re-write the saturation and vibrance code to improve the performance by using SSE2.
 
+12. Change the MTF sliders so that the mid-tone slider is drawn with the triangle at the top, and change the hit-test
+    code to use QPolygon::containsPoint() so that you click on the triangle to select the slider you want to move.
+    This means that even it the two sliders are at the same location, you can still select the one that you want.
 
 Changes for DeepSkyStacker 6.2.1
 ================================
