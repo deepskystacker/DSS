@@ -54,7 +54,7 @@ Changes for DeepSkyStacker 6.2.2
 
 12. Change the MTF sliders so that the mid-tone slider is drawn with the triangle at the top, and change the hit-test
     code to use QPolygon::containsPoint() so that you click on the triangle to select the slider you want to move.
-    This means that even it the two sliders are at the same location, you can still select the one that you want.
+    This means that even if the two sliders are at the same location, you can still select the one that you want.
 
 Changes for DeepSkyStacker 6.2.1
 ================================
