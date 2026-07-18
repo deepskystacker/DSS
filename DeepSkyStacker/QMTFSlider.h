@@ -88,6 +88,10 @@ namespace DSS
 		ActiveHandle m_ActiveHandle;
 		ActiveHandle m_SelectedHandle;
 
+		QPolygon shadowPolygon;
+		QPolygon midtonePolygon;
+		QPolygon highlightPolygon;
+
 		int posFromValue(double val) const;
 		double valueFromPos(int pos) const;
 		void drawHandle(QPainter& p, int x, ActiveHandle type);

@@ -151,32 +151,36 @@ namespace DSS
 	void QMTFSlider::drawHandle(QPainter& p, int x, ActiveHandle type)
 	{
 		int yBottom = height() - 2;
-		int size = 6;
+		int size = (height() / 2) - 2;
+		int width = size * 2 / 3;
 
-		int midtoneHeight = static_cast<int>(size * 2 * 0.5); // 50% shorter height
-		const int apexY = yBottom - midtoneHeight;
+		const int apexY = yBottom - size;
 
 		// Draw marker line only above the handle, starting from the triangle apex.
 		p.setPen(QPen(Qt::gray, 1));
-		p.drawLine(x, 2, x, apexY);
 
 		QPolygon poly;
 		if (type == ActiveHandle::Shadows)
 		{
-			poly << QPoint(x, yBottom) << QPoint(x + size, yBottom) << QPoint(x, apexY);
+			poly << QPoint(x, yBottom) << QPoint(x + (width * 5)/4, yBottom) << QPoint(x, apexY);
+			p.drawLine(x, 2, x, apexY);
+			shadowPolygon = poly;
 		}
 		else if (type == ActiveHandle::Highlights)
 		{
-			poly << QPoint(x, yBottom) << QPoint(x - size, yBottom) << QPoint(x, apexY);
+			poly << QPoint(x, yBottom) << QPoint(x - (width * 5) / 4, yBottom) << QPoint(x, apexY);
+			p.drawLine(x, 2, x, apexY);
+			highlightPolygon = poly;
 		}
 		else // Midtones
 		{
-			poly << QPoint(x, apexY) << QPoint(x - size, yBottom) << QPoint(x + size, yBottom);
+			poly << QPoint(x, apexY) << QPoint(x - width, 2) << QPoint(x + width, 2);
+			p.drawLine(x, yBottom, x, apexY);
+			midtonePolygon = poly;
 		}
 
 		// All handles are transparent with gray borders by default.
 		// Fill only the selected handle (the one affected by mouse wheel).
-		p.setPen(QPen(Qt::gray, 1));
 		if (type == m_SelectedHandle)
 			p.setBrush(Qt::gray);
 		else
@@ -185,16 +189,13 @@ namespace DSS
 		p.drawPolygon(poly);
 	}
 
-	QMTFSlider::ActiveHandle QMTFSlider::hitTest(int x, int /*y*/) const
+	QMTFSlider::ActiveHandle QMTFSlider::hitTest(int x, int y) const
 	{
-		int xS = posFromValue(m_Shadows);
-		int xM = posFromValue(m_Midtones);
-		int xH = posFromValue(m_Highlights);
-
+		QPoint point{ x, y };
 		// Give priority to Midtones if close
-		if (std::abs(x - xM) < 8) return ActiveHandle::Midtones;
-		if (std::abs(x - xS) < 8) return ActiveHandle::Shadows;
-		if (std::abs(x - xH) < 8) return ActiveHandle::Highlights;
+		if (shadowPolygon.containsPoint(point, Qt::OddEvenFill)) return ActiveHandle::Shadows;
+		if (midtonePolygon.containsPoint(point, Qt::OddEvenFill)) return ActiveHandle::Midtones;
+		if (highlightPolygon.containsPoint(point, Qt::OddEvenFill)) return ActiveHandle::Highlights;
 
 		return ActiveHandle::None;
 	}
