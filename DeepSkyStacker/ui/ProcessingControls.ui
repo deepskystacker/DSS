@@ -44,7 +44,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="mtfStretchTab">
          <attribute name="title">
@@ -242,7 +242,7 @@ Right-click to change Autostretch parameters</string>
                <widget class="QDoubleSpinBox" name="mtfShadowsSpinBox">
                 <property name="minimumSize">
                  <size>
-                  <width>65</width>
+                  <width>75</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -324,7 +324,7 @@ Right-click to change Autostretch parameters</string>
                <widget class="QDoubleSpinBox" name="mtfMidtonesSpinBox">
                 <property name="minimumSize">
                  <size>
-                  <width>65</width>
+                  <width>75</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -418,7 +418,7 @@ Right-click to change Autostretch parameters</string>
                <widget class="QDoubleSpinBox" name="mtfHighlightsSpinBox">
                 <property name="minimumSize">
                  <size>
-                  <width>65</width>
+                  <width>75</width>
                   <height>0</height>
                  </size>
                 </property>
