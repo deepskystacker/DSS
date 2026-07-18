@@ -1,0 +1,781 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="qwt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_abstract_scale_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_arrow_button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_axis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_axis_id.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_bezier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_clipper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_color_map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_column_symbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_compass_rose.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_curve_fitter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_date_scale_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_date_scale_engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_dial_needle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_event_pattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_graphic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_interval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_interval_symbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_legend_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_matrix_raster_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_null_paintdevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_painter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_painter_command.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_picker_machine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_pixel_matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_abstract_barchart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_abstract_canvas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_barchart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_curve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_dict.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_directpainter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_graphicitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_histogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_intervalcurve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_layout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_legenditem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_marker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_multi_barchart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_rasteritem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_scaleitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_seriesitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_shapeitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_spectrocurve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_spectrogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_svgitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_textlabel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_tradingcurve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_vectorfield.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_plot_zoneitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_point_3d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_point_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_point_mapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_point_polar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_curve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_fitter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_grid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_itemdict.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_layout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_marker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_polar_spectrogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_raster_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_round_scale_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_samples.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_scale_div.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_scale_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_scale_engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_scale_map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_series_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_series_store.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline_basis.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline_cubic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline_curve_fitter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline_local.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline_parametrization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline_pleasing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_spline_polynomial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_symbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_system_clock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_text_engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_vectorfield_symbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qwt_weeding_curve_fitter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="qwt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_abstract_legend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_abstract_scale.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_abstract_scale_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_abstract_slider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_analog_clock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_arrow_button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_bezier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_clipper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_color_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_column_symbol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_compass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_compass_rose.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_counter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_curve_fitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_dial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_dial_needle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_dyngrid_layout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_event_pattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_graphic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_interval.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_interval_symbol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_knob.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_legend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_legend_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_legend_label.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_magnifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_matrix_raster_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_null_paintdevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_painter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_painter_command.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_panner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_picker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_picker_machine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_pixel_matrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_abstract_barchart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_abstract_canvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_axis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_barchart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_canvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_curve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_dict.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_directpainter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_graphicitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_histogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_intervalcurve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_layout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_legenditem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_magnifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_marker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_multi_barchart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_opengl_canvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_panner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_picker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_rasteritem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_rescaler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_scaleitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_seriesitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_shapeitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_spectrocurve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_spectrogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_svgitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_textlabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_tradingcurve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_vectorfield.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_zoneitem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_plot_zoomer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_point_3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_point_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_point_mapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_point_polar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_canvas.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_curve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_fitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_itemdict.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_layout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_magnifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_marker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_panner.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_picker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_plot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_polar_spectrogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_raster_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_round_scale_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_sampling_thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_scale_div.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_scale_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_scale_engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_scale_map.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_scale_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_series_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_slider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline_basis.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline_cubic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline_curve_fitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline_local.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline_parametrization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline_pleasing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_spline_polynomial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_symbol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_system_clock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_text_engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_text_label.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_thermo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_vectorfield_symbol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_weeding_curve_fitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_wheel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_widget_overlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_date.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_date_scale_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qwt_date_scale_engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="qwt_abstract_legend.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_abstract_scale.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_abstract_slider.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_analog_clock.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_compass.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_counter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_dial.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_dyngrid_layout.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_knob.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_legend.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_legend_label.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_magnifier.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_panner.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_picker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_canvas.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_glcanvas.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_magnifier.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_opengl_canvas.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_panner.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_picker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_renderer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_rescaler.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_plot_zoomer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_polar_canvas.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_polar_magnifier.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_polar_panner.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_polar_picker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_polar_plot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_polar_renderer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_sampling_thread.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_scale_widget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_slider.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_text_label.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_thermo.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_wheel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qwt_widget_overlay.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>

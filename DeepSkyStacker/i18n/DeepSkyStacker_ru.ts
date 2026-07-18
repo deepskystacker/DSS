@@ -540,46 +540,31 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="615"/>
-        <location filename="../editstars.cpp" line="1123"/>
+        <location filename="../editstars.cpp" line="511"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Нажмите чтобы поставить комету здесь</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="617"/>
-        <location filename="../editstars.cpp" line="1125"/>
+        <location filename="../editstars.cpp" line="513"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Добавить звезду</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="625"/>
-        <location filename="../editstars.cpp" line="1132"/>
+        <location filename="../editstars.cpp" line="521"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Нажмите чтобы убрать комету</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="627"/>
-        <location filename="../editstars.cpp" line="1134"/>
+        <location filename="../editstars.cpp" line="523"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Убрать звезду</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="1182"/>
-        <source>#Stars: %1
-Score: %2
-FWHM: %3</source>
-        <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation>#Звезды: %1
-Качество: %2
-FWHM: %3</translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
+        <location filename="../editstars.cpp" line="572"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -587,7 +572,7 @@ Comet:%1</source>
 Комета:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="669"/>
+        <location filename="../editstars.cpp" line="565"/>
         <source>#Stars: %1
 Quality: %2
 FWHM: %3</source>
@@ -597,8 +582,7 @@ FWHM: %3</source>
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
+        <location filename="../editstars.cpp" line="572"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Да</translation>
@@ -1321,12 +1305,12 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="743"/>
+        <location filename="../ui/ProcessingControls.ui" line="745"/>
         <source>Colour Balance</source>
         <translation>Цветовой баланс</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="523"/>
+        <location filename="../ui/ProcessingControls.ui" line="525"/>
         <source>ASinH Image stretch</source>
         <translation>Растяжение ASinH</translation>
     </message>
@@ -1341,84 +1325,100 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>Связать каналы RGB, чтобы при перемещении ползунка MTF все каналы обновлялись одновременно.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="238"/>
+        <location filename="../ui/ProcessingControls.ui" line="363"/>
         <source>Shadows</source>
         <translation>Тени</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="260"/>
+        <location filename="../ui/ProcessingControls.ui" line="256"/>
         <source>MTF shadow point.</source>
         <translation>Точка теней MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <location filename="../ui/ProcessingControls.ui" line="457"/>
         <source>Midtones</source>
         <translation>Средние тона</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="298"/>
+        <location filename="../ui/ProcessingControls.ui" line="338"/>
         <source>MTF midtone balance point.</source>
         <translation>Точка баланса средних тонов MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="317"/>
+        <location filename="../ui/ProcessingControls.ui" line="316"/>
         <source>Highlights</source>
         <translation>Светлые участки</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="339"/>
+        <location filename="../ui/ProcessingControls.ui" line="432"/>
         <source>MTF highlight point.</source>
         <translation>Точка светлых участков MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="364"/>
+        <location filename="../ui/ProcessingControls.ui" line="228"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
         <translation>Расчетный процент пикселей ниже текущей точки теней MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="367"/>
+        <location filename="../ui/ProcessingControls.ui" line="231"/>
         <source>Shadow Clipping:</source>
         <translation>Обрезание теней:</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="411"/>
+        <location filename="../ui/ProcessingControls.ui" line="404"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
         <translation>Расчетный процент пикселей выше текущей точки светлых участков MTF.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="414"/>
+        <location filename="../ui/ProcessingControls.ui" line="407"/>
         <source>Highlight Clipping:</source>
         <translation>Обрезание светов:</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="497"/>
+        <location filename="../ui/ProcessingControls.ui" line="499"/>
         <source>Apply the current MTF stretch settings to the image.</source>
         <translation>Применить текущие настройки растяжения MTF к изображению.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="531"/>
+        <location filename="../ui/ProcessingControls.ui" line="533"/>
         <source>Stretch Factor</source>
         <translation>Коэффициент растяжения</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="605"/>
+        <location filename="../ui/ProcessingControls.ui" line="607"/>
         <source>Black Point</source>
         <translation>Блэк Пойнт</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="683"/>
+        <location filename="../ui/ProcessingControls.ui" line="685"/>
         <source>Human-weighted luminance</source>
         <translation>Яркость, взвешенная по человеческому признаку</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="952"/>
+        <location filename="../ui/ProcessingControls.ui" line="949"/>
+        <source>Saturation</source>
+        <translation>Насыщенность</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="968"/>
+        <source>Saturation shift</source>
+        <translation>Сдвиг насыщенности</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1030"/>
+        <source>Vibrance</source>
+        <translation>Вибрация</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1129"/>
         <source>Preview</source>
         <translation>Предварительный просмотр</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="500"/>
-        <location filename="../ui/ProcessingControls.ui" line="720"/>
-        <location filename="../ui/ProcessingControls.ui" line="924"/>
+        <location filename="../ui/ProcessingControls.ui" line="502"/>
+        <location filename="../ui/ProcessingControls.ui" line="722"/>
+        <location filename="../ui/ProcessingControls.ui" line="926"/>
+        <location filename="../ui/ProcessingControls.ui" line="1101"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Применить</translation>
@@ -1436,17 +1436,17 @@ Right-click to change Autostretch parameters</source>
         <translation>Автонастройка</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="975"/>
+        <location filename="../ui/ProcessingControls.ui" line="1152"/>
         <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>Oтобразите пиксели ниже Black Level синим цветом, а пиксели выше White Level — красным.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="978"/>
+        <location filename="../ui/ProcessingControls.ui" line="1155"/>
         <source>Show Shadow and Highlight clipping</source>
         <translation>Показать отсечение теней и светлых участков</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="1058"/>
+        <location filename="../ui/ProcessingControls.ui" line="1235"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Сбросить</translation>
@@ -1455,95 +1455,95 @@ Right-click to change Autostretch parameters</source>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1228"/>
+        <location filename="../ProcessingDlg.cpp" line="1238"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="563"/>
+        <location filename="../ProcessingDlg.cpp" line="582"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>Изображение TIFF или FITS (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="447"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>Маска звёзд, созданная DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="449"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Сохранить маску звёзд в %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="526"/>
-        <location filename="../ProcessingDlg.cpp" line="638"/>
+        <location filename="../ProcessingDlg.cpp" line="545"/>
+        <location filename="../ProcessingDlg.cpp" line="647"/>
         <source>Failed to load image %1</source>
         <translation>Не удалось загрузить изображение %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="667"/>
+        <location filename="../ProcessingDlg.cpp" line="676"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Изображение 16 бит/канал (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="668"/>
+        <location filename="../ProcessingDlg.cpp" line="677"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - целые (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="678"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF изображение 32 бит/канал - дробные (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="670"/>
+        <location filename="../ProcessingDlg.cpp" line="679"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 16 бит/канал (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="671"/>
+        <location filename="../ProcessingDlg.cpp" line="680"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Изображение 32 бит/канал - целые (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="672"/>
+        <location filename="../ProcessingDlg.cpp" line="681"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS изображение 32 бит/канал -дробные (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="681"/>
+        <location filename="../ProcessingDlg.cpp" line="690"/>
         <source>Save Image</source>
         <translation>Сохранить изображение</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="784"/>
+        <location filename="../ProcessingDlg.cpp" line="793"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Нечего сохранять.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="799"/>
+        <location filename="../ProcessingDlg.cpp" line="808"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Инфо не доступно</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="821"/>
+        <location filename="../ProcessingDlg.cpp" line="831"/>
         <source>Exposure: %1 </source>
         <translation>Выдержка: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="822"/>
+        <location filename="../ProcessingDlg.cpp" line="832"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1553,35 +1553,40 @@ Right-click to change Autostretch parameters</source>
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1386"/>
+        <location filename="../ProcessingDlg.cpp" line="1410"/>
         <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
         <translation>Растяжение MTF: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1400"/>
+        <location filename="../ProcessingDlg.cpp" line="1423"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
         <translation>ASinH stretch: beta %L1, bp %L2, ​​hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1413"/>
+        <location filename="../ProcessingDlg.cpp" line="1435"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
         <translation>Цветовой баланс: R %L1, G %L2, ​​B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1424"/>
-        <location filename="../ProcessingDlg.cpp" line="1452"/>
-        <location filename="../ProcessingDlg.cpp" line="1480"/>
+        <location filename="../ProcessingDlg.cpp" line="1446"/>
+        <source>Saturation: %L1, Vibrance: %L2</source>
+        <translation>Насыщенность: %L1, Вибрация: %L2</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1456"/>
+        <location filename="../ProcessingDlg.cpp" line="1484"/>
+        <location filename="../ProcessingDlg.cpp" line="1523"/>
         <source>Undo %1</source>
         <translation>Отменить %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1441"/>
-        <location filename="../ProcessingDlg.cpp" line="1484"/>
+        <location filename="../ProcessingDlg.cpp" line="1473"/>
+        <location filename="../ProcessingDlg.cpp" line="1527"/>
         <source>Redo %1</source>
         <translation>Повторить %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1796"/>
+        <location filename="../ProcessingDlg.cpp" line="1852"/>
         <source>Edit autostretch parameters ...</source>
         <translation>Редактировать параметры автоматического растяжения ...</translation>
     </message>
@@ -2705,13 +2710,13 @@ Ctrl-A или эквивалент для выбора всех строк
         <translation>Не удалось загрузить изображение %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1866"/>
+        <location filename="../StackingDlg.cpp" line="1870"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Кадров изображения:%1      -      Dark кадров: %2      -      Flat кадров:%3      -   Dark Flat кадров: %4   -      Offset/Bias кадров: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2269"/>
+        <location filename="../StackingDlg.cpp" line="2277"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Не все ваши проверенные световые рамки имеют рассчитанное качество. Вам следует перерегистрировать ваши световые рамки.</translation>
     </message>
@@ -2783,7 +2788,7 @@ Ctrl-A или эквивалент для выбора всех строк
         <translation>Открыть Bias кадры...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1879"/>
+        <location filename="../StackingDlg.cpp" line="1883"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2797,42 +2802,42 @@ Dark Flat кадров: %4
 Offset/Bias кадров: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1962"/>
+        <location filename="../StackingDlg.cpp" line="1966"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Открыть другой список файлов...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2106"/>
+        <location filename="../StackingDlg.cpp" line="2114"/>
         <source>Save file list</source>
         <translation>Сохранить список файлов</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2141"/>
+        <location filename="../StackingDlg.cpp" line="2149"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker версии %1 доступен для загрузки.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2158"/>
+        <location filename="../StackingDlg.cpp" line="2166"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Проверка версии Интернет-код ошибки %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2258"/>
+        <location filename="../StackingDlg.cpp" line="2266"/>
         <source>Total registering time: %1 %2</source>
         <translation>Общее время регистрации: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2285"/>
+        <location filename="../StackingDlg.cpp" line="2293"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Вы должны выбрать кадры с изображениями, чтобы зарегистрировать их.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2342"/>
+        <location filename="../StackingDlg.cpp" line="2350"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2842,19 +2847,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker должен иметь возможность создавать файлы в каталогах в процессе работы.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2363"/>
+        <location filename="../StackingDlg.cpp" line="2371"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Выбранные изображения несовместимы: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2367"/>
+        <location filename="../StackingDlg.cpp" line="2375"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Вы должны выбрать кадры с изображениями, чтобы сложить их.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2415"/>
+        <location filename="../StackingDlg.cpp" line="2423"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2864,18 +2869,18 @@ Do you want to save the changes?</source>
 Хотите сохранить изменения?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2531"/>
+        <location filename="../StackingDlg.cpp" line="2539"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Общее время накопления: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2562"/>
+        <location filename="../StackingDlg.cpp" line="2570"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Сохранить итоговое изображение в %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2646"/>
+        <location filename="../StackingDlg.cpp" line="2654"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3257,14 +3262,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="113"/>
+        <location filename="../DeepSkyStacker.cpp" line="107"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Срок действия этой бета-версии DeepSkyStacker истек
 Вы, вероятно, можете получить еще один или загрузить финальную версию с веб-сайта.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="141"/>
+        <location filename="../DeepSkyStacker.cpp" line="135"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3272,19 +3277,19 @@ You can probably get another one or download the final release from the web site
 (Эту опцию можно выключить и включить позже в)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="522"/>
+        <location filename="../DeepSkyStacker.cpp" line="516"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Спонсор DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
+        <location filename="../DeepSkyStacker.cpp" line="683"/>
+        <location filename="../DeepSkyStacker.cpp" line="686"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="381"/>
+        <location filename="../DeepSkyStacker.cpp" line="375"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 не существует или не является файлом</translation>
     </message>

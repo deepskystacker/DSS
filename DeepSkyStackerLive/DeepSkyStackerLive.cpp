@@ -53,16 +53,6 @@
 #include <QImageReader>
 #include <QtLogging>
 
-//
-// Necessary Windows header
-//
-#if defined(Q_OS_WIN) && !defined(NDEBUG) && __has_include(<vld.h>)
-//
-// Visual Leak Detector
-// 
-#include <vld.h>
-#endif
-
 #include "avx_simd_check.h"
 #include "DeepSkyStackerLive.h"
 #include "DSSVersion.h"

@@ -140,7 +140,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(qwt-6.3.0)
+add_subdirectory(qwt)
 add_subdirectory(ZClass)
 add_subdirectory(DeepSkyStackerKernel)
 # 

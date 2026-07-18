@@ -295,7 +295,7 @@ namespace DSS
                         return file.m_SkyBackground.m_fLight;
                     else if (0. != file.m_SkyBackground.m_fLight)
                     {
-                        return QString("%1 %").arg(file.m_SkyBackground.m_fLight * 100.0, 0, 'f', 2);
+                        return QString("%1").arg(file.m_SkyBackground.m_fLight * 100.0, 0, 'f', 2);
                     }
                     else
                         return QString("NC");
@@ -399,7 +399,7 @@ namespace DSS
             case Column::Stars:
                 return tr("#Stars", "IDS_COLUMN_STARS");
             case Column::Background:
-                return tr("Sky Background", "IDS_COLUMN_SKYBACKGROUND");
+                return tr("Sky Background %", "IDS_COLUMN_SKYBACKGROUND");
             default:
                 break;
             }

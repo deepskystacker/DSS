@@ -534,46 +534,31 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="615"/>
-        <location filename="../editstars.cpp" line="1123"/>
+        <location filename="../editstars.cpp" line="511"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>点击添加彗星</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="617"/>
-        <location filename="../editstars.cpp" line="1125"/>
+        <location filename="../editstars.cpp" line="513"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>点击添加星点</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="625"/>
-        <location filename="../editstars.cpp" line="1132"/>
+        <location filename="../editstars.cpp" line="521"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>点击移除彗星</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="627"/>
-        <location filename="../editstars.cpp" line="1134"/>
+        <location filename="../editstars.cpp" line="523"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>点击移除星点</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="1182"/>
-        <source>#Stars: %1
-Score: %2
-FWHM: %3</source>
-        <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation>星级：%1
-品质：%2
-半高宽：%3</translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
+        <location filename="../editstars.cpp" line="572"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -581,7 +566,7 @@ Comet:%1</source>
 彗星: %1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="669"/>
+        <location filename="../editstars.cpp" line="565"/>
         <source>#Stars: %1
 Quality: %2
 FWHM: %3</source>
@@ -591,8 +576,7 @@ FWHM: %3</source>
 半高宽：%3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
+        <location filename="../editstars.cpp" line="572"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>确定</translation>
@@ -1312,12 +1296,12 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="743"/>
+        <location filename="../ui/ProcessingControls.ui" line="745"/>
         <source>Colour Balance</source>
         <translation>色彩平衡</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="523"/>
+        <location filename="../ui/ProcessingControls.ui" line="525"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH 图像拉伸</translation>
     </message>
@@ -1332,84 +1316,100 @@ Detected Cold Pixels: %L3 (%L4%)
         <translation>将 RGB 通道关联起来，以便移动 MTF 滑块时，所有通道同步更新。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="238"/>
+        <location filename="../ui/ProcessingControls.ui" line="363"/>
         <source>Shadows</source>
         <translation>阴影</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="260"/>
+        <location filename="../ui/ProcessingControls.ui" line="256"/>
         <source>MTF shadow point.</source>
         <translation>MTF 阴影点。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <location filename="../ui/ProcessingControls.ui" line="457"/>
         <source>Midtones</source>
         <translation>中间调</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="298"/>
+        <location filename="../ui/ProcessingControls.ui" line="338"/>
         <source>MTF midtone balance point.</source>
         <translation>MTF 中间调平衡点。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="317"/>
+        <location filename="../ui/ProcessingControls.ui" line="316"/>
         <source>Highlights</source>
         <translation>高光</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="339"/>
+        <location filename="../ui/ProcessingControls.ui" line="432"/>
         <source>MTF highlight point.</source>
         <translation>MTF高光点。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="364"/>
+        <location filename="../ui/ProcessingControls.ui" line="228"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
         <translation>低于当前MTF阴影点的像素估计百分比。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="367"/>
+        <location filename="../ui/ProcessingControls.ui" line="231"/>
         <source>Shadow Clipping:</source>
         <translation>阴影剪切：</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="411"/>
+        <location filename="../ui/ProcessingControls.ui" line="404"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
         <translation>高于当前MTF高光点的像素估计百分比。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="414"/>
+        <location filename="../ui/ProcessingControls.ui" line="407"/>
         <source>Highlight Clipping:</source>
         <translation>高光剪切：</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="497"/>
+        <location filename="../ui/ProcessingControls.ui" line="499"/>
         <source>Apply the current MTF stretch settings to the image.</source>
         <translation>将当前MTF拉伸设置应用到图像。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="531"/>
+        <location filename="../ui/ProcessingControls.ui" line="533"/>
         <source>Stretch Factor</source>
         <translation>拉伸系数</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="605"/>
+        <location filename="../ui/ProcessingControls.ui" line="607"/>
         <source>Black Point</source>
         <translation>黑点</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="683"/>
+        <location filename="../ui/ProcessingControls.ui" line="685"/>
         <source>Human-weighted luminance</source>
         <translation>人为加权亮度</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="952"/>
+        <location filename="../ui/ProcessingControls.ui" line="949"/>
+        <source>Saturation</source>
+        <translation>饱和度</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="968"/>
+        <source>Saturation shift</source>
+        <translation>饱和度偏移</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1030"/>
+        <source>Vibrance</source>
+        <translation>自然饱和度</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1129"/>
         <source>Preview</source>
         <translation>预览</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="500"/>
-        <location filename="../ui/ProcessingControls.ui" line="720"/>
-        <location filename="../ui/ProcessingControls.ui" line="924"/>
+        <location filename="../ui/ProcessingControls.ui" line="502"/>
+        <location filename="../ui/ProcessingControls.ui" line="722"/>
+        <location filename="../ui/ProcessingControls.ui" line="926"/>
+        <location filename="../ui/ProcessingControls.ui" line="1101"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>应用</translation>
@@ -1427,17 +1427,17 @@ Right-click to change Autostretch parameters</source>
         <translation>阴影</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="975"/>
+        <location filename="../ui/ProcessingControls.ui" line="1152"/>
         <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>将低于黑电平的像素显示为蓝色，将高于白电平的像素显示为红色。</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="978"/>
+        <location filename="../ui/ProcessingControls.ui" line="1155"/>
         <source>Show Shadow and Highlight clipping</source>
         <translation>显示阴影和高光剪切</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="1058"/>
+        <location filename="../ui/ProcessingControls.ui" line="1235"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>重置</translation>
@@ -1446,95 +1446,95 @@ Right-click to change Autostretch parameters</source>
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1228"/>
+        <location filename="../ProcessingDlg.cpp" line="1238"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>要保存这些修改吗？</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="563"/>
+        <location filename="../ProcessingDlg.cpp" line="582"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF 或 FITS 图像 (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="447"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>星点蒙版由 DeepSkyStacker 制作</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="449"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>保存星点蒙版到 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="526"/>
-        <location filename="../ProcessingDlg.cpp" line="638"/>
+        <location filename="../ProcessingDlg.cpp" line="545"/>
+        <location filename="../ProcessingDlg.cpp" line="647"/>
         <source>Failed to load image %1</source>
         <translation>加载图像 %1 失败</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="667"/>
+        <location filename="../ProcessingDlg.cpp" line="676"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 16 位每通道 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="668"/>
+        <location filename="../ProcessingDlg.cpp" line="677"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 32 位每通道整数 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="678"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF 文件 32 位每通道浮点数 (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="670"/>
+        <location filename="../ProcessingDlg.cpp" line="679"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 16 位每通道 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="671"/>
+        <location filename="../ProcessingDlg.cpp" line="680"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 32 位每通道整数 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="672"/>
+        <location filename="../ProcessingDlg.cpp" line="681"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS 文件 32 位每通道浮点数 (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="681"/>
+        <location filename="../ProcessingDlg.cpp" line="690"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="784"/>
+        <location filename="../ProcessingDlg.cpp" line="793"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>没有可保存的图像</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="799"/>
+        <location filename="../ProcessingDlg.cpp" line="808"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>没有可用的信息</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="821"/>
+        <location filename="../ProcessingDlg.cpp" line="831"/>
         <source>Exposure: %1 </source>
         <translation>曝光: %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="822"/>
+        <location filename="../ProcessingDlg.cpp" line="832"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1542,35 +1542,40 @@ Right-click to change Autostretch parameters</source>
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1386"/>
+        <location filename="../ProcessingDlg.cpp" line="1410"/>
         <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
         <translation>MTF 拉伸: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1400"/>
+        <location filename="../ProcessingDlg.cpp" line="1423"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
         <translation>ASinH 拉伸：β %L1，bp %L2，hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1413"/>
+        <location filename="../ProcessingDlg.cpp" line="1435"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
         <translation>色彩平衡：R %L1，G %L2，B %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1424"/>
-        <location filename="../ProcessingDlg.cpp" line="1452"/>
-        <location filename="../ProcessingDlg.cpp" line="1480"/>
+        <location filename="../ProcessingDlg.cpp" line="1446"/>
+        <source>Saturation: %L1, Vibrance: %L2</source>
+        <translation>饱和度: %L1, 自然饱和度: %L2</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1456"/>
+        <location filename="../ProcessingDlg.cpp" line="1484"/>
+        <location filename="../ProcessingDlg.cpp" line="1523"/>
         <source>Undo %1</source>
         <translation>撤销 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1441"/>
-        <location filename="../ProcessingDlg.cpp" line="1484"/>
+        <location filename="../ProcessingDlg.cpp" line="1473"/>
+        <location filename="../ProcessingDlg.cpp" line="1527"/>
         <source>Redo %1</source>
         <translation>重做 %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1796"/>
+        <location filename="../ProcessingDlg.cpp" line="1852"/>
         <source>Edit autostretch parameters ...</source>
         <translation>编辑自动拉伸参数 ...</translation>
     </message>
@@ -2753,13 +2758,13 @@ This operation cannot be reversed or cancelled.</source>
         <translation>打开暗平场文件...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1866"/>
+        <location filename="../StackingDlg.cpp" line="1870"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>亮场: %1      -      暗场: %2      -      平场: %3      -   暗平场: %4   -      偏置场: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1879"/>
+        <location filename="../StackingDlg.cpp" line="1883"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2773,47 +2778,47 @@ Offset/Bias Frames: %5</source>
 偏置场: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1962"/>
+        <location filename="../StackingDlg.cpp" line="1966"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>打开另一个文件列表...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2106"/>
+        <location filename="../StackingDlg.cpp" line="2114"/>
         <source>Save file list</source>
         <translation>保存文件列表</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2141"/>
+        <location filename="../StackingDlg.cpp" line="2149"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>新版本 DeepSkyStacker: %1 可以下载</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2158"/>
+        <location filename="../StackingDlg.cpp" line="2166"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>检查新版本失败: %1
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2258"/>
+        <location filename="../StackingDlg.cpp" line="2266"/>
         <source>Total registering time: %1 %2</source>
         <translation>注册时长: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2269"/>
+        <location filename="../StackingDlg.cpp" line="2277"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>并非所有选中的亮场图像都计算了质量。请重新注册亮场图像。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2285"/>
+        <location filename="../StackingDlg.cpp" line="2293"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>检测星点前需要选择亮场图像。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2342"/>
+        <location filename="../StackingDlg.cpp" line="2350"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2823,19 +2828,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker 需要在这些文件夹中创建文件。</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2363"/>
+        <location filename="../StackingDlg.cpp" line="2371"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>选择的图像不兼容: %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2367"/>
+        <location filename="../StackingDlg.cpp" line="2375"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>堆栈前需要选择亮场图像</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2415"/>
+        <location filename="../StackingDlg.cpp" line="2423"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2845,18 +2850,18 @@ Do you want to save the changes?</source>
 要保存这些更改吗？</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2531"/>
+        <location filename="../StackingDlg.cpp" line="2539"/>
         <source>Total stacking time: %1 %2</source>
         <translation>堆栈时间总计: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2562"/>
+        <location filename="../StackingDlg.cpp" line="2570"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>保存最终图像到 %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2646"/>
+        <location filename="../StackingDlg.cpp" line="2654"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3229,14 +3234,14 @@ Right Click to change behaviour.</source>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="113"/>
+        <location filename="../DeepSkyStacker.cpp" line="107"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker beta 版本已过期
 您可以再获取一个 beta 版本(如果有)或下载正式版本。</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="141"/>
+        <location filename="../DeepSkyStacker.cpp" line="135"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3244,19 +3249,19 @@ You can probably get another one or download the final release from the web site
 (稍后从关于对话框中启用或禁用此选项)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="522"/>
+        <location filename="../DeepSkyStacker.cpp" line="516"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>捐助 DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
+        <location filename="../DeepSkyStacker.cpp" line="683"/>
+        <location filename="../DeepSkyStacker.cpp" line="686"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="381"/>
+        <location filename="../DeepSkyStacker.cpp" line="375"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 文件不存在或格式错误</translation>
     </message>

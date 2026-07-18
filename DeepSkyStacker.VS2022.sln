@@ -30,7 +30,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeepSkyStackerKernel", "Dee
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZClass", "ZClass\ZClass.vcxproj", "{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qwt-6.3.0", "qwt-6.3.0\qwt-6.3.0.vcxproj", "{0BD6AB93-B4D3-426E-9BED-18A9B0B5CD67}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qwt", "qwt\qwt.vcxproj", "{0BD6AB93-B4D3-426E-9BED-18A9B0B5CD67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

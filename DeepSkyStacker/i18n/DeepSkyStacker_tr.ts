@@ -537,46 +537,31 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="615"/>
-        <location filename="../editstars.cpp" line="1123"/>
+        <location filename="../editstars.cpp" line="511"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Kuyrukluyıldızı buraya ayarlamak için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="617"/>
-        <location filename="../editstars.cpp" line="1125"/>
+        <location filename="../editstars.cpp" line="513"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Bu yıldızı eklemek için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="625"/>
-        <location filename="../editstars.cpp" line="1132"/>
+        <location filename="../editstars.cpp" line="521"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Kuyrukluyıldızı kaldırmak için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="627"/>
-        <location filename="../editstars.cpp" line="1134"/>
+        <location filename="../editstars.cpp" line="523"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Bu yıldızı silmek için tıklayın</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="1182"/>
-        <source>#Stars: %1
-Score: %2
-FWHM: %3</source>
-        <comment>IDS_LIGHTFRAMEINFO</comment>
-        <translation>#Yıldızlar: %1
-Kalite: %2
-FWHM: %3</translation>
-    </message>
-    <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
+        <location filename="../editstars.cpp" line="572"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -584,7 +569,7 @@ Comet:%1</source>
 Kuyrukluyıldız:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="669"/>
+        <location filename="../editstars.cpp" line="565"/>
         <source>#Stars: %1
 Quality: %2
 FWHM: %3</source>
@@ -594,8 +579,7 @@ Kalite: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="676"/>
-        <location filename="../editstars.cpp" line="1189"/>
+        <location filename="../editstars.cpp" line="572"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Evet</translation>
@@ -1316,12 +1300,12 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="743"/>
+        <location filename="../ui/ProcessingControls.ui" line="745"/>
         <source>Colour Balance</source>
         <translation>Renk Dengesi</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="523"/>
+        <location filename="../ui/ProcessingControls.ui" line="525"/>
         <source>ASinH Image stretch</source>
         <translation>ASinH Görüntü germe</translation>
     </message>
@@ -1336,84 +1320,100 @@ Algılanan Soğuk Pikseller: %L3 (%L4%)
         <translation>RGB kanallarını birbirine bağlayın, böylece bir MTF kaydırıcısını hareket ettirdiğinizde tüm kanallar birlikte güncellenir.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="238"/>
+        <location filename="../ui/ProcessingControls.ui" line="363"/>
         <source>Shadows</source>
         <translation>Gölgeler</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="260"/>
+        <location filename="../ui/ProcessingControls.ui" line="256"/>
         <source>MTF shadow point.</source>
         <translation>MTF gölge noktası.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="276"/>
+        <location filename="../ui/ProcessingControls.ui" line="457"/>
         <source>Midtones</source>
         <translation>Orta Tonlar</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="298"/>
+        <location filename="../ui/ProcessingControls.ui" line="338"/>
         <source>MTF midtone balance point.</source>
         <translation>MTF orta ton denge noktası.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="317"/>
+        <location filename="../ui/ProcessingControls.ui" line="316"/>
         <source>Highlights</source>
         <translation>Vurgular</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="339"/>
+        <location filename="../ui/ProcessingControls.ui" line="432"/>
         <source>MTF highlight point.</source>
         <translation>MTF vurgu noktası.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="364"/>
+        <location filename="../ui/ProcessingControls.ui" line="228"/>
         <source>Estimated percentage of pixels below the current MTF shadow point.</source>
         <translation>Mevcut MTF gölge noktasının altındaki piksellerin tahmini yüzdesi.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="367"/>
+        <location filename="../ui/ProcessingControls.ui" line="231"/>
         <source>Shadow Clipping:</source>
         <translation>Gölge kırpma:</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="411"/>
+        <location filename="../ui/ProcessingControls.ui" line="404"/>
         <source>Estimated percentage of pixels above the current MTF highlight point.</source>
         <translation>Mevcut MTF vurgu noktasının üzerindeki piksellerin tahmini yüzdesi.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="414"/>
+        <location filename="../ui/ProcessingControls.ui" line="407"/>
         <source>Highlight Clipping:</source>
         <translation>Vurgu kırpma:</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="497"/>
+        <location filename="../ui/ProcessingControls.ui" line="499"/>
         <source>Apply the current MTF stretch settings to the image.</source>
         <translation>Mevcut MTF genişletme ayarlarını görüntüye uygula.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="531"/>
+        <location filename="../ui/ProcessingControls.ui" line="533"/>
         <source>Stretch Factor</source>
         <translation>Esneme Faktörü</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="605"/>
+        <location filename="../ui/ProcessingControls.ui" line="607"/>
         <source>Black Point</source>
         <translation>Siyah Nokta</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="683"/>
+        <location filename="../ui/ProcessingControls.ui" line="685"/>
         <source>Human-weighted luminance</source>
         <translation>İnsan ağırlıklı parlaklık</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="952"/>
+        <location filename="../ui/ProcessingControls.ui" line="949"/>
+        <source>Saturation</source>
+        <translation>Doygunluk</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="968"/>
+        <source>Saturation shift</source>
+        <translation>Doygunluk kayması</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1030"/>
+        <source>Vibrance</source>
+        <translation>Canlılık</translation>
+    </message>
+    <message>
+        <location filename="../ui/ProcessingControls.ui" line="1129"/>
         <source>Preview</source>
         <translation>Önizleme</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="500"/>
-        <location filename="../ui/ProcessingControls.ui" line="720"/>
-        <location filename="../ui/ProcessingControls.ui" line="924"/>
+        <location filename="../ui/ProcessingControls.ui" line="502"/>
+        <location filename="../ui/ProcessingControls.ui" line="722"/>
+        <location filename="../ui/ProcessingControls.ui" line="926"/>
+        <location filename="../ui/ProcessingControls.ui" line="1101"/>
         <source>Apply</source>
         <comment>IDC_PROCESS</comment>
         <translation>Uygula</translation>
@@ -1431,17 +1431,17 @@ Otomatik uzatma parametrelerini değiştirmek için sağ tıklayın</translation
         <translation>Otomatik Genişletme</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="975"/>
+        <location filename="../ui/ProcessingControls.ui" line="1152"/>
         <source>Show pixels below the Black Level as blue and pixels above the White Level as red.</source>
         <translation>Black Levelnin altındaki pikselleri mavi, White Levelnin üstündeki pikselleri kırmızı olarak göster.</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="978"/>
+        <location filename="../ui/ProcessingControls.ui" line="1155"/>
         <source>Show Shadow and Highlight clipping</source>
         <translation>Gölge ve Vurgu kırpmasını göster</translation>
     </message>
     <message>
-        <location filename="../ui/ProcessingControls.ui" line="1058"/>
+        <location filename="../ui/ProcessingControls.ui" line="1235"/>
         <source>Reset</source>
         <comment>IDC_RESET</comment>
         <translation>Sıfırla</translation>
@@ -1450,95 +1450,95 @@ Otomatik uzatma parametrelerini değiştirmek için sağ tıklayın</translation
 <context>
     <name>DSS::ProcessingDlg</name>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1228"/>
+        <location filename="../ProcessingDlg.cpp" line="1238"/>
         <source>Do you want to save the modifications?</source>
         <comment>IDS_MSG_SAVEMODIFICATIONS</comment>
         <translation>Değişiklikleri kaydetmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="563"/>
+        <location filename="../ProcessingDlg.cpp" line="582"/>
         <source>TIFF and FITS Files (*.tif *.tiff *.fits *.fit *.fts)</source>
         <comment>IDS_FILTER_DSIIMAGETIFF</comment>
         <translation>TIFF veya FITS görüntüsü (*.tif *.tiff *.fits *.fit *.fts)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="447"/>
+        <location filename="../ProcessingDlg.cpp" line="475"/>
         <source>Star Mask created by DeepSkyStacker</source>
         <comment>IDS_STARMASKDESCRIPTION</comment>
         <translation>DeepSkyStacker&apos;la Yıldız Maskesini oluşturuyor</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="449"/>
+        <location filename="../ProcessingDlg.cpp" line="477"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
         <translation>Yıldız Maskesini Kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="526"/>
-        <location filename="../ProcessingDlg.cpp" line="638"/>
+        <location filename="../ProcessingDlg.cpp" line="545"/>
+        <location filename="../ProcessingDlg.cpp" line="647"/>
         <source>Failed to load image %1</source>
         <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="667"/>
+        <location filename="../ProcessingDlg.cpp" line="676"/>
         <source>TIFF Image 16 bit/ch (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 16 bit/ch (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="668"/>
+        <location filename="../ProcessingDlg.cpp" line="677"/>
         <source>TIFF Image 32 bit/ch - integer (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü 32 bit/ch -tamsayı (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="669"/>
+        <location filename="../ProcessingDlg.cpp" line="678"/>
         <source>TIFF Image 32 bit/ch - rational (*.tif)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>TIFF Görüntüsü  32 bit/ch - rasyonel (*.tif)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="670"/>
+        <location filename="../ProcessingDlg.cpp" line="679"/>
         <source>FITS Image 16 bit/ch (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 16 bit/ch (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="671"/>
+        <location filename="../ProcessingDlg.cpp" line="680"/>
         <source>FITS Image 32 bit/ch - integer (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch - tamsayı (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="672"/>
+        <location filename="../ProcessingDlg.cpp" line="681"/>
         <source>FITS Image 32 bit/ch - rational (*.fits)</source>
         <comment>IDS_FILTER_OUTPUT</comment>
         <translation>FITS Görüntüsü 32 bit/ch -rasyonel (*.fits)</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="681"/>
+        <location filename="../ProcessingDlg.cpp" line="690"/>
         <source>Save Image</source>
         <translation>Resmi Kaydet</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="784"/>
+        <location filename="../ProcessingDlg.cpp" line="793"/>
         <source>There is no picture to save.</source>
         <comment>IDS_MSG_NOPICTURETOSAVE</comment>
         <translation>Kaydedilecek dosya yok.</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="799"/>
+        <location filename="../ProcessingDlg.cpp" line="808"/>
         <source>No information available</source>
         <comment>IDS_NOINFO</comment>
         <translation>Herhangi bir bilgi mevcut değil</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="821"/>
+        <location filename="../ProcessingDlg.cpp" line="831"/>
         <source>Exposure: %1 </source>
         <translation>Poz süresi: %1 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../ProcessingDlg.cpp" line="822"/>
+        <location filename="../ProcessingDlg.cpp" line="832"/>
         <source>%n frames</source>
         <comment>IDS_NRFRAMES</comment>
         <translation>
@@ -1546,35 +1546,40 @@ Otomatik uzatma parametrelerini değiştirmek için sağ tıklayın</translation
         </translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1386"/>
+        <location filename="../ProcessingDlg.cpp" line="1410"/>
         <source>MTF stretch: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</source>
         <translation>MTF Genişletme: R %L1 %L2 %L3, G %L4 %L5 %L6, B %L7 %L8 %L9</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1400"/>
+        <location filename="../ProcessingDlg.cpp" line="1423"/>
         <source>ASinH stretch: beta %L1, bp %L2, hw %3</source>
         <translation>ASinH germe: beta %L1, bp %L2, ​​hw %3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1413"/>
+        <location filename="../ProcessingDlg.cpp" line="1435"/>
         <source>Colour Balance: R %L1, G %L2, B %L3</source>
         <translation>Renk Dengesi: Kırmızı %L1, Yeşil %L2, ​​Mavi %L3</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1424"/>
-        <location filename="../ProcessingDlg.cpp" line="1452"/>
-        <location filename="../ProcessingDlg.cpp" line="1480"/>
+        <location filename="../ProcessingDlg.cpp" line="1446"/>
+        <source>Saturation: %L1, Vibrance: %L2</source>
+        <translation>Doygunluk: %L1, Canlılık: %L2</translation>
+    </message>
+    <message>
+        <location filename="../ProcessingDlg.cpp" line="1456"/>
+        <location filename="../ProcessingDlg.cpp" line="1484"/>
+        <location filename="../ProcessingDlg.cpp" line="1523"/>
         <source>Undo %1</source>
         <translation>Geri Al %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1441"/>
-        <location filename="../ProcessingDlg.cpp" line="1484"/>
+        <location filename="../ProcessingDlg.cpp" line="1473"/>
+        <location filename="../ProcessingDlg.cpp" line="1527"/>
         <source>Redo %1</source>
         <translation>Yeniden Yap %1</translation>
     </message>
     <message>
-        <location filename="../ProcessingDlg.cpp" line="1796"/>
+        <location filename="../ProcessingDlg.cpp" line="1852"/>
         <source>Edit autostretch parameters ...</source>
         <translation>Otomatik uzatma parametrelerini düzenle ...</translation>
     </message>
@@ -2692,13 +2697,13 @@ Menüyü görüntülemek için farenin sağ tuşu</translation>
         <translation>%1 resmi yüklenemedi</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1866"/>
+        <location filename="../StackingDlg.cpp" line="1870"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Görüntü Dosyaları:%1      -      Siyah Kareler: %2      -      Düz Kareler:%3      -   Siyah Düz Kareler: %4   -      Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2269"/>
+        <location filename="../StackingDlg.cpp" line="2277"/>
         <source>Not all of your checked light frames have a quality calculated. You should re-register your light frames.</source>
         <translation>Kontrol ettiğiniz ışık çerçevelerinin hepsinin hesaplanmış bir kalitesi yoktur. Işık çerçevelerinizi yeniden kaydetmelisiniz.</translation>
     </message>
@@ -2768,7 +2773,7 @@ Menüyü görüntülemek için farenin sağ tuşu</translation>
         <translation>Ofset Kareleri Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1879"/>
+        <location filename="../StackingDlg.cpp" line="1883"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -2782,42 +2787,42 @@ Siyah Düz Kareler: %4
 Ofset Kareler: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1962"/>
+        <location filename="../StackingDlg.cpp" line="1966"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Başka Bir Dosya Listesi Aç...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2106"/>
+        <location filename="../StackingDlg.cpp" line="2114"/>
         <source>Save file list</source>
         <translation>Dosya listesini kaydet</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2141"/>
+        <location filename="../StackingDlg.cpp" line="2149"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker Sürüm %1 indirilebilir.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2158"/>
+        <location filename="../StackingDlg.cpp" line="2166"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Sürüm kontrolü İnternet hata kodu %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2258"/>
+        <location filename="../StackingDlg.cpp" line="2266"/>
         <source>Total registering time: %1 %2</source>
         <translation>Toplam kayıt süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2285"/>
+        <location filename="../StackingDlg.cpp" line="2293"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Hizalama için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2342"/>
+        <location filename="../StackingDlg.cpp" line="2350"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -2827,19 +2832,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker&apos;ın işlem sırasında bu klasörlere dosya oluşturması gerekiyor.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2363"/>
+        <location filename="../StackingDlg.cpp" line="2371"/>
         <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation>Seçilen resimler uyumlu değil: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2367"/>
+        <location filename="../StackingDlg.cpp" line="2375"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>İstiflemek için görüntü karelerini işaretlemelisiniz.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2415"/>
+        <location filename="../StackingDlg.cpp" line="2423"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -2849,18 +2854,18 @@ Do you want to save the changes?</source>
 Değişiklikler kaydedilsin mi?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2531"/>
+        <location filename="../StackingDlg.cpp" line="2539"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Toplam istifleme süresi: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2562"/>
+        <location filename="../StackingDlg.cpp" line="2570"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Son görüntüyü kaydediyor %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2646"/>
+        <location filename="../StackingDlg.cpp" line="2654"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3240,14 +3245,14 @@ Davranışı değiştirmek için sağ tıklayın.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="113"/>
+        <location filename="../DeepSkyStacker.cpp" line="107"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>DeepSkyStacker&apos;ın bu beta sürümünün süresi doldu
 Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="141"/>
+        <location filename="../DeepSkyStacker.cpp" line="135"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -3255,19 +3260,19 @@ Muhtemelen başka bir tane alabilir veya son sürümü web sitesinden indirebili
 (Bu seçeneği daha sonra Hakkında kısmından uygulayabilir veya kaldırabilirsiniz)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="522"/>
+        <location filename="../DeepSkyStacker.cpp" line="516"/>
         <source>Sponsor DeepSkyStacker</source>
         <translation>Sponsor DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="689"/>
-        <location filename="../DeepSkyStacker.cpp" line="692"/>
+        <location filename="../DeepSkyStacker.cpp" line="683"/>
+        <location filename="../DeepSkyStacker.cpp" line="686"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="381"/>
+        <location filename="../DeepSkyStacker.cpp" line="375"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 mevcut değil veya bir dosya değil</translation>
     </message>

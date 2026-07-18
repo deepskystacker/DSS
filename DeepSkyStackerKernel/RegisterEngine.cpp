@@ -175,7 +175,7 @@ bool CRegisteredFrame::SaveRegisteringInfo(const fs::path& szInfoFileName)
 	for (int i = 0; const CStar& star : this->m_vStars)
 	{
 		fileOut << "Star# = " << i << Qt::endl;
-		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 2) << Qt::endl;
+		fileOut << QString("Intensity = %1").arg(star.m_fIntensity, 0, 'f', 6) << Qt::endl;
 		fileOut << QString("MeanRadius = %1").arg(star.m_fMeanRadius, 0, 'f', 2) << Qt::endl;
 		fileOut << paramString(CircularityParam, " = %1").arg(star.m_fCircularity, 0, 'f', 2) << Qt::endl;
 		fileOut << QString("Eccentricity = %1").arg(star.eccentricity, 0, 'f', 2) << Qt::endl;
@@ -433,7 +433,7 @@ double CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap, double thresh
 	const int nrSubrectsX = (calcWidth - 1) / StepSize + 1;
 //	const size_t nPixels = static_cast<size_t>(Bitmap.Width()) * static_cast<size_t>(Bitmap.Height());
 	const int nrEnabledThreads = Multitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
-	constexpr double LowestPossibleThreshold = 0.00075;
+	constexpr double LowestPossibleThreshold = 0.00050;
 
 	int oneMoreIteration = 0; // 0 = continue search; 1 = one more iteration please; 2 = last iteration was already the "one more", so stop now.
 

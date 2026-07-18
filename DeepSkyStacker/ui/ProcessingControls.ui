@@ -18,13 +18,13 @@
     <widget class="QWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
-       <width>430</width>
+       <width>450</width>
        <height>370</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>430</width>
+       <width>450</width>
        <height>370</height>
       </size>
      </property>
@@ -242,7 +242,7 @@ Right-click to change Autostretch parameters</string>
                <widget class="QDoubleSpinBox" name="mtfShadowsSpinBox">
                 <property name="minimumSize">
                  <size>
-                  <width>65</width>
+                  <width>75</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -255,14 +255,20 @@ Right-click to change Autostretch parameters</string>
                 <property name="toolTip">
                  <string>MTF shadow point.</string>
                 </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="keyboardTracking">
+                 <bool>false</bool>
+                </property>
                 <property name="decimals">
-                 <number>4</number>
+                 <number>5</number>
                 </property>
                 <property name="maximum">
                  <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.001000000000000</double>
+                 <double>0.000010000000000</double>
                 </property>
                </widget>
               </item>
@@ -318,7 +324,7 @@ Right-click to change Autostretch parameters</string>
                <widget class="QDoubleSpinBox" name="mtfMidtonesSpinBox">
                 <property name="minimumSize">
                  <size>
-                  <width>65</width>
+                  <width>75</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -331,14 +337,20 @@ Right-click to change Autostretch parameters</string>
                 <property name="toolTip">
                  <string>MTF midtone balance point.</string>
                 </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="keyboardTracking">
+                 <bool>false</bool>
+                </property>
                 <property name="decimals">
-                 <number>4</number>
+                 <number>5</number>
                 </property>
                 <property name="maximum">
                  <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.001000000000000</double>
+                 <double>0.000010000000000</double>
                 </property>
                 <property name="value">
                  <double>0.500000000000000</double>
@@ -406,7 +418,7 @@ Right-click to change Autostretch parameters</string>
                <widget class="QDoubleSpinBox" name="mtfHighlightsSpinBox">
                 <property name="minimumSize">
                  <size>
-                  <width>65</width>
+                  <width>75</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -419,14 +431,20 @@ Right-click to change Autostretch parameters</string>
                 <property name="toolTip">
                  <string>MTF highlight point.</string>
                 </property>
+                <property name="accelerated">
+                 <bool>true</bool>
+                </property>
+                <property name="keyboardTracking">
+                 <bool>false</bool>
+                </property>
                 <property name="decimals">
-                 <number>4</number>
+                 <number>5</number>
                 </property>
                 <property name="maximum">
                  <double>1.000000000000000</double>
                 </property>
                 <property name="singleStep">
-                 <double>0.001000000000000</double>
+                 <double>0.000010000000000</double>
                 </property>
                 <property name="value">
                  <double>1.000000000000000</double>
@@ -563,7 +581,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="asinhStretchSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>400</width>
               <height>16777215</height>
              </size>
             </property>
@@ -634,7 +652,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="asinhBPSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>400</width>
               <height>16777215</height>
              </size>
             </property>
@@ -744,7 +762,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="redSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -793,7 +811,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="greenSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -842,7 +860,7 @@ Right-click to change Autostretch parameters</string>
            <widget class="QSlider" name="blueSlider">
             <property name="maximumSize">
              <size>
-              <width>360</width>
+              <width>16777215</width>
               <height>16777215</height>
              </size>
             </property>
@@ -911,6 +929,181 @@ Right-click to change Autostretch parameters</string>
             </item>
             <item>
              <spacer name="horizontalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="saturationTab">
+         <attribute name="title">
+          <string>Saturation</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <spacer name="verticalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>7</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Saturation shift</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QSlider" name="saturation">
+              <property name="minimum">
+               <number>-10</number>
+              </property>
+              <property name="maximum">
+               <number>50</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TickPosition::TicksBothSides</enum>
+              </property>
+              <property name="tickInterval">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="saturationLabel">
+              <property name="minimumSize">
+               <size>
+                <width>25</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string notr="true">0</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::TextFormat::PlainText</enum>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>418</width>
+              <height>17</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Vibrance</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QSlider" name="vibrance">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="tickPosition">
+               <enum>QSlider::TickPosition::TicksBothSides</enum>
+              </property>
+              <property name="tickInterval">
+               <number>10</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="vibranceLabel">
+              <property name="minimumSize">
+               <size>
+                <width>25</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string notr="true">0</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::TextFormat::PlainText</enum>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>176</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <spacer name="horizontalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="saApply">
+              <property name="text">
+               <string comment="IDC_PROCESS">Apply</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_10">
               <property name="orientation">
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
@@ -1094,5 +1287,38 @@ Right-click to change Autostretch parameters</string>
  <resources>
   <include location="../resources.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>vibrance</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>vibranceLabel</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>219</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>saturation</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>saturationLabel</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>62</x>
+     <y>134</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>123</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

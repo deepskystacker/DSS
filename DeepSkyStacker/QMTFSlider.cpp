@@ -105,7 +105,8 @@ namespace DSS
 	{
 		const int margin = 8;
 		int w = width() - 2 * margin;
-		return margin + static_cast<int>(val * w);
+		const auto result = std::sqrt(val);
+		return margin + static_cast<int>(result * w);
 	}
 
 	double QMTFSlider::valueFromPos(int pos) const
@@ -114,6 +115,7 @@ namespace DSS
 		int w = width() - 2 * margin;
 		if (w <= 0) return 0.0;
 		double val = static_cast<double>(pos - margin) / w;
+		val = val * val; // Square the value to get a non-linear response
 		return std::clamp(val, 0.0, 1.0);
 	}
 
@@ -149,32 +151,36 @@ namespace DSS
 	void QMTFSlider::drawHandle(QPainter& p, int x, ActiveHandle type)
 	{
 		int yBottom = height() - 2;
-		int size = 6;
+		int size = (height() / 2) - 2;
+		int width = size * 2 / 3;
 
-		int midtoneHeight = static_cast<int>(size * 2 * 0.5); // 50% shorter height
-		const int apexY = yBottom - midtoneHeight;
+		const int apexY = yBottom - size;
 
 		// Draw marker line only above the handle, starting from the triangle apex.
 		p.setPen(QPen(Qt::gray, 1));
-		p.drawLine(x, 2, x, apexY);
 
 		QPolygon poly;
 		if (type == ActiveHandle::Shadows)
 		{
-			poly << QPoint(x, yBottom) << QPoint(x + size, yBottom) << QPoint(x, apexY);
+			poly << QPoint(x, yBottom) << QPoint(x + (width * 5)/4, yBottom) << QPoint(x, apexY);
+			p.drawLine(x, 2, x, apexY);
+			shadowPolygon = poly;
 		}
 		else if (type == ActiveHandle::Highlights)
 		{
-			poly << QPoint(x, yBottom) << QPoint(x - size, yBottom) << QPoint(x, apexY);
+			poly << QPoint(x, yBottom) << QPoint(x - (width * 5) / 4, yBottom) << QPoint(x, apexY);
+			p.drawLine(x, 2, x, apexY);
+			highlightPolygon = poly;
 		}
 		else // Midtones
 		{
-			poly << QPoint(x, apexY) << QPoint(x - size, yBottom) << QPoint(x + size, yBottom);
+			poly << QPoint(x, apexY) << QPoint(x - width, 2) << QPoint(x + width, 2);
+			p.drawLine(x, yBottom, x, apexY);
+			midtonePolygon = poly;
 		}
 
 		// All handles are transparent with gray borders by default.
 		// Fill only the selected handle (the one affected by mouse wheel).
-		p.setPen(QPen(Qt::gray, 1));
 		if (type == m_SelectedHandle)
 			p.setBrush(Qt::gray);
 		else
@@ -183,16 +189,13 @@ namespace DSS
 		p.drawPolygon(poly);
 	}
 
-	QMTFSlider::ActiveHandle QMTFSlider::hitTest(int x, int /*y*/) const
+	QMTFSlider::ActiveHandle QMTFSlider::hitTest(int x, int y) const
 	{
-		int xS = posFromValue(m_Shadows);
-		int xM = posFromValue(m_Midtones);
-		int xH = posFromValue(m_Highlights);
-
+		QPoint point{ x, y };
 		// Give priority to Midtones if close
-		if (std::abs(x - xM) < 8) return ActiveHandle::Midtones;
-		if (std::abs(x - xS) < 8) return ActiveHandle::Shadows;
-		if (std::abs(x - xH) < 8) return ActiveHandle::Highlights;
+		if (shadowPolygon.containsPoint(point, Qt::OddEvenFill)) return ActiveHandle::Shadows;
+		if (midtonePolygon.containsPoint(point, Qt::OddEvenFill)) return ActiveHandle::Midtones;
+		if (highlightPolygon.containsPoint(point, Qt::OddEvenFill)) return ActiveHandle::Highlights;
 
 		return ActiveHandle::None;
 	}
@@ -214,22 +217,19 @@ namespace DSS
 	{
 		if (m_ActiveHandle != ActiveHandle::None)
 		{
-			double val = valueFromPos(event->pos().x());
+			const double val = valueFromPos(event->pos().x());
 
 			if (m_ActiveHandle == ActiveHandle::Shadows)
 			{
-				val = std::clamp(val, 0.0, m_Highlights);
-				m_Shadows = val;
-			}
-			else if (m_ActiveHandle == ActiveHandle::Highlights)
-			{
-				val = std::clamp(val, m_Midtones, 1.0); // Cannot pass midtones
-				m_Highlights = val;
+				setShadows(val);
 			}
 			else if (m_ActiveHandle == ActiveHandle::Midtones)
 			{
-				val = std::clamp(val, 0.0, m_Highlights);
-				m_Midtones = val;
+				setMidtones(val);
+			}
+			else if (m_ActiveHandle == ActiveHandle::Highlights)
+			{
+				setHighlights(val);
 			}
 
 			update();
@@ -305,28 +305,23 @@ namespace DSS
 	{
 		if (m_SelectedHandle != ActiveHandle::None)
 		{
-			int delta = event->angleDelta().y();
-			if (delta != 0)
+			const double degrees = event->angleDelta().y() / 8.0;	// Convert to degrees - 8 units per degree
+			const double step = (arrowIncrement * degrees) / wheelDivisor; // 15 degrees per step, divided by wheelDivisor for finer control
+			if (step != 0)
 			{
-				double step = (delta > 0) ? 0.005 : -0.005;
-
 				if (m_SelectedHandle == ActiveHandle::Shadows)
 				{
-					m_Shadows = std::clamp(m_Shadows + step, 0.0, m_Midtones);
-					emit shadowsChanged(m_Shadows);
-				}
-				else if (m_SelectedHandle == ActiveHandle::Highlights)
-				{
-					m_Highlights = std::clamp(m_Highlights + step, m_Midtones, 1.0);
-					emit highlightsChanged(m_Highlights);
+					setShadows(m_Shadows + step);
 				}
 				else if (m_SelectedHandle == ActiveHandle::Midtones)
 				{
-					m_Midtones = std::clamp(m_Midtones + step, m_Shadows, m_Highlights);
-					emit midtonesChanged(m_Midtones);
+					setMidtones(m_Midtones + step);
+				}
+				else if (m_SelectedHandle == ActiveHandle::Highlights)
+				{
+					setHighlights(m_Highlights + step);
 				}
 
-				update();
 				emit sliderMoved();
 				emit valuesChanged(m_Shadows, m_Midtones, m_Highlights);
 				event->accept();
@@ -335,7 +330,5 @@ namespace DSS
 		}
 		Inherited::wheelEvent(event);
 	}
-
-
 
 } // namespace DSS

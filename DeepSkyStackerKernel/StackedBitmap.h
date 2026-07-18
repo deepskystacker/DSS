@@ -208,9 +208,13 @@ namespace DSS
 		void deNormalise();
 
 		//
-		// Saturation shift allows to shift the saturation of the image by a given amount, either increasing or decreasing it.
+		// Adjust saturation allows adjustment of both overall colour saturation and also vibrance which allows
+		// low colour saturation areas of the image to have the colour saturation boosted.
+		// As with the other adjustments, the image data is expected to have been normalised to the range [0.0, 1.0]
 		//
-		//void saturationShift(float value);
+		// Source is in saturation.cpp
+		//
+		void adjustSaturation(float saturation, float vibrance);
 
 		// 
 		//

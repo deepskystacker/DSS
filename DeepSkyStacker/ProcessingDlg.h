@@ -80,11 +80,18 @@ namespace DSS
 		SelectRect* selectRect;
 		DSSRect	selectionRect;
 
+
+		//
+		// Enum to identify the image processing function to be applied to the preview image
+		// the enum values *must* correspond to the tab index of the tab widget in the
+		// ProcessingControls UI
+		//
 		enum class ProcessingFunction
 		{
 			MtfStretch,
 			AsinhStretch,
-			ColourBalance
+			ColourBalance,
+			Saturation,
 		};
 
 		//
@@ -97,11 +104,14 @@ namespace DSS
 		//
 		void zeroAsinHControls();
 		void zeroColourBalanceControls();
+		void zeroSaturationControls();
+
 		inline void zeroAdjustmentControls()
 		{
+			zeroMtfControls();
 			zeroAsinHControls();
 			zeroColourBalanceControls();
-			zeroMtfControls();
+			zeroSaturationControls();
 		}
 
 		void connectSignalsToSlots();
@@ -155,6 +165,9 @@ namespace DSS
 		float greenShift{ 0.0f };	// Green channel shift value
 		float blueShift{ 0.0f };	// Blue channel shift value
 
+		float saturationShift{ 0.0f };	// Saturation shift value
+		float vibranceFactor{ 0.0f };	// Vibrance factor value
+
 		bool preview{ true };		// Whether to show a preview of the processed image
 
 		//
@@ -166,7 +179,7 @@ namespace DSS
 		// until the user clicks the Apply button.
 		//
 		bool usePreviewDeepStack{ false };
-		QMutex previewMutex;	// Mutex to protect access to the preview code
+		QMutex displayMutex;	// Mutex to protect access to the image updating code
 		
 		//
 		// Timer to control handling of valueChanged signals from the asinh stretch and black point
@@ -193,6 +206,13 @@ namespace DSS
 		// is adjusting the MTF controls.
 		//
 		QTimer mtfSliderTimer;
+
+		// 
+		// Timers for the Saturation and Vibrance controls, to avoid excessive processing of the preview image
+		// when the user is adjusting the Saturation and Vibrance sliders.
+		//
+		QTimer saturationTimer;
+		QTimer vibranceTimer;
 
 		//
 		// The DeepStack object used for the preview image and histogram, created by the doPreview() method
@@ -369,6 +389,7 @@ namespace DSS
 		}
 
 		void zeroMtfControls();
+
 		void previewChanged(Qt::CheckState state)
 		{
 			switch (state)
@@ -382,16 +403,7 @@ namespace DSS
 			}
 			if (preview)
 			{
-				if (controls->tabWidget->currentWidget() == controls->asinhStretchTab)
-				{
-					// Apply the stretch asynchronously to the preview image.
-					emit onPreview(ProcessingFunction::AsinhStretch);
-				}
-				if (controls->tabWidget->currentWidget() == controls->colourBalanceTab)
-				{
-					// Apply the adjustment asynchronously to the preview image.
-					emit onPreview(ProcessingFunction::ColourBalance);
-				}
+				emit onPreview(static_cast<ProcessingFunction>(controls->tabWidget->currentIndex()));
 			}
 		}
 		
@@ -440,6 +452,35 @@ namespace DSS
 			else controls->cbApply->setEnabled(true);
 		}
 
+		void saturationSliderChanged(int value)
+		{
+			//
+			// Save slider value, which is between -10 and 50
+			//
+			saturationShift = (static_cast<float>(value));
+			if (preview)
+			{
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::Saturation);
+			}
+			else controls->saApply->setEnabled(true);
+		}
+
+		void vibranceSliderChanged(int value)
+		{
+			//
+			// Convert the slider value, which is between 0 and 99, to a shift value between 0.0 and 0.99
+			//
+			vibranceFactor = (static_cast<float>(value) / 100.0f);
+			if (preview)
+			{
+				// Apply the adjustment asynchronously to the preview image.
+				emit onPreview(ProcessingFunction::Saturation);
+			}
+			else controls->saApply->setEnabled(true);
+		}
+
+
 		void mtfRedGradientSliderMoved();
 		void mtfGreenGradientSliderMoved();
 		void mtfBlueGradientSliderMoved();
@@ -449,6 +490,8 @@ namespace DSS
 		void mtfHighlightsSpinBoxChanged(double value);
 
 		void onMtfAutostretchSettings();
+
+		void mtfApplyPressed();
 
 		void asinhApplyPressed()
 		{
@@ -462,7 +505,11 @@ namespace DSS
 			emit onApply(ProcessingFunction::ColourBalance);
 		}
 
-		void mtfApplyPressed();
+		void saApplyPressed()
+		{
+			controls->saApply->setEnabled(false);
+			emit onApply(ProcessingFunction::Saturation);
+		}
 
 		//
 		// Triggered when the user changes the state of the "Show Clipping" checkbox, which
@@ -472,23 +519,27 @@ namespace DSS
 
 		void tabChanged(int index)
 		{
-			if (preview)
+			switch (index)
 			{
-				switch (index)
-				{
-				case 0: // MTF stretch tab
-					emit onPreview(ProcessingFunction::MtfStretch);
-					break;
-				case 1:	// Asinh stretch tab
-					emit onPreview(ProcessingFunction::AsinhStretch);
-					break;
-				case 2: // Colour balance tab
-					emit onPreview(ProcessingFunction::ColourBalance);
-					break;
-				default:
-					break;
-				}
+			case 0:
+				controls->mtfApply->setEnabled(false);
+				break;
+			case 1:
+				controls->asinhApply->setEnabled(false);
+				break;
+			case 2:
+				controls->cbApply->setEnabled(false);
+				break;
+			case 3:
+				controls->saApply->setEnabled(false);
+				break;
+			default:
+				break;
 			}
+			//if (preview)
+			//{
+			//	emit onPreview(static_cast<ProcessingFunction>(index));
+			//}
 		}
 
 #if (0)

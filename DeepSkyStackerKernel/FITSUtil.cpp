@@ -254,6 +254,7 @@ bool CFITSReader::Open()
 		int			lISOSpeed = 0;
 		int			lGain = -1;
 		double		xBayerOffset = 0.0, yBayerOffset = 0.0;
+		QString		rowOrder;
 
 
 		m_bDSI = false;
@@ -364,6 +365,19 @@ bool CFITSReader::Open()
 			};
 
 			ReadKey("GAIN", lGain);
+
+			// Attempt to get the row order if present, set whether top-down or bottom-up.
+			// DeepSkyStacker assumes a default of top-down (true) as most astro cameras
+			// write their FITS files in that order.
+			if (ReadKey("ROWORDER", rowOrder))
+			{
+				bottomUp = (rowOrder == "BOTTOM-UP");
+			}
+
+			if (!bottomUp)
+				ZTRACE_RUNTIME("FITS file is top-down");
+			else
+				ZTRACE_RUNTIME("FITS file is bottom-up");
 
 			ReadKey("FILTER", filterName);
 
@@ -585,6 +599,10 @@ bool CFITSReader::Open()
 					"CD11=%lf, CD12=%lf, CD21=%lf, CD22=%lf",
 					wcsInfo.crpix1, wcsInfo.crpix2, wcsInfo.crval1, wcsInfo.crval2,
 					wcsInfo.cd11, wcsInfo.cd12, wcsInfo.cd21, wcsInfo.cd22);
+			}
+			else
+			{
+				ZTRACE_RUNTIME("WCS information in FITS header was either not found or incomplete.");
 			}
 
 			if (bResult)
@@ -1071,8 +1089,13 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	try
 	{
 		if (static_cast<bool>(m_pBitmap))
-		{
-				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+		{	
+			//
+			// If the FITS file is bottom up, then we need to invert the Y coordinate when writing to the bitmap.
+			//
+			if (bottomUp) lY = m_lHeight - 1 - lY;
+
+			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
 	}
 	catch (ZException& e)
@@ -1439,8 +1462,7 @@ bool CFITSWriter::Open()
 			fits_create_img(m_fits, nBitPixels, nAxis, nAxes, &status);
 			if (status == 0)
 			{
-				bResult = true;
-
+				bResult = WriteKey("ROWORDER", "TOP-DOWN", "Row order of the image data");
 				if (m_lISOSpeed)
 					bResult = bResult && WriteKey("ISOSPEED", m_lISOSpeed);
 				if (m_lGain >= 0)

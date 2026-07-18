@@ -209,6 +209,7 @@ set(Source_Files
     "RegisterCore.cpp"
     "RegisterEngine.cpp"
     "RunningStackingEngine.cpp"
+	"saturation.cpp"
     "Settings.cpp"
     "StackedBitmap.cpp"
     "StackingEngine.cpp"
@@ -244,15 +245,29 @@ message("CMAKE_OSX_ARCHITECTURES: " ${CMAKE_OSX_ARCHITECTURES})
 message("LINUX: " ${LINUX}) 
 message("APPLE: " ${APPLE})
 message("CMAKE_SYSTEM_NAME: " ${CMAKE_SYSTEM_NAME})
+
+set_source_files_properties(saturation.cpp
+    PROPERTIES
+	COMPILE_DEFINITIONS "SIMDE_ENABLE_OPENMP")
+
+if (LINUX OR APPLE)
+set_source_files_properties(saturation.cpp
+    PROPERTIES
+	COMPILE_OPTIONS -fopenmp-simd)
+endif()
+
 if (LINUX OR (APPLE AND ("${CMAKE_OSX_ARCHITECTURES}" STREQUAL "x86_64")))
 message("Setting AVX compile options")
 set_source_files_properties(${AVX_Files}
     PROPERTIES
-        COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
+	COMPILE_DEFINITIONS "SIMDE_ENABLE_OPENMP"
+    COMPILE_OPTIONS "-mavx;-mavx2;-mfma;-mssse3;-msse4.2")
+
 set_source_files_properties(avx_simd_check.cpp
     PROPERTIES
         COMPILE_OPTIONS "-mxsave")
 endif()
+
 endif()
 
 set_source_files_properties(${AVX_Files}
@@ -356,11 +371,11 @@ elseif(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
 			-Wno-double-promotion -Wno-unreachable-code-break -Wno-disabled-macro-expansion
 			-Wno-unused-macros -Wno-reserved-identifier -Wno-unused-lambda-capture
 			-Wno-missing-braces -Wno-documentation-unknown-command
-			-Werror -Xclang -fopenmp
+			-Werror -Xclang -fopenmp -fopenmp-simd
          )
     else()
         target_compile_options(DeepSkyStackerAVX PRIVATE
-            -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp
+            -Wall -Wextra -Wpedantic -Wno-sign-compare -Wno-misleading-indentation -Wno-empty-body -Werror -fopenmp -fopenmp-simd
         )
     endif()
 endif()
