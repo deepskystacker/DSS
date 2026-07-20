@@ -71,9 +71,9 @@ class CFITSWriter;
 namespace DSS
 {
 	//
-// Define a structure to hold the parameters for the MTF autostretch, which can be used to store the computed
-// shadow (black point), midtone, and highlight (white point) values for each channel (R=0, G=1, B=2).
-// 
+	// Define a structure to hold the parameters for the MTF autostretch, which can be used to store the computed
+	// shadow (black point), midtone, and highlight (white point) values for each channel (R=0, G=1, B=2).
+	// 
 	struct MTFStretchParameters
 	{
 		float clipPoint[3];
