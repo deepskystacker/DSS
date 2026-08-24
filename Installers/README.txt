@@ -42,7 +42,7 @@ Changes for DeepSkyStacker 6.2.2
     Write FITS files with the ROWORDER keyword set to TOP-DOWN.
 
 8.  Implement a Saturation tab for the processing pane.   It provides controls to adjust both saturation and
-    vibrance.  The vibrance control lets you to selectively boost the intensity of muted, less saturated colours.
+    vibrance.  The vibrance control lets you selectively boost the intensity of muted, less saturated colours.
     You would typically use this after Applying an MTF stretch, as that tends to desaturate colours in the image.
 
 9.  Fix some problems with the handling of the Apply buttons of the Processing tabs.
