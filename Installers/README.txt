@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.2.2
+Welcome to DeepSkyStacker 6.2.3 Beta 1
 ===============================
 
 Reporting problems:
@@ -13,6 +13,21 @@ Known problems:
    then the exposure is set to zero.   This would be a lot of work to fix as it would require us to implement our own
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
+
+Changes for DeepSkyStacker 6.2.3 Beta 1
+================================
+
+1.  Bug fix: MasterDark and MasterDarkFlat files were written without the TIFF EXIF Exposure tag, and the code that
+    constructed the filenames had a few problems.   The code has now been re-written so that the EXIF Exposure tag
+    is written correctly, and the filenames are constructed as follows:
+
+    If the exposure time is >= 0.1 second, MasterDark and MasterDarkFlat files are now written with a file name that
+    includes the exposure with varying decimal digits of precision:
+        >= 10s:  zero digits (e.g.: MasterDarkFlat_ISO800_10s.tif)
+        >= 1s:   one digit (e.g.: MasterDarkFlat_ISO800_6.5s.tif)
+        >= 0.1s: two digits (e.g.: MasterDarkFlat_ISO800_0.25s.tif)
+    If the exposure is < 0.1 second, then the file name is written as fractions of a second with the '/' replaced
+    by '-' with no decimal digits for the divisor (e.g. MasterDarkFlat_ISO800_1-15s.tif).
 
 Changes for DeepSkyStacker 6.2.2
 ================================
