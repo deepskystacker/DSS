@@ -1439,9 +1439,9 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
 		if (gain < 0)
 			gain = m_pMemoryBitmap->GetGain();
-		if (0. != exposureTime)
+		if (0. == exposureTime)
 			exposureTime = static_cast<float>(m_pMemoryBitmap->GetExposure());
-		if (0. != aperture)
+		if (0. == aperture)
 			aperture = static_cast<float>(m_pMemoryBitmap->GetAperture());
 		if (!nrframes)
 			nrframes = m_pMemoryBitmap->GetNrFrames();
