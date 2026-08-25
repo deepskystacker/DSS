@@ -243,13 +243,32 @@ static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool
 	fs::path dir{ basePath }; dir.remove_filename();
 
 	QString fileName;
+	double exposure = pTaskInfo->m_fExposure;
+	int precision = 0;
 	if (bExposure)
-		fileName = QString("%1_%2%3_%4s").arg(type).arg(ISOGain).arg(lISOGain).arg(static_cast<int>(pTaskInfo->m_fExposure));
+	{
+		if (exposure < 0.1)
+		{
+			exposure = 1.0 / (pTaskInfo->m_fExposure);
+			fileName = QString("%1_%2%3_1-%4s.tif").arg(type).arg(ISOGain).arg(lISOGain).arg(exposure, 0, 'f', precision);
+		}
+		else
+		{
+			if (exposure < 1.0)
+				precision = 2;
+			else if (exposure < 10.0)
+				precision = 1;
+			else
+				precision = 0;
+
+			fileName = QString("%1_%2%3_%4s.tif").arg(type).arg(ISOGain).arg(lISOGain).arg(exposure, 0, 'f', precision);
+		}
+	}
 	else
 		fileName = QString("%1_%2%3").arg(type).arg(ISOGain).arg(lISOGain);
 	fs::path name{ fileName.toStdU16String() };
 
-	masterFile = dir; masterFile.replace_filename(name.replace_extension(".tif"));
+	masterFile = dir; masterFile.replace_filename(name);
 	masterInfoFile = dir;  masterInfoFile.replace_filename(name.replace_extension("Description.txt"));
 }
 
