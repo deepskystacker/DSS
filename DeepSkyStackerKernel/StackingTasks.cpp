@@ -265,7 +265,7 @@ static void BuildMasterFileNames(CTaskInfo* pTaskInfo, const QString& type, bool
 		}
 	}
 	else
-		fileName = QString("%1_%2%3").arg(type).arg(ISOGain).arg(lISOGain);
+		fileName = QString("%1_%2%3.tif").arg(type).arg(ISOGain).arg(lISOGain);
 	fs::path name{ fileName.toStdU16String() };
 
 	masterFile = dir; masterFile.replace_filename(name);
