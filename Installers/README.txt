@@ -17,11 +17,6 @@ Known problems:
 Changes for DeepSkyStacker 6.2.3 Beta 2
 ================================
 
-1.  Bug fix: Crash attempting to use either the MTF or ASinH stretch when processing a monochrome image.
-
-Changes for DeepSkyStacker 6.2.3 Beta 1
-================================
-
 1.  Bug fix: MasterDark and MasterDarkFlat files were written without the TIFF EXIF Exposure tag, and the code that
     constructed the filenames had a few problems.   The code has now been re-written so that:
 
@@ -33,6 +28,8 @@ Changes for DeepSkyStacker 6.2.3 Beta 1
 
     If the exposure is < 0.1 second, then the file name is written as fractions of a second with the '/' replaced
     by '-' with no decimal digits for the divisor (e.g. MasterDarkFlat_ISO800_1-15s.tif).
+
+2.  Bug fix: Crash attempting to use either the MTF or ASinH stretch when processing a monochrome image.
 
 Changes for DeepSkyStacker 6.2.2
 ================================
