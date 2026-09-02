@@ -1330,12 +1330,15 @@ void StackedBitmap::normalise()
 		VecType temp = _mm_loadu_ps(pRed + offset);
 		temp = _mm_mul_ps(temp, scaleFactor);
 		_mm_storeu_ps(pRed + offset, temp);
-		temp = _mm_loadu_ps(pGreen + offset);
-		temp = _mm_mul_ps(temp, scaleFactor);
-		_mm_storeu_ps(pGreen + offset, temp);
-		temp = _mm_loadu_ps(pBlue + offset);
-		temp = _mm_mul_ps(temp, scaleFactor);
-		_mm_storeu_ps(pBlue + offset, temp);
+		if (!m_bMonochrome)
+		{
+			temp = _mm_loadu_ps(pGreen + offset);
+			temp = _mm_mul_ps(temp, scaleFactor);
+			_mm_storeu_ps(pGreen + offset, temp);
+			temp = _mm_loadu_ps(pBlue + offset);
+			temp = _mm_mul_ps(temp, scaleFactor);
+			_mm_storeu_ps(pBlue + offset, temp);
+		}
 	}
 }
 
@@ -1362,12 +1365,15 @@ void StackedBitmap::deNormalise()
 		VecType temp = _mm_loadu_ps(pRed + offset);
 		temp = _mm_mul_ps(temp, scaleFactor);
 		_mm_storeu_ps(pRed + offset, temp);
-		temp = _mm_loadu_ps(pGreen + offset);
-		temp = _mm_mul_ps(temp, scaleFactor);
-		_mm_storeu_ps(pGreen + offset, temp);
-		temp = _mm_loadu_ps(pBlue + offset);
-		temp = _mm_mul_ps(temp, scaleFactor);
-		_mm_storeu_ps(pBlue + offset, temp);
+		if (!m_bMonochrome)
+		{
+			temp = _mm_loadu_ps(pGreen + offset);
+			temp = _mm_mul_ps(temp, scaleFactor);
+			_mm_storeu_ps(pGreen + offset, temp);
+			temp = _mm_loadu_ps(pBlue + offset);
+			temp = _mm_mul_ps(temp, scaleFactor);
+			_mm_storeu_ps(pBlue + offset, temp);
+		}
 	}
 }
 
