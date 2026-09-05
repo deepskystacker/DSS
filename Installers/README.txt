@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.2.3 Beta 2
+Changes for DeepSkyStacker 6.2.3 Beta 3
 ================================
 
 1.  Bug fix: MasterDark and MasterDarkFlat files were written without the TIFF EXIF Exposure tag, and the code that
@@ -30,6 +30,10 @@ Changes for DeepSkyStacker 6.2.3 Beta 2
     by '-' with no decimal digits for the divisor (e.g. MasterDarkFlat_ISO800_1-15s.tif).
 
 2.  Bug fix: Crash attempting to use either the MTF or ASinH stretch when processing a monochrome image.
+
+3.  Bug fix: If a file list file in the Most Recently Used list of file lists is on a drive that isn't "ready", a
+    std::filesystem::filesystem_error exception was thrown when checking the file status.  This terminated DeepSkyStacker.
+    The code was changed to avoid raising an exception.    Inaccessible file list entries will be removed from the MRU list.
 
 Changes for DeepSkyStacker 6.2.2
 ================================

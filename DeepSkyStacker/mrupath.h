@@ -33,6 +33,7 @@ public:
 	{
 		QSettings			settings;
 		uint				count;
+		std::error_code ec;
 
 		paths.clear();
 
@@ -48,7 +49,8 @@ public:
 
 			fs::path path(settings.value(keyName).toString().toStdU16String());
 
-			if (status(path).type() == fs::file_type::regular)
+
+			if (status(path, ec).type() == fs::file_type::regular)
 				paths.push_back(path);
 		}
 	}
