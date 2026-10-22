@@ -1,0 +1,49 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"if (Test-Path '.claude/vs-permission-hook.ps1') { & '.claude/vs-permission-hook.ps1' } elseif (Test-Path '$CLAUDE_PROJECT_DIR/.claude/vs-permission-hook.ps1') { & '$CLAUDE_PROJECT_DIR/.claude/vs-permission-hook.ps1' } else { exit 0 }\"",
+            "timeout": 86400
+          }
+        ],
+        "matcher": "Edit|Write|MultiEdit"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"if (Test-Path '.claude/vs-usage-hook.ps1') { & '.claude/vs-usage-hook.ps1' } elseif (Test-Path '$CLAUDE_PROJECT_DIR/.claude/vs-usage-hook.ps1') { & '$CLAUDE_PROJECT_DIR/.claude/vs-usage-hook.ps1' } else { exit 0 }\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"if (Test-Path '.claude/vs-debug-context-hook.ps1') { & '.claude/vs-debug-context-hook.ps1' } elseif (Test-Path '$CLAUDE_PROJECT_DIR/.claude/vs-debug-context-hook.ps1') { & '$CLAUDE_PROJECT_DIR/.claude/vs-debug-context-hook.ps1' } else { exit 0 }\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"if (Test-Path '.claude/vs-notify-hook.ps1') { & '.claude/vs-notify-hook.ps1' } elseif (Test-Path '$CLAUDE_PROJECT_DIR/.claude/vs-notify-hook.ps1') { & '$CLAUDE_PROJECT_DIR/.claude/vs-notify-hook.ps1' } else { exit 0 }\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
