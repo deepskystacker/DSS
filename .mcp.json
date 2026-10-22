@@ -1,0 +1,28 @@
+{
+  "mcpServers": {
+    "vs-debug": {
+      "type": "stdio",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".claude/vs-mcp-shim.ps1"
+      ]
+    },
+    "vs-semantic": {
+      "type": "stdio",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        ".claude/vs-mcp-shim.ps1",
+        "-Route",
+        "/mcp-semantic"
+      ]
+    }
+  }
+}
