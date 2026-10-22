@@ -98,7 +98,7 @@
       <LanguageStandard>stdcpp23</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../zclass;./../DeepSkyStackerKernel</AdditionalIncludeDirectories>
-      <AdditionalOptions>/utf-8 /wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/openmp:experimental /utf-8 /wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <TreatWarningAsError>false</TreatWarningAsError>
@@ -122,8 +122,7 @@
       <LanguageStandard>stdcpp23</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../zclass;./../DeepSkyStackerKernel</AdditionalIncludeDirectories>
-      <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalOptions>/utf-8 /wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/openmp:experimental /utf-8 /wd4828 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <TreatWarningAsError>false</TreatWarningAsError>
