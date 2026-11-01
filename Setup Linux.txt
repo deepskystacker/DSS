@@ -175,7 +175,7 @@ sudo update-alternatives --config gcc
 sudo update-alternatives --config g++
 
 #
-# Update cmake to 4.0.3
+# Update cmake to the latest version
 #
 echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
 sudo apt-get update
