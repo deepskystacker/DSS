@@ -36,7 +36,7 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-project(DeepSkyStacker VERSION 6.1.3 LANGUAGES C CXX)
+project(DeepSkyStacker VERSION 6.2.3 LANGUAGES C CXX)
 
 message ("System Name is: " ${CMAKE_SYSTEM_NAME})
 message ("Prefix path: " ${CMAKE_PREFIX_PATH})
@@ -73,7 +73,11 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
+if(LINUX)
+find_package(Qt6 6.10.2 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets Concurrent LinguistTools Svg PrintSupport)
+else()
 find_package(Qt6 6.10.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets Concurrent LinguistTools Svg PrintSupport)
+endif()
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 find_package(cfitsio REQUIRED)

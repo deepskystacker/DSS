@@ -44,7 +44,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.10.0/gcc_64"
+        "QTDIR": "/opt/Qt/6.10.2/gcc_64"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug"
@@ -62,7 +62,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.10.0/gcc_64"
+        "QTDIR": "/opt/Qt/6.10.2/gcc_64"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo"
