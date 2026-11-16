@@ -42,6 +42,102 @@ namespace DSS
 	{
 		constexpr double degToRad = M_PI / 180.0;
 		constexpr double radToDeg = 180.0 / M_PI;
+
+		// Relative test: the matrix entries are tiny (degrees/pixel) so an
+		// absolute threshold is meaningless.  Non-finite values count as
+		// singular too.
+		bool isSingular(double cd11, double cd12, double cd21, double cd22)
+		{
+			const double determinant = cd11 * cd22 - cd12 * cd21;
+			const double norm = fabs(cd11) + fabs(cd12) + fabs(cd21) + fabs(cd22);
+			return !std::isfinite(norm) || norm == 0.0 || !(fabs(determinant) > 1e-12 * norm * norm);
+		}
+
+		// CTYPE is "cccc-ppp": a four character coordinate type padded with
+		// '-' ("RA--", "DEC-"), then '-' and a three character projection
+		// code.  A distortion suffix such as "-SIP" may follow, which is
+		// accepted (the distortion terms themselves are ignored).
+		bool isTanAxis(const QString& ctype, QLatin1StringView coordinate)
+		{
+			const QString type = ctype.trimmed().toUpper();
+			return type.startsWith(coordinate) && type.mid(4, 4) == QLatin1StringView("-TAN");
+		}
+
+		// CUNIT defaults to degrees for celestial axes if it is absent.
+		bool isDegrees(const QString& cunit)
+		{
+			const QString unit = cunit.trimmed().toLower();
+			return unit.isEmpty() || unit == QLatin1StringView("deg") ||
+				unit == QLatin1StringView("degree") || unit == QLatin1StringView("degrees");
+		}
+	}
+
+	// The FITS WCS standard (Greisen & Calabretta, papers I and II) allows
+	// the pixel to intermediate world coordinate transformation to be given
+	// in three ways.  In order of precedence here:
+	//
+	//  1. CDi_j		Used directly.  If any one is present the missing
+	//					ones default to 0.
+	//  2. CDELTi, PCi_j	CDi_j = CDELTi * PCi_j.  Missing PCi_j default to
+	//					the identity matrix and missing CDELTi to 1.
+	//  3. CDELTi, CROTA2	The older AIPS convention, with rho = CROTA2
+	//					(0 if absent, i.e. CDELT alone is an unrotated image):
+	//						CD1_1 =  CDELT1 * cos(rho)
+	//						CD1_2 = -CDELT2 * sin(rho)
+	//						CD2_1 =  CDELT1 * sin(rho)
+	//						CD2_2 =  CDELT2 * cos(rho)
+	bool WCSInfo::setFromKeywords(const WCSKeywords& keys)
+	{
+		crpix1 = keys.crpix1.value_or(0.0);
+		crpix2 = keys.crpix2.value_or(0.0);
+		crval1 = keys.crval1.value_or(0.0);
+		crval2 = keys.crval2.value_or(0.0);
+
+		// CRPIX and CRVAL do have defaults (0), but a header without them
+		// hasn't been plate solved, so don't claim to have a WCS solution.
+		const bool haveReference = keys.crpix1 && keys.crpix2 && keys.crval1 && keys.crval2;
+
+		matrixSource = MatrixSource::None;
+		cd11 = cd12 = cd21 = cd22 = 0.0;
+		const double cdelt1 = keys.cdelt1.value_or(1.0);
+		const double cdelt2 = keys.cdelt2.value_or(1.0);
+
+		if (keys.cd11 || keys.cd12 || keys.cd21 || keys.cd22)
+		{
+			matrixSource = MatrixSource::CD;
+			cd11 = keys.cd11.value_or(0.0);
+			cd12 = keys.cd12.value_or(0.0);
+			cd21 = keys.cd21.value_or(0.0);
+			cd22 = keys.cd22.value_or(0.0);
+		}
+		else if (keys.pc11 || keys.pc12 || keys.pc21 || keys.pc22)
+		{
+			matrixSource = MatrixSource::CdeltPC;
+			cd11 = cdelt1 * keys.pc11.value_or(1.0);
+			cd12 = cdelt1 * keys.pc12.value_or(0.0);
+			cd21 = cdelt2 * keys.pc21.value_or(0.0);
+			cd22 = cdelt2 * keys.pc22.value_or(1.0);
+		}
+		else if (keys.cdelt1 && keys.cdelt2)
+		{
+			matrixSource = MatrixSource::CdeltCrota;
+			const double rho = keys.crota2.value_or(0.0) * degToRad;
+			cd11 = cdelt1 * cos(rho);
+			cd12 = -cdelt2 * sin(rho);
+			cd21 = cdelt1 * sin(rho);
+			cd22 = cdelt2 * cos(rho);
+		}
+		const bool haveMatrix = (matrixSource != MatrixSource::None);
+
+		// pixelToWorld() and worldToPixel() assume axis 1 is RA and axis 2
+		// is Dec, a gnomonic (TAN) projection, and degrees.
+		const bool supported =
+			isTanAxis(keys.ctype1, QLatin1StringView("RA--")) &&
+			isTanAxis(keys.ctype2, QLatin1StringView("DEC-")) &&
+			isDegrees(keys.cunit1) && isDegrees(keys.cunit2);
+
+		ok = haveReference && haveMatrix && supported && !isSingular(cd11, cd12, cd21, cd22);
+		return ok;
 	}
 
 	// The CD matrix converts pixel offsets (from CRPIX) into "intermediate
@@ -80,10 +176,7 @@ namespace DSS
 	{
 		ZASSERT(ok);
 		const double determinant = cd11 * cd22 - cd12 * cd21;
-		const double norm = fabs(cd11) + fabs(cd12) + fabs(cd21) + fabs(cd22);
-		// Relative test: the matrix entries are tiny (degrees/pixel) so an
-		// absolute threshold is meaningless.
-		if (norm == 0.0 || fabs(determinant) <= 1e-12 * norm * norm)
+		if (isSingular(cd11, cd12, cd21, cd22))
 			return std::nullopt;	// Cannot invert the matrix
 
 		const double ra0 = crval1 * degToRad;

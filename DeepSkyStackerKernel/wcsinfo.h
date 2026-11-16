@@ -40,10 +40,33 @@
 
 namespace DSS
 {
+	// The WCS related keywords as read from a FITS header.  A keyword that
+	// wasn't present is left as nullopt (or an empty string) so that
+	// WCSInfo::setFromKeywords() can apply the defaults the FITS standard
+	// defines for it.
+	struct WCSKeywords
+	{
+		std::optional<double> crpix1, crpix2;
+		std::optional<double> crval1, crval2;
+		std::optional<double> cd11, cd12, cd21, cd22;
+		std::optional<double> cdelt1, cdelt2;
+		std::optional<double> pc11, pc12, pc21, pc22;
+		std::optional<double> crota2;
+		QString ctype1, ctype2;
+		QString cunit1, cunit2;
+	};
+
 	class WCSInfo
 	{
 	public:
-
+		// Which FITS keywords the CD matrix was obtained from.
+		enum class MatrixSource
+		{
+			None,			// No usable matrix keywords
+			CD,				// CDi_j
+			CdeltPC,		// CDELTi and PCi_j
+			CdeltCrota		// CDELTi and (optionally) CROTA2
+		};
 
 		double crval1{ 0.0 };	// Reference RA in degrees
 		double crval2{ 0.0 };	// Reference Dec in degrees
@@ -54,7 +77,14 @@ namespace DSS
 		double crpix1{ 0.0 };	// Reference pixel X
 		double crpix2{ 0.0 };	// Reference pixel Y
 		QString creator;		// Software that wrote the FITS file
+		MatrixSource matrixSource{ MatrixSource::None };
 		bool ok{ false };
+
+		// Populates the reference point and CD matrix from FITS keywords,
+		// deriving the CD matrix from CDELT + PC or CDELT + CROTA2 if there
+		// are no CD keywords.  Sets and returns ok, which is true only for
+		// a complete, invertible RA/Dec TAN projection in degrees.
+		bool setFromKeywords(const WCSKeywords& keys);
 
 		std::tuple<double, double> pixelToWorld(double x, double y) const;
 

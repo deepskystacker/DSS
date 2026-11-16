@@ -560,59 +560,67 @@ bool CFITSReader::Open()
 			//
 			// Populate the WCSInfo structure with the WCS information from the FITS header, if present.
 			//
-			ReadKey("CRPIX1", wcsInfo.crpix1);
-			ReadKey("CRPIX2", wcsInfo.crpix2);
-			ReadKey("CRVAL1", wcsInfo.crval1);
-			ReadKey("CRVAL2", wcsInfo.crval2);
-
-			bool have_CD =
-				ReadKey("CD1_1", wcsInfo.cd11) &&
-				ReadKey("CD1_2", wcsInfo.cd12) &&
-				ReadKey("CD2_1", wcsInfo.cd21) &&
-				ReadKey("CD2_2", wcsInfo.cd22);
-
-			if (have_CD)
-			{
-				ZTRACE_RUNTIME("CD matrix found in FITS header, using that to populate WCS information.");
-				wcsInfo.ok = true;
-			}
-			// If we don't have CD matrix elements, try to get CDELT and PCn values and
-			// calculate the CD matrix from those.
-			else
-			{
-				double cdelt1 = 0., cdelt2 = 0.;
-				if (ReadKey("CDELT1", cdelt1) && ReadKey("CDELT2", cdelt2))
+			// Every keyword is read independently (no short-circuiting) and
+			// absent ones are left unset, because the defaults the FITS
+			// standard defines for them depend on which others are present.
+			// WCSInfo::setFromKeywords() applies those rules and derives the
+			// CD matrix from CDELT + PC or CDELT + CROTA2 if necessary.
+			//
+			const auto readDouble = [this](const char* key) -> std::optional<double>
 				{
-					double pc11 = 0, pc12 = 0, pc21 = 0, pc22 = 0;
-					bool have_PC =
-						ReadKey("PC1_1", pc11) &&
-						ReadKey("PC1_2", pc12) &&
-						ReadKey("PC2_1", pc21) &&
-						ReadKey("PC2_2", pc22);
+					double value = 0.0;
+					if (ReadKey(key, value))
+						return value;
+					return std::nullopt;
+				};
 
-					if (have_PC)
-					{
-						ZTRACE_RUNTIME("CD matrix not found in FITS header, but CDELT and PC matrix elements found, using those to calculate CD matrix.");
-						// CD_i_j = CDELT_i * PC_i_j
-						wcsInfo.cd11 = pc11 * cdelt1;
-						wcsInfo.cd12 = pc12 * cdelt1;
-						wcsInfo.cd21 = pc21 * cdelt2;
-						wcsInfo.cd22 = pc22 * cdelt2;
-						wcsInfo.ok = true;
-					}
-				}
-			}
-			if (wcsInfo.ok)
+			WCSKeywords wcsKeys;
+			wcsKeys.crpix1 = readDouble("CRPIX1");
+			wcsKeys.crpix2 = readDouble("CRPIX2");
+			wcsKeys.crval1 = readDouble("CRVAL1");
+			wcsKeys.crval2 = readDouble("CRVAL2");
+			wcsKeys.cd11 = readDouble("CD1_1");
+			wcsKeys.cd12 = readDouble("CD1_2");
+			wcsKeys.cd21 = readDouble("CD2_1");
+			wcsKeys.cd22 = readDouble("CD2_2");
+			wcsKeys.cdelt1 = readDouble("CDELT1");
+			wcsKeys.cdelt2 = readDouble("CDELT2");
+			wcsKeys.pc11 = readDouble("PC1_1");
+			wcsKeys.pc12 = readDouble("PC1_2");
+			wcsKeys.pc21 = readDouble("PC2_1");
+			wcsKeys.pc22 = readDouble("PC2_2");
+			wcsKeys.crota2 = readDouble("CROTA2");
+			ReadKey("CTYPE1", wcsKeys.ctype1);
+			ReadKey("CTYPE2", wcsKeys.ctype2);
+			ReadKey("CUNIT1", wcsKeys.cunit1);
+			ReadKey("CUNIT2", wcsKeys.cunit2);
+
+			if (wcsInfo.setFromKeywords(wcsKeys))
 			{
+				switch (wcsInfo.matrixSource)
+				{
+				case WCSInfo::MatrixSource::CD:
+					ZTRACE_RUNTIME("CD matrix found in FITS header, using that to populate WCS information.");
+					break;
+				case WCSInfo::MatrixSource::CdeltPC:
+					ZTRACE_RUNTIME("CD matrix not found in FITS header, calculated it from CDELT and PC matrix elements.");
+					break;
+				case WCSInfo::MatrixSource::CdeltCrota:
+					ZTRACE_RUNTIME("CD matrix not found in FITS header, calculated it from CDELT and CROTA2.");
+					break;
+				default:
+					break;
+				}
+				// %.10g because the CD values are of the order of 1e-4.
 				ZTRACE_RUNTIME("WCS information found in FITS header:\n"
-					"CRPIX1=%lf, CRPIX2=%lf, CRVAL1=%lf, CRVAL2=%lf\n"
-					"CD11=%lf, CD12=%lf, CD21=%lf, CD22=%lf",
+					"CRPIX1=%.10g, CRPIX2=%.10g, CRVAL1=%.10g, CRVAL2=%.10g\n"
+					"CD11=%.10g, CD12=%.10g, CD21=%.10g, CD22=%.10g",
 					wcsInfo.crpix1, wcsInfo.crpix2, wcsInfo.crval1, wcsInfo.crval2,
 					wcsInfo.cd11, wcsInfo.cd12, wcsInfo.cd21, wcsInfo.cd22);
 			}
 			else
 			{
-				ZTRACE_RUNTIME("WCS information in FITS header was either not found or incomplete.");
+				ZTRACE_RUNTIME("WCS information in FITS header was not found, incomplete, or not an RA/Dec TAN projection.");
 			}
 
 			if (bResult)
