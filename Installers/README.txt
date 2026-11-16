@@ -46,6 +46,8 @@ Changes for DeepSkyStacker 6.2.3 Beta 4
 6.  Change the default for the use of WCS data in FITS light frames to false.  This was done as some applications use
     stale WCS data from the last frame that they plate solved, which is no good for accurate image alignment.
 
+7.  Bug fix: Claude Code assisted fixes to the WCS code as it was neither complete, nor correct.
+
 Changes for DeepSkyStacker 6.2.2
 ================================
 
