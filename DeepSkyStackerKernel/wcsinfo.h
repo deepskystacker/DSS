@@ -35,6 +35,9 @@
 **
 ****************************************************************************/
 
+#include <optional>
+#include <tuple>
+
 namespace DSS
 {
 	class WCSInfo
@@ -42,25 +45,28 @@ namespace DSS
 	public:
 
 
-		double crval1{ 0.0 }; // Reference RA in degrees
-		double crval2{ 0.0 }; // Reference Dec in degrees
-		double cd11{ 0.0 };   // CD matrix element (RA)
-		double cd12{ 0.0 };   // CD matrix element (RA)
-		double cd21{ 0.0 };   // CD matrix element (Dec)
-		double cd22{ 0.0 };   // CD matrix element (Dec)
-		double crpix1{ 0.0 }; // Reference pixel X
-		double crpix2{ 0.0 }; // Reference pixel Y
+		double crval1{ 0.0 };	// Reference RA in degrees
+		double crval2{ 0.0 };	// Reference Dec in degrees
+		double cd11{ 0.0 };		// CD matrix element (RA)
+		double cd12{ 0.0 };		// CD matrix element (RA)
+		double cd21{ 0.0 };		// CD matrix element (Dec)
+		double cd22{ 0.0 };		// CD matrix element (Dec)
+		double crpix1{ 0.0 };	// Reference pixel X
+		double crpix2{ 0.0 };	// Reference pixel Y
+		QString creator;		// Software that wrote the FITS file
 		bool ok{ false };
 
 		std::tuple<double, double> pixelToWorld(double x, double y) const;
 
-		std::tuple<double, double> worldToPixel(double ra, double dec) const;
+		// Returns nullopt if the CD matrix is singular or the position is
+		// not on the visible hemisphere of the tangent plane.
+		std::optional<std::tuple<double, double>> worldToPixel(double ra, double dec) const;
 
 		double rotationAngle() const;
 
 		double pixelScale() const;
 
-		std::tuple <double, double> offsetXY(const WCSInfo& referenceWCSInfo) const;
+		std::optional<std::tuple<double, double>> offsetXY(const WCSInfo& referenceWCSInfo) const;
 
 		double rotationFrom(const WCSInfo& referenceWCSInfo) const;
 	};

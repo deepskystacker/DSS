@@ -142,7 +142,7 @@ void	WorkspaceSettings::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 	vSettings.emplace_back(WorkspaceSetting("Stacking/Offset_Iteration", QVariant(static_cast<uint>(5))));
 	vSettings.emplace_back(WorkspaceSetting("Stacking/Offset_Kappa", QVariant(2.0)));
 
-	vSettings.emplace_back(WorkspaceSetting("Stacking/UseWCS", QVariant(true))); 
+	vSettings.emplace_back(WorkspaceSetting("Stacking/UseWCS", QVariant(false))); 
 
 	vSettings.emplace_back(WorkspaceSetting("Stacking/BackgroundCalibration", QVariant(false)));
 	vSettings.emplace_back(WorkspaceSetting("Stacking/PerChannelBackgroundCalibration", QVariant(true)));

@@ -126,6 +126,7 @@ protected:
 	bool					m_bDSI;
 	bool	isCompressed{ false };
 	bool bottomUp{ false };
+	QString software_;
 
 private :
 	bool	ReadKey(const char * szKey, double & fValue, QString & strComment);

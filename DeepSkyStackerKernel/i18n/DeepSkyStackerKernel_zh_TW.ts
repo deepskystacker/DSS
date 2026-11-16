@@ -447,7 +447,7 @@ returned a status of %2, error text is:
         <translation>檔案 %1 的第二個 HDU 不包含壓縮影像。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="754"/>
+        <location filename="../FITSUtil.cpp" line="765"/>
         <source>fits_read_pixll returned a status of %1, error text is &quot;%2&quot;
 reading file %3.
 The file will not be processed.</source>
@@ -456,7 +456,7 @@ The file will not be processed.</source>
 該文件將不會被處理。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="823"/>
+        <location filename="../FITSUtil.cpp" line="834"/>
         <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
 Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
 settings will be used.</source>
@@ -465,13 +465,70 @@ FITS/DDP 中 DATAMIN = %L1 和 DATAMAX = %L2 的預設值
 將使用設定。</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1051"/>
+        <location filename="../FITSUtil.cpp" line="1000"/>
+        <source>A pixel value in the FITS file:
+
+%1
+
+is outside the range [DATAMIN, DATAMAX],
+where DATAMIN = %L2 and DATAMAX = %L3.
+</source>
+        <translation>FITS 檔案中的像素值：
+
+%1
+
+超出範圍 [DATAMIN, DATAMAX]，
+其中 DATAMIN = %L2 且 DATAMAX = %L3。
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1009"/>
+        <source>Minimum pixel value = %L4.
+Maximum pixel value = %L5.
+</source>
+        <translation>最小像素值 = %L4。
+最大像素值 = %L5。
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1016"/>
+        <source>Minimum pixel values = (%L4, %L5, %L6).
+Maximum pixel values = (%L7, %L8, %L9).
+</source>
+        <translation>最小像素值範圍 = (%L4, %L5, %L6)。
+最大像素值 = (%L7, %L8, %L9)。
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1024"/>
+        <source>
+DATAMIN and DATAMAX were read from the FITS headers, so
+the file is not valid and cannot be processed.</source>
+        <translation>
+DATAMIN 和 DATAMAX 取自 FITS 標頭，因此
+該檔案無效且無法處理。</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1032"/>
+        <source>
+DATAMIN and DATAMAX were taken from the DDP settings, and
+the file cannot be processed with the current settings.
+
+You can change the DATAMIN and DATAMAX settings in the FITS tab of the DDP settings, and try again.</source>
+        <translation>
+DATAMIN 和 DATAMAX 取自 DDP 設定，且
+以目前設定無法處理該檔案。
+
+您可以在 DDP 設定的「FITS」分頁中變更 DATAMIN 和 DATAMAX 設定，然後重試。</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1201"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker不會對8位元的影像進行解拜耳</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1413"/>
+        <location filename="../FITSUtil.cpp" line="1563"/>
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -499,8 +556,8 @@ returned a status of %2, error text is:
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="263"/>
-        <location filename="../FITSUtil.cpp" line="1106"/>
-        <location filename="../FITSUtil.cpp" line="1853"/>
+        <location filename="../FITSUtil.cpp" line="1256"/>
+        <location filename="../FITSUtil.cpp" line="2003"/>
         <location filename="../MultiBitmapProcess.cpp" line="229"/>
         <location filename="../StackingEngine.cpp" line="2385"/>
         <location filename="../TIFFUtil.cpp" line="1478"/>
@@ -514,8 +571,8 @@ returned a status of %2, error text is:
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="273"/>
-        <location filename="../FITSUtil.cpp" line="1115"/>
-        <location filename="../FITSUtil.cpp" line="1862"/>
+        <location filename="../FITSUtil.cpp" line="1265"/>
+        <location filename="../FITSUtil.cpp" line="2012"/>
         <location filename="../MultiBitmapProcess.cpp" line="238"/>
         <location filename="../StackingEngine.cpp" line="2394"/>
         <location filename="../TIFFUtil.cpp" line="1487"/>
@@ -978,69 +1035,69 @@ returned a status of %2, error text is:
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1122"/>
-        <location filename="../StackedBitmap.cpp" line="1237"/>
+        <location filename="../StackedBitmap.cpp" line="1123"/>
+        <location filename="../StackedBitmap.cpp" line="1238"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>載入 %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="510"/>
+        <location filename="../StackedBitmap.cpp" line="511"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>處理影像中...</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="751"/>
+        <location filename="../StackedBitmap.cpp" line="752"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>儲存 %1 bit TIFF檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="754"/>
-        <location filename="../StackedBitmap.cpp" line="955"/>
+        <location filename="../StackedBitmap.cpp" line="755"/>
+        <location filename="../StackedBitmap.cpp" line="956"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>儲存 %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1005"/>
+        <location filename="../StackedBitmap.cpp" line="1006"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>影像已儲存並套用設定值.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1007"/>
+        <location filename="../StackedBitmap.cpp" line="1008"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>影像已儲存並嵌入設定值.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="952"/>
+        <location filename="../StackedBitmap.cpp" line="953"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>儲存 %1 bit FITS檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1117"/>
+        <location filename="../StackedBitmap.cpp" line="1118"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>載入 %1 bit 之單色TIFF檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1119"/>
+        <location filename="../StackedBitmap.cpp" line="1120"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>載入每色 %1 bit 之TIFF檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1232"/>
+        <location filename="../StackedBitmap.cpp" line="1233"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>載入 %1 bit 單色FITS檔</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1234"/>
+        <location filename="../StackedBitmap.cpp" line="1235"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>載入每色 %1 bit 之FITS檔</translation>
@@ -1277,25 +1334,25 @@ and help DeepSkyStacker find a transformation between the reference frame and th
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="317"/>
+        <location filename="../StackingTasks.cpp" line="336"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>產生總和偏壓影像</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="342"/>
+        <location filename="../StackingTasks.cpp" line="361"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>將偏壓影像 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../StackingTasks.cpp" line="387"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>計算總和偏壓 (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="387"/>
+        <location filename="../StackingTasks.cpp" line="406"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -1303,39 +1360,39 @@ and help DeepSkyStacker find a transformation between the reference frame and th
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../StackingTasks.cpp" line="413"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>儲存總和偏壓檔</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="481"/>
+        <location filename="../StackingTasks.cpp" line="500"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>產生總和暗電流影像</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="516"/>
+        <location filename="../StackingTasks.cpp" line="535"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>將暗電流影像 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
-        <location filename="../StackingTasks.cpp" line="716"/>
-        <location filename="../StackingTasks.cpp" line="1170"/>
+        <location filename="../StackingTasks.cpp" line="554"/>
+        <location filename="../StackingTasks.cpp" line="735"/>
+        <location filename="../StackingTasks.cpp" line="1189"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>扣除偏壓</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="560"/>
+        <location filename="../StackingTasks.cpp" line="579"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>計算總和暗電流 (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="579"/>
+        <location filename="../StackingTasks.cpp" line="598"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -1343,7 +1400,7 @@ and help DeepSkyStacker find a transformation between the reference frame and th
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="763"/>
+        <location filename="../StackingTasks.cpp" line="782"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -1351,7 +1408,7 @@ and help DeepSkyStacker find a transformation between the reference frame and th
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1249"/>
+        <location filename="../StackingTasks.cpp" line="1268"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -1359,7 +1416,7 @@ and help DeepSkyStacker find a transformation between the reference frame and th
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="586"/>
+        <location filename="../StackingTasks.cpp" line="605"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>儲存總和暗電流檔</translation>
@@ -1373,67 +1430,67 @@ and help DeepSkyStacker find a transformation between the reference frame and th
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="676"/>
+        <location filename="../StackingTasks.cpp" line="695"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>產生總和平場暗電流影像</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="696"/>
+        <location filename="../StackingTasks.cpp" line="715"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>將暗電流 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="744"/>
+        <location filename="../StackingTasks.cpp" line="763"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>計算總和平場暗電流 (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="769"/>
+        <location filename="../StackingTasks.cpp" line="788"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>儲存總和平場暗電流</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="933"/>
+        <location filename="../StackingTasks.cpp" line="952"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>計算平場校正參數</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="985"/>
+        <location filename="../StackingTasks.cpp" line="1004"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>套用平場校正參數</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1102"/>
+        <location filename="../StackingTasks.cpp" line="1121"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>產生總和平場</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1152"/>
+        <location filename="../StackingTasks.cpp" line="1171"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>將平場 %1 加至 %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1180"/>
+        <location filename="../StackingTasks.cpp" line="1199"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>扣除暗電流</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1227"/>
+        <location filename="../StackingTasks.cpp" line="1246"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>計算總和平場 (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1255"/>
+        <location filename="../StackingTasks.cpp" line="1274"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>儲存總和平場</translation>

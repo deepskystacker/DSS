@@ -752,7 +752,10 @@ namespace
 				const DSS::WCSInfo& wcsInfo = frameInfo.wcsInfo;
 
 				// Compute the offset using the WCS information of this frame and the reference frame.
-				auto [xOffset, yOffset] = wcsInfo.offsetXY(referenceWCSInfo);
+				const auto wcsOffset = wcsInfo.offsetXY(referenceWCSInfo);
+					// Singular matrix etc.: use zero offset marker and fall back below.
+					const bool wcsUsable = wcsOffset.has_value();
+					auto [xOffset, yOffset] = wcsOffset.value_or(std::make_tuple(0.0, 0.0));
 				ZTRACE_RUNTIME("Frame %d WCS offset to reference frame: x=%.3f, y=%.3f", i, xOffset, yOffset);
 
 				// Compute the angle (rotation) of this frame with respect to the reference frame using the WCS information.
@@ -764,9 +767,11 @@ namespace
 				//
 				frameInfo.m_fXOffset = xOffset;
 				frameInfo.m_fYOffset = yOffset;
-				frameInfo.m_fAngle = angle;	
+				frameInfo.m_fAngle = angle;
 
-				offsetComputed = true;
+				// If the WCS was unusable, fall back to star matching
+				// (which overwrites the offsets set above).
+				offsetComputed = wcsUsable || pStackingEngine->ComputeLightFrameOffset(i);
 			}
 			else
 			{

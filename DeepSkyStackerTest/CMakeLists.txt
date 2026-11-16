@@ -31,6 +31,7 @@ set(Source_Files
     "RegisterTest.cpp"
     "SkyBackGroupTest.cpp"
     "TimeStampTest.cpp"
+    "WcsInfoTest.cpp"
 )
 source_group("Source Files" FILES ${Source_Files})
 
