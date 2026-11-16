@@ -40,8 +40,8 @@ namespace DSS
 {
 	namespace
 	{
-		constexpr double degToRad = M_PI / 180.0;
-		constexpr double radToDeg = 180.0 / M_PI;
+		constexpr double degToRad = std::numbers::pi / 180.0;
+		constexpr double radToDeg = 180.0 / std::numbers::pi;
 
 		// Relative test: the matrix entries are tiny (degrees/pixel) so an
 		// absolute threshold is meaningless.  Non-finite values count as
