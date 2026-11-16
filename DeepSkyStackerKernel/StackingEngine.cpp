@@ -751,26 +751,32 @@ namespace
 				// Get a const reference to the WCS info of this bitmap
 				const DSS::WCSInfo& wcsInfo = frameInfo.wcsInfo;
 
-				// Compute the offset using the WCS information of this frame and the reference frame.
-				const auto wcsOffset = wcsInfo.offsetXY(referenceWCSInfo);
-					// Singular matrix etc.: use zero offset marker and fall back below.
-					const bool wcsUsable = wcsOffset.has_value();
-					auto [xOffset, yOffset] = wcsOffset.value_or(std::make_tuple(0.0, 0.0));
-				ZTRACE_RUNTIME("Frame %d WCS offset to reference frame: x=%.3f, y=%.3f", i, xOffset, yOffset);
+				// Compute the transformation that maps this frame onto the
+				// reference frame from the WCS information of the two frames.
+				// There is none if e.g. a matrix is singular, or one frame is
+				// a mirror image of the other.
+				const auto wcsTransformation = wcsInfo.transformationTo(referenceWCSInfo,
+					frameInfo.RenderedWidth(), frameInfo.RenderedHeight(),
+					frameInfo.IsSuperPixel() ? 2 : 1, lightFrames[0].IsSuperPixel() ? 2 : 1);
+				const bool wcsUsable = wcsTransformation.has_value();
 
-				// Compute the angle (rotation) of this frame with respect to the reference frame using the WCS information.
-				auto angle = wcsInfo.rotationFrom(referenceWCSInfo);
-				ZTRACE_RUNTIME("Frame %d WCS rotation to reference frame: %.3f deg", i, angle);
+				if (wcsUsable)
+				{
+					//
+					// Set the transformation, and derive the offsets and the
+					// angle (radians) from it exactly as is done for the
+					// transformation that star matching produces.
+					//
+					frameInfo.m_BilinearParameters = *wcsTransformation;
+					wcsTransformation->Offsets(frameInfo.m_fXOffset, frameInfo.m_fYOffset);
+					frameInfo.m_fAngle = wcsTransformation->Angle(frameInfo.RenderedWidth());
+					ZTRACE_RUNTIME("Frame %d WCS offset to reference frame: x=%.3f, y=%.3f, rotation: %.3f deg",
+						i, frameInfo.m_fXOffset, frameInfo.m_fYOffset, frameInfo.m_fAngle * 180.0 / std::numbers::pi);
+				}
+				else
+					ZTRACE_RUNTIME("Frame %d: no usable transformation from WCS information, using star matching", i);
 
-				//
-				// We now have what we need from the WCS information, so we can set the offsets and rotation for this bitmap.
-				//
-				frameInfo.m_fXOffset = xOffset;
-				frameInfo.m_fYOffset = yOffset;
-				frameInfo.m_fAngle = angle;
-
-				// If the WCS was unusable, fall back to star matching
-				// (which overwrites the offsets set above).
+				// If the WCS was unusable, fall back to star matching.
 				offsetComputed = wcsUsable || pStackingEngine->ComputeLightFrameOffset(i);
 			}
 			else

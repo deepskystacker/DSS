@@ -93,45 +93,206 @@ TEST_CASE("WCS pixel scale and rotation angle", "[WCS]")
 	CHECK(makeWcs(10.0, 20.0, 0.0, 0.0, -120.0).rotationAngle() == Catch::Approx(-120.0).margin(1e-9));
 }
 
-TEST_CASE("WCS rotationFrom is reference minus this, wrapped", "[WCS]")
+namespace
 {
-	const auto ref = makeWcs(10.0, 20.0, 0.0, 0.0, 10.0);
-	CHECK(makeWcs(10.0, 20.0, 0.0, 0.0, 25.0).rotationFrom(ref) == Catch::Approx(-15.0).margin(1e-9));
-	// 170 -> -170 is a 20 degree step, not 340.
-	CHECK(makeWcs(10.0, 20.0, 0.0, 0.0, 170.0).rotationFrom(makeWcs(10.0, 20.0, 0.0, 0.0, -170.0)) == Catch::Approx(20.0).margin(1e-9));
+	constexpr int frameWidth = 3000;
+	constexpr int frameHeight = 2000;
+	constexpr double degrees = M_PI / 180.0;
+
+	// The same image with its rows in the opposite order (which is what a
+	// plate solver sees for a file stored top-down): the Y axis is mirrored.
+	DSS::WCSInfo mirrored(DSS::WCSInfo w)
+	{
+		w.cd12 = -w.cd12;
+		w.cd22 = -w.cd22;
+		return w;
+	}
+
+	// Largest difference in pixels, over a grid covering the frame, between
+	// the transformation and the exact mapping through the sky.
+	double worstError(const CBilinearParameters& transformation, const DSS::WCSInfo& frame, const DSS::WCSInfo& ref)
+	{
+		double worst = 0.0;
+		for (int x = 0; x <= frameWidth; x += frameWidth / 6)
+			for (int y = 0; y <= frameHeight; y += frameHeight / 4)
+			{
+				const auto exact = frame.mapTo(ref, x, y);
+				REQUIRE(exact.has_value());
+				const QPointF pt = transformation.transform(QPointF(x, y));
+				worst = std::max(worst, std::abs(pt.x() - std::get<0>(*exact)));
+				worst = std::max(worst, std::abs(pt.y() - std::get<1>(*exact)));
+			}
+		return worst;
+	}
 }
 
-TEST_CASE("WCS offsetXY with identical pointing is zero", "[WCS]")
+TEST_CASE("WCS toBitmapCoordinates", "[WCS][transformation]")
 {
-	const auto ref = makeWcs(150.0, 30.0, 100.0, 100.0, 5.0);
-	const auto offset = ref.offsetXY(ref);
-	REQUIRE(offset.has_value());
-	CHECK(std::get<0>(*offset) == Catch::Approx(0.0).margin(1e-6));
-	CHECK(std::get<1>(*offset) == Catch::Approx(0.0).margin(1e-6));
+	const auto fits = makeWcs(150.0, 40.0, 1500.5, 1000.25, 12.0);
+	const auto [ra, dec] = fits.pixelToWorld(321.0, 654.0);	// FITS (1-based) pixel
+
+	SECTION("top-down: pixel centres become 0-based")
+	{
+		auto w = fits;
+		w.toBitmapCoordinates(frameHeight, false);
+		CHECK(w.crpix1 == Catch::Approx(1499.5).margin(1e-12));
+		CHECK(w.crpix2 == Catch::Approx(999.25).margin(1e-12));
+		const auto [ra2, dec2] = w.pixelToWorld(320.0, 653.0);
+		CHECK(ra2 == Catch::Approx(ra).margin(1e-11));
+		CHECK(dec2 == Catch::Approx(dec).margin(1e-11));
+	}
+
+	SECTION("bottom-up: the rows are reversed as well")
+	{
+		auto w = fits;
+		w.toBitmapCoordinates(frameHeight, true);
+		// FITS row 654 (1-based) is loaded into bitmap row height - 654.
+		const auto [ra2, dec2] = w.pixelToWorld(320.0, frameHeight - 654.0);
+		CHECK(ra2 == Catch::Approx(ra).margin(1e-11));
+		CHECK(dec2 == Catch::Approx(dec).margin(1e-11));
+		// Reversing the rows changes the parity of the image.
+		CHECK((w.cd11 * w.cd22 - w.cd12 * w.cd21) * (fits.cd11 * fits.cd22 - fits.cd12 * fits.cd21) < 0.0);
+	}
 }
 
-TEST_CASE("WCS offsetXY accounts for differing crpix", "[WCS]")
+TEST_CASE("WCS transformation between identical frames is the identity", "[WCS][transformation]")
 {
-	// Same sky pointing, but this frame's reference pixel is elsewhere:
-	// its crpix pixel lands on the reference's crpix pixel.
-	const auto ref = makeWcs(150.0, 30.0, 100.0, 100.0);
-	const auto frame = makeWcs(150.0, 30.0, 50.0, 60.0);
-	const auto offset = frame.offsetXY(ref);
-	REQUIRE(offset.has_value());
-	CHECK(std::get<0>(*offset) == Catch::Approx(50.0).margin(1e-6));
-	CHECK(std::get<1>(*offset) == Catch::Approx(40.0).margin(1e-6));
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 5.0);
+	const auto t = ref.transformationTo(ref, frameWidth, frameHeight);
+	REQUIRE(t.has_value());
+	CHECK(t->Type == TT_BILINEAR);
+	CHECK(t->a0 == Catch::Approx(0.0).margin(1e-9));
+	CHECK(t->a1 == Catch::Approx(1.0).margin(1e-9));
+	CHECK(t->a2 == Catch::Approx(0.0).margin(1e-9));
+	CHECK(t->a3 == Catch::Approx(0.0).margin(1e-9));
+	CHECK(t->b0 == Catch::Approx(0.0).margin(1e-9));
+	CHECK(t->b1 == Catch::Approx(0.0).margin(1e-9));
+	CHECK(t->b2 == Catch::Approx(1.0).margin(1e-9));
+	CHECK(t->b3 == Catch::Approx(0.0).margin(1e-9));
+	CHECK(t->Angle(frameWidth) == Catch::Approx(0.0).margin(1e-9));
 }
 
-TEST_CASE("WCS offsetXY recovers a known pixel shift", "[WCS]")
+TEST_CASE("WCS transformation recovers a known pixel shift", "[WCS][transformation]")
 {
-	const auto ref = makeWcs(150.0, 70.0, 100.0, 100.0, 20.0);
-	// Frame pointed at the sky position that is 10,20 pixels from the reference crpix.
-	const auto [ra, dec] = ref.pixelToWorld(110.0, 120.0);
-	const auto frame = makeWcs(ra, dec, 100.0, 100.0, 20.0);
-	const auto offset = frame.offsetXY(ref);
-	REQUIRE(offset.has_value());
-	CHECK(std::get<0>(*offset) == Catch::Approx(10.0).margin(1e-6));
-	CHECK(std::get<1>(*offset) == Catch::Approx(20.0).margin(1e-6));
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 20.0);
+	// Frame pointed at the sky position 10,20 pixels from the reference crpix.
+	const auto [ra, dec] = ref.pixelToWorld(1510.0, 1020.0);
+	const auto frame = makeWcs(ra, dec, 1500.0, 1000.0, 20.0);
+	const auto t = frame.transformationTo(ref, frameWidth, frameHeight);
+	REQUIRE(t.has_value());
+
+	// The shift is exact at the frame's reference pixel.
+	const QPointF centre = t->transform(QPointF(1500.0, 1000.0));
+	CHECK(centre.x() == Catch::Approx(1510.0).margin(1e-3));
+	CHECK(centre.y() == Catch::Approx(1020.0).margin(1e-3));
+
+	// Away from it the meridians converge, so the field is very slightly
+	// rotated between the two tangent points (about 0.003 degrees here),
+	// which moves pixel (0, 0) by a fraction of a pixel more.
+	double xOffset = 0.0, yOffset = 0.0;
+	t->Offsets(xOffset, yOffset);
+	CHECK(xOffset == Catch::Approx(10.0).margin(0.2));
+	CHECK(yOffset == Catch::Approx(20.0).margin(0.2));
+	CHECK(t->Angle(frameWidth) == Catch::Approx(0.0).margin(1e-3));
+	CHECK(worstError(*t, frame, ref) < 0.01);
+
+	// A different crpix for the same pointing is a shift too.
+	const auto frame2 = makeWcs(150.0, 30.0, 1450.0, 960.0, 20.0);
+	const auto t2 = frame2.transformationTo(ref, frameWidth, frameHeight);
+	REQUIRE(t2.has_value());
+	t2->Offsets(xOffset, yOffset);
+	CHECK(xOffset == Catch::Approx(50.0).margin(1e-6));
+	CHECK(yOffset == Catch::Approx(40.0).margin(1e-6));
+}
+
+TEST_CASE("WCS transformation rotation has the right sign for either parity", "[WCS][transformation]")
+{
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 10.0);
+	const auto frame = makeWcs(150.0, 30.0, 1500.0, 1000.0, 25.0);
+
+	SECTION("normal parity")
+	{
+		const auto t = frame.transformationTo(ref, frameWidth, frameHeight);
+		REQUIRE(t.has_value());
+		CHECK(t->Angle(frameWidth) == Catch::Approx(-15.0 * degrees).margin(1e-9));
+		// The rotation is about the common reference pixel ...
+		const QPointF centre = t->transform(QPointF(1500.0, 1000.0));
+		CHECK(centre.x() == Catch::Approx(1500.0).margin(1e-6));
+		CHECK(centre.y() == Catch::Approx(1000.0).margin(1e-6));
+		// ... so the offset of pixel (0, 0) is far from zero.
+		double xOffset = 0.0, yOffset = 0.0;
+		t->Offsets(xOffset, yOffset);
+		CHECK(std::hypot(xOffset, yOffset) > 100.0);
+		CHECK(worstError(*t, frame, ref) < 1e-6);
+	}
+
+	SECTION("mirrored frames rotate the other way")
+	{
+		const auto t = mirrored(frame).transformationTo(mirrored(ref), frameWidth, frameHeight);
+		REQUIRE(t.has_value());
+		CHECK(t->Angle(frameWidth) == Catch::Approx(15.0 * degrees).margin(1e-9));
+		CHECK(worstError(*t, mirrored(frame), mirrored(ref)) < 1e-6);
+	}
+
+	SECTION("meridian flip")
+	{
+		const auto flipped = makeWcs(150.0, 30.0, 1500.0, 1000.0, 190.0);
+		const auto t = flipped.transformationTo(ref, frameWidth, frameHeight);
+		REQUIRE(t.has_value());
+		CHECK(std::abs(t->Angle(frameWidth)) == Catch::Approx(180.0 * degrees).margin(1e-9));
+		const QPointF corner = t->transform(QPointF(0.0, 0.0));
+		CHECK(corner.x() == Catch::Approx(3000.0).margin(1e-6));
+		CHECK(corner.y() == Catch::Approx(2000.0).margin(1e-6));
+	}
+}
+
+TEST_CASE("WCS transformation is refused for frames of opposite parity", "[WCS][transformation]")
+{
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 10.0);
+	const auto frame = makeWcs(150.0, 30.0, 1500.0, 1000.0, 25.0);
+	CHECK_FALSE(mirrored(frame).transformationTo(ref, frameWidth, frameHeight).has_value());
+	CHECK_FALSE(frame.transformationTo(mirrored(ref), frameWidth, frameHeight).has_value());
+
+	// Nor is there one for frames on opposite sides of the sky, or for
+	// nonsensical sizes.
+	CHECK_FALSE(makeWcs(330.0, -30.0, 1500.0, 1000.0).transformationTo(ref, frameWidth, frameHeight).has_value());
+	CHECK_FALSE(frame.transformationTo(ref, 0, frameHeight).has_value());
+	CHECK_FALSE(frame.transformationTo(ref, frameWidth, frameHeight, 0).has_value());
+}
+
+TEST_CASE("WCS transformation follows the exact mapping across the frame", "[WCS][transformation]")
+{
+	// Dithered and slightly rotated frames, including close to the pole
+	// where the field rotates quickly with RA.
+	for (const double dec0 : { -60.0, 0.0, 45.0, 85.0 })
+	{
+		const auto ref = makeWcs(210.0, dec0, 1500.0, 1000.0, 37.0);
+		const auto [ra, dec] = ref.pixelToWorld(1560.0, 960.0);
+		const auto frame = makeWcs(ra, dec, 1480.0, 1015.0, 39.5);
+		const auto t = frame.transformationTo(ref, frameWidth, frameHeight);
+		REQUIRE(t.has_value());
+		CHECK(worstError(*t, frame, ref) < 0.01);
+	}
+}
+
+TEST_CASE("WCS transformation with super-pixel binning", "[WCS][transformation]")
+{
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 10.0);
+	const auto [ra, dec] = ref.pixelToWorld(1530.0, 990.0);
+	const auto frame = makeWcs(ra, dec, 1500.0, 1000.0, 13.0);
+
+	// Both rendered at half size: rendered pixel r is centred on WCS
+	// pixel 2r + 0.5.
+	const auto t = frame.transformationTo(ref, frameWidth / 2, frameHeight / 2, 2, 2);
+	REQUIRE(t.has_value());
+	for (const auto [x, y] : { std::pair{ 0.0, 0.0 }, std::pair{ 750.0, 500.0 }, std::pair{ 1400.0, 30.0 }, std::pair{ 12.0, 990.0 } })
+	{
+		const auto exact = frame.mapTo(ref, 2.0 * x + 0.5, 2.0 * y + 0.5);
+		REQUIRE(exact.has_value());
+		const QPointF pt = t->transform(QPointF(x, y));
+		CHECK(pt.x() == Catch::Approx((std::get<0>(*exact) - 0.5) / 2.0).margin(0.01));
+		CHECK(pt.y() == Catch::Approx((std::get<1>(*exact) - 0.5) / 2.0).margin(0.01));
+	}
 }
 
 namespace

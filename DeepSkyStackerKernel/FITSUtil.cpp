@@ -304,7 +304,6 @@ bool CFITSReader::Open()
 			bResult = ReadKey("NAXIS2", lHeight);
 			if (lNrAxis >= 3)
 				bResult = ReadKey("NAXIS3", lNrChannels);
-			bResult = ReadKey("BITPIX", m_bitPix);
 		}
 		else
 		{
@@ -312,7 +311,26 @@ bool CFITSReader::Open()
 			bResult = ReadKey("ZNAXIS2", lHeight);
 			if (lNrAxis >= 3)
 				bResult = ReadKey("ZNAXIS3", lNrChannels);
-			bResult = ReadKey("ZBITPIX", m_bitPix);
+		}
+
+		//
+		// Get the "equivalent" image type rather than the value of BITPIX.
+		//
+		// FITS has no unsigned integer types: unsigned 16 bit data is stored
+		// as signed 16 bit (BITPIX = 16) with BZERO = 32768, and similarly for
+		// the other sizes.  cfitsio applies BSCALE and BZERO when we read the
+		// pixels, so what we get for such a file is already in the range
+		// [0, 65535], and it must NOT be shifted again as truly signed data
+		// (BITPIX = 16, BZERO = 0) needs to be.
+		//
+		// fits_get_img_equivtype() takes BSCALE and BZERO into account and so
+		// reports USHORT_IMG for that case and SHORT_IMG only for data that
+		// really is signed.  It also handles compressed images (ZBITPIX).
+		//
+		{
+			int typeStatus = 0;
+			fits_get_img_equivtype(m_fits, &m_bitPix, &typeStatus);
+			bResult = (0 == typeStatus);
 		}
 
 
@@ -617,6 +635,10 @@ bool CFITSReader::Open()
 					"CD11=%.10g, CD12=%.10g, CD21=%.10g, CD22=%.10g",
 					wcsInfo.crpix1, wcsInfo.crpix2, wcsInfo.crval1, wcsInfo.crval2,
 					wcsInfo.cd11, wcsInfo.cd12, wcsInfo.cd21, wcsInfo.cd22);
+
+				// From here on the WCS information must refer to the pixels of
+				// the bitmap as we load it, not as they are stored in the file.
+				wcsInfo.toBitmapCoordinates(lHeight, bottomUp);
 			}
 			else
 			{
@@ -635,6 +657,9 @@ bool CFITSReader::Open()
 				m_bSigned = false;
 				switch (m_bitPix)
 				{
+				case SBYTE_IMG :
+					m_bSigned = true;  // Fall through intentional
+					[[fallthrough]];
 				case BYTE_IMG :
 					m_lBitsPerPixel = 8;
 					m_bFloat = false;
@@ -662,6 +687,9 @@ bool CFITSReader::Open()
 					m_bFloat = true;
 					break;
 				case LONGLONG_IMG :
+					m_bSigned = true; // Fall through intentional
+					[[fallthrough]];
+				case ULONGLONG_IMG :
 					m_lBitsPerPixel = 64;
 					m_bFloat = false;
 					break;
@@ -716,6 +744,7 @@ bool CFITSReader::Read()
 	//
 	// The shift values are used to convert the signed values read from the FITS file into an unsigned value
 	//
+	constexpr double ShiftValueInt8 = -static_cast<double>(std::numeric_limits<std::int8_t>::min());
 	constexpr double ShiftValueInt16 = -static_cast<double>(std::numeric_limits<std::int16_t>::min());
 	constexpr double ShiftValueInt32 = -static_cast<double>(std::numeric_limits<std::int32_t>::min());
 	constexpr double ShiftValueInt64 = -static_cast<double>(std::numeric_limits<std::int64_t>::min());
@@ -953,6 +982,16 @@ bool CFITSReader::Read()
 
 				switch (m_bitPix)
 				{
+				case SBYTE_IMG:
+					//
+					// Data values in the FITS file are signed 8 bit integers.
+					// Shift them by 128 so that the range is [0, 255] instead
+					// of [-128, 127].
+					//
+					red += ShiftValueInt8;
+					green += ShiftValueInt8;
+					blue += ShiftValueInt8;
+					[[fallthrough]];
 				case BYTE_IMG:
 					break;
 				case SHORT_IMG:
@@ -1000,6 +1039,8 @@ bool CFITSReader::Read()
 					red += ShiftValueInt64;
 					green += ShiftValueInt64;
 					blue += ShiftValueInt64;
+					[[fallthrough]];
+				case ULONGLONG_IMG:
 					//
 					// Scale the values to the range [0, 255]
 					//

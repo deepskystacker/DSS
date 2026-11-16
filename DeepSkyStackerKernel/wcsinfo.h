@@ -37,6 +37,7 @@
 
 #include <optional>
 #include <tuple>
+#include "BilinearParameters.h"
 
 namespace DSS
 {
@@ -74,6 +75,10 @@ namespace DSS
 		double cd12{ 0.0 };		// CD matrix element (RA)
 		double cd21{ 0.0 };		// CD matrix element (Dec)
 		double cd22{ 0.0 };		// CD matrix element (Dec)
+		// The reference pixel and the CD matrix are as read from the FITS
+		// header (pixel centres are 1-based, rows in file order) until
+		// toBitmapCoordinates() has been called.  After that they refer to
+		// the coordinates of the bitmap as DSS holds it in memory.
 		double crpix1{ 0.0 };	// Reference pixel X
 		double crpix2{ 0.0 };	// Reference pixel Y
 		QString creator;		// Software that wrote the FITS file
@@ -86,6 +91,11 @@ namespace DSS
 		// a complete, invertible RA/Dec TAN projection in degrees.
 		bool setFromKeywords(const WCSKeywords& keys);
 
+		// Converts from FITS pixel coordinates to those of the bitmap DSS
+		// loads from the file: pixel centres are 0-based, and the rows are
+		// reversed if the file is stored bottom-up.  height is NAXIS2.
+		void toBitmapCoordinates(int height, bool bottomUp);
+
 		std::tuple<double, double> pixelToWorld(double x, double y) const;
 
 		// Returns nullopt if the CD matrix is singular or the position is
@@ -96,8 +106,18 @@ namespace DSS
 
 		double pixelScale() const;
 
-		std::optional<std::tuple<double, double>> offsetXY(const WCSInfo& referenceWCSInfo) const;
+		// Maps a pixel position in this frame to the position in the
+		// reference frame that shows the same point on the sky.
+		std::optional<std::tuple<double, double>> mapTo(const WCSInfo& referenceWCSInfo, double x, double y) const;
 
-		double rotationFrom(const WCSInfo& referenceWCSInfo) const;
+		// The transformation that maps positions in this frame's rendered
+		// bitmap (renderedWidth x renderedHeight) to positions in the
+		// reference frame's rendered bitmap.  binning is the number of
+		// pixels of the WCS solution along each side of a rendered pixel
+		// (2 for a super-pixel de-Bayered image, otherwise 1).
+		// Returns nullopt if there is no usable transformation, including
+		// when one frame is a mirror image of the other.
+		std::optional<CBilinearParameters> transformationTo(const WCSInfo& referenceWCSInfo,
+			int renderedWidth, int renderedHeight, int binning = 1, int referenceBinning = 1) const;
 	};
 }
