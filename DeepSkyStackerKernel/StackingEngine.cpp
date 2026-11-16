@@ -726,7 +726,7 @@ namespace
 		bool useWCS = workspace.value("Stacking/UseWCS", true).toBool();
 
 		LIGHTFRAMEINFOVECTOR& lightFrames = pStackingEngine->LightFrames();
-		DSS::WCSInfo referenceWCSInfo = lightFrames[0].wcsInfo; // Get the WCS Info of the reference frame.
+		const DSS::WCSInfo referenceWCSInfo = lightFrames[0].wcsInfo; // Get the WCS Info of the reference frame.
 
 		if (pProg != nullptr)
 			pProg->Progress1(strText, 0);
