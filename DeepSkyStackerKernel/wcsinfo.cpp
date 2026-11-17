@@ -34,6 +34,7 @@
 **
 ****************************************************************************/
 #include "pch.h"
+#include <numbers>
 #include "wcsinfo.h"
 
 namespace DSS
@@ -56,11 +57,15 @@ namespace DSS
 		// CTYPE is "cccc-ppp": a four character coordinate type padded with
 		// '-' ("RA--", "DEC-"), then '-' and a three character projection
 		// code.  A distortion suffix such as "-SIP" may follow, which is
-		// accepted (the distortion terms themselves are ignored).
+		// accepted (the distortion terms themselves are ignored).  Anything
+		// else after the projection code (e.g. "RA---TANX") means it isn't
+		// a TAN projection.
 		bool isTanAxis(const QString& ctype, QLatin1StringView coordinate)
 		{
 			const QString type = ctype.trimmed().toUpper();
-			return type.startsWith(coordinate) && type.mid(4, 4) == QLatin1StringView("-TAN");
+			return type.startsWith(coordinate) &&
+				type.mid(4, 4) == QLatin1StringView("-TAN") &&
+				(type.size() == 8 || type.at(8) == u'-');
 		}
 
 		// CUNIT defaults to degrees for celestial axes if it is absent.
@@ -95,7 +100,11 @@ namespace DSS
 
 		// CRPIX and CRVAL do have defaults (0), but a header without them
 		// hasn't been plate solved, so don't claim to have a WCS solution.
-		const bool haveReference = keys.crpix1 && keys.crpix2 && keys.crval1 && keys.crval2;
+		// Nor if any of them is NaN or infinite, which would propagate
+		// into every position computed from the solution.
+		const bool haveReference = keys.crpix1 && keys.crpix2 && keys.crval1 && keys.crval2 &&
+			std::isfinite(crpix1) && std::isfinite(crpix2) &&
+			std::isfinite(crval1) && std::isfinite(crval2);
 
 		matrixSource = MatrixSource::None;
 		cd11 = cd12 = cd21 = cd22 = 0.0;

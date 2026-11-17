@@ -4,10 +4,10 @@
 
 namespace
 {
-	// North-up, east-left image, 1 arcsec/pixel, rotated by rotDeg.
-	DSS::WCSInfo makeWcs(double ra, double dec, double crpix1, double crpix2, double rotDeg = 0.0)
+	// North-up, east-left image, scaleArcsec arcsec/pixel, rotated by rotDeg.
+	DSS::WCSInfo makeWcs(double ra, double dec, double crpix1, double crpix2, double rotDeg = 0.0, double scaleArcsec = 1.0)
 	{
-		constexpr double scale = 1.0 / 3600.0;
+		const double scale = scaleArcsec / 3600.0;
 		const double r = rotDeg * M_PI / 180.0;
 		DSS::WCSInfo w;
 		w.crval1 = ra;
@@ -510,4 +510,334 @@ TEST_CASE("WCS keywords: CTYPE and CUNIT", "[WCS][keywords]")
 	k = good;
 	k.cunit1 = "rad"; k.cunit2 = "rad";
 	CHECK_FALSE(w.setFromKeywords(k));
+
+	// The projection code must be exactly TAN, optionally followed by a
+	// distortion suffix.
+	k = good;
+	k.ctype1 = "RA---TANX"; k.ctype2 = "DEC--TANX";
+	CHECK_FALSE(w.setFromKeywords(k));
+	k = good;
+	k.ctype1 = "RA---TANGENT";
+	CHECK_FALSE(w.setFromKeywords(k));
+	k = good;
+	k.ctype1 = "RA---TAN-TPD"; k.ctype2 = "DEC--TAN-TPD";
+	CHECK(w.setFromKeywords(k));
+	k = good;
+	k.ctype1 = "RA---TPV"; k.ctype2 = "DEC--TPV";
+	CHECK_FALSE(w.setFromKeywords(k));
+
+	// Long forms of degrees.
+	k = good;
+	k.cunit1 = "degree"; k.cunit2 = "Degrees";
+	CHECK(w.setFromKeywords(k));
+
+	// One bad axis is enough to reject the header.
+	k = good;
+	k.ctype2.clear();
+	CHECK_FALSE(w.setFromKeywords(k));
+	k = good;
+	k.ctype1 = "RA---SIN";
+	CHECK_FALSE(w.setFromKeywords(k));
+	k = good;
+	k.cunit2 = "arcsec";
+	CHECK_FALSE(w.setFromKeywords(k));
+}
+
+TEST_CASE("WCS keywords: more incomplete headers", "[WCS][keywords]")
+{
+	DSS::WCSInfo w;
+
+	// Only CDELT2.
+	auto k = makeKeys();
+	k.cdelt2 = arcsec;
+	CHECK_FALSE(w.setFromKeywords(k));
+
+	// The other reference pixel / value keywords.
+	k = makeKeys();
+	k.cd11 = -arcsec; k.cd22 = arcsec;
+	k.crpix2.reset();
+	CHECK_FALSE(w.setFromKeywords(k));
+	k = makeKeys();
+	k.cd11 = -arcsec; k.cd22 = arcsec;
+	k.crval1.reset();
+	CHECK_FALSE(w.setFromKeywords(k));
+}
+
+TEST_CASE("WCS keywords: singularity test is relative to the scale", "[WCS][keywords]")
+{
+	DSS::WCSInfo w;
+
+	// A tiny (0.0036 mas/pixel) but perfectly valid matrix: an absolute
+	// determinant threshold would wrongly reject it.
+	auto k = makeKeys();
+	k.cd11 = -1e-9; k.cd22 = 1e-9;
+	CHECK(w.setFromKeywords(k));
+
+	// Rows that are multiples of each other.
+	k = makeKeys();
+	k.cd11 = 1e-4; k.cd12 = 2e-4; k.cd21 = 2e-4; k.cd22 = 4e-4;
+	CHECK_FALSE(w.setFromKeywords(k));
+
+	// Singular via PC and via CDELT + CROTA2.
+	k = makeKeys();
+	k.cdelt1 = -arcsec; k.cdelt2 = arcsec;
+	k.pc11 = 1.0; k.pc12 = 1.0; k.pc21 = 1.0; k.pc22 = 1.0;
+	CHECK_FALSE(w.setFromKeywords(k));
+	k = makeKeys();
+	k.cdelt1 = -arcsec; k.cdelt2 = 0.0; k.crota2 = 30.0;
+	CHECK_FALSE(w.setFromKeywords(k));
+}
+
+TEST_CASE("WCS keywords: non-finite values are rejected", "[WCS][keywords]")
+{
+	constexpr double nan = std::numeric_limits<double>::quiet_NaN();
+	constexpr double inf = std::numeric_limits<double>::infinity();
+	DSS::WCSInfo w;
+
+	for (const double bad : { nan, inf, -inf })
+	{
+		auto k = makeKeys();
+		k.cd11 = bad; k.cd22 = arcsec;
+		CHECK_FALSE(w.setFromKeywords(k));
+
+		k = makeKeys();
+		k.cdelt1 = bad; k.cdelt2 = arcsec;
+		CHECK_FALSE(w.setFromKeywords(k));
+
+		k = makeKeys();
+		k.cdelt1 = -arcsec; k.cdelt2 = arcsec; k.crota2 = bad;
+		CHECK_FALSE(w.setFromKeywords(k));
+
+		// The reference pixel and value.
+		for (auto member : { &DSS::WCSKeywords::crpix1, &DSS::WCSKeywords::crpix2,
+			&DSS::WCSKeywords::crval1, &DSS::WCSKeywords::crval2 })
+		{
+			k = makeKeys();
+			k.cd11 = -arcsec; k.cd22 = arcsec;
+			k.*member = bad;
+			CHECK_FALSE(w.setFromKeywords(k));
+		}
+	}
+}
+
+TEST_CASE("WCS pixel scale of non-square and sheared pixels", "[WCS]")
+{
+	auto k = makeKeys();
+	k.cdelt1 = -2.0 * arcsec; k.cdelt2 = 3.0 * arcsec; k.crota2 = 25.0;
+	DSS::WCSInfo w;
+	REQUIRE(w.setFromKeywords(k));
+	// Geometric mean of the two axis scales.
+	CHECK(w.pixelScale() == Catch::Approx(std::sqrt(6.0)).margin(1e-9));
+
+	// Shear does not change the area of a pixel.
+	k = makeKeys();
+	k.cd11 = -arcsec; k.cd12 = 0.3 * arcsec; k.cd22 = arcsec;
+	REQUIRE(w.setFromKeywords(k));
+	CHECK(w.pixelScale() == Catch::Approx(1.0).margin(1e-9));
+}
+
+TEST_CASE("WCS at and across the celestial poles", "[WCS]")
+{
+	SECTION("tangent point exactly at a pole round trips")
+	{
+		for (const double dec0 : { 90.0, -90.0 })
+		{
+			const auto w = makeWcs(45.0, dec0, 1000.0, 800.0, 15.0);
+			for (const auto [x, y] : { std::pair{ 1000.0, 800.0 }, std::pair{ 0.0, 0.0 }, std::pair{ 2000.0, 1600.0 }, std::pair{ 1700.0, 20.0 } })
+			{
+				const auto [ra, dec] = w.pixelToWorld(x, y);
+				CHECK(ra >= 0.0);
+				CHECK(ra < 360.0);
+				CHECK(std::abs(dec) <= 90.0);
+				const auto back = w.worldToPixel(ra, dec);
+				REQUIRE(back.has_value());
+				CHECK(std::get<0>(*back) == Catch::Approx(x).margin(1e-6));
+				CHECK(std::get<1>(*back) == Catch::Approx(y).margin(1e-6));
+			}
+		}
+	}
+
+	SECTION("a pixel beyond the pole is on the opposite meridian")
+	{
+		// The tangent point is 36" from the north pole; 72 pixels north
+		// of it is 36" beyond the pole, on the other side.
+		const auto w = makeWcs(30.0, 89.99, 500.0, 500.0);
+		const auto [ra, dec] = w.pixelToWorld(500.0, 572.0);
+		CHECK(ra == Catch::Approx(210.0).margin(1e-6));
+		CHECK(dec == Catch::Approx(89.99).margin(1e-6));
+
+		const auto back = w.worldToPixel(ra, dec);
+		REQUIRE(back.has_value());
+		CHECK(std::get<0>(*back) == Catch::Approx(500.0).margin(1e-6));
+		CHECK(std::get<1>(*back) == Catch::Approx(572.0).margin(1e-6));
+	}
+}
+
+TEST_CASE("WCS RA normalisation", "[WCS]")
+{
+	// A position a minute fraction of a pixel west of RA 0 is less than
+	// half an ulp below 360, so adding 360 rounds to exactly 360, which
+	// must be reported as 0.
+	const auto w = makeWcs(0.0, 0.0, 100.0, 100.0);
+	const auto [ra, dec] = w.pixelToWorld(100.0 + 1e-12, 100.0);
+	CHECK(ra >= 0.0);
+	CHECK(ra < 360.0);
+	CHECK(ra == 0.0);
+
+	// CRVAL1 outside [0, 360) is normalised too.
+	CHECK(std::get<0>(makeWcs(370.0, 10.0, 0.0, 0.0).pixelToWorld(0.0, 0.0)) == Catch::Approx(10.0).margin(1e-9));
+	CHECK(std::get<0>(makeWcs(-10.0, 10.0, 0.0, 0.0).pixelToWorld(0.0, 0.0)) == Catch::Approx(350.0).margin(1e-9));
+
+	// worldToPixel accepts RA in any equivalent range.
+	const auto w2 = makeWcs(0.01, 20.0, 500.0, 500.0);
+	const auto expected = w2.worldToPixel(359.99, 20.0);
+	REQUIRE(expected.has_value());
+	for (const double ra2 : { -0.01, 719.99 })
+	{
+		const auto p = w2.worldToPixel(ra2, 20.0);
+		REQUIRE(p.has_value());
+		CHECK(std::get<0>(*p) == Catch::Approx(std::get<0>(*expected)).margin(1e-6));
+		CHECK(std::get<1>(*p) == Catch::Approx(std::get<1>(*expected)).margin(1e-6));
+	}
+}
+
+TEST_CASE("WCS worldToPixel hemisphere boundary", "[WCS]")
+{
+	const auto w = makeWcs(10.0, 0.0, 0.0, 0.0);
+	CHECK(w.worldToPixel(99.0, 0.0).has_value());		// 89 degrees away
+	CHECK_FALSE(w.worldToPixel(100.5, 0.0).has_value());	// 90.5 degrees away
+
+	const auto north = makeWcs(10.0, 60.0, 0.0, 0.0);
+	CHECK(north.worldToPixel(190.0, 61.0).has_value());		// 59 degrees away, over the pole
+	CHECK_FALSE(north.worldToPixel(190.0, 10.0).has_value());	// 110 degrees away
+}
+
+TEST_CASE("WCS top-down and bottom-up files of the same field agree", "[WCS][transformation]")
+{
+	// The solution in bitmap (0-based, top row first) coordinates.
+	const auto bitmap = makeWcs(150.0, 30.0, 1500.0, 1000.0, 10.0);
+
+	// What a plate solver writes for each file, describing pixels in
+	// file order with 1-based centres.
+	auto topDown = bitmap;
+	topDown.crpix1 += 1.0;
+	topDown.crpix2 += 1.0;
+
+	auto bottomUp = mirrored(bitmap);
+	bottomUp.crpix1 += 1.0;
+	bottomUp.crpix2 = frameHeight - bitmap.crpix2;
+
+	topDown.toBitmapCoordinates(frameHeight, false);
+	bottomUp.toBitmapCoordinates(frameHeight, true);
+
+	for (const auto* w : { &topDown, &bottomUp })
+	{
+		CHECK(w->crpix1 == Catch::Approx(bitmap.crpix1).margin(1e-12));
+		CHECK(w->crpix2 == Catch::Approx(bitmap.crpix2).margin(1e-12));
+		checkMatrix(*w, bitmap.cd11, bitmap.cd12, bitmap.cd21, bitmap.cd22);
+	}
+
+	const auto t = bottomUp.transformationTo(topDown, frameWidth, frameHeight);
+	REQUIRE(t.has_value());
+	for (const auto [x, y] : { std::pair{ 0.0, 0.0 }, std::pair{ 3000.0, 2000.0 }, std::pair{ 123.0, 1789.0 } })
+	{
+		const QPointF pt = t->transform(QPointF(x, y));
+		CHECK(pt.x() == Catch::Approx(x).margin(1e-6));
+		CHECK(pt.y() == Catch::Approx(y).margin(1e-6));
+	}
+}
+
+TEST_CASE("WCS transformation with different binning in the two frames", "[WCS][transformation]")
+{
+	// Same pointing, so the transformation is exactly the change of
+	// rendered pixel grid: rendered pixel r of a binned frame is centred
+	// on WCS pixel 2r + 0.5.
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 10.0);
+
+	SECTION("super-pixel frame, normal reference")
+	{
+		const auto t = ref.transformationTo(ref, frameWidth / 2, frameHeight / 2, 2, 1);
+		REQUIRE(t.has_value());
+		for (const auto [x, y] : { std::pair{ 0.0, 0.0 }, std::pair{ 1500.0, 1000.0 }, std::pair{ 321.0, 777.0 } })
+		{
+			const QPointF pt = t->transform(QPointF(x, y));
+			CHECK(pt.x() == Catch::Approx(2.0 * x + 0.5).margin(1e-6));
+			CHECK(pt.y() == Catch::Approx(2.0 * y + 0.5).margin(1e-6));
+		}
+	}
+
+	SECTION("normal frame, super-pixel reference")
+	{
+		const auto t = ref.transformationTo(ref, frameWidth, frameHeight, 1, 2);
+		REQUIRE(t.has_value());
+		for (const auto [x, y] : { std::pair{ 0.0, 0.0 }, std::pair{ 3000.0, 2000.0 }, std::pair{ 321.0, 777.0 } })
+		{
+			const QPointF pt = t->transform(QPointF(x, y));
+			CHECK(pt.x() == Catch::Approx((x - 0.5) / 2.0).margin(1e-6));
+			CHECK(pt.y() == Catch::Approx((y - 0.5) / 2.0).margin(1e-6));
+		}
+	}
+}
+
+TEST_CASE("WCS transformation between different pixel scales", "[WCS][transformation]")
+{
+	// E.g. frames from two different telescopes: 2"/pixel onto 1"/pixel,
+	// sharing a tangent point, so the mapping is exactly linear.
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 10.0, 1.0);
+	const auto frame = makeWcs(150.0, 30.0, 700.0, 500.0, 10.0, 2.0);
+	const auto t = frame.transformationTo(ref, frameWidth, frameHeight);
+	REQUIRE(t.has_value());
+	for (const auto [x, y] : { std::pair{ 700.0, 500.0 }, std::pair{ 0.0, 0.0 }, std::pair{ 800.0, 450.0 } })
+	{
+		const QPointF pt = t->transform(QPointF(x, y));
+		CHECK(pt.x() == Catch::Approx(1500.0 + 2.0 * (x - 700.0)).margin(1e-6));
+		CHECK(pt.y() == Catch::Approx(1000.0 + 2.0 * (y - 500.0)).margin(1e-6));
+	}
+	CHECK(worstError(*t, frame, ref) < 1e-6);
+}
+
+TEST_CASE("WCS transformation across RA 0/360", "[WCS][transformation]")
+{
+	const auto ref = makeWcs(0.003, 30.0, 1500.0, 1000.0, 10.0);
+	// 40 pixels west of the reference pixel is west of RA 0.
+	const auto [ra, dec] = ref.pixelToWorld(1540.0, 1015.0);
+	REQUIRE(ra > 359.0);
+	const auto frame = makeWcs(ra, dec, 1500.0, 1000.0, 10.0);
+
+	const auto t = frame.transformationTo(ref, frameWidth, frameHeight);
+	REQUIRE(t.has_value());
+	const QPointF centre = t->transform(QPointF(1500.0, 1000.0));
+	CHECK(centre.x() == Catch::Approx(1540.0).margin(1e-3));
+	CHECK(centre.y() == Catch::Approx(1015.0).margin(1e-3));
+	CHECK(worstError(*t, frame, ref) < 0.01);
+
+	// And the other way round.
+	const auto back = ref.transformationTo(frame, frameWidth, frameHeight);
+	REQUIRE(back.has_value());
+	CHECK(worstError(*back, ref, frame) < 0.01);
+}
+
+TEST_CASE("WCS transformation for a field containing the pole", "[WCS][transformation]")
+{
+	// The frames are 0.83 x 0.56 degrees, so both contain the pole.
+	for (const double dec0 : { 89.9, -90.0 })
+	{
+		const auto ref = makeWcs(210.0, dec0, 1500.0, 1000.0, 37.0);
+		const auto [ra, dec] = ref.pixelToWorld(1560.0, 960.0);
+		const auto frame = makeWcs(ra, dec, 1480.0, 1015.0, 39.5);
+		const auto t = frame.transformationTo(ref, frameWidth, frameHeight);
+		REQUIRE(t.has_value());
+		CHECK(worstError(*t, frame, ref) < 0.01);
+	}
+}
+
+TEST_CASE("WCS transformation rejects nonsensical sizes and binning", "[WCS][transformation]")
+{
+	const auto ref = makeWcs(150.0, 30.0, 1500.0, 1000.0, 10.0);
+	CHECK_FALSE(ref.transformationTo(ref, frameWidth, 0).has_value());
+	CHECK_FALSE(ref.transformationTo(ref, -frameWidth, frameHeight).has_value());
+	CHECK_FALSE(ref.transformationTo(ref, frameWidth, -frameHeight).has_value());
+	CHECK_FALSE(ref.transformationTo(ref, frameWidth, frameHeight, -1).has_value());
+	CHECK_FALSE(ref.transformationTo(ref, frameWidth, frameHeight, 1, 0).has_value());
+	CHECK_FALSE(ref.transformationTo(ref, frameWidth, frameHeight, 1, -2).has_value());
 }
