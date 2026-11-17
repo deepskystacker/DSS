@@ -447,7 +447,7 @@ vrátil stav %2, text chyby je:
         <translation>Druhá HDU souboru %1 neobsahuje komprimovaný obraz.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="754"/>
+        <location filename="../FITSUtil.cpp" line="765"/>
         <source>fits_read_pixll returned a status of %1, error text is &quot;%2&quot;
 reading file %3.
 The file will not be processed.</source>
@@ -456,7 +456,7 @@ The file will not be processed.</source>
 Soubor nebude zpracován.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="823"/>
+        <location filename="../FITSUtil.cpp" line="834"/>
         <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
 Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
 settings will be used.</source>
@@ -465,13 +465,70 @@ Výchozí hodnoty DATAMIN = %L1 a DATAMAX = %L2 z FITS/DDP
 budou použita nastavení.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1051"/>
+        <location filename="../FITSUtil.cpp" line="1000"/>
+        <source>A pixel value in the FITS file:
+
+%1
+
+is outside the range [DATAMIN, DATAMAX],
+where DATAMIN = %L2 and DATAMAX = %L3.
+</source>
+        <translation>Hodnota pixelu v souboru FITS:
+
+%1
+
+je mimo rozsah [DATAMIN, DATAMAX],
+kde DATAMIN = %L2 a DATAMAX = %L3.
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1009"/>
+        <source>Minimum pixel value = %L4.
+Maximum pixel value = %L5.
+</source>
+        <translation>Minimální hodnota pixelu = %L4.
+Maximální hodnota pixelu = %L5.
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1016"/>
+        <source>Minimum pixel values = (%L4, %L5, %L6).
+Maximum pixel values = (%L7, %L8, %L9).
+</source>
+        <translation>Minimální hodnoty pixelů = (%L4, %L5, %L6).
+Maximální hodnoty pixelů = (%L7, %L8, %L9).
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1024"/>
+        <source>
+DATAMIN and DATAMAX were read from the FITS headers, so
+the file is not valid and cannot be processed.</source>
+        <translation>
+Hodnoty DATAMIN a DATAMAX byly načteny z hlaviček souboru FITS, takže
+soubor není platný a nelze jej zpracovat.</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1032"/>
+        <source>
+DATAMIN and DATAMAX were taken from the DDP settings, and
+the file cannot be processed with the current settings.
+
+You can change the DATAMIN and DATAMAX settings in the FITS tab of the DDP settings, and try again.</source>
+        <translation>
+Hodnoty DATAMIN a DATAMAX byly převzaty z nastavení DDP a
+soubor nelze zpracovat s aktuálním nastavením.
+
+Nastavení DATAMIN a DATAMAX můžete změnit na kartě FITS v nastavení DDP a zkusit to znovu.</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1201"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker nebude de-Bayer 8 bit obrázky</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1413"/>
+        <location filename="../FITSUtil.cpp" line="1563"/>
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -499,8 +556,8 @@ vrátil stav %2, text chyby je:
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="263"/>
-        <location filename="../FITSUtil.cpp" line="1106"/>
-        <location filename="../FITSUtil.cpp" line="1853"/>
+        <location filename="../FITSUtil.cpp" line="1256"/>
+        <location filename="../FITSUtil.cpp" line="2003"/>
         <location filename="../MultiBitmapProcess.cpp" line="229"/>
         <location filename="../StackingEngine.cpp" line="2385"/>
         <location filename="../TIFFUtil.cpp" line="1478"/>
@@ -514,8 +571,8 @@ vrátil stav %2, text chyby je:
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="273"/>
-        <location filename="../FITSUtil.cpp" line="1115"/>
-        <location filename="../FITSUtil.cpp" line="1862"/>
+        <location filename="../FITSUtil.cpp" line="1265"/>
+        <location filename="../FITSUtil.cpp" line="2012"/>
         <location filename="../MultiBitmapProcess.cpp" line="238"/>
         <location filename="../StackingEngine.cpp" line="2394"/>
         <location filename="../TIFFUtil.cpp" line="1487"/>
@@ -979,69 +1036,69 @@ vrátil stav %2, text chyby je:
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1122"/>
-        <location filename="../StackedBitmap.cpp" line="1237"/>
+        <location filename="../StackedBitmap.cpp" line="1123"/>
+        <location filename="../StackedBitmap.cpp" line="1238"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Načítání %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="510"/>
+        <location filename="../StackedBitmap.cpp" line="511"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>Zpracování obrazu...</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="751"/>
+        <location filename="../StackedBitmap.cpp" line="752"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>Ukládání TIFF %1 bit</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="754"/>
-        <location filename="../StackedBitmap.cpp" line="955"/>
+        <location filename="../StackedBitmap.cpp" line="755"/>
+        <location filename="../StackedBitmap.cpp" line="956"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Ukládání %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1005"/>
+        <location filename="../StackedBitmap.cpp" line="1006"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>Obraz byl uložen s použitím úprav.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1007"/>
+        <location filename="../StackedBitmap.cpp" line="1008"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Obraz byl uložen bez použití úprav.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="952"/>
+        <location filename="../StackedBitmap.cpp" line="953"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Ukládání FITS %1 bit</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1117"/>
+        <location filename="../StackedBitmap.cpp" line="1118"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>Načítání TIFF %1 bit jednobarevného</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1119"/>
+        <location filename="../StackedBitmap.cpp" line="1120"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>Načítání TIFF %1 bit/k</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1232"/>
+        <location filename="../StackedBitmap.cpp" line="1233"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>Načítání FITS %1 bit jednobarevný</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1234"/>
+        <location filename="../StackedBitmap.cpp" line="1235"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>Načítání FITS %1 bit/k</translation>
@@ -1278,25 +1335,25 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="317"/>
+        <location filename="../StackingTasks.cpp" line="336"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>Vytvoření základního snímku zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="342"/>
+        <location filename="../StackingTasks.cpp" line="361"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>Přidávání snímku zkreslení %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../StackingTasks.cpp" line="387"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>Výpočet základního zkreslení (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="387"/>
+        <location filename="../StackingTasks.cpp" line="406"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -1306,39 +1363,39 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../StackingTasks.cpp" line="413"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>Uložení základního snímku zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="481"/>
+        <location filename="../StackingTasks.cpp" line="500"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>Vytvoření základního snímku temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="516"/>
+        <location filename="../StackingTasks.cpp" line="535"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>Přidávání snímku temného pozadí %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
-        <location filename="../StackingTasks.cpp" line="716"/>
-        <location filename="../StackingTasks.cpp" line="1170"/>
+        <location filename="../StackingTasks.cpp" line="554"/>
+        <location filename="../StackingTasks.cpp" line="735"/>
+        <location filename="../StackingTasks.cpp" line="1189"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Odečítání snímku zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="560"/>
+        <location filename="../StackingTasks.cpp" line="579"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Výpočet základního temného pozadí (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="579"/>
+        <location filename="../StackingTasks.cpp" line="598"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -1348,7 +1405,7 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="763"/>
+        <location filename="../StackingTasks.cpp" line="782"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -1358,7 +1415,7 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1249"/>
+        <location filename="../StackingTasks.cpp" line="1268"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -1368,7 +1425,7 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="586"/>
+        <location filename="../StackingTasks.cpp" line="605"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Uložení základního snímku temného pozadí</translation>
@@ -1382,67 +1439,67 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="676"/>
+        <location filename="../StackingTasks.cpp" line="695"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Vytvoření základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="696"/>
+        <location filename="../StackingTasks.cpp" line="715"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Přidávání snímku vyrovnání temného pozadí %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="744"/>
+        <location filename="../StackingTasks.cpp" line="763"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Výpočet základního vyrovnání temného pozadí(%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="769"/>
+        <location filename="../StackingTasks.cpp" line="788"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Uložení základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="933"/>
+        <location filename="../StackingTasks.cpp" line="952"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Výpočet kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="985"/>
+        <location filename="../StackingTasks.cpp" line="1004"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Použití kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1102"/>
+        <location filename="../StackingTasks.cpp" line="1121"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Vytvoření základního snímku vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1152"/>
+        <location filename="../StackingTasks.cpp" line="1171"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Přidávání snímku vyrovnání jasu %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1180"/>
+        <location filename="../StackingTasks.cpp" line="1199"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Odečítání snímku temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1227"/>
+        <location filename="../StackingTasks.cpp" line="1246"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Výpočet základního vyrovnání jasu (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1255"/>
+        <location filename="../StackingTasks.cpp" line="1274"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Uložení základního snímku vyrovnání jasu</translation>

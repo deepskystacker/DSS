@@ -159,6 +159,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TimeStampTest.cpp" />
+    <ClCompile Include="WcsInfoTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AvxAccumulateTest.h" />

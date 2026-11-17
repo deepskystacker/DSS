@@ -447,7 +447,7 @@ a renvoyé un statut %2, le texte d&apos;erreur est :
         <translation>Le deuxième HDU du fichier %1 ne contient pas d&apos;image compressée.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="754"/>
+        <location filename="../FITSUtil.cpp" line="765"/>
         <source>fits_read_pixll returned a status of %1, error text is &quot;%2&quot;
 reading file %3.
 The file will not be processed.</source>
@@ -456,7 +456,7 @@ Lecture du fichier %3.
 Le fichier ne sera pas traité.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="823"/>
+        <location filename="../FITSUtil.cpp" line="834"/>
         <source>Failed to read DATAMIN and DATAMAX keywords from the FITS header.
 Default values of DATAMIN = %L1 and DATAMAX = %L2 from the FITS/DDP
 settings will be used.</source>
@@ -464,13 +464,70 @@ settings will be used.</source>
 Les valeurs par défaut DATAMIN = %L1 et DATAMAX = %L2 des paramètres FITS/DDP seront utilisées.</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1051"/>
+        <location filename="../FITSUtil.cpp" line="1000"/>
+        <source>A pixel value in the FITS file:
+
+%1
+
+is outside the range [DATAMIN, DATAMAX],
+where DATAMIN = %L2 and DATAMAX = %L3.
+</source>
+        <translation>Une valeur de pixel dans le fichier FITS :
+
+%1
+
+se situe en dehors de l&apos;intervalle [DATAMIN, DATAMAX],
+où DATAMIN = %L2 et DATAMAX = %L3.
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1009"/>
+        <source>Minimum pixel value = %L4.
+Maximum pixel value = %L5.
+</source>
+        <translation>Valeur minimale du pixel = %L4.
+Valeur maximale du pixel = %L5.
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1016"/>
+        <source>Minimum pixel values = (%L4, %L5, %L6).
+Maximum pixel values = (%L7, %L8, %L9).
+</source>
+        <translation>Valeurs minimales des pixels = (%L4, %L5, %L6).
+Valeurs maximales des pixels = (%L7, %L8, %L9).
+</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1024"/>
+        <source>
+DATAMIN and DATAMAX were read from the FITS headers, so
+the file is not valid and cannot be processed.</source>
+        <translation>
+Les valeurs DATAMIN et DATAMAX ont été lues à partir des en-têtes FITS ;
+le fichier n’est donc pas valide et ne peut pas être traité.</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1032"/>
+        <source>
+DATAMIN and DATAMAX were taken from the DDP settings, and
+the file cannot be processed with the current settings.
+
+You can change the DATAMIN and DATAMAX settings in the FITS tab of the DDP settings, and try again.</source>
+        <translation>
+Les valeurs DATAMIN et DATAMAX proviennent des paramètres DDP, et
+le fichier ne peut pas être traité avec les paramètres actuels.
+
+Vous pouvez modifier les paramètres DATAMIN et DATAMAX dans l’onglet FITS des paramètres DDP, puis réessayer.</translation>
+    </message>
+    <message>
+        <location filename="../FITSUtil.cpp" line="1201"/>
         <source>DeepSkyStacker will not de-Bayer 8 bit images</source>
         <comment>IDS_8BIT_FITS_NODEBAYER</comment>
         <translation>DeepSkyStacker ne de-Bayer images 8 bits</translation>
     </message>
     <message>
-        <location filename="../FITSUtil.cpp" line="1413"/>
+        <location filename="../FITSUtil.cpp" line="1563"/>
         <source>fits_create_diskfile %1
 returned a status of %2, error text is:
 &quot;%3&quot;</source>
@@ -498,8 +555,8 @@ a renvoyé un statut %2, le texte d&apos;erreur est :
     <name>Kernel</name>
     <message>
         <location filename="../BitmapExt.cpp" line="263"/>
-        <location filename="../FITSUtil.cpp" line="1106"/>
-        <location filename="../FITSUtil.cpp" line="1853"/>
+        <location filename="../FITSUtil.cpp" line="1256"/>
+        <location filename="../FITSUtil.cpp" line="2003"/>
         <location filename="../MultiBitmapProcess.cpp" line="229"/>
         <location filename="../StackingEngine.cpp" line="2385"/>
         <location filename="../TIFFUtil.cpp" line="1478"/>
@@ -513,8 +570,8 @@ a renvoyé un statut %2, le texte d&apos;erreur est :
     </message>
     <message>
         <location filename="../BitmapExt.cpp" line="273"/>
-        <location filename="../FITSUtil.cpp" line="1115"/>
-        <location filename="../FITSUtil.cpp" line="1862"/>
+        <location filename="../FITSUtil.cpp" line="1265"/>
+        <location filename="../FITSUtil.cpp" line="2012"/>
         <location filename="../MultiBitmapProcess.cpp" line="238"/>
         <location filename="../StackingEngine.cpp" line="2394"/>
         <location filename="../TIFFUtil.cpp" line="1487"/>
@@ -977,69 +1034,69 @@ a renvoyé un statut %2, le texte d&apos;erreur est :
 <context>
     <name>StackedBitmap</name>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1122"/>
-        <location filename="../StackedBitmap.cpp" line="1237"/>
+        <location filename="../StackedBitmap.cpp" line="1123"/>
+        <location filename="../StackedBitmap.cpp" line="1238"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Chargement de %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="510"/>
+        <location filename="../StackedBitmap.cpp" line="511"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>Traitement de l&apos;image en cours...</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="751"/>
+        <location filename="../StackedBitmap.cpp" line="752"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>Enregistrement en TIFF %1 bits</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="754"/>
-        <location filename="../StackedBitmap.cpp" line="955"/>
+        <location filename="../StackedBitmap.cpp" line="755"/>
+        <location filename="../StackedBitmap.cpp" line="956"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Enregistrement de %1</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1005"/>
+        <location filename="../StackedBitmap.cpp" line="1006"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
         <translation>Image enregistrée avec les ajustements appliqués.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1007"/>
+        <location filename="../StackedBitmap.cpp" line="1008"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Image enregistrée avec les ajustements inclus.</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="952"/>
+        <location filename="../StackedBitmap.cpp" line="953"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Enregistrement en FITS %1 bits</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1117"/>
+        <location filename="../StackedBitmap.cpp" line="1118"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>Chargement d&apos;un fichier TIFF %1 bits monochrome</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1119"/>
+        <location filename="../StackedBitmap.cpp" line="1120"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>Chargement d&apos;un fichier TIFF %1 bits/ch</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1232"/>
+        <location filename="../StackedBitmap.cpp" line="1233"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>Chargement d&apos;un fichier FITS %1 bits monochrome</translation>
     </message>
     <message>
-        <location filename="../StackedBitmap.cpp" line="1234"/>
+        <location filename="../StackedBitmap.cpp" line="1235"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>Chargement d&apos;un fichier FITS %1 bits/ch</translation>
@@ -1276,25 +1333,25 @@ et aider DeepSkyStacker à trouver une transformation entre l&apos;image de réf
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="317"/>
+        <location filename="../StackingTasks.cpp" line="336"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>Création de l&apos;image Master Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="342"/>
+        <location filename="../StackingTasks.cpp" line="361"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>Ajout de l&apos;image d&apos;offset %1 sur %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../StackingTasks.cpp" line="387"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>Calcul de l&apos;image du master offset (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="387"/>
+        <location filename="../StackingTasks.cpp" line="406"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -1303,39 +1360,39 @@ et aider DeepSkyStacker à trouver une transformation entre l&apos;image de réf
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../StackingTasks.cpp" line="413"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>Enregistrement du Master Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="481"/>
+        <location filename="../StackingTasks.cpp" line="500"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>Création de l&apos;image Master Dark</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="516"/>
+        <location filename="../StackingTasks.cpp" line="535"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>Ajout de l&apos;image de dark %1 sur %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
-        <location filename="../StackingTasks.cpp" line="716"/>
-        <location filename="../StackingTasks.cpp" line="1170"/>
+        <location filename="../StackingTasks.cpp" line="554"/>
+        <location filename="../StackingTasks.cpp" line="735"/>
+        <location filename="../StackingTasks.cpp" line="1189"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Soustraction du master offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="560"/>
+        <location filename="../StackingTasks.cpp" line="579"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Calcul de l&apos;image du master dark (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="579"/>
+        <location filename="../StackingTasks.cpp" line="598"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -1344,7 +1401,7 @@ et aider DeepSkyStacker à trouver une transformation entre l&apos;image de réf
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="763"/>
+        <location filename="../StackingTasks.cpp" line="782"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -1353,7 +1410,7 @@ et aider DeepSkyStacker à trouver une transformation entre l&apos;image de réf
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1249"/>
+        <location filename="../StackingTasks.cpp" line="1268"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -1362,7 +1419,7 @@ et aider DeepSkyStacker à trouver une transformation entre l&apos;image de réf
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="586"/>
+        <location filename="../StackingTasks.cpp" line="605"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Enregistrement du Master Dark</translation>
@@ -1376,67 +1433,67 @@ et aider DeepSkyStacker à trouver une transformation entre l&apos;image de réf
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="676"/>
+        <location filename="../StackingTasks.cpp" line="695"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Création du Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="696"/>
+        <location filename="../StackingTasks.cpp" line="715"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Ajout de l&apos;image de dark flat %1 sur %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="744"/>
+        <location filename="../StackingTasks.cpp" line="763"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Calcul de l&apos;image du master dark flat (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="769"/>
+        <location filename="../StackingTasks.cpp" line="788"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Enregistrement du Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="933"/>
+        <location filename="../StackingTasks.cpp" line="952"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Calcul des paramètres de calibration du flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="985"/>
+        <location filename="../StackingTasks.cpp" line="1004"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Application des paramètres de calibration du flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1102"/>
+        <location filename="../StackingTasks.cpp" line="1121"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Creation de l&apos;image Master Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1152"/>
+        <location filename="../StackingTasks.cpp" line="1171"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Ajout de l&apos;image de flat %1 sur %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1180"/>
+        <location filename="../StackingTasks.cpp" line="1199"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Soustraction du master dark</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1227"/>
+        <location filename="../StackingTasks.cpp" line="1246"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Calcul de l&apos;image du master flat (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1255"/>
+        <location filename="../StackingTasks.cpp" line="1274"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Enregistrement du Master Flat</translation>

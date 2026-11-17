@@ -523,9 +523,12 @@ bool CTIFFReader::Read()
 
 	std::atomic_bool stop { false };
 
+	//
+	// Lambda to normalize the data values to the range [0, 255] for floating point images.
+	//
 	const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
 	{
-		constexpr double scaleFactor = (1.0 + std::numeric_limits<std::uint16_t>::max()) / 256.0;
+		constexpr double scaleFactor = 255.0;
 		const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
 		return (static_cast<double>(value) - sampleMin) * normalizationFactor;
 	};

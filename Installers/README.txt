@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 6.2.3 Beta 3
+Welcome to DeepSkyStacker 6.2.3 Beta 4
 ===============================
 
 Reporting problems:
@@ -14,7 +14,7 @@ Known problems:
    custom edit control for the table cell.
    This is considered a LOW priority issue - if anyone wants to develop code to do this a pull request will be considered.
 
-Changes for DeepSkyStacker 6.2.3 Beta 3
+Changes for DeepSkyStacker 6.2.3 Beta 4
 ================================
 
 1.  Bug fix: MasterDark and MasterDarkFlat files were written without the TIFF EXIF Exposure tag, and the code that
@@ -34,6 +34,19 @@ Changes for DeepSkyStacker 6.2.3 Beta 3
 3.  Bug fix: If a file list file in the Most Recently Used list of file lists is on a drive that isn't "ready", a
     std::filesystem::filesystem_error exception was thrown when checking the file status.  This terminated DeepSkyStacker.
     The code was changed to avoid raising an exception.    Inaccessible file list entries will be removed from the MRU list.
+
+4.  If a floating point FITS file is being read and the data values read are outside the range [DATAMIN, DATAMAX] 
+    specified in the FITS header or defaulted from the FITS/DDP settings, issue an warning reporting the data range in
+    use and the actual out of range pixel values and stop processing the file.
+
+5.  Bug fix: Correction to handling of data in FITS files with signed integer data.   For example, when reading a FITS
+    file with two byte signed integer data, the values need to be adjusted from a range of [-32768, 32767] to a range
+    of [0, 65535] prior to scaling to the range used internally by DeepSkyStacker of [0.0, 255.0]
+
+6.  Change the default for the use of WCS data in FITS light frames to false.  This was done as some applications use
+    stale WCS data from the last frame that they plate solved, which is no good for accurate image alignment.
+
+7.  Bug fix: Claude Code assisted fixes to the WCS code as it was neither complete, nor correct.
 
 Changes for DeepSkyStacker 6.2.2
 ================================

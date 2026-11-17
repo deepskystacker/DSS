@@ -235,7 +235,6 @@ bool CFITSReader::Open()
 
 	}
 
-
 	if (m_fits)
 	{
 		ZTRACE_RUNTIME("Opened %s", file.generic_u8string().c_str());
@@ -305,7 +304,6 @@ bool CFITSReader::Open()
 			bResult = ReadKey("NAXIS2", lHeight);
 			if (lNrAxis >= 3)
 				bResult = ReadKey("NAXIS3", lNrChannels);
-			bResult = ReadKey("BITPIX", m_bitPix);
 		}
 		else
 		{
@@ -313,7 +311,26 @@ bool CFITSReader::Open()
 			bResult = ReadKey("ZNAXIS2", lHeight);
 			if (lNrAxis >= 3)
 				bResult = ReadKey("ZNAXIS3", lNrChannels);
-			bResult = ReadKey("ZBITPIX", m_bitPix);
+		}
+
+		//
+		// Get the "equivalent" image type rather than the value of BITPIX.
+		//
+		// FITS has no unsigned integer types: unsigned 16 bit data is stored
+		// as signed 16 bit (BITPIX = 16) with BZERO = 32768, and similarly for
+		// the other sizes.  cfitsio applies BSCALE and BZERO when we read the
+		// pixels, so what we get for such a file is already in the range
+		// [0, 65535], and it must NOT be shifted again as truly signed data
+		// (BITPIX = 16, BZERO = 0) needs to be.
+		//
+		// fits_get_img_equivtype() takes BSCALE and BZERO into account and so
+		// reports USHORT_IMG for that case and SHORT_IMG only for data that
+		// really is signed.  It also handles compressed images (ZBITPIX).
+		//
+		{
+			int typeStatus = 0;
+			fits_get_img_equivtype(m_fits, &m_bitPix, &typeStatus);
+			bResult = (0 == typeStatus);
 		}
 
 
@@ -333,8 +350,8 @@ bool CFITSReader::Open()
 
 			if (!strComment.isEmpty())
 			{
-				if ((strComment.indexOf("in seconds")<0) &&
-					((strComment.indexOf("ms")>0) || (fExposureTime>3600)))
+				if ((strComment.indexOf("in seconds") < 0) &&
+					((strComment.indexOf("ms") > 0) || (fExposureTime > 3600)))
 				{
 					// Exposure time is most certainly in ms
 					fExposureTime /= 1000.0;
@@ -385,7 +402,7 @@ bool CFITSReader::Open()
 			// One time action to create a mapping between the character name of the CFA
 			// pattern and our internal CFA type 
 			// 
-			static std::map<QString, CFATYPE> bayerMap {
+			static std::map<QString, CFATYPE> bayerMap{
 				{ "BGGR", CFATYPE_BGGR },
 				{ "GRBG", CFATYPE_GRBG },
 				{ "GBRG", CFATYPE_GBRG },
@@ -452,7 +469,7 @@ bool CFITSReader::Open()
 				CFAPattern = CFAPattern.trimmed();
 				if (CFAPattern == "CMYG")
 					m_CFAType = CFATYPE_CYGMCYMG;
-			} 
+			}
 			//
 			// For everything else we attempt to use the BAYERPAT or COLORTYP keywords to establish
 			// the correct CFA (Bayer) pattern.
@@ -548,61 +565,84 @@ bool CFITSReader::Open()
 			};
 
 			//
+			// Read the name of the software that wrote for file for later use.
+			// 
+			if (ReadKey("SOFTWARE", software_) ||
+				ReadKey("PROGRAM", software_) ||
+				ReadKey("CREATOR", software_) ||
+				ReadKey("SWCREATE", software_))
+			{
+				wcsInfo.creator = software_;
+			}
+
+			//
 			// Populate the WCSInfo structure with the WCS information from the FITS header, if present.
 			//
-			ReadKey("CRPIX1", wcsInfo.crpix1);
-			ReadKey("CRPIX2", wcsInfo.crpix2);
-			ReadKey("CRVAL1", wcsInfo.crval1);
-			ReadKey("CRVAL2", wcsInfo.crval2);
-
-			bool have_CD = 
-				ReadKey("CD1_1", wcsInfo.cd11) &&
-				ReadKey("CD1_2", wcsInfo.cd12) && 
-				ReadKey("CD2_1", wcsInfo.cd21) && 
-				ReadKey("CD2_2", wcsInfo.cd22);
-
-			if (have_CD)
-			{
-				ZTRACE_RUNTIME("CD matrix found in FITS header, using that to populate WCS information.");
-				wcsInfo.ok = true;
-			}
-			// If we don't have CD matrix elements, try to get CDELT and PCn values and
-			// calculate the CD matrix from those.
-			else
-			{
-				double cdelt1 = 0., cdelt2 = 0.;
-				if (ReadKey("CDELT1", cdelt1) && ReadKey("CDELT2", cdelt2))
+			// Every keyword is read independently (no short-circuiting) and
+			// absent ones are left unset, because the defaults the FITS
+			// standard defines for them depend on which others are present.
+			// WCSInfo::setFromKeywords() applies those rules and derives the
+			// CD matrix from CDELT + PC or CDELT + CROTA2 if necessary.
+			//
+			const auto readDouble = [this](const char* key) -> std::optional<double>
 				{
-					double pc11 = 0, pc12 = 0, pc21 = 0, pc22 = 0;
-					bool have_PC =
-						ReadKey("PC1_1", pc11) &&
-						ReadKey("PC1_2", pc12) &&
-						ReadKey("PC2_1", pc21) &&
-						ReadKey("PC2_2", pc22);
+					double value = 0.0;
+					if (ReadKey(key, value))
+						return value;
+					return std::nullopt;
+				};
 
-					if (have_PC)
-					{
-						ZTRACE_RUNTIME("CD matrix not found in FITS header, but CDELT and PC matrix elements found, using those to calculate CD matrix.");
-						// CD_i_j = PC_i_j * CDELT_j
-						wcsInfo.cd11 = pc11 * cdelt1;
-						wcsInfo.cd12 = pc12 * cdelt2;
-						wcsInfo.cd21 = pc21 * cdelt1;
-						wcsInfo.cd22 = pc22 * cdelt2;
-						wcsInfo.ok = true;
-					}	
-				}
-			}
-			if (wcsInfo.ok)
+			WCSKeywords wcsKeys;
+			wcsKeys.crpix1 = readDouble("CRPIX1");
+			wcsKeys.crpix2 = readDouble("CRPIX2");
+			wcsKeys.crval1 = readDouble("CRVAL1");
+			wcsKeys.crval2 = readDouble("CRVAL2");
+			wcsKeys.cd11 = readDouble("CD1_1");
+			wcsKeys.cd12 = readDouble("CD1_2");
+			wcsKeys.cd21 = readDouble("CD2_1");
+			wcsKeys.cd22 = readDouble("CD2_2");
+			wcsKeys.cdelt1 = readDouble("CDELT1");
+			wcsKeys.cdelt2 = readDouble("CDELT2");
+			wcsKeys.pc11 = readDouble("PC1_1");
+			wcsKeys.pc12 = readDouble("PC1_2");
+			wcsKeys.pc21 = readDouble("PC2_1");
+			wcsKeys.pc22 = readDouble("PC2_2");
+			wcsKeys.crota2 = readDouble("CROTA2");
+			ReadKey("CTYPE1", wcsKeys.ctype1);
+			ReadKey("CTYPE2", wcsKeys.ctype2);
+			ReadKey("CUNIT1", wcsKeys.cunit1);
+			ReadKey("CUNIT2", wcsKeys.cunit2);
+
+			if (wcsInfo.setFromKeywords(wcsKeys))
 			{
+				switch (wcsInfo.matrixSource)
+				{
+				case WCSInfo::MatrixSource::CD:
+					ZTRACE_RUNTIME("CD matrix found in FITS header, using that to populate WCS information.");
+					break;
+				case WCSInfo::MatrixSource::CdeltPC:
+					ZTRACE_RUNTIME("CD matrix not found in FITS header, calculated it from CDELT and PC matrix elements.");
+					break;
+				case WCSInfo::MatrixSource::CdeltCrota:
+					ZTRACE_RUNTIME("CD matrix not found in FITS header, calculated it from CDELT and CROTA2.");
+					break;
+				default:
+					break;
+				}
+				// %.10g because the CD values are of the order of 1e-4.
 				ZTRACE_RUNTIME("WCS information found in FITS header:\n"
-					"CRPIX1=%lf, CRPIX2=%lf, CRVAL1=%lf, CRVAL2=%lf\n"
-					"CD11=%lf, CD12=%lf, CD21=%lf, CD22=%lf",
+					"CRPIX1=%.10g, CRPIX2=%.10g, CRVAL1=%.10g, CRVAL2=%.10g\n"
+					"CD11=%.10g, CD12=%.10g, CD21=%.10g, CD22=%.10g",
 					wcsInfo.crpix1, wcsInfo.crpix2, wcsInfo.crval1, wcsInfo.crval2,
 					wcsInfo.cd11, wcsInfo.cd12, wcsInfo.cd21, wcsInfo.cd22);
+
+				// From here on the WCS information must refer to the pixels of
+				// the bitmap as we load it, not as they are stored in the file.
+				wcsInfo.toBitmapCoordinates(lHeight, bottomUp);
 			}
 			else
 			{
-				ZTRACE_RUNTIME("WCS information in FITS header was either not found or incomplete.");
+				ZTRACE_RUNTIME("WCS information in FITS header was not found, incomplete, or not an RA/Dec TAN projection.");
 			}
 
 			if (bResult)
@@ -617,6 +657,9 @@ bool CFITSReader::Open()
 				m_bSigned = false;
 				switch (m_bitPix)
 				{
+				case SBYTE_IMG :
+					m_bSigned = true;  // Fall through intentional
+					[[fallthrough]];
 				case BYTE_IMG :
 					m_lBitsPerPixel = 8;
 					m_bFloat = false;
@@ -644,6 +687,9 @@ bool CFITSReader::Open()
 					m_bFloat = true;
 					break;
 				case LONGLONG_IMG :
+					m_bSigned = true; // Fall through intentional
+					[[fallthrough]];
+				case ULONGLONG_IMG :
 					m_lBitsPerPixel = 64;
 					m_bFloat = false;
 					break;
@@ -695,8 +741,20 @@ bool CFITSReader::Open()
 
 bool CFITSReader::Read()
 {
-	constexpr double ScaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
-	constexpr double ScaleFactorInt32 = ScaleFactorInt16 * (1.0 + std::numeric_limits<std::uint16_t>::max());
+	//
+	// The shift values are used to convert the signed values read from the FITS file into an unsigned value
+	//
+	constexpr double ShiftValueInt8 = -static_cast<double>(std::numeric_limits<std::int8_t>::min());
+	constexpr double ShiftValueInt16 = -static_cast<double>(std::numeric_limits<std::int16_t>::min());
+	constexpr double ShiftValueInt32 = -static_cast<double>(std::numeric_limits<std::int32_t>::min());
+	constexpr double ShiftValueInt64 = -static_cast<double>(std::numeric_limits<std::int64_t>::min());
+	//
+	// The scale factors are used to convert the values read from the FITS file into a number in the
+	// range of [0.0, 255.0].   The previous values gave incorrect results.
+	//
+	constexpr double ScaleFactorInt16 = static_cast<double>(std::numeric_limits<std::uint16_t>::max()) / 255.0;
+	constexpr double ScaleFactorInt32 = static_cast<double>(std::numeric_limits<std::uint32_t>::max()) / 255.0;
+	constexpr double ScaleFactorInt64 = static_cast<double>(std::numeric_limits<std::uint64_t>::max()) / 255.0;
 
 	ZFUNCTRACE_RUNTIME();
 	bool result = true;
@@ -769,12 +827,11 @@ bool CFITSReader::Read()
 		//
 		double dataMin = 0.0;
 		double dataMax = 1.0;
-		QString software;
 
 		//
 		// Was this FITS file written by DeepSkyStacker?
 		// 
-		const bool isDSSFITS { (ReadKey("SOFTWARE", software) && software.startsWith("DeepSkyStacker")) };
+		const bool isDSSFITS { software_.startsWith("DeepSkyStacker") };
 
 		//
 		// Special case the Meade DSI files:
@@ -832,11 +889,12 @@ bool CFITSReader::Read()
 		}
 
 		//
-		// Lambda to normalize the data values to the range [0, 255.996...] for floating point images.
+		// Lambda to normalize the data values to the range [0, 255] for floating point images.
 		//
 		const auto normalizeFloatValue = [dataMin, dataMax](const double value) -> double
 			{
-				constexpr double scaleFactor = static_cast<double>(std::numeric_limits<std::uint16_t>::max()) / 256.0;
+				// Same full-scale value (255.0) as the integer cases.
+				constexpr double scaleFactor = 255.0;
 				const double normalizationFactor = scaleFactor / (dataMax - dataMin);
 				return (value - dataMin) * normalizationFactor;
 			};
@@ -851,10 +909,52 @@ bool CFITSReader::Read()
 		// 
 		// Process the data we loaded from the FITS file
 		//
+		//
+		// Track the range of the floating point values read.  OpenMP min/max reductions
+		// aren't available with /openmp:experimental, so each row accumulates its own
+		// range in locals and merges it into these atomics once, when the row is done.
+		//
+		std::atomic<double> atomicRedMin, atomicRedMax;
+		std::atomic<double> atomicGreenMin, atomicGreenMax;
+		std::atomic<double> atomicBlueMin, atomicBlueMax;
+		if (1 == colours)
+		{
+			atomicRedMin = atomicRedMax = atomicGreenMin = atomicGreenMax = atomicBlueMin = atomicBlueMax = doubleBuff[0];
+		}
+		else
+		{
+			atomicRedMin = atomicRedMax = doubleBuff[0];
+			atomicGreenMin = atomicGreenMax = doubleBuff[greenOffset];
+			atomicBlueMin = atomicBlueMax = doubleBuff[blueOffset];
+		}
+
+		//
+		// Lower (raise) the atomic to value if value is smaller (larger).
+		// std::atomic<double> has no fetch_min/fetch_max, so use a CAS loop;
+		// compare_exchange_weak reloads current on failure.
+		//
+		const auto atomicMin = [](std::atomic<double>& target, const double value)
+			{
+				double current = target.load();
+				while (value < current && !target.compare_exchange_weak(current, value))
+					;
+			};
+		const auto atomicMax = [](std::atomic<double>& target, const double value)
+			{
+				double current = target.load();
+				while (value > current && !target.compare_exchange_weak(current, value))
+					;
+			};
+
 #pragma omp parallel for default(shared) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
 			if (stop.load()) continue; // This is the only way we can "escape" from OPENMP loops. An early break is impossible.
+
+			// Infinities are the identity for min/max, so an unused row merges nothing.
+			constexpr double infinity = std::numeric_limits<double>::infinity();
+			double rowRedMin = infinity, rowGreenMin = infinity, rowBlueMin = infinity;
+			double rowRedMax = -infinity, rowGreenMax = -infinity, rowBlueMax = -infinity;
 
 			for (int col = 0; col < m_lWidth; ++col)
 			{
@@ -882,27 +982,81 @@ bool CFITSReader::Read()
 
 				switch (m_bitPix)
 				{
+				case SBYTE_IMG:
+					//
+					// Data values in the FITS file are signed 8 bit integers.
+					// Shift them by 128 so that the range is [0, 255] instead
+					// of [-128, 127].
+					//
+					red += ShiftValueInt8;
+					green += ShiftValueInt8;
+					blue += ShiftValueInt8;
+					[[fallthrough]];
 				case BYTE_IMG:
 					break;
 				case SHORT_IMG:
+					//
+					// Data values in the FITS file are signed 16 bit integers.
+					// Prior to scaling the values, shift them by 32768 so that
+					// the range is [0, 65535] instead of [-32768, 32767].
+					//
+					red += ShiftValueInt16;
+					green += ShiftValueInt16;
+					blue += ShiftValueInt16;
+					[[fallthrough]];
 				case USHORT_IMG:
+					//
+					// Scale the values to the range [0, 255]
+					//
 					red /= ScaleFactorInt16;
 					green /= ScaleFactorInt16;
 					blue /= ScaleFactorInt16;
 					break;
 				case LONG_IMG:
+					//
+					// Data values in the FITS file are signed 32 bit integers.
+					// Prior to scaling the values, shift them by 2147483648 so that
+					// the range is [0, 4294967295] instead of [-2147483648, 2147483647].
+					//
+					red += ShiftValueInt32;
+					green += ShiftValueInt32;
+					blue += ShiftValueInt32;
+					[[fallthrough]];
 				case ULONG_IMG:
+					//
+					// Scale the values to the range [0, 255]
+					//
 					red /= ScaleFactorInt32;
 					green /= ScaleFactorInt32;
 					blue /= ScaleFactorInt32;
 					break;
 				case LONGLONG_IMG:
-					red /= ScaleFactorInt32;
-					green /= ScaleFactorInt32;
-					blue /= ScaleFactorInt32;
+					//
+					// Data values in the FITS file are signed 64 bit integers.
+					// Prior to scaling the values, shift them by 9223372036854775808 so that
+					// the range is [0, 18446744073709551615] instead of [-9223372036854775808, 9223372036854775807].
+					//
+					red += ShiftValueInt64;
+					green += ShiftValueInt64;
+					blue += ShiftValueInt64;
+					[[fallthrough]];
+				case ULONGLONG_IMG:
+					//
+					// Scale the values to the range [0, 255]
+					//
+					red /= ScaleFactorInt64;
+					green /= ScaleFactorInt64;
+					blue /= ScaleFactorInt64;
 					break;
 				case FLOAT_IMG:
 				case DOUBLE_IMG:
+					rowRedMin = std::min(rowRedMin, red);
+					rowRedMax = std::max(rowRedMax, red);
+					rowGreenMin = std::min(rowGreenMin, green);
+					rowGreenMax = std::max(rowGreenMax, green);
+					rowBlueMin = std::min(rowBlueMin, blue);
+					rowBlueMax = std::max(rowBlueMax, blue);
+
 					red = normalizeFloatValue(red);
 					green = normalizeFloatValue(green);
 					blue = normalizeFloatValue(blue);
@@ -918,8 +1072,101 @@ bool CFITSReader::Read()
 				}
 			}
 
+			atomicMin(atomicRedMin, rowRedMin);
+			atomicMax(atomicRedMax, rowRedMax);
+			atomicMin(atomicGreenMin, rowGreenMin);
+			atomicMax(atomicGreenMax, rowGreenMax);
+			atomicMin(atomicBlueMin, rowBlueMin);
+			atomicMax(atomicBlueMax, rowBlueMax);
+
 			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
 				m_pProgress->Progress2(row);
+		}
+		const double redMin = atomicRedMin.load(), redMax = atomicRedMax.load();
+		const double greenMin = atomicGreenMin.load(), greenMax = atomicGreenMax.load();
+		const double blueMin = atomicBlueMin.load(), blueMax = atomicBlueMax.load();
+		if (m_bitPix == FLOAT_IMG || m_bitPix == DOUBLE_IMG)
+		{
+			//
+			// If any of the values are outside the range [dataMin, dataMax], then we have a problem with the data range.
+			//
+			if (redMin   < dataMin || redMax   > dataMax ||
+				greenMin < dataMin || greenMax > dataMax ||
+				blueMin  < dataMin || blueMax  > dataMax)
+			{
+				QString errorMessage = QCoreApplication::translate("FITSUtil",
+					"A pixel value in the FITS file:\n\n"
+					"%1\n\n"
+					"is outside the range [DATAMIN, DATAMAX],\n"
+					"where DATAMIN = %L2 and DATAMAX = %L3.\n"
+
+				);
+				if (1 == colours)
+				{
+					errorMessage += QCoreApplication::translate("FITSUtil",
+						"Minimum pixel value = %L4.\n"
+						"Maximum pixel value = %L5.\n"
+					);
+				}
+				else
+				{
+					errorMessage += QCoreApplication::translate("FITSUtil",
+						"Minimum pixel values = (%L4, %L5, %L6).\n"
+						"Maximum pixel values = (%L7, %L8, %L9).\n"
+					);
+
+				}
+				if (minMaxRead)
+				{
+					errorMessage += QCoreApplication::translate("FITSUtil",
+						"\n"
+						"DATAMIN and DATAMAX were read from the FITS headers, so\n"
+						"the file is not valid and cannot be processed."
+					);
+				}
+				else
+				{
+					errorMessage += QCoreApplication::translate("FITSUtil",
+						"\n"
+						"DATAMIN and DATAMAX were taken from the DDP settings, and\n"
+						"the file cannot be processed with the current settings.\n\n"
+						"You can change the DATAMIN and DATAMAX settings in the FITS tab of the DDP settings, and try again."
+					);
+				}
+
+				if (1 == colours)
+				{
+					DSSBase::instance()->reportError(
+						errorMessage
+						.arg(file.generic_u16string().c_str())
+						.arg(dataMin, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(dataMax, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(redMin, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(redMax, 0, 'f', QLocale::FloatingPointShortest),
+						"FITSDataRange",
+						DSSBase::Severity::Warning,
+						DSSBase::Method::QMessageBox);
+				}
+				else
+				{
+					DSSBase::instance()->reportError(
+						errorMessage
+						.arg(file.generic_u16string().c_str())
+						.arg(dataMin, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(dataMax, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(redMin, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(greenMin, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(blueMin, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(redMax, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(greenMax, 0, 'f', QLocale::FloatingPointShortest)
+						.arg(blueMax, 0, 'f', QLocale::FloatingPointShortest),
+						"FITSDataRange",
+						DSSBase::Severity::Warning,
+						DSSBase::Method::QMessageBox);
+				}
+
+				result = false;
+			}
 		}
 		if (m_pProgress)
 			m_pProgress->End2();
