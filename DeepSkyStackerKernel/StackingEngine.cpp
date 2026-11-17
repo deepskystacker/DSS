@@ -1962,7 +1962,7 @@ std::pair<bool, FutureType> CStackingEngine::StackLightFrame(
 			else if ((pTaskInfo->m_Method != MBP_ENTROPYAVERAGE) && static_cast<bool>(m_pMasterLight) && static_cast<bool>(StackTask.m_pTempBitmap))
 			{
 				if (futureForWrite.valid())
-					futureForWrite.get();
+					std::ignore = futureForWrite.get();
 				const auto writeTask = [masterLight = this->m_pMasterLight](std::shared_ptr<CMemoryBitmap> tempBitmap) -> bool {
 					return masterLight->AddBitmap(tempBitmap.get(), nullptr);
 				};
@@ -2347,7 +2347,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						}
 					}
 					if (futureForWriteTempFile.valid())
-						futureForWriteTempFile.get(); // Wait for last temp file to be written.
+						std::ignore = futureForWriteTempFile.get(); // Wait for last temp file to be written.
 					pStackingInfo->m_pLightTask->m_bDone = true;
 					bEnd = bStop;
 				}
