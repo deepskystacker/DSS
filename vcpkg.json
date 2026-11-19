@@ -31,43 +31,43 @@
   "overrides": [
     {
       "name": "boost-align",
-      "version": "1.89.0"
+      "version": "1.92.0"
     },
     {
       "name": "boost-atomic",
-      "version": "1.89.0"
+      "version": "1.92.0"
     },
     {
       "name": "boost-container",
-      "version": "1.89.0"
+      "version": "1.92.0"
     },
     {
       "name": "boost-interprocess",
-      "version": "1.89.0"
+      "version": "1.92.0"
     },
     {
       "name": "exiv2",
-      "version": "0.28.7#1"
+      "version": "0.28.9"
     },
     {
       "name": "expat",
-      "version": "2.7.3"
+      "version": "2.9.0"
     },
     {
       "name": "freeglut",
-      "version": "3.6.0#1"
+      "version": "3.8.0"
     },
     {
       "name": "libraw",
-      "version": "0.22.0"
+      "version": "0.22.3"
     },
     {
       "name": "tiff",
-      "version": "4.7.1"
+      "version": "4.7.2"
     },
     {
       "name": "zlib",
-      "version": "1.3.1"
+      "version": "1.3.2"
     }
   ]
 }
