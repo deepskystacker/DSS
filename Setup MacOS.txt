@@ -3,18 +3,19 @@
 # line tools by running:
 # 
 xcode-select --install
+
 #
 # Install CMake by downloading https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-macos-universal.dmg
 # and copy the app file from the .dmg file to "Applications", then open terminal window or ssh session and run:
 #
-curl -OL https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-macos-universal.dmg
+curl -OL https://github.com/Kitware/CMake/releases/download/v4.5.0/cmake-4.5.0-macos-universal.dmg
 sudo "/Applications/CMake.app/Contents/bin/cmake-gui" --install
 
 #
 # Install Ninja
 #
 cd /usr/local/bin
-sudo curl -LO https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-mac.zip
+sudo curl -LO https://github.com/ninja-build/ninja/releases/download/v1.13.2/ninja-mac.zip
 sudo unzip ninja-mac.zip
 sudo rm -f ninja-mac.zip
 
@@ -25,11 +26,11 @@ sudo rm -f ninja-mac.zip
 # Download and install openmp stuff for use with XCode
 #
 cd ~/Downloads
-curl -O https://mac.r-project.org/openmp/openmp-19.1.0-darwin20-Release.tar.gz
-sudo tar -zxvf openmp-19.1.0-darwin20-Release.tar.gz -C /
+curl -O https://mac.r-project.org/openmp/openmp-19.1.5-darwin20-Release.tar.gz
+sudo tar -zxvf openmp-19.1.5-darwin20-Release.tar.gz -C /
 
 #
-# Install Qt 6.9.1
+# Install Qt 6.10.0
 #
 cd ~/Downloads
 curl -O https://download.qt.io/official_releases/online_installers/qt-online-installer-mac-x64-online.dmg
@@ -39,7 +40,7 @@ curl -O https://download.qt.io/official_releases/online_installers/qt-online-ins
 # 
 # Make sure you install QtCharts and QtWebEngine (under Extensions).
 #
-# To install 6.9.1 you may need to opt to show Archive items
+# To install 6.10.0 you may need to opt to show Archive items
 #
 
 #
