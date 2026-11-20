@@ -340,6 +340,8 @@ namespace DSS
 						StackingInfo.m_pDarkFlatTask->m_bDone = false;
 					if (StackingInfo.m_pOffsetTask)
 						StackingInfo.m_pOffsetTask->m_bDone = false;
+					if (StackingInfo.m_pFlatOffsetTask)
+						StackingInfo.m_pFlatOffsetTask->m_bDone = false;
 					if (StackingInfo.m_pDarkTask)
 						StackingInfo.m_pDarkTask->m_bDone = false;
 					if (StackingInfo.m_pFlatTask)

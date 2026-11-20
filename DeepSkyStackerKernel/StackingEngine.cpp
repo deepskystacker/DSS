@@ -2921,6 +2921,41 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 				stream << QCoreApplication::translate("StackRecap", "-> No Dark", "IDS_RECAP_NODARK");
 			}
 
+			// The flat and dark flat are calibrated with their own bias if it
+			// is not the one used for the lights (different ISO/gain).
+			if (si.m_pFlatOffsetTask && si.m_pFlatOffsetTask != si.m_pOffsetTask)
+			{
+				const CTaskInfo& flatReference = si.m_pFlatTask ? *si.m_pFlatTask : *si.m_pDarkFlatTask;
+
+				strExposure = exposureToString(si.m_pFlatOffsetTask->m_fExposure);
+				GetISOGainStrings(si.m_pFlatOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+
+				stream << QCoreApplication::translate("StackRecap", "-> Flat Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_FLATOFFSET")
+							.arg(si.m_pFlatOffsetTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+
+				if (si.m_pFlatOffsetTask->m_vBitmaps.size()>1)
+				{
+					FormatFromMethod(strTempText, si.m_pFlatOffsetTask->m_Method, si.m_pFlatOffsetTask->m_fKappa, si.m_pFlatOffsetTask->m_lNrIterations);
+					stream << "<ul>" << QCoreApplication::translate("StackRecap", "Method: ", "IDS_RECAP_METHOD") << strTempText << "</ul>";
+				}
+				else
+					stream << "<br>";
+
+				if (si.m_pFlatOffsetTask->HasISOSpeed())
+				{
+					if (si.m_pFlatOffsetTask->m_lISOSpeed != flatReference.m_lISOSpeed)
+						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
+				}
+				else
+				{
+					if (si.m_pFlatOffsetTask->m_lGain != flatReference.m_lGain)
+						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
+				}
+			}
+
 			if (si.m_pDarkFlatTask && si.m_pFlatTask)
 			{
 				strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
@@ -2977,16 +3012,8 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 					stream << strTempText << "</ul>";
 				}
 
-				if (si.m_pFlatTask->HasISOSpeed())
-				{
-					if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-						stream << QCoreApplication::translate("StackRecap", "Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-				}
-				else
-				{
-					if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
-						stream << QCoreApplication::translate("StackRecap", "Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-				}
+				// No ISO/gain check against the lights: flats (and their
+				// bias) may legitimately be taken at a different ISO/gain.
 				stream << "</ul>";
 			}
 			else
@@ -3036,6 +3063,17 @@ void CStackingEngine::WriteDescription(CAllStackingTasks& tasks, const fs::path&
 					for (size_t j = 0; j < si.m_pDarkTask->m_vBitmaps.size(); j++)
 					{
 						stream << si.m_pDarkTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
+					}
+				}
+
+				if (si.m_pFlatOffsetTask && si.m_pFlatOffsetTask != si.m_pOffsetTask && si.m_pFlatOffsetTask->m_vBitmaps.size())
+				{
+					stream << "<b>" << QCoreApplication::translate("DSS::Group", "Flat Bias/Offset", "IDS_TYPE_FLATOFFSET") << "</b><br>\n";
+					if (si.m_pFlatOffsetTask->m_strOutputFile != si.m_pFlatOffsetTask->m_vBitmaps[0].filePath)
+						stream << QCoreApplication::translate("DSS::Group", "Master Offset", "IDS_TYPE_MASTEROFFSET") << " -> " << si.m_pFlatOffsetTask->m_strOutputFile.string().c_str() << "<br>";
+					for (size_t j = 0; j < si.m_pFlatOffsetTask->m_vBitmaps.size(); j++)
+					{
+						stream << si.m_pFlatOffsetTask->m_vBitmaps[j].filePath.string().c_str() << "<br>";
 					}
 				}
 

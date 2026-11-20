@@ -146,6 +146,11 @@ public :
 	CTaskInfo *			m_pFlatTask;
 	CTaskInfo *			m_pLightTask;
 	CTaskInfo *			m_pDarkFlatTask;
+	// Bias applied to the flat and dark flat masters.  Flats, dark flats and
+	// their bias frames are assumed to share one ISO/gain, which may differ
+	// from the lights; m_pOffsetTask (matched to the lights) serves lights
+	// and darks.
+	CTaskInfo *			m_pFlatOffsetTask;
 
 private :
 	void	CopyFrom(const CStackingInfo & si)
@@ -155,10 +160,11 @@ private :
 		m_pFlatTask		= si.m_pFlatTask;
 		m_pLightTask	= si.m_pLightTask;
 		m_pDarkFlatTask = si.m_pDarkFlatTask;
+		m_pFlatOffsetTask = si.m_pFlatOffsetTask;
 	}
 
 private :
-	bool	CheckForExistingOffset(fs::path& strMasterFile);
+	bool	CheckForExistingOffset(CTaskInfo* pOffsetTask, fs::path& strMasterFile);
 	bool	CheckForExistingDark(fs::path& strMasterFile);
 	bool	CheckForExistingDarkFlat(fs::path& strMasterFile);
 	bool	CheckForExistingFlat(fs::path& strMasterFile);
@@ -171,6 +177,7 @@ public :
 		m_pFlatTask		= nullptr;
 		m_pLightTask	= nullptr;
 		m_pDarkFlatTask	= nullptr;
+		m_pFlatOffsetTask = nullptr;
 	}
 
 	CStackingInfo(const CStackingInfo & si)
@@ -188,7 +195,9 @@ public :
 		return (*this);
 	}
 
-	bool	DoOffsetTask(DSS::OldProgressBase* const pProgress);
+	// Builds (or finds) the master for the given offset task, which is either
+	// m_pOffsetTask (lights, darks) or m_pFlatOffsetTask (flats, dark flats).
+	bool	DoOffsetTask(CTaskInfo* pOffsetTask, DSS::OldProgressBase* const pProgress);
 	bool	DoDarkTask(DSS::OldProgressBase* const pProgress);
 	bool	DoFlatTask(DSS::OldProgressBase* const pProgress);
 	bool	DoDarkFlatTask(DSS::OldProgressBase* const pProgress);

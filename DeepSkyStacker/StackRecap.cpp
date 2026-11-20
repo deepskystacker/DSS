@@ -604,6 +604,57 @@ namespace DSS
 						insertHTML(strHTML, strText, QColorConstants::DarkRed);
 						strHTML += "</li>";
 					};
+					// The flat and dark flat are calibrated with their own bias if
+					// it is not the one used for the lights (different ISO/gain).
+					if (si.m_pFlatOffsetTask && si.m_pFlatOffsetTask != si.m_pOffsetTask)
+					{
+						const CTaskInfo& flatReference = si.m_pFlatTask ? *si.m_pFlatTask : *si.m_pDarkFlatTask;
+
+						strExposure = exposureToString(si.m_pFlatOffsetTask->m_fExposure);
+						GetISOGainStrings(si.m_pFlatOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
+						strHTML += "<li>";
+						strText = tr("-> Flat Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_FLATOFFSET")
+							.arg(si.m_pFlatOffsetTask->m_vBitmaps.size())
+							.arg(strISOGainText)
+							.arg(strISOGainValue)
+							.arg(strExposure);
+						insertHTML(strHTML, strText, windowTextColour);
+						strHTML += "</li>";
+
+						strHTML += "<ul style=\"list-style: none; \">";
+
+						if (si.m_pFlatOffsetTask->m_vBitmaps.size() > 1)
+						{
+							strHTML += "<li>";
+							strText = tr("Method: ", "IDS_RECAP_METHOD");
+							insertHTML(strHTML, strText, windowTextColour);
+							FormatMethod(strText, si.m_pFlatOffsetTask->m_Method, si.m_pFlatOffsetTask->m_fKappa, si.m_pFlatOffsetTask->m_lNrIterations);
+							insertHTML(strHTML, strText, blueColour, false, false, SSTAB_OFFSET);
+							strHTML += "</li>";
+						};
+
+						if (si.m_pFlatOffsetTask->HasISOSpeed())
+						{
+							if (si.m_pFlatOffsetTask->m_lISOSpeed != flatReference.m_lISOSpeed)
+							{
+								strHTML += "<li>";
+								strText = tr("Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
+								insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
+								strHTML += "</li>";
+							};
+						}
+						else
+						{
+							if (si.m_pFlatOffsetTask->m_lGain != flatReference.m_lGain)
+							{
+								strHTML += "<li>";
+								strText = tr("Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
+								insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
+								strHTML += "</li>";
+							};
+						};
+						strHTML += "</ul>";
+					};
 					if (si.m_pDarkFlatTask && si.m_pFlatTask)
 					{
 						strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
@@ -684,26 +735,8 @@ namespace DSS
 							strHTML += "</li>";
 						};
 
-						if (si.m_pFlatTask->HasISOSpeed())
-						{
-							if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
-							{
-								strHTML += "<li>";
-								strText = tr("Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
-								insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
-								strHTML += "</li>";
-							};
-						}
-						else
-						{
-							if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
-							{
-								strHTML += "<li>";
-								strText = tr("Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
-								insertHTML(strHTML, strText, QColorConstants::DarkRed, false, true);
-								strHTML += "</li>";
-							};
-						};
+						// No ISO/gain check against the lights: flats (and their
+						// bias) may legitimately be taken at a different ISO/gain.
 						strHTML += "</ul>";
 					}
 					else
