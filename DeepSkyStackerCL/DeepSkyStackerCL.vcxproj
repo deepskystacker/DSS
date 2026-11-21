@@ -38,7 +38,7 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>6.10.0_msvc2022_64</QtInstall>
+    <QtInstall>6.12.0_msvc2022_64</QtInstall>
     <QtModules>core; gui</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeployPdb>true</QtDeployPdb>
@@ -46,7 +46,7 @@
     <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.10.0_msvc2022_64</QtInstall>
+    <QtInstall>6.12.0_msvc2022_64</QtInstall>
     <QtModules>core; gui</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeployPdb>true</QtDeployPdb>
