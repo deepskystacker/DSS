@@ -755,6 +755,12 @@ bool CFITSReader::Read()
 	constexpr double ScaleFactorInt16 = static_cast<double>(std::numeric_limits<std::uint16_t>::max()) / 255.0;
 	constexpr double ScaleFactorInt32 = static_cast<double>(std::numeric_limits<std::uint32_t>::max()) / 255.0;
 	constexpr double ScaleFactorInt64 = static_cast<double>(std::numeric_limits<std::uint64_t>::max()) / 255.0;
+	//
+	// Amount by which it is allowable to for ADU values to be greater than DATAMAX or less than DATAMIN.
+	// This is to allow for the fact that the quantization of the data by RICE compression can result in values
+	// that are slightly outside the range of [DATAMIN, DATAMAX].
+	//
+	constexpr double allowedEpsilon = 1.0e-4;
 
 	ZFUNCTRACE_RUNTIME();
 	bool result = true;
@@ -1089,10 +1095,18 @@ bool CFITSReader::Read()
 		{
 			//
 			// If any of the values are outside the range [dataMin, dataMax], then we have a problem with the data range.
+			// Allow for a small epsilon because RICE compression can result in values that are slightly outside the range of [DATAMIN, DATAMAX].
 			//
-			if (redMin   < dataMin || redMax   > dataMax ||
-				greenMin < dataMin || greenMax > dataMax ||
-				blueMin  < dataMin || blueMax  > dataMax)
+			ZTRACE_RUNTIME("redMax = %g, greenMax = %g, blueMax = %g", redMax, greenMax, blueMax);
+
+			ZTRACE_RUNTIME("std::fabs(dataMin - redMin) = %g, std::fabs(redMax - dataMax) = %g", std::fabs(dataMin - redMin), std::fabs(redMax - dataMax));
+			ZTRACE_RUNTIME("std::fabs(dataMin - greenMin) = %g, std::fabs(greenMax - dataMax) = %g", std::fabs(dataMin - greenMin), std::fabs(greenMax - dataMax));
+			ZTRACE_RUNTIME("std::fabs(dataMin - blueMin) = %g, std::fabs(blueMax - dataMax) = %g", std::fabs(dataMin - blueMin), std::fabs(blueMax - dataMax));
+			ZTRACE_RUNTIME("Allowed epsilon = %g", allowedEpsilon);
+
+			if (((redMin   < dataMin) && (std::fabs(dataMin - redMin)   > allowedEpsilon)) || ((redMax   > dataMax) && (std::fabs(redMax - dataMax)   > allowedEpsilon))   ||
+				((greenMin < dataMin) && (std::fabs(dataMin - greenMin) > allowedEpsilon)) || ((greenMax > dataMax) && (std::fabs(greenMax - dataMax) > allowedEpsilon)) ||
+				((blueMin  < dataMin) && (std::fabs(dataMin - blueMin)  > allowedEpsilon)) || ((blueMax  > dataMax) && (std::fabs(blueMax - dataMax)  > allowedEpsilon)) )
 			{
 				QString errorMessage = QCoreApplication::translate("FITSUtil",
 					"A pixel value in the FITS file:\n\n"
