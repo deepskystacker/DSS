@@ -1097,7 +1097,7 @@ bool CFITSReader::Read()
 			// If any of the values are outside the range [dataMin, dataMax], then we have a problem with the data range.
 			// Allow for a small epsilon because RICE compression can result in values that are slightly outside the range of [DATAMIN, DATAMAX].
 			//
-			if (((redMin   < dataMin) && (std::fabs(dataMin - redMin)   > allowedEpsilon)) || ((redMax   > dataMax) && (std::fabs(redMax - dataMax)   > allowedEpsilon))   ||
+			if (((redMin   < dataMin) && (std::fabs(dataMin - redMin)   > allowedEpsilon)) || ((redMax   > dataMax) && (std::fabs(redMax - dataMax)   > allowedEpsilon)) ||
 				((greenMin < dataMin) && (std::fabs(dataMin - greenMin) > allowedEpsilon)) || ((greenMax > dataMax) && (std::fabs(greenMax - dataMax) > allowedEpsilon)) ||
 				((blueMin  < dataMin) && (std::fabs(dataMin - blueMin)  > allowedEpsilon)) || ((blueMax  > dataMax) && (std::fabs(blueMax - dataMax)  > allowedEpsilon)) )
 			{
