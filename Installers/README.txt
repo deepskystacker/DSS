@@ -55,6 +55,8 @@ Changes for DeepSkyStacker 6.2.3 Beta 4
     DATAMAX when reading FITS files containing floating point data.  This is necessary because the quantization of the
     data by RICE compression can result in values that are slightly outside the range [DATAMIN, DATAMAX].
 
+10. Update Qt to 6.12.0 for all platforms.
+
 Changes for DeepSkyStacker 6.2.2
 ================================
 
