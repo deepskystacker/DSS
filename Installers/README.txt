@@ -49,7 +49,11 @@ Changes for DeepSkyStacker 6.2.3 Beta 4
 7.  Bug fix: Claude Code assisted fixes to the WCS code as it was neither complete, nor correct.
 
 8.  Update boost to 1.92.0, cfitsio to 4.7.0, exiv2 to 0.28.9, expat to 2.9.0, freeglut to 3.8.0, libraw to 0.22.3,
-    tiff to 4.7.2, and zlib to 1.3.2
+    tiff to 4.7.2, and zlib to 1.3.2.
+
+9.  Change the code in FITSUtil.cpp to allow ADU values that are slightly smaller than DATAMIN, or slightly larger than
+    DATAMAX when reading FITS files containing floating point data.  This is necessary because the quantization of the
+    data by RICE compression can result in values that are slightly outside the range [DATAMIN, DATAMAX].
 
 Changes for DeepSkyStacker 6.2.2
 ================================
