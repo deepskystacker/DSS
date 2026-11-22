@@ -133,7 +133,7 @@ if(APPLE)
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStackerLive"
         MACOSX_BUNDLE_ICON_FILE "DSSLive.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystackerlive"
-        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2026, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
         INSTALL_RPATH "@executable_path/../Frameworks"
 )
 endif()

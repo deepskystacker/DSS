@@ -388,7 +388,7 @@ if(APPLE)
         MACOSX_BUNDLE_BUNDLE_NAME "DeepSkyStacker"
         MACOSX_BUNDLE_ICON_FILE "DeepSkyStacker.icns"
         MACOSX_BUNDLE_GUI_IDENTIFIER "com.github.deepskystacker.deepskystacker"
-        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2025, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2018-2026, David C. Partridge; Copyright © 2006-2019, Luc Coiffier"
 		MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/MacOSXBundleInfo.plist.in"
         INSTALL_RPATH "@executable_path/../Frameworks"
 )
