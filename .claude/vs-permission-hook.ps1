@@ -6,10 +6,17 @@
 
 $ErrorActionPreference = 'Stop'
 
-function Emit([string]$decision, [string]$reason) {
-    @{ hookSpecificOutput = @{ hookEventName = 'PreToolUse'; permissionDecision = $decision; permissionDecisionReason = $reason } } |
-        ConvertTo-Json -Compress -Depth 8
+# Print one JSON line as raw UTF-8 bytes, bypassing PowerShell's console encoding (the OEM code page
+# under 5.1, which mangles any non-ASCII character in a reject reason or a rewritten edit).
+function EmitRaw([string]$json) {
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($json + "`n")
+    $out = [Console]::OpenStandardOutput(); $out.Write($bytes, 0, $bytes.Length); $out.Flush()
     exit 0
+}
+
+function Emit([string]$decision, [string]$reason) {
+    EmitRaw (@{ hookSpecificOutput = @{ hookEventName = 'PreToolUse'; permissionDecision = $decision; permissionDecisionReason = $reason } } |
+        ConvertTo-Json -Compress -Depth 8)
 }
 
 function ApplyEdit([string]$content, [string]$old, [string]$new, [bool]$all) {
@@ -93,7 +100,9 @@ try {
     # descendant of its own CLI, so the bridge can check whether the CLI connected to it is one of our
     # ancestors; folder paths cannot answer that, because a second Claude session in the same tree - one
     # running under VS Code - matches them just as well and would otherwise steal the diff into VS.
-    $body = @{ filePath = $file; newContents = $new; transcript_path = $p.transcript_path; permissionMode = [string]$p.permission_mode; cwd = [string]$p.cwd; pid = $PID; entrypoint = [string]$env:CLAUDE_CODE_ENTRYPOINT } | ConvertTo-Json -Compress -Depth 8
+    # toolName lets the bridge rebuild this tool's input when the user EDITS the proposal in the diff
+    # before accepting (edit-before-accept): it answers with the complete hook output to print.
+    $body = @{ filePath = $file; newContents = $new; toolName = [string]$tool; transcript_path = $p.transcript_path; permissionMode = [string]$p.permission_mode; cwd = [string]$p.cwd; pid = $PID; entrypoint = [string]$env:CLAUDE_CODE_ENTRYPOINT } | ConvertTo-Json -Compress -Depth 8
     # Send the body as explicit UTF-8 bytes; Invoke-RestMethod's default string encoding mangles
     # non-ASCII content (em-dashes, smart quotes) into invalid JSON.
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($body)
@@ -110,6 +119,10 @@ try {
         exit 0
     }
     elseif ($resp.allow) {
+        # Accepted WITH the user's edits: the bridge already composed the whole decision (allow +
+        # updatedInput carrying their version + a note for Claude), as one pure-ASCII JSON line. Print it
+        # verbatim - re-serializing it here would only add ways for PowerShell to alter it.
+        if ($resp.hookOutput) { EmitRaw ([string]$resp.hookOutput) }
         Emit 'allow' 'Accepted in Visual Studio diff'
     }
     else {
