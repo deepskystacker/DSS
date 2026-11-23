@@ -54,7 +54,11 @@ try {
     # permissionMode rides along so the panel's run-wild checkbox tracks a shift+tab mode change at the
     # next prompt, rather than staying stuck until the session happens to make an edit.
     # pid + entrypoint identify WHICH session this is - see vs-permission-hook.ps1 (issue #42).
-    $body = @{ cwd = $p.cwd; permissionMode = [string]$p.permission_mode; pid = $PID; entrypoint = [string]$env:CLAUDE_CODE_ENTRYPOINT } | ConvertTo-Json -Compress
+    # transcript_path + the first line of the prompt open the panel's live-activity card: the bridge
+    # follows the transcript from here until the Stop hook fires, so the card can show each tool call.
+    $preview = [string]$p.prompt
+    if ($preview) { $preview = ($preview -split "`r?`n")[0]; if ($preview.Length -gt 160) { $preview = $preview.Substring(0, 160) } }
+    $body = @{ cwd = $p.cwd; permissionMode = [string]$p.permission_mode; pid = $PID; entrypoint = [string]$env:CLAUDE_CODE_ENTRYPOINT; transcript_path = [string]$p.transcript_path; prompt = $preview } | ConvertTo-Json -Compress
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($body)
     # Short timeout on purpose: the bridge itself caps the UI-thread read at ~2s and answers fast (real
     # state when paused, "unknown" when the UI thread is busy). We only need headroom over that. Keeping
