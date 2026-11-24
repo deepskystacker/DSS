@@ -80,7 +80,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.12.1/macos"
+        "QTDIR": "/opt/Qt/6.12.0/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -100,7 +100,7 @@
       ],
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
-        "QTDIR": "/opt/Qt/6.12.1/macos"
+        "QTDIR": "/opt/Qt/6.12.0/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
@@ -119,7 +119,7 @@
         "DSS-Settings"
       ],
       "environment": {
-        "QTDIR": "/opt/Qt/6.12.1/macos"
+        "QTDIR": "/opt/Qt/6.12.0/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -139,7 +139,7 @@
       ],
       "cmakeExecutable": "/usr/local/bin/cmake",
       "environment": {
-        "QTDIR": "/opt/Qt/6.12.1/macos"
+        "QTDIR": "/opt/Qt/6.12.0/macos"
       },
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",

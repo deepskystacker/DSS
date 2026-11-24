@@ -73,7 +73,11 @@ set(CMAKE_INSTALL_LIBDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_LIBEXECDIR "." CACHE STRING "" FORCE)
 set(CMAKE_INSTALL_PLUGINSDIR "." CACHE STRING "" FORCE)
 
+if (MACOS)
+find_package(Qt6 6.12.0 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets Concurrent LinguistTools Svg PrintSupport)
+else()
 find_package(Qt6 6.12.1 REQUIRED COMPONENTS Core Gui Widgets Network Charts DBus OpenGLWidgets Concurrent LinguistTools Svg PrintSupport)
+endif()
 
 #set(CMAKE_FIND_DEBUG_MODE 1)
 find_package(cfitsio REQUIRED)
