@@ -20,6 +20,7 @@ set(Header_Files
 source_group("Header Files" FILES ${Header_Files})
 
 set(Source_Files
+    "ChartPage.cpp"
     "ChartTab.cpp"
     "DeepSkyStackerLive.cpp"
     "EmailSettings.cpp"
@@ -155,6 +156,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ../DeepSkyStackerKernel
     ../ZClass
     ../Tools
+    ../qwt
   )
 
 if(WIN32)
@@ -192,7 +194,7 @@ if(MSVC)
             /Zi;
             /GS-
         >
-	    -W4 /wd4652 /wd4702 /wd4828 
+	    -W4 /wd4652 /wd4702 /wd4828 /wd4995 /wd4244 
 		-Zc:__cplusplus /openmp:experimental
         /MP;
         /utf-8;
@@ -246,10 +248,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Qt6::Gui
     Qt6::Widgets
     Qt6::Network
-    Qt6::Charts
+    Qt6::Svg
+    Qt6::PrintSupport
 	DeepSkyStackerKernel
     DeepSkyStackerAVX
     ZClass
+    qwt
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::container)
 target_link_libraries(${PROJECT_NAME} PRIVATE Exiv2::exiv2lib)

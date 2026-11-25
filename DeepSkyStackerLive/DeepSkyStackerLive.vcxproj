@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.12.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;svg;printsupport</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
     <QtDeploy>false</QtDeploy>
     <QtDeployPdb>true</QtDeployPdb>
@@ -45,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.12.1_msvc2022_64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network;charts</QtModules>
+    <QtModules>core;gui;gui-private;widgets;network;svg;printsupport</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtDeploy>false</QtDeploy>
     <QtDeployPdb>true</QtDeployPdb>
@@ -112,13 +112,13 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;..\ZClass;..\tools;..\qwt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(Qt_DEFINES_);NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4995 /wd4244 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
@@ -172,13 +172,13 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;..\ZClass;..\tools;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\..\DeepSkyStackerKernel;.\..\DeepSkyStackerLive;..\ZClass;..\tools;..\qwt;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(Qt_DEFINES_);NOMINMAX;LIBRAW_NODLL;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4995 /wd4244 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
@@ -222,6 +222,7 @@
   <ItemGroup>
     <ClCompile Include="..\Tools\imageview.cpp" />
     <ClCompile Include="..\Tools\QLinearGradientCtrl.cpp" />
+    <ClCompile Include="ChartPage.cpp" />
     <ClCompile Include="ChartTab.cpp" />
     <ClCompile Include="DeepSkyStackerLive.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -253,6 +254,7 @@
     <QtMoc Include="emailsettings.h" />
     <QtMoc Include="foldermonitor.h" />
     <QtMoc Include="fileregistrar.h" />
+    <ClInclude Include="ChartPage.h" />
     <ClInclude Include="dssliveenums.h" />
     <QtMoc Include="filestacker.h" />
     <QtMoc Include="imageviewer.h" />
@@ -274,6 +276,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DeepSkyStackerKernel\DeepSkyStackerKernel.vcxproj">
       <Project>{cb7b75f1-08f4-4c8d-a7ef-2aa33e9a67f1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\qwt\qwt.vcxproj">
+      <Project>{0bd6ab93-b4d3-426e-9bed-18a9b0b5cd67}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ZClass\ZClass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>

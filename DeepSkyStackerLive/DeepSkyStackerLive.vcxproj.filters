@@ -69,6 +69,9 @@
     <ClCompile Include="RestartMonitoring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChartPage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ChartTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,6 +144,9 @@
     <QtMoc Include="RestartMonitoring.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <ClInclude Include="ChartPage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <QtMoc Include="ChartTab.h">
       <Filter>Header Files</Filter>
     </QtMoc>
