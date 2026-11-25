@@ -61,6 +61,8 @@ namespace DSS
 		void setPoint(const QString& name, size_t series, POINTTYPE type);
 		void clear();
 		void setDarkTheme(bool dark);
+		// Digits after the decimal point in the hover value (default 2)
+		void setValueDecimals(int decimals) { valueDecimals_ = decimals; }
 
 	private:
 		static constexpr size_t markerCount{ 4 };
@@ -91,6 +93,7 @@ namespace DSS
 		double yMin_;
 		double yMax_;
 		bool dark_{ false };
+		int valueDecimals_{ 2 };
 
 		void applyColours(Series& s);
 		void rebuildMarkers(Series& s, size_t marker);

@@ -204,7 +204,7 @@ namespace DSS
 				}
 				if (!best)
 					return QwtText();
-				return QwtText(QLocale().toString(best->store->sample(static_cast<size_t>(bestIndex)).y(), 'f', 2));
+				return QwtText(QLocale().toString(best->store->sample(static_cast<size_t>(bestIndex)).y(), 'f', valueDecimals_));
 			});
 
 		setDarkTheme(false);
@@ -298,6 +298,11 @@ namespace DSS
 		QColor gridColour = text;
 		gridColour.setAlpha(60);
 		grid_->setPen(gridColour, 0.0, Qt::DotLine);
+
+		// The picker's tracker text defaults to a white pen, which is
+		// unreadable on a light canvas, so follow the theme.
+		if (auto* picker = canvas()->findChild<QwtPlotPicker*>())
+			picker->setTrackerPen(QPen(text));
 
 		for (auto& s : series_)
 			applyColours(s);

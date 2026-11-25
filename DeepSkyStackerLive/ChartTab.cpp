@@ -29,6 +29,8 @@ namespace DSS
 		starsPage_ = makePage({ { tr("#Stars", "IDC_STARS"), QColor() } }, 0, 250);
 		offsetPage_ = makePage({ { "dX", Qt::red }, { "dY", Qt::blue } }, -1.0, 1.0);
 		anglePage_ = makePage({ { tr("Angle", "IDC_ANGLE"), QColor() } }, -0.005, 0.005);
+		// Angles are tiny (radians), so two decimals would show 0.00
+		anglePage_->setValueDecimals(5);
 		skybgPage_ = makePage({ { tr("Sky Background", "IDC_SKYBACKGROUND"), QColor() } }, 0, 1.0);
 
 		colorSchemeChanged(QGuiApplication::styleHints()->colorScheme());
