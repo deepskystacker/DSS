@@ -58,6 +58,9 @@ Changes for DeepSkyStacker 6.2.3 Beta 4
 10. Update Qt to 6.12.1 for Linux and Windows, and to 6.12.0 for macOS until a problem with the packaging of QtWebEngine
     (which is needed by uchmviewer) is resolved.
 
+11. Change the code in DeepSkyStackerLive to use qwt for the graphs, rather than QtCharts which is now deprecated.  QtGraphs
+    was not an option because it uses the GPL license.
+
 Changes for DeepSkyStacker 6.2.2
 ================================
 
