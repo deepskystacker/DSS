@@ -44,7 +44,18 @@
 #include <QPointF>
 #include <QString>
 #include <QVector>
+
+#if defined(_MSC_VER) 
+#pragma warning(push)
+#pragma warning(disable : 4244 4995)
+#endif
+
 #include <QwtPlot>
+
+#if defined(_MSC_VER) 
+#pragma warning(pop)
+#endif
+
 
 class QwtPlotCurve;
 class QwtPlotGrid;

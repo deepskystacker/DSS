@@ -118,7 +118,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4995 /wd4244 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>
@@ -178,7 +178,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <LanguageStandard>stdcpp23</LanguageStandard>
-      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 /wd4995 /wd4244 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zc:__cplusplus /utf-8 /openmp:experimental /wd4828 /wd4652 /wd4702 %(AdditionalOptions)</AdditionalOptions>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>true</ExternalTemplatesDiagnostics>
       <WarningLevel>Level4</WarningLevel>

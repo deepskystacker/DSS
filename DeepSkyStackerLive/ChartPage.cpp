@@ -39,6 +39,11 @@
 #include <algorithm>
 #include <functional>
 
+#if defined(_MSC_VER) 
+#pragma warning(push)
+#pragma warning(disable : 4244 4250 4995)
+#endif
+
 #include <QwtLegend>
 #include <QwtLinearScaleEngine>
 #include <QwtPickerTrackerMachine>
@@ -48,6 +53,10 @@
 #include <QwtSeriesData>
 #include <QwtSymbol>
 #include <QwtText>
+
+#if defined(_MSC_VER) 
+#pragma warning(pop)
+#endif
 
 // ChartPage.h / ChartPage.cpp: a QwtPlot subclass that draws one metric and replaces the six QChart objects.
 // 
