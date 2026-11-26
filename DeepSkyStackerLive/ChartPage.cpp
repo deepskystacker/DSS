@@ -43,6 +43,10 @@
 #pragma warning(push)
 #pragma warning(disable : 4244 4250 4995)
 #endif
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
+#endif
 
 #include <QwtLegend>
 #include <QwtLinearScaleEngine>
@@ -56,6 +60,9 @@
 
 #if defined(_MSC_VER) 
 #pragma warning(pop)
+#endif
+#if defined(Q_CC_CLANG)
+#pragma clang diagnostic pop
 #endif
 
 // ChartPage.h / ChartPage.cpp: a QwtPlot subclass that draws one metric and replaces the six QChart objects.
@@ -88,10 +95,10 @@ namespace DSS
 
 		// Indexed by POINTTYPE - 1
 		const std::array<MarkerStyle, 4> markerStyles{ {
-			{ QColorConstants::Cyan, 6 },				// PT_REFERENCE
-			{ QColorConstants::Green, 4 },				// PT_OK
-			{ QColorConstants::Red, 6 },				// PT_WRONG
-			{ QColorConstants::Svg::orange, 6 }			// PT_WARNING
+			{ QColorConstants::Cyan, 12 },				// PT_REFERENCE
+			{ QColorConstants::Green, 8 },				// PT_OK
+			{ QColorConstants::Red, 12 },				// PT_WRONG
+			{ QColorConstants::Svg::orange, 12 }			// PT_WARNING
 		} };
 
 		// Given the number of files, choose a suitable tick interval and
